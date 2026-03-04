@@ -4,9 +4,9 @@
       [autofocus]="true"
       [hideIcon]="true"
       [formField]="searchForm"
-      [resetLabel]="'Clear the search'"
+      [resetLabel]="'Aramayı temizle'"
       class="docs-search-input"
-      placeholder="Search docs"
+      placeholder="Dokümanlarda ara"
     />
 
     @if (searchResults().length) {
@@ -65,11 +65,11 @@
       <div class="docs-search-results docs-mini-scroll-track">
         @if (!resultsResource.hasValue()) {
           <div class="docs-search-results__start-typing">
-            <span>Start typing to see results</span>
+            <span>Sonuçları görmek için yazmaya başlayın</span>
           </div>
         } @else if (searchResults().length === 0) {
           <div class="docs-search-results__no-results">
-            <span>No results found</span>
+            <span>Sonuç bulunamadı</span>
           </div>
         }
       </div>
@@ -91,7 +91,7 @@
               </g>
             </svg>
           </kbd>
-          <span>to select</span>
+          <span>seçmek için</span>
         </li>
         <li>
           <kbd class="docs-search-commands-key">
@@ -120,7 +120,7 @@
               </g>
             </svg>
           </kbd>
-          <span>to navigate</span>
+          <span>navigasyon için</span>
         </li>
         <li>
           <kbd class="docs-search-commands-key"
@@ -138,11 +138,11 @@
               </g>
             </svg>
           </kbd>
-          <span>to close</span>
+          <span>kapatmak için</span>
         </li>
       </ul>
       <div class="docs-algolia">
-        <span>Search by</span>
+        <span>Arama motoru</span>
         <a
           target="_blank"
           rel="noopener"

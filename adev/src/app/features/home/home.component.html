@@ -4,19 +4,19 @@
     <div class="content">
       <div class="adev-banner-container">
         <a href="events/v21" class="adev-banner" target="_blank">
-          <h1 tabindex="-1">Angular v21 is here!</h1>
-          <p class="adev-banner-cta">🕹️ Start your adventure</p>
+          <h1 tabindex="-1">Angular v21 burada!</h1>
+          <p class="adev-banner-cta">🕹️ Maceranıza başlayın</p>
         </a>
 
         <div class="search-field">
-          <docs-text-field placeholder="search" (click)="openSearch()" />
+          <docs-text-field placeholder="ara" (click)="openSearch()" />
         </div>
       </div>
 
       @if (!isUwu) {
         <div class="title">
-          <h2>Productivity<br />Meets scalability</h2>
-          <h3>The framework for building scalable web apps with confidence</h3>
+          <h2>Verimlilik<br />Ölçeklenebilirlikle buluşuyor</h2>
+          <h3>Güvenle ölçeklenebilir web uygulamaları oluşturmak için framework</h3>
         </div>
       } @else {
         <!-- UwU logo -->
@@ -27,8 +27,8 @@
 
       <div class="learn-angular">
         <a href="#learn-more" class="adev-cta">
-          <button class="docs-primary-btn" [attr.text]="'Get Started'" aria-label="Get Started">
-            Get Started
+          <button class="docs-primary-btn" [attr.text]="'Başlayın'" aria-label="Başlayın">
+            Başlayın
           </button>
         </a>
         <div class="adev-arrow"></div>
@@ -37,15 +37,15 @@
   </section>
 
   <section class="features-section" #featuresSection>
-    <h2 id="features">Features that actually <br />help you solve problems</h2>
+    <h2 id="features">Gerçekten sorunları çözmenize<br />yardımcı olan özellikler</h2>
 
     <div ngTabs class="material-tabs">
       <div ngTabList selectionMode="follow" [(selectedTab)]="selectedFeatureTab">
         <div class="tab-background"></div>
-        <div ngTab [value]="FEATURE_TAB.signals">Signals</div>
-        <div ngTab [value]="FEATURE_TAB.controlFlow">Control Flow</div>
-        <div ngTab [value]="FEATURE_TAB.deferrableViews">Deferrable Views</div>
-        <div ngTab [value]="FEATURE_TAB.hydration">Hydration</div>
+        <div ngTab [value]="FEATURE_TAB.signals">Sinyaller</div>
+        <div ngTab [value]="FEATURE_TAB.controlFlow">Kontrol Akışı</div>
+        <div ngTab [value]="FEATURE_TAB.deferrableViews">Ertelenebilir Görünümler</div>
+        <div ngTab [value]="FEATURE_TAB.hydration">Hidrasyon</div>
       </div>
 
       <div class="sliding-window">
@@ -85,7 +85,7 @@
   </section>
 
   <section class="selling-points">
-    <h2>Enabling you to build<br />smarter and faster</h2>
+    <h2>Daha akıllı ve daha hızlı<br />geliştirmenizi sağlar</h2>
     <div class="cards">
       <a class="card" routerLink="/ai/develop-with-ai">
         <div class="icon-wrapper">
@@ -93,8 +93,8 @@
         </div>
         <div class="card-content">
           <h3>
-            <strong>AI-forward</strong> resources and integrations to supercharge your development
-            with AI
+            <strong>Yapay zeka odaklı</strong> kaynaklar ve entegrasyonlarla geliştirmenizi yapay
+            zeka ile güçlendirin
           </h3>
         </div>
       </a>
@@ -105,8 +105,8 @@
         </div>
         <div class="card-content">
           <h3>
-            <strong>Opinionated & versatile,</strong> organized yet modular thanks to Angular
-            components and dependency injection
+            <strong>Tutarlı ve çok yönlü,</strong> Angular bileşenleri ve bağımlılık enjeksiyonu
+            sayesinde düzenli ancak modüler
           </h3>
         </div>
       </a>
@@ -117,8 +117,8 @@
         </div>
         <div class="card-content">
           <h3>
-            <strong>Reactive</strong> and fast state updates with fine-grained reactivity based on
-            Angular Signals
+            <strong>Reaktif</strong> ve Angular Sinyalleri tabanlı ince taneli reaktivite ile hızlı
+            durum güncellemeleri
           </h3>
         </div>
       </a>
@@ -129,8 +129,8 @@
         </div>
         <div class="card-content">
           <h3>
-            <strong>Fully featured</strong> platform where everything works together with Angular's
-            first-party modules for forms, routing, and more
+            <strong>Tam donanımlı</strong> platform; formlar, yönlendirme ve daha fazlası için
+            Angular'ın birinci taraf modülleriyle her şey bir arada çalışır
           </h3>
         </div>
       </a>
@@ -141,18 +141,13 @@
     <div class="wrapper">
       <div class="pattern"></div>
       <div class="content">
-        <h2>Where performance matters</h2>
+        <h2>Performansın önemli olduğu yer</h2>
         <h3>
-          Trusted by millions to build fast, reliable applications that scale with the size of your
-          team
+          Ekibinizin büyüklüğüne göre ölçeklenen hızlı, güvenilir uygulamalar oluşturmak için
+          milyonlarca kişi tarafından güvenilir
         </h3>
-        <button
-          class="docs-primary-btn"
-          [attr.text]="'Get started'"
-          routerLink="/guide/performance"
-        >
-          <!-- TODO: LINK -->
-          Get started
+        <button class="docs-primary-btn" [attr.text]="'Başlayın'" routerLink="/guide/performance">
+          Başlayın
         </button>
       </div>
     </div>
@@ -160,33 +155,35 @@
 
   <section class="explore-section" id="learn-more">
     <div class="title">
-      <h2>What to learn more about Angular?</h2>
+      <h2>Angular hakkında daha fazla bilgi edinmek ister misiniz?</h2>
       <div class="pattern"></div>
     </div>
 
     <div class="cards-grid">
-      <!-- Card 1: Tutorials -->
+      <!-- Kart 1: Eğitimler -->
       <a routerLink="/tutorials/learn-angular" class="explore-card">
         <div class="card-content">
           <p>
-            <span class="emphasis">New to Angular?</span>
-            Try our completely in browser tutorial lessons designed to give you hands on experience
-            with Angular.
+            <span class="emphasis">Angular'da yeni misiniz?</span>
+            Angular ile uygulamalı deneyim kazanmanız için tasarlanmış tamamen tarayıcı içi eğitim
+            derslerimizi deneyin.
           </p>
-          <span class="fake-button">Start coding <docs-icon>arrow_forward</docs-icon></span>
+          <span class="fake-button">Kodlamaya başlayın <docs-icon>arrow_forward</docs-icon></span>
           <div class="editor-background"></div>
         </div>
       </a>
 
-      <!-- Card 2: AI -->
+      <!-- Kart 2: Yapay Zeka -->
       <a routerLink="/ai" class="explore-card">
         <div class="card-content">
           <p>
-            <span class="emphasis">Are you an LLM or curious about AI in Angular?</span>
-            Head over to our AI section to find prompts, strategies, best practices, examples, and
-            more.
+            <span class="emphasis"
+              >Bir LLM misiniz veya Angular'da yapay zeka merak ediyor musunuz?</span
+            >
+            Promptlar, stratejiler, en iyi uygulamalar, örnekler ve daha fazlasını bulmak için yapay
+            zeka bölümümüze gidin.
           </p>
-          <span class="fake-button">Angular + AI <docs-icon>arrow_forward</docs-icon></span>
+          <span class="fake-button">Angular + Yapay Zeka <docs-icon>arrow_forward</docs-icon></span>
           <div class="angular-mcp-container">
             <div class="mcp-content">
               <div class="mcp-label">Angular MCP</div>
@@ -200,26 +197,26 @@
         </div>
       </a>
 
-      <!-- Card 3: Overview -->
+      <!-- Kart 3: Genel Bakış -->
       <a routerLink="/overview" class="explore-card">
         <div class="card-content">
           <p>
-            <span class="emphasis">Why Angular?</span>
-            Learn about Angular, its benefits, and if it's right for you.
+            <span class="emphasis">Neden Angular?</span>
+            Angular'ı, avantajlarını ve sizin için doğru olup olmadığını öğrenin.
           </p>
           <div class="logo-background"></div>
         </div>
       </a>
 
-      <!-- Card 4: Essentials -->
+      <!-- Kart 4: Temel Bilgiler -->
       <a routerLink="/essentials" class="explore-card">
         <div class="card-content">
           <p>
-            <span class="emphasis">More of a reader?</span>
-            Our essentials guides are designed to help you understand Angular fundamentals in the
-            time it would take to finish a cup of coffee (or a tea).
+            <span class="emphasis">Okumayı mı tercih ediyorsunuz?</span>
+            Temel bilgiler rehberlerimiz, bir fincan kahve (veya çay) bitirme süresinde Angular
+            temellerini anlamanıza yardımcı olmak için tasarlanmıştır.
           </p>
-          <span class="fake-button">Angular concepts <docs-icon>arrow_forward</docs-icon></span>
+          <span class="fake-button">Angular kavramları <docs-icon>arrow_forward</docs-icon></span>
         </div>
       </a>
     </div>
@@ -228,14 +225,14 @@
   <section class="learn-more-bottom-section" id="bottom">
     <div class="pattern"></div>
     <div class="content">
-      <h2>Want to learn more about Angular ?</h2>
+      <h2>Angular hakkında daha fazla bilgi edinmek ister misiniz?</h2>
       <button
         class="docs-primary-btn"
-        [attr.text]="'Learn more'"
-        aria-label="Learn more"
+        [attr.text]="'Daha fazla bilgi'"
+        aria-label="Daha fazla bilgi"
         routerLink="/overview"
       >
-        Learn more
+        Daha fazla bilgi
       </button>
     </div>
   </section>
