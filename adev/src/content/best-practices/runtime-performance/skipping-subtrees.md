@@ -1,19 +1,19 @@
 # Skipping component subtrees
 
-JavaScript, by default, uses mutable data structures that you can reference from multiple different components. Angular runs change detection over your entire component tree to make sure that the most up-to-date state of your data structures is reflected in the DOM.
+JavaScript, varsayilan olarak birden fazla farkli bilesenden referans verebileceginiz degistirilebilir veri yapilari kullanir. Angular, veri yapilarinizin en guncel durumunun DOM'a yansitildigından emin olmak icin tum bilesen agaci uzerinde degisiklik algilamasi calistirir.
 
-Change detection is sufficiently fast for most applications. However, when an application has an especially large component tree, running change detection across the whole application can cause performance issues. You can address this by configuring change detection to only run on a subset of the component tree.
+Degisiklik algilama cogu uygulama icin yeterince hizlidir. Ancak, bir uygulama ozellikle buyuk bir bilesen agacina sahip oldugunda, tum uygulama genelinde degisiklik algilamasi calistirmak performans sorunlarina neden olabilir. Bunu, degisiklik algilamasini bilesen agacinin yalnizca bir alt kumesinde calisacak sekilde yapilandirarak cozebilirsiniz.
 
-If you are confident that a part of the application is not affected by a state change, you can use [OnPush](/api/core/ChangeDetectionStrategy) to skip change detection in an entire component subtree.
+Bir uygulamanin bir bolumunun bir durum degisikliginden etkilenmediginden eminseniz, tum bir bilesen alt agacinda degisiklik algilamasini atlamak icin [OnPush](/api/core/ChangeDetectionStrategy) kullanabilirsiniz.
 
 ## Using `OnPush`
 
-OnPush change detection instructs Angular to run change detection for a component subtree **only** when:
+OnPush degisiklik algilama, Angular'a bir bilesen alt agaci icin degisiklik algilamasini **yalnizca** su durumlarda calistirmasi talimatini verir:
 
-- The root component of the subtree receives new inputs as the result of a template binding. Angular compares the current and past value of the input with `==`.
-- Angular handles an event _(for example using event binding, output binding, or `@HostListener` )_ in the subtree's root component or any of its children whether they are using OnPush change detection or not.
+- Alt agacin kok bileseni, bir sablon baglamasi sonucunda yeni girisler aldiginda. Angular, girisin mevcut ve onceki degerini `==` ile karsilastirir.
+- Angular, OnPush degisiklik algilama kullansalar da kullanmasalar da, alt agacin kok bileseninde veya herhangi bir cocugunda bir olayı islediginde _(ornegin olay baglama, cikis baglama veya `@HostListener` kullanarak)_.
 
-You can set the change detection strategy of a component to `OnPush` in the `@Component` decorator:
+Bir bilesenin degisiklik algilama stratejisini `@Component` dekoratorunde `OnPush` olarak ayarlayabilirsiniz:
 
 ```ts
 import {ChangeDetectionStrategy, Component} from '@angular/core';
@@ -26,13 +26,13 @@ export class MyComponent {}
 
 ## Common change detection scenarios
 
-This section examines several common change detection scenarios to illustrate Angular's behavior.
+Bu bolum, Angular'in davranisini gostermek icin birkaç yaygin degisiklik algilama senaryosunu incelemektedir.
 
 ### An event is handled by a component with default change detection
 
-If Angular handles an event within a component without `OnPush` strategy, the framework executes change detection on the entire component tree. Angular will skip descendant component subtrees with roots using `OnPush`, which have not received new inputs.
+Angular, `OnPush` stratejisi olmayan bir bilesen icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasi calistirir. Angular, yeni giris almamis OnPush kullanan koklere sahip torun bilesen alt agaclarini atlayacaktir.
 
-As an example, if we set the change detection strategy of `MainComponent` to `OnPush` and the user interacts with a component outside the subtree with root `MainComponent`, Angular will check all the pink components from the diagram below (`AppComponent`, `HeaderComponent`, `SearchComponent`, `ButtonComponent`) unless `MainComponent` receives new inputs:
+Ornek olarak, `MainComponent`'in degisiklik algilama stratejisini `OnPush` olarak ayarlar ve kullanici `MainComponent` kokune sahip alt agacin disindaki bir bilesenle etkilesime gecerse, `MainComponent` yeni girisler almadikca Angular asagidaki diyagramdaki tum pembe bilesenleri (`AppComponent`, `HeaderComponent`, `SearchComponent`, `ButtonComponent`) kontrol edecektir:
 
 ```mermaid
 graph TD;
@@ -53,9 +53,9 @@ class event eventNode
 
 ## An event is handled by a component with OnPush
 
-If Angular handles an event within a component with OnPush strategy, the framework will execute change detection within the entire component tree. Angular will ignore component subtrees with roots using OnPush, which have not received new inputs and are outside the component which handled the event.
+Angular, OnPush stratejisine sahip bir bilesen icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasini calistiracaktir. Angular, yeni giris almamis ve olayı isleyen bilesenin disinda kalan OnPush kullanan koklere sahip bilesen alt agaclarini gormezden gelecektir.
 
-As an example, if Angular handles an event within `MainComponent`, the framework will run change detection in the entire component tree. Angular will ignore the subtree with root `LoginComponent` because it has `OnPush` and the event happened outside of its scope.
+Ornek olarak, Angular `MainComponent` icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasi calistiracaktir. Angular, `LoginComponent` kokune sahip alt agaci gormezden gelecektir cunku `OnPush`'a sahiptir ve olay kapsaminin disinda gerceklesmistir.
 
 ```mermaid
 graph TD;
@@ -78,9 +78,9 @@ class event eventNode
 
 ## An event is handled by a descendant of a component with OnPush
 
-If Angular handles an event in a component with OnPush, the framework will execute change detection in the entire component tree, including the component’s ancestors.
+Angular, OnPush'a sahip bir bilesenin icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasi calistiracak ve bilesenin atalarini da dahil edecektir.
 
-As an example, in the diagram below, Angular handles an event in `LoginComponent` which uses OnPush. Angular will invoke change detection in the entire component subtree including `MainComponent` (`LoginComponent`’s parent), even though `MainComponent` has `OnPush` as well. Angular checks `MainComponent` as well because `LoginComponent` is part of its view.
+Ornek olarak, asagidaki diyagramda Angular, OnPush kullanan `LoginComponent` icinde bir olayı isler. Angular, `MainComponent` (`LoginComponent`'in ebeveyni) de dahil olmak uzere tum bilesen alt agacinda degisiklik algilamasi cagrilacaktir, `MainComponent`'in de `OnPush`'a sahip olmasina ragmen. Angular `MainComponent`'i de kontrol eder cunku `LoginComponent` onun gorunumunun bir parcasidir.
 
 ```mermaid
 graph TD;
@@ -104,9 +104,9 @@ class event eventNode
 
 ## New inputs to component with OnPush
 
-Angular will run change detection within a child component with `OnPush` when setting an input property as result of a template binding.
+Angular, bir sablon baglamasi sonucunda bir giris ozelligini ayarlarken `OnPush`'a sahip bir alt bilesende degisiklik algilamasi calistiracaktir.
 
-For example, in the diagram below, `AppComponent` passes a new input to `MainComponent`, which has `OnPush`. Angular will run change detection in `MainComponent` but will not run change detection in `LoginComponent`, which also has `OnPush`, unless it receives new inputs as well.
+Ornegin, asagidaki diyagramda `AppComponent`, `OnPush`'a sahip `MainComponent`'e yeni bir giris iletir. Angular, `MainComponent`'te degisiklik algilamasi calistiracak ancak kendisi de yeni girisler almadikca, ayrica `OnPush`'a sahip olan `LoginComponent`'te degisiklik algilamasi calistirmayacaktir.
 
 ```mermaid
 graph TD;
@@ -129,5 +129,5 @@ class event eventNode
 
 ## Edge cases
 
-- **Modifying input properties in TypeScript code**. When you use an API like `@ViewChild` or `@ContentChild` to get a reference to a component in TypeScript and manually modify an `@Input` property, Angular will not automatically run change detection for OnPush components. If you need Angular to run change detection, you can inject `ChangeDetectorRef` in your component and call `changeDetectorRef.markForCheck()` to tell Angular to schedule a change detection.
-- **Modifying object references**. In case an input receives a mutable object as value and you modify the object but preserve the reference, Angular will not invoke change detection. That’s the expected behavior because the previous and the current value of the input point to the same reference.
+- **TypeScript kodunda giris ozelliklerini degistirme**. TypeScript'te bir bilesene referans almak icin `@ViewChild` veya `@ContentChild` gibi bir API kullandiginiizda ve bir `@Input` ozelligini manuel olarak degistirdiginizde, Angular OnPush bilesenleri icin degisiklik algilamasi otomatik olarak calistirmayacaktir. Angular'in degisiklik algilamasi calistirmasina ihtiyaciniz varsa, bileseninize `ChangeDetectorRef` enjekte edebilir ve Angular'a bir degisiklik algilama planlamasi soyleyen `changeDetectorRef.markForCheck()` cagrisini yapabilirsiniz.
+- **Nesne referanslarini degistirme**. Bir girisin deger olarak degistirilebilir bir nesne aldigi ve nesneyi degistirip referansi korudugunuz durumda, Angular degisiklik algilamasi cagirmayacaktir. Bu beklenen davranistir cunku girisin onceki ve mevcut degeri ayni referansi gosterir.

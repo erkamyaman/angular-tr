@@ -1,20 +1,20 @@
 # Debugging tests
 
-If your tests aren't working as you expect, you can debug them in both the default Node.js environment and in a real browser.
+Testleriniz beklediğiniz gibi çalışmıyorsa, hem varsayılan Node.js ortamında hem de gerçek bir tarayıcıda hata ayıklayabilirsiniz.
 
 ## Debugging in Node.js
 
-Debugging in the default Node.js environment is often the quickest way to diagnose issues that are not related to browser-specific APIs or rendering.
+Varsayılan Node.js ortamında hata ayıklama, tarayıcıya özgü API'ler veya render ile ilgili olmayan sorunları teşhis etmenin genellikle en hızlı yoludur.
 
-1.  Run the `ng test` command with the `--debug` flag:
+1.  `ng test` komutunu `--debug` bayrağı ile çalıştırın:
     ```shell
     ng test --debug
     ```
-2.  The test runner will start in debug mode and wait for a debugger to attach.
-3.  You can now attach your preferred debugger. For example, you can use the built-in Node.js debugger in VS Code or the Chrome DevTools for Node.js.
+2.  Test çalıştırıcısı hata ayıklama modunda başlar ve bir hata ayıklayıcının bağlanmasını bekler.
+3.  Artık tercih ettiğiniz hata ayıklayıcıyı bağlayabilirsiniz. Örneğin, VS Code'daki yerleşik Node.js hata ayıklayıcısını veya Node.js için Chrome DevTools'u kullanabilirsiniz.
 
 ## Debugging in a browser
 
-The same way you start a debugging session with in Node, you can use `ng test` with the `--debug` flag with Vitest and [browser mode](/guide/testing/migrating-to-vitest#5-configure-browser-mode-optional).
+Node'da bir hata ayıklama oturumu başlattığınız şekilde, Vitest ve [tarayıcı modu](/guide/testing/migrating-to-vitest#5-configure-browser-mode-optional) ile `ng test`'i `--debug` bayrağı ile kullanabilirsiniz.
 
-The test runner will start in debug mode and wait for you to open the browser devtools to debug the tests.
+Test çalıştırıcısı hata ayıklama modunda başlar ve testleri hata ayıklamak için tarayıcı geliştirici araçlarını açmanızı bekler.

@@ -1,10 +1,10 @@
 # Redirecting Routes
 
-Route redirects allow you to automatically navigate users from one route to another. Think of it like mail forwarding, where mail intended for one address is sent to a different address. This is useful for handling legacy URLs, implementing default routes, or managing access control.
+Rota yönlendirmeleri, kullanıcıları otomatik olarak bir rotadan diğerine yönlendirmenize olanak tanır. Bunu, bir adrese gönderilen postanın farklı bir adrese iletildiği posta yönlendirmesi gibi düşünün. Bu, eski URL'leri yönetmek, varsayılan rotalar uygulamak veya erişim kontrolünü yönetmek için kullanışlıdır.
 
 ## How to configure redirects
 
-You can define redirects in your route configuration with the `redirectTo` property. This property accepts a string.
+Rota yapılandırmanızda `redirectTo` özelliği ile yönlendirmeler tanımlayabilirsiniz. Bu özellik bir dize kabul eder.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -16,34 +16,34 @@ const routes: Routes = [
   // Redirect with path parameters
   {path: 'legacy-user/:id', redirectTo: 'users/:id'},
 
-  // Redirect any other URLs that don’t match
+  // Redirect any other URLs that don't match
   // (also known as a "wildcard" redirect)
   {path: '**', redirectTo: '/login'},
 ];
 ```
 
-In this example, there are three redirects:
+Bu örnekte üç yönlendirme vardır:
 
-1. When a user visits the `/marketing` path, they are redirected to `/newsletter`.
-2. When a user visits any `/legacy-user/:id` path, they are routed to the corresponding `/users/:id` path.
-3. When a user visit any path that’s not defined in the router, they are redirected to the login page because of the `**` wildcard path definition.
+1. Kullanıcı `/marketing` yolunu ziyaret ettiğinde `/newsletter`'a yönlendirilir.
+2. Kullanıcı herhangi bir `/legacy-user/:id` yolunu ziyaret ettiğinde ilgili `/users/:id` yoluna yönlendirilir.
+3. Kullanıcı yönlendiricide tanımlanmamış herhangi bir yolu ziyaret ettiğinde, `**` joker yol tanımı nedeniyle giriş sayfasına yönlendirilir.
 
 ## Understanding `pathMatch`
 
-The `pathMatch` property on routes enables developers to control how Angular matches a URL to routes.
+Rotalardaki `pathMatch` özelliği, geliştiricilerin Angular'ın bir URL'yi rotalarla nasıl eşleştireceğini kontrol etmesini sağlar.
 
-There are two values that `pathMatch` accepts:
+`pathMatch`'in kabul ettiği iki değer vardır:
 
-| Value      | Description                                  |
-| ---------- | -------------------------------------------- |
-| `'full'`   | The entire URL path must match exactly       |
-| `'prefix'` | Only the beginning of the URL needs to match |
+| Değer      | Açıklama                                         |
+| ---------- | ------------------------------------------------ |
+| `'full'`   | URL yolunun tamamı tam olarak eşleşmelidir       |
+| `'prefix'` | Yalnızca URL'nin başlangıcının eşleşmesi gerekir |
 
-By default, all redirects use the `prefix` strategy.
+Varsayılan olarak tüm yönlendirmeler `prefix` stratejisini kullanır.
 
 ### `pathMatch: 'prefix'`
 
-`pathMatch: 'prefix'` is the default strategy and ideal when you want Angular Router to match all subsequent routes when triggering a redirect.
+`pathMatch: 'prefix'` varsayılan stratejidir ve Angular Router'ın bir yönlendirme tetiklerken sonraki tüm rotaları eşleştirmesini istediğinizde idealdir.
 
 ```ts
 export const routes: Routes = [
@@ -55,46 +55,46 @@ export const routes: Routes = [
 ];
 ```
 
-In this example, all routes that are prefixed with `news` are redirected to their `/blog` equivalents. Here are some examples where users are redirected when visiting the old `news` prefix:
+Bu örnekte, `news` ön ekiyle başlayan tüm rotalar `/blog` eşdeğerlerine yönlendirilir. Kullanıcıların eski `news` ön ekini ziyaret ettiğinde yönlendirildiği bazı örnekler:
 
-- `/news` redirects to `/blog`
-- `/news/article` redirects to `/blog/article`
-- `/news/article/:id` redirects to `/blog/article/:id`
+- `/news` rotası `/blog`'a yönlendirilir
+- `/news/article` rotası `/blog/article`'a yönlendirilir
+- `/news/article/:id` rotası `/blog/article/:id`'ye yönlendirilir
 
 ### `pathMatch: 'full'`
 
-On the other hand, `pathMatch: 'full'` is useful when you want Angular Router to only redirect a specific path.
+Öte yandan, `pathMatch: 'full'` Angular Router'ın yalnızca belirli bir yolu yönlendirmesini istediğinizde kullanışlıdır.
 
 ```ts
 export const routes: Routes = [{path: '', redirectTo: '/dashboard', pathMatch: 'full'}];
 ```
 
-In this example, any time the user visits the root URL (i.e., `''`), the router redirects that user to the `'/dashboard'` page.
+Bu örnekte, kullanıcı kök URL'yi (yani `''`) ziyaret ettiğinde yönlendirici o kullanıcıyı `'/dashboard'` sayfasına yönlendirir.
 
-Any subsequent pages (e.g., `/login`, `/about`, `/product/id`, etc.), are ignored and do not trigger a redirect.
+Sonraki sayfalar (örn. `/login`, `/about`, `/product/id` vb.) yok sayılır ve bir yönlendirme tetiklemez.
 
-TIP: Be careful when configuring a redirect on the root page (i.e., `"/"` or `""`). If you do not set `pathMatch: 'full'`, the router will redirect all URLs.
+TIP: Kök sayfada (yani `"/"` veya `""`) bir yönlendirme yapılandırırken dikkatli olun. `pathMatch: 'full'` ayarlamazsanız, yönlendirici tüm URL'leri yönlendirecektir.
 
-To further illustrate this, if the `news` example from the previous section used `pathMatch: 'full'` instead:
+Daha fazla açıklama için, önceki bölümdeki `news` örneği `pathMatch: 'full'` kullansaydı:
 
 ```ts
 export const routes: Routes = [{path: 'news', redirectTo: '/blog', pathMatch: 'full'}];
 ```
 
-This means that:
+Bu şu anlama gelir:
 
-1. Only the `/news` path will be redirected to `/blog`.
-2. Any subsequent segments such as `/news/articles` or `/news/articles/1` would not redirect with the new `/blog` prefix.
+1. Yalnızca `/news` yolu `/blog`'a yönlendirilir.
+2. `/news/articles` veya `/news/articles/1` gibi sonraki segmentler yeni `/blog` ön ekiyle yönlendirilmez.
 
 ## Conditional redirects
 
-The `redirectTo` property can also accept a function in order to add logic to how users are redirected.
+`redirectTo` özelliği, kullanıcıların nasıl yönlendirildiğine mantık eklemek için bir fonksiyon da kabul edebilir.
 
-The [function](api/router/RedirectFunction) only has access part of the [`ActivatedRouteSnapshot`](api/router/ActivatedRouteSnapshot) data since some data is not accurately known at the route matching phase. Examples include: resolved titles, lazy loaded components, etc.
+[Fonksiyon](api/router/RedirectFunction), [`ActivatedRouteSnapshot`](api/router/ActivatedRouteSnapshot) verilerinin yalnızca bir kısmına erişebilir çünkü bazı veriler rota eşleştirme aşamasında doğru şekilde bilinmez. Örnekler arasında çözümlenen başlıklar, tembel yüklenen bileşenler vb. bulunur.
 
-It typically returns a string or [`URLTree`](api/router/UrlTree), but it can also return an observable or promise.
+Genellikle bir dize veya [`URLTree`](api/router/UrlTree) döndürür, ancak bir observable veya promise de döndürebilir.
 
-Here is an example where the user is redirected to different menu based on the time of the day:
+İşte kullanıcının günün saatine göre farklı bir menüye yönlendirildiği bir örnek:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -133,8 +133,8 @@ export const routes: Routes = [
 ];
 ```
 
-To learn more, check out [the API docs for the RedirectFunction](api/router/RedirectFunction).
+Daha fazla bilgi için [RedirectFunction API dokümanlarına](api/router/RedirectFunction) göz atın.
 
 ## Next steps
 
-For more information about the `redirectTo` property, check out the [API docs](api/router/Route#redirectTo).
+`redirectTo` özelliği hakkında daha fazla bilgi için [API dokümanlarına](api/router/Route#redirectTo) göz atın.

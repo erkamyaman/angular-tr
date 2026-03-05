@@ -1,10 +1,8 @@
 # Using DOM APIs
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-Angular handles most DOM creation, updates, and removals for you. However, you might rarely need to
-directly interact with a component's DOM. Components can inject ElementRef to get a reference to the
-component's host element:
+Angular, DOM olusturma, guncelleme ve kaldirma islemlerinin cogunu sizin icin yonetir. Ancak nadiren bir bilesnenin DOM'u ile dogrudan etkilesime girmeniz gerekebilir. Bilesenlere, bilesnenin host elemanina bir referans almak icin ElementRef enjekte edilebilir:
 
 ```ts
 @Component({
@@ -18,11 +16,9 @@ export class ProfilePhoto {
 }
 ```
 
-The `nativeElement` property references the
-host [Element](https://developer.mozilla.org/docs/Web/API/Element) instance.
+`nativeElement` ozelligi, host [Element](https://developer.mozilla.org/docs/Web/API/Element) ornegine referans verir.
 
-You can use Angular's `afterEveryRender` and `afterNextRender` functions to register a **render
-callback** that runs when Angular has finished rendering the page.
+Angular sayfayi render etmeyi bitirdiginde calisan bir **render geri cagrisi** kaydetmek icin Angular'in `afterEveryRender` ve `afterNextRender` fonksiyonlarini kullanabilirsiniz.
 
 ```ts
 @Component({
@@ -39,51 +35,33 @@ export class ProfilePhoto {
 }
 ```
 
-`afterEveryRender` and `afterNextRender` must be called in an _injection context_, typically a
-component's constructor.
+`afterEveryRender` ve `afterNextRender` bir _enjeksiyon baglaminda_ cagrilmalidir, tipik olarak bilesnenin constructor'inda.
 
-**Avoid direct DOM manipulation whenever possible.** Always prefer expressing your DOM's structure
-in component templates and updating that DOM with bindings.
+**Mumkun oldugunda dogrudan DOM manipulasyonundan kacinin.** DOM yapisinizi her zaman bilesen sablonlarinda ifade etmeyi ve o DOM'u baglamalarla guncellemeyi tercih edin.
 
-**Render callbacks never run during server-side rendering or build-time pre-rendering.**
+**Render geri cagrilari, sunucu tarafi render etme veya derleme zamani on-render etme sirasinda asla calismaz.**
 
-**Never directly manipulate the DOM inside of other Angular lifecycle hooks**. Angular does not
-guarantee that a component's DOM is fully rendered at any point other than in render callbacks.
-Further, reading or modifying the DOM during other lifecycle hooks can negatively impact page
-performance by
-causing [layout thrashing](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing).
+**Diger Angular yasam dongusu kancalari icerisinde DOM'u asla dogrudan manipule etmeyin**. Angular, render geri cagrilari disinda hicbir noktada bilesnenin DOM'unun tamamen render edildigini garanti etmez. Ayrica, diger yasam dongusu kancalari sirasinda DOM'u okumak veya degistirmek, [duzeni bozma](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing) nedeniyle sayfa performansini olumsuz etkileyebilir.
 
 ## Using a component's renderer
 
-Components can inject an instance of `Renderer2` to perform certain DOM manipulations that are tied
-to other Angular features.
+Bilesenlere, diger Angular ozellikleriyle baglantili belirli DOM manipulasyonlari gerceklestirmek icin bir `Renderer2` ornegi enjekte edilebilir.
 
-Any DOM elements created by a component's `Renderer2` participate in that
-component's [style encapsulation](guide/components/styling#style-scoping).
+Bir bilesnenin `Renderer2`'si tarafindan olusturulan tum DOM elemanlari, o bilesnenin [stil kapsullemesine](guide/components/styling#style-scoping) katilir.
 
-Certain `Renderer2` APIs also tie into Angular's animation system. You can use the `setProperty`
-method to update synthetic animation properties and the `listen` method to add event listeners for
-synthetic animation events. See the [Animations](guide/animations) guide for details.
+Belirli `Renderer2` API'leri ayrica Angular'in animasyon sistemine baglanir. Sentetik animasyon ozelliklerini guncellemek icin `setProperty` yontemini ve sentetik animasyon olaylari icin olay dinleyicileri eklemek icin `listen` yontemini kullanabilirsiniz. Ayrintilar icin [Animasyonlar](guide/animations) rehberine bakin.
 
-Aside from these two narrow use-cases, there is no difference between using `Renderer2` and native
-DOM APIs. `Renderer2` APIs do not support DOM manipulation in server-side rendering or build-time
-pre-rendering contexts.
+Bu iki dar kullanim alani disinda, `Renderer2` kullanmak ile yerel DOM API'lerini kullanmak arasinda hicbir fark yoktur. `Renderer2` API'leri, sunucu tarafi render etme veya derleme zamani on-render etme baglamlarinda DOM manipulasyonunu desteklemez.
 
 ## When to use DOM APIs
 
-While Angular handles most rendering concerns, some behaviors may still require using DOM APIs. Some
-common use cases include:
+Angular render etme konularinin cogunu yonetse de, bazi davranislar yine de DOM API'lerinin kullanilmasini gerektirebilir. Bazi yaygin kullanim alanlari sunlardir:
 
-- Managing element focus
-- Measuring element geometry, such as with `getBoundingClientRect`
-- Reading an element's text content
-- Setting up native observers such
-  as [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver),
-  [`ResizeObserver`](https://developer.mozilla.org/docs/Web/API/ResizeObserver), or
-  [`IntersectionObserver`](https://developer.mozilla.org/docs/Web/API/Intersection_Observer_API).
+- Eleman odagini yonetme
+- `getBoundingClientRect` gibi eleman geometrisini olcme
+- Bir elemanin metin icerigini okuma
+- [`MutationObserver`](https://developer.mozilla.org/docs/Web/API/MutationObserver),
+  [`ResizeObserver`](https://developer.mozilla.org/docs/Web/API/ResizeObserver) veya
+  [`IntersectionObserver`](https://developer.mozilla.org/docs/Web/API/Intersection_Observer_API) gibi yerel gozlemciler kurma.
 
-Avoid inserting, removing, and modifying DOM elements. In particular, **never directly set an
-element's `innerHTML` property**, which can make your application vulnerable
-to [cross-site scripting (XSS) exploits](https://developer.mozilla.org/docs/Glossary/Cross-site_scripting).
-Angular's template bindings, including bindings for `innerHTML`, include safeguards that help
-protect against XSS attacks. See the [Security guide](best-practices/security) for details.
+DOM elemanlarini eklemekten, kaldirmaktan ve degistirmekten kacinin. Ozellikle, **bir elemanin `innerHTML` ozelligini asla dogrudan ayarlamayin**, bu uygulamanizi [siteler arasi betik calistirma (XSS) saldirilarina](https://developer.mozilla.org/docs/Glossary/Cross-site_scripting) karsi savunmasiz hale getirebilir. Angular'in sablon baglamalari, `innerHTML` icin olanlar dahil, XSS saldirilarina karsi korumaya yardimci olan guvenlik onlemleri icerir. Ayrintilar icin [Guvenlik rehberi](best-practices/security)'ne bakin.

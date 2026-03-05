@@ -1,24 +1,24 @@
 # LLM prompts and AI IDE setup
 
-Generating code with large language models (LLMs) is a rapidly growing area of interest for developers. While LLMs are often capable of generating working code it can be a challenge to generate code for consistently evolving frameworks like Angular.
+Büyük dil modelleri (LLM'ler) ile kod üretmek, geliştiriciler için hızla büyüyen bir ilgi alanıdır. LLM'ler genellikle çalışan kod üretebilse de, Angular gibi sürekli gelişen framework'ler için tutarlı kod üretmek zor olabilir.
 
-Advanced instructions and prompting are an emerging standard for supporting modern code generation with domain specific details. This section contains curated content and resources to support more accurate code generation for Angular and LLMs.
+Gelişmiş talimatlar ve prompting, alan spesifik ayrıntılarla modern kod üretimini desteklemek için ortaya çıkan bir standarttır. Bu bölüm, Angular ve LLM'ler için daha doğru kod üretimini desteklemek üzere özenle hazırlanmış içerik ve kaynaklar içerir.
 
 ## Custom Prompts and System Instructions
 
-Improve your experience generating code with LLMs by using one of the following custom, domain specific files.
+Aşağıdaki özel, alan spesifik dosyalardan birini kullanarak LLM'lerle kod üretme deneyiminizi iyileştirin.
 
-NOTE: These files will be updated on a regular basis staying up to date with Angular's conventions.
+NOTE: Bu dosyalar, Angular'ın kurallarıyla güncel kalacak şekilde düzenli olarak güncellenecektir.
 
-Here is a set of instructions to help LLMs generate correct code that follows Angular best practices. This file can be included as system instructions to your AI tooling or included along with your prompt as context.
+İşte LLM'lerin Angular en iyi uygulamalarını takip eden doğru kod üretmesine yardımcı olacak bir dizi talimat. Bu dosya, yapay zeka araçlarınıza sistem talimatları olarak eklenebilir veya bağlam olarak promptunuzla birlikte dahil edilebilir.
 
 <docs-code language="md" path="packages/core/resources/best-practices.md" class="compact"/>
 
-<a download href="/assets/context/best-practices.md" target="_blank">Click here to download the best-practices.md file.</a>
+<a download href="/assets/context/best-practices.md" target="_blank">best-practices.md dosyasını indirmek için buraya tıklayın.</a>
 
 ## Rules Files
 
-Several editors, such as <a href="https://studio.firebase.google.com?utm_source=adev&utm_medium=website&utm_campaign=BUILD_WITH_AI_ANGULAR&utm_term=angular_devrel&utm_content=build_with_ai_angular_firebase_studio">Firebase Studio</a> have rules files useful for providing critical context to LLMs.
+<a href="https://studio.firebase.google.com?utm_source=adev&utm_medium=website&utm_campaign=BUILD_WITH_AI_ANGULAR&utm_term=angular_devrel&utm_content=build_with_ai_angular_firebase_studio">Firebase Studio</a> gibi birçok düzenleyici, LLM'lere kritik bağlam sağlamak için yararlı kural dosyalarına sahiptir.
 
 | Environment/IDE      | Rules File                                                                                                             | Installation Instructions                                                                                                                                       |
 | :------------------- | :--------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,19 +31,19 @@ Several editors, such as <a href="https://studio.firebase.google.com?utm_source=
 
 ## Angular CLI MCP Server setup
 
-The Angular CLI includes an experimental [Model Context Protocol (MCP) server](https://modelcontextprotocol.io/) that allows AI assistants in your development environment to interact with the Angular CLI.
+Angular CLI, geliştirme ortamınızdaki yapay zeka asistanlarının Angular CLI ile etkileşime geçmesini sağlayan deneysel bir [Model Context Protocol (MCP) sunucusu](https://modelcontextprotocol.io/) içerir.
 
-[**Learn how to set up the Angular CLI MCP Server**](/ai/mcp)
+[**Angular CLI MCP Sunucusunu nasıl kuracağınızı öğrenin**](/ai/mcp)
 
 ## Providing Context with `llms.txt`
 
-`llms.txt` is a proposed standard for websites designed to help LLMs better understand and process their content. The Angular team has developed two versions of this file to help LLMs and tools that use LLMs for code generation to create better modern Angular code.
+`llms.txt`, LLM'lerin içeriklerini daha iyi anlamasına ve işlemesine yardımcı olmak için tasarlanmış web siteleri için önerilen bir standarttır. Angular ekibi, LLM'lerin ve kod üretimi için LLM kullanan araçların daha iyi modern Angular kodu oluşturmasına yardımcı olmak için bu dosyanın iki versiyonunu geliştirmiştir.
 
-- <a href="/llms.txt" target="_blank">llms.txt</a> - an index file providing links to key files and resources.
-- <a href="/assets/context/llms-full.txt" target="_blank">llms-full.txt</a> - a more robust compiled set of resources describing how Angular works and how to build Angular applications.
+- <a href="/llms.txt" target="_blank">llms.txt</a> - anahtar dosyalara ve kaynaklara bağlantılar sağlayan bir indeks dosyası.
+- <a href="/assets/context/llms-full.txt" target="_blank">llms-full.txt</a> - Angular'ın nasıl çalıştığını ve Angular uygulamalarının nasıl oluşturulacağını açıklayan daha kapsamlı derlenmiş bir kaynak seti.
 
-Be sure [to check out the overview page](/ai) for more information on how to integrate AI into your Angular applications.
+Yapay zekayı Angular uygulamalarınıza nasıl entegre edeceğiniz hakkında daha fazla bilgi için [genel bakış sayfasına göz atın](/ai).
 
 ## Web Codegen Scorer
 
-The Angular team developed and open-sourced the [Web Codegen Scorer](https://github.com/angular/web-codegen-scorer), a tool to evaluate and score the quality of AI generated web code. You can use this tool to make evidence-based decisions relating to AI-generated code, such as fine-tuning prompts to improve the accuracy of LLM-generated code for Angular. These prompts can be included as system instructions for your AI tooling or as context with your prompt. You can also use this tool to compare the quality of code produced by different models and monitor quality over time as models and agents evolve.
+Angular ekibi, yapay zeka tarafından üretilen web kodunun kalitesini değerlendirmek ve puanlamak için bir araç olan [Web Codegen Scorer](https://github.com/angular/web-codegen-scorer)'ı geliştirdi ve açık kaynak olarak yayınladı. Bu aracı, Angular için LLM tarafından üretilen kodun doğruluğunu artırmak amacıyla promptları ince ayar yapmak gibi yapay zeka tarafından üretilen kodla ilgili kanıta dayalı kararlar almak için kullanabilirsiniz. Bu promptlar, yapay zeka araçlarınız için sistem talimatları olarak veya promptunuzla birlikte bağlam olarak eklenebilir. Ayrıca bu aracı, farklı modeller tarafından üretilen kodun kalitesini karşılaştırmak ve modeller ve ajanlar geliştikçe kaliteyi zaman içinde izlemek için de kullanabilirsiniz.

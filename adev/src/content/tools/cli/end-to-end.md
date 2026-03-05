@@ -1,10 +1,10 @@
 # End to End Testing
 
-End-to-end or (E2E) testing is a form of testing used to assert your entire application works as expected from start to finish or _"end-to-end"_. E2E testing differs from unit testing in that it is completely decoupled from the underlying implementation details of your code. It is typically used to validate an application in a way that mimics the way a user would interact with it. This page serves as a guide to getting started with end-to-end testing in Angular using the Angular CLI.
+Uçtan uca veya (E2E) test, tüm uygulamanızın baştan sona veya _"uçtan uca"_ beklendiği gibi çalıştığını doğrulamak için kullanılan bir test biçimidir. E2E testi, kodunuzun temel uygulama ayrıntılarından tamamen bağımsız olması bakımından birim testinden farklıdır. Genellikle bir uygulamayı, kullanıcının onunla etkileşim kurma şeklini taklit eden bir biçimde doğrulamak için kullanılır. Bu sayfa, Angular CLI kullanarak Angular'da uçtan uca teste başlama kılavuzu olarak hizmet eder.
 
 ## Set Up E2E Testing
 
-The Angular CLI downloads and installs everything you need to run end-to-end tests for your Angular application.
+Angular CLI, Angular uygulamanız için uçtan uca testleri çalıştırmak için ihtiyacınız olan her şeyi indirir ve kurar.
 
 ```shell
 
@@ -12,7 +12,7 @@ ng e2e
 
 ```
 
-The `ng e2e` command will first check your project for the "e2e" target. If it can't locate it, the CLI will then prompt you which e2e package you would like to use and walk you through the setup.
+`ng e2e` komutu önce projenizde "e2e" hedefini kontrol eder. Bulamazsa, CLI hangi e2e paketini kullanmak istediğinizi sorar ve kurulum sürecinde size rehberlik eder.
 
 ```text
 
@@ -36,11 +36,11 @@ Puppeteer
 
 ```
 
-If you don't find the test runner you would like to use from the list above, you can manually add a package using `ng add`.
+Yukarıdaki listeden kullanmak istediğiniz test çalıştırıcısını bulamazsanız, `ng add` kullanarak manuel olarak bir paket ekleyebilirsiniz.
 
 ## Running E2E Tests
 
-Now that your application is configured for end-to-end testing we can now run the same command to execute your tests.
+Uygulamanız uçtan uca test için yapılandırıldığına göre, testlerinizi çalıştırmak için aynı komutu kullanabiliriz.
 
 ```shell
 
@@ -48,14 +48,14 @@ ng e2e
 
 ```
 
-Note, their isn't anything "special" about running your tests with any of the integrated e2e packages. The `ng e2e` command is really just running the `e2e` builder under the hood. You can always [create your own custom builder](tools/cli/cli-builder#creating-a-builder) named `e2e` and run it using `ng e2e`.
+Entegre e2e paketlerinden herhangi biriyle testlerinizi çalıştırmanın "özel" bir tarafı olmadığını unutmayın. `ng e2e` komutu aslında arka planda `e2e` builder'ını çalıştırmaktadır. `e2e` adında her zaman [kendi özel builder'ınızı oluşturabilir](tools/cli/cli-builder#creating-a-builder) ve `ng e2e` kullanarak çalıştırabilirsiniz.
 
 ## More information on end-to-end testing tools
 
-| Testing Tool | Details                                                                                                              |
-| :----------- | :------------------------------------------------------------------------------------------------------------------- |
-| Cypress      | [Getting started with Cypress](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test) |
-| Nightwatch   | [Getting started with Nightwatch](https://nightwatchjs.org/guide/writing-tests/introduction.html)                    |
-| WebdriverIO  | [Getting started with Webdriver.io](https://webdriver.io/docs/gettingstarted)                                        |
-| Playwright   | [Getting started with Playwright](https://playwright.dev/docs/writing-tests)                                         |
-| Puppeteer    | [Getting started with Puppeteer](https://pptr.dev)                                                                   |
+| Test Aracı  | Ayrıntılar                                                                                                    |
+| :---------- | :------------------------------------------------------------------------------------------------------------ |
+| Cypress     | [Cypress ile başlarken](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test) |
+| Nightwatch  | [Nightwatch ile başlarken](https://nightwatchjs.org/guide/writing-tests/introduction.html)                    |
+| WebdriverIO | [Webdriver.io ile başlarken](https://webdriver.io/docs/gettingstarted)                                        |
+| Playwright  | [Playwright ile başlarken](https://playwright.dev/docs/writing-tests)                                         |
+| Puppeteer   | [Puppeteer ile başlarken](https://pptr.dev)                                                                   |

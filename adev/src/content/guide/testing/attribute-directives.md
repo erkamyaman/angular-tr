@@ -1,12 +1,12 @@
 # Testing Attribute Directives
 
-An _attribute directive_ modifies the behavior of an element, component or another directive.
-Its name reflects the way the directive is applied: as an attribute on a host element.
+Bir _nitelik yönergesi_, bir öğenin, bileşenin veya başka bir yönergenin davranışını değiştirir.
+Adı, yönergenin uygulanma biçimini yansıtır: bir ana öğe üzerinde nitelik olarak.
 
 ## Testing the `Highlight` directive
 
-The sample application's `Highlight` directive sets the background color of an element based on either a data bound color or a default color \(lightgray\).
-It also sets a custom property of the element \(`customProperty`\) to `true` for no reason other than to show that it can.
+Örnek uygulamanın `Highlight` yönergesi, bir öğenin arka plan rengini veri bağlı bir renge veya varsayılan renge \(açık gri\) göre ayarlar.
+Ayrıca öğenin özel bir özelliğini \(`customProperty`\) gösterebileceğinden başka bir neden olmaksızın `true` olarak ayarlar.
 
 ```ts
 import {Directive, inject, input} from '@angular/core';
@@ -28,7 +28,7 @@ export class Highlight {
 }
 ```
 
-It's used throughout the application, perhaps most simply in the `About` component:
+Uygulama genelinde kullanılır, belki de en basit şekilde `About` bileşeninde:
 
 ```ts
 @Component({
@@ -42,7 +42,7 @@ It's used throughout the application, perhaps most simply in the `About` compone
 export class About {}
 ```
 
-Testing the specific use of the `Highlight` directive within the `About` component requires only the techniques explored in the ["Nested component tests"](guide/testing/components-scenarios#nested-component-tests) section of [Component testing scenarios](guide/testing/components-scenarios).
+`About` bileşeni içindeki `Highlight` yönergesinin belirli kullanımını test etmek, yalnızca [Bileşen test senaryolarının](guide/testing/components-scenarios) ["İç içe bileşen testleri"](guide/testing/components-scenarios#nested-component-tests) bölümünde incelenen teknikleri gerektirir.
 
 ```ts
 let fixture: ComponentFixture<About>;
@@ -63,13 +63,13 @@ it('should have skyblue <h2>', () => {
 });
 ```
 
-However, testing a single use case is unlikely to explore the full range of a directive's capabilities.
-Finding and testing all components that use the directive is tedious, brittle, and almost as unlikely to afford full coverage.
+Ancak tek bir kullanım durumunu test etmek, bir yönergenin yeteneklerinin tam kapsamını keşfetme olasılığı düşüktür.
+Yönergeyi kullanan tüm bileşenleri bulup test etmek sıkıcı, kırılgan ve neredeyse tam kapsamı sağlama olasılığı aynı derecede düşüktür.
 
-_Class-only tests_ might be helpful, but attribute directives like this one tend to manipulate the DOM.
-Isolated unit tests don't touch the DOM and, therefore, do not inspire confidence in the directive's efficacy.
+_Yalnızca sınıf testleri_ faydalı olabilir, ancak bunun gibi nitelik yönergeleri DOM'u manipüle etme eğilimindedir.
+İzole birim testleri DOM'a dokunmaz ve bu nedenle yönergenin etkinliğine güven vermez.
 
-A better solution is to create an artificial test component that demonstrates all ways to apply the directive.
+Daha iyi bir çözüm, yönergeyi uygulamanın tüm yollarını gösteren yapay bir test bileşeni oluşturmaktır.
 
 ```angular-ts
 @Component({
@@ -86,10 +86,10 @@ class Test {}
 
 <img alt="HighlightDirective spec in action" src="assets/images/guide/testing/highlight-directive-spec.png">
 
-HELPFUL: The `<input>` case binds the `Highlight` to the name of a color value in the input box.
-The initial value is the word "cyan" which should be the background color of the input box.
+HELPFUL: `<input>` durumu, `Highlight`'ı giriş kutusundaki bir renk değerinin adına bağlar.
+Başlangıç değeri "cyan" kelimesidir ve bu, giriş kutusunun arka plan rengi olmalıdır.
 
-Here are some tests of this component:
+İşte bu bileşenin bazı testleri:
 
 ```ts
 let fixture: ComponentFixture<Test>;
@@ -141,16 +141,16 @@ it('bare <h2> should not have a backgroundColor', () => {
 });
 ```
 
-A few techniques are noteworthy:
+Birkaç teknik dikkat çekicidir:
 
-- The `By.directive` predicate is a great way to get the elements that have this directive _when their element types are unknown_
-- The [`:not` pseudo-class](https://developer.mozilla.org/docs/Web/CSS/:not) in `By.css('h2:not([highlight])')` helps find `<h2>` elements that _do not_ have the directive.
-  `By.css('*:not([highlight])')` finds _any_ element that does not have the directive.
+- `By.directive` yüklemi, _öğe tipleri bilinmediğinde_ bu yönergeye sahip öğeleri almanın harika bir yoludur
+- `By.css('h2:not([highlight])')` içindeki [`:not` sözde sınıfı](https://developer.mozilla.org/docs/Web/CSS/:not), yönergeye sahip _olmayan_ `<h2>` öğelerini bulmaya yardımcı olur.
+  `By.css('*:not([highlight])')` yönergeye sahip olmayan _herhangi bir_ öğeyi bulur.
 
-- `DebugElement.styles` affords access to element styles even in the absence of a real browser, thanks to the `DebugElement` abstraction.
-  But feel free to exploit the `nativeElement` when that seems easier or more clear than the abstraction.
+- `DebugElement.styles`, `DebugElement` soyutlaması sayesinde gerçek bir tarayıcı olmasa bile öğe stillerine erişim sağlar.
+  Ancak soyutlamadan daha kolay veya daha anlaşılır göründüğünde `nativeElement`'i kullanmaktan çekinmeyin.
 
-- Angular adds a directive to the injector of the element to which it is applied.
-  The test for the default color uses the injector of the second `<h2>` to get its `Highlight` instance and its `defaultColor`.
+- Angular, bir yönergeyi uygulandığı öğenin enjektörüne ekler.
+  Varsayılan renk testi, `Highlight` örneğini ve `defaultColor` değerini almak için ikinci `<h2>`'nin enjektörünü kullanır.
 
-- `DebugElement.properties` affords access to the artificial custom property that is set by the directive
+- `DebugElement.properties`, yönerge tarafından ayarlanan yapay özel özelliğe erişim sağlar

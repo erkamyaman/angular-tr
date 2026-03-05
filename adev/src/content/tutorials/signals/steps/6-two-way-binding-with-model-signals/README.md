@@ -1,15 +1,15 @@
 # Two-way binding with model signals
 
-Now that you've learned [passing data to components with input signals](/tutorials/signals/5-component-communication-with-signals), let's explore Angular's `model()` API for two-way binding. Model signals are perfect for UI components like checkboxes, sliders, or custom form controls where the component needs to both receive a value AND update it.
+Artık [input sinyalleri ile bileşenlere veri aktarmayı](/tutorials/signals/5-component-communication-with-signals) öğrendiğinize göre, iki yönlü bağlama için Angular'ın `model()` API'sini keşfedelim. Model sinyalleri, bileşenin hem bir değer alması HEM DE onu güncellemesi gereken onay kutuları, kaydırıcılar veya özel form kontrolleri gibi UI bileşenleri için mükemmeldir.
 
-In this activity, you'll create a custom checkbox component that manages its own state while keeping the parent synchronized.
+Bu aktivitede, üst bileşenle senkronize kalırken kendi durumunu yöneten özel bir onay kutusu bileşeni oluşturacaksınız.
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Set up the custom checkbox with model signal">
-Create a model signal in the `custom-checkbox` component that can both receive and update the parent's value.
+`custom-checkbox` bileşeninde, üst bileşenin değerini hem alabilecek hem de güncelleyebilecek bir model sinyali oluşturun.
 
 ```ts
 // Add imports for model signals
@@ -22,11 +22,11 @@ checked = model.required<boolean>();
 label = input<string>('');
 ```
 
-Unlike `input()` signals which are read-only, `model()` signals can be both read and written to.
+Salt okunur olan `input()` sinyallerinin aksine, `model()` sinyalleri hem okunabilir hem de yazılabilir.
 </docs-step>
 
 <docs-step title="Create the checkbox template">
-Build the checkbox template that responds to clicks and updates its own model.
+Tıklamalara yanıt veren ve kendi modelini güncelleyen onay kutusu şablonunu oluşturun.
 
 ```html
 <label class="custom-checkbox">
@@ -36,11 +36,11 @@ Build the checkbox template that responds to clicks and updates its own model.
 </label>
 ```
 
-The component reads from its model signal and has a method to update it.
+Bileşen, model sinyalinden okur ve onu güncellemek için bir metoda sahiptir.
 </docs-step>
 
 <docs-step title="Add the toggle method">
-Implement the toggle method that updates the model signal when the checkbox is clicked.
+Onay kutusu tıklandığında model sinyalini güncelleyen toggle metodunu uygulayın.
 
 ```ts
 toggle() {
@@ -49,11 +49,11 @@ toggle() {
 }
 ```
 
-When the child component calls `this.checked.set()`, it automatically propagates the change back to the parent. This is the key difference from `input()` signals.
+Alt bileşen `this.checked.set()` çağrısı yaptığında, değişiklik otomatik olarak üst bileşene yayılır. Bu, `input()` sinyallerinden temel farktır.
 </docs-step>
 
 <docs-step title="Set up two-way binding in the parent">
-First, uncomment the model signal properties and methods in `app.ts`:
+Önce, `app.ts` dosyasındaki model sinyal özelliklerini ve metotlarını yorumdan çıkarın:
 
 ```ts
 // Parent signal models
@@ -71,14 +71,14 @@ resetAll() {
 }
 ```
 
-Then update the template:
+Ardından şablonu güncelleyin:
 
-Part 1. **Uncomment the checkboxes and add two-way binding:**
+Bölüm 1. **Onay kutularını yorumdan çıkarın ve iki yönlü bağlama ekleyin:**
 
-- Replace `___ADD_TWO_WAY_BINDING___` with `[(checked)]="agreedToTerms"` for the first checkbox
-- Replace `___ADD_TWO_WAY_BINDING___` with `[(checked)]="enableNotifications"` for the second
+- İlk onay kutusu için `___ADD_TWO_WAY_BINDING___` yerine `[(checked)]="agreedToTerms"` koyun
+- İkincisi için `___ADD_TWO_WAY_BINDING___` yerine `[(checked)]="enableNotifications"` koyun
 
-Part 2. **Replace the `???` placeholders with @if blocks:**
+Bölüm 2. **`???` yer tutucularını @if blokları ile değiştirin:**
 
 ```angular-html
 @if (agreedToTerms()) {
@@ -94,38 +94,38 @@ Part 2. **Replace the `???` placeholders with @if blocks:**
 }
 ```
 
-Part 3. **Add click handlers to the buttons:**
+Bölüm 3. **Düğmelere tıklama işleyicileri ekleyin:**
 
 ```html
 <button (click)="toggleTermsFromParent()">Toggle Terms from Parent</button>
 <button (click)="resetAll()">Reset All</button>
 ```
 
-The `[(checked)]` syntax creates two-way binding - data flows down to the component AND changes flow back up to the parent by emitting an event that references the signal itself and does _not_ call the signal getter directly.
+`[(checked)]` sözdizimi iki yönlü bağlama oluşturur - veri bileşene aşağı akar VE değişiklikler, sinyalin kendisine referans veren ve sinyal getter'ını doğrudan _çağırmayan_ bir olay yayarak üst bileşene geri akar.
 </docs-step>
 
 <docs-step title="Test the two-way binding">
-Interact with your app to see two-way binding in action:
+İki yönlü bağlamayı çalışırken görmek için uygulamanızla etkileşime geçin:
 
-1. **Click checkboxes** - Component updates its own state and notifies parent
-2. **Click "Toggle Terms from Parent"** - Parent updates propagate down to component
-3. **Click "Reset All"** - Parent resets both models and components update automatically
+1. **Onay kutularına tıklayın** - Bileşen kendi durumunu günceller ve üst bileşeni bilgilendirir
+2. **"Toggle Terms from Parent" düğmesine tıklayın** - Üst bileşen güncellemeleri alt bileşene yayılır
+3. **"Reset All" düğmesine tıklayın** - Üst bileşen her iki modeli sıfırlar ve bileşenler otomatik olarak güncellenir
 
-Both the parent and child can update the shared state, and both stay in sync automatically!
+Hem üst hem de alt bileşen paylaşılan durumu güncelleyebilir ve her ikisi de otomatik olarak senkronize kalır!
 </docs-step>
 
 </docs-workflow>
 
-Perfect! You've learned how model signals enable two-way binding:
+Mükemmel! Model sinyallerinin iki yönlü bağlamayı nasıl etkinleştirdiğini öğrendiniz:
 
-- **Model signals** - Use `model()` and `model.required()` for values that can be both read and written
-- **Two-way binding** - Use `[(property)]` syntax to bind parent signals to child models
-- **Perfect for UI components** - Checkboxes, form controls, and widgets that need to manage their own state
-- **Automatic synchronization** - Parent and child stay in sync without manual event handling
+- **Model sinyalleri** - Hem okunabilir hem de yazılabilir değerler için `model()` ve `model.required()` kullanın
+- **İki yönlü bağlama** - Üst sinyalleri alt modellere bağlamak için `[(property)]` sözdizimini kullanın
+- **UI bileşenleri için mükemmel** - Kendi durumunu yönetmesi gereken onay kutuları, form kontrolleri ve widget'lar
+- **Otomatik senkronizasyon** - Üst ve alt bileşenler manuel olay yönetimi olmadan senkronize kalır
 
-**When to use `model()` vs `input()`:**
+**`model()` ve `input()` ne zaman kullanılır:**
 
-- Use `input()` for data that only flows down (display data, configuration)
-- Use `model()` for UI components that need to update their own value (form controls, toggles)
+- Yalnızca aşağı akan veriler için `input()` kullanın (görüntüleme verileri, yapılandırma)
+- Kendi değerini güncellemesi gereken UI bileşenleri için `model()` kullanın (form kontrolleri, geçişler)
 
-In the next lesson, you'll learn about [using signals with services](/tutorials/signals/7-using-signals-with-services)!
+Bir sonraki derste, [sinyalleri servislerle kullanmayı](/tutorials/signals/7-using-signals-with-services) öğreneceksiniz!

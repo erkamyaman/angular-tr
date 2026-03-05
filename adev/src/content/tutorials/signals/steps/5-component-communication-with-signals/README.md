@@ -1,15 +1,15 @@
 # Passing data to components with input signals
 
-Now that you've learned [managing async data with signals](/tutorials/signals/4-managing-async-data-with-signals), let's explore Angular's signal-based `input()` API for passing data from parent to child components, making component data flow more reactive and efficient. If you're familiar with component props from other frameworks, inputs are the same idea.
+Artık [sinyallerle asenkron veri yönetmeyi](/tutorials/signals/4-managing-async-data-with-signals) öğrendiğinize göre, üst bileşenden alt bileşene veri aktarmak için Angular'ın sinyal tabanlı `input()` API'sini keşfedelim; bu, bileşen veri akışını daha reaktif ve verimli hale getirir. Diğer framework'lerdeki bileşen prop'larına aşinaysanız, input'lar aynı fikirdir.
 
-In this activity, you'll add signal inputs to a product card component and see how parent data flows down reactively.
+Bu aktivitede, bir ürün kartı bileşenine sinyal input'ları ekleyecek ve üst bileşen verilerinin reaktif olarak nasıl aktığını göreceksiniz.
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Add signal inputs to ProductCard">
-Add signal `input()` functions to receive data in the `product-card` component.
+`product-card` bileşeninde veri almak için sinyal `input()` fonksiyonları ekleyin.
 
 ```ts
 // Add imports for signal inputs
@@ -21,11 +21,11 @@ price = input.required<number>();
 available = input<boolean>(true);
 ```
 
-Notice how `input.required()` creates an input that must be provided, while `input()` with a default value is optional.
+`input.required()` fonksiyonunun sağlanması zorunlu bir input oluşturduğuna, `input()` fonksiyonunun varsayılan değerle isteğe bağlı olduğuna dikkat edin.
 </docs-step>
 
 <docs-step title="Connect inputs to the template">
-Update the template in `product-card` to display the signal input values.
+Sinyal input değerlerini görüntülemek için `product-card` içindeki şablonu güncelleyin.
 
 ```angular-html
 <div class="product-card">
@@ -42,11 +42,11 @@ Update the template in `product-card` to display the signal input values.
 </div>
 ```
 
-Input signals work just like regular signals in templates - call them as functions to access their values.
+Input sinyalleri, şablonlarda normal sinyaller gibi çalışır - değerlerine erişmek için fonksiyon olarak çağırın.
 </docs-step>
 
 <docs-step title="Connect parent signals to child inputs">
-Update the `product-card` usage in `app.ts` to pass dynamic signal values instead of static ones.
+`app.ts` dosyasındaki `product-card` kullanımını, statik değerler yerine dinamik sinyal değerleri geçirecek şekilde güncelleyin.
 
 ```html
 <!-- Change from static values: -->
@@ -56,11 +56,11 @@ Update the `product-card` usage in `app.ts` to pass dynamic signal values instea
 <product-card [name]="productName()" [price]="productPrice()" [available]="productAvailable()" />
 ```
 
-The square brackets `[]` create property bindings that pass the current signal values to the child.
+Köşeli parantezler `[]`, mevcut sinyal değerlerini alt bileşene aktaran özellik bağlamaları oluşturur.
 </docs-step>
 
 <docs-step title="Test reactive updates">
-Add methods in `app.ts` to update the parent signals and see how the child component reacts automatically.
+Üst sinyalleri güncellemek ve alt bileşenin otomatik olarak nasıl tepki verdiğini görmek için `app.ts` dosyasına metotlar ekleyin.
 
 ```ts
 updateProduct() {
@@ -81,18 +81,18 @@ toggleAvailability() {
 </div>
 ```
 
-When parent signals change, the child component automatically receives and displays the new values!
+Üst sinyaller değiştiğinde, alt bileşen otomatik olarak yeni değerleri alır ve görüntüler!
 </docs-step>
 
 </docs-workflow>
 
-Excellent! You've learned how signal inputs work:
+Mükemmel! Sinyal input'larının nasıl çalıştığını öğrendiniz:
 
-- **Signal inputs** - Use `input()` and `input.required()` to receive data from parent components
-- **Reactive updates** - Child components automatically update when parent signal values change
-- **Type safety** - Signal inputs provide full TypeScript type checking
-- **Default values** - Optional inputs can have default values while required inputs must be provided
+- **Sinyal input'ları** - Üst bileşenlerden veri almak için `input()` ve `input.required()` kullanın
+- **Reaktif güncellemeler** - Üst sinyal değerleri değiştiğinde alt bileşenler otomatik olarak güncellenir
+- **Tür güvenliği** - Sinyal input'ları tam TypeScript tür denetimi sağlar
+- **Varsayılan değerler** - İsteğe bağlı input'ların varsayılan değerleri olabilirken, zorunlu input'ların sağlanması gerekir
 
-Signal inputs make component communication more reactive and eliminate the need for `OnChanges` lifecycle hooks in many cases.
+Sinyal input'ları bileşen iletişimini daha reaktif hale getirir ve birçok durumda `OnChanges` yaşam döngüsü kancalarına olan ihtiyacı ortadan kaldırır.
 
-In the next lesson, you'll learn about [two-way binding with model signals](/tutorials/signals/6-two-way-binding-with-model-signals)!
+Bir sonraki derste, [model sinyalleri ile iki yönlü bağlamayı](/tutorials/signals/6-two-way-binding-with-model-signals) öğreneceksiniz!

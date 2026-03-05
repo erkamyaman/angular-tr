@@ -1,14 +1,14 @@
 # Expression Syntax
 
-Angular expressions are based on JavaScript, but differ in some key ways. This guide walks through the similarities and differences between Angular expressions and standard JavaScript.
+Angular ifadeleri JavaScript'e dayalidir, ancak bazi onemli yonlerden farklilik gosterir. Bu rehber, Angular ifadeleri ile standart JavaScript arasindaki benzerlikleri ve farkliliklari aciklar.
 
 ## Value literals
 
-Angular supports a subset of [literal values](https://developer.mozilla.org/en-US/docs/Glossary/Literal) from JavaScript.
+Angular, JavaScript'ten bir [literal deger](https://developer.mozilla.org/en-US/docs/Glossary/Literal) alt kumesini destekler.
 
 ### Supported value literals
 
-| Literal type           | Example values                  |
+| Literal turu           | Ornek degerler                  |
 | ---------------------- | ------------------------------- |
 | String                 | `'Hello'`, `"World"`            |
 | Boolean                | `true`, `false`                 |
@@ -22,32 +22,32 @@ Angular supports a subset of [literal values](https://developer.mozilla.org/en-U
 
 ### Unsupported value literals
 
-| Literal type | Example values |
+| Literal turu | Ornek degerler |
 | ------------ | -------------- |
 | BigInt       | `1n`           |
 
 ## Globals
 
-Angular expressions support the following [globals](https://developer.mozilla.org/en-US/docs/Glossary/Global_object):
+Angular ifadeleri asagidaki [global degiskenleri](https://developer.mozilla.org/en-US/docs/Glossary/Global_object) destekler:
 
 - [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 - [$any](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
 
-No other JavaScript globals are supported. Common JavaScript globals include `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt`, and more.
+Baska hicbir JavaScript global degiskeni desteklenmez. Yaygin JavaScript global degiskenleri arasinda `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt` ve daha fazlasi bulunur.
 
 ## Local variables
 
-Angular automatically makes special local variables available for use in expressions in specific contexts. These special variables always start with the dollar sign character (`$`).
+Angular, belirli baglamlarda ifadelerde kullanilmak uzere ozel yerel degiskenleri otomatik olarak kullanilabilir hale getirir. Bu ozel degiskenler her zaman dolar isareti karakteri (`$`) ile baslar.
 
-For example, `@for` blocks make several local variables corresponding to information about the loop, such as `$index`.
+Ornegin, `@for` bloklari dongu hakkinda bilgi iceren `$index` gibi birkac yerel degisken saglar.
 
 ## What operators are supported?
 
 ### Supported operators
 
-Angular supports the following operators from standard JavaScript.
+Angular, standart JavaScript'ten asagidaki operatorleri destekler.
 
-| Operator                      | Example(s)                                     |
+| Operator                      | Ornek(ler)                                     |
 | ----------------------------- | ---------------------------------------------- |
 | Add / Concatenate             | `1 + 2`                                        |
 | Subtract                      | `52 - 3`                                       |
@@ -83,19 +83,19 @@ Angular supports the following operators from standard JavaScript.
 | Spread in array literals      | `[...arr, 1, 2, 3]`                            |
 | Rest in function calls        | `fn(...args)`                                  |
 
-Angular expressions additionally also support the following non-standard operators:
+Angular ifadeleri ayrica asagidaki standart disi operatorleri de destekler:
 
-| Operator                        | Example(s)                     |
+| Operator                        | Ornek(ler)                     |
 | ------------------------------- | ------------------------------ |
 | [Pipe](/guide/templates/pipes)  | `{{ total \| currency }}`      |
 | Optional chaining\*             | `someObj.someProp?.nestedProp` |
 | Non-null assertion (TypeScript) | `someObj!.someProp`            |
 
-NOTE: Optional chaining behaves differently from the standard JavaScript version in that if the left side of Angular’s optional chaining operator is `null` or `undefined`, it returns `null` instead of `undefined`.
+NOTE: Optional chaining, standart JavaScript surumunden farkli davranir; Angular'in optional chaining operatorunun sol tarafi `null` veya `undefined` ise, `undefined` yerine `null` dondurur.
 
 ### Unsupported operators
 
-| Operator              | Example(s)                        |
+| Operator              | Ornek(ler)                        |
 | --------------------- | --------------------------------- |
 | All bitwise operators | `&`, `&=`, `~`, `\|=`, `^=`, etc. |
 | Object destructuring  | `const { name } = person`         |
@@ -105,15 +105,15 @@ NOTE: Optional chaining behaves differently from the standard JavaScript version
 
 ## Lexical context for expressions
 
-Angular expressions are evaluated within the context of the component class as well as any relevant [template variables](/guide/templates/variables), locals, and globals.
+Angular ifadeleri, bilesen sinifinin baglami icinde ve ayrica ilgili [sablon degiskenleri](/guide/templates/variables), yerel degiskenler ve global degiskenler icinde degerlendirilir.
 
-When referring to component class members, `this` is always implied. However, if a template declares a [template variables](guide/templates/variables) with the same name as a member, the variable shadows that member. You can unambiguously reference such a class member by explicitly using `this.`. This can be useful when creating an `@let` declaration that shadows a class member, e.g. for signal narrowing purposes.
+Bilesen sinif uyelerine referans verirken `this` her zaman ima edilir. Ancak, bir sablon ayni adla bir [sablon degiskeni](guide/templates/variables) bildirirse, degisken o uyeyi golgelar. Bu tur bir sinif uyesine belirsizlik olmadan referans vermek icin acikca `this.` kullanabilirsiniz. Bu, bir sinif uyesini golgeleyen bir `@let` bildirimi olustururken, ornegin signal daraltma amaclari icin faydali olabilir.
 
 ## Declarations
 
-Generally speaking, declarations are not supported in Angular expressions. This includes, but is not limited to:
+Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasinda su durumlar yer alir ancak bunlarla sinirli degildir:
 
-| Declarations    | Example(s)                                  |
+| Bildirimler     | Ornek(ler)                                  |
 | --------------- | ------------------------------------------- |
 | Variables       | `let label = 'abc'`, `const item = 'apple'` |
 | Functions       | `function myCustomFunction() { }`           |
@@ -122,7 +122,7 @@ Generally speaking, declarations are not supported in Angular expressions. This 
 
 # Event listener statements
 
-Event handlers are **statements** rather than expressions. While they support all of the same syntax as Angular expressions, there are two key differences:
+Olay isleyicileri ifadeler degil **ifadeler (statements)** dir. Angular ifadelerinin tum sozdizimini desteklemelerine ragmen, iki temel fark vardir:
 
-1. Statements **do support** assignment operators (but not destructing assignments)
-1. Statements **do not support** pipes
+1. Ifadeler atama operatorlerini **destekler** (ancak yapisal atama islemlerini desteklemez)
+1. Ifadeler pipe'lari **desteklemez**

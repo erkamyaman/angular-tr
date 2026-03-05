@@ -1,22 +1,22 @@
 # Testing routing and navigation
 
-Testing routing and navigation is essential to ensure your application behaves correctly when users navigate between different routes. This guide covers various strategies for testing routing functionality in Angular applications.
+Yönlendirme ve navigasyonu test etmek, kullanıcılar farklı rotalar arasında gezindiğinde uygulamanızın doğru şekilde davrandığından emin olmak için gereklidir. Bu kılavuz, Angular uygulamalarında yönlendirme işlevselliğini test etmek için çeşitli stratejileri kapsar.
 
 ## Prerequisites
 
-This guide assumes you are familiar with the following tools and libraries:
+Bu kılavuz, aşağıdaki araçlar ve kütüphanelerle tanıdık olduğunuzu varsayar:
 
-- **[Vitest](https://vitest.dev/)** - JavaScript testing framework that provides the testing syntax (`describe`, `it`, `expect`)
-- **[Angular Testing Utilities](guide/testing)** - Angular's built-in testing tools ([`TestBed`](api/core/testing/TestBed), [`ComponentFixture`](api/core/testing/ComponentFixture))
-- **[`RouterTestingHarness`](api/router/testing/RouterTestingHarness)** - Test harness for testing routed components with built-in navigation and component testing capabilities
+- **[Vitest](https://vitest.dev/)** - Test söz dizimini (`describe`, `it`, `expect`) sağlayan JavaScript test framework'ü
+- **[Angular Testing Utilities](guide/testing)** - Angular'ın yerleşik test araçları ([`TestBed`](api/core/testing/TestBed), [`ComponentFixture`](api/core/testing/ComponentFixture))
+- **[`RouterTestingHarness`](api/router/testing/RouterTestingHarness)** - Yerleşik navigasyon ve bileşen test yetenekleriyle yönlendirilen bileşenleri test etmek için test aracı
 
 ## Testing scenarios
 
 ### Route parameters
 
-Components often rely on route parameters from the URL to fetch data, like a user ID for a profile page.
+Bileşenler genellikle veri çekmek için URL'deki rota parametrelerine bağımlıdır, örneğin profil sayfası için bir kullanıcı kimliği.
 
-The following example shows how to test a `UserProfile` component that displays a user ID from the route.
+Aşağıdaki örnek, rotadan bir kullanıcı kimliği görüntüleyen bir `UserProfile` bileşeninin nasıl test edileceğini gösterir.
 
 ```ts { header: 'user-profile.spec.ts'}
 import {TestBed} from '@angular/core/testing';
@@ -55,9 +55,9 @@ export class UserProfile {
 
 ### Route guards
 
-Route guards control access to routes based on conditions like authentication or permissions. When testing guards, focus on mocking dependencies and verifying navigation outcomes.
+Rota koruyucuları, kimlik doğrulama veya izinler gibi koşullara göre rotalara erişimi kontrol eder. Koruyucuları test ederken, bağımlılıkları taklit etmeye ve navigasyon sonuçlarını doğrulamaya odaklanın.
 
-The following example tests an `authGuard` that allows navigation for authenticated users and redirects unauthenticated users to a login page.
+Aşağıdaki örnek, kimliği doğrulanmış kullanıcılar için navigasyona izin veren ve doğrulanmamış kullanıcıları giriş sayfasına yönlendiren bir `authGuard`'ı test eder.
 
 ```ts {header: 'auth.guard.spec.ts'}
 import {vi, type Mocked} from 'vitest';
@@ -124,9 +124,9 @@ export const authGuard: CanActivateFn = () => {
 
 ### Router outlets
 
-Router outlet tests are more of an integration test since you're essentially testing the integration between the [`Router`](api/router/Router), the outlet, and the components being displayed.
+Router outlet testleri, esasen [`Router`](api/router/Router), outlet ve görüntülenen bileşenler arasındaki entegrasyonu test ettiğiniz için daha çok bir entegrasyon testidir.
 
-Here's an example of how to set up a test that verifies different components are displayed for different routes:
+İşte farklı rotalar için farklı bileşenlerin görüntülendiğini doğrulayan bir testin nasıl kurulacağına dair bir örnek:
 
 ```ts {header: 'app.spec.ts'}
 import {TestBed} from '@angular/core/testing';
@@ -195,15 +195,15 @@ export class App {}
 
 ### Nested routes
 
-Testing nested routes ensures that both the parent and child components render correctly when navigating to nested URLs. This is important because nested routes involve multiple layers.
+İç içe rotaları test etmek, iç içe URL'lere navigasyon yapıldığında hem üst hem de alt bileşenlerin doğru şekilde render edilmesini sağlar. Bu, iç içe rotalar birden fazla katman içerdiği için önemlidir.
 
-You need to verify that:
+Doğrulamanız gerekenler:
 
-1. The parent component renders properly.
-2. The child component renders within it.
-3. Ensure that both components can access their respective route data.
+1. Üst bileşenin düzgün render edilmesi.
+2. Alt bileşenin içinde render edilmesi.
+3. Her iki bileşenin ilgili rota verilerine erişebildiğinden emin olunması.
 
-Here's an example of testing a parent-child route structure:
+İşte bir üst-alt rota yapısını test etmeye dair bir örnek:
 
 ```ts {header: 'nested-routes.spec.ts'}
 import {TestBed} from '@angular/core/testing';
@@ -261,11 +261,11 @@ export class Child {}
 
 ### Query parameters and fragments
 
-Query parameters (like `?search=angular&category=web`) and URL fragments (like `#section1`) provide additional data through the URL that doesn't affect which component loads, but does affect how the component behaves. Components that read query parameters through [`ActivatedRoute.queryParams`](api/router/ActivatedRoute#queryParams) need to be tested to ensure they handle different parameter scenarios correctly.
+Sorgu parametreleri (`?search=angular&category=web` gibi) ve URL fragment'ları (`#section1` gibi), hangi bileşenin yükleneceğini etkilemeyen ancak bileşenin nasıl davranacağını etkileyen URL aracılığıyla ek veri sağlar. [`ActivatedRoute.queryParams`](api/router/ActivatedRoute#queryParams) aracılığıyla sorgu parametrelerini okuyan bileşenlerin, farklı parametre senaryolarını doğru şekilde yönettiğinden emin olmak için test edilmeleri gerekir.
 
-Unlike route parameters that are part of the route definition, query parameters are optional and can change without triggering route navigation. This means you need to test both the initial loading and the reactive updates when query parameters change.
+Rota tanımının bir parçası olan rota parametrelerinin aksine, sorgu parametreleri isteğe bağlıdır ve rota navigasyonunu tetiklemeden değişebilir. Bu, hem ilk yüklemeyi hem de sorgu parametreleri değiştiğinde reaktif güncellemeleri test etmeniz gerektiği anlamına gelir.
 
-Here's an example of how to test query parameters and fragments:
+İşte sorgu parametrelerini ve fragment'ları test etmeye dair bir örnek:
 
 ```ts {header: 'search.spec.ts'}
 import {TestBed} from '@angular/core/testing';
@@ -312,9 +312,9 @@ export class Search {
 
 ## Best practices for router testing
 
-1. **Use RouterTestingHarness** - For testing routed components, use [`RouterTestingHarness`](api/router/testing/RouterTestingHarness) which provides a cleaner API and eliminates the need for test host components. It offers direct component access, built-in navigation, and better type safety. However, it isn't as suitable for some scenarios, such as testing named outlets, where you may need to create custom host components.
-2. **Handle external dependencies thoughtfully** - Prefer real implementations when possible for more realistic tests. If real implementations aren't feasible (e.g., external APIs), use fakes that approximate the real behavior. Use mocks or stubs only as a last resort, as they can make tests brittle and less reliable.
-3. **Test navigation state** - Verify both the navigation action and the resulting application state, including URL changes and component rendering.
-4. **Handle asynchronous operations** - Router navigation is asynchronous. Use `async/await` to properly handle timing in your tests.
-5. **Test error scenarios** - Include tests for invalid routes, failed navigation, and guard rejections to ensure your application handles edge cases gracefully.
-6. **Do not mock Angular Router** - Instead, provide real route configurations and use the harness to navigate. This makes your tests more robust and less likely to break on internal Angular updates, while also ensuring you catch real issues when the router updates since mocks can hide breaking changes.
+1. **RouterTestingHarness kullanın** - Yönlendirilen bileşenleri test etmek için, daha temiz bir API sağlayan ve test host bileşenleri ihtiyacını ortadan kaldıran [`RouterTestingHarness`](api/router/testing/RouterTestingHarness) kullanın. Doğrudan bileşen erişimi, yerleşik navigasyon ve daha iyi tür güvenliği sunar. Ancak, adlandırılmış outlet'leri test etme gibi bazı senaryolar için uygun olmayabilir ve özel host bileşenleri oluşturmanız gerekebilir.
+2. **Harici bağımlılıkları özenle yönetin** - Daha gerçekçi testler için mümkünse gerçek uygulamaları tercih edin. Gerçek uygulamalar mümkün değilse (örn. harici API'ler), gerçek davranışa yaklaşan sahte nesneler kullanın. Mock veya stub'ları yalnızca son çare olarak kullanın, çünkü testleri kırılgan ve daha az güvenilir yapabilirler.
+3. **Navigasyon durumunu test edin** - Hem navigasyon eylemini hem de sonuçta ortaya çıkan uygulama durumunu, URL değişiklikleri ve bileşen render'ı dahil olmak üzere doğrulayın.
+4. **Asenkron işlemleri yönetin** - Router navigasyonu asenkrondur. Testlerinizde zamanlamayı düzgün yönetmek için `async/await` kullanın.
+5. **Hata senaryolarını test edin** - Uygulamanızın uç durumları nazikçe yönettiğinden emin olmak için geçersiz rotalar, başarısız navigasyon ve koruyucu redleri için testler ekleyin.
+6. **Angular Router'ı taklit etmeyin** - Bunun yerine, gerçek rota yapılandırmaları sağlayın ve navigasyon yapmak için harness'ı kullanın. Bu, testlerinizi daha sağlam yapar ve dahili Angular güncellemelerinde kırılma olasılığını azaltır, ayrıca mock'lar kırıcı değişiklikleri gizleyebildiğinden yönlendirici güncellendiğinde gerçek sorunları yakalamanızı sağlar.

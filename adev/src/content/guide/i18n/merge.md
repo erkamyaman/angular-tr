@@ -1,105 +1,105 @@
 # Merge translations into the application
 
-To merge the completed translations into your project, complete the following actions
+Tamamlanan çevirileri projenize birleştirmek için aşağıdaki işlemleri tamamlayın
 
-1. Use the [Angular CLI][CliMain] to build a copy of the distributable files of your project
-1. Use the `"localize"` option to replace all of the i18n messages with the valid translations and build a localized variant application.
-   A variant application is a complete copy of the distributable files of your application translated for a single locale.
+1. Projenizin dağıtılabilir dosyalarının bir kopyasını oluşturmak için [Angular CLI][CliMain] kullanın
+1. Tüm i18n mesajlarını geçerli çevirilerle değiştirmek ve yerelleştirilmiş bir uygulama varyantı oluşturmak için `"localize"` seçeneğini kullanın.
+   Bir varyant uygulama, uygulamanızın tek bir yerel ayar için çevrilmiş dağıtılabilir dosyalarının tam bir kopyasıdır.
 
-After you merge the translations, serve each distributable copy of the application using server-side language detection or different subdirectories.
+Çevirileri birleştirdikten sonra, sunucu tarafı dil algılama veya farklı alt dizinler kullanarak uygulamanın her dağıtılabilir kopyasını sunun.
 
-HELPFUL: For more information about how to serve each distributable copy of the application, see [deploying multiple locales](guide/i18n/deploy).
+HELPFUL: Uygulamanın her dağıtılabilir kopyasının nasıl sunulacağı hakkında daha fazla bilgi için [deploying multiple locales](guide/i18n/deploy) bölümüne bakın.
 
-For a compile-time translation of the application, the build process uses ahead-of-time (AOT) compilation to produce a small, fast, ready-to-run application.
+Uygulamanın derleme zamanı çevirisi için, derleme süreci küçük, hızlı ve çalıştırmaya hazır bir uygulama üretmek üzere önceden derleme (AOT) kullanır.
 
-HELPFUL: For a detailed explanation of the build process, see [Building and serving Angular apps][GuideBuild].
-The build process works for translation files in the `.xlf` format or in another format that Angular understands, such as `.xtb`.
-For more information about translation file formats used by Angular, see [Change the source language file format][GuideI18nCommonTranslationFilesChangeTheSourceLanguageFileFormat]
+HELPFUL: Derleme süreci hakkında ayrıntılı bir açıklama için [Building and serving Angular apps][GuideBuild] bölümüne bakın.
+Derleme süreci `.xlf` formatındaki veya Angular'ın anladığı `.xtb` gibi başka bir formattaki çeviri dosyaları için çalışır.
+Angular tarafından kullanılan çeviri dosyası formatları hakkında daha fazla bilgi için [Change the source language file format][GuideI18nCommonTranslationFilesChangeTheSourceLanguageFileFormat] bölümüne bakın
 
-To build a separate distributable copy of the application for each locale, [define the locales in the build configuration][GuideI18nCommonMergeDefineLocalesInTheBuildConfiguration] in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file of your project.
+Her yerel ayar için ayrı bir dağıtılabilir uygulama kopyası oluşturmak üzere, projenizin [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki [derleme yapılandırmasında yerel ayarları tanımlayın][GuideI18nCommonMergeDefineLocalesInTheBuildConfiguration].
 
-This method shortens the build process by removing the requirement to perform a full application build for each locale.
+Bu yöntem, her yerel ayar için tam bir uygulama derlemesi yapma gereksinimini ortadan kaldırarak derleme sürecini kısaltır.
 
-To [generate application variants for each locale][GuideI18nCommonMergeGenerateApplicationVariantsForEachLocale], use the `"localize"` option in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file.
-Also, to [build from the command line][GuideI18nCommonMergeBuildFromTheCommandLine], use the [`build`][CliBuild] [Angular CLI][CliMain] command with the `--localize` option.
+[Her yerel ayar için uygulama varyantları oluşturmak][GuideI18nCommonMergeGenerateApplicationVariantsForEachLocale] üzere, [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki `"localize"` seçeneğini kullanın.
+Ayrıca, [komut satırından derlemek][GuideI18nCommonMergeBuildFromTheCommandLine] için [`build`][CliBuild] [Angular CLI][CliMain] komutunu `--localize` seçeneğiyle kullanın.
 
-HELPFUL: Optionally, [apply specific build options for just one locale][GuideI18nCommonMergeApplySpecificBuildOptionsForJustOneLocale] for a custom locale configuration.
+HELPFUL: İsteğe bağlı olarak, özel bir yerel ayar yapılandırması için [yalnızca bir yerel ayar için belirli derleme seçeneklerini uygulayın][GuideI18nCommonMergeApplySpecificBuildOptionsForJustOneLocale].
 
 ## Define locales in the build configuration
 
-Use the `i18n` project option in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file of your project to define locales for a project.
+Bir proje için yerel ayarları tanımlamak üzere projenizin [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki `i18n` proje seçeneğini kullanın.
 
-The following sub-options identify the source language and tell the compiler where to find supported translations for the project.
+Aşağıdaki alt seçenekler kaynak dili tanımlar ve derleyiciye proje için desteklenen çevirilerin nerede bulunacağını söyler.
 
-| Suboption      | Details                                                                      |
-| :------------- | :--------------------------------------------------------------------------- |
-| `sourceLocale` | The locale you use within the application source code \(`en-US` by default\) |
-| `locales`      | A map of locale identifiers to translation files                             |
+| Suboption      | Details                                                                          |
+| :------------- | :------------------------------------------------------------------------------- |
+| `sourceLocale` | Uygulama kaynak kodunuzda kullandığınız yerel ayar \(varsayılan olarak `en-US`\) |
+| `locales`      | Yerel ayar tanımlayıcılarının çeviri dosyalarına eşlemesi                        |
 
 ### `angular.json` for `en-US` and `fr` example
 
-For example, the following excerpt of an [`angular.json`][GuideWorkspaceConfig] workspace build configuration file sets the source locale to `en-US` and provides the path to the French \(`fr`\) locale translation file.
+Örneğin, aşağıdaki [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyası alıntısı, kaynak yerel ayarını `en-US` olarak ayarlar ve Fransızca \(`fr`\) yerel ayar çeviri dosyasının yolunu sağlar.
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="locale-config"/>
 
 ## Generate application variants for each locale
 
-To use your locale definition in the build configuration, use the `"localize"` option in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file to tell the CLI which locales to generate for the build configuration.
+Derleme yapılandırmasındaki yerel ayar tanımınızı kullanmak için, [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki `"localize"` seçeneğini kullanarak CLI'ya derleme yapılandırması için hangi yerel ayarların oluşturulacağını söyleyin.
 
-- Set `"localize"` to `true` for all the locales previously defined in the build configuration.
-- Set `"localize"` to an array of a subset of the previously defined locale identifiers to build only those locale versions.
-- Set `"localize"` to `false` to disable localization and not generate any locale-specific versions.
+- Derleme yapılandırmasında daha önce tanımlanan tüm yerel ayarlar için `"localize"` değerini `true` olarak ayarlayın.
+- Yalnızca belirli yerel ayar sürümlerini derlemek için `"localize"` değerini daha önce tanımlanmış yerel ayar tanımlayıcılarının bir alt kümesinin dizisi olarak ayarlayın.
+- Yerelleştirmeyi devre dışı bırakmak ve herhangi bir yerel ayara özel sürüm oluşturmamak için `"localize"` değerini `false` olarak ayarlayın.
 
-HELPFUL: Ahead-of-time (AOT) compilation is required to localize component templates.
+HELPFUL: Bileşen şablonlarını yerelleştirmek için önceden derleme (AOT) gereklidir.
 
-If you changed this setting, set `"aot"` to `true` in order to use AOT.
+Bu ayarı değiştirdiyseniz, AOT kullanmak için `"aot"` değerini `true` olarak ayarlayın.
 
-HELPFUL: Due to the deployment complexities of i18n and the need to minimize rebuild time, the development server only supports localizing a single locale at a time.
-If you set the `"localize"` option to `true`, define more than one locale, and use `ng serve`; then an error occurs.
-If you want to develop against a specific locale, set the `"localize"` option to a specific locale.
-For example, for French \(`fr`\), specify `"localize": ["fr"]`.
+HELPFUL: i18n'nin dağıtım karmaşıklıkları ve yeniden derleme süresini en aza indirme ihtiyacı nedeniyle, geliştirme sunucusu aynı anda yalnızca tek bir yerel ayarın yerelleştirilmesini destekler.
+`"localize"` seçeneğini `true` olarak ayarlar, birden fazla yerel ayar tanımlar ve `ng serve` kullanırsanız; bir hata oluşur.
+Belirli bir yerel ayara karşı geliştirme yapmak istiyorsanız, `"localize"` seçeneğini belirli bir yerel ayara ayarlayın.
+Örneğin, Fransızca \(`fr`\) için `"localize": ["fr"]` belirtin.
 
-The CLI loads and registers the locale data, places each generated version in a locale-specific directory to keep it separate from other locale versions, and puts the directories within the configured `outputPath` for the project.
-For each application variant the `lang` attribute of the `html` element is set to the locale.
-The CLI also adjusts the HTML base HREF for each version of the application by adding the locale to the configured `baseHref`.
+CLI yerel ayar verilerini yükler ve kaydeder, oluşturulan her sürümü diğer yerel ayar sürümlerinden ayrı tutmak için yerel ayara özel bir dizine yerleştirir ve dizinleri proje için yapılandırılmış `outputPath` içine koyar.
+Her uygulama varyantı için `html` öğesinin `lang` niteliği yerel ayara ayarlanır.
+CLI ayrıca yapılandırılmış `baseHref`'e yerel ayarı ekleyerek uygulamanın her sürümü için HTML temel HREF'ini ayarlar.
 
-Set the `"localize"` property as a shared configuration to effectively inherit for all the configurations.
-Also, set the property to override other configurations.
+`"localize"` özelliğini tüm yapılandırmalar için etkili bir şekilde miras almak üzere paylaşılan bir yapılandırma olarak ayarlayın.
+Ayrıca, diğer yapılandırmaları geçersiz kılmak için özelliği ayarlayın.
 
 ### `angular.json` include all locales from build example
 
-The following example displays the `"localize"` option set to `true` in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file, so that all locales defined in the build configuration are built.
+Aşağıdaki örnek, tüm derleme yapılandırmasında tanımlanan yerel ayarların derlenmesi için [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasında `"localize"` seçeneğinin `true` olarak ayarlandığını göstermektedir.
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="build-localize-true"/>
 
 ## Build from the command line
 
-Also, use the `--localize` option with the [`ng build`][CliBuild] command and your existing `production` configuration.
-The CLI builds all locales defined in the build configuration.
-If you set the locales in build configuration, it is similar to when you set the `"localize"` option to `true`.
+Ayrıca, [`ng build`][CliBuild] komutuyla ve mevcut `production` yapılandırmanızla `--localize` seçeneğini kullanın.
+CLI, derleme yapılandırmasında tanımlanan tüm yerel ayarları derler.
+Derleme yapılandırmasında yerel ayarları ayarlarsanız, `"localize"` seçeneğini `true` olarak ayarladığınız zamana benzerdir.
 
-HELPFUL: For more information about how to set the locales, see [Generate application variants for each locale][GuideI18nCommonMergeGenerateApplicationVariantsForEachLocale].
+HELPFUL: Yerel ayarların nasıl ayarlanacağı hakkında daha fazla bilgi için [Generate application variants for each locale][GuideI18nCommonMergeGenerateApplicationVariantsForEachLocale] bölümüne bakın.
 
 <docs-code path="adev/src/content/examples/i18n/doc-files/commands.sh" region="build-localize"/>
 
 ## Apply specific build options for just one locale
 
-To apply specific build options to only one locale, specify a single locale to create a custom locale-specific configuration.
+Belirli derleme seçeneklerini yalnızca bir yerel ayara uygulamak için, özel bir yerel ayara özel yapılandırma oluşturmak üzere tek bir yerel ayar belirtin.
 
-IMPORTANT: Use the [Angular CLI][CliMain] development server \(`ng serve`\) with only a single locale.
+IMPORTANT: [Angular CLI][CliMain] geliştirme sunucusunu \(`ng serve`\) yalnızca tek bir yerel ayarla kullanın.
 
 ### build for French example
 
-The following example displays a custom locale-specific configuration using a single locale.
+Aşağıdaki örnek, tek bir yerel ayar kullanan özel bir yerel ayara özel yapılandırmayı göstermektedir.
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="build-single-locale"/>
 
-Pass this configuration to the `ng serve` or `ng build` commands.
-The following code example displays how to serve the French language file.
+Bu yapılandırmayı `ng serve` veya `ng build` komutlarına geçirin.
+Aşağıdaki kod örneği, Fransızca dil dosyasının nasıl sunulacağını göstermektedir.
 
 <docs-code path="adev/src/content/examples/i18n/doc-files/commands.sh" region="serve-french"/>
 
-For production builds, use configuration composition to run both configurations.
+Üretim derlemeleri için, her iki yapılandırmayı da çalıştırmak üzere yapılandırma bileşimini kullanın.
 
 <docs-code path="adev/src/content/examples/i18n/doc-files/commands.sh" region="build-production-french"/>
 
@@ -107,31 +107,31 @@ For production builds, use configuration composition to run both configurations.
 
 ## Report missing translations
 
-When a translation is missing, the build succeeds but generates a warning such as `Missing translation for message "{translation_text}"`.
-To configure the level of warning that is generated by the Angular compiler, specify one of the following levels.
+Bir çeviri eksik olduğunda, derleme başarılı olur ancak `Missing translation for message "{translation_text}"` gibi bir uyarı oluşturur.
+Angular derleyicisi tarafından oluşturulan uyarı seviyesini yapılandırmak için aşağıdaki seviyelerden birini belirtin.
 
-| Warning level | Details                                              | Output                                                 |
-| :------------ | :--------------------------------------------------- | :----------------------------------------------------- |
-| `error`       | Throw an error and the build fails                   | n/a                                                    |
-| `ignore`      | Do nothing                                           | n/a                                                    |
-| `warning`     | Displays the default warning in the console or shell | `Missing translation for message "{translation_text}"` |
+| Warning level | Details                                             | Output                                                 |
+| :------------ | :-------------------------------------------------- | :----------------------------------------------------- |
+| `error`       | Bir hata fırlatır ve derleme başarısız olur         | n/a                                                    |
+| `ignore`      | Hiçbir şey yapmaz                                   | n/a                                                    |
+| `warning`     | Konsolda veya kabukta varsayılan uyarıyı görüntüler | `Missing translation for message "{translation_text}"` |
 
-Specify the warning level in the `options` section for the `build` target of your [`angular.json`][GuideWorkspaceConfig] workspace build configuration file.
+Uyarı seviyesini projenizin [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki `build` hedefinin `options` bölümünde belirtin.
 
 ### `angular.json` `error` warning example
 
-The following example displays how to set the warning level to `error`.
+Aşağıdaki örnek, uyarı seviyesinin `error` olarak nasıl ayarlanacağını göstermektedir.
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="missing-translation-error" />
 
-HELPFUL: When you compile your Angular project into an Angular application, the instances of the `i18n` attribute are replaced with instances of the [`$localize`][ApiLocalizeInitLocalize] tagged message string.
-This means that your Angular application is translated after compilation.
-This also means that you can create localized versions of your Angular application without re-compiling your entire Angular project for each locale.
+HELPFUL: Angular projenizi bir Angular uygulamasına derlediğinizde, `i18n` niteliğinin örnekleri [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesi örnekleriyle değiştirilir.
+Bu, Angular uygulamanızın derlemeden sonra çevrildiği anlamına gelir.
+Bu ayrıca, her yerel ayar için tüm Angular projenizi yeniden derlemeden Angular uygulamanızın yerelleştirilmiş sürümlerini oluşturabileceğiniz anlamına gelir.
 
-When you translate your Angular application, the _translation transformation_ replaces and reorders the parts \(static strings and expressions\) of the template literal string with strings from a collection of translations.
-For more information, see [`$localize`][ApiLocalizeInitLocalize].
+Angular uygulamanızı çevirdiğinizde, _çeviri dönüşümü_ şablon literal dizesinin parçalarını \(statik dizeler ve ifadeler\) bir çeviri koleksiyonundaki dizelerle değiştirir ve yeniden sıralar.
+Daha fazla bilgi için [`$localize`][ApiLocalizeInitLocalize] bölümüne bakın.
 
-TLDR: Compile once, then translate for each locale.
+TLDR: Bir kez derleyin, ardından her yerel ayar için çevirin.
 
 ## What's next
 

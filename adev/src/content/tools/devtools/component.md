@@ -2,75 +2,75 @@
 
 ## Debug your application
 
-The **Components** tab lets you explore the structure of your application.
-You can visualize the component and directive instances in the DOM and inspect or modify their state.
+**Components** sekmesi, uygulamanızın yapısını keşfetmenizi sağlar.
+DOM'daki bileşen ve direktif örneklerini görselleştirebilir, durumlarını inceleyebilir veya değiştirebilirsiniz.
 
 ### Explore the application structure
 
-The component tree displays a hierarchical relationship of the _components and directives_ within your application.
+Bileşen ağacı, uygulamanızdaki _bileşenler ve direktifler_ arasındaki hiyerarşik ilişkiyi gösterir.
 
 <img src="assets/images/guide/devtools/component-explorer.png" alt="A screenshot of the 'Components' tab showing a tree of Angular components and directives starting the root of the application.">
 
-Click the individual components or directives in the component explorer to select them and preview their properties.
-Angular DevTools displays properties and metadata on the right side of the component tree.
+Bileşen gezgininde tek tek bileşenlere veya direktiflere tıklayarak bunları seçin ve özelliklerini önizleyin.
+Angular DevTools, özellikleri ve meta verileri bileşen ağacının sağ tarafında görüntüler.
 
-To look up a component or directive by name use the search box above the component tree.
+Bir bileşeni veya direktifi ada göre aramak için bileşen ağacının üzerindeki arama kutusunu kullanın.
 
 <img src="assets/images/guide/devtools/search.png" alt="A screenshot of the 'Components' tab. The filter bar immediately underneath the tab is searching for 'todo' and all components with 'todo' in the name are highlighted in the tree. `app-todos` is currently selected and a sidebar to the right displays information about the component's properties. This includes a section of `@Output` fields and another section for other properties.">
 
 ### Navigate to the host node
 
-To go to the host element of a particular component or directive, double-click it in the component explorer.
-Angular DevTools will open the Elements tab in Chrome or the Inspector tab in Firefox, and select the associated DOM node.
+Belirli bir bileşenin veya direktifin ana öğesine gitmek için bileşen gezgininde üzerine çift tıklayın.
+Angular DevTools, Chrome'da Elements sekmesini veya Firefox'ta Inspector sekmesini açar ve ilişkili DOM düğümünü seçer.
 
 ### Navigate to source
 
-For components, Angular DevTools lets you navigate to the component definition in the Sources tab (Chrome) and Debugger tab (Firefox).
-After you select a particular component, click the icon at the top-right of the properties view:
+Bileşenler için Angular DevTools, Sources sekmesinde (Chrome) ve Debugger sekmesinde (Firefox) bileşen tanımına gitmenizi sağlar.
+Belirli bir bileşeni seçtikten sonra, özellikler görünümünün sağ üst köşesindeki simgeye tıklayın:
 
 <img src="assets/images/guide/devtools/navigate-source.png" alt="A screenshot of the 'Components' tab. The properties view on the right is visible for a component and the mouse rests in the upper right corner of that view on top of a `<>` icon. An adjacent tooltip reads 'Open component source'.">
 
 ### Update property value
 
-Like browsers' DevTools, the properties view lets you edit the value of an input, output, or other properties.
-Right-click on the property value and if edit functionality is available for this value type, a text input will appear.
-Type the new value and press `Enter` to apply this value to the property.
+Tarayıcıların DevTools'unda olduğu gibi, özellikler görünümü bir input, output veya diğer özelliklerin değerini düzenlemenize olanak tanır.
+Özellik değerine sağ tıklayın ve bu değer türü için düzenleme işlevi mevcutsa, bir metin girişi alanı görünecektir.
+Yeni değeri yazın ve özelliğe uygulamak için `Enter` tuşuna basın.
 
 <img src="assets/images/guide/devtools/update-property.png" alt="A screenshot of the 'Components' tab with the properties view open for a component. An `@Input` named `todo` contains a `label` property which is currently selected and has been manually updated to the value 'Buy milk'.">
 
 ### Access selected component or directive in console
 
-As a shortcut in the console, Angular DevTools provides access to instances of recently selected components or directives.
-Type `$ng0` to get a reference to the instance of the currently selected component or directive, and type `$ng1` for the previously selected instance, `$ng2` for the instance selected before that, and so on.
+Konsolda bir kısayol olarak Angular DevTools, son seçilen bileşen veya direktif örneklerine erişim sağlar.
+Şu anda seçili bileşenin veya direktifin örneğine referans almak için `$ng0` yazın, daha önce seçilen örnek için `$ng1`, ondan önce seçilen örnek için `$ng2` yazın ve bu şekilde devam edin.
 
 <img src="assets/images/guide/devtools/access-console.png" alt="A screenshot of the 'Components' tab with the browser console underneath. In the console, the user has typed three commands, `$ng0`, `$ng1`, and `$ng2` to view the three most recently selected elements. After each statement, the console prints a different component reference.">
 
 ### Select a directive or component
 
-Similar to browsers' DevTools, you can inspect the page to select a particular component or directive.
-Click the **_Inspect element_** icon in the top left corner within Angular DevTools and hover over a DOM element on the page.
-The extension recognizes the associated directives and/or components and lets you select the corresponding element in the Component tree.
+Tarayıcıların DevTools'una benzer şekilde, belirli bir bileşeni veya direktifi incelemek için sayfayı denetleyebilirsiniz.
+Angular DevTools içinde sol üst köşedeki **_Inspect element_** simgesine tıklayın ve sayfadaki bir DOM öğesinin üzerine gelin.
+Uzantı, ilişkili direktifleri ve/veya bileşenleri tanır ve Bileşen ağacında karşılık gelen öğeyi seçmenize olanak tanır.
 
 <img src="assets/images/guide/devtools/inspect-element.png" alt="A screenshot of the 'Components' tab with an Angular todo application visible. In the very top-left corner of Angular DevTools, an icon of a screen with a mouse icon inside it is selected. The mouse rests on a todo element in the Angular application UI. The element is highlighted with a `<TodoComponent>` label displayed in an adjacent tooltip.">
 
 ### Inspect Deferrable views
 
-Alongside the directives, the directive tree also includes [`@defer` blocks](/guide/templates/defer).
+Direktiflerin yanı sıra, direktif ağacı [`@defer` bloklarını](/guide/templates/defer) da içerir.
 
 <img src="assets/images/guide/devtools/defer-block.png" />
 
-Clicking a defer block shows more details in the properties sidebar: the different optional blocks (for example `@loading`, `@placeholder`, and `@error`), the configured triggers (defer triggers, prefetch triggers, and hydrate triggers), and timing options such as the `minimum` and `after` values.
+Bir defer bloğuna tıklamak, özellikler kenar çubuğunda daha fazla ayrıntı gösterir: farklı isteğe bağlı bloklar (örneğin `@loading`, `@placeholder` ve `@error`), yapılandırılmış tetikleyiciler (defer tetikleyicileri, prefetch tetikleyicileri ve hydrate tetikleyicileri) ve `minimum` ve `after` değerleri gibi zamanlama seçenekleri.
 
 ### Hydration
 
-When [hydration](/guide/hydration) is enabled on your SSR/SSG application, the directive tree shows the hydration status of each component.
+SSR/SSG uygulamanızda [hydration](/guide/hydration) etkinleştirildiğinde, direktif ağacı her bileşenin hydration durumunu gösterir.
 
-In case of errors, an error message is displayed on the affected component.
+Hata durumunda, etkilenen bileşen üzerinde bir hata mesajı görüntülenir.
 
 <img src="assets/images/guide/devtools/hydration-status.png" />
 
-The hydration status can also be visualized on the application itself by enabling the overlay.
+Hydration durumu, kaplama (overlay) etkinleştirilerek uygulamanın kendisi üzerinde de görselleştirilebilir.
 
 <img src="assets/images/guide/devtools/hydration-overlay-ecom.png" />
 
-Here is an illustration of the hydration overlays on a Angular e-shop example app.
+İşte bir Angular e-ticaret örnek uygulamasındaki hydration kaplamalarının bir gösterimi.

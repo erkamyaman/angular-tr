@@ -1,14 +1,14 @@
 # Event handling
 
-Event handling enables interactive features on web apps. It gives you the ability as a developer to respond to user actions like button presses, form submissions and more.
+Olay yönetimi, web uygulamalarında etkileşimli özellikleri mümkün kılar. Geliştirici olarak buton tıklamaları, form gönderimleri ve daha fazlası gibi kullanıcı eylemlerine yanıt verme imkanı sağlar.
 
-NOTE: Learn more about [handling user interaction in the essentials guide](/essentials/templates#handling-user-interaction).
+NOTE: [Temel bilgiler kılavuzundaki kullanıcı etkileşimini yönetme](/essentials/templates#handling-user-interaction) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to add an event handler.
+Bu aktivitede, bir olay yöneticisi eklemeyi öğreneceksiniz.
 
 <hr />
 
-In Angular you bind to events with the parentheses syntax `()`. On a given element, wrap the event you want to bind to with parentheses and set an event handler. Consider this `button` example:
+Angular'da olaylara parantez sözdizimi `()` ile bağlanırsınız. Belirli bir öğede, bağlanmak istediğiniz olayı parantez içine alın ve bir olay yöneticisi ayarlayın. Bu `button` örneğini inceleyin:
 
 ```angular-ts
 @Component({
@@ -22,14 +22,14 @@ export class App {
 }
 ```
 
-In this example, the `greet()` function will run every time the button is clicked. Take note that the `greet()` syntax includes the trailing parenthesis.
+Bu örnekte, butona her tıklandığında `greet()` fonksiyonu çalışacaktır. `greet()` sözdiziminin sondaki parantezleri içerdiğine dikkat edin.
 
-Alright, your turn to give this a try:
+Pekala, şimdi sıra sizde:
 
 <docs-workflow>
 
 <docs-step title="Add an event handler">
-Add the `showSecretMessage()` event handler function in the `App` class. Use the following code as the implementation:
+`App` sınıfına `showSecretMessage()` olay yöneticisi fonksiyonunu ekleyin. Uygulama olarak aşağıdaki kodu kullanın:
 
 ```ts
 showSecretMessage() {
@@ -40,7 +40,7 @@ showSecretMessage() {
 </docs-step>
 
 <docs-step title="Bind to the template event">
-Update the template code in `app.ts` to bind to the `mouseover` event of the `section` element.
+`app.ts` dosyasındaki şablon kodunu, `section` öğesinin `mouseover` olayına bağlanacak şekilde güncelleyin.
 
 <!-- prettier-ignore -->
 ```angular-html
@@ -51,4 +51,4 @@ Update the template code in `app.ts` to bind to the `mouseover` event of the `se
 
 </docs-workflow>
 
-And with a few steps in the code you've created your first event handler in Angular. Seems like you are getting pretty good at this, keep up the good work.
+Birkaç adımda Angular'da ilk olay yöneticinizi oluşturdunuz. Bu işte oldukça iyi oluyorsunuz gibi görünüyor, harika çalışmaya devam edin.

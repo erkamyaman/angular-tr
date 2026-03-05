@@ -1,28 +1,26 @@
 # Migration to signal queries
 
-Angular introduced improved APIs for queries that are considered
-production ready as of v19.
-Read more about signal queries and their benefits in the [dedicated guide](guide/components/queries).
+Angular, v19 itibarıyla üretime hazır kabul edilen sorgular için geliştirilmiş API'ler tanıttı.
+Sinyal sorguları ve faydaları hakkında daha fazla bilgi için [özel kılavuzu](guide/components/queries) okuyun.
 
-To support existing teams that would like to use signal queries, the Angular team
-provides an automated migration that converts existing decorator query fields to the new API.
+Sinyal sorgularını kullanmak isteyen mevcut ekipleri desteklemek için Angular ekibi, mevcut dekoratör sorgu alanlarını yeni API'ye dönüştüren otomatik bir geçiş sağlar.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```bash
 ng generate @angular/core:signal-queries-migration
 ```
 
-Alternatively, the migration is available as a [code refactor action](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) in VSCode.
-Install the latest version of the VSCode extension and click onto e.g. a `@ViewChild` field.
-See more details in the section [below](#vscode-extension).
+Alternatif olarak, geçiş VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
+VSCode uzantısının en son sürümünü kurun ve örneğin bir `@ViewChild` alanına tıklayın.
+Daha fazla ayrıntı için [aşağıdaki](#vscode-extension) bölüme bakın.
 
 ## What does the migration change?
 
-1. `@ViewChild()`, `@ViewChildren`, `@ContentChild` and `@ContentChildren` class members
-   are updated to their signal equivalents.
-2. References in your application to migrated queries are updated to call the signal.
-   - This includes references in templates, host bindings or TypeScript code.
+1. `@ViewChild()`, `@ViewChildren`, `@ContentChild` ve `@ContentChildren` sınıf üyeleri
+   sinyal eşdeğerlerine güncellenir.
+2. Uygulamanızdaki geçirilen sorgulara yapılan referanslar, sinyali çağıracak şekilde güncellenir.
+   - Bu, şablonlardaki, ana bağlamalardaki veya TypeScript kodundaki referansları içerir.
 
 **Before**
 
@@ -65,25 +63,24 @@ export class MyComponent {
 
 ## Configuration options
 
-The migration supports a few options for fine tuning the migration to your specific needs.
+Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
 ### `--path`
 
-By default, the migration will update your whole Angular CLI workspace.
-You can limit the migration to a specific sub-directory using this option.
+Varsayılan olarak, geçiş tüm Angular CLI çalışma alanınızı güncelleyecektir.
+Bu seçeneği kullanarak geçişi belirli bir alt dizinle sınırlayabilirsiniz.
 
 ### `--best-effort-mode`
 
-By default, the migration skips queries that cannot be safely migrated.
-The migration tries to refactor code as safely as possible.
+Varsayılan olarak, geçiş güvenli bir şekilde geçirilemeyen sorguları atlar.
+Geçiş, kodu mümkün olduğunca güvenli bir şekilde yeniden düzenlemeye çalışır.
 
-When the `--best-effort-mode` flag is enabled, the migration eagerly
-tries to migrate as much as possible, even if it could break your build.
+`--best-effort-mode` bayrağı etkinleştirildiğinde, geçiş, derlemenizi bozabilse bile mümkün olduğunca çok şeyi geçirmeye istekli bir şekilde çalışır.
 
 ### `--insert-todos`
 
-When enabled, the migration will add TODOs to queries that couldn't be migrated.
-The TODOs will include reasoning on why queries were skipped. E.g.
+Etkinleştirildiğinde, geçiş geçirilemeyen sorgulara TODO'lar ekler.
+TODO'lar, sorguların neden atlandığına dair gerekçeyi içerir. Örneğin:
 
 ```ts
 // TODO: Skipped for migration because:
@@ -93,23 +90,23 @@ The TODOs will include reasoning on why queries were skipped. E.g.
 
 ### `--analysis-dir`
 
-In large projects you may use this option to reduce the amount of files being analyzed.
-By default, the migration analyzes the whole workspace, regardless of the `--path` option, in
-order to update all references affected by a query declaration being migrated.
+Büyük projelerde, analiz edilen dosya miktarını azaltmak için bu seçeneği kullanabilirsiniz.
+Varsayılan olarak, geçiş `--path` seçeneğinden bağımsız olarak tüm çalışma alanını analiz eder,
+böylece bir sorgu bildiriminin geçişinden etkilenen tüm referansları günceller.
 
-With this option, you can limit analysis to a sub-folder. Note that this means that any
-references outside this directory are silently skipped, potentially breaking your build.
+Bu seçenekle, analizi bir alt klasörle sınırlayabilirsiniz. Bu dizin dışındaki herhangi bir
+referansın sessizce atlanacağını ve potansiyel olarak derlemenizi bozabileceğini unutmayın.
 
 ## VSCode extension
 
 ![Screenshot of the VSCode extension and clicking on an `@ViewChild` field](assets/images/migrations/signal-queries-vscode.png 'Screenshot of the VSCode extension and clicking on an `@ViewChild` field.')
 
-The migration is available as a [code refactor action](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) in VSCode.
+Geçiş, VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
 
-To make use of the migration via VSCode, install the latest version of the VSCode extension and either click:
+Geçişi VSCode aracılığıyla kullanmak için VSCode uzantısının en son sürümünü kurun ve şunlardan birine tıklayın:
 
-- on a `@ViewChild`, `@ViewChildren`, `@ContentChild`, or `@ContentChildren` field.
-- on a directive/component
+- bir `@ViewChild`, `@ViewChildren`, `@ContentChild` veya `@ContentChildren` alanına.
+- bir direktif/bileşene
 
-Then, wait for the yellow lightbulb VSCode refactoring button to appear.
-Via this button you can then select the signal queries migration.
+Ardından, sarı ampul VSCode yeniden düzenleme düğmesinin görünmesini bekleyin.
+Bu düğme aracılığıyla sinyal sorguları geçişini seçebilirsiniz.

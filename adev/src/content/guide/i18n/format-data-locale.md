@@ -1,18 +1,18 @@
 # Format data based on locale
 
-Angular provides the following built-in data transformation [pipes](guide/templates/pipes).
-The data transformation pipes use the [`LOCALE_ID`][ApiCoreLocaleId] token to format data based on rules of each locale.
+Angular, aşağıdaki yerleşik veri dönüştürme [pipe'larını](guide/templates/pipes) sağlar.
+Veri dönüştürme pipe'ları, her yerel ayarın kurallarına göre verileri biçimlendirmek için [`LOCALE_ID`][ApiCoreLocaleId] token'ını kullanır.
 
-| Data transformation pipe                | Details                                           |
-| :-------------------------------------- | :------------------------------------------------ |
-| [`DatePipe`][ApiCommonDatepipe]         | Formats a date value.                             |
-| [`CurrencyPipe`][ApiCommonCurrencypipe] | Transforms a number into a currency string.       |
-| [`DecimalPipe`][ApiCommonDecimalpipe]   | Transforms a number into a decimal number string. |
-| [`PercentPipe`][ApiCommonPercentpipe]   | Transforms a number into a percentage string.     |
+| Data transformation pipe                | Details                                      |
+| :-------------------------------------- | :------------------------------------------- |
+| [`DatePipe`][ApiCommonDatepipe]         | Bir tarih değerini biçimlendirir.            |
+| [`CurrencyPipe`][ApiCommonCurrencypipe] | Bir sayıyı para birimi dizesine dönüştürür.  |
+| [`DecimalPipe`][ApiCommonDecimalpipe]   | Bir sayıyı ondalık sayı dizesine dönüştürür. |
+| [`PercentPipe`][ApiCommonPercentpipe]   | Bir sayıyı yüzde dizesine dönüştürür.        |
 
 ## Use DatePipe to display the current date
 
-To display the current date in the format for the current locale, use the following format for the `DatePipe`.
+Geçerli tarihi mevcut yerel ayarın biçiminde görüntülemek için `DatePipe` için aşağıdaki biçimi kullanın.
 
 ```angular-html
 {{ today | date }}
@@ -20,15 +20,15 @@ To display the current date in the format for the current locale, use the follow
 
 ## Override current locale for CurrencyPipe
 
-Add the `locale` parameter to the pipe to override the current value of `LOCALE_ID` token.
+Mevcut `LOCALE_ID` token değerini geçersiz kılmak için pipe'a `locale` parametresini ekleyin.
 
-To force the currency to use American English \(`en-US`\), use the following format for the `CurrencyPipe`
+Para birimini Amerikan İngilizcesi \(`en-US`\) kullanmaya zorlamak için `CurrencyPipe` için aşağıdaki biçimi kullanın
 
 ```angular-html
 {{ amount | currency: 'en-US' }}
 ```
 
-HELPFUL: The locale specified for the `CurrencyPipe` overrides the global `LOCALE_ID` token of your application.
+HELPFUL: `CurrencyPipe` için belirtilen yerel ayar, uygulamanızın global `LOCALE_ID` token'ını geçersiz kılar.
 
 ## What's next
 

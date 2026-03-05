@@ -1,15 +1,15 @@
 # Understanding communicating with backend services using HTTP
 
-Most front-end applications need to communicate with a server over the HTTP protocol, to download or upload data and access other back-end services. Angular provides a client HTTP API for Angular applications, the `HttpClient` service class in `@angular/common/http`.
+Çoğu ön yüz uygulaması, veri indirmek veya yüklemek ve diğer arka uç hizmetlerine erişmek için HTTP protokolü üzerinden bir sunucu ile iletişim kurmalıdır. Angular, Angular uygulamaları için `@angular/common/http` içindeki `HttpClient` hizmet sınıfı olan bir istemci HTTP API'si sağlar.
 
 ## HTTP client service features
 
-The HTTP client service offers the following major features:
+HTTP istemci hizmeti aşağıdaki başlıca özellikleri sunar:
 
-- The ability to request [typed response values](guide/http/making-requests#fetching-json-data)
-- Streamlined [error handling](guide/http/making-requests#handling-request-failure)
-- Request and response [interception](guide/http/interceptors)
-- Robust [testing utilities](guide/http/testing)
+- [Tipli yanıt değerleri](guide/http/making-requests#fetching-json-data) talep etme yeteneği
+- Kolaylaştırılmış [hata yönetimi](guide/http/making-requests#handling-request-failure)
+- İstek ve yanıt [yakalama](guide/http/interceptors)
+- Güçlü [test araçları](guide/http/testing)
 
 ## What's next
 

@@ -1,40 +1,40 @@
 # Angular application build system
 
-In v17 and higher, the new build system provides an improved way to build Angular applications. This new build system includes:
+v17 ve üzeri sürümlerde, yeni derleme sistemi Angular uygulamalarını derlemek için geliştirilmiş bir yol sunar. Bu yeni derleme sistemi şunları içerir:
 
-- A modern output format using ESM, with dynamic import expressions to support lazy module loading.
-- Faster build-time performance for both initial builds and incremental rebuilds.
-- Newer JavaScript ecosystem tools such as [esbuild](https://esbuild.github.io/) and [Vite](https://vitejs.dev/).
-- Integrated SSR and prerendering capabilities.
-- Automatic global and component stylesheet hot replacement.
+- Tembel modül yüklemesini desteklemek için dinamik import ifadeleri kullanan ESM ile modern bir çıktı formatı.
+- Hem ilk derlemeler hem de artımlı yeniden derlemeler için daha hızlı derleme zamanı performansı.
+- [esbuild](https://esbuild.github.io/) ve [Vite](https://vitejs.dev/) gibi daha yeni JavaScript ekosistemi araçları.
+- Entegre SSR ve önceden oluşturma yetenekleri.
+- Otomatik global ve bileşen stil sayfası sıcak değiştirme.
 
-This new build system is stable and fully supported for use with Angular applications.
-You can migrate to the new build system with applications that use the `browser` builder.
-If using a custom builder, please refer to the documentation for that builder on possible migration options.
+Bu yeni derleme sistemi kararlıdır ve Angular uygulamalarıyla kullanım için tam olarak desteklenir.
+`browser` builder'ını kullanan uygulamalarla yeni derleme sistemine geçiş yapabilirsiniz.
+Özel bir builder kullanıyorsanız, olası geçiş seçenekleri hakkında lütfen o builder'ın belgelerine bakın.
 
-IMPORTANT: The existing webpack-based build system is still considered stable and fully supported.
-Applications can continue to use the `browser` builder and projects can opt-out of migrating during an update.
+IMPORTANT: Mevcut webpack tabanlı derleme sistemi hâlâ kararlı ve tam olarak desteklenen olarak kabul edilmektedir.
+Uygulamalar `browser` builder'ını kullanmaya devam edebilir ve projeler güncelleme sırasında geçiş yapmayı tercih etmeyebilir.
 
 ## For new applications
 
-New applications will use this new build system by default via the `application` builder.
+Yeni uygulamalar, `application` builder'ı aracılığıyla varsayılan olarak bu yeni derleme sistemini kullanacaktır.
 
 ## For existing applications
 
-Both automated and manual procedures are available depending on the requirements of the project.
-Starting with v18, the update process will ask if you would like to migrate existing applications to use the new build system via the automated migration.
-Prior to migrating, please consider reviewing the [Known Issues](#known-issues) section as it may contain relevant information for your project.
+Projenin gereksinimlerine bağlı olarak hem otomatik hem de manuel prosedürler mevcuttur.
+v18'den başlayarak, güncelleme süreci otomatik geçiş aracılığıyla mevcut uygulamaları yeni derleme sistemini kullanmaya geçirmek isteyip istemediğinizi soracaktır.
+Geçiş yapmadan önce, projeniz için ilgili bilgiler içerebilecek [Bilinen Sorunlar](#known-issues) bölümünü incelemeyi düşünün.
 
-HELPFUL: Remember to remove any CommonJS assumptions in the application server code if using SSR such as `require`, `__filename`, `__dirname`, or other constructs from the [CommonJS module scope](https://nodejs.org/api/modules.html#the-module-scope). All application code should be ESM compatible. This does not apply to third-party dependencies.
+HELPFUL: SSR kullanıyorsanız, uygulama sunucu kodundaki `require`, `__filename`, `__dirname` veya [CommonJS modül kapsamındaki](https://nodejs.org/api/modules.html#the-module-scope) diğer yapılar gibi CommonJS varsayımlarını kaldırmayı unutmayın. Tüm uygulama kodu ESM uyumlu olmalıdır. Bu, üçüncü taraf bağımlılıklar için geçerli değildir.
 
 ### Automated migration (Recommended)
 
-The automated migration will adjust both the application configuration within `angular.json` as well as code and stylesheets to remove previous webpack-specific feature usage.
-While many changes can be automated and most applications will not require any further changes, each application is unique and there may be some manual changes required.
-After the migration, please attempt a build of the application as there could be new errors that will require adjustments within the code.
-The errors will attempt to provide solutions to the problem when possible and the later sections of this guide describe some of the more common situations that you may encounter.
-When updating to Angular v18 via `ng update`, you will be asked to execute the migration.
-This migration is entirely optional for v18 and can also be run manually at anytime after an update via the following command:
+Otomatik geçiş, `angular.json` içindeki uygulama yapılandırmasını ve önceki webpack'e özgü özellik kullanımını kaldırmak için kodu ve stil sayfalarını ayarlayacaktır.
+Birçok değişiklik otomatikleştirilebilir ve çoğu uygulama ek değişiklik gerektirmez, ancak her uygulama benzersizdir ve bazı manuel değişiklikler gerekebilir.
+Geçişten sonra lütfen uygulamayı derlemeyi deneyin çünkü kod içinde ayarlama gerektiren yeni hatalar olabilir.
+Hatalar mümkün olduğunda soruna çözüm önerileri sunmaya çalışacaktır ve bu kılavuzun sonraki bölümleri karşılaşabileceğiniz daha yaygın durumlardan bazılarını açıklamaktadır.
+Angular v18'e `ng update` aracılığıyla güncelleme yaparken, geçişi yürütmeniz istenecektir.
+Bu geçiş v18 için tamamen isteğe bağlıdır ve bir güncellemeden sonra herhangi bir zamanda aşağıdaki komutla manuel olarak da çalıştırılabilir:
 
 ```shell
 
@@ -42,41 +42,41 @@ ng update @angular/cli --name use-application-builder
 
 ```
 
-The migration does the following:
+Geçiş şunları yapar:
 
-- Converts existing `browser` or `browser-esbuild` target to `application`
-- Removes any previous SSR builders (because `application` does that now).
-- Updates configuration accordingly.
-- Merges `tsconfig.server.json` with `tsconfig.app.json` and adds the TypeScript option `"esModuleInterop": true` to ensure `express` imports are [ESM compliant](#esm-default-imports-vs-namespace-imports).
-- Updates application server code to use new bootstrapping and output directory structure.
-- Removes any webpack-specific builder stylesheet usage such as the tilde or caret in `@import`/`url()` and updates the configuration to provide equivalent behavior
-- Converts to use the new lower dependency `@angular/build` Node.js package if no other `@angular-devkit/build-angular` usage is found.
+- Mevcut `browser` veya `browser-esbuild` hedefini `application`'a dönüştürür
+- Önceki SSR builder'larını kaldırır (çünkü `application` artık bunu yapar).
+- Yapılandırmayı buna göre günceller.
+- `tsconfig.server.json`'ı `tsconfig.app.json` ile birleştirir ve `express` import'larının [ESM uyumlu](#esm-default-imports-vs-namespace-imports) olmasını sağlamak için TypeScript seçeneği `"esModuleInterop": true`'yu ekler.
+- Uygulama sunucu kodunu yeni önyükleme ve çıktı dizin yapısını kullanacak şekilde günceller.
+- `@import`/`url()` içindeki tilde veya şapka gibi webpack'e özgü builder stil sayfası kullanımlarını kaldırır ve eşdeğer davranışı sağlamak için yapılandırmayı günceller
+- Başka bir `@angular-devkit/build-angular` kullanımı bulunamazsa, yeni daha az bağımlılığa sahip `@angular/build` Node.js paketini kullanmaya dönüştürür.
 
 ### Manual migration
 
-Additionally for existing projects, you can manually opt-in to use the new builder on a per-application basis with two different options.
-Both options are considered stable and fully supported by the Angular team.
-The choice of which option to use is a factor of how many changes you will need to make to migrate and what new features you would like to use in the project.
+Ek olarak, mevcut projeler için uygulama bazında iki farklı seçenekle yeni builder'ı kullanmayı manuel olarak tercih edebilirsiniz.
+Her iki seçenek de kararlı kabul edilir ve Angular ekibi tarafından tam olarak desteklenir.
+Hangi seçeneğin kullanılacağı, geçiş için ne kadar değişiklik yapmanız gerektiğine ve projede hangi yeni özellikleri kullanmak istediğinize bağlıdır.
 
-- The `browser-esbuild` builder builds only the client-side bundle of an application designed to be compatible with the existing `browser` builder that provides the preexisting build system.
-  This builder provides equivalent build options, and in many cases, it serves as a drop-in replacement for existing `browser` applications.
-- The `application` builder covers an entire application, such as the client-side bundle, as well as optionally building a server for server-side rendering and performing build-time prerendering of static pages.
+- `browser-esbuild` builder'ı, mevcut derleme sistemini sağlayan mevcut `browser` builder'ı ile uyumlu olacak şekilde tasarlanmış bir uygulamanın yalnızca istemci tarafı paketini derler.
+  Bu builder eşdeğer derleme seçenekleri sunar ve birçok durumda mevcut `browser` uygulamaları için doğrudan yerine geçen bir çözüm olarak hizmet eder.
+- `application` builder'ı, istemci tarafı paketi gibi tüm uygulamayı kapsar, ayrıca isteğe bağlı olarak sunucu tarafı oluşturma için bir sunucu derler ve statik sayfaların derleme zamanı önceden oluşturmasını gerçekleştirir.
 
-The `application` builder is generally preferred as it improves server-side rendered (SSR) builds, and makes it easier for client-side rendered projects to adopt SSR in the future.
-However it requires a little more migration effort, particularly for existing SSR applications if performed manually.
-If the `application` builder is difficult for your project to adopt, `browser-esbuild` can be an easier solution which gives most of the build performance benefits with fewer breaking changes.
+`application` builder'ı genel olarak tercih edilir çünkü sunucu tarafı oluşturulan (SSR) derlemeleri iyileştirir ve istemci tarafı oluşturulan projelerin gelecekte SSR'yi benimsemesini kolaylaştırır.
+Ancak, özellikle mevcut SSR uygulamaları için manuel olarak yapıldığında biraz daha fazla geçiş çabası gerektirir.
+`application` builder'ının projeniz için benimsenmesi zorsa, `browser-esbuild` daha az bozucu değişiklikle derleme performans avantajlarının çoğunu sağlayan daha kolay bir çözüm olabilir.
 
 #### Manual migration to the compatibility builder
 
-A builder named `browser-esbuild` is available within the `@angular-devkit/build-angular` package that is present in an Angular CLI generated application.
-You can try out the new build system for applications that use the `browser` builder.
-If using a custom builder, please refer to the documentation for that builder on possible migration options.
+`@angular-devkit/build-angular` paketinde, Angular CLI tarafından oluşturulan bir uygulamada bulunan `browser-esbuild` adlı bir builder mevcuttur.
+`browser` builder'ını kullanan uygulamalar için yeni derleme sistemini deneyebilirsiniz.
+Özel bir builder kullanıyorsanız, olası geçiş seçenekleri hakkında lütfen o builder'ın belgelerine bakın.
 
-The compatibility option was implemented to minimize the amount of changes necessary to initially migrate your applications.
-This is provided via an alternate builder (`browser-esbuild`).
-You can update the `build` target for any application target to migrate to the new build system.
+Uyumluluk seçeneği, uygulamalarınızı başlangıçta geçirmek için gereken değişiklik miktarını en aza indirmek amacıyla uygulanmıştır.
+Bu, alternatif bir builder (`browser-esbuild`) aracılığıyla sağlanır.
+Yeni derleme sistemine geçiş yapmak için herhangi bir uygulama hedefinin `build` hedefini güncelleyebilirsiniz.
 
-The following is what you would typically find in `angular.json` for an application:
+`angular.json`'da bir uygulama için tipik olarak bulacağınız şey şudur:
 
 ```json
 ...
@@ -86,7 +86,7 @@ The following is what you would typically find in `angular.json` for an applicat
 ...
 ```
 
-Changing the `builder` field is the only change you will need to make.
+`builder` alanını değiştirmek yapmanız gereken tek değişikliktir.
 
 ```json
 ...
@@ -98,10 +98,10 @@ Changing the `builder` field is the only change you will need to make.
 
 #### Manual migration to the new `application` builder
 
-A builder named `application` is also available within the `@angular-devkit/build-angular` package that is present in an Angular CLI generated application.
-This builder is the default for all new applications created via `ng new`.
+`@angular-devkit/build-angular` paketinde, Angular CLI tarafından oluşturulan bir uygulamada bulunan `application` adlı bir builder de mevcuttur.
+Bu builder, `ng new` aracılığıyla oluşturulan tüm yeni uygulamalar için varsayılandır.
 
-The following is what you would typically find in `angular.json` for an application:
+`angular.json`'da bir uygulama için tipik olarak bulacağınız şey şudur:
 
 ```json
 ...
@@ -111,7 +111,7 @@ The following is what you would typically find in `angular.json` for an applicat
 ...
 ```
 
-Changing the `builder` field is the first change you will need to make.
+`builder` alanını değiştirmek yapmanız gereken ilk değişikliktir.
 
 ```json
 ...
@@ -121,44 +121,44 @@ Changing the `builder` field is the first change you will need to make.
 ...
 ```
 
-Once the builder name has been changed, options within the `build` target will need to be updated.
-The following list discusses all the `browser` builder options that will need to be adjusted.
+Builder adı değiştirildikten sonra, `build` hedefindeki seçeneklerin güncellenmesi gerekecektir.
+Aşağıdaki liste, ayarlanması gereken tüm `browser` builder seçeneklerini tartışır.
 
-- `main` should be renamed to `browser`.
-- `polyfills` should be an array, rather than a single file.
-- `buildOptimizer` should be removed, as this is covered by the `optimization` option.
-- `resourcesOutputPath` should be removed, this is now always `media`.
-- `vendorChunk` should be removed, as this was a performance optimization which is no longer needed.
-- `commonChunk` should be removed, as this was a performance optimization which is no longer needed.
-- `deployUrl` should be removed and is not supported. Prefer [`<base href>`](guide/routing/common-router-tasks) instead. See [deployment documentation](tools/cli/deployment#--deploy-url) for more information.
-- `ngswConfigPath` should be renamed to `serviceWorker`.
+- `main`, `browser` olarak yeniden adlandırılmalıdır.
+- `polyfills`, tek bir dosya yerine bir dizi olmalıdır.
+- `buildOptimizer` kaldırılmalıdır, çünkü bu `optimization` seçeneği tarafından karşılanır.
+- `resourcesOutputPath` kaldırılmalıdır, bu artık her zaman `media`'dır.
+- `vendorChunk` kaldırılmalıdır, çünkü bu artık gerekli olmayan bir performans optimizasyonuydu.
+- `commonChunk` kaldırılmalıdır, çünkü bu artık gerekli olmayan bir performans optimizasyonuydu.
+- `deployUrl` kaldırılmalıdır ve desteklenmez. Bunun yerine [`<base href>`](guide/routing/common-router-tasks) tercih edin. Daha fazla bilgi için [dağıtım belgelerine](tools/cli/deployment#--deploy-url) bakın.
+- `ngswConfigPath`, `serviceWorker` olarak yeniden adlandırılmalıdır.
 
-If the application is not using SSR currently, this should be the final step to allow `ng build` to function.
-After executing `ng build` for the first time, there may be new warnings or errors based on behavioral differences or application usage of webpack-specific features.
-Many of the warnings will provide suggestions on how to remedy that problem.
-If it appears that a warning is incorrect or the solution is not apparent, please open an issue on [GitHub](https://github.com/angular/angular-cli/issues).
-Also, the later sections of this guide provide additional information on several specific cases as well as current known issues.
+Uygulama şu anda SSR kullanmıyorsa, `ng build`'in çalışması için bu son adım olmalıdır.
+İlk kez `ng build` çalıştırıldıktan sonra, davranışsal farklılıklara veya uygulamanın webpack'e özgü özellik kullanımına dayalı yeni uyarılar veya hatalar olabilir.
+Uyarıların çoğu, sorunu nasıl çözeceğinize dair öneriler sunacaktır.
+Bir uyarının yanlış olduğu veya çözümün belirgin olmadığı görülüyorsa, lütfen [GitHub](https://github.com/angular/angular-cli/issues) üzerinde bir sorun açın.
+Ayrıca, bu kılavuzun sonraki bölümleri birkaç belirli durum ve mevcut bilinen sorunlar hakkında ek bilgi sağlamaktadır.
 
-For applications new to SSR, the [Angular SSR Guide](guide/ssr) provides additional information regarding the setup process for adding SSR to an application.
+SSR konusunda yeni olan uygulamalar için, [Angular SSR Kılavuzu](guide/ssr) bir uygulamaya SSR ekleme kurulum süreci hakkında ek bilgi sağlar.
 
-For applications that are already using SSR, additional adjustments will be needed to update the application server to support the new integrated SSR capabilities.
-The `application` builder now provides the integrated functionality for all of the following preexisting builders:
+Halihazırda SSR kullanan uygulamalar için, yeni entegre SSR yeteneklerini desteklemek üzere uygulama sunucusunu güncellemek için ek ayarlamalar gerekecektir.
+`application` builder'ı artık aşağıdaki mevcut builder'ların tamamı için entegre işlevsellik sağlamaktadır:
 
 - `app-shell`
 - `prerender`
 - `server`
 - `ssr-dev-server`
 
-The `ng update` process will automatically remove usages of the `@nguniversal` scope packages where some of these builders were previously located.
-The new `@angular/ssr` package will also be automatically added and used with configuration and code being adjusted during the update.
-The `@angular/ssr` package supports the `browser` builder as well as the `application` builder.
+`ng update` süreci, bu builder'lardan bazılarının daha önce bulunduğu `@nguniversal` kapsamı paketlerinin kullanımlarını otomatik olarak kaldıracaktır.
+Yeni `@angular/ssr` paketi de otomatik olarak eklenecek ve güncelleme sırasında yapılandırma ve kod ayarlanarak kullanılacaktır.
+`@angular/ssr` paketi hem `browser` builder'ını hem de `application` builder'ını destekler.
 
 ## Executing a build
 
-Once you have updated the application configuration, builds can be performed using `ng build` as was previously done.
-Depending on the choice of builder migration, some of the command line options may be different.
-If the build command is contained in any `npm` or other scripts, ensure they are reviewed and updated.
-For applications that have migrated to the `application` builder and that use SSR and/or prererending, you also may be able to remove extra `ng run` commands from scripts now that `ng build` has integrated SSR support.
+Uygulama yapılandırmasını güncelledikten sonra, derlemeler daha önce olduğu gibi `ng build` kullanılarak gerçekleştirilebilir.
+Seçilen builder geçişine bağlı olarak, bazı komut satırı seçenekleri farklı olabilir.
+Derleme komutu herhangi bir `npm` veya diğer betiklerde yer alıyorsa, bunların gözden geçirildiğinden ve güncellendiğinden emin olun.
+`application` builder'ına geçiş yapmış ve SSR ve/veya önceden oluşturma kullanan uygulamalar için, artık `ng build`'in entegre SSR desteğine sahip olması nedeniyle betiklerden ek `ng run` komutlarını kaldırabilirsiniz.
 
 ```shell
 
@@ -168,8 +168,8 @@ ng build
 
 ## Starting the development server
 
-The development server will automatically detect the new build system and use it to build the application.
-To start the development server no changes are necessary to the `dev-server` builder configuration or command line.
+Geliştirme sunucusu yeni derleme sistemini otomatik olarak algılayacak ve uygulamayı derlemek için kullanacaktır.
+Geliştirme sunucusunu başlatmak için `dev-server` builder yapılandırmasında veya komut satırında herhangi bir değişiklik gerekmez.
 
 ```shell
 
@@ -177,28 +177,28 @@ ng serve
 
 ```
 
-You can continue to use the [command line options](/cli/serve) you have used in the past with the development server.
+Geliştirme sunucusuyla daha önce kullandığınız [komut satırı seçeneklerini](/cli/serve) kullanmaya devam edebilirsiniz.
 
-HELPFUL: With the development server, you may see a small Flash of Unstyled Content (FOUC) on startup as the server initializes.
-The development server attempts to defer processing of stylesheets until first use to improve rebuild times.
-This will not occur in builds outside the development server.
+HELPFUL: Geliştirme sunucusuyla, sunucu başlatılırken küçük bir Stillenmemiş İçerik Yanıp Sönmesi (FOUC) görebilirsiniz.
+Geliştirme sunucusu, yeniden derleme sürelerini iyileştirmek için stil sayfalarının işlenmesini ilk kullanıma kadar ertelemeye çalışır.
+Bu, geliştirme sunucusu dışındaki derlemelerde oluşmayacaktır.
 
 ### Hot module replacement
 
-Hot Module Replacement (HMR) is a technique used by development servers to avoid reloading the entire page when only part of an application is changed.
-The changes in many cases can be immediately shown in the browser which allows for an improved edit/refresh cycle while developing an application.
-While general JavaScript-based hot module replacement (HMR) is currently not supported, several more specific forms of HMR are available:
+Sıcak Modül Değiştirme (HMR), bir uygulamanın yalnızca bir parçası değiştirildiğinde tüm sayfanın yeniden yüklenmesini önlemek için geliştirme sunucuları tarafından kullanılan bir tekniktir.
+Birçok durumda değişiklikler hemen tarayıcıda gösterilebilir ve bu, bir uygulamayı geliştirirken geliştirilmiş bir düzenleme/yenileme döngüsü sağlar.
+Genel JavaScript tabanlı sıcak modül değiştirme (HMR) şu anda desteklenmese de, birkaç daha spesifik HMR biçimi mevcuttur:
 
-- **global stylesheet** (`styles` build option)
-- **component stylesheet** (inline and file-based)
-- **component template** (inline and file-based)
+- **global stil sayfası** (`styles` derleme seçeneği)
+- **bileşen stil sayfası** (satır içi ve dosya tabanlı)
+- **bileşen şablonu** (satır içi ve dosya tabanlı)
 
-The HMR capabilities are automatically enabled and require no code or configuration changes to use.
-Angular provides HMR support for both file-based (`templateUrl`/`styleUrl`/`styleUrls`) and inline (`template`/`styles`) component styles and templates.
-The build system will attempt to compile and process the minimal amount of application code when it detects a stylesheet only change.
+HMR yetenekleri otomatik olarak etkinleştirilir ve kullanmak için herhangi bir kod veya yapılandırma değişikliği gerektirmez.
+Angular hem dosya tabanlı (`templateUrl`/`styleUrl`/`styleUrls`) hem de satır içi (`template`/`styles`) bileşen stilleri ve şablonları için HMR desteği sağlar.
+Derleme sistemi, yalnızca bir stil sayfası değişikliği algıladığında minimum miktarda uygulama kodunu derlemeye ve işlemeye çalışacaktır.
 
-If preferred, the HMR capabilities can be disabled by setting the `hmr` development server option to `false`.
-This can also be changed on the command line via:
+Tercih edilirse, HMR yetenekleri `hmr` geliştirme sunucusu seçeneğini `false` olarak ayarlayarak devre dışı bırakılabilir.
+Bu, komut satırından da şu şekilde değiştirilebilir:
 
 ```shell
 
@@ -208,24 +208,24 @@ ng serve --no-hmr
 
 ### Vite as a development server
 
-The usage of Vite in the Angular CLI is currently within a _development server capacity only_. Even without using the underlying Vite build system, Vite provides a full-featured development server with client side support that has been bundled into a low dependency npm package. This makes it an ideal candidate to provide comprehensive development server functionality. The current development server process uses the new build system to generate a development build of the application in memory and passes the results to Vite to serve the application. The usage of Vite, much like the Webpack-based development server, is encapsulated within the Angular CLI `dev-server` builder and currently cannot be directly configured.
+Angular CLI'da Vite'ın kullanımı şu anda yalnızca bir _geliştirme sunucusu kapasitesindedir_. Temel Vite derleme sistemini kullanmasa bile, Vite düşük bağımlılıklı bir npm paketine paketlenmiş, istemci tarafı desteğine sahip tam özellikli bir geliştirme sunucusu sağlar. Bu, onu kapsamlı geliştirme sunucusu işlevselliği sağlamak için ideal bir aday yapar. Mevcut geliştirme sunucusu süreci, bellekte uygulamanın bir geliştirme derlemesini oluşturmak için yeni derleme sistemini kullanır ve sonuçları uygulamayı sunması için Vite'a iletir. Webpack tabanlı geliştirme sunucusu gibi Vite'ın kullanımı da Angular CLI `dev-server` builder'ı içinde kapsüllenmiştir ve şu anda doğrudan yapılandırılamaz.
 
 ### Prebundling
 
-Prebundling provides improved build and rebuild times when using the development server.
-Vite provides [prebundling capabilities](https://vite.dev/guide/dep-pre-bundling) that are enabled by default when using the Angular CLI.
-The prebundling process analyzes all the third-party project dependencies within a project and processes them the first time the development server is executed.
-This process removes the need to rebuild and bundle the project's dependencies each time a rebuild occurs or the development server is executed.
+Ön paketleme, geliştirme sunucusunu kullanırken geliştirilmiş derleme ve yeniden derleme süreleri sağlar.
+Vite, Angular CLI kullanılırken varsayılan olarak etkinleştirilen [ön paketleme yetenekleri](https://vite.dev/guide/dep-pre-bundling) sağlar.
+Ön paketleme süreci, bir proje içindeki tüm üçüncü taraf proje bağımlılıklarını analiz eder ve geliştirme sunucusu ilk kez yürütüldüğünde bunları işler.
+Bu süreç, her yeniden derlemede veya geliştirme sunucusu yürütüldüğünde projenin bağımlılıklarını yeniden derleme ve paketleme ihtiyacını ortadan kaldırır.
 
-In most cases, no additional customization is required. However, some situations where it may be needed include:
+Çoğu durumda ek özelleştirme gerekmez. Ancak, gerekebilecek bazı durumlar şunlardır:
 
-- Customizing loader behavior for imports within the dependency such as the [`loader` option](#file-extension-loader-customization)
-- Symlinking a dependency to local code for development such as [`npm link`](https://docs.npmjs.com/cli/v10/commands/npm-link)
-- Working around an error encountered during prebundling of a dependency
+- Bağımlılık içindeki import'lar için yükleyici davranışını özelleştirme, örneğin [`loader` seçeneği](#file-extension-loader-customization)
+- Bir bağımlılığı yerel geliştirme için yerel koda sembolik olarak bağlama, örneğin [`npm link`](https://docs.npmjs.com/cli/v10/commands/npm-link)
+- Bir bağımlılığın ön paketlemesi sırasında karşılaşılan bir hatanın giderilmesi
 
-The prebundling process can be fully disabled or individual dependencies can be excluded if needed by a project.
-The `dev-server` builder's `prebundle` option can be used for these customizations.
-To exclude specific dependencies, the `prebundle.exclude` option is available:
+Ön paketleme süreci tamamen devre dışı bırakılabilir veya bir projenin ihtiyaç duyması halinde bireysel bağımlılıklar hariç tutulabilir.
+Bu özelleştirmeler için `dev-server` builder'ının `prebundle` seçeneği kullanılabilir.
+Belirli bağımlılıkları hariç tutmak için `prebundle.exclude` seçeneği mevcuttur:
 
 ```json
     "serve": {
@@ -237,8 +237,8 @@ To exclude specific dependencies, the `prebundle.exclude` option is available:
       },
 ```
 
-By default, `prebundle` is set to `true` but can be set to `false` to fully disable prebundling.
-However, excluding specific dependencies is recommended instead since rebuild times will increase with prebundling disabled.
+Varsayılan olarak, `prebundle` `true` olarak ayarlanmıştır ancak ön paketlemeyi tamamen devre dışı bırakmak için `false` olarak ayarlanabilir.
+Ancak, ön paketleme devre dışı bırakıldığında yeniden derleme süreleri artacağından, belirli bağımlılıkları hariç tutmak önerilir.
 
 ```json
     "serve": {
@@ -250,24 +250,24 @@ However, excluding specific dependencies is recommended instead since rebuild ti
 
 ## New features
 
-One of the main benefits of the application build system is the improved build and rebuild speed.
-However, the new application build system also provides additional features not present in the `browser` builder.
+Uygulama derleme sisteminin ana avantajlarından biri geliştirilmiş derleme ve yeniden derleme hızıdır.
+Ancak yeni uygulama derleme sistemi, `browser` builder'ında bulunmayan ek özellikler de sağlar.
 
-IMPORTANT: The new features of the `application` builder described here are incompatible with the `karma` test builder by default because it is using the `browser` builder internally.
-Users can opt-in to use the `application` builder by setting the `builderMode` option to `application` for the `karma` builder.
-This option is currently in developer preview.
-If you notice any issues, please report them [here](https://github.com/angular/angular-cli/issues).
+IMPORTANT: Burada açıklanan `application` builder'ının yeni özellikleri, dahili olarak `browser` builder'ını kullandığı için varsayılan olarak `karma` test builder'ı ile uyumlu değildir.
+Kullanıcılar, `karma` builder'ı için `builderMode` seçeneğini `application` olarak ayarlayarak `application` builder'ını kullanmayı tercih edebilir.
+Bu seçenek şu anda geliştirici önizlemesindedir.
+Herhangi bir sorun fark ederseniz, lütfen [buradan](https://github.com/angular/angular-cli/issues) bildirin.
 
 ### Build-time value replacement with `define`
 
-The `define` option allows identifiers present in the code to be replaced with another value at build time.
-This is similar to the behavior of Webpack's `DefinePlugin` which was previously used with some custom Webpack configurations that used third-party builders.
-The option can either be used within the `angular.json` configuration file or on the command line.
-Configuring `define` within `angular.json` is useful for cases where the values are constant and able to be checked in to source control.
+`define` seçeneği, kodda bulunan tanımlayıcıların derleme zamanında başka bir değerle değiştirilmesine olanak tanır.
+Bu, daha önce üçüncü taraf builder'ları kullanan bazı özel Webpack yapılandırmalarında kullanılan Webpack'in `DefinePlugin`'inin davranışına benzerdir.
+Seçenek, `angular.json` yapılandırma dosyasında veya komut satırında kullanılabilir.
+`angular.json` içinde `define` yapılandırması, değerlerin sabit olduğu ve kaynak kontrolüne eklenebilecek durumlar için kullanışlıdır.
 
-Within the configuration file, the option is in the form of an object.
-The keys of the object represent the identifier to replace and the values of the object represent the corresponding replacement value for the identifier.
-An example is as follows:
+Yapılandırma dosyasında, seçenek bir nesne biçimindedir.
+Nesnenin anahtarları değiştirilecek tanımlayıcıyı, nesnenin değerleri ise tanımlayıcı için karşılık gelen değiştirme değerini temsil eder.
+Bir örnek şu şekildedir:
 
 ```json
   "build": {
@@ -283,22 +283,22 @@ An example is as follows:
   }
 ```
 
-HELPFUL: All replacement values are defined as strings within the configuration file.
-If the replacement is intended to be an actual string literal, it should be enclosed in single quote marks.
-This allows the flexibility of using any valid JSON type as well as a different identifier as a replacement.
+HELPFUL: Tüm değiştirme değerleri yapılandırma dosyasında dize olarak tanımlanır.
+Değiştirmenin gerçek bir dize literali olması amaçlanıyorsa, tek tırnak işaretleri içine alınmalıdır.
+Bu, herhangi bir geçerli JSON türünün yanı sıra farklı bir tanımlayıcının değiştirme olarak kullanılma esnekliğini sağlar.
 
-The command line usage is preferred for values that may change per build execution such as the git commit hash or an environment variable.
-The CLI will merge `--define` values from the command line with `define` values from `angular.json`, including both in a build.
-Command line usage takes precedence if the same identifier is present for both.
-For command line usage, the `--define` option uses the format of `IDENTIFIER=VALUE`.
+Komut satırı kullanımı, git commit hash'i veya ortam değişkeni gibi her derleme yürütmesinde değişebilen değerler için tercih edilir.
+CLI, komut satırından `--define` değerlerini `angular.json`'daki `define` değerleriyle birleştirir ve her ikisini de bir derlemeye dahil eder.
+Aynı tanımlayıcı her ikisinde de mevcutsa komut satırı kullanımı önceliklidir.
+Komut satırı kullanımı için, `--define` seçeneği `IDENTIFIER=VALUE` biçimini kullanır.
 
 ```shell
 ng build --define SOME_NUMBER=5 --define "ANOTHER='these will overwrite existing'"
 ```
 
-Environment variables can also be selectively included in a build.
-For non-Windows shells, the quotes around the hash literal can be escaped directly if preferred.
-This example assumes a bash-like shell but similar behavior is available for other shells as well.
+Ortam değişkenleri de bir derlemeye seçici olarak dahil edilebilir.
+Windows dışı kabuklarda, hash literalinin etrafındaki tırnak işaretleri tercih edilirse doğrudan kaçırılabilir.
+Bu örnek bash benzeri bir kabuk varsayar ancak diğer kabuklar için de benzer davranış mevcuttur.
 
 ```shell
 export MY_APP_API_HOST="http://example.com"
@@ -306,8 +306,8 @@ export API_RETRY=3
 ng build --define API_HOST=\'$MY_APP_API_HOST\' --define API_RETRY=$API_RETRY
 ```
 
-For either usage, TypeScript needs to be aware of the types for the identifiers to prevent type-checking errors during the build.
-This can be accomplished with an additional type definition file within the application source code (`src/types.d.ts`, for example) with similar content:
+Her iki kullanım için de TypeScript'in, derleme sırasında tür denetimi hatalarını önlemek üzere tanımlayıcıların türlerinden haberdar olması gerekir.
+Bu, uygulama kaynak kodu içinde ek bir tür tanım dosyası ile gerçekleştirilebilir (örneğin `src/types.d.ts`) ve benzer içerikle:
 
 ```ts
 declare const SOME_NUMBER: number;
@@ -317,35 +317,35 @@ declare const API_HOST: string;
 declare const API_RETRY: number;
 ```
 
-The default project configuration is already setup to use any type definition files present in the project source directories.
-If the TypeScript configuration for the project has been altered, it may need to be adjusted to reference this newly added type definition file.
+Varsayılan proje yapılandırması, proje kaynak dizinlerinde bulunan herhangi bir tür tanım dosyasını kullanmak üzere zaten ayarlanmıştır.
+Projenin TypeScript yapılandırması değiştirilmişse, yeni eklenen bu tür tanım dosyasına başvurmak için ayarlanması gerekebilir.
 
-IMPORTANT: This option will not replace identifiers contained within Angular metadata such as a Component or Directive decorator.
+IMPORTANT: Bu seçenek, Component veya Directive dekoratörü gibi Angular meta verileri içindeki tanımlayıcıları değiştirmeyecektir.
 
 ### File extension loader customization
 
-IMPORTANT: This feature is only available with the `application` builder.
+IMPORTANT: Bu özellik yalnızca `application` builder'ı ile kullanılabilir.
 
-Some projects may need to control how all files with a specific file extension are loaded and bundled into an application.
-When using the `application` builder, the `loader` option can be used to handle these cases.
-The option allows a project to define the type of loader to use with a specified file extension.
-A file with the defined extension can then be used within the application code via an import statement or dynamic import expression.
-The available loaders that can be used are:
+Bazı projeler, belirli bir dosya uzantısına sahip tüm dosyaların nasıl yükleneceğini ve bir uygulamaya nasıl paketleneceğini kontrol etmesi gerekebilir.
+`application` builder'ını kullanırken, bu durumları ele almak için `loader` seçeneği kullanılabilir.
+Seçenek, bir projenin belirtilen bir dosya uzantısıyla kullanılacak yükleyici türünü tanımlamasına olanak tanır.
+Tanımlanan uzantıya sahip bir dosya daha sonra bir import deyimi veya dinamik import ifadesi aracılığıyla uygulama kodu içinde kullanılabilir.
+Kullanılabilecek yükleyiciler şunlardır:
 
-- `text` - inlines the content as a `string` available as the default export
-- `binary` - inlines the content as a `Uint8Array` available as the default export
-- `file` - emits the file at the application output path and provides the runtime location of the file as the default export
-- `dataurl` - inlines the content as a [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs).
-- `base64` - inlines the content as a Base64-encoded string.
-- `empty` - considers the content to be empty and will not include it in bundles
+- `text` - içeriği varsayılan dışa aktarma olarak kullanılabilen bir `string` olarak satır içi yerleştirir
+- `binary` - içeriği varsayılan dışa aktarma olarak kullanılabilen bir `Uint8Array` olarak satır içi yerleştirir
+- `file` - dosyayı uygulama çıktı yoluna yayar ve dosyanın çalışma zamanı konumunu varsayılan dışa aktarma olarak sağlar
+- `dataurl` - içeriği bir [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) olarak satır içi yerleştirir.
+- `base64` - içeriği Base64 kodlanmış bir dize olarak satır içi yerleştirir.
+- `empty` - içeriği boş olarak kabul eder ve paketlere dahil etmez
 
-The `empty` value, while less common, can be useful for compatibility of third-party libraries that may contain bundler-specific import usage that needs to be removed.
-One case for this is side-effect imports (`import 'my.css';`) of CSS files which has no effect in a browser.
-Instead, the project can use `empty` and then the CSS files can be added to the `styles` build option or use some other injection method.
+`empty` değeri, daha az yaygın olmakla birlikte, kaldırılması gereken paketleyiciye özgü import kullanımı içerebilen üçüncü taraf kütüphanelerin uyumluluğu için yararlı olabilir.
+Bunun bir örneği, tarayıcıda hiçbir etkisi olmayan CSS dosyalarının yan etkili import'larıdır (`import 'my.css';`).
+Bunun yerine, proje `empty` kullanabilir ve ardından CSS dosyaları `styles` derleme seçeneğine eklenebilir veya başka bir enjeksiyon yöntemi kullanılabilir.
 
-The loader option is an object-based option with the keys used to define the file extension and the values used to define the loader type.
+Loader seçeneği, anahtarların dosya uzantısını tanımlamak ve değerlerin yükleyici türünü tanımlamak için kullanıldığı nesne tabanlı bir seçenektir.
 
-An example of the build option usage to inline the content of SVG files into the bundled application would be as follows:
+SVG dosyalarının içeriğini paketlenmiş uygulamaya satır içi yerleştirmek için derleme seçeneği kullanımının bir örneği şu şekilde olacaktır:
 
 ```json
   "build": {
@@ -359,7 +359,7 @@ An example of the build option usage to inline the content of SVG files into the
   }
 ```
 
-An SVG file can then be imported:
+Bir SVG dosyası daha sonra içe aktarılabilir:
 
 ```ts
 import contents from './some-file.svg';
@@ -367,7 +367,7 @@ import contents from './some-file.svg';
 console.log(contents); // <svg>...</svg>
 ```
 
-Additionally, TypeScript needs to be aware of the module type for the import to prevent type-checking errors during the build. This can be accomplished with an additional type definition file within the application source code (`src/types.d.ts`, for example) with the following or similar content:
+Ek olarak, TypeScript'in derleme sırasında tür denetimi hatalarını önlemek için import'un modül türünden haberdar olması gerekir. Bu, uygulama kaynak kodu içinde ek bir tür tanım dosyası (örneğin `src/types.d.ts`) ile aşağıdaki veya benzer içerikle gerçekleştirilebilir:
 
 ```ts
 declare module '*.svg' {
@@ -376,36 +376,36 @@ declare module '*.svg' {
 }
 ```
 
-The default project configuration is already setup to use any type definition files (`.d.ts` files) present in the project source directories. If the TypeScript configuration for the project has been altered, the tsconfig may need to be adjusted to reference this newly added type definition file.
+Varsayılan proje yapılandırması, proje kaynak dizinlerinde bulunan herhangi bir tür tanım dosyasını (`.d.ts` dosyaları) kullanmak üzere zaten ayarlanmıştır. Projenin TypeScript yapılandırması değiştirilmişse, yeni eklenen bu tür tanım dosyasına başvurmak için tsconfig'in ayarlanması gerekebilir.
 
 ### Import attribute loader customization
 
-For cases where only certain files should be loaded in a specific way, per file control over loading behavior is available.
-This is accomplished with a `loader` [import attribute](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with) that can be used with both import statements and expressions.
-The presence of the import attribute takes precedence over all other loading behavior including JS/TS and any `loader` build option values.
-For general loading for all files of an otherwise unsupported file type, the [`loader`](#file-extension-loader-customization) build option is recommended.
+Yalnızca belirli dosyaların belirli bir şekilde yüklenmesi gereken durumlar için, yükleme davranışı üzerinde dosya bazında kontrol mevcuttur.
+Bu, hem import deyimleri hem de ifadeleriyle kullanılabilen bir `loader` [import özniteliği](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with) ile gerçekleştirilir.
+Import özniteliğinin varlığı, JS/TS ve herhangi bir `loader` derleme seçeneği değerleri dahil tüm diğer yükleme davranışlarına göre önceliklidir.
+Desteklenmeyen bir dosya türünün tüm dosyaları için genel yükleme için [`loader`](#file-extension-loader-customization) derleme seçeneği önerilir.
 
-For the import attribute, the following loader values are supported:
+Import özniteliği için aşağıdaki yükleyici değerleri desteklenir:
 
-- `text` - inlines the content as a `string` available as the default export
-- `binary` - inlines the content as a `Uint8Array` available as the default export
-- `file` - emits the file at the application output path and provides the runtime location of the file as the default export
-- `dataurl` - inlines the content as a [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs).
-- `base64` - inlines the content as a Base64-encoded string.
+- `text` - içeriği varsayılan dışa aktarma olarak kullanılabilen bir `string` olarak satır içi yerleştirir
+- `binary` - içeriği varsayılan dışa aktarma olarak kullanılabilen bir `Uint8Array` olarak satır içi yerleştirir
+- `file` - dosyayı uygulama çıktı yoluna yayar ve dosyanın çalışma zamanı konumunu varsayılan dışa aktarma olarak sağlar
+- `dataurl` - içeriği bir [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) olarak satır içi yerleştirir.
+- `base64` - içeriği Base64 kodlanmış bir dize olarak satır içi yerleştirir.
 
-An additional requirement to use import attributes is that the TypeScript `module` option must be set to `esnext` to allow TypeScript to successfully build the application code.
-Once `ES2025` is available within TypeScript, this change will no longer be needed.
+Import özniteliklerini kullanmak için ek bir gereksinim, TypeScript'in uygulama kodunu başarıyla derleyebilmesi için TypeScript `module` seçeneğinin `esnext` olarak ayarlanması gerektiğidir.
+TypeScript içinde `ES2025` kullanılabilir olduğunda, bu değişiklik artık gerekli olmayacaktır.
 
-At this time, TypeScript does not support type definitions that are based on import attribute values.
-The use of `@ts-expect-error`/`@ts-ignore` or the use of individual type definition files (assuming the file is only imported with the same loader attribute) is currently required.
-As an example, an SVG file can be imported as text via:
+Bu aşamada, TypeScript import öznitelik değerlerine dayalı tür tanımlarını desteklememektedir.
+`@ts-expect-error`/`@ts-ignore` kullanımı veya bireysel tür tanım dosyalarının kullanımı (dosyanın yalnızca aynı loader özniteliğiyle içe aktarıldığı varsayılarak) şu anda gereklidir.
+Örnek olarak, bir SVG dosyası metin olarak şu şekilde içe aktarılabilir:
 
 ```ts
 // @ts-expect-error TypeScript cannot provide types based on attributes yet
 import contents from './some-file.svg' with {loader: 'text'};
 ```
 
-The same can be accomplished with an import expression inside an async function.
+Aynı şey bir async fonksiyon içindeki bir import ifadesiyle de gerçekleştirilebilir.
 
 ```ts
 async function loadSvg(): Promise<string> {
@@ -414,10 +414,10 @@ async function loadSvg(): Promise<string> {
 }
 ```
 
-For the import expression, the `loader` value must be a string literal to be statically analyzed.
-A warning will be issued if the value is not a string literal.
+Import ifadesi için, `loader` değerinin statik olarak analiz edilebilmesi için bir dize literali olması gerekir.
+Değer bir dize literali değilse bir uyarı verilecektir.
 
-The `file` loader is useful when a file will be loaded at runtime through either a `fetch()`, setting to an image elements `src`, or other similar method.
+`file` yükleyicisi, bir dosyanın çalışma zamanında `fetch()`, bir görüntü öğesinin `src`'sine ayarlama veya benzeri bir yöntemle yükleneceği durumlarda yararlıdır.
 
 ```ts
 // @ts-expect-error TypeScript cannot provide types based on attributes yet
@@ -426,7 +426,7 @@ import imagePath from './image.webp' with {loader: 'file'};
 console.log(imagePath); // media/image-ULK2SIIB.webp
 ```
 
-The `base64` loader is useful when a file needs to be embedded directly into the bundle as an encoded string that can later be used to construct a Data URL.
+`base64` yükleyicisi, bir dosyanın doğrudan pakete kodlanmış bir dize olarak gömülmesi ve daha sonra bir Data URL oluşturmak için kullanılması gerektiğinde yararlıdır.
 
 ```ts
 // @ts-expect-error TypeScript cannot provide types based on attributes yet
@@ -435,7 +435,7 @@ import logo from './logo.png' with {loader: 'base64'};
 console.log(logo); // "iVBORw0KGgoAAAANSUhEUgAA..."
 ```
 
-The `dataurl` loader to inline assets as complete Data URLs.
+Varlıkları tam Data URL'leri olarak satır içi yerleştirmek için `dataurl` yükleyicisi.
 
 ```ts
 // @ts-expect-error TypeScript cannot provide types based on attributes yet
@@ -444,33 +444,33 @@ import icon from './icon.svg' with {loader: 'dataurl'};
 console.log(icon); // "data:image/svg+xml;..."
 ```
 
-For production builds as shown in the code comment above, hashing will be automatically added to the path for long-term caching.
+Yukarıdaki kod yorumunda gösterildiği gibi üretim derlemeleri için, uzun süreli önbellekleme amacıyla yola otomatik olarak hash eklenir.
 
-HELPFUL: When using the development server and using a `loader` attribute to import a file from a Node.js package, that package must be excluded from prebundling via the development server `prebundle` option.
+HELPFUL: Geliştirme sunucusunu kullanırken ve bir Node.js paketinden dosya içe aktarmak için `loader` özniteliği kullanırken, o paketin geliştirme sunucusu `prebundle` seçeneği aracılığıyla ön paketlemeden hariç tutulması gerekir.
 
 ### Import/export conditions
 
-Projects may need to map certain import paths to different files based on the type of build.
-This can be particularly useful for cases such as `ng serve` needing to use debug/development specific code but `ng build` needing to use code without any development features/information.
-Several import/export [conditions](https://nodejs.org/api/packages.html#community-conditions-definitions) are automatically applied to support these project needs:
+Projelerin, derleme türüne göre belirli import yollarını farklı dosyalara eşlemesi gerekebilir.
+Bu, özellikle `ng serve`'in hata ayıklama/geliştirmeye özgü kodu kullanması gerektiği ancak `ng build`'in herhangi bir geliştirme özelliği/bilgisi olmayan kodu kullanması gerektiği durumlar için yararlı olabilir.
+Bu proje ihtiyaçlarını desteklemek için birkaç import/export [koşulu](https://nodejs.org/api/packages.html#community-conditions-definitions) otomatik olarak uygulanır:
 
-- For optimized builds, the `production` condition is enabled.
-- For non-optimized builds, the `development` condition is enabled.
-- For browser output code, the `browser` condition is enabled.
+- Optimize edilmiş derlemeler için `production` koşulu etkinleştirilir.
+- Optimize edilmemiş derlemeler için `development` koşulu etkinleştirilir.
+- Tarayıcı çıktı kodu için `browser` koşulu etkinleştirilir.
 
-An optimized build is determined by the value of the `optimization` option.
-When `optimization` is set to `true` or more specifically if `optimization.scripts` is set to `true`, then the build is considered optimized.
-This classification applies to both `ng build` and `ng serve`.
-In a new project, `ng build` defaults to optimized and `ng serve` defaults to non-optimized.
+Optimize edilmiş bir derleme, `optimization` seçeneğinin değerine göre belirlenir.
+`optimization` `true` olarak ayarlandığında veya daha spesifik olarak `optimization.scripts` `true` olarak ayarlandığında, derleme optimize edilmiş kabul edilir.
+Bu sınıflandırma hem `ng build` hem de `ng serve` için geçerlidir.
+Yeni bir projede, `ng build` varsayılan olarak optimize edilmiş, `ng serve` ise varsayılan olarak optimize edilmemiştir.
 
-A useful method to leverage these conditions within application code is to combine them with [subpath imports](https://nodejs.org/api/packages.html#subpath-imports).
-By using the following import statement:
+Bu koşulları uygulama kodu içinde kullanmanın yararlı bir yöntemi, bunları [alt yol import'ları](https://nodejs.org/api/packages.html#subpath-imports) ile birleştirmektir.
+Aşağıdaki import deyimini kullanarak:
 
 ```ts
 import {verboseLogging} from '#logger';
 ```
 
-The file can be switched in the `imports` field in `package.json`:
+Dosya, `package.json`'daki `imports` alanında değiştirilebilir:
 
 ```json
 {
@@ -484,7 +484,7 @@ The file can be switched in the `imports` field in `package.json`:
 }
 ```
 
-For applications that are also using SSR, browser and server code can be switched by using the `browser` condition:
+SSR de kullanan uygulamalar için, tarayıcı ve sunucu kodu `browser` koşulu kullanılarak değiştirilebilir:
 
 ```json
 {
@@ -498,31 +498,31 @@ For applications that are also using SSR, browser and server code can be switche
 }
 ```
 
-These conditions also apply to Node.js packages and any defined [`exports`](https://nodejs.org/api/packages.html#conditional-exports) within the packages.
+Bu koşullar, Node.js paketleri ve paketler içinde tanımlanan herhangi bir [`exports`](https://nodejs.org/api/packages.html#conditional-exports) için de geçerlidir.
 
-HELPFUL: If currently using the `fileReplacements` build option, this feature may be able to replace its usage.
+HELPFUL: Şu anda `fileReplacements` derleme seçeneğini kullanıyorsanız, bu özellik onun kullanımını değiştirebilir.
 
 ## Known Issues
 
-There are currently several known issues that you may encounter when trying the new build system. This list will be updated to stay current. If any of these issues are currently blocking you from trying out the new build system, please check back in the future as it may have been solved.
+Yeni derleme sistemini denerken karşılaşabileceğiniz şu anda bilinen birkaç sorun vardır. Bu liste güncel kalmak üzere güncellenecektir. Bu sorunlardan herhangi biri şu anda yeni derleme sistemini denemenizi engelliyorsa, çözülmüş olabileceği için gelecekte tekrar kontrol edin.
 
 ### Type-checking of Web Worker code and processing of nested Web Workers
 
-Web Workers can be used within application code using the same syntax (`new Worker(new URL('<workerfile>', import.meta.url))`) that is supported with the `browser` builder.
-However, the code within the Worker will not currently be type-checked by the TypeScript compiler. TypeScript code is supported just not type-checked.
-Additionally, any nested workers will not be processed by the build system. A nested worker is a Worker instantiation within another Worker file.
+Web Worker'lar, `browser` builder'ı ile desteklenen aynı sözdizimi (`new Worker(new URL('<workerfile>', import.meta.url))`) kullanılarak uygulama kodu içinde kullanılabilir.
+Ancak Worker içindeki kod şu anda TypeScript derleyicisi tarafından tür denetiminden geçirilmeyecektir. TypeScript kodu desteklenir ancak tür denetimi yapılmaz.
+Ek olarak, iç içe geçmiş worker'lar derleme sistemi tarafından işlenmeyecektir. İç içe geçmiş bir worker, başka bir Worker dosyası içindeki bir Worker başlatmasıdır.
 
 ### ESM default imports vs. namespace imports
 
-TypeScript by default allows default exports to be imported as namespace imports and then used in call expressions.
-This is unfortunately a divergence from the ECMAScript specification.
-The underlying bundler (`esbuild`) within the new build system expects ESM code that conforms to the specification.
-The build system will now generate a warning if your application uses an incorrect type of import of a package.
-However, to allow TypeScript to accept the correct usage, a TypeScript option must be enabled within the application's `tsconfig` file.
-When enabled, the [`esModuleInterop`](https://www.typescriptlang.org/tsconfig#esModuleInterop) option provides better alignment with the ECMAScript specification and is also recommended by the TypeScript team.
-Once enabled, you can update package imports where applicable to an ECMAScript conformant form.
+TypeScript varsayılan olarak, varsayılan dışa aktarmaların namespace import'ları olarak içe aktarılmasına ve ardından çağrı ifadelerinde kullanılmasına izin verir.
+Bu ne yazık ki ECMAScript spesifikasyonundan bir sapmadır.
+Yeni derleme sistemi içindeki temel paketleyici (`esbuild`), spesifikasyona uygun ESM kodu bekler.
+Derleme sistemi artık uygulamanız bir paketin yanlış türde import'unu kullanıyorsa bir uyarı üretecektir.
+Ancak, TypeScript'in doğru kullanımı kabul etmesi için uygulamanın `tsconfig` dosyasında bir TypeScript seçeneğinin etkinleştirilmesi gerekir.
+Etkinleştirildiğinde, [`esModuleInterop`](https://www.typescriptlang.org/tsconfig#esModuleInterop) seçeneği ECMAScript spesifikasyonu ile daha iyi uyum sağlar ve TypeScript ekibi tarafından da önerilir.
+Etkinleştirildikten sonra, paket import'larını uygulanabilir olduğunda ECMAScript uyumlu bir biçime güncelleyebilirsiniz.
 
-Using the [`moment`](https://npmjs.com/package/moment) package as an example, the following application code will cause runtime errors:
+[`moment`](https://npmjs.com/package/moment) paketini örnek olarak kullanarak, aşağıdaki uygulama kodu çalışma zamanı hatalarına neden olacaktır:
 
 ```ts
 import * as moment from 'moment';
@@ -530,7 +530,7 @@ import * as moment from 'moment';
 console.log(moment().format());
 ```
 
-The build will generate a warning to notify you that there is a potential problem. The warning will be similar to:
+Derleme, potansiyel bir sorun olduğunu bildirmek için bir uyarı üretecektir. Uyarı şuna benzer olacaktır:
 
 ```text
 ▲ [WARNING] Calling "moment" will crash at run-time because it's an import namespace object, not a function [call-import-namespace]
@@ -548,7 +548,7 @@ Consider changing "moment" to a default import instead:
 
 ```
 
-However, you can avoid the runtime errors and the warning by enabling the `esModuleInterop` TypeScript option for the application and changing the import to the following:
+Ancak, uygulama için `esModuleInterop` TypeScript seçeneğini etkinleştirerek ve import'u aşağıdaki şekilde değiştirerek çalışma zamanı hatalarından ve uyarıdan kaçınabilirsiniz:
 
 ```ts
 import moment from 'moment';
@@ -558,19 +558,19 @@ console.log(moment().format());
 
 ### Order-dependent side-effectful imports in lazy modules
 
-Import statements that are dependent on a specific ordering and are also used in multiple lazy modules can cause top-level statements to be executed out of order.
-This is not common as it depends on the usage of side-effectful modules and does not apply to the `polyfills` option.
-This is caused by a [defect](https://github.com/evanw/esbuild/issues/399) in the underlying bundler but will be addressed in a future update.
+Belirli bir sıralamaya bağlı olan ve birden fazla tembel modülde de kullanılan import deyimleri, üst düzey ifadelerin sıra dışı yürütülmesine neden olabilir.
+Bu, yan etkili modüllerin kullanımına bağlı olduğu ve `polyfills` seçeneği için geçerli olmadığı için yaygın değildir.
+Bu, temel paketleyicideki bir [kusurdan](https://github.com/evanw/esbuild/issues/399) kaynaklanır ancak gelecekteki bir güncellemede ele alınacaktır.
 
-IMPORTANT: Avoiding the use of modules with non-local side effects (outside of polyfills) is recommended whenever possible regardless of the build system being used and avoids this particular issue. Modules with non-local side effects can have a negative effect on both application size and runtime performance as well.
+IMPORTANT: Kullanılan derleme sisteminden bağımsız olarak, mümkün olduğunda yerel olmayan yan etkilere sahip modüllerin (polyfill'ler dışında) kullanımından kaçınılması önerilir ve bu özel sorunu da önler. Yerel olmayan yan etkilere sahip modüller hem uygulama boyutu hem de çalışma zamanı performansı üzerinde olumsuz etkiye sahip olabilir.
 
 ### Output location changes
 
-By default, after a successful build by the application builder the bundle is located in a `dist/<project-name>/browser` directory (instead of `dist/<project-name>` for the browser builder).
-This might break some of the toolchains that rely the previous location. In this case, you can [configure the output path](reference/configs/workspace-config#output-path-configuration) to suit your needs.
+Varsayılan olarak, application builder'ın başarılı bir derlemesinden sonra paket `dist/<project-name>/browser` dizininde bulunur (browser builder'ı için `dist/<project-name>` yerine).
+Bu, önceki konuma dayanan bazı araç zincirlerini bozabilir. Bu durumda, ihtiyaçlarınıza uygun şekilde [çıktı yolunu yapılandırabilirsiniz](reference/configs/workspace-config#output-path-configuration).
 
 ## Bug reports
 
-Report issues and feature requests on [GitHub](https://github.com/angular/angular-cli/issues).
+Sorunları ve özellik isteklerini [GitHub](https://github.com/angular/angular-cli/issues) üzerinden bildirin.
 
-Please provide a minimal reproduction where possible to aid the team in addressing issues.
+Ekibin sorunları ele almasına yardımcı olmak için lütfen mümkün olduğunda minimal bir yeniden üretim sağlayın.

@@ -1,25 +1,25 @@
 # Creating an injectable service
 
-Service is a broad category encompassing any value, function, or feature that an application needs.
-A service is typically a class with a narrow, well-defined purpose.
-A component is one type of class that can use DI.
+Servis, bir uygulamanın ihtiyaç duyduğu herhangi bir değeri, fonksiyonu veya özelliği kapsayan geniş bir kategoridir.
+Bir servis tipik olarak dar ve iyi tanımlanmış bir amaca sahip bir sınıftır.
+Bir bileşen, DI kullanabilen sınıf türlerinden biridir.
 
-Angular distinguishes components from services to increase modularity and reusability.
-By separating a component's view-related features from other kinds of processing, you can make your component classes lean and efficient.
+Angular, modülerlik ve yeniden kullanılabilirliği artırmak için bileşenleri servislerden ayırır.
+Bir bileşenin görünümle ilgili özelliklerini diğer işleme türlerinden ayırarak, bileşen sınıflarınızı yalın ve verimli hale getirebilirsiniz.
 
-Ideally, a component's job is to enable the user experience and nothing more.
-A component should present properties and methods for data binding, to mediate between the view (rendered by the template) and the application logic (which often includes some notion of a model).
+İdeal olarak, bir bileşenin görevi kullanıcı deneyimini etkinleştirmek ve başka hiçbir şey olmamalıdır.
+Bir bileşen, görünüm (şablon tarafından render edilen) ile uygulama mantığı (genellikle bir model kavramı içeren) arasında aracılık etmek için veri bağlama için özellikler ve yöntemler sunmalıdır.
 
-A component can delegate certain tasks to services, such as fetching data from the server, validating user input, or logging directly to the console.
-By defining such processing tasks in an injectable service class, you make those tasks available to any component.
-You can also make your application more adaptable by configuring different providers of the same kind of service, as appropriate in different circumstances.
+Bir bileşen, sunucudan veri getirme, kullanıcı girişini doğrulama veya doğrudan konsola günlükleme gibi belirli görevleri servislere devredebilir.
+Bu tür işleme görevlerini enjekte edilebilir bir servis sınıfında tanımlayarak, bu görevleri herhangi bir bileşen için kullanılabilir hale getirirsiniz.
+Farklı koşullarda uygun olduğu şekilde aynı tür servisin farklı sağlayıcılarını yapılandırarak uygulamanızı daha uyarlanabilir hale getirebilirsiniz.
 
-Angular does not enforce these principles.
-Angular helps you follow these principles by making it easy to factor your application logic into services and make those services available to components through DI.
+Angular bu ilkeleri zorunlu kılmaz.
+Angular, uygulama mantığınızı servislere ayırmanızı ve bu servisleri DI aracılığıyla bileşenlere sunmanızı kolaylaştırarak bu ilkeleri takip etmenize yardımcı olur.
 
 ## Service examples
 
-Here's an example of a service class that logs to the browser console:
+İşte tarayıcı konsoluna günlük kaydı yapan bir servis sınıfı örneği:
 
 ```ts {header: "logger.service.ts (class)"}
 export class Logger {
@@ -35,9 +35,9 @@ export class Logger {
 }
 ```
 
-Services can depend on other services.
-For example, here's a `HeroService` that depends on the `Logger` service, and also uses `BackendService` to get heroes.
-That service in turn might depend on the `HttpClient` service to fetch heroes asynchronously from a server:
+Servisler diğer servislere bağımlı olabilir.
+Örneğin, işte `Logger` servisine bağımlı olan ve ayrıca kahramanları almak için `BackendService` kullanan bir `HeroService`.
+Bu servis de sunucudan asenkron olarak kahramanları getirmek için `HttpClient` servisine bağımlı olabilir:
 
 ```ts {header: "hero.service.ts", highlight="[7,8,12,13]"}
 import {inject} from '@angular/core';
@@ -60,17 +60,17 @@ export class HeroService {
 
 ## Creating an injectable service with the CLI
 
-The Angular CLI provides a command to create a new service. In the following example, you add a new service to an existing application.
+Angular CLI, yeni bir servis oluşturmak için bir komut sağlar. Aşağıdaki örnekte, mevcut bir uygulamaya yeni bir servis eklersiniz.
 
-To generate a new `HeroService` class in the `src/app/heroes` folder, follow these steps:
+`src/app/heroes` klasöründe yeni bir `HeroService` sınıfı oluşturmak için şu adımları izleyin:
 
-1. Run this [Angular CLI](/tools/cli) command:
+1. Şu [Angular CLI](/tools/cli) komutunu çalıştırın:
 
 ```sh
 ng generate service heroes/hero
 ```
 
-This command creates the following default `HeroService`:
+Bu komut aşağıdaki varsayılan `HeroService`'i oluşturur:
 
 ```ts {header: 'heroes/hero.service.ts (CLI-generated)'}
 import {Injectable} from '@angular/core';
@@ -81,10 +81,10 @@ import {Injectable} from '@angular/core';
 export class HeroService {}
 ```
 
-The `@Injectable()` decorator specifies that Angular can use this class in the DI system.
-The metadata, `providedIn: 'root'`, means that the `HeroService` is provided throughout the application.
+`@Injectable()` dekoratörü, Angular'ın bu sınıfı DI sisteminde kullanabileceğini belirtir.
+Meta veri olan `providedIn: 'root'`, `HeroService`'in uygulama genelinde sağlandığı anlamına gelir.
 
-Add a `getHeroes()` method that returns the heroes from `mock.heroes.ts` to get the hero mock data:
+`mock.heroes.ts` dosyasından kahramanları döndüren bir `getHeroes()` yöntemi ekleyerek kahraman sahte verilerini alın:
 
 ```ts {header: 'hero.service.ts'}
 import {Injectable} from '@angular/core';
@@ -102,14 +102,14 @@ export class HeroService {
 }
 ```
 
-For clarity and maintainability, it is recommended that you define components and services in separate files.
+Netlik ve bakım kolaylığı açısından, bileşenleri ve servisleri ayrı dosyalarda tanımlamanız önerilir.
 
 ## Injecting services
 
-To inject a service as a dependency into a component, you can declare a class field representing the dependency and use Angular's [`inject`](/api/core/inject) function to initialize it.
+Bir servisi bir bileşene bağımlılık olarak enjekte etmek için, bağımlılığı temsil eden bir sınıf alanı bildirebilir ve bunu başlatmak için Angular'ın [`inject`](/api/core/inject) fonksiyonunu kullanabilirsiniz.
 
-The following example specifies the `HeroService` in the `HeroList`.
-The type of `heroService` is `HeroService`.
+Aşağıdaki örnek, `HeroList` içinde `HeroService`'i belirtir.
+`heroService`'in türü `HeroService`'dir.
 
 ```ts
 import {inject} from '@angular/core';
@@ -119,18 +119,18 @@ export class HeroList {
 }
 ```
 
-It is also possible to inject a service into a component using the component's constructor:
+Bir servisi bileşenin constructor'ı kullanarak da enjekte etmek mümkündür:
 
 ```ts {header: 'hero-list.ts (constructor signature)'}
   constructor(private heroService: HeroService)
 ```
 
-The [`inject`](/api/core/inject) method can be used in both classes and functions, while the constructor method can naturally only be used in a class constructor. However, in either case a dependency may only be injected in a valid [injection context](guide/di/dependency-injection-context), usually in the construction or initialization of a component.
+[`inject`](/api/core/inject) yöntemi hem sınıflarda hem de fonksiyonlarda kullanılabilirken, constructor yöntemi doğal olarak yalnızca bir sınıf constructor'ında kullanılabilir. Ancak her iki durumda da bir bağımlılık yalnızca geçerli bir [enjeksiyon bağlamında](guide/di/dependency-injection-context), genellikle bir bileşenin oluşturulması veya başlatılması sırasında enjekte edilebilir.
 
 ## Injecting services in other services
 
-When a service depends on another service, follow the same pattern as injecting into a component.
-In the following example, `HeroService` depends on a `Logger` service to report its activities:
+Bir servis başka bir servise bağımlı olduğunda, bir bileşene enjekte etmeyle aynı deseni izleyin.
+Aşağıdaki örnekte, `HeroService` faaliyetlerini raporlamak için bir `Logger` servisine bağımlıdır:
 
 ```ts {header: 'hero.service.ts, highlight: [[3],[9],[12]]}
 import {inject, Injectable} from '@angular/core';
@@ -150,7 +150,7 @@ export class HeroService {
 }
 ```
 
-In this example, the `getHeroes()` method uses the `Logger` service by logging a message when fetching heroes.
+Bu örnekte, `getHeroes()` yöntemi kahramanları getirirken bir mesaj kaydederek `Logger` servisini kullanır.
 
 ## What's next
 

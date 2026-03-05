@@ -1,56 +1,56 @@
 # Creating custom route matches
 
-The Angular Router supports a powerful matching strategy that you can use to help users navigate your application.
-This matching strategy supports static routes, variable routes with parameters, wildcard routes, and so on.
-Also, build your own custom pattern matching for situations in which the URLs are more complicated.
+Angular Router, kullanıcılarınızın uygulamanızda gezinmesine yardımcı olmak için kullanabileceğiniz güçlü bir eşleştirme stratejisini destekler.
+Bu eşleştirme stratejisi statik rotaları, parametreli değişken rotaları, joker rotaları ve daha fazlasını destekler.
+Ayrıca, URL'lerin daha karmaşık olduğu durumlar için kendi özel kalıp eşleştirmenizi oluşturun.
 
-In this tutorial, you'll build a custom route matcher using Angular's `UrlMatcher`.
-This matcher looks for a Twitter handle in the URL.
+Bu eğitimde, Angular'ın `UrlMatcher`'ını kullanarak özel bir rota eşleştirici oluşturacaksınız.
+Bu eşleştirici, URL'de bir Twitter kullanıcı adı arar.
 
 ## Objectives
 
-Implement Angular's `UrlMatcher` to create a custom route matcher.
+Angular'ın `UrlMatcher`'ını kullanarak özel bir rota eşleştirici uygulayın.
 
 ## Create a sample application
 
-Using the Angular CLI, create a new application, _angular-custom-route-match_.
-In addition to the default Angular application framework, you will also create a _profile_ component.
+Angular CLI kullanarak, _angular-custom-route-match_ adlı yeni bir uygulama oluşturun.
+Varsayılan Angular uygulama çerçevesine ek olarak, bir _profile_ bileşeni de oluşturacaksınız.
 
-1. Create a new Angular project, _angular-custom-route-match_.
+1. _angular-custom-route-match_ adlı yeni bir Angular projesi oluşturun.
 
    ```shell
    ng new angular-custom-route-match
    ```
 
-   When prompted with `Would you like to add Angular routing?`, select `Y`.
+   `Would you like to add Angular routing?` sorusu geldiğinde `Y` seçin.
 
-   When prompted with `Which stylesheet format would you like to use?`, select `CSS`.
+   `Which stylesheet format would you like to use?` sorusu geldiğinde `CSS` seçin.
 
-   After a few moments, a new project, `angular-custom-route-match`, is ready.
+   Birkaç dakika sonra yeni proje `angular-custom-route-match` hazırdır.
 
-1. From your terminal, navigate to the `angular-custom-route-match` directory.
-1. Create a component, _profile_.
+1. Terminalinizden `angular-custom-route-match` dizinine gidin.
+1. Bir _profile_ bileşeni oluşturun.
 
    ```shell
    ng generate component profile
    ```
 
-1. In your code editor, locate the file, `profile.html` and replace the placeholder content with the following HTML.
+1. Kod editörünüzde `profile.html` dosyasını bulun ve yer tutucu içeriği aşağıdaki HTML ile değiştirin.
 
    <docs-code header="profile.html" path="adev/src/content/examples/routing-with-urlmatcher/src/app/profile/profile.html"/>
 
-1. In your code editor, locate the file, `app.html` and replace the placeholder content with the following HTML.
+1. Kod editörünüzde `app.html` dosyasını bulun ve yer tutucu içeriği aşağıdaki HTML ile değiştirin.
 
    <docs-code header="app.html" path="adev/src/content/examples/routing-with-urlmatcher/src/app/app.html"/>
 
 ## Configure your routes for your application
 
-With your application framework in place, you next need to add routing capabilities to the `app.config.ts` file.
-As a part of this process, you will create a custom URL matcher that looks for a Twitter handle in the URL.
-This handle is identified by a preceding `@` symbol.
+Uygulama çerçeveniz hazır olduğunda, `app.config.ts` dosyanıza yönlendirme yetenekleri eklemeniz gerekir.
+Bu işlemin bir parçası olarak, URL'de bir Twitter kullanıcı adı arayan özel bir URL eşleştirici oluşturacaksınız.
+Bu kullanıcı adı, öncesinde gelen `@` sembolü ile tanımlanır.
 
-1. In your code editor, open your `app.config.ts` file.
-1. Add an `import` statement for Angular's `provideRouter` and `withComponentInputBinding` as well as the application routes.
+1. Kod editörünüzde `app.config.ts` dosyanızı açın.
+1. Angular'ın `provideRouter` ve `withComponentInputBinding` ile uygulama rotaları için bir `import` ifadesi ekleyin.
 
    ```ts
    import {provideRouter, withComponentInputBinding} from '@angular/router';
@@ -58,28 +58,27 @@ This handle is identified by a preceding `@` symbol.
    import {routes} from './app.routes';
    ```
 
-1. In the providers array, add a `provideRouter(routes, withComponentInputBinding())` statement.
+1. providers dizisinde bir `provideRouter(routes, withComponentInputBinding())` ifadesi ekleyin.
 
-1. Define the custom route matcher by adding the following code to the application routes.
+1. Aşağıdaki kodu uygulama rotalarına ekleyerek özel rota eşleştiriciyi tanımlayın.
 
    <docs-code header="app.routes.ts" path="adev/src/content/examples/routing-with-urlmatcher/src/app/app.routes.ts" region="matcher"/>
 
-This custom matcher is a function that performs the following tasks:
+Bu özel eşleştirici, aşağıdaki görevleri yerine getiren bir fonksiyondur:
 
-- The matcher verifies that the array contains only one segment
-- The matcher employs a regular expression to ensure that the format of the username is a match
-- If there is a match, the function returns the entire URL, defining a `username` route parameter as a substring of the path
-- If there isn't a match, the function returns null and the router continues to look for other routes that match the URL
+- Eşleştirici, dizinin yalnızca bir segment içerdiğini doğrular
+- Eşleştirici, kullanıcı adı formatının eşleştiğinden emin olmak için bir düzenli ifade kullanır
+- Eşleşme varsa, fonksiyon tüm URL'yi döndürür ve yolun bir alt dizesi olarak bir `username` rota parametresi tanımlar
+- Eşleşme yoksa, fonksiyon null döndürür ve yönlendirici URL ile eşleşen diğer rotaları aramaya devam eder
 
-HELPFUL: A custom URL matcher behaves like any other route definition. Define child routes or lazy loaded routes as you would with any other route.
+HELPFUL: Özel bir URL eşleştirici, diğer herhangi bir rota tanımı gibi davranır. Alt rotaları veya tembel yüklenen rotaları, diğer herhangi bir rotada olduğu gibi tanımlayın.
 
 ## Reading the route parameters
 
-With the custom matcher in place, you can now bind the route parameter in the `profile` component.
+Özel eşleştirici hazır olduğunda, artık `profile` bileşeninde rota parametresini bağlayabilirsiniz.
 
-In your code editor, open your `profile.ts` file and create an `input` matching the `username` parameter.
-We added the `withComponentInputBinding` feature earlier
-in `provideRouter`. This allows the `Router` to bind information directly to the route components.
+Kod editörünüzde `profile.ts` dosyanızı açın ve `username` parametresiyle eşleşen bir `input` oluşturun.
+Daha önce `provideRouter`'da `withComponentInputBinding` özelliğini eklemiştik. Bu, `Router`'ın bilgileri doğrudan rota bileşenlerine bağlamasına olanak tanır.
 
 ```ts
 username = input.required<string>();
@@ -87,30 +86,30 @@ username = input.required<string>();
 
 ## Test your custom URL matcher
 
-With your code in place, you can now test your custom URL matcher.
+Kodunuz hazır olduğunda, artık özel URL eşleştiricinizi test edebilirsiniz.
 
-1. From a terminal window, run the `ng serve` command.
+1. Bir terminal penceresinden `ng serve` komutunu çalıştırın.
 
    ```shell
    ng serve
    ```
 
-1. Open a browser to `http://localhost:4200`.
+1. Bir tarayıcıda `http://localhost:4200` adresini açın.
 
-   You should see a single web page, consisting of a sentence that reads `Navigate to my profile`.
+   `Navigate to my profile` yazan bir cümleden oluşan tek bir web sayfası görmelisiniz.
 
-1. Click the **my profile** hyperlink.
+1. **my profile** bağlantısına tıklayın.
 
-   A new sentence, reading `Hello, Angular!` appears on the page.
+   Sayfada `Hello, Angular!` yazan yeni bir cümle belirir.
 
 ## Next steps
 
-Pattern matching with the Angular Router provides you with a lot of flexibility when you have dynamic URLs in your application.
-To learn more about the Angular Router, see the following topics:
+Angular Router ile kalıp eşleştirme, uygulamanızda dinamik URL'leriniz olduğunda size çok fazla esneklik sağlar.
+Angular Router hakkında daha fazla bilgi edinmek için aşağıdaki konulara bakın:
 
 <docs-pill-row>
   <docs-pill href="guide/routing/common-router-tasks" title="In-app Routing and Navigation"/>
   <docs-pill href="api/router/Router" title="Router API"/>
 </docs-pill-row>
 
-HELPFUL: This content is based on [Custom Route Matching with the Angular Router](https://medium.com/@brandontroberts/custom-route-matching-with-the-angular-router-fbdd48665483), by [Brandon Roberts](https://twitter.com/brandontroberts).
+HELPFUL: Bu içerik, [Brandon Roberts](https://twitter.com/brandontroberts) tarafından yazılan [Custom Route Matching with the Angular Router](https://medium.com/@brandontroberts/custom-route-matching-with-the-angular-router-fbdd48665483) makalesine dayanmaktadır.

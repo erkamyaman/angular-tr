@@ -1,83 +1,83 @@
 # Build your first Angular app
 
-This tutorial consists of lessons that introduce the Angular concepts you need to know to start coding in Angular.
+Bu eğitim, Angular'da kod yazmaya başlamak için bilmeniz gereken Angular kavramlarını tanıtan derslerden oluşmaktadır.
 
-You can do as many or as few as you would like and you can do them in any order.
+İstediğiniz kadar çok veya az ders yapabilir ve bunları istediğiniz sırada tamamlayabilirsiniz.
 
-HELPFUL: Prefer video? We also have a full [YouTube course](https://youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&si=1q9889ulHp8VZ0e7) for this tutorial!
+HELPFUL: Video mu tercih ediyorsunuz? Bu eğitim için eksiksiz bir [YouTube kursu](https://youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&si=1q9889ulHp8VZ0e7) da mevcuttur!
 
 <docs-video src="https://www.youtube.com/embed/xAT0lHYhHMY?si=cKUW_MGn3MesFT7o"/>
 
 ## Before you start
 
-For the best experience with this tutorial, review these requirements to make sure you have what you need to be successful.
+Bu eğitimde en iyi deneyimi yaşamak için, başarılı olmak için ihtiyacınız olanları kontrol etmek üzere bu gereksinimleri gözden geçirin.
 
 ### Your experience
 
-The lessons in this tutorial assume that you have experience with the following:
+Bu eğitimdeki dersler, aşağıdaki konularda deneyiminiz olduğunu varsaymaktadır:
 
-1. Created an HTML web page by editing the HTML directly.
-1. Programmed web site content in JavaScript.
-1. Read Cascading Style Sheet (CSS) content and understand how selectors are used.
-1. Used command-line instructions to perform tasks on your computer.
+1. HTML'yi doğrudan düzenleyerek bir HTML web sayfası oluşturmuş olmak.
+1. JavaScript ile web sitesi içeriği programlamış olmak.
+1. Basamaklı Stil Sayfası (CSS) içeriğini okumak ve seçicilerin nasıl kullanıldığını anlamak.
+1. Bilgisayarınızda görevleri gerçekleştirmek için komut satırı talimatlarını kullanmış olmak.
 
 ### Your equipment
 
-These lessons can be completed using a local installation of the Angular tools or in our embedded editor. Local Angular development can be completed on Windows, MacOS or Linux based systems.
+Bu dersler, Angular araçlarının yerel kurulumu veya gömülü editörümüz kullanılarak tamamlanabilir. Yerel Angular geliştirmesi Windows, MacOS veya Linux tabanlı sistemlerde yapılabilir.
 
-NOTE: Look for alerts like this one, which call out steps that may only be for your local editor.
+NOTE: Bu gibi uyarılara dikkat edin, bunlar yalnızca yerel editörünüz için geçerli olabilecek adımları belirtir.
 
 ## Conceptual preview of your first Angular app
 
-The lessons in this tutorial create an Angular app that lists houses for rent and shows the details of individual houses.
-This app uses features that are common to many Angular apps.
+Bu eğitimdeki dersler, kiralık evleri listeleyen ve bireysel evlerin ayrıntılarını gösteren bir Angular uygulaması oluşturur.
+Bu uygulama, birçok Angular uygulamasında yaygın olan özellikleri kullanır.
 
 <img alt="Output of homes landing page" src="assets/images/tutorials/first-app/homes-app-landing-page.png">
 
 ## Local development environment
 
-NOTE: This step is only for your local environment!
+NOTE: Bu adım yalnızca yerel ortamınız içindir!
 
-Perform these steps in a command-line tool on the computer you want to use for this tutorial.
+Bu eğitim için kullanmak istediğiniz bilgisayardaki komut satırı aracında bu adımları gerçekleştirin.
 
 <docs-workflow>
 
 <docs-step title="Identify the version of `node.js` that Angular requires">
-Angular requires an active LTS or maintenance LTS version of Node. Let's confirm your version of `node.js`. For information about specific version requirements, see the engines property in the [package.json file](https://unpkg.com/browse/@angular/core@15.1.5/package.json).
+Angular, aktif LTS veya bakım LTS sürümünde bir Node gerektirir. `node.js` sürümünüzü doğrulayalım. Belirli sürüm gereksinimleri hakkında bilgi için [package.json dosyasındaki](https://unpkg.com/browse/@angular/core@15.1.5/package.json) engines özelliğine bakın.
 
-From a **Terminal** window:
+Bir **Terminal** penceresinden:
 
-1. Run the following command: `node --version`
-1. Confirm that the version number displayed meets the requirements.
+1. Şu komutu çalıştırın: `node --version`
+1. Görüntülenen sürüm numarasının gereksinimleri karşıladığını doğrulayın.
    </docs-step>
 
 <docs-step title="Install the correct version of `node.js` for Angular">
-If you do not have a version of `node.js` installed, please follow the [directions for installation on nodejs.org](https://nodejs.org/en/download/)
+Eğer `node.js` sürümü yüklü değilse, lütfen [nodejs.org üzerindeki kurulum talimatlarını](https://nodejs.org/en/download/) takip edin.
 </docs-step>
 
 <docs-step title="Install the latest version of Angular">
-With `node.js` and `npm` installed, the next step is to install the [Angular CLI](tools/cli) which provides tooling for effective Angular development.
+`node.js` ve `npm` yüklendikten sonra, sıradaki adım etkili Angular geliştirmesi için araçlar sağlayan [Angular CLI](tools/cli)'yi yüklemektir.
 
-From a **Terminal** window run the following command: `npm install -g @angular/cli`.
+Bir **Terminal** penceresinden şu komutu çalıştırın: `npm install -g @angular/cli`.
 </docs-step>
 
 <docs-step title="Install integrated development environment (IDE)">
-You are free to use any tool you prefer to build apps with Angular. We recommend the following:
+Angular ile uygulama geliştirmek için tercih ettiğiniz herhangi bir aracı kullanabilirsiniz. Aşağıdakileri öneriyoruz:
 
 1. [Visual Studio Code](https://code.visualstudio.com/)
-2. As an optional, but recommended step you can further improve your developer experience by installing the [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)
+2. İsteğe bağlı ancak önerilen bir adım olarak, [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template) yükleyerek geliştirici deneyiminizi daha da iyileştirebilirsiniz.
 3. [WebStorm](https://www.jetbrains.com/webstorm/)
    </docs-step>
 
 <docs-step title="Optional: set-up your AI powered IDE">
 
-In case you're following this tutorial in your preferred AI powered IDE, [check out Angular prompt rules and best practices](/ai/develop-with-ai).
+Bu eğitimi tercih ettiğiniz yapay zeka destekli IDE'de takip ediyorsanız, [Angular prompt kurallarına ve en iyi uygulamalarına göz atın](/ai/develop-with-ai).
 
 </docs-step>
 
 </docs-workflow>
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="/overview" title="What is Angular"/>

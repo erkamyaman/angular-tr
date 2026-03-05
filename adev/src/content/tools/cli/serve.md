@@ -1,12 +1,12 @@
 # Serving Angular apps for development
 
-You can serve your Angular CLI application with the `ng serve` command.
-This will compile your application, skip unnecessary optimizations, start a devserver, and automatically rebuild and live reload any subsequent changes.
-You can stop the server by pressing `Ctrl+C`.
+Angular CLI uygulamanızı `ng serve` komutuyla sunabilirsiniz.
+Bu, uygulamanızı derler, gereksiz optimizasyonları atlar, bir geliştirme sunucusu başlatır ve sonraki değişiklikleri otomatik olarak yeniden derler ve canlı yeniden yükler.
+Sunucuyu `Ctrl+C` tuşlarına basarak durdurabilirsiniz.
 
-`ng serve` only executes the builder for the `serve` target in the default project as specified in `angular.json`. While any builder can be used here, the most common (and default) builder is `@angular/build:dev-server`.
+`ng serve` yalnızca `angular.json` içinde belirtilen varsayılan projedeki `serve` hedefi için builder'ı çalıştırır. Burada herhangi bir builder kullanılabilir, ancak en yaygın (ve varsayılan) builder `@angular/build:dev-server`'dır.
 
-You can determine which builder is being used for a particular project by looking up the `serve` target for that project.
+Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `serve` hedefine bakarak belirleyebilirsiniz.
 
 ```json
 {
@@ -32,11 +32,11 @@ You can determine which builder is being used for a particular project by lookin
 
 ## Proxying to a backend server
 
-Use [proxying support](https://vite.dev/config/server-options#server-proxy) to divert certain URLs to a backend server, by passing a file to the `--proxy-config` build option.
-For example, to divert all calls for `http://localhost:4200/api` to a server running on `http://localhost:3000/api`, take the following steps.
+Belirli URL'leri bir arka uç sunucusuna yönlendirmek için [proxy desteğini](https://vite.dev/config/server-options#server-proxy) kullanın; bunun için `--proxy-config` derleme seçeneğine bir dosya geçirin.
+Örneğin, `http://localhost:4200/api` için yapılan tüm çağrıları `http://localhost:3000/api` üzerinde çalışan bir sunucuya yönlendirmek için aşağıdaki adımları izleyin.
 
-1. Create a file `proxy.conf.json` in your project's `src/` folder.
-1. Add the following content to the new proxy file:
+1. Projenizin `src/` klasöründe bir `proxy.conf.json` dosyası oluşturun.
+1. Yeni proxy dosyasına aşağıdaki içeriği ekleyin:
 
 ```json
 {
@@ -47,7 +47,7 @@ For example, to divert all calls for `http://localhost:4200/api` to a server run
 }
 ```
 
-1. In the CLI configuration file, `angular.json`, add the `proxyConfig` option to the `serve` target:
+1. CLI yapılandırma dosyası `angular.json` içinde, `serve` hedefine `proxyConfig` seçeneğini ekleyin:
 
 ```json
 {
@@ -66,18 +66,18 @@ For example, to divert all calls for `http://localhost:4200/api` to a server run
 }
 ```
 
-1. To run the development server with this proxy configuration, call `ng serve`.
+1. Geliştirme sunucusunu bu proxy yapılandırmasıyla çalıştırmak için `ng serve` komutunu çağırın.
 
-NOTE: To apply changes made to your proxy configuration file, you must restart the `ng serve` process.
+NOTE: Proxy yapılandırma dosyanızda yapılan değişiklikleri uygulamak için `ng serve` sürecini yeniden başlatmanız gerekir.
 
 ### Path matching behavior depends on the builder
 
-**`@angular/build:dev-server`** (based on [Vite](https://vite.dev/config/server-options#server-proxy))
+**`@angular/build:dev-server`** ([Vite](https://vite.dev/config/server-options#server-proxy) tabanlı)
 
-- `/api` matches only `/api`.
-- `/api/*` matches `/api/users` but not `/api/users/123`.
-- `/api/**` matches `/api/users` and `/api/users/123`.
+- `/api` yalnızca `/api` ile eşleşir.
+- `/api/*` `/api/users` ile eşleşir ancak `/api/users/123` ile eşleşmez.
+- `/api/**` hem `/api/users` hem de `/api/users/123` ile eşleşir.
 
-**`@angular-devkit/build-angular:dev-server`** (based on [Webpack DevServer](https://webpack.js.org/configuration/dev-server/#devserverproxy))
+**`@angular-devkit/build-angular:dev-server`** ([Webpack DevServer](https://webpack.js.org/configuration/dev-server/#devserverproxy) tabanlı)
 
-- `/api` matches `/api` and any sub-paths (equivalent to `/api/**`).
+- `/api` hem `/api` hem de tüm alt yollarla eşleşir (`/api/**` ile eşdeğer).

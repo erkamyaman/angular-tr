@@ -1,11 +1,11 @@
 # Version compatibility
 
-The following tables describe the versions of Node.js, TypeScript, and RxJS that each version of
-Angular requires.
+Aşağıdaki tablolar, her Angular sürümünün gerektirdiği Node.js, TypeScript ve RxJS sürümlerini
+açıklar.
 
 ## Actively supported versions
 
-This table covers [Angular versions under active support](reference/releases#actively-supported-versions).
+Bu tablo, [aktif destek altındaki Angular sürümlerini](reference/releases#actively-supported-versions) kapsar.
 
 | Angular                        | Node.js                             | TypeScript     | RxJS               |
 | ------------------------------ | ----------------------------------- | -------------- | ------------------ |
@@ -19,9 +19,8 @@ This table covers [Angular versions under active support](reference/releases#act
 
 ## Unsupported Angular versions
 
-This table covers Angular versions that are no longer under long-term support (LTS). This
-information was correct when each version went out of LTS and is provided without any further
-guarantees. It is listed here for historical reference.
+Bu tablo, artık uzun vadeli destek (LTS) altında olmayan Angular sürümlerini kapsar. Bu
+bilgiler, her sürüm LTS'den çıktığında doğruydu ve başka herhangi bir garanti olmaksızın sağlanmıştır. Burada tarihsel referans olarak listelenmiştir.
 
 | Angular            | Node.js                              | TypeScript     | RxJS               |
 | ------------------ | ------------------------------------ | -------------- | ------------------ |
@@ -53,7 +52,7 @@ guarantees. It is listed here for historical reference.
 
 ### Before v9
 
-Until Angular v9, Angular and Angular CLI versions were not synced.
+Angular v9'a kadar, Angular ve Angular CLI sürümleri senkronize değildi.
 
 | Angular                     | Angular CLI                 | Node.js             | TypeScript     | RxJS   |
 | --------------------------- | --------------------------- | ------------------- | -------------- | ------ |
@@ -72,54 +71,51 @@ Until Angular v9, Angular and Angular CLI versions were not synced.
 
 ## Browser support
 
-Angular uses the ["widely available" Baseline](https://web.dev/baseline) to define browser
-support. For each major version, Angular supports browsers included in the Baseline of a
-chosen date near the release date for that major.
+Angular, tarayıcı desteğini tanımlamak için ["yaygın olarak kullanılabilir" Baseline](https://web.dev/baseline)'ı kullanır.
+Her ana sürüm için Angular, o ana sürümün yayın tarihine yakın seçilen bir tarihteki Baseline'a dahil olan tarayıcıları destekler.
 
-The "widely available" Baseline includes browsers released less than 30 months (2.5 years)
-of the chosen date within Baseline's core browser set (Chrome, Edge, Firefox, Safari) and
-targets supporting approximately 95% of web users.
+"Yaygın olarak kullanılabilir" Baseline, Baseline'ın temel tarayıcı seti (Chrome, Edge, Firefox, Safari) içinde seçilen tarihten 30 aydan (2,5 yıl) daha kısa süre önce yayımlanan tarayıcıları ve yaklaşık %95 web kullanıcısını desteklemeyi hedefleyen tarayıcıları içerir.
 
-| Angular | Baseline Date | Browser Set                 |
-| ------- | ------------- | --------------------------- |
-| v21     | 2025-10-20    | [Browser Set][browsers-v21] |
-| v20     | 2025-04-30    | [Browser Set][browsers-v20] |
+| Angular | Baseline Tarihi | Tarayıcı Seti               |
+| ------- | --------------- | --------------------------- |
+| v21     | 2025-10-20      | [Browser Set][browsers-v21] |
+| v20     | 2025-04-30      | [Browser Set][browsers-v20] |
 
 [browsers-v21]: https://web-platform-dx.github.io/web-features/supported-browsers/?widelyAvailableOnDate=2025-10-20&includeDownstream=false
 [browsers-v20]: https://web-platform-dx.github.io/web-features/supported-browsers/?widelyAvailableOnDate=2025-04-30&includeDownstream=false
 
-Angular versions prior to v20 support the following specific browser versions:
+v20 öncesi Angular sürümleri aşağıdaki belirli tarayıcı sürümlerini destekler:
 
-| Browser | Supported versions                          |
-| :------ | :------------------------------------------ |
-| Chrome  | 2 most recent versions                      |
-| Firefox | latest and extended support release \(ESR\) |
-| Edge    | 2 most recent major versions                |
-| Safari  | 2 most recent major versions                |
-| iOS     | 2 most recent major versions                |
-| Android | 2 most recent major versions                |
+| Tarayıcı | Desteklenen sürümler                          |
+| :------- | :-------------------------------------------- |
+| Chrome   | En son 2 sürüm                                |
+| Firefox  | En son ve genişletilmiş destek sürümü \(ESR\) |
+| Edge     | En son 2 ana sürüm                            |
+| Safari   | En son 2 ana sürüm                            |
+| iOS      | En son 2 ana sürüm                            |
+| Android  | En son 2 ana sürüm                            |
 
 ## Polyfills
 
-Angular is built on the latest standards of the web platform.
-Targeting such a wide range of browsers is challenging because they do not support all features of modern browsers.
-You compensate by loading polyfill scripts \("polyfills"\) for the browsers that you must support.
-See instructions on how to include polyfills into your project below.
+Angular, web platformunun en son standartları üzerine inşa edilmiştir.
+Bu kadar geniş bir tarayıcı yelpazesini hedeflemek, modern tarayıcıların tüm özelliklerini desteklemedikleri için zorludur.
+Desteklemeniz gereken tarayıcılar için polyfill betikleri ("polyfill'ler") yükleyerek bunu telafi edersiniz.
+Projenize polyfill'leri nasıl dahil edeceğinize dair talimatlar için aşağıya bakın.
 
-IMPORTANT: The suggested polyfills are the ones that run full Angular applications.
-You might need additional polyfills to support features not covered by this list.
+IMPORTANT: Önerilen polyfill'ler, tam Angular uygulamalarını çalıştıranlarıdır.
+Bu liste tarafından kapsanmayan özellikleri desteklemek için ek polyfill'lere ihtiyacınız olabilir.
 
-HELPFUL: Polyfills cannot magically transform an old, slow browser into a modern, fast one.
+HELPFUL: Polyfill'ler eski, yavaş bir tarayıcıyı sihirli bir şekilde modern, hızlı bir tarayıcıya dönüştüremez.
 
 ## Enabling polyfills with CLI projects
 
-The [Angular CLI](tools/cli) provides support for polyfills.
-If you are not using the CLI to create your projects, see [Polyfill instructions for non-CLI users](#polyfills-for-non-cli-users).
+[Angular CLI](tools/cli), polyfill'ler için destek sağlar.
+Projelerinizi oluşturmak için CLI kullanmıyorsanız, [CLI olmayan kullanıcılar için polyfill talimatlarına](#polyfills-for-non-cli-users) bakın.
 
-The `polyfills` options of the [browser and test builder](tools/cli/cli-builder) can be a full path for a file \(Example: `src/polyfills.ts`\) or,
-relative to the current workspace or module specifier \(Example: `zone.js`\).
+[Tarayıcı ve test oluşturucusu](tools/cli/cli-builder)'nun `polyfills` seçenekleri bir dosyanın tam yolu \(Örnek: `src/polyfills.ts`\) veya,
+geçerli çalışma alanına göreceli veya modül belirleyicisi \(Örnek: `zone.js`\) olabilir.
 
-If you create a TypeScript file, make sure to include it in the `files` property of your `tsconfig` file.
+Bir TypeScript dosyası oluşturursanız, `tsconfig` dosyanızın `files` özelliğine dahil ettiğinizden emin olun.
 
 ```json
 
@@ -138,9 +134,9 @@ If you create a TypeScript file, make sure to include it in the `files` property
 
 ## Polyfills for non-CLI users
 
-If you are not using the CLI, add your polyfill scripts directly to the host web page \(`index.html`\).
+CLI kullanmıyorsanız, polyfill betiklerinizi doğrudan ana web sayfasına \(`index.html`\) ekleyin.
 
-For example:
+Örneğin:
 
 <docs-code header="src/index.html" language="html">
 <!-- pre-zone polyfills -->

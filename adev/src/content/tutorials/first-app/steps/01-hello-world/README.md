@@ -1,120 +1,120 @@
 # Hello world
 
-This first lesson serves as the starting point from which each lesson in this tutorial adds new features to build a complete Angular app. In this lesson, we'll update the application to display the famous text, "Hello World".
+Bu ilk ders, bu eğitimdeki her dersin eksiksiz bir Angular uygulaması oluşturmak için yeni özellikler eklediği başlangıç noktası olarak hizmet eder. Bu derste, uygulamayı ünlü "Hello World" metnini görüntüleyecek şekilde güncelleyeceğiz.
 
 <docs-video src="https://www.youtube.com/embed/UnOwDuliqZA?si=uML-cDRbrxmYdD_9"/>
 
 ## What you'll learn
 
-If your application runs successfully in the browser and displays the executed content without errors, it confirms that your development environment and IDE are correctly set up to begin building an Angular app.
+Uygulamanız tarayıcıda başarıyla çalışıyorsa ve yürütülen içeriği hatasız görüntülüyorsa, geliştirme ortamınızın ve IDE'nizin bir Angular uygulaması oluşturmaya başlamak için doğru şekilde kurulduğunu doğrular.
 
-NOTE: If you are working with the embedded editor, skip to [step four](#create-hello-world).
-When working in the browser playground, you do not need to `ng serve` to run the app. Other commands like `ng generate` can be done in the console window to your right.
+NOTE: Gömülü editörle çalışıyorsanız, [dördüncü adıma](#create-hello-world) atlayın.
+Tarayıcı oyun alanında çalışırken, uygulamayı çalıştırmak için `ng serve` komutunu kullanmanıza gerek yoktur. `ng generate` gibi diğer komutlar sağınızdaki konsol penceresinde çalıştırılabilir.
 
 <docs-workflow>
 
 <docs-step title="Download the default app">
-Start by clicking the "Download" icon in the top right pan of the code editor. This will download a `.zip` file containing the source code for this tutorial. Open this in your local Terminal and IDE then move on to testing the default app.
+Kod editörünün sağ üst köşesindeki "İndir" simgesine tıklayarak başlayın. Bu, bu eğitimin kaynak kodunu içeren bir `.zip` dosyası indirecektir. Bunu yerel Terminal ve IDE'nizde açın, ardından varsayılan uygulamayı test etmeye geçin.
 
-At any step in the tutorial, you can click this icon to download the step's source code and start from there.
+Eğitimin herhangi bir adımında, o adımın kaynak kodunu indirmek ve oradan başlamak için bu simgeye tıklayabilirsiniz.
 </docs-step>
 
 <docs-step title="Test the default app">
-In this step, after you download the default starting app, you build the default Angular app.
-This confirms that your development environment has what you need to continue the tutorial.
+Bu adımda, varsayılan başlangıç uygulamasını indirdikten sonra, varsayılan Angular uygulamasını derlersiniz.
+Bu, geliştirme ortamınızın eğitime devam etmek için ihtiyacınız olan her şeye sahip olduğunu doğrular.
 
-In the **Terminal** pane of your IDE:
+IDE'nizin **Terminal** bölmesinde:
 
-1. In your project directory, navigate to the `first-app` directory.
-1. Run this command to install the dependencies needed to run the app.
+1. Proje dizininizde, `first-app` dizinine gidin.
+1. Uygulamayı çalıştırmak için gereken bağımlılıkları yüklemek üzere bu komutu çalıştırın.
 
    ```shell
    npm install
    ```
 
-1. Run this command to build and serve the default app.
+1. Varsayılan uygulamayı derlemek ve sunmak için bu komutu çalıştırın.
 
    ```shell
    ng serve
    ```
 
-   The app should build without errors.
+   Uygulama hatasız derlenmeli.
 
-1. In a web browser on your development computer, open `http://localhost:4200`.
-1. Confirm that the default web site appears in the browser.
-1. You can leave `ng serve` running as you complete the next steps.
+1. Geliştirme bilgisayarınızdaki bir web tarayıcısında `http://localhost:4200` adresini açın.
+1. Varsayılan web sitesinin tarayıcıda göründüğünü doğrulayın.
+1. Sonraki adımları tamamlarken `ng serve` komutunu çalışır durumda bırakabilirsiniz.
    </docs-step>
 
 <docs-step title="Review the files in the project">
-In this step, you get to know the files that make up a default Angular app.
+Bu adımda, varsayılan bir Angular uygulamasını oluşturan dosyaları tanıyacaksınız.
 
-In the **Explorer** pane of your IDE:
+IDE'nizin **Explorer** bölmesinde:
 
-1. In your project directory, navigate to the `first-app` directory.
-1. Open the `src` directory to see these files.
-   1. In the file explorer, find the Angular app files (`/src`).
-      1. `index.html` is the app's top level HTML template.
-      1. `styles.css` is the app's top level style sheet.
-      1. `main.ts` is where the app starts running.
-      1. `favicon.ico` is the app's icon, just as you would find in any web site.
-   1. In the file explorer, find the Angular app's component files (`/app`).
-      1. `app.ts` is the source file that describes the `app-root` component.
-         This is the top-level Angular component in the app. A component is the basic building block of an Angular application.
-         The component description includes the component's code, HTML template, and styles, which can be described in this file, or in separate files.
+1. Proje dizininizde, `first-app` dizinine gidin.
+1. Bu dosyaları görmek için `src` dizinini açın.
+   1. Dosya gezgininde Angular uygulama dosyalarını (`/src`) bulun.
+      1. `index.html` uygulamanın en üst düzey HTML şablonudur.
+      1. `styles.css` uygulamanın en üst düzey stil sayfasıdır.
+      1. `main.ts` uygulamanın çalışmaya başladığı yerdir.
+      1. `favicon.ico` herhangi bir web sitesinde olduğu gibi uygulamanın simgesidir.
+   1. Dosya gezgininde Angular uygulamasının bileşen dosyalarını (`/app`) bulun.
+      1. `app.ts`, `app-root` bileşenini tanımlayan kaynak dosyasıdır.
+         Bu, uygulamadaki en üst düzey Angular bileşenidir. Bir bileşen, Angular uygulamasının temel yapı taşıdır.
+         Bileşen tanımı, bileşenin kodunu, HTML şablonunu ve stillerini içerir; bunlar bu dosyada veya ayrı dosyalarda tanımlanabilir.
 
-         In this app, the styles are in a separate file while the component's code and HTML template are in this file.
+         Bu uygulamada stiller ayrı bir dosyada iken bileşenin kodu ve HTML şablonu bu dosyadadır.
 
-      1. `app.css` is the style sheet for this component.
-      1. New components are added to this directory.
+      1. `app.css` bu bileşenin stil sayfasıdır.
+      1. Yeni bileşenler bu dizine eklenir.
 
-   1. In the file explorer, find the image directory (`/assets`) that contains images used by the app.
-   1. In the file explorer, find the files and directories that an Angular app needs to build and run, but they are not files that you normally interact with.
-      1. `.angular` has files required to build the Angular app.
-      1. `.e2e` has files used to test the app.
-      1. `.node_modules` has the node.js packages that the app uses.
-      1. `angular.json` describes the Angular app to the app building tools.
-      1. `package.json` is used by `npm` (the node package manager) to run the finished app.
-      1. `tsconfig.*` are the files that describe the app's configuration to the TypeScript compiler.
+   1. Dosya gezgininde uygulama tarafından kullanılan görselleri içeren görsel dizinini (`/assets`) bulun.
+   1. Dosya gezgininde bir Angular uygulamasının derlenmesi ve çalıştırılması için gereken, ancak normalde etkileşime girmediğiniz dosya ve dizinleri bulun.
+      1. `.angular` Angular uygulamasını derlemek için gereken dosyaları içerir.
+      1. `.e2e` uygulamayı test etmek için kullanılan dosyaları içerir.
+      1. `.node_modules` uygulamanın kullandığı node.js paketlerini içerir.
+      1. `angular.json` Angular uygulamasını derleme araçlarına tanımlar.
+      1. `package.json`, tamamlanmış uygulamayı çalıştırmak için `npm` (node paket yöneticisi) tarafından kullanılır.
+      1. `tsconfig.*` uygulamanın TypeScript derleyicisine yapılandırmasını tanımlayan dosyalardır.
 
-After you have reviewed the files that make up an Angular app project, continue to the next step.
+Bir Angular uygulama projesini oluşturan dosyaları inceledikten sonra, bir sonraki adıma geçin.
 </docs-step>
 
 <docs-step title="Create `Hello World`">
-In this step, you update the Angular project files to change the displayed content.
+Bu adımda, görüntülenen içeriği değiştirmek için Angular proje dosyalarını güncellersiniz.
 
-In your IDE:
+IDE'nizde:
 
-1. Open `first-app/src/index.html`.
-   NOTE: This step and the next are only for your local environment!
+1. `first-app/src/index.html` dosyasını açın.
+   NOTE: Bu adım ve sonraki adım yalnızca yerel ortamınız içindir!
 
-1. In `index.html`, replace the `<title>` element with this code to update the title of the app.
+1. `index.html` dosyasında, uygulamanın başlığını güncellemek için `<title>` öğesini bu kodla değiştirin.
 
    <docs-code header="Replace in src/index.html" path="adev/src/content/tutorials/first-app/steps/02-Home/src/index.html" visibleLines="[5]"/>
 
-   Then, save the changes you just made to `index.html`.
+   Ardından, `index.html` dosyasında yaptığınız değişiklikleri kaydedin.
 
-1. Next, open `first-app/src/app/app.ts`.
-1. In `app.ts`, in the `@Component` definition, replace the `template` line with this code to change the text in the app component.
+1. Sonra, `first-app/src/app/app.ts` dosyasını açın.
+1. `app.ts` dosyasında, `@Component` tanımındaki `template` satırını, uygulama bileşenindeki metni değiştirmek için bu kodla değiştirin.
 
    <docs-code language="angular-ts" header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[6,8]"/>
 
-1. In `app.ts`, in the `App` class definition, replace the `title` line with this code to change the component title.
+1. `app.ts` dosyasında, `App` sınıf tanımındaki `title` satırını, bileşen başlığını değiştirmek için bu kodla değiştirin.
 
    <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[11,13]"/>
 
-   Then, save the changes you made to `app.ts`.
+   Ardından, `app.ts` dosyasında yaptığınız değişiklikleri kaydedin.
 
-1. If you stopped the `ng serve` command from step 1, in the **Terminal** window of your IDE, run `ng serve` again.
-1. Open your browser and navigate to `localhost:4200` and confirm that the app builds without error and displays _Homes_ in the title and _Hello world_ in the body of your app:
+1. 1. adımdaki `ng serve` komutunu durdurduysanız, IDE'nizin **Terminal** penceresinde `ng serve` komutunu tekrar çalıştırın.
+1. Tarayıcınızı açın ve `localhost:4200` adresine gidin; uygulamanın hatasız derlendiğini ve başlıkta _Homes_, gövdesinde _Hello world_ görüntülediğini doğrulayın:
    <img alt="browser frame of page displaying the text 'Hello World'" src="assets/images/tutorials/first-app/homes-app-lesson-01-browser.png">
    </docs-step>
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you updated a default Angular app to display _Hello world_.
-In the process, you learned about the `ng serve` command to serve your app locally for testing.
+SUMMARY: Bu derste, varsayılan bir Angular uygulamasını _Hello world_ görüntüleyecek şekilde güncellediniz.
+Bu süreçte, uygulamanızı test için yerel olarak sunmak üzere `ng serve` komutunu öğrendiniz.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/components" title="Angular Components"/>

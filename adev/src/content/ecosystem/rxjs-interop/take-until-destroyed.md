@@ -1,8 +1,8 @@
 # Unsubscribing with `takeUntilDestroyed`
 
-TIP: This guide assumes you're familiar with [component and directive lifecycle](guide/components/lifecycle).
+TIP: Bu kılavuz, [bileşen ve direktif yaşam döngüsüne](guide/components/lifecycle) aşina olduğunuzu varsayar.
 
-The `takeUntilDestroyed` operator, from `@angular/core/rxjs-interop`, provides a concise and reliable way to automatically unsubscribe from an Observable when a component or directive is destroyed. This prevents common memory leaks with RxJS subscriptions. It works similarly to the RxJS [`takeUntil`](https://rxjs.dev/api/operators/takeUntil) operator but without the need for a separate Subject.
+`@angular/core/rxjs-interop` paketindeki `takeUntilDestroyed` operatörü, bir bileşen veya direktif yok edildiğinde bir Observable'dan otomatik olarak aboneliği iptal etmenin kısa ve güvenilir bir yolunu sunar. Bu, RxJS abonelikleriyle oluşan yaygın bellek sızıntılarını önler. RxJS [`takeUntil`](https://rxjs.dev/api/operators/takeUntil) operatörüne benzer şekilde çalışır ancak ayrı bir Subject'e ihtiyaç duymaz.
 
 ```typescript
 import {Component, inject} from '@angular/core';
@@ -25,7 +25,7 @@ export class UserProfile {
 }
 ```
 
-The `takeUntilDestroyed` operator accepts a single optional [`DestroyRef`](/api/core/DestroyRef) argument. The operator uses `DestroyRef` to know when the component or directive has been destroyed. You can omit this argument when calling `takeUntilDestroyed` in an [injection context](/guide/di/dependency-injection-context), typically the constructor of a component or directive. Always provide a `DestroyRef` if your code may call `takeUntilDestroyed` outside of an injection context.
+`takeUntilDestroyed` operatörü isteğe bağlı tek bir [`DestroyRef`](/api/core/DestroyRef) argümanı kabul eder. Operatör, bileşenin veya direktifin ne zaman yok edildiğini bilmek için `DestroyRef` kullanır. `takeUntilDestroyed`'ı bir [enjeksiyon bağlamında](/guide/di/dependency-injection-context) çağırırken, genellikle bir bileşen veya direktifin constructor'ı, bu argümanı atlayabilirsiniz. Kodunuz `takeUntilDestroyed`'ı bir enjeksiyon bağlamı dışında çağırabiliyorsa, her zaman bir `DestroyRef` sağlayın.
 
 ```typescript
 @Component(/* ... */)

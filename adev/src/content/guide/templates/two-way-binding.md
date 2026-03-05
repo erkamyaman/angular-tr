@@ -1,16 +1,16 @@
 # Two-way binding
 
-**Two way binding** is a shorthand to simultaneously bind a value into an element, while also giving that element the ability to propagate changes back through this binding.
+**Cift yonlu baglama (two-way binding)**, bir degeri eslasmanli olarak bir elemana baglarken, ayni zamanda o elemana degisiklikleri bu baglama uzerinden geri iletme yeteneeiig veren bir kisayoldur.
 
 ## Syntax
 
-The syntax for two-way binding is a combination of square brackets and parentheses, `[()]`. It combines the syntax from property binding, `[]`, and the syntax from event binding, `()`. The Angular community informally refers to this syntax as "banana-in-a-box".
+Cift yonlu baglama sozdizimi, koseli parantez ve parantezlerin birlesimidir: `[()]`. Ozellik baglamasinin sozdizimi olan `[]` ile olay baglamasinin sozdizimi olan `()`'yi birlestirir. Angular toplulugu bu sozdizimini resmi olmayan sekilde "kutu icindeki muz" (banana-in-a-box) olarak adlandirir.
 
 ## Two-way binding with form controls
 
-Developers commonly use two-way binding to keep component data in sync with a form control as a user interacts with the control. For example, when a user fills out a text input, it should update the state in the component.
+Gelistiriciler, kullanici bir kontrolle etkilesime girdikce bilesen verilerini bir form kontroluyle senkronize tutmak icin yaygin olarak cift yonlu baglama kullanir. Ornegin, bir kullanici bir metin girdisini doldurdugunda, bilesendeeki durumu guncellemelidir.
 
-The following example dynamically updates the `firstName` attribute on the page:
+Asagidaki ornek, `firstName` nitelligini sayfada dinamik olarak gunceller:
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -30,21 +30,21 @@ export class App {
 }
 ```
 
-To use two-way binding with native form controls, you need to:
+Yerel form kontrolleriyle cift yonlu baglama kullanmak icin:
 
-1. Import the `FormsModule` from `@angular/forms`
-1. Use the `ngModel` directive with the two-way binding syntax (e.g., `[(ngModel)]`)
-1. Assign it the state that you want it to update (e.g., `firstName`)
+1. `@angular/forms`'dan `FormsModule`'u iceri aktarin
+1. Cift yonlu baglama sozdizimi ile `ngModel` direktifini kullanin (orn. `[(ngModel)]`)
+1. Guncellenmesini istediginiz durumu atayin (orn. `firstName`)
 
-Once that is set up, Angular will ensure that any updates in the text input will reflect correctly inside of the component state!
+Bu yapilandirildiktan sonra, Angular metin girdisindeki herhangi bir guncellemenin bilesen durumunda dogru sekilde yansitilmasini saglayacaktir!
 
-Learn more about [`NgModel`](/api/forms/NgModel) in the official docs.
+Resmi belgelerde [`NgModel`](/api/forms/NgModel) hakkinda daha fazla bilgi edinin.
 
 ## Two-way binding between components
 
-Leveraging two-way binding between a parent and child component requires more configuration compared to form elements.
+Bir ust ve alt bilesen arasinda cift yonlu baglamayi kullanmak, form elemanlarina kiyasla daha fazla yapilandirma gerektirir.
 
-Here is an example where the `App` is responsible for setting the initial count state, but the logic for updating and rendering the UI for the counter primarily resides inside its child `Counter`.
+Ise `App`'in baslangic sayac durumunu ayarlamasindan sorumlu oldugu, ancak sayacin guncelleme mantigi ve kullanici arayuzu islemesinin agirlikli olarak alt bileseni olan `Counter` icinde bulundugu bir ornek.
 
 ```angular-ts
 // ./app.ts
@@ -89,11 +89,11 @@ export class Counter {
 
 ### Enabling two-way binding between components
 
-If we break down the example above to its core, each two-way binding for components requires the following:
+Yukaridaki ornegi ozune indirgersek, bilesenler icin her cift yonlu baglama asagidakileri gerektirir:
 
-The child component must contain a `model` property.
+Alt bilesen bir `model` ozelligine sahip olmalidir.
 
-Here is a simplified example:
+Iste basitlestirilmis bir ornek:
 
 ```angular-ts
 // './counter.ts';
@@ -111,12 +111,12 @@ export class Counter {
 }
 ```
 
-The parent component must:
+Ust bilesen sunlari yapmalidir:
 
-1. Wrap the `model` property name in the two-way binding syntax.
-1. Assign a property or a signal to the `model` property.
+1. `model` ozellik adini cift yonlu baglama sozdizimi icine sarin.
+1. `model` ozelligine bir ozellik veya signal atayin.
 
-Here is a simplified example:
+Ise basitlestirilmis bir ornek:
 
 ```angular-ts
 // ./app.ts

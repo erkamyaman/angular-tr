@@ -1,24 +1,24 @@
 # Learn Angular Signal Forms
 
-This interactive tutorial will teach you how to build reactive forms using Angular's experimental Signal Forms API.
+Bu etkileşimli öğretici, Angular'ın deneysel Signal Forms API'sini kullanarak reaktif formlar oluşturmayı size öğretecektir.
 
-IMPORTANT: Signal Forms is currently [experimental](reference/releases#experimental). The API may change before stabilizing. Check the [official documentation](guide/forms/signals/overview) for the latest updates.
+IMPORTANT: Signal Forms şu anda [deneysel](reference/releases#experimental) aşamadadır. API, kararlı hale gelmeden önce değişebilir. En son güncellemeler için [resmi belgelere](guide/forms/signals/overview) göz atın.
 
 ## How to use this tutorial
 
-This tutorial assumes you understand Angular's core concepts and have basic familiarity with signals. If you're new to Angular, read our [essentials guide](/essentials). If you're new to signals, complete the [signals tutorial](/tutorials/signals) first.
+Bu öğretici, Angular'ın temel kavramlarını anladığınızı ve sinyaller (signals) konusunda temel bir bilginiz olduğunu varsayar. Angular'da yeniyseniz, [temel kavramlar rehberimizi](/essentials) okuyun. Sinyallerde yeniyseniz, önce [sinyaller öğreticisini](/tutorials/signals) tamamlayın.
 
-Each step represents a concept in Signal Forms. You'll build a complete login form from scratch, learning the fundamentals step by step.
+Her adım, Signal Forms'daki bir kavramı temsil eder. Sıfırdan eksiksiz bir giriş formu oluşturacak ve temelleri adım adım öğreneceksiniz.
 
-**Your learning path:**
+**Öğrenme yolunuz:**
 
-1. Set up the form model with TypeScript and signals
-2. Connect the form to your template
-3. Add validation rules
-4. Display validation errors to users
-5. Handle form submission
-6. Explore advanced topics and next steps
+1. TypeScript ve sinyallerle form modelini oluşturma
+2. Formu şablonunuza bağlama
+3. Doğrulama kuralları ekleme
+4. Kullanıcılara doğrulama hatalarını gösterme
+5. Form gönderimini yönetme
+6. İleri düzey konuları ve sonraki adımları keşfetme
 
-If you get stuck, click "Reveal answer" at the top.
+Takılırsanız, üstteki "Reveal answer" seçeneğine tıklayın.
 
-Alright, let's [get started](/tutorials/signal-forms/1-set-up-form-model)!
+Pekala, [başlayalım](/tutorials/signal-forms/1-set-up-form-model)!

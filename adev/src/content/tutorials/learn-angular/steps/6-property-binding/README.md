@@ -1,27 +1,27 @@
 # Property Binding in Angular
 
-Property binding in Angular enables you to set values for properties of HTML elements, Angular components and more.
+Angular'da özellik bağlama, HTML öğelerinin, Angular bileşenlerinin ve daha fazlasının özellikleri için değer belirlemenizi sağlar.
 
-Use property binding to dynamically set values for properties and attributes. You can do things such as toggle button features, set image paths programmatically, and share values between components.
+Özellikler ve nitelikler için dinamik olarak değer ayarlamak üzere özellik bağlamayı kullanın. Buton özelliklerini değiştirme, resim yollarını programatik olarak ayarlama ve bileşenler arasında değer paylaşma gibi işlemler yapabilirsiniz.
 
-NOTE: Learn more about [setting dynamic properties and attributes in the essentials guide](/essentials/templates#setting-dynamic-properties-and-attributes).
+NOTE: [Temel bilgiler kılavuzundaki dinamik özellik ve nitelik ayarlama](/essentials/templates#setting-dynamic-properties-and-attributes) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to use property binding in templates.
+Bu aktivitede, şablonlarda özellik bağlamayı nasıl kullanacağınızı öğreneceksiniz.
 
 <hr />
 
-To bind to an element's attribute, wrap the attribute name in square brackets. Here's an example:
+Bir öğenin niteliğine bağlanmak için nitelik adını köşeli parantez içine alın. İşte bir örnek:
 
 ```angular-html
 <img alt="photo" [src]="imageURL" />
 ```
 
-In this example, the value of the `src` attribute will be bound to the class property `imageURL`. Whatever value `imageURL` has will be set as the `src` attribute of the `img` tag.
+Bu örnekte, `src` niteliğinin değeri `imageURL` sınıf özelliğine bağlanacaktır. `imageURL`'nin değeri ne olursa olsun, `img` etiketinin `src` niteliği olarak ayarlanacaktır.
 
 <docs-workflow>
 
 <docs-step title="Add a property called `isEditable`" header="app.ts" language="ts">
-Update the code in `app.ts` by adding a property to the `App` class called `isEditable` with the initial value set to `true`.
+`app.ts` dosyasındaki kodu, `App` sınıfına `isEditable` adında ve başlangıç değeri `true` olan bir özellik ekleyerek güncelleyin.
 
 ```ts {highlight:[2]}
 export class App {
@@ -32,7 +32,7 @@ export class App {
 </docs-step>
 
 <docs-step title="Bind to `contentEditable`" header="app.ts" language="ts">
-Next, bind the `contentEditable` attribute of the `div` to the `isEditable` property by using the <code aria-label="square brackets">[]</code> syntax.
+Sonra, `div`'in `contentEditable` niteliğini `isEditable` özelliğine <code aria-label="square brackets">[]</code> sözdizimini kullanarak bağlayın.
 
 ```angular-ts {highlight:[3]}
 @Component({
@@ -45,6 +45,6 @@ Next, bind the `contentEditable` attribute of the `div` to the `isEditable` prop
 
 </docs-workflow>
 
-The div is now editable. Nice work 👍
+Div artık düzenlenebilir durumda. Harika is!
 
-Property binding is one of Angular's many powerful features. If you'd like to learn more checkout [the Angular documentation](guide/templates/binding#css-class-and-style-property-bindings).
+Özellik bağlama, Angular'ın birçok güçlü özelliğinden biridir. Daha fazla bilgi edinmek isterseniz [Angular belgelerine](guide/templates/binding#css-class-and-style-property-bindings) göz atın.

@@ -1,10 +1,10 @@
 # Setting up `HttpClient`
 
-Before you can use `HttpClient` in your app, you must configure it using [dependency injection](guide/di).
+Uygulamanızda `HttpClient` kullanabilmeniz için önce onu [bağımlılık enjeksiyonu](guide/di) ile yapılandırmanız gerekir.
 
 ## Providing `HttpClient` through dependency injection
 
-`HttpClient` is provided using the `provideHttpClient` helper function, which most apps include in the application `providers` in `app.config.ts`.
+`HttpClient`, çoğu uygulamanın `app.config.ts` dosyasındaki uygulama `providers` içine dahil ettiği `provideHttpClient` yardımcı fonksiyonu kullanılarak sağlanır.
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-If your app is using NgModule-based bootstrap instead, you can include `provideHttpClient` in the providers of your app's NgModule:
+Uygulamanız bunun yerine NgModule tabanlı önyükleme kullanıyorsa, `provideHttpClient`'ı uygulamanızın NgModule'ünün providers'ına dahil edebilirsiniz:
 
 ```ts
 @NgModule({
@@ -22,7 +22,7 @@ If your app is using NgModule-based bootstrap instead, you can include `provideH
 export class AppModule {}
 ```
 
-You can then inject the `HttpClient` service as a dependency of your components, services, or other classes:
+Ardından `HttpClient` hizmetini bileşenlerinizin, servislerinizin veya diğer sınıflarınızın bağımlılığı olarak enjekte edebilirsiniz:
 
 ```ts
 @Injectable({providedIn: 'root'})
@@ -34,7 +34,7 @@ export class ConfigService {
 
 ## Configuring features of `HttpClient`
 
-`provideHttpClient` accepts a list of optional feature configurations, to enable or configure the behavior of different aspects of the client. This section details the optional features and their usages.
+`provideHttpClient`, istemcinin farklı yönlerinin davranışını etkinleştirmek veya yapılandırmak için isteğe bağlı özellik yapılandırmalarının bir listesini kabul eder. Bu bölüm isteğe bağlı özellikleri ve kullanımlarını açıklar.
 
 ### `withFetch`
 
@@ -44,47 +44,47 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-By default, `HttpClient` uses the [`XMLHttpRequest`](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest) API to make requests. The `withFetch` feature switches the client to use the [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API) API instead.
+Varsayılan olarak, `HttpClient` istekleri yapmak için [`XMLHttpRequest`](https://developer.mozilla.org/docs/Web/API/XMLHttpRequest) API'sini kullanır. `withFetch` özelliği istemciyi bunun yerine [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API) API'sini kullanacak şekilde değiştirir.
 
-`fetch` is a more modern API and is available in a few environments where `XMLHttpRequest` is not supported. It does have a few limitations, such as not producing upload progress events.
+`fetch` daha modern bir API'dir ve `XMLHttpRequest`'in desteklenmediği bazı ortamlarda kullanılabilir. Yükleme ilerleme olayları üretmemesi gibi bazı sınırlamaları vardır.
 
 ### `withInterceptors(...)`
 
-`withInterceptors` configures the set of interceptor functions which will process requests made through `HttpClient`. See the [interceptor guide](guide/http/interceptors) for more information.
+`withInterceptors`, `HttpClient` üzerinden yapılan istekleri işleyecek yakalayıcı fonksiyonları kümesini yapılandırır. Daha fazla bilgi için [yakalayıcılar kılavuzuna](guide/http/interceptors) bakın.
 
 ### `withInterceptorsFromDi()`
 
-`withInterceptorsFromDi` includes the older style of class-based interceptors in the `HttpClient` configuration. See the [interceptor guide](guide/http/interceptors) for more information.
+`withInterceptorsFromDi`, eski tarz sınıf tabanlı yakalayıcıları `HttpClient` yapılandırmasına dahil eder. Daha fazla bilgi için [yakalayıcılar kılavuzuna](guide/http/interceptors) bakın.
 
-HELPFUL: Functional interceptors (through `withInterceptors`) have more predictable ordering and we recommend them over DI-based interceptors.
+HELPFUL: Fonksiyonel yakalayıcılar (`withInterceptors` aracılığıyla) daha öngörülebilir sıralamaya sahiptir ve bunları DI tabanlı yakalayıcılar yerine öneriyoruz.
 
 ### `withRequestsMadeViaParent()`
 
-By default, when you configure `HttpClient` using `provideHttpClient` within a given injector, this configuration overrides any configuration for `HttpClient` which may be present in the parent injector.
+Varsayılan olarak, belirli bir enjektör içinde `provideHttpClient` kullanarak `HttpClient`'ı yapılandırdığınızda, bu yapılandırma üst enjektörde bulunabilecek herhangi bir `HttpClient` yapılandırmasını geçersiz kılar.
 
-When you add `withRequestsMadeViaParent()`, `HttpClient` is configured to instead pass requests up to the `HttpClient` instance in the parent injector, once they've passed through any configured interceptors at this level. This is useful if you want to _add_ interceptors in a child injector, while still sending the request through the parent injector's interceptors as well.
+`withRequestsMadeViaParent()` eklediğinizde, `HttpClient` bu seviyedeki yapılandırılmış yakalayıcılardan geçtikten sonra istekleri üst enjektördeki `HttpClient` örneğine iletecek şekilde yapılandırılır. Bu, üst enjektörün yakalayıcılarından da geçirerek isteği gönderirken bir alt enjektörde yakalayıcılar _eklemek_ istiyorsanız kullanışlıdır.
 
-CRITICAL: You must configure an instance of `HttpClient` above the current injector, or this option is not valid and you'll get a runtime error when you try to use it.
+CRITICAL: Mevcut enjektörün üstünde bir `HttpClient` örneği yapılandırmanız gerekir, aksi takdirde bu seçenek geçerli değildir ve kullanmaya çalıştığınızda çalışma zamanı hatası alırsınız.
 
 ### `withJsonpSupport()`
 
-Including `withJsonpSupport` enables the `.jsonp()` method on `HttpClient`, which makes a GET request via the [JSONP convention](https://en.wikipedia.org/wiki/JSONP) for cross-domain loading of data.
+`withJsonpSupport` dahil edildiğinde, `HttpClient` üzerinde alan adları arası veri yükleme için [JSONP kuralı](https://en.wikipedia.org/wiki/JSONP) aracılığıyla GET isteği yapan `.jsonp()` yöntemi etkinleştirilir.
 
-HELPFUL: Prefer using [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS) to make cross-domain requests instead of JSONP when possible.
+HELPFUL: Mümkün olduğunda alan adları arası istekler yapmak için JSONP yerine [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS) kullanmayı tercih edin.
 
 ### `withXsrfConfiguration(...)`
 
-Including this option allows for customization of `HttpClient`'s built-in XSRF security functionality. See the [security guide](best-practices/security) for more information.
+Bu seçeneği dahil etmek, `HttpClient`'ın yerleşik XSRF güvenlik işlevselliğinin özelleştirilmesine olanak tanır. Daha fazla bilgi için [güvenlik kılavuzuna](best-practices/security) bakın.
 
 ### `withNoXsrfProtection()`
 
-Including this option disables `HttpClient`'s built-in XSRF security functionality. See the [security guide](best-practices/security) for more information.
+Bu seçeneği dahil etmek, `HttpClient`'ın yerleşik XSRF güvenlik işlevselliğini devre dışı bırakır. Daha fazla bilgi için [güvenlik kılavuzuna](best-practices/security) bakın.
 
 ## `HttpClientModule`-based configuration
 
-Some applications may configure `HttpClient` using the older API based on NgModules.
+Bazı uygulamalar `HttpClient`'ı NgModule'lere dayalı eski API kullanarak yapılandırabilir.
 
-This table lists the NgModules available from `@angular/common/http` and how they relate to the provider configuration functions above.
+Bu tablo, `@angular/common/http`'den kullanılabilir NgModule'leri ve bunların yukarıdaki sağlayıcı yapılandırma fonksiyonlarıyla nasıl ilişkilendiğini listeler.
 
 | **NgModule**                            | `provideHttpClient()` equivalent              |
 | --------------------------------------- | --------------------------------------------- |
@@ -94,7 +94,7 @@ This table lists the NgModules available from `@angular/common/http` and how the
 | `HttpClientXsrfModule.disable()`        | `withNoXsrfProtection()`                      |
 
 <docs-callout important title="Use caution when using HttpClientModule in multiple injectors">
-When `HttpClientModule` is present in multiple injectors, the behavior of interceptors is poorly defined and depends on the exact options and provider/import ordering.
+`HttpClientModule` birden fazla enjektörde bulunduğunda, yakalayıcıların davranışı belirsizdir ve tam seçenekler ile sağlayıcı/içe aktarma sıralamasına bağlıdır.
 
-Prefer `provideHttpClient` for multi-injector configurations, as it has more stable behavior. See the `withRequestsMadeViaParent` feature above.
+Daha kararlı davranışa sahip olduğu için çoklu enjektör yapılandırmalarında `provideHttpClient`'ı tercih edin. Yukarıdaki `withRequestsMadeViaParent` özelliğine bakın.
 </docs-callout>

@@ -1,21 +1,21 @@
 # Add validation to your form
 
-Adding validation to your form is critical to ensure users enter valid data. Signal Forms uses validators in a schema function that you pass to the `form()` function.
+Kullanıcıların geçerli veri girmesini sağlamak için formunuza doğrulama eklemek kritik öneme sahiptir. Signal Forms, `form()` fonksiyonuna ilettiğiniz bir şema fonksiyonunda doğrulayıcılar (validators) kullanır.
 
-In this activity, you'll learn how to:
+Bu aktivitede şunları öğreneceksiniz:
 
-- Import built-in validators
-- Define a schema function for your form
-- Apply validators to specific fields with custom error messages
+- Yerleşik doğrulayıcıları içe aktarma
+- Formunuz için bir şema fonksiyonu tanımlama
+- Özel hata mesajlarıyla belirli alanlara doğrulayıcılar uygulama
 
-Let's add validation!
+Doğrulama ekleyelim!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import the validators">
-Import the `required` and `email` validators from `@angular/forms/signals`:
+`@angular/forms/signals` paketinden `required` ve `email` doğrulayıcılarını içe aktarın:
 
 ```ts
 import {form, FormField, required, email} from '@angular/forms/signals';
@@ -24,7 +24,7 @@ import {form, FormField, required, email} from '@angular/forms/signals';
 </docs-step>
 
 <docs-step title="Add a schema function to your form">
-Update your `form()` call to include a schema function as the second parameter. The schema function receives a `fieldPath` parameter that lets you access each field:
+`form()` çağrınızı, ikinci parametre olarak bir şema fonksiyonu içerecek şekilde güncelleyin. Şema fonksiyonu, her alana erişmenizi sağlayan bir `fieldPath` parametresi alır:
 
 ```ts
 loginForm = form(this.loginModel, (fieldPath) => {
@@ -35,7 +35,7 @@ loginForm = form(this.loginModel, (fieldPath) => {
 </docs-step>
 
 <docs-step title="Add validation to the email field">
-Inside the schema function, add validation for the email field. Use both `required()` and `email()` validators:
+Şema fonksiyonunun içinde, e-posta alanı için doğrulama ekleyin. Hem `required()` hem de `email()` doğrulayıcılarını kullanın:
 
 ```ts
 loginForm = form(this.loginModel, (fieldPath) => {
@@ -44,11 +44,11 @@ loginForm = form(this.loginModel, (fieldPath) => {
 });
 ```
 
-The `message` option provides custom error messages for users.
+`message` seçeneği, kullanıcılar için özel hata mesajları sağlar.
 </docs-step>
 
 <docs-step title="Add validation to the password field">
-Add validation for the password field using the `required()` validator:
+`required()` doğrulayıcısını kullanarak parola alanı için doğrulama ekleyin:
 
 ```ts
 loginForm = form(this.loginModel, (fieldPath) => {
@@ -62,6 +62,6 @@ loginForm = form(this.loginModel, (fieldPath) => {
 
 </docs-workflow>
 
-Perfect! You've added validation to your form. The validators run automatically as users interact with the form. When validation fails, the field's state will reflect the errors.
+Mükemmel! Formunuza doğrulama eklediniz. Doğrulayıcılar, kullanıcılar formla etkileşime geçtikçe otomatik olarak çalışır. Doğrulama başarısız olduğunda, alanın durumu hataları yansıtacaktır.
 
-Next, you'll learn [how to display validation errors in the template](/tutorials/signal-forms/4-display-errors)!
+Ardından, [şablonda doğrulama hatalarını nasıl göstereceğinizi](/tutorials/signal-forms/4-display-errors) öğreneceksiniz!

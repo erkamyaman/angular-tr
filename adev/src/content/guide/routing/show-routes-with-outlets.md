@@ -1,6 +1,6 @@
 # Show routes with outlets
 
-The `RouterOutlet` directive is a placeholder that marks the location where the router should render the component for the current URL.
+`RouterOutlet` direktifi, yönlendiricinin geçerli URL için bileşeni render etmesi gereken konumu işaretleyen bir yer tutucudur.
 
 ```html
 <app-header />
@@ -22,7 +22,7 @@ import {RouterOutlet} from '@angular/router';
 export class App {}
 ```
 
-In this example, if an application has the following routes defined:
+Bu örnekte, bir uygulama aşağıdaki rotalar tanımlanmışsa:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -43,7 +43,7 @@ const routes: Routes = [
 ];
 ```
 
-When a user visits `/products`, Angular renders the following:
+Kullanıcı `/products` adresini ziyaret ettiğinde, Angular şunu render eder:
 
 ```angular-html
 <app-header />
@@ -51,7 +51,7 @@ When a user visits `/products`, Angular renders the following:
 <app-footer />
 ```
 
-If the user goes back to the home page, then Angular renders:
+Kullanıcı ana sayfaya geri dönerse, Angular şunu render eder:
 
 ```angular-html
 <app-header />
@@ -59,7 +59,7 @@ If the user goes back to the home page, then Angular renders:
 <app-footer />
 ```
 
-When displaying a route, the `<router-outlet>` element remains present in the DOM as a reference point for future navigations. Angular inserts routed content just after the outlet element as a sibling.
+Bir rota görüntülenirken, `<router-outlet>` öğesi gelecekteki navigasyonlar için bir referans noktası olarak DOM'da mevcut kalır. Angular, yönlendirilen içeriği outlet öğesinin hemen sonrasına kardeş eleman olarak ekler.
 
 ```angular-html
 <!-- Contents of the component's template -->
@@ -78,11 +78,11 @@ When displaying a route, the `<router-outlet>` element remains present in the DO
 
 ## Nesting routes with child routes
 
-As your application grows more complex, you might want to create routes that are relative to a component other than your root component. This enables you to create experiences where only part of the application changes when the URL changes, as opposed to the users feeling like the entire page is refreshed.
+Uygulamanız daha karmaşık hale geldikçe, kök bileşeniniz dışında bir bileşene göre rotalar oluşturmak isteyebilirsiniz. Bu, URL değiştiğinde kullanıcıların tüm sayfanın yenilendiğini hissetmesi yerine yalnızca uygulamanın bir bölümünün değiştiği deneyimler oluşturmanıza olanak tanır.
 
-These types of nested routes are called child routes. This means you're adding a second `<router-outlet>` to your app, because it is in addition to the `<router-outlet>` in AppComponent.
+Bu tür iç içe rotalara alt rotalar denir. Bu, uygulamanıza AppComponent'teki `<router-outlet>` öğesine ek olarak ikinci bir `<router-outlet>` eklediğiniz anlamına gelir.
 
-In this example, the `Settings` component will display the desired panel based on what the user selects. One of the unique things you’ll notice about child routes is that the component often has its own `<nav>` and `<router-outlet>`.
+Bu örnekte, `Settings` bileşeni kullanıcının seçimine göre istenen paneli görüntüler. Alt rotalarda dikkat edeceğiniz benzersiz şeylerden biri, bileşenin genellikle kendi `<nav>` ve `<router-outlet>` öğelerine sahip olmasıdır.
 
 ```angular-html
 <h1>Settings</h1>
@@ -95,7 +95,7 @@ In this example, the `Settings` component will display the desired panel based o
 <router-outlet />
 ```
 
-A child route is like any other route, in that it needs both a `path` and a `component`. The one difference is that you place child routes in a children array within the parent route.
+Alt rota diğer herhangi bir rota gibidir; hem bir `path` hem de bir `component` gerektirir. Tek fark, alt rotaları üst rota içindeki bir children dizisine yerleştirmenizdir.
 
 ```ts
 const routes: Routes = [
@@ -116,11 +116,11 @@ const routes: Routes = [
 ];
 ```
 
-Once both the `routes` and `<router-outlet>` are configured correctly, your application is now using nested routes!
+Hem `routes` hem de `<router-outlet>` doğru şekilde yapılandırıldığında, uygulamanız artık iç içe rotaları kullanıyor!
 
 ## Secondary routes with named outlets
 
-Pages may have multiple outlets— you can assign a name to each outlet to specify which content belongs to which outlet.
+Sayfaların birden fazla outlet'i olabilir — hangi içeriğin hangi outlet'e ait olduğunu belirtmek için her outlet'e bir ad atayabilirsiniz.
 
 ```angular-html
 <app-header />
@@ -130,9 +130,9 @@ Pages may have multiple outlets— you can assign a name to each outlet to speci
 <app-footer />
 ```
 
-Each outlet must have a unique name. The name cannot be set or changed dynamically. By default, the name is `'primary'`.
+Her outlet'in benzersiz bir adı olmalıdır. Ad dinamik olarak ayarlanamaz veya değiştirilemez. Varsayılan olarak ad `'primary'` şeklindedir.
 
-Angular matches the outlet's name to the `outlet` property defined on each route:
+Angular, outlet'in adını her rotada tanımlanan `outlet` özelliği ile eşleştirir:
 
 ```ts
 {
@@ -144,16 +144,16 @@ Angular matches the outlet's name to the `outlet` property defined on each route
 
 ## Outlet lifecycle events
 
-There are four lifecycle events that a router outlet can emit:
+Bir router outlet'in yayınlayabileceği dört yaşam döngüsü olayı vardır:
 
-| Event        | Description                                                              |
-| ------------ | ------------------------------------------------------------------------ |
-| `activate`   | When a new component is instantiated                                     |
-| `deactivate` | When a component is destroyed                                            |
-| `attach`     | When the `RouteReuseStrategy` instructs the outlet to attach the subtree |
-| `detach`     | When the `RouteReuseStrategy` instructs the outlet to detach the subtree |
+| Olay         | Açıklama                                                          |
+| ------------ | ----------------------------------------------------------------- |
+| `activate`   | Yeni bir bileşen oluşturulduğunda                                 |
+| `deactivate` | Bir bileşen yok edildiğinde                                       |
+| `attach`     | `RouteReuseStrategy` outlet'e alt ağacı eklemesini söylediğinde   |
+| `detach`     | `RouteReuseStrategy` outlet'ten alt ağacı ayırmasını söylediğinde |
 
-You can add event listeners with the standard event binding syntax:
+Standart olay bağlama söz dizimi ile olay dinleyicileri ekleyebilirsiniz:
 
 ```angular-html
 <router-outlet
@@ -164,11 +164,11 @@ You can add event listeners with the standard event binding syntax:
 />
 ```
 
-Check out the [API docs for RouterOutlet](/api/router/RouterOutlet?tab=api) if you’d like to learn more.
+Daha fazla bilgi edinmek istiyorsanız [RouterOutlet için API dokümanlarına](/api/router/RouterOutlet?tab=api) göz atın.
 
 ## Passing contextual data to routed components
 
-Passing contextual data to routed components often requires global state or complicated route configurations. To make this easier, each `RouterOutlet` supports a `routerOutletData` input. Routed components and their children can read this data as a signal using the `ROUTER_OUTLET_DATA` injection token, allowing outlet-specific configuration without modifying route definitions.
+Yönlendirilen bileşenlere bağlamsal veri aktarmak genellikle global durum veya karmaşık rota yapılandırmaları gerektirir. Bunu kolaylaştırmak için her `RouterOutlet` bir `routerOutletData` girişini destekler. Yönlendirilen bileşenler ve alt bileşenleri, `ROUTER_OUTLET_DATA` enjeksiyon token'ını kullanarak bu veriyi sinyal olarak okuyabilir ve böylece rota tanımlarını değiştirmeden outlet'e özgü yapılandırma yapılabilir.
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -185,7 +185,7 @@ import {RouterOutlet} from '@angular/router';
 export class Dashboard {}
 ```
 
-The routed component can inject the provided outlet data using `ROUTER_OUTLET_DATA`:
+Yönlendirilen bileşen, `ROUTER_OUTLET_DATA` kullanarak sağlanan outlet verisini enjekte edebilir:
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -200,12 +200,12 @@ export class Stats {
 }
 ```
 
-When Angular activates the `Stats` in that outlet, it receives `{ layout: 'sidebar' }` as injected data.
+Angular, `Stats` bileşenini o outlet'te etkinleştirdiğinde, enjekte edilen veri olarak `{ layout: 'sidebar' }` alır.
 
-NOTE: When the `routerOutletData` input is unset, the injected value is null by default.
+NOTE: `routerOutletData` girişi ayarlanmadığında, enjekte edilen değer varsayılan olarak null'dur.
 
 ---
 
 ## Next steps
 
-Learn how to [navigate to routes](/guide/routing/navigate-to-routes) with Angular Router.
+Angular Router ile [rotalara nasıl navigasyon yapılacağını](/guide/routing/navigate-to-routes) öğrenin.

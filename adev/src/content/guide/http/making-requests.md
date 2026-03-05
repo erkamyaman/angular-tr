@@ -1,16 +1,16 @@
 # Making HTTP requests
 
-`HttpClient` has methods corresponding to the different HTTP verbs used to make requests, both to load data and to apply mutations on the server. Each method returns an [RxJS `Observable`](https://rxjs.dev/guide/observable) which, when subscribed, sends the request and then emits the results when the server responds.
+`HttpClient`, hem veri yüklemek hem de sunucuda değişiklikler uygulamak için istek yapmak üzere kullanılan farklı HTTP fiillerine karşılık gelen yöntemlere sahiptir. Her yöntem, abone olunduğunda isteği gönderen ve ardından sunucu yanıt verdiğinde sonuçları yayınlayan bir [RxJS `Observable`](https://rxjs.dev/guide/observable) döndürür.
 
-NOTE: `Observable`s created by `HttpClient` may be subscribed any number of times and will make a new backend request for each subscription.
+NOTE: `HttpClient` tarafından oluşturulan `Observable`'lara istenilen sayıda abone olunabilir ve her abonelik için yeni bir arka uç isteği yapılır.
 
-Through an options object passed to the request method, various properties of the request and the returned response type can be adjusted.
+İstek yöntemine iletilen bir seçenekler nesnesi aracılığıyla, isteğin çeşitli özellikleri ve döndürülen yanıt türü ayarlanabilir.
 
 ## Fetching JSON data
 
-Fetching data from a backend often requires making a GET request using the [`HttpClient.get()`](api/common/http/HttpClient#get) method. This method takes two arguments: the string endpoint URL from which to fetch, and an _optional options_ object to configure the request.
+Bir arka uçtan veri almak genellikle [`HttpClient.get()`](api/common/http/HttpClient#get) yöntemi kullanılarak bir GET isteği yapmayı gerektirir. Bu yöntem iki argüman alır: veri alınacak uç nokta URL'si olan bir string ve isteği yapılandırmak için _isteğe bağlı bir seçenekler_ nesnesi.
 
-For example, to fetch configuration data from a hypothetical API using the `HttpClient.get()` method:
+Örneğin, `HttpClient.get()` yöntemini kullanarak varsayımsal bir API'den yapılandırma verilerini almak için:
 
 ```ts
 http.get<Config>('/api/config').subscribe((config) => {
@@ -18,15 +18,15 @@ http.get<Config>('/api/config').subscribe((config) => {
 });
 ```
 
-Note the generic type argument which specifies that the data returned by the server will be of type `Config`. This argument is optional, and if you omit it then the returned data will have type `Object`.
+Sunucu tarafından döndürülen verilerin `Config` türünde olacağını belirten jenerik tür argümanına dikkat edin. Bu argüman isteğe bağlıdır ve atlarsanız döndürülen veri `Object` türünde olacaktır.
 
-TIP: When dealing with data of uncertain structure and potential `undefined` or `null` values, consider using the `unknown` type instead of `Object` as the response type.
+TIP: Belirsiz yapıya sahip verilerle ve potansiyel `undefined` veya `null` değerlerle çalışırken, yanıt türü olarak `Object` yerine `unknown` türünü kullanmayı düşünün.
 
-CRITICAL: The generic type of request methods is a type **assertion** about the data returned by the server. `HttpClient` does not verify that the actual return data matches this type.
+CRITICAL: İstek yöntemlerinin jenerik türü, sunucu tarafından döndürülen veriler hakkında bir tür **varsayımıdır**. `HttpClient` gerçek dönüş verilerinin bu türle eşleştiğini doğrulamaz.
 
 ## Fetching other types of data
 
-By default, `HttpClient` assumes that servers will return JSON data. When interacting with a non-JSON API, you can tell `HttpClient` what response type to expect and return when making the request. This is done with the `responseType` option.
+Varsayılan olarak, `HttpClient` sunucuların JSON verisi döndüreceğini varsayar. JSON olmayan bir API ile etkileşim kurarken, istek yaparken `HttpClient`'a hangi yanıt türünü bekleyip döndüreceğini söyleyebilirsiniz. Bu, `responseType` seçeneği ile yapılır.
 
 | **`responseType` value** | **Returned response type**                                                                                                                |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ By default, `HttpClient` assumes that servers will return JSON data. When intera
 | `'arraybuffer'`          | [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) containing the raw response bytes |
 | `'blob'`                 | [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob) instance                                                                        |
 
-For example, you can ask `HttpClient` to download the raw bytes of a `.jpeg` image into an `ArrayBuffer`:
+Örneğin, `HttpClient`'tan bir `.jpeg` görüntüsünün ham baytlarını bir `ArrayBuffer`'a indirmesini isteyebilirsiniz:
 
 ```ts
 http.get('/images/dog.jpg', {responseType: 'arraybuffer'}).subscribe((buffer) => {
@@ -44,16 +44,16 @@ http.get('/images/dog.jpg', {responseType: 'arraybuffer'}).subscribe((buffer) =>
 ```
 
 <docs-callout important title="Literal value for `responseType`">
-Because the value of `responseType` affects the type returned by `HttpClient`, it must have a literal type and not a `string` type.
+`responseType` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
-This happens automatically if the options object passed to the request method is a literal object, but if you're extracting the request options out into a variable or helper method you might need to explicitly specify it as a literal, such as `responseType: 'text' as const`.
+İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `responseType: 'text' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
 ## Mutating server state
 
-Server APIs which perform mutations often require making POST requests with a request body specifying the new state or the change to be made.
+Sunucu API'lerinde durum değişiklikleri yapan işlemler genellikle yeni durumu veya yapılacak değişikliği belirten bir istek gövdesi ile POST istekleri yapmayı gerektirir.
 
-The [`HttpClient.post()`](api/common/http/HttpClient#post) method behaves similarly to `get()`, and accepts an additional `body` argument before its options:
+[`HttpClient.post()`](api/common/http/HttpClient#post) yöntemi `get()` ile benzer şekilde davranır ve seçeneklerinden önce ek bir `body` argümanı kabul eder:
 
 ```ts
 http.post<Config>('/api/config', newConfig).subscribe((config) => {
@@ -61,7 +61,7 @@ http.post<Config>('/api/config', newConfig).subscribe((config) => {
 });
 ```
 
-Many different types of values can be provided as the request's `body`, and `HttpClient` will serialize them accordingly:
+İsteğin `body`'si olarak birçok farklı türde değer sağlanabilir ve `HttpClient` bunları buna göre serileştirir:
 
 | **`body` type**                                                                                                               | **Serialized as**                                    |
 | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
@@ -72,13 +72,13 @@ Many different types of values can be provided as the request's `body`, and `Htt
 | [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                                             | `multipart/form-data` encoded data                   |
 | [`HttpParams`](api/common/http/HttpParams) or [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams) | `application/x-www-form-urlencoded` formatted string |
 
-IMPORTANT: Remember to `.subscribe()` to mutation request `Observable`s in order to actually fire the request.
+IMPORTANT: İsteğin gerçekten gönderilmesi için değiştirici istek `Observable`'larına `.subscribe()` yapmayı unutmayın.
 
 ## Setting URL parameters
 
-Specify request parameters that should be included in the request URL using the `params` option.
+İstek URL'sine dahil edilmesi gereken istek parametrelerini `params` seçeneğini kullanarak belirtin.
 
-Passing an object literal is the simplest way of configuring URL parameters:
+Bir nesne literali iletmek, URL parametrelerini yapılandırmanın en basit yoludur:
 
 ```ts
 http
@@ -90,9 +90,9 @@ http
   });
 ```
 
-Alternatively, pass an instance of `HttpParams` if you need more control over the construction or serialization of the parameters.
+Alternatif olarak, parametrelerin oluşturulması veya serileştirilmesi üzerinde daha fazla kontrole ihtiyacınız varsa bir `HttpParams` örneği iletin.
 
-IMPORTANT: Instances of `HttpParams` are _immutable_ and cannot be directly changed. Instead, mutation methods such as `append()` return a new instance of `HttpParams` with the mutation applied.
+IMPORTANT: `HttpParams` örnekleri _değiştirilemezdir_ ve doğrudan değiştirilemez. Bunun yerine, `append()` gibi değiştirme yöntemleri, değişikliğin uygulandığı yeni bir `HttpParams` örneği döndürür.
 
 ```ts
 const baseParams = new HttpParams().set('filter', 'all');
@@ -106,13 +106,13 @@ http
   });
 ```
 
-You can instantiate `HttpParams` with a custom `HttpParameterCodec` that determines how `HttpClient` will encode the parameters into the URL.
+`HttpClient`'ın parametreleri URL'ye nasıl kodlayacağını belirleyen özel bir `HttpParameterCodec` ile `HttpParams`'ı örnekleyebilirsiniz.
 
 ### Custom parameter encoding
 
-By default, `HttpParams` uses the built-in [`HttpUrlEncodingCodec`](api/common/http/HttpUrlEncodingCodec) to encode and decode parameter keys and values.
+Varsayılan olarak, `HttpParams` parametre anahtarlarını ve değerlerini kodlamak ve çözmek için yerleşik [`HttpUrlEncodingCodec`](api/common/http/HttpUrlEncodingCodec) kullanır.
 
-You can provide your own implementation of [`HttpParameterCodec`](api/common/http/HttpParameterCodec) to customize how encoding and decoding are applied.
+Kodlama ve çözmenin nasıl uygulanacağını özelleştirmek için kendi [`HttpParameterCodec`](api/common/http/HttpParameterCodec) uygulamanızı sağlayabilirsiniz.
 
 ```ts
 import {HttpClient, HttpParams, HttpParameterCodec} from '@angular/common/http';
@@ -153,9 +153,9 @@ export class ApiService {
 
 ## Setting request headers
 
-Specify request headers that should be included in the request using the `headers` option.
+İsteğe dahil edilmesi gereken istek başlıklarını `headers` seçeneğini kullanarak belirtin.
 
-Passing an object literal is the simplest way of configuring request headers:
+Bir nesne literali iletmek, istek başlıklarını yapılandırmanın en basit yoludur:
 
 ```ts
 http
@@ -169,9 +169,9 @@ http
   });
 ```
 
-Alternatively, pass an instance of `HttpHeaders` if you need more control over the construction of headers
+Alternatif olarak, başlıkların oluşturulması üzerinde daha fazla kontrole ihtiyacınız varsa bir `HttpHeaders` örneği iletin.
 
-IMPORTANT: Instances of `HttpHeaders` are _immutable_ and cannot be directly changed. Instead, mutation methods such as `append()` return a new instance of `HttpHeaders` with the mutation applied.
+IMPORTANT: `HttpHeaders` örnekleri _değiştirilemezdir_ ve doğrudan değiştirilemez. Bunun yerine, `append()` gibi değiştirme yöntemleri, değişikliğin uygulandığı yeni bir `HttpHeaders` örneği döndürür.
 
 ```ts
 const baseHeaders = new HttpHeaders().set('X-Debug-Level', 'minimal');
@@ -187,9 +187,9 @@ http
 
 ## Interacting with the server response events
 
-For convenience, `HttpClient` by default returns an `Observable` of the data returned by the server (the response body). Occasionally it's desirable to examine the actual response, for example to retrieve specific response headers.
+Kolaylık sağlamak için, `HttpClient` varsayılan olarak sunucu tarafından döndürülen verinin (yanıt gövdesi) bir `Observable`'ını döndürür. Bazen gerçek yanıtı incelemek istenebilir, örneğin belirli yanıt başlıklarını almak için.
 
-To access the entire response, set the `observe` option to `'response'`:
+Tüm yanıta erişmek için `observe` seçeneğini `'response'` olarak ayarlayın:
 
 ```ts
 http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
@@ -199,20 +199,20 @@ http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
 ```
 
 <docs-callout important title="Literal value for `observe`">
-Because the value of `observe` affects the type returned by `HttpClient`, it must have a literal type and not a `string` type.
+`observe` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
-This happens automatically if the options object passed to the request method is a literal object, but if you're extracting the request options out into a variable or helper method you might need to explicitly specify it as a literal, such as `observe: 'response' as const`.
+İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'response' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
 ## Receiving raw progress events
 
-In addition to the response body or response object, `HttpClient` can also return a stream of raw _events_ corresponding to specific moments in the request lifecycle. These events include when the request is sent, when the response header is returned, and when the body is complete. These events can also include _progress events_ which report upload and download status for large request or response bodies.
+Yanıt gövdesi veya yanıt nesnesine ek olarak, `HttpClient` istek yaşam döngüsündeki belirli anlara karşılık gelen ham _olaylar_ akışını da döndürebilir. Bu olaylar isteğin ne zaman gönderildiğini, yanıt başlığının ne zaman döndüğünü ve gövdenin ne zaman tamamlandığını içerir. Bu olaylar ayrıca büyük istek veya yanıt gövdeleri için yükleme ve indirme durumunu bildiren _ilerleme olaylarını_ da içerebilir.
 
-Progress events are disabled by default (as they have a performance cost) but can be enabled with the `reportProgress` option.
+İlerleme olayları varsayılan olarak devre dışıdır (performans maliyeti olduğundan) ancak `reportProgress` seçeneği ile etkinleştirilebilir.
 
-NOTE: The optional `fetch` implementation of `HttpClient` does not report _upload_ progress events.
+NOTE: `HttpClient`'ın isteğe bağlı `fetch` uygulaması _yükleme_ ilerleme olaylarını bildirmez.
 
-To observe the event stream, set the `observe` option to `'events'`:
+Olay akışını gözlemlemek için `observe` seçeneğini `'events'` olarak ayarlayın:
 
 ```ts
 http
@@ -233,12 +233,12 @@ http
 ```
 
 <docs-callout important title="Literal value for `observe`">
-Because the value of `observe` affects the type returned by `HttpClient`, it must have a literal type and not a `string` type.
+`observe` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
-This happens automatically if the options object passed to the request method is a literal object, but if you're extracting the request options out into a variable or helper method you might need to explicitly specify it as a literal, such as `observe: 'events' as const`.
+İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'events' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
-Each `HttpEvent` reported in the event stream has a `type` which distinguishes what the event represents:
+Olay akışında bildirilen her `HttpEvent`, olayın neyi temsil ettiğini ayırt eden bir `type` özelliğine sahiptir:
 
 | **`type` value**                 | **Event meaning**                                                                  |
 | -------------------------------- | ---------------------------------------------------------------------------------- |
@@ -251,25 +251,25 @@ Each `HttpEvent` reported in the event stream has a `type` which distinguishes w
 
 ## Handling request failure
 
-There are three ways an HTTP request can fail:
+Bir HTTP isteğinin başarısız olmasının üç yolu vardır:
 
-- A network or connection error can prevent the request from reaching the backend server.
-- A request didn't respond in time when the timeout option was set.
-- The backend can receive the request but fail to process it, and return an error response.
+- Bir ağ veya bağlantı hatası, isteğin arka uç sunucusuna ulaşmasını engelleyebilir.
+- Zaman aşımı seçeneği ayarlandığında istek zamanında yanıt vermeyebilir.
+- Arka uç isteği alabilir ancak işlemekte başarısız olabilir ve bir hata yanıtı döndürebilir.
 
-`HttpClient` captures all of the above kinds of errors in an `HttpErrorResponse` which it returns through the `Observable`'s error channel. Network and timeout errors have a `status` code of `0` and an `error` which is an instance of [`ProgressEvent`](https://developer.mozilla.org/docs/Web/API/ProgressEvent). Backend errors have the failing `status` code returned by the backend, and the error response as the `error`. Inspect the response to identify the error's cause and the appropriate action to handle the error.
+`HttpClient` yukarıdaki tüm hata türlerini, `Observable`'ın hata kanalı aracılığıyla döndürdüğü bir `HttpErrorResponse` içinde yakalar. Ağ ve zaman aşımı hataları `0` `status` koduna ve [`ProgressEvent`](https://developer.mozilla.org/docs/Web/API/ProgressEvent) örneği olan bir `error`'a sahiptir. Arka uç hataları, arka uç tarafından döndürülen başarısız `status` koduna ve hata yanıtını `error` olarak içerir. Hatanın nedenini ve hatayı ele almak için uygun eylemi belirlemek üzere yanıtı inceleyin.
 
-The [RxJS library](https://rxjs.dev/) offers several operators which can be useful for error handling.
+[RxJS kütüphanesi](https://rxjs.dev/) hata yönetimi için kullanışlı olabilecek çeşitli operatörler sunar.
 
-You can use the `catchError` operator to transform an error response into a value for the UI. This value can tell the UI to display an error page or value, and capture the error's cause if necessary.
+Bir hata yanıtını kullanıcı arayüzü için bir değere dönüştürmek üzere `catchError` operatörünü kullanabilirsiniz. Bu değer kullanıcı arayüzüne bir hata sayfası veya değeri göstermesini söyleyebilir ve gerekirse hatanın nedenini yakalayabilir.
 
-Sometimes transient errors such as network interruptions can cause a request to fail unexpectedly, and simply retrying the request will allow it to succeed. RxJS provides several _retry_ operators which automatically re-subscribe to a failed `Observable` under certain conditions. For example, the `retry()` operator will automatically attempt to re-subscribe a specified number of times.
+Bazen ağ kesintileri gibi geçici hatalar bir isteğin beklenmedik şekilde başarısız olmasına neden olabilir ve isteği basitçe yeniden denemek başarılı olmasını sağlayabilir. RxJS, başarısız bir `Observable`'a belirli koşullar altında otomatik olarak yeniden abone olan çeşitli _yeniden deneme_ operatörleri sağlar. Örneğin, `retry()` operatörü otomatik olarak belirtilen sayıda yeniden abone olmayı deneyecektir.
 
 ### Timeouts
 
-To set a timeout for a request, you can set the `timeout` option to a number of milliseconds along other request options. If the backend request does not complete within the specified time, the request will be aborted and an error will be emitted.
+Bir istek için zaman aşımı ayarlamak üzere, diğer istek seçenekleriyle birlikte `timeout` seçeneğini milisaniye cinsinden bir sayıya ayarlayabilirsiniz. Arka uç isteği belirtilen süre içinde tamamlanmazsa, istek iptal edilir ve bir hata yayınlanır.
 
-NOTE: The timeout will only apply to the backend HTTP request itself. It is not a timeout for the entire request handling chain. Therefore, this option is not affected by any delay introduced by interceptors.
+NOTE: Zaman aşımı yalnızca arka uç HTTP isteğinin kendisine uygulanır. Tüm istek işleme zinciri için bir zaman aşımı değildir. Bu nedenle bu seçenek, yakalayıcılar tarafından oluşturulan herhangi bir gecikmeden etkilenmez.
 
 ```ts
 http
@@ -288,15 +288,15 @@ http
 
 ## Advanced fetch options
 
-When using the `withFetch()` provider, Angular's `HttpClient` provides access to advanced fetch API options that can improve performance and user experience. These options are only available when using the fetch backend.
+`withFetch()` sağlayıcısı kullanıldığında, Angular'ın `HttpClient`'ı performansı ve kullanıcı deneyimini iyileştirebilecek gelişmiş fetch API seçeneklerine erişim sağlar. Bu seçenekler yalnızca fetch arka ucu kullanılırken mevcuttur.
 
 ### Fetch options
 
-The following options provide fine-grained control over request behavior when using the fetch backend.
+Aşağıdaki seçenekler, fetch arka ucu kullanılırken istek davranışı üzerinde ayrıntılı kontrol sağlar.
 
 #### Keep-alive connections
 
-The `keepalive` option allows a request to outlive the page that initiated it. This is particularly useful for analytics or logging requests that need to complete even if the user navigates away from the page.
+`keepalive` seçeneği, bir isteğin onu başlatan sayfadan daha uzun yaşamasına olanak tanır. Bu, özellikle kullanıcı sayfadan ayrılsa bile tamamlanması gereken analitik veya günlükleme istekleri için kullanışlıdır.
 
 ```ts
 http
@@ -308,7 +308,7 @@ http
 
 #### HTTP caching control
 
-The `cache` option controls how the request interacts with the browser's HTTP cache, which can significantly improve performance for repeated requests.
+`cache` seçeneği, isteğin tarayıcının HTTP önbelleği ile nasıl etkileşime gireceğini kontrol eder ve tekrarlanan istekler için performansı önemli ölçüde iyileştirebilir.
 
 ```ts
 //  Use cached response regardless of freshness
@@ -341,7 +341,7 @@ http
 
 #### Request priority for Core Web Vitals
 
-The `priority` option allows you to indicate the relative importance of a request, helping browsers optimize resource loading for better Core Web Vitals scores.
+`priority` seçeneği, bir isteğin göreli önemini belirtmenize olanak tanır ve tarayıcıların daha iyi Core Web Vitals puanları için kaynak yüklemesini optimize etmesine yardımcı olur.
 
 ```ts
 // High priority for critical resources
@@ -372,17 +372,17 @@ http
   });
 ```
 
-Available `priority` values:
+Kullanılabilir `priority` değerleri:
 
-- `'high'`: High priority, loaded early (e.g., critical user data, above-the-fold content)
-- `'low'`: Low priority, loaded when resources are available (e.g., analytics, prefetch data)
-- `'auto'`: Browser determines priority based on request context (default)
+- `'high'`: Yüksek öncelik, erken yüklenir (örn. kritik kullanıcı verileri, ekranın üst kısmındaki içerik)
+- `'low'`: Düşük öncelik, kaynaklar mevcut olduğunda yüklenir (örn. analitik, ön yükleme verileri)
+- `'auto'`: Tarayıcı, istek bağlamına göre önceliği belirler (varsayılan)
 
-TIP: Use `priority: 'high'` for requests that affect Largest Contentful Paint (LCP) and `priority: 'low'` for requests that don't impact initial user experience.
+TIP: Largest Contentful Paint (LCP) etkileyen istekler için `priority: 'high'` ve ilk kullanıcı deneyimini etkilemeyen istekler için `priority: 'low'` kullanın.
 
 #### Request mode
 
-The `mode` option controls how the request handles cross-origin requests and determines the response type.
+`mode` seçeneği, isteğin çapraz köken isteklerini nasıl ele aldığını kontrol eder ve yanıt türünü belirler.
 
 ```ts
 // Same-origin requests only
@@ -413,17 +413,17 @@ http
   });
 ```
 
-Available `mode` values:
+Kullanılabilir `mode` değerleri:
 
-- `'same-origin'`: Only allow same-origin requests, fail for cross-origin requests
-- `'cors'`: Allow cross-origin requests with CORS (default)
-- `'no-cors'`: Allow simple cross-origin requests without CORS, response is opaque
+- `'same-origin'`: Yalnızca aynı kökenli isteklere izin verir, çapraz köken isteklerinde başarısız olur
+- `'cors'`: CORS ile çapraz köken isteklere izin verir (varsayılan)
+- `'no-cors'`: CORS olmadan basit çapraz köken isteklere izin verir, yanıt opaktır
 
-TIP: Use `mode: 'same-origin'` for sensitive requests that should never go cross-origin.
+TIP: Hassas istekler için hiçbir zaman çapraz köken olmaması gereken durumlarda `mode: 'same-origin'` kullanın.
 
 #### Redirect handling
 
-The `redirect` option specifies how to handle redirect responses from the server.
+`redirect` seçeneği, sunucudan gelen yönlendirme yanıtlarının nasıl ele alınacağını belirtir.
 
 ```ts
 // Follow redirects automatically (default behavior)
@@ -459,17 +459,17 @@ http
   });
 ```
 
-Available `redirect` values:
+Kullanılabilir `redirect` değerleri:
 
-- `'follow'`: Automatically follow redirects (default)
-- `'error'`: Treat redirects as errors
-- `'manual'`: Don't follow redirects automatically, return redirect response
+- `'follow'`: Yönlendirmeleri otomatik olarak takip eder (varsayılan)
+- `'error'`: Yönlendirmeleri hata olarak ele alır
+- `'manual'`: Yönlendirmeleri otomatik olarak takip etmez, yönlendirme yanıtını döndürür
 
-TIP: Use `redirect: 'manual'` when you need to handle redirects with custom logic.
+TIP: Yönlendirmeleri özel mantıkla ele almanız gerektiğinde `redirect: 'manual'` kullanın.
 
 #### Credentials handling
 
-The `credentials` option controls whether cookies, authorization headers, and other credentials are sent with cross-origin requests. This is particularly important for authentication scenarios.
+`credentials` seçeneği, çerezlerin, yetkilendirme başlıklarının ve diğer kimlik bilgilerinin çapraz köken istekleriyle gönderilip gönderilmeyeceğini kontrol eder. Bu, özellikle kimlik doğrulama senaryoları için önemlidir.
 
 ```ts
 // Include credentials for cross-origin requests
@@ -519,19 +519,19 @@ http
   });
 ```
 
-IMPORTANT: The `withCredentials` option takes precedence over the `credentials` option. If both are specified, `withCredentials: true` will always result in `credentials: 'include'`, regardless of the explicit `credentials` value.
+IMPORTANT: `withCredentials` seçeneği `credentials` seçeneğinden önceliklidir. Her ikisi de belirtilmişse, `withCredentials: true` açık `credentials` değerinden bağımsız olarak her zaman `credentials: 'include'` sonucunu verecektir.
 
-Available `credentials` values:
+Kullanılabilir `credentials` değerleri:
 
-- `'omit'`: Never send credentials
-- `'same-origin'`: Send credentials only for same-origin requests (default)
-- `'include'`: Always send credentials, even for cross-origin requests
+- `'omit'`: Kimlik bilgilerini asla göndermez
+- `'same-origin'`: Kimlik bilgilerini yalnızca aynı kökenli istekler için gönderir (varsayılan)
+- `'include'`: Çapraz köken istekler dahil her zaman kimlik bilgilerini gönderir
 
-TIP: Use `credentials: 'include'` when you need to send authentication cookies or headers to a different domain that supports CORS. Avoid mixing `credentials` and `withCredentials` options to prevent confusion.
+TIP: CORS'u destekleyen farklı bir alan adına kimlik doğrulama çerezleri veya başlıkları göndermeniz gerektiğinde `credentials: 'include'` kullanın. Karışıklığı önlemek için `credentials` ve `withCredentials` seçeneklerini birlikte kullanmaktan kaçının.
 
 #### Referrer
 
-The `referrer` option allows you to control what referrer information is sent with the request. This is important for privacy and security considerations.
+`referrer` seçeneği, istekle birlikte hangi yönlendiren bilgisinin gönderileceğini kontrol etmenize olanak tanır. Bu, gizlilik ve güvenlik açısından önemlidir.
 
 ```ts
 // Send a specific referrer URL
@@ -553,17 +553,17 @@ http
   });
 ```
 
-The `referrer` option accepts:
+`referrer` seçeneği şunları kabul eder:
 
-- A valid URL string: Sets the specific referrer URL to send
-- An empty string `''`: Sends no referrer information
-- `'about:client'`: Uses the default referrer (current page URL)
+- Geçerli bir URL string: Gönderilecek belirli yönlendiren URL'sini ayarlar
+- Boş bir string `''`: Yönlendiren bilgisi göndermez
+- `'about:client'`: Varsayılan yönlendireni (mevcut sayfa URL'si) kullanır
 
-TIP: Use `referrer: ''` for sensitive requests where you don't want to leak the referring page URL.
+TIP: Yönlendiren sayfa URL'sini sızdırmak istemediğiniz hassas istekler için `referrer: ''` kullanın.
 
 #### Referrer policy
 
-The `referrerPolicy` option controls how much referrer information , the URL of the page making the request is sent along with an HTTP request. This setting affects both privacy and analytics, allowing you to balance data visibility with security considerations.
+`referrerPolicy` seçeneği, ne kadar yönlendiren bilgisinin (isteği yapan sayfanın URL'si) bir HTTP isteğiyle birlikte gönderileceğini kontrol eder. Bu ayar hem gizlilik hem de analitikleri etkiler ve veri görünürlüğü ile güvenlik değerlendirmeleri arasında denge kurmanıza olanak tanır.
 
 ```ts
 // Send no referrer information regardless of the current page
@@ -581,22 +581,22 @@ http
   .subscribe();
 ```
 
-The `referrerPolicy` option accepts:
+`referrerPolicy` seçeneği şunları kabul eder:
 
-- `'no-referrer'` Never send the `Referer` header.
-- `'no-referrer-when-downgrade'` Sends the referrer for same-origin and secure (HTTPS→HTTPS) requests, but omits it when navigating from a secure to a less secure origin (HTTPS→HTTP).
-- `'origin'` Sends only the origin (scheme, host, port) of the referrer, omitting path and query information.
-- `'origin-when-cross-origin'` Sends the full URL for same-origin requests, but only the origin for cross-origin requests.
-- `'same-origin'` Sends the full URL for same-origin requests and no referrer for cross-origin requests.
-- `'strict-origin'` Sends only the origin, and only if the protocol security level is not downgraded (e.g., HTTPS→HTTPS). Omits the referrer on downgrade.
-- `'strict-origin-when-cross-origin'` Default browser behavior. Sends the full URL for same-origin requests, the origin for cross-origin requests when not downgraded, and omits the referrer on downgrade.
-- `'unsafe-url'`Always sends the full URL (including path and query). This can expose sensitive data and should be used with caution.
+- `'no-referrer'` `Referer` başlığını asla göndermez.
+- `'no-referrer-when-downgrade'` Aynı köken ve güvenli (HTTPS->HTTPS) istekler için yönlendireni gönderir, ancak güvenli bir kökenden daha az güvenli bir kökene (HTTPS->HTTP) geçerken atlar.
+- `'origin'` Yönlendirenin yalnızca kökenini (şema, ana bilgisayar, port) gönderir, yol ve sorgu bilgilerini atlar.
+- `'origin-when-cross-origin'` Aynı köken istekler için tam URL gönderir, ancak çapraz köken istekler için yalnızca kökeni gönderir.
+- `'same-origin'` Aynı köken istekler için tam URL gönderir ve çapraz köken istekler için yönlendiren göndermez.
+- `'strict-origin'` Yalnızca kökeni gönderir ve yalnızca protokol güvenlik seviyesi düşürülmemişse (örn. HTTPS->HTTPS). Düşürmede yönlendireni atlar.
+- `'strict-origin-when-cross-origin'` Varsayılan tarayıcı davranışı. Aynı köken istekler için tam URL, düşürülmemiş çapraz köken istekler için köken gönderir ve düşürmede yönlendireni atlar.
+- `'unsafe-url'` Her zaman tam URL'yi (yol ve sorgu dahil) gönderir. Bu hassas verileri açığa çıkarabilir ve dikkatli kullanılmalıdır.
 
-TIP: Prefer conservative values such as `'no-referrer'`, `'origin'`, or `'strict-origin-when-cross-origin'` for privacy-sensitive requests.
+TIP: Gizlilik açısından hassas istekler için `'no-referrer'`, `'origin'` veya `'strict-origin-when-cross-origin'` gibi muhafazakar değerleri tercih edin.
 
 #### Integrity
 
-The `integrity` option allows you to verify that the response hasn't been tampered with by providing a cryptographic hash of the expected content. This is particularly useful for loading scripts or other resources from CDNs.
+`integrity` seçeneği, beklenen içeriğin kriptografik özetini sağlayarak yanıtın değiştirilmediğini doğrulamanıza olanak tanır. Bu, özellikle CDN'lerden betik veya diğer kaynakları yüklerken kullanışlıdır.
 
 ```ts
 // Verify response integrity with SHA-256 hash
@@ -610,29 +610,29 @@ http
   });
 ```
 
-IMPORTANT: The `integrity` option requires an exact match between the response content and the provided hash. If the content doesn't match, the request will fail with a network error.
+IMPORTANT: `integrity` seçeneği, yanıt içeriği ile sağlanan özet arasında tam bir eşleşme gerektirir. İçerik eşleşmezse, istek bir ağ hatası ile başarısız olur.
 
-TIP: Use subresource integrity when loading critical resources from external sources to ensure they haven't been modified. Generate hashes using tools like `openssl`.
+TIP: Değiştirilmediğinden emin olmak için harici kaynaklardan kritik kaynaklar yüklerken alt kaynak bütünlüğünü kullanın. Özetleri `openssl` gibi araçlar kullanarak oluşturun.
 
 ## Http `Observable`s
 
-Each request method on `HttpClient` constructs and returns an `Observable` of the requested response type. Understanding how these `Observable`s work is important when using `HttpClient`.
+`HttpClient` üzerindeki her istek yöntemi, istenen yanıt türünün bir `Observable`'ını oluşturur ve döndürür. `HttpClient` kullanırken bu `Observable`'ların nasıl çalıştığını anlamak önemlidir.
 
-`HttpClient` produces what RxJS calls "cold" `Observable`s, meaning that no actual request happens until the `Observable` is subscribed. Only then is the request actually dispatched to the server. Subscribing to the same `Observable` multiple times will trigger multiple backend requests. Each subscription is independent.
+`HttpClient`, RxJS'in "soğuk" `Observable`'lar dediği şeyi üretir, yani `Observable`'a abone olunana kadar gerçek bir istek yapılmaz. Ancak o zaman istek sunucuya gönderilir. Aynı `Observable`'a birden fazla kez abone olmak birden fazla arka uç isteğini tetikler. Her abonelik bağımsızdır.
 
-TIP: You can think of `HttpClient` `Observable`s as _blueprints_ for actual server requests.
+TIP: `HttpClient` `Observable`'larını gerçek sunucu istekleri için _planlar_ olarak düşünebilirsiniz.
 
-Once subscribed, unsubscribing will abort the in-progress request. This is very useful if the `Observable` is subscribed via the `async` pipe, as it will automatically cancel the request if the user navigates away from the current page. Additionally, if you use the `Observable` with an RxJS combinator like `switchMap`, this cancellation will clean up any stale requests.
+Abone olduktan sonra, abonelikten çıkmak devam eden isteği iptal eder. Bu, `Observable`'a `async` pipe aracılığıyla abone olunmuşsa çok kullanışlıdır, çünkü kullanıcı mevcut sayfadan ayrıldığında isteği otomatik olarak iptal eder. Ek olarak, `Observable`'ı `switchMap` gibi bir RxJS birleştiricisi ile kullanırsanız, bu iptal eski istekleri temizler.
 
-Once the response returns, `Observable`s from `HttpClient` usually complete (although interceptors can influence this).
+Yanıt döndüğünde, `HttpClient`'tan gelen `Observable`'lar genellikle tamamlanır (ancak yakalayıcılar bunu etkileyebilir).
 
-Because of the automatic completion, there is usually no risk of memory leaks if `HttpClient` subscriptions are not cleaned up. However, as with any async operation, we strongly recommend that you clean up subscriptions when the component using them is destroyed, as the subscription callback may otherwise run and encounter errors when it attempts to interact with the destroyed component.
+Otomatik tamamlama nedeniyle, `HttpClient` abonelikleri temizlenmezse genellikle bellek sızıntısı riski yoktur. Ancak, herhangi bir asenkron işlemde olduğu gibi, abonelik geri çağrısının aksi takdirde çalışıp yok edilmiş bileşenle etkileşime girmeye çalıştığında hatalarla karşılaşabileceğinden, onları kullanan bileşen yok edildiğinde abonelikleri temizlemenizi şiddetle öneriyoruz.
 
-TIP: Using the `async` pipe or the `toSignal` operation to subscribe to `Observable`s ensures that subscriptions are disposed properly.
+TIP: `Observable`'lara abone olmak için `async` pipe veya `toSignal` işlemini kullanmak, aboneliklerin düzgün şekilde elden çıkarılmasını sağlar.
 
 ## Best practices
 
-While `HttpClient` can be injected and used directly from components, generally we recommend you create reusable, injectable services which isolate and encapsulate data access logic. For example, this `UserService` encapsulates the logic to request data for a user by their id:
+`HttpClient` doğrudan bileşenlerden enjekte edilip kullanılabilse de, genellikle veri erişim mantığını izole eden ve kapsülleyen yeniden kullanılabilir, enjekte edilebilir servisler oluşturmanızı öneririz. Örneğin, bu `UserService` bir kullanıcıyı id'sine göre veri isteme mantığını kapsüller:
 
 ```ts
 @Injectable({providedIn: 'root'})
@@ -645,7 +645,7 @@ export class UserService {
 }
 ```
 
-Within a component, you can combine `@if` with the `async` pipe to render the UI for the data only after it's finished loading:
+Bir bileşen içinde, veri yalnızca yüklenmesi tamamlandığında kullanıcı arayüzünü oluşturmak için `@if` ile `async` pipe'ı birleştirebilirsiniz:
 
 ```angular-ts
 import {AsyncPipe} from '@angular/common';

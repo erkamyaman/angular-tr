@@ -1,11 +1,11 @@
 <docs-decorative-header title="Server-side & hybrid rendering" imgSrc="adev/src/assets/images/overview.svg"> <!-- markdownlint-disable-line -->
-Learn about different ways you can optimize the performance of your application with different rendering strategies.
+Farklı render stratejileri ile uygulamanızın performansını optimize edebileceğiniz farklı yolları öğrenin.
 </docs-decorative-header>
 
-One of the top priorities of any developer is ensuring that their application is as performant as possible. These guides are here to help you follow best practices for building performant applications by taking advantage of different rendering strategies.
+Herhangi bir geliştiricinin en önemli önceliklerinden biri, uygulamasının mümkün olduğunca performanslı olmasını sağlamaktır. Bu kılavuzlar, farklı render stratejilerinden yararlanarak performanslı uygulamalar oluşturmak için en iyi uygulamaları takip etmenize yardımcı olmak için buradalar.
 
-| Guides Types                                          | Description                                                                                                                                                                             |
-| :---------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Server and hybrid rendering](/guide/ssr)             | Learn how to leverage rendering pages on the server to improve load times.                                                                                                              |
-| [Hydration](/guide/hydration)                         | A process to improve application performance by restoring its state after server-side rendering and reusing existing DOM structure as much as possible.                                 |
-| [Incremental Hydration](/guide/incremental-hydration) | Incremental hydration is an advanced type of hydration that can leave sections of your application dehydrated and incrementally trigger hydration of those sections as they are needed. |
+| Guides Types                                          | Description                                                                                                                                                                       |
+| :---------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Server and hybrid rendering](/guide/ssr)             | Yükleme sürelerini iyileştirmek için sayfaları sunucuda render etmeyi nasıl kullanacağınızı öğrenin.                                                                              |
+| [Hydration](/guide/hydration)                         | Sunucu tarafı render sonrası durumunu geri yükleyerek ve mevcut DOM yapısını mümkün olduğunca yeniden kullanarak uygulama performansını artıran bir süreç.                        |
+| [Incremental Hydration](/guide/incremental-hydration) | Artımlı hidrasyon, uygulamanızın bölümlerini dehidrate bırakabilen ve ihtiyaç duyuldukça bu bölümlerin hidrasyonunu artımlı olarak tetikleyebilen gelişmiş bir hidrasyon türüdür. |

@@ -1,8 +1,8 @@
 # NgModules
 
-IMPORTANT: The Angular team recommends using [standalone components](guide/components) instead of `NgModule` for all new code. Use this guide to understand existing code built with `@NgModule`.
+IMPORTANT: Angular ekibi, tüm yeni kodlar için `NgModule` yerine [bağımsız bileşenler](guide/components) kullanılmasını önerir. Mevcut `@NgModule` ile oluşturulmuş kodu anlamak için bu kılavuzu kullanın.
 
-An NgModule is a class marked by the `@NgModule` decorator. This decorator accepts _metadata_ that tells Angular how to compile component templates and configure dependency injection.
+Bir NgModule, `@NgModule` dekoratörü ile işaretlenmiş bir sınıftır. Bu dekoratör, Angular'a bileşen şablonlarını nasıl derleyeceğini ve bağımlılık enjeksiyonunu nasıl yapılandıracağını söyleyen _meta verileri_ kabul eder.
 
 ```typescript
 import {NgModule} from '@angular/core';
@@ -13,14 +13,14 @@ import {NgModule} from '@angular/core';
 export class CustomMenuModule {}
 ```
 
-An NgModule has two main responsibilities:
+Bir NgModule'ün iki ana sorumluluğu vardır:
 
-- Declaring components, directives, and pipes that belong to the NgModule
-- Add providers to the injector for components, directives, and pipes that import the NgModule
+- NgModule'e ait bileşenleri, direktifleri ve pipe'ları bildirmek
+- NgModule'ü içe aktaran bileşenler, direktifler ve pipe'lar için enjektöre sağlayıcılar eklemek
 
 ## Declarations
 
-The `declarations` property of the `@NgModule` metadata declares the components, directives, and pipes that belong to the NgModule.
+`@NgModule` meta verisinin `declarations` özelliği, NgModule'e ait bileşenleri, direktifleri ve pipe'ları bildirir.
 
 ```typescript
 @NgModule({
@@ -31,9 +31,9 @@ The `declarations` property of the `@NgModule` metadata declares the components,
 export class CustomMenuModule {}
 ```
 
-In the example above, the components `CustomMenu` and `CustomMenuItem` belong to `CustomMenuModule`.
+Yukarıdaki örnekte, `CustomMenu` ve `CustomMenuItem` bileşenleri `CustomMenuModule`'e aittir.
 
-The `declarations` property additionally accepts _arrays_ of components, directives, and pipes. These arrays, in turn, may also contain other arrays.
+`declarations` özelliği ek olarak bileşen, direktif ve pipe _dizilerini_ kabul eder. Bu diziler de sırasıyla başka diziler içerebilir.
 
 ```typescript
 const MENU_COMPONENTS = [CustomMenu, CustomMenuItem];
@@ -48,9 +48,9 @@ const WIDGETS = [MENU_COMPONENTS, CustomSlider];
 export class CustomMenuModule {}
 ```
 
-If Angular discovers any components, directives, or pipes declared in more than one NgModule, it reports an error.
+Angular, birden fazla NgModule'de bildirilen herhangi bir bileşen, direktif veya pipe keşfederse bir hata bildirir.
 
-Any components, directives, or pipes must be explicitly marked as `standalone: false` in order to be declared in an NgModule.
+Bir NgModule'de bildirilmek için herhangi bir bileşen, direktif veya pipe açıkça `standalone: false` olarak işaretlenmelidir.
 
 ```typescript
 @Component({
@@ -65,7 +65,7 @@ export class CustomMenu {
 
 ### imports
 
-Components declared in an NgModule may depend on other components, directives, and pipes. Add these dependencies to the `imports` property of the `@NgModule` metadata.
+Bir NgModule'de bildirilen bileşenler diğer bileşenlere, direktiflere ve pipe'lara bağımlı olabilir. Bu bağımlılıkları `@NgModule` meta verisinin `imports` özelliğine ekleyin.
 
 ```typescript
 @NgModule({
@@ -77,11 +77,11 @@ Components declared in an NgModule may depend on other components, directives, a
 export class CustomMenuModule {}
 ```
 
-The `imports` array accepts other NgModules, as well as standalone components, directives, and pipes.
+`imports` dizisi, diğer NgModule'leri ve bağımsız bileşenleri, direktifleri ve pipe'ları kabul eder.
 
 ### exports
 
-An NgModule can _export_ its declared components, directives, and pipes such that they're available to other components and NgModules.
+Bir NgModule, bildirilen bileşenlerini, direktiflerini ve pipe'larını diğer bileşenler ve NgModule'ler tarafından kullanılabilir olacak şekilde _dışa aktarabilir_.
 
 ```typescript
 @NgModule({
@@ -95,7 +95,7 @@ An NgModule can _export_ its declared components, directives, and pipes such tha
 export class CustomMenuModule {}
 ```
 
-The `exports` property is not limited to declarations, however. An NgModule can also export any other components, directives, pipes, and NgModules that it imports.
+Ancak `exports` özelliği bildirimlerle sınırlı değildir. Bir NgModule ayrıca içe aktardığı diğer bileşenleri, direktifleri, pipe'ları ve NgModule'leri de dışa aktarabilir.
 
 ```typescript
 @NgModule({
@@ -110,12 +110,12 @@ export class CustomMenuModule {}
 
 ## `NgModule` providers
 
-TIP: See the [Dependency Injection guide](guide/di) for information on dependency injection and providers.
+TIP: Bağımlılık enjeksiyonu ve sağlayıcılar hakkında bilgi için [Bağımlılık Enjeksiyonu kılavuzuna](guide/di) bakın.
 
-An `NgModule` can specify `providers` for injected dependencies. These providers are available to:
+Bir `NgModule`, enjekte edilen bağımlılıklar için `providers` belirleyebilir. Bu sağlayıcılar aşağıdakilere sunulur:
 
-- Any standalone component, directive, or pipe that imports the NgModule, and
-- The `declarations` and `providers` of any _other_ NgModule that imports the NgModule.
+- NgModule'ü içe aktaran herhangi bir bağımsız bileşen, direktif veya pipe, ve
+- NgModule'ü içe aktaran herhangi bir _diğer_ NgModule'ün `declarations` ve `providers` değerleri.
 
 ```typescript
 @NgModule({
@@ -136,18 +136,18 @@ export class CustomMenuModule {}
 export class UserProfileModule {}
 ```
 
-In the example above:
+Yukarıdaki örnekte:
 
-- The `CustomMenuModule` provides `OverlayManager`.
-- The `CustomMenu` and `CustomMenuItem` components can inject `OverlayManager` because they're declared in `CustomMenuModule`.
-- `UserProfile` can inject `OverlayManager` because its NgModule imports `CustomMenuModule`.
-- `UserDataClient` can inject `OverlayManager` because its NgModule imports `CustomMenuModule`.
+- `CustomMenuModule`, `OverlayManager`'ı sağlar.
+- `CustomMenu` ve `CustomMenuItem` bileşenleri, `CustomMenuModule`'de bildirildikleri için `OverlayManager`'ı enjekte edebilir.
+- `UserProfile`, NgModule'ü `CustomMenuModule`'ü içe aktardığı için `OverlayManager`'ı enjekte edebilir.
+- `UserDataClient`, NgModule'ü `CustomMenuModule`'ü içe aktardığı için `OverlayManager`'ı enjekte edebilir.
 
 ### The `forRoot` and `forChild` pattern
 
-Some NgModules define a static `forRoot` method that accepts some configuration and returns an array of providers. The name "`forRoot`" is a convention that indicates that these providers are intended to be added exclusively to the _root_ of your application during bootstrap.
+Bazı NgModule'ler, bazı yapılandırmaları kabul eden ve bir sağlayıcı dizisi döndüren statik bir `forRoot` yöntemi tanımlar. "`forRoot`" adı, bu sağlayıcıların önyükleme sırasında yalnızca uygulamanızın _köküne_ eklenmesinin amaçlandığını belirten bir kuraldır.
 
-Any providers included in this way are eagerly loaded, increasing the JavaScript bundle size of your initial page load.
+Bu şekilde dahil edilen sağlayıcılar hevesle yüklenir ve ilk sayfa yüklemenizin JavaScript paket boyutunu artırır.
 
 ```typescript
 bootstrapApplication(MyApplicationRoot, {
@@ -155,7 +155,7 @@ bootstrapApplication(MyApplicationRoot, {
 });
 ```
 
-Similarly, some NgModules may define a static `forChild` that indicates the providers are intended to be added to components within your application hierarchy.
+Benzer şekilde, bazı NgModule'ler, sağlayıcıların uygulama hiyerarşinizdeki bileşenlere eklenmesinin amaçlandığını belirten statik bir `forChild` yöntemi tanımlayabilir.
 
 ```typescript
 @Component({
@@ -169,11 +169,11 @@ export class UserProfile {
 
 ## Bootstrapping an application
 
-IMPORTANT: The Angular team recommends using [bootstrapApplication](api/platform-browser/bootstrapApplication) instead of `bootstrapModule` for all new code. Use this guide to understand existing applications bootstrapped with `@NgModule`.
+IMPORTANT: Angular ekibi, tüm yeni kodlar için `bootstrapModule` yerine [bootstrapApplication](api/platform-browser/bootstrapApplication) kullanılmasını önerir. `@NgModule` ile önyükleme yapılan mevcut uygulamaları anlamak için bu kılavuzu kullanın.
 
-The `@NgModule` decorator accepts an optional `bootstrap` array that may contain one or more components.
+`@NgModule` dekoratörü, bir veya daha fazla bileşen içerebilen isteğe bağlı bir `bootstrap` dizisi kabul eder.
 
-You can use the [`bootstrapModule`](/api/core/PlatformRef#bootstrapModule) method from either [`platformBrowser`](api/platform-browser/platformBrowser) or [`platformServer`](api/platform-server/platformServer) to start an Angular application. When run, this function locates any elements on the page with a CSS selector that matches the listed component(s) and renders those components on the page.
+Angular uygulamasını başlatmak için [`platformBrowser`](api/platform-browser/platformBrowser) veya [`platformServer`](api/platform-server/platformServer)'dan [`bootstrapModule`](/api/core/PlatformRef#bootstrapModule) yöntemini kullanabilirsiniz. Çalıştırıldığında, bu fonksiyon listelenen bileşenlerle eşleşen bir CSS seçicisine sahip sayfadaki tüm öğeleri bulur ve bu bileşenleri sayfada render eder.
 
 ```typescript
 import {platformBrowser} from '@angular/platform-browser';
@@ -186,6 +186,6 @@ export class MyApplicationModule {}
 platformBrowser().bootstrapModule(MyApplicationModule);
 ```
 
-Components listed in `bootstrap` are automatically included in the NgModule's declarations.
+`bootstrap` içinde listelenen bileşenler otomatik olarak NgModule'ün bildirimlerine dahil edilir.
 
-When you bootstrap an application from an NgModule, the collected `providers` of this module and all of the `providers` of its `imports` are eagerly loaded and available to inject for the entire application.
+Bir uygulamayı NgModule'den önyükleme yaptığınızda, bu modülün toplanan `providers` değerleri ve tüm `imports` değerlerinin `providers` değerleri hevesle yüklenir ve tüm uygulama için enjekte edilmeye hazır olur.

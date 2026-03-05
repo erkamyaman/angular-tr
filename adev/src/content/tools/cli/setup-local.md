@@ -1,19 +1,19 @@
 # Setting up the local environment and workspace
 
-This guide explains how to set up your environment for Angular development using the [Angular CLI](cli 'CLI command reference').
-It includes information about installing the CLI, creating an initial workspace and starter app, and running that app locally to verify your setup.
+Bu kılavuz, [Angular CLI](cli 'CLI command reference') kullanarak Angular geliştirme ortamınızı nasıl kuracağınızı açıklar.
+CLI'ı yükleme, başlangıç çalışma alanı ve başlangıç uygulaması oluşturma ve kurulumunuzu doğrulamak için bu uygulamayı yerel olarak çalıştırma hakkında bilgi içerir.
 
 <docs-callout title="Try Angular without local setup">
 
-If you are new to Angular, you might want to start with [Try it now!](tutorials/learn-angular), which introduces the essentials of Angular in your browser.
-This standalone tutorial takes advantage of the interactive [StackBlitz](https://stackblitz.com) environment for online development.
-You don't need to set up your local environment until you're ready.
+Angular'da yeniyseniz, tarayıcınızda Angular'ın temellerini tanıtan [Şimdi deneyin!](tutorials/learn-angular) ile başlamak isteyebilirsiniz.
+Bu bağımsız eğitim, çevrimiçi geliştirme için etkileşimli [StackBlitz](https://stackblitz.com) ortamından yararlanır.
+Hazır olana kadar yerel ortamınızı kurmanıza gerek yoktur.
 
 </docs-callout>
 
 ## Before you start
 
-To use Angular CLI, you should be familiar with the following:
+Angular CLI'ı kullanmak için aşağıdakilere aşina olmanız gerekir:
 
 <docs-pill-row>
   <docs-pill href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" title="JavaScript"/>
@@ -21,21 +21,21 @@ To use Angular CLI, you should be familiar with the following:
   <docs-pill href="https://developer.mozilla.org/en-US/docs/Web/CSS" title="CSS"/>
 </docs-pill-row>
 
-You should also be familiar with usage of command line interface (CLI) tools and have a general understanding of command shells.
-Knowledge of [TypeScript](https://www.typescriptlang.org) is helpful, but not required.
+Ayrıca komut satırı arayüzü (CLI) araçlarının kullanımına aşina olmanız ve komut kabukları hakkında genel bir anlayışa sahip olmanız gerekir.
+[TypeScript](https://www.typescriptlang.org) bilgisi faydalıdır, ancak zorunlu değildir.
 
 ## Dependencies
 
-To install Angular CLI on your local system, you need to install [Node.js](https://nodejs.org/).
-Angular CLI uses Node and its associated package manager, npm, to install and run JavaScript tools outside the browser.
+Angular CLI'ı yerel sisteminize kurmak için [Node.js](https://nodejs.org/) yüklemeniz gerekir.
+Angular CLI, tarayıcı dışında JavaScript araçlarını yüklemek ve çalıştırmak için Node ve ilişkili paket yöneticisi npm'i kullanır.
 
-[Download and install Node.js](https://nodejs.org/en/download), which will include the `npm` CLI as well.
-Angular requires an [active LTS or maintenance LTS](https://nodejs.org/en/about/previous-releases) version of Node.js.
-See [Angular's version compatibility](reference/versions) guide for more information.
+`npm` CLI'ını da içerecek olan [Node.js'i indirin ve yükleyin](https://nodejs.org/en/download).
+Angular, Node.js'in [aktif LTS veya bakım LTS](https://nodejs.org/en/about/previous-releases) sürümünü gerektirir.
+Daha fazla bilgi için Angular'ın [sürüm uyumluluğu](reference/versions) kılavuzuna bakın.
 
 ## Install the Angular CLI
 
-To install the Angular CLI, open a terminal window and run the following command:
+Angular CLI'ı yüklemek için bir terminal penceresi açın ve aşağıdaki komutu çalıştırın:
 
 <docs-code-multifile>
    <docs-code
@@ -67,8 +67,8 @@ To install the Angular CLI, open a terminal window and run the following command
 
 ### Powershell execution policy
 
-On Windows client computers, the execution of PowerShell scripts is disabled by default, so the above command may fail with an error.
-To allow the execution of PowerShell scripts, which is needed for npm global binaries, you must set the following <a href="https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_execution_policies">execution policy</a>:
+Windows istemci bilgisayarlarında, PowerShell betiklerinin çalıştırılması varsayılan olarak devre dışıdır, bu nedenle yukarıdaki komut bir hatayla başarısız olabilir.
+npm global ikili dosyaları için gerekli olan PowerShell betiklerinin çalıştırılmasına izin vermek için aşağıdaki <a href="https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_execution_policies">çalıştırma ilkesini</a> ayarlamanız gerekir:
 
 ```sh
 
@@ -76,12 +76,12 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 ```
 
-Carefully read the message displayed after executing the command and follow the instructions. Make sure you understand the implications of setting an execution policy.
+Komutu çalıştırdıktan sonra görüntülenen mesajı dikkatlice okuyun ve talimatları izleyin. Bir çalıştırma ilkesi ayarlamanın etkilerini anladığınızdan emin olun.
 
 ### Unix permissions
 
-On some Unix-like setups, global scripts may be owned by the root user, so to the above command may fail with a permission error.
-Run with `sudo` to execute the command as the root user and enter your password when prompted:
+Bazı Unix benzeri kurulumlarda, global betikler root kullanıcısına ait olabilir, bu nedenle yukarıdaki komut bir izin hatasıyla başarısız olabilir.
+Komutu root kullanıcısı olarak çalıştırmak için `sudo` ile çalıştırın ve istendiğinde parolanızı girin:
 
 <docs-code-multifile>
    <docs-code
@@ -111,13 +111,13 @@ Run with `sudo` to execute the command as the root user and enter your password 
 
  </docs-code-multifile>
 
-Make sure you understand the implications of running commands as root.
+Komutları root olarak çalıştırmanın etkilerini anladığınızdan emin olun.
 
 ## Create a workspace and initial application
 
-You develop apps in the context of an Angular **workspace**.
+Uygulamaları bir Angular **çalışma alanı** bağlamında geliştirirsiniz.
 
-To create a new workspace and initial starter app, run the CLI command `ng new` and provide the name `my-app`, as shown here, then answer prompts about features to include:
+Yeni bir çalışma alanı ve başlangıç uygulaması oluşturmak için `ng new` CLI komutunu çalıştırın ve burada gösterildiği gibi `my-app` adını verin, ardından dahil edilecek özellikler hakkındaki istemleri yanıtlayın:
 
 ```shell
 
@@ -125,11 +125,11 @@ ng new my-app
 
 ```
 
-The Angular CLI installs the necessary Angular npm packages and other dependencies.
-This can take a few minutes.
+Angular CLI, gerekli Angular npm paketlerini ve diğer bağımlılıkları yükler.
+Bu birkaç dakika sürebilir.
 
-The CLI creates a new workspace and a small welcome app in a new directory with the same name as the workspace, ready to run.
-Navigate to the new directory so subsequent commands use this workspace.
+CLI, çalışma alanıyla aynı adda yeni bir dizinde yeni bir çalışma alanı ve çalıştırılmaya hazır küçük bir karşılama uygulaması oluşturur.
+Sonraki komutların bu çalışma alanını kullanması için yeni dizine gidin.
 
 ```shell
 
@@ -139,7 +139,7 @@ cd my-app
 
 ## Run the application
 
-The Angular CLI includes a development server, for you to build and serve your app locally. Run the following command:
+Angular CLI, uygulamanızı yerel olarak derleyip sunmanız için bir geliştirme sunucusu içerir. Aşağıdaki komutu çalıştırın:
 
 ```shell
 
@@ -147,33 +147,32 @@ ng serve --open
 
 ```
 
-The `ng serve` command launches the server, watches your files, as well as rebuilds the app and reloads the browser as you make changes to those files.
+`ng serve` komutu sunucuyu başlatır, dosyalarınızı izler ve bu dosyalarda değişiklik yaptığınızda uygulamayı yeniden derler ve tarayıcıyı yeniden yükler.
 
-The `--open` (or just `-o`) option automatically opens your browser to `http://localhost:4200/` to view the generated application.
+`--open` (veya sadece `-o`) seçeneği, oluşturulan uygulamayı görüntülemek için tarayıcınızı otomatik olarak `http://localhost:4200/` adresinde açar.
 
 ## Workspaces and project files
 
-The [`ng new`](cli/new) command creates an [Angular workspace](reference/configs/workspace-config) folder and generates a new application inside it.
-A workspace can contain multiple applications and libraries.
-The initial application created by the [`ng new`](cli/new) command is at the root directory of the workspace.
-When you generate an additional application or library in an existing workspace, it goes into a `projects/` subfolder by default.
+[`ng new`](cli/new) komutu bir [Angular çalışma alanı](reference/configs/workspace-config) klasörü oluşturur ve içinde yeni bir uygulama oluşturur.
+Bir çalışma alanı birden fazla uygulama ve kütüphane içerebilir.
+[`ng new`](cli/new) komutu tarafından oluşturulan ilk uygulama, çalışma alanının kök dizinindedir.
+Mevcut bir çalışma alanında ek bir uygulama veya kütüphane oluşturduğunuzda, varsayılan olarak bir `projects/` alt klasörüne yerleştirilir.
 
-A newly generated application contains the source files for a root component and template.
-Each application has a `src` folder that contains its components, data, and assets.
+Yeni oluşturulan bir uygulama, bir kök bileşen ve şablon için kaynak dosyalarını içerir.
+Her uygulamanın bileşenlerini, verilerini ve varlıklarını içeren bir `src` klasörü vardır.
 
-You can edit the generated files directly, or add to and modify them using CLI commands.
-Use the [`ng generate`](cli/generate) command to add new files for additional components, directives, pipes, services, and more.
-Commands such as [`ng add`](cli/add) and [`ng generate`](cli/generate), which create or operate on applications and libraries, must be executed
-from within a workspace. By contrast, commands such as `ng new` must be executed _outside_ a workspace because they will create a new one.
+Oluşturulan dosyaları doğrudan düzenleyebilir veya CLI komutlarını kullanarak ekleyebilir ve değiştirebilirsiniz.
+Ek bileşenler, direktifler, pipe'lar, servisler ve daha fazlası için yeni dosyalar eklemek üzere [`ng generate`](cli/generate) komutunu kullanın.
+Uygulamalar ve kütüphaneler oluşturan veya bunlar üzerinde işlem yapan [`ng add`](cli/add) ve [`ng generate`](cli/generate) gibi komutlar, bir çalışma alanı içinden çalıştırılmalıdır. Buna karşın, `ng new` gibi komutlar yeni bir çalışma alanı oluşturacakları için bir çalışma alanının _dışından_ çalıştırılmalıdır.
 
 ## Next steps
 
-- Learn more about the [file structure](reference/configs/file-structure) and [configuration](reference/configs/workspace-config) of the generated workspace.
+- Oluşturulan çalışma alanının [dosya yapısı](reference/configs/file-structure) ve [yapılandırması](reference/configs/workspace-config) hakkında daha fazla bilgi edinin.
 
-- Test your new application with [`ng test`](cli/test).
+- Yeni uygulamanızı [`ng test`](cli/test) ile test edin.
 
-- Generate boilerplate like components, directives, and pipes with [`ng generate`](cli/generate).
+- Bileşenler, direktifler ve pipe'lar gibi şablonları [`ng generate`](cli/generate) ile oluşturun.
 
-- Deploy your new application and make it available to real users with [`ng deploy`](cli/deploy).
+- Yeni uygulamanızı [`ng deploy`](cli/deploy) ile dağıtın ve gerçek kullanıcıların erişimine sunun.
 
-- Set up and run end-to-end tests of your application with [`ng e2e`](cli/e2e).
+- Uygulamanızın uçtan uca testlerini [`ng e2e`](cli/e2e) ile kurun ve çalıştırın.

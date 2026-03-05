@@ -1,25 +1,25 @@
 # Set up the form model
 
-Every Signal Form starts with a form data model - a signal that defines the shape of your data, and stores your form data.
+Her Signal Form, bir form veri modeli ile başlar - verilerinizin şeklini tanımlayan ve form verilerinizi depolayan bir sinyal.
 
-In this lesson, you'll learn how to:
+Bu derste şunları öğreneceksiniz:
 
-- Define a TypeScript interface for your form data
-- Create a signal to hold form values
-- Use the `form()` function to create a Signal Form
+- Form verileriniz için bir TypeScript arayüzü (interface) tanımlama
+- Form değerlerini tutmak için bir sinyal oluşturma
+- Signal Form oluşturmak için `form()` fonksiyonunu kullanma
 
-Let's build the foundation for our login form!
+Giriş formumuzun temelini oluşturalım!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Define the LoginData interface">
-Create a TypeScript interface that defines the structure of your login form data. The form will have:
+Giriş formu verilerinizin yapısını tanımlayan bir TypeScript arayüzü oluşturun. Form şunları içerecek:
 
-- An `email` field (string)
-- A `password` field (string)
-- A `rememberMe` field (boolean)
+- Bir `email` alanı (string)
+- Bir `password` alanı (string)
+- Bir `rememberMe` alanı (boolean)
 
 ```ts
 interface LoginData {
@@ -29,11 +29,11 @@ interface LoginData {
 }
 ```
 
-Add this interface above the `@Component` decorator.
+Bu arayüzü `@Component` dekoratörünün üzerine ekleyin.
 </docs-step>
 
 <docs-step title="Import signal and form">
-Import the `signal` function from `@angular/core` and the `form` function from `@angular/forms/signals`:
+`@angular/core` paketinden `signal` fonksiyonunu ve `@angular/forms/signals` paketinden `form` fonksiyonunu içe aktarın:
 
 ```ts
 import {Component, signal} from '@angular/core';
@@ -43,7 +43,7 @@ import {form} from '@angular/forms/signals';
 </docs-step>
 
 <docs-step title="Create the form model signal">
-In your component class, create a `loginModel` signal with initial values. Use the `LoginData` interface as the type parameter:
+Bileşen sınıfınızda, başlangıç değerleriyle bir `loginModel` sinyali oluşturun. Tür parametresi olarak `LoginData` arayüzünü kullanın:
 
 ```ts
 loginModel = signal<LoginData>({
@@ -53,21 +53,21 @@ loginModel = signal<LoginData>({
 });
 ```
 
-The initial values start as empty strings for text fields and `false` for the checkbox.
+Başlangıç değerleri, metin alanları için boş dizeler ve onay kutusu için `false` olarak ayarlanır.
 </docs-step>
 
 <docs-step title="Create the form">
-Now create the form by passing your model signal to the `form()` function:
+Şimdi model sinyalinizi `form()` fonksiyonuna ileterek formu oluşturun:
 
 ```ts
 loginForm = form(this.loginModel);
 ```
 
-The `form()` function creates a form from your model, giving you access to field state and validation.
+`form()` fonksiyonu, modelinizden bir form oluşturarak alan durumu ve doğrulama erişimi sağlar.
 </docs-step>
 
 </docs-workflow>
 
-Excellent! You've set up your form model. The `loginModel` signal holds your form data, and the `loginForm` provides access to each field with type safety.
+Mükemmel! Form modelinizi kurdunuz. `loginModel` sinyali form verilerinizi tutar ve `loginForm` tür güvenliğiyle her alana erişim sağlar.
 
-Next, you'll learn [how to connect your form to the template](/tutorials/signal-forms/2-connect-form-template)!
+Ardından, [formunuzu şablona nasıl bağlayacağınızı](/tutorials/signal-forms/2-connect-form-template) öğreneceksiniz!

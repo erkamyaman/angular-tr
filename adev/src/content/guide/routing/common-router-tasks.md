@@ -1,25 +1,25 @@
 # Other common Routing Tasks
 
-This guide covers some other common tasks associated with using Angular router in your application.
+Bu kılavuz, uygulamanızda Angular yönlendirici kullanımıyla ilişkili diğer bazı yaygın görevleri kapsar.
 
 ## Getting route information
 
-Often, as a user navigates your application, you want to pass information from one component to another.
-For example, consider an application that displays a shopping list of grocery items.
-Each item in the list has a unique `id`.
-To edit an item, users click an Edit button, which opens an `EditGroceryItem` component.
-You want that component to retrieve the `id` for the grocery item so it can display the right information to the user.
+Genellikle, bir kullanıcı uygulamanızda gezinirken bir bileşenden diğerine bilgi aktarmak istersiniz.
+Örneğin, market ürünlerinin bir alışveriş listesini görüntüleyen bir uygulama düşünün.
+Listedeki her öğenin benzersiz bir `id`'si vardır.
+Bir öğeyi düzenlemek için kullanıcılar, bir `EditGroceryItem` bileşeni açan Düzenle düğmesine tıklar.
+Bu bileşenin, doğru bilgileri kullanıcıya gösterebilmesi için market ürününün `id`'sini almasını istersiniz.
 
-Use a route to pass this type of information to your application components.
-To do so, you use the `withComponentInputBinding` feature with `provideRouter` or the `bindToComponentInputs` option of `RouterModule.forRoot`.
+Bu tür bilgileri uygulama bileşenlerinize aktarmak için bir rota kullanın.
+Bunu yapmak için, `provideRouter` ile `withComponentInputBinding` özelliğini veya `RouterModule.forRoot`'un `bindToComponentInputs` seçeneğini kullanırsınız.
 
-To get information from a route:
+Bir rotadan bilgi almak için:
 
 <docs-workflow>
 
 <docs-step title="Add `withComponentInputBinding`">
 
-Add the `withComponentInputBinding` feature to the `provideRouter` method.
+`provideRouter` yöntemine `withComponentInputBinding` özelliğini ekleyin.
 
 ```ts
 providers: [provideRouter(appRoutes, withComponentInputBinding())];
@@ -29,7 +29,7 @@ providers: [provideRouter(appRoutes, withComponentInputBinding())];
 
 <docs-step title="Add an `input` to the component">
 
-Update the component to have an `input()` property matching the name of the parameter.
+Bileşeni, parametre adıyla eşleşen bir `input()` özelliğine sahip olacak şekilde güncelleyin.
 
 ```ts
 id = input.required<string>();
@@ -38,11 +38,11 @@ hero = computed(() => this.service.getHero(id()));
 
 </docs-step>
 <docs-step title="Optional: Use a default value">
-The router assigns values to all inputs based on the current route when `withComponentInputBinding` is enabled.
-The router assigns `undefined` if no route data matches the input key, such as when an optional query parameter is missing.
-You should include `undefined` in the `input`'s type when there's a possibility that an input might not be matched by the route.
+`withComponentInputBinding` etkinleştirildiğinde yönlendirici, geçerli rotaya göre tüm girişlere değer atar.
+İsteğe bağlı bir sorgu parametresi eksik olduğunda gibi, giriş anahtarıyla eşleşen rota verisi yoksa yönlendirici `undefined` atar.
+Bir girişin rota tarafından eşleştirilmeme olasılığı olduğunda `input` türüne `undefined` dahil etmelisiniz.
 
-Provide a default value by either using the `transform` option on the input or managing a local state with a `linkedSignal`.
+Girişte `transform` seçeneğini kullanarak veya `linkedSignal` ile yerel bir durum yöneterek varsayılan bir değer sağlayın.
 
 ```ts
 id = input.required({
@@ -56,13 +56,13 @@ internalId = linkedSignal(() => this.id() ?? getDefaultId());
 </docs-step>
 </docs-workflow>
 
-NOTE: You can bind all route data with key, value pairs to component inputs: static or resolved route data, path parameters, matrix parameters, and query parameters.
-If you want to use the parent components route info you will need to set the router `paramsInheritanceStrategy` option:
-`withRouterConfig({paramsInheritanceStrategy: 'always'})` . See [router configuration options](guide/routing/customizing-route-behavior#router-configuration-options) for details on other available settings.
+NOTE: Anahtar, değer çiftleri ile tüm rota verilerini bileşen girişlerine bağlayabilirsiniz: statik veya çözümlenmiş rota verileri, yol parametreleri, matris parametreleri ve sorgu parametreleri.
+Üst bileşenlerin rota bilgilerini kullanmak istiyorsanız, yönlendirici `paramsInheritanceStrategy` seçeneğini ayarlamanız gerekir:
+`withRouterConfig({paramsInheritanceStrategy: 'always'})`. Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma seçeneklerine](guide/routing/customizing-route-behavior#router-configuration-options) bakın.
 
 ## Displaying a 404 page
 
-To display a 404 page, set up a [wildcard route](guide/routing/define-routes#wildcards) with the `component` property set to the component you'd like to use for your 404 page as follows:
+404 sayfası görüntülemek için, `component` özelliğini 404 sayfanız için kullanmak istediğiniz bileşene ayarlayarak bir [joker rota](guide/routing/define-routes#wildcards) kurun:
 
 ```ts
 const routes: Routes = [
@@ -72,23 +72,23 @@ const routes: Routes = [
 ];
 ```
 
-The last route with the `path` of `**` is a wildcard route.
-The router selects this route if the requested URL doesn't match any of the paths earlier in the list and sends the user to the `PageNotFound`.
+`**` `path`'ine sahip son rota bir joker rotadır.
+İstenen URL, listedeki daha önceki yollardan hiçbiriyle eşleşmezse yönlendirici bu rotayı seçer ve kullanıcıyı `PageNotFound`'a yönlendirir.
 
 ## Link parameters array
 
-A link parameters array holds the following ingredients for router navigation:
+Bir bağlantı parametreleri dizisi, yönlendirici navigasyonu için aşağıdaki bileşenleri içerir:
 
-- The path of the route to the destination component
-- Required and optional route parameters that go into the route URL
+- Hedef bileşene giden rotanın yolu
+- Rota URL'sine giren zorunlu ve isteğe bağlı rota parametreleri
 
-Bind the `RouterLink` directive to such an array like this:
+`RouterLink` direktifini böyle bir diziye şu şekilde bağlayın:
 
 ```angular-html
 <a [routerLink]="['/heroes']">Heroes</a>
 ```
 
-The following is a two-element array when specifying a route parameter:
+Bir rota parametresi belirtilirken aşağıdaki iki elemanlı bir dizidir:
 
 ```angular-html
 <a [routerLink]="['/hero', hero.id]">
@@ -97,44 +97,44 @@ The following is a two-element array when specifying a route parameter:
 </a>
 ```
 
-Provide optional route parameters in an object, as in `{ foo: 'foo' }`:
+İsteğe bağlı rota parametrelerini `{ foo: 'foo' }` gibi bir nesnede sağlayın:
 
 ```angular-html
 <a [routerLink]="['/crisis-center', {foo: 'foo'}]">Crisis Center</a>
 ```
 
-This syntax passes matrix parameters, which are optional parameters associated with a specific URL segment. Learn more about [matrix parameters](/guide/routing/read-route-state#matrix-parameters).
+Bu söz dizimi, belirli bir URL segmentiyle ilişkili isteğe bağlı parametreler olan matris parametrelerini aktarır. [Matris parametreleri](/guide/routing/read-route-state#matrix-parameters) hakkında daha fazla bilgi edinin.
 
-These three examples cover the needs of an application with one level of routing.
-However, with a child router, such as in the crisis center, you create new link array possibilities.
+Bu üç örnek, tek seviyeli yönlendirmeye sahip bir uygulamanın ihtiyaçlarını karşılar.
+Ancak, kriz merkezi gibi bir alt yönlendirici ile yeni bağlantı dizisi olasılıkları oluşturursunuz.
 
-The following minimal `RouterLink` example builds upon a specified default child route for the crisis center.
+Aşağıdaki minimal `RouterLink` örneği, kriz merkezi için belirtilen varsayılan alt rota üzerine kuruludur.
 
 ```angular-html
 <a [routerLink]="['/crisis-center']">Crisis Center</a>
 ```
 
-Review the following:
+Aşağıdakileri inceleyin:
 
-- The first item in the array identifies the parent route \(`/crisis-center`\)
-- There are no parameters for this parent route
-- There is no default for the child route so you need to pick one
-- You're navigating to the `CrisisList`, whose route path is `/`, but you don't need to explicitly add the slash
+- Dizideki ilk öğe üst rotayı belirler \(`/crisis-center`\)
+- Bu üst rota için parametre yoktur
+- Alt rota için varsayılan yoktur, bu yüzden bir tane seçmeniz gerekir
+- `CrisisList`'e navigasyon yapıyorsunuz, rota yolu `/`'dir ama eğik çizgiyi açıkça eklemeniz gerekmez
 
-Consider the following router link that navigates from the root of the application down to the Dragon Crisis:
+Uygulamanın kökünden Dragon Crisis'e navigasyon yapan aşağıdaki router bağlantısını inceleyin:
 
 ```angular-html
 <a [routerLink]="['/crisis-center', 1]">Dragon Crisis</a>
 ```
 
-- The first item in the array identifies the parent route \(`/crisis-center`\)
-- There are no parameters for this parent route
-- The second item identifies the child route details about a particular crisis \(`/:id`\)
-- The details child route requires an `id` route parameter
-- You added the `id` of the Dragon Crisis as the second item in the array \(`1`\)
-- The resulting path is `/crisis-center/1`
+- Dizideki ilk öğe üst rotayı belirler \(`/crisis-center`\)
+- Bu üst rota için parametre yoktur
+- İkinci öğe, belirli bir kriz hakkında alt rota ayrıntılarını belirler \(`/:id`\)
+- Ayrıntılar alt rotası bir `id` rota parametresi gerektirir
+- Dragon Crisis'in `id`'sini diziye ikinci öğe olarak eklediniz \(`1`\)
+- Sonuç yol `/crisis-center/1`'dir
 
-You could also redefine the `App` template with Crisis Center routes exclusively:
+`App` şablonunu yalnızca Kriz Merkezi rotalarıyla da yeniden tanımlayabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -151,38 +151,38 @@ You could also redefine the `App` template with Crisis Center routes exclusively
 export class App {}
 ```
 
-In summary, you can write applications with one, two or more levels of routing.
-The link parameters array affords the flexibility to represent any routing depth and any legal sequence of route paths, \(required\) router parameters, and \(optional\) route parameter objects.
+Özetle, bir, iki veya daha fazla yönlendirme derinliğine sahip uygulamalar yazabilirsiniz.
+Bağlantı parametreleri dizisi, herhangi bir yönlendirme derinliğini ve herhangi bir geçerli rota yolları, \(zorunlu\) yönlendirici parametreleri ve \(isteğe bağlı\) rota parametre nesneleri dizisini temsil etme esnekliği sağlar.
 
 ## `LocationStrategy` and browser URL styles
 
-When the router navigates to a new component view, it updates the browser's location and history with a URL for that view.
+Yönlendirici yeni bir bileşen görünümüne navigasyon yaptığında, tarayıcının konumunu ve geçmişini o görünüm için bir URL ile günceller.
 
-Modern HTML5 browsers support [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state'), a technique that changes a browser's location and history without triggering a server page request.
-The router can compose a "natural" URL that is indistinguishable from one that would otherwise require a page load.
+Modern HTML5 tarayıcıları, sunucu sayfa isteği tetiklemeden tarayıcının konumunu ve geçmişini değiştiren bir teknik olan [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state')'i destekler.
+Yönlendirici, normalde sayfa yüklemesi gerektirecek olandan ayırt edilemeyen "doğal" bir URL oluşturabilir.
 
-Here's the Crisis Center URL in this "HTML5 pushState" style:
+İşte bu "HTML5 pushState" stilinde Kriz Merkezi URL'si:
 
 ```text
 localhost:3002/crisis-center
 ```
 
-Older browsers send page requests to the server when the location URL changes unless the change occurs after a "#" \(called the "hash"\).
-Routers can take advantage of this exception by composing in-application route URLs with hashes.
-Here's a "hash URL" that routes to the Crisis Center.
+Eski tarayıcılar, konum URL'si değiştiğinde sunucuya sayfa isteği gönderir, ancak değişiklik "#" \("hash" olarak adlandırılır\)'dan sonra gerçekleşirse bunu yapmaz.
+Yönlendiriciler, hash'lerle uygulama içi rota URL'leri oluşturarak bu istisnadan yararlanabilir.
+İşte Kriz Merkezi'ne yönlendiren bir "hash URL".
 
 ```text
 localhost:3002/src/#/crisis-center
 ```
 
-The router supports both styles with two `LocationStrategy` providers:
+Yönlendirici, iki `LocationStrategy` sağlayıcısıyla her iki stili destekler:
 
-| Providers              | Details                              |
-| :--------------------- | :----------------------------------- |
-| `PathLocationStrategy` | The default "HTML5 pushState" style. |
-| `HashLocationStrategy` | The "hash URL" style.                |
+| Sağlayıcılar           | Ayrıntılar                          |
+| :--------------------- | :---------------------------------- |
+| `PathLocationStrategy` | Varsayılan "HTML5 pushState" stili. |
+| `HashLocationStrategy` | "Hash URL" stili.                   |
 
-The `RouterModule.forRoot()` function sets the `LocationStrategy` to the `PathLocationStrategy`, which makes it the default strategy.
-You also have the option of switching to the `HashLocationStrategy` with an override during the bootstrapping process.
+`RouterModule.forRoot()` fonksiyonu, `LocationStrategy`'yi `PathLocationStrategy` olarak ayarlar ve bu onu varsayılan strateji yapar.
+Ayrıca başlatma işlemi sırasında bir geçersiz kılma ile `HashLocationStrategy`'ye geçme seçeneğiniz de vardır.
 
-HELPFUL: For more information on providers and the bootstrap process, see [Dependency Injection](guide/di/defining-dependency-providers).
+HELPFUL: Sağlayıcılar ve başlatma işlemi hakkında daha fazla bilgi için [Bağımlılık Enjeksiyonu](guide/di/defining-dependency-providers) bölümüne bakın.

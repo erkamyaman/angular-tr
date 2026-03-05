@@ -2,24 +2,24 @@
 
 ## Overview
 
-This page describes the drag and drop directives which lets you quickly create drag and drop interfaces with the following:
+Bu sayfa, aşağıdaki işlevlerle hızlıca sürükle ve bırak arayüzleri oluşturmanıza olanak tanıyan sürükle ve bırak direktiflerini açıklar:
 
-- Free dragging
-- Create a list of reorderable draggable elements
-- Transfer draggable elements between lists
-- Dragging animations
-- Lock draggable elements along an axis or element
-- Add custom drag handles
-- Add previews on drag
-- Add custom drag placeholder
+- Serbest sürükleme
+- Yeniden sıralanabilir sürüklenebilir öğelerin listesini oluşturma
+- Sürüklenebilir öğeleri listeler arasında aktarma
+- Sürükleme animasyonları
+- Sürüklenebilir öğeleri bir eksen veya öğe boyunca kilitleme
+- Özel sürükleme tutamaçları ekleme
+- Sürükleme sırasında önizlemeler ekleme
+- Özel sürükleme yer tutucusu ekleme
 
-For the full API reference, please see the [Angular CDK's drag and drop API reference page](api#angular_cdk_drag-drop).
+Tam API referansı için lütfen [Angular CDK'nin sürükle ve bırak API referans sayfasına](api#angular_cdk_drag-drop) bakın.
 
 ## Before you start
 
 ### CDK Installation
 
-The [Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories) is a set of behavior primitives for building components. To use the drag and drop directives, first install `@angular/cdk` from npm. You can do this from your terminal using Angular CLI:
+[Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories), bileşen oluşturmak için bir davranış ilkeleri setidir. Sürükle ve bırak direktiflerini kullanmak için önce npm'den `@angular/cdk` yükleyin. Bunu Angular CLI kullanarak terminalinizden yapabilirsiniz:
 
 ```shell
 ng add @angular/cdk
@@ -27,7 +27,7 @@ ng add @angular/cdk
 
 ### Importing drag and drop
 
-To use drag and drop, import what you need from the directives in your component.
+Sürükle ve bırakı kullanmak için bileşeninizde direktiflerden ihtiyacınız olanları içe aktarın.
 
 ```ts
 import {Component} from '@angular/core';
@@ -43,7 +43,7 @@ export class DragDropExample {}
 
 ## Create draggable elements
 
-You can make any element draggable by adding the `cdkDrag` directive. By default, all draggable elements support free dragging.
+`cdkDrag` direktifini ekleyerek herhangi bir öğeyi sürüklenebilir yapabilirsiniz. Varsayılan olarak, tüm sürüklenebilir öğeler serbest sürüklemeyi destekler.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/overview/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/overview/app/app.html"/>
@@ -53,9 +53,9 @@ You can make any element draggable by adding the `cdkDrag` directive. By default
 
 ## Create a list of reorderable draggable elements
 
-Add the `cdkDropList` directive to a parent element to group draggable elements into a reorderable collection. This defines where draggable elements can be dropped. The draggable elements in the drop list group rearrange automatically as an element moves.
+Sürüklenebilir öğeleri yeniden sıralanabilir bir koleksiyona gruplamak için bir üst öğeye `cdkDropList` direktifini ekleyin. Bu, sürüklenebilir öğelerin nereye bırakılabileceğini tanımlar. Bırakma listesi grubundaki sürüklenebilir öğeler, bir öğe hareket ettiğinde otomatik olarak yeniden düzenlenir.
 
-The drag and drop directives don't update your data model. To update the data model, listen to the `cdkDropListDropped` event (once the user finishes dragging) and update the data model manually.
+Sürükle ve bırak direktifleri veri modelinizi güncellemez. Veri modelini güncellemek için `cdkDropListDropped` olayını dinleyin (kullanıcı sürüklemeyi bitirdiğinde) ve veri modelini manuel olarak güncelleyin.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/sorting/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/sorting/app/app.html"/>
@@ -63,16 +63,16 @@ The drag and drop directives don't update your data model. To update the data mo
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/sorting/app/app.css"/>
 </docs-code-multifile>
 
-You can use the `CDK_DROP_LIST` injection token that can be used to reference instances of `cdkDropList`. For more information see the [dependency injection guide](/guide/di) and the [drop list injection token API](api/cdk/drag-drop/CDK_DROP_LIST).
+`cdkDropList` örneklerine referans vermek için kullanılabilen `CDK_DROP_LIST` enjeksiyon token'ını kullanabilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di) ve [bırakma listesi enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DROP_LIST) bakın.
 
 ## Transfer draggable elements between lists
 
-The `cdkDropList` directive supports transferring draggable elements between connected drop lists. There are two ways to connect one or more `cdkDropList` instances together:
+`cdkDropList` direktifi, bağlı bırakma listeleri arasında sürüklenebilir öğelerin aktarılmasını destekler. Bir veya daha fazla `cdkDropList` örneğini birbirine bağlamanın iki yolu vardır:
 
-- Set the `cdkDropListConnectedTo` property to another drop list.
-- Wrap the elements in an element with the `cdkDropListGroup` attribute.
+- `cdkDropListConnectedTo` özelliğini başka bir bırakma listesine ayarlayın.
+- Öğeleri `cdkDropListGroup` niteliğine sahip bir öğe ile sarın.
 
-The `cdkDropListConnectedTo` directive works both with a direct reference to another `cdkDropList` or by referencing the id of another drop container.
+`cdkDropListConnectedTo` direktifi hem başka bir `cdkDropList`'e doğrudan referans hem de başka bir bırakma kapsayıcısının kimliğine referans ile çalışır.
 
 ```html
 <!-- This is valid -->
@@ -90,7 +90,7 @@ The `cdkDropListConnectedTo` directive works both with a direct reference to ano
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/connected-sorting/app/app.css"/>
 </docs-code-multifile>
 
-Use the `cdkDropListGroup` directive if you have an unknown number of connected drop lists to set up the connection automatically. Any new `cdkDropList` that is added under a group automatically connects to all other lists.
+Bilinmeyen sayıda bağlı bırakma listeniz varsa bağlantıyı otomatik olarak kurmak için `cdkDropListGroup` direktifini kullanın. Bir grup altına eklenen herhangi bir yeni `cdkDropList` otomatik olarak diğer tüm listelere bağlanır.
 
 ```angular-html
 <div cdkDropListGroup>
@@ -107,11 +107,11 @@ Use the `cdkDropListGroup` directive if you have an unknown number of connected 
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/connected-sorting-group/app/app.css"/>
 </docs-code-multifile>
 
-You can use the `CDK_DROP_LIST_GROUP` injection token that can be used to reference instances of `cdkDropListGroup`. For more information see the [dependency injection guide](/guide/di) and the [drop list group injection token API](api/cdk/drag-drop/CDK_DROP_LIST_GROUP).
+`cdkDropListGroup` örneklerine referans vermek için kullanılabilen `CDK_DROP_LIST_GROUP` enjeksiyon token'ını kullanabilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di) ve [bırakma listesi grubu enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DROP_LIST_GROUP) bakın.
 
 ### Selective dragging
 
-By default, a user can move `cdkDrag` elements from one container into another connected container. For more fine-grained control over which elements can be dropped into a container, use `cdkDropListEnterPredicate`. Angular calls the predicate whenever a draggable element enters a new container. Depending on whether the predicate returns true or false, the item may or may not be allowed into the new container.
+Varsayılan olarak, bir kullanıcı `cdkDrag` öğelerini bir kapsayıcıdan bağlı başka bir kapsayıcıya taşıyabilir. Hangi öğelerin bir kapsayıcıya bırakılabileceği üzerinde daha ayrıntılı kontrol için `cdkDropListEnterPredicate` kullanın. Angular, sürüklenebilir bir öğe yeni bir kapsayıcıya her girdiğinde yüklemi çağırır. Yüklemin true veya false döndürmesine bağlı olarak, öğeye yeni kapsayıcıya girilmesine izin verilebilir veya verilmeyebilir.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/enter-predicate/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/enter-predicate/app/app.html"/>
@@ -121,7 +121,7 @@ By default, a user can move `cdkDrag` elements from one container into another c
 
 ## Attach data
 
-You can associate some arbitrary data with both `cdkDrag` and `cdkDropList` by setting `cdkDragData` or `cdkDropListData`, respectively. You can bind to the events fired from both directives that will include this data, allowing you to easily identify the origin of the drag or drop interaction.
+Sırasıyla `cdkDragData` veya `cdkDropListData` ayarlayarak hem `cdkDrag` hem de `cdkDropList` ile rastgele veriler ilişkilendirebilirsiniz. Her iki direktiften tetiklenen olaylara bağlanabilir ve bu veriler dahil olacaktır, böylece sürükleme veya bırakma etkileşiminin kaynağını kolayca tanımlayabilirsiniz.
 
 ```angular-html
 @for (list of lists; track list) {
@@ -137,7 +137,7 @@ You can associate some arbitrary data with both `cdkDrag` and `cdkDropList` by s
 
 ### Customize drag handle
 
-By default, the user can drag the entire `cdkDrag` element to move it around. To restrict the user to only be able to do so using a handle element, add the `cdkDragHandle` directive to an element inside of `cdkDrag`. You can have as many `cdkDragHandle` elements as you want.
+Varsayılan olarak, kullanıcı onu hareket ettirmek için tüm `cdkDrag` öğesini sürükleyebilir. Kullanıcıyı bunu yalnızca bir tutamaç öğesi kullanarak yapabilmeye kısıtlamak için `cdkDrag` içindeki bir öğeye `cdkDragHandle` direktifini ekleyin. İstediğiniz kadar `cdkDragHandle` öğesine sahip olabilirsiniz.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/custom-handle/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/custom-handle/app/app.html"/>
@@ -145,15 +145,15 @@ By default, the user can drag the entire `cdkDrag` element to move it around. To
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/custom-handle/app/app.css"/>
 </docs-code-multifile>
 
-You can use the `CDK_DRAG_HANDLE` injection token that can be used to reference instances of `cdkDragHandle`. For more information see the [dependency injection guide](/guide/di) and the [drag handle injection token API](api/cdk/drag-drop/CDK_DRAG_HANDLE).
+`cdkDragHandle` örneklerine referans vermek için kullanılabilen `CDK_DRAG_HANDLE` enjeksiyon token'ını kullanabilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di) ve [sürükleme tutamacı enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_HANDLE) bakın.
 
 ### Customize drag preview
 
-A preview element becomes visible when a `cdkDrag` element is being dragged. By default, the preview is a clone of the original element positioned next to the user's cursor.
+Bir `cdkDrag` öğesi sürüklenirken bir önizleme öğesi görünür hale gelir. Varsayılan olarak önizleme, kullanıcının imlecinin yanında konumlandırılmış orijinal öğenin bir klonudur.
 
-To customize the preview, provide a custom template via `*cdkDragPreview`. The custom preview won't match the size of the original dragged element since assumptions aren't made about the element's content. To match the size of the element for the drag preview, pass true to the `matchSize` input.
+Önizlemeyi özelleştirmek için `*cdkDragPreview` aracılığıyla özel bir şablon sağlayın. Özel önizleme, öğenin içeriği hakkında varsayımlar yapılmadığından orijinal sürüklenen öğenin boyutuyla eşleşmez. Öğe boyutuyla eşleştirmek için `matchSize` girişine true geçirin.
 
-The cloned element removes its id attribute in order to avoid having multiple elements with the same id on the page. This will cause any CSS that targets that id not to be applied.
+Klonlanan öğe, sayfada aynı kimliğe sahip birden fazla öğe olmasını önlemek için id niteliğini kaldırır. Bu, o kimliği hedefleyen herhangi bir CSS'in uygulanmamasına neden olur.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/custom-preview/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/custom-preview/app/app.html"/>
@@ -161,25 +161,25 @@ The cloned element removes its id attribute in order to avoid having multiple el
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/custom-preview/app/app.css"/>
 </docs-code-multifile>
 
-You can use the `CDK_DRAG_PREVIEW` injection token that can be used to reference instances of `cdkDragPreview`. For more information see the [dependency injection guide](/guide/di) and the [drag preview injection token API](api/cdk/drag-drop/CDK_DRAG_PREVIEW).
+`cdkDragPreview` örneklerine referans vermek için kullanılabilen `CDK_DRAG_PREVIEW` enjeksiyon token'ını kullanabilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di) ve [sürükleme önizlemesi enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_PREVIEW) bakın.
 
 ### Customize drag insertion point
 
-By default, Angular inserts the `cdkDrag` preview into the `<body>` of the page in order to avoid issues with positioning and overflow. This may not be desirable in some cases because the preview won't have its inherited styles applied.
+Varsayılan olarak, Angular konumlandırma ve taşma ile ilgili sorunları önlemek için `cdkDrag` önizlemesini sayfanın `<body>` öğesine ekler. Bazı durumlarda bu istenmeyebilir çünkü önizleme devralınan stilleri almayacaktır.
 
-You can change where Angular inserts the preview using the `cdkDragPreviewContainer` input on `cdkDrag`. The possible values are:
+Angular'ın önizlemeyi nereye eklediğini `cdkDrag` üzerindeki `cdkDragPreviewContainer` girişini kullanarak değiştirebilirsiniz. Olası değerler şunlardır:
 
-| Value                         | Description                                                                            | Advantages                                                                                                                  | Disadvantages                                                                                                                                                             |
-| :---------------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `global`                      | Default value. Angular inserts the preview into the <body> or the closest shadow root. | Preview won't be affected by `z-index` or `overflow: hidden`. It also won't affect `:nth-child` selectors and flex layouts. | Doesn't retain inherited styles.                                                                                                                                          |
-| `parent`                      | Angular inserts the preview inside the parent of the element that is being dragged.    | Preview inherits the same styles as the dragged element.                                                                    | Preview may be clipped by `overflow: hidden` or be placed under other elements due to `z-index`. Furthermore, it can affect `:nth-child` selectors and some flex layouts. |
-| `ElementRef` or `HTMLElement` | Angular inserts the preview into the specified element.                                | Preview inherits styles from the specified container element.                                                               | Preview may be clipped by `overflow: hidden` or be placed under other elements due to `z-index`. Furthermore, it can affect `:nth-child` selectors and some flex layouts. |
+| Value                           | Description                                                                    | Advantages                                                                                                                        | Disadvantages                                                                                                                                                                                  |
+| :------------------------------ | :----------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global`                        | Varsayılan değer. Angular önizlemeyi <body> veya en yakın shadow root'a ekler. | Önizleme `z-index` veya `overflow: hidden` tarafından etkilenmez. Ayrıca `:nth-child` seçicilerini ve flex düzenlerini etkilemez. | Devralınan stilleri almaz.                                                                                                                                                                     |
+| `parent`                        | Angular önizlemeyi sürüklenen öğenin üst öğesi içine ekler.                    | Önizleme sürüklenen öğe ile aynı stilleri devralır.                                                                               | Önizleme `overflow: hidden` tarafından kırpılabilir veya `z-index` nedeniyle diğer öğelerin altına yerleştirilebilir. Ayrıca `:nth-child` seçicilerini ve bazı flex düzenlerini etkileyebilir. |
+| `ElementRef` veya `HTMLElement` | Angular önizlemeyi belirtilen öğeye ekler.                                     | Önizleme belirtilen kapsayıcı öğeden stilleri devralır.                                                                           | Önizleme `overflow: hidden` tarafından kırpılabilir veya `z-index` nedeniyle diğer öğelerin altına yerleştirilebilir. Ayrıca `:nth-child` seçicilerini ve bazı flex düzenlerini etkileyebilir. |
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update `previewContainer` within the config if the value is `global` or `parent`. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, değer `global` veya `parent` ise yapılandırma içinde `previewContainer`'ı güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Customize drag placeholder
 
-While a `cdkDrag` element is being dragged, the directive creates a placeholder element that shows where the element will be placed when dropped. By default, the placeholder is a clone of the element that is being dragged. You can replace the placeholder with a custom one using the `*cdkDragPlaceholder` directive:
+Bir `cdkDrag` öğesi sürüklenirken, direktif öğenin bırakıldığında nereye yerleştirileceğini gösteren bir yer tutucu öğe oluşturur. Varsayılan olarak, yer tutucu sürüklenen öğenin bir klonudur. `*cdkDragPlaceholder` direktifini kullanarak yer tutucuyu özel biriyle değiştirebilirsiniz:
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/custom-placeholder/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/custom-placeholder/app/app.html"/>
@@ -187,13 +187,13 @@ While a `cdkDrag` element is being dragged, the directive creates a placeholder 
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/custom-placeholder/app/app.css"/>
 </docs-code-multifile>
 
-You can use the `CDK_DRAG_PLACEHOLDER` injection token that can be used to reference instances of `cdkDragPlaceholder`. For more information see the [dependency injection guide](/guide/di) and the [drag placeholder injection token API](api/cdk/drag-drop/CDK_DRAG_PLACEHOLDER).
+`cdkDragPlaceholder` örneklerine referans vermek için kullanılabilen `CDK_DRAG_PLACEHOLDER` enjeksiyon token'ını kullanabilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di) ve [sürükleme yer tutucusu enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_PLACEHOLDER) bakın.
 
 ### Customize drag root element
 
-Set the `cdkDragRootElement` attribute if there's an element that you want to make draggable but you don't have direct access to it.
+Sürüklenebilir yapmak istediğiniz ancak doğrudan erişiminiz olmayan bir öğe varsa `cdkDragRootElement` niteliğini ayarlayın.
 
-The attribute accepts a selector and looks up the DOM until it finds an element that matches the selector. If an element is found, it becomes draggable. This is useful for cases such as making a dialog draggable.
+Nitelik bir seçici kabul eder ve seçiciyle eşleşen bir öğe bulana kadar DOM'u yukarı doğru arar. Bir öğe bulunursa sürüklenebilir hale gelir. Bu, bir diyaloğu sürüklenebilir yapmak gibi durumlar için kullanışlıdır.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/root-element/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/root-element/app/app.html"/>
@@ -201,11 +201,11 @@ The attribute accepts a selector and looks up the DOM until it finds an element 
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/root-element/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update `rootElementSelector` within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde `rootElementSelector`'ı güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Set DOM position of a draggable element
 
-By default, `cdkDrag` elements not in a `cdkDropList` move from their normal DOM position only when a user manually moves the element. Use the `cdkDragFreeDragPosition` input to explicitly set the element’s position. A common use case for this is restoring a draggable element's position after a user has navigated away and then returned.
+Varsayılan olarak, `cdkDropList` içinde olmayan `cdkDrag` öğeleri yalnızca kullanıcı öğeyi manuel olarak hareket ettirdiğinde normal DOM konumlarından hareket eder. Öğenin konumunu açıkça ayarlamak için `cdkDragFreeDragPosition` girişini kullanın. Bunun yaygın bir kullanım durumu, kullanıcı uzaklaştıktan ve geri döndükten sonra sürüklenebilir bir öğenin konumunu geri yüklemektir.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/free-drag-position/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/free-drag-position/app/app.html"/>
@@ -215,7 +215,7 @@ By default, `cdkDrag` elements not in a `cdkDropList` move from their normal DOM
 
 ### Restrict movement within an element
 
-To stop the user from being able to drag a `cdkDrag` element outside of another element, pass a CSS selector to the `cdkDragBoundary` attribute. This attribute accepts a selector and looks up the DOM until it finds an element that matches it. If a match is found, the element becomes the boundary that the draggable element can't be dragged outside of `cdkDragBoundary` can also be used when `cdkDrag` is placed inside a `cdkDropList`.
+Kullanıcının bir `cdkDrag` öğesini başka bir öğenin dışına sürükleyememesini sağlamak için `cdkDragBoundary` niteliğine bir CSS seçicisi geçirin. Bu nitelik bir seçici kabul eder ve eşleşen bir öğe bulana kadar DOM'u yukarı doğru arar. Bir eşleşme bulunursa, öğe sürüklenebilir öğenin `cdkDragBoundary` dışına sürüklenemeyeceği sınır haline gelir. `cdkDragBoundary`, `cdkDrag` bir `cdkDropList` içine yerleştirildiğinde de kullanılabilir.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/boundary/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/boundary/app/app.html"/>
@@ -223,11 +223,11 @@ To stop the user from being able to drag a `cdkDrag` element outside of another 
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/boundary/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update boundaryElement within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde boundaryElement'i güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Restrict movement along an axis
 
-By default, `cdkDrag` allows free movement in all directions. To restrict dragging to a specific axis, set `cdkDragLockAxis` to either "x" or "y"on `cdkDrag`. To restrict dragging for multiple draggable elements within `cdkDropList`, set `cdkDropListLockAxis` on `cdkDropList` instead.
+Varsayılan olarak, `cdkDrag` tüm yönlerde serbest harekete izin verir. Sürüklemeyi belirli bir eksene kısıtlamak için `cdkDrag` üzerinde `cdkDragLockAxis`'i "x" veya "y" olarak ayarlayın. `cdkDropList` içindeki birden fazla sürüklenebilir öğe için sürüklemeyi kısıtlamak amacıyla bunun yerine `cdkDropList` üzerinde `cdkDropListLockAxis` ayarlayın.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/axis-lock/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/axis-lock/app/app.html"/>
@@ -235,13 +235,13 @@ By default, `cdkDrag` allows free movement in all directions. To restrict draggi
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/axis-lock/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update `lockAxis` within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde `lockAxis`'i güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Delay dragging
 
-By default when the user puts their pointer down on a `cdkDrag`, the dragging sequence starts. This behavior might not be desirable in cases like fullscreen draggable elements on touch devices where the user might accidentally trigger a drag event as they scroll on the page.
+Varsayılan olarak kullanıcı bir `cdkDrag` öğesine işaretçisini bastığında sürükleme dizisi başlar. Bu davranış, dokunmatik cihazlarda tam ekran sürüklenebilir öğeler gibi kullanıcının sayfada kaydırma yaparken yanlışlıkla sürükleme olayı tetikleyebileceği durumlarda istenmeyebilir.
 
-You can delay the dragging sequence using the `cdkDragStartDelay` input. The input waits for the user to hold down their pointer for the specified number of milliseconds before dragging the element.
+`cdkDragStartDelay` girişini kullanarak sürükleme dizisini geciktirebilirsiniz. Giriş, öğeyi sürüklemeden önce kullanıcının belirtilen milisaniye sayısı kadar işaretçisini basılı tutmasını bekler.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/delay-drag/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/delay-drag/app/app.html"/>
@@ -249,11 +249,11 @@ You can delay the dragging sequence using the `cdkDragStartDelay` input. The inp
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/delay-drag/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update dragStartDelay within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde dragStartDelay'i güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Disable dragging
 
-If you want to disable dragging for a particular drag item, set the `cdkDragDisabled` input on a `cdkDrag` item to true or false. You can disable an entire list using the `cdkDropListDisabled` input on a `cdkDropList`. It is also possible to disable a specific handle via `cdkDragHandleDisabled` on `cdkDragHandle`.
+Belirli bir sürükleme öğesi için sürüklemeyi devre dışı bırakmak istiyorsanız, `cdkDrag` öğesinde `cdkDragDisabled` girişini true veya false olarak ayarlayın. `cdkDropList` üzerindeki `cdkDropListDisabled` girişini kullanarak tüm bir listeyi devre dışı bırakabilirsiniz. `cdkDragHandle` üzerindeki `cdkDragHandleDisabled` aracılığıyla belirli bir tutamacı devre dışı bırakmak da mümkündür.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/disable-drag/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/disable-drag/app/app.html"/>
@@ -261,13 +261,13 @@ If you want to disable dragging for a particular drag item, set the `cdkDragDisa
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/disable-drag/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update `draggingDisabled` within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde `draggingDisabled`'ı güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ## Sorting customizations
 
 ### List orientation
 
-By default, the `cdkDropList` directive assumes lists are vertical. This can be changed by setting the `cdkDropListOrientation` property to horizontal.
+Varsayılan olarak, `cdkDropList` direktifi listelerin dikey olduğunu varsayar. Bu, `cdkDropListOrientation` özelliğini horizontal olarak ayarlayarak değiştirilebilir.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/horizontal-sorting/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/horizontal-sorting/app/app.html"/>
@@ -275,13 +275,13 @@ By default, the `cdkDropList` directive assumes lists are vertical. This can be 
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/horizontal-sorting/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update `listOrientation` within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde `listOrientation`'ı güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### List wrapping
 
-By default, the `cdkDropList` sorts the draggable elements by moving them around using a CSS transform. This allows for the sorting to be animated which provides a better user experience. However this also comes with the drawback that the drop list works only in one direction: vertically or horizontally.
+Varsayılan olarak, `cdkDropList` sürüklenebilir öğeleri CSS dönüşümü kullanarak hareket ettirerek sıralar. Bu, sıralama işleminin animasyonlu olmasını sağlayarak daha iyi bir kullanıcı deneyimi sunar. Ancak bu, bırakma listesinin yalnızca bir yönde çalışması dezavantajını da beraberinde getirir: dikey veya yatay.
 
-If you have a sortable list that needs to wrap onto new lines, you can set `cdkDropListOrientation` attribute to `mixed`. This causes the list to use a different strategy of sorting the elements which involves moving them in the DOM. However the list can no longer animate the sorting action .
+Yeni satırlara sarılması gereken sıralanabilir bir listeniz varsa, `cdkDropListOrientation` niteliğini `mixed` olarak ayarlayabilirsiniz. Bu, listenin öğeleri DOM'da hareket ettirmeyi içeren farklı bir sıralama stratejisi kullanmasına neden olur. Ancak liste artık sıralama eylemini animasyonlandıramaz.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/mixed-sorting/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/mixed-sorting/app/app.html"/>
@@ -291,7 +291,7 @@ If you have a sortable list that needs to wrap onto new lines, you can set `cdkD
 
 ### Selective sorting
 
-By default, `cdkDrag` elements are sorted into any position inside of a `cdkDropList`. To change this behavior, set the `cdkDropListSortPredicate` attribute which takes in a function. The predicate function is called whenever a draggable element is about to be moved into a new index within the drop list. If the predicate returns true, the item will be moved into the new index, otherwise it will keep its current position.
+Varsayılan olarak, `cdkDrag` öğeleri bir `cdkDropList` içinde herhangi bir konuma sıralanır. Bu davranışı değiştirmek için bir fonksiyon alan `cdkDropListSortPredicate` niteliğini ayarlayın. Yüklem fonksiyonu, sürüklenebilir bir öğe bırakma listesi içinde yeni bir dizine taşınmak üzereyken çağrılır. Yüklem true döndürürse, öğe yeni dizine taşınır, aksi takdirde mevcut konumunu korur.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/sort-predicate/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/sort-predicate/app/app.html"/>
@@ -301,7 +301,7 @@ By default, `cdkDrag` elements are sorted into any position inside of a `cdkDrop
 
 ### Disable sorting
 
-There are cases where draggable elements can be dragged out of one `cdkDropList` into another, however the user shouldn't be able to sort them within the source list. For these cases, add the `cdkDropListSortingDisabled` attribute to prevent the draggable elements in a `cdkDropList` from sorting. This preserves the dragged element's initial position in the source list if it does not get dragged to a new valid position.
+Sürüklenebilir öğelerin bir `cdkDropList`'ten diğer bağlı bir listeye sürüklenebildiği ancak kullanıcının bunları kaynak listede sıralamaması gereken durumlar vardır. Bu durumlar için `cdkDropList`'teki sürüklenebilir öğelerin sıralanmasını engellemek amacıyla `cdkDropListSortingDisabled` niteliğini ekleyin. Bu, sürüklenen öğe yeni geçerli bir konuma sürüklenmezse kaynak listedeki ilk konumunu korur.
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/disable-sorting/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/disable-sorting/app/app.html"/>
@@ -309,15 +309,15 @@ There are cases where draggable elements can be dragged out of one `cdkDropList`
   <docs-code header="app.css" path="adev/src/content/examples/drag-drop/src/disable-sorting/app/app.css"/>
 </docs-code-multifile>
 
-Alternatively, you can modify the `CDK_DRAG_CONFIG` injection token to update sortingDisabled within the config. For more information see the [dependency injection guide](/guide/di), [drag config injection token API](api/cdk/drag-drop/CDK_DRAG_CONFIG), and the [drag drop config API](api/cdk/drag-drop/DragDropConfig).
+Alternatif olarak, yapılandırma içinde sortingDisabled'ı güncellemek için `CDK_DRAG_CONFIG` enjeksiyon token'ını değiştirebilirsiniz. Daha fazla bilgi için [bağımlılık enjeksiyonu kılavuzuna](/guide/di), [sürükleme yapılandırması enjeksiyon token'ı API'sine](api/cdk/drag-drop/CDK_DRAG_CONFIG) ve [sürükle bırak yapılandırma API'sine](api/cdk/drag-drop/DragDropConfig) bakın.
 
 ### Copying items between lists
 
-By default, when an item is dragged from one list to another, it is moved out of its original list. However, you can configure the directives to copy the item, leaving the original item in the source list.
+Varsayılan olarak, bir öğe bir listeden diğerine sürüklendiğinde, orijinal listesinden taşınır. Ancak, orijinal öğeyi kaynak listesinde bırakarak öğeyi kopyalamak için direktifleri yapılandırabilirsiniz.
 
-To enable copying, you can set the `cdkDropListHasAnchor` input. This tells the `cdkDropList` to create an "anchor" element that stays in the original container and doesn't move with the item. If the user moves the item back into the original container, the anchor is removed automatically. The anchor element can be styled by targeting the `.cdk-drag-anchor` CSS class.
+Kopyalamayı etkinleştirmek için `cdkDropListHasAnchor` girişini ayarlayabilirsiniz. Bu, `cdkDropList`'e orijinal kapsayıcıda kalan ve öğeyle birlikte hareket etmeyen bir "çapa" öğesi oluşturmasını söyler. Kullanıcı öğeyi orijinal kapsayıcıya geri taşırsa, çapa otomatik olarak kaldırılır. Çapa öğesi `.cdk-drag-anchor` CSS sınıfı hedef alınarak stillenebilir.
 
-Combining `cdkDropListHasAnchor` with `cdkDropListSortingDisabled` makes it possible to construct a list from which a user can copy items without being able to reorder the source list (e.g. a product list and a shopping cart).
+`cdkDropListHasAnchor`'ı `cdkDropListSortingDisabled` ile birleştirmek, kullanıcının kaynak listeyi yeniden sıralayamadan öğeleri kopyalayabileceği bir liste oluşturmayı mümkün kılar (örneğin bir ürün listesi ve bir alışveriş sepeti).
 
 <docs-code-multifile preview path="adev/src/content/examples/drag-drop/src/copy-list/app/app.ts">
   <docs-code header="app.html" path="adev/src/content/examples/drag-drop/src/copy-list/app/app.html"/>
@@ -327,39 +327,39 @@ Combining `cdkDropListHasAnchor` with `cdkDropListSortingDisabled` makes it poss
 
 ## Customize animations
 
-Drag and drop supports animations for both:
+Sürükle ve bırak her ikisi için de animasyonları destekler:
 
-- Sorting an draggable element inside a list
-- Moving the draggable element from the position that the user dropped it to the final position inside the list
+- Sürüklenebilir bir öğeyi liste içinde sıralama
+- Sürüklenebilir öğeyi kullanıcının bıraktığı konumdan listenin içindeki son konuma taşıma
 
-To set up your animations, define a CSS transition that targets the transform property. The following classes can be used for animations:
+Animasyonlarınızı ayarlamak için transform özelliğini hedefleyen bir CSS geçişi tanımlayın. Animasyonlar için aşağıdaki sınıflar kullanılabilir:
 
-| CSS class name      | Result of adding transition                                                                                                                                                                                |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| .cdk-drag           | Animate draggable elements as they are being sorted.                                                                                                                                                       |
-| .cdk-drag-animating | Animate the draggable element from its dropped position to the final position within the `cdkDropList`.<br><br>This CSS class is applied to a `cdkDrag` element only when the dragging action has stopped. |
+| CSS class name      | Result of adding transition                                                                                                                                                                  |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| .cdk-drag           | Sürüklenebilir öğeleri sıralanırken animasyonlandırın.                                                                                                                                       |
+| .cdk-drag-animating | Sürüklenebilir öğeyi bırakılan konumdan `cdkDropList` içindeki son konuma animasyonlandırın.<br><br>Bu CSS sınıfı bir `cdkDrag` öğesine yalnızca sürükleme eylemi durdurulduğunda uygulanır. |
 
 ## Styling
 
-Both `cdkDrag` and `cdkDropList` directives only apply essential styles needed for functionality. Applications can customize their styles by targeting these specified CSS classes.
+Hem `cdkDrag` hem de `cdkDropList` direktifleri yalnızca işlevsellik için gerekli temel stilleri uygular. Uygulamalar, bu belirtilen CSS sınıflarını hedefleyerek stillerini özelleştirebilir.
 
-| CSS class name           | Description                                                                                                                                                                                                                                                                                             |
-| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| .cdk-drop-list           | Selector for the `cdkDropList` container elements.                                                                                                                                                                                                                                                      |
-| .cdk-drag                | Selector for `cdkDrag` elements.                                                                                                                                                                                                                                                                        |
-| .cdk-drag-disabled       | Selector for disabled `cdkDrag` elements.                                                                                                                                                                                                                                                               |
-| .cdk-drag-handle         | Selector for the host element of the `cdkDragHandle`.                                                                                                                                                                                                                                                   |
-| .cdk-drag-preview        | Selector for the drag preview element. This is the element that appears next to the cursor as a user drags an element in a sortable list.<br><br>The element looks exactly like the element that is being dragged unless customized with a custom template through `*cdkDragPreview`.                   |
-| .cdk-drag-placeholder    | Selector for the drag placeholder element. This is the element that is shown in the spot where the draggable element will be dragged to once the dragging action ends.<br><br>This element looks exactly like the element that is being sorted unless customized with the cdkDragPlaceholder directive. |
-| .cdk-drop-list-dragging  | Selector for `cdkDropList` container element that has a draggable element currently being dragged.                                                                                                                                                                                                      |
-| .cdk-drop-list-disabled  | Selector for `cdkDropList` container elements that are disabled.                                                                                                                                                                                                                                        |
-| .cdk-drop-list-receiving | Selector for `cdkDropList` container element that has a draggable element it can receive from a connected drop list that is currently being dragged.                                                                                                                                                    |
-| .cdk-drag-anchor         | Selector for the anchor element that is created when `cdkDropListHasAnchor` is enabled. This element indicates the position from which the dragged item started.                                                                                                                                        |
+| CSS class name           | Description                                                                                                                                                                                                                                            |
+| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| .cdk-drop-list           | `cdkDropList` kapsayıcı öğeleri için seçici.                                                                                                                                                                                                           |
+| .cdk-drag                | `cdkDrag` öğeleri için seçici.                                                                                                                                                                                                                         |
+| .cdk-drag-disabled       | Devre dışı bırakılmış `cdkDrag` öğeleri için seçici.                                                                                                                                                                                                   |
+| .cdk-drag-handle         | `cdkDragHandle`'ın host öğesi için seçici.                                                                                                                                                                                                             |
+| .cdk-drag-preview        | Sürükleme önizleme öğesi için seçici. Bu, kullanıcı sıralanabilir bir listede öğe sürüklerken imlecin yanında görünen öğedir.<br><br>Öğe, `*cdkDragPreview` aracılığıyla özel bir şablonla özelleştirilmedikçe sürüklenen öğeyle tamamen aynı görünür. |
+| .cdk-drag-placeholder    | Sürükleme yer tutucu öğesi için seçici. Bu, sürükleme eylemi sona erdiğinde sürüklenebilir öğenin sürükleneceği noktada gösterilen öğedir.<br><br>Bu öğe, cdkDragPlaceholder direktifiyle özelleştirilmedikçe sıralanan öğeyle tamamen aynı görünür.   |
+| .cdk-drop-list-dragging  | Şu anda sürüklenmekte olan bir sürüklenebilir öğeye sahip `cdkDropList` kapsayıcı öğesi için seçici.                                                                                                                                                   |
+| .cdk-drop-list-disabled  | Devre dışı bırakılmış `cdkDropList` kapsayıcı öğeleri için seçici.                                                                                                                                                                                     |
+| .cdk-drop-list-receiving | Şu anda sürüklenmekte olan bağlı bir bırakma listesinden alabileceği bir sürüklenebilir öğeye sahip `cdkDropList` kapsayıcı öğesi için seçici.                                                                                                         |
+| .cdk-drag-anchor         | `cdkDropListHasAnchor` etkinleştirildiğinde oluşturulan çapa öğesi için seçici. Bu öğe, sürüklenen öğenin başladığı konumu gösterir.                                                                                                                   |
 
 ## Dragging in a scrollable container
 
-If your draggable items are inside a scrollable container (e.g., a `div` with `overflow: auto`), automatic scrolling will not work unless the scrollable container has the `cdkScrollable` directive. Without it, the CDK cannot detect or control the scroll behavior of the container during drag operations.
+Sürüklenebilir öğeleriniz kaydırılabilir bir kapsayıcı içindeyse (örneğin, `overflow: auto` ile bir `div`), kaydırılabilir kapsayıcıda `cdkScrollable` direktifi olmadıkça otomatik kaydırma çalışmaz. Bu olmadan CDK, sürükleme işlemleri sırasında kapsayıcının kaydırma davranışını algılayamaz veya kontrol edemez.
 
 ## Integrations with other components
 
-The CDK's drag-and-drop functionality can be integrated with different components. Common use cases include sortable `MatTable` components and sortable `MatTabGroup` components.
+CDK'nin sürükle ve bırak işlevselliği farklı bileşenlerle entegre edilebilir. Yaygın kullanım durumları arasında sıralanabilir `MatTable` bileşenleri ve sıralanabilir `MatTabGroup` bileşenleri bulunur.

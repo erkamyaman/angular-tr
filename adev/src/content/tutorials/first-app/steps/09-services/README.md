@@ -1,106 +1,106 @@
 # Angular services
 
-This tutorial lesson demonstrates how to create an Angular service and use dependency injection to include it in your app.
+Bu eğitim dersi, bir Angular servisi oluşturmayı ve bağımlılık enjeksiyonu kullanarak uygulamanıza dahil etmeyi gösterir.
 
 <docs-video src="https://www.youtube.com/embed/-jRxG84AzCI?si=rieGfJawp9xJ00Sz"/>
 
 ## What you'll learn
 
-Your app has a service to serve the data to your app.
-At the end of this lesson, the service reads data from local, static data.
-In a later lesson, you'll update the service to get data from a web service.
+Uygulamanız, verilerinizi uygulamanıza sunan bir servise sahiptir.
+Bu dersin sonunda, servis verileri yerel, statik verilerden okur.
+İlerideki bir derste, servisi bir web servisinden veri alacak şekilde güncelleyeceksiniz.
 
 ## Conceptual preview of services
 
-This tutorial introduces Angular services and dependency injection.
+Bu eğitim, Angular servisleri ve bağımlılık enjeksiyonunu tanıtır.
 
 ### Angular services
 
-_Angular services_ provide a way for you to separate Angular app data and functions that can be used by multiple components in your app.
-To be used by multiple components, a service must be made _injectable_.
-Services that are injectable and used by a component become dependencies of that component.
-The component depends on those services and can't function without them.
+_Angular servisleri_, uygulamanızdaki birden fazla bileşen tarafından kullanılabilen Angular uygulama verilerini ve işlevlerini ayırmanız için bir yol sağlar.
+Birden fazla bileşen tarafından kullanılabilmesi için, bir servisin _enjekte edilebilir_ olması gerekir.
+Enjekte edilebilir olan ve bir bileşen tarafından kullanılan servisler, o bileşenin bağımlılıkları haline gelir.
+Bileşen bu servislere bağımlıdır ve onlar olmadan çalışamaz.
 
 ### Dependency injection
 
-_Dependency injection_ is the mechanism that manages the dependencies of an app's components and the services that other components can use.
+_Bağımlılık enjeksiyonu_, bir uygulamanın bileşenlerinin bağımlılıklarını ve diğer bileşenlerin kullanabileceği servisleri yöneten mekanizmadır.
 
 <docs-workflow>
 
 <docs-step title="Create a new service for your app">
-This step creates an injectable service for your app.
+Bu adım, uygulamanız için enjekte edilebilir bir servis oluşturur.
 
-In the **Terminal** pane of your IDE:
+IDE'nizin **Terminal** bölmesinde:
 
-1. In your project directory, navigate to the `first-app` directory.
-1. In the `first-app` directory, run this command to create the new service.
+1. Proje dizininizde, `first-app` dizinine gidin.
+1. `first-app` dizininde, yeni servisi oluşturmak için bu komutu çalıştırın.
 
    ```shell
    ng generate service housing --skip-tests
    ```
 
-1. Run `ng serve` to build the app and serve it to `http://localhost:4200`.
-1. Confirm that the app builds without error.
-   Correct any errors before you continue to the next step.
+1. Uygulamayı derlemek ve `http://localhost:4200` adresinde sunmak için `ng serve` komutunu çalıştırın.
+1. Uygulamanın hatasız derlendiğini doğrulayın.
+   Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
    </docs-step>
 
 <docs-step title="Add static data to the new service">
-This step adds some sample data to your new service.
-In a later lesson, you'll replace the static data with a web interface to get data as you might in a real app.
-For now, your app's new service uses the data that has, so far, been created locally in `Home`.
+Bu adım, yeni servisinize bazı örnek veriler ekler.
+İlerideki bir derste, statik verileri gerçek bir uygulamada yapabileceğiniz gibi veri almak için bir web arayüzüyle değiştireceksiniz.
+Şimdilik, uygulamanızın yeni servisi, şimdiye kadar `Home` bileşeninde yerel olarak oluşturulan verileri kullanır.
 
-In the **Edit** pane of your IDE:
+IDE'nizin **Edit** bölmesinde:
 
-1. In `src/app/home/home.ts`, from `Home`, copy the `housingLocationList` variable and its array value.
-1. In `src/app/housing.service.ts`:
-   1. Inside the `HousingService` class, paste the variable that you copied from `Home` in the previous step.
-   1. Inside the `HousingService` class, paste these functions after the data you just copied.
-      These functions allow dependencies to access the service's data.
+1. `src/app/home/home.ts` dosyasından, `Home` bileşenindeki `housingLocationList` değişkenini ve dizi değerini kopyalayın.
+1. `src/app/housing.service.ts` dosyasında:
+   1. `HousingService` sınıfı içinde, önceki adımda `Home` bileşeninden kopyaladığınız değişkeni yapıştırın.
+   1. `HousingService` sınıfı içinde, az önce kopyaladığınız veriden sonra bu fonksiyonları yapıştırın.
+      Bu fonksiyonlar, bağımlılıkların servisin verilerine erişmesini sağlar.
 
       <docs-code header="Service functions in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[112,118]"/>
 
-      You will need these functions in a future lesson. For now, it is enough to understand that these functions return either a specific `HousingLocation` by id or the entire list.
+      Bu fonksiyonlara ilerideki bir derste ihtiyacınız olacak. Şimdilik, bu fonksiyonların belirli bir `HousingLocation`'ı id'ye göre veya tüm listeyi döndürdüğünü anlamak yeterlidir.
 
-   1. Add a file level import for the `HousingLocation`.
+   1. `HousingLocation` için dosya düzeyinde bir import ekleyin.
 
       <docs-code header="Import HousingLocation type in  src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[2]"/>
 
-1. Confirm that the app builds without error.
-   Correct any errors before you continue to the next step.
+1. Uygulamanın hatasız derlendiğini doğrulayın.
+   Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
    </docs-step>
 
 <docs-step title="Inject the new service into `Home`">
-This step injects the new service into your app's `Home` so that it can read the app's data from a service.
-In a later lesson, you'll replace the static data with a live data source to get data as you might in a real app.
+Bu adım, yeni servisi uygulamanızın `Home` bileşenine enjekte eder, böylece uygulama verilerini bir servisten okuyabilir.
+İlerideki bir derste, statik verileri gerçek bir uygulamada yapabileceğiniz gibi veri almak için canlı bir veri kaynağıyla değiştireceksiniz.
 
-In the **Edit** pane of your IDE, in `src/app/home/home.ts`:
+IDE'nizin **Edit** bölmesinde, `src/app/home/home.ts` dosyasında:
 
-1.  At the top of `src/app/home/home.ts`, add the `inject` to the items imported from `@angular/core`. This will import the `inject` function into the `Home` class.
+1.  `src/app/home/home.ts` dosyasının en üstünde, `@angular/core`'dan içe aktarılan öğelere `inject`'i ekleyin. Bu, `inject` fonksiyonunu `Home` sınıfına aktaracaktır.
 
       <docs-code language="angular-ts" header="Update to src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[1]"/>
 
-1.  Add a new file level import for the `HousingService`:
+1.  `HousingService` için yeni bir dosya düzeyinde import ekleyin:
 
       <docs-code language="angular-ts" header="Add import to src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[4]"/>
 
-1.  From `Home`, delete the `housingLocationList` array entries and assign `housingLocationList` the value of empty array (`[]`). In a few steps you will update the code to pull the data from the `HousingService`.
+1.  `Home` bileşeninden `housingLocationList` dizi girişlerini silin ve `housingLocationList`'e boş dizi (`[]`) değerini atayın. Birkaç adım sonra verileri `HousingService`'ten çekmek için kodu güncelleyeceksiniz.
 
-1.  In `Home`, add the following code to inject the new service and initialize the data for the app. The `constructor` is the first function that runs when this component is created. The code in the `constructor` will assign the `housingLocationList` the value returned from the call to `getAllHousingLocations`.
+1.  `Home` bileşeninde, yeni servisi enjekte etmek ve uygulama için verileri başlatmak üzere aşağıdaki kodu ekleyin. `constructor`, bu bileşen oluşturulduğunda çalışan ilk fonksiyondur. `constructor` içindeki kod, `housingLocationList`'e `getAllHousingLocations` çağrısından dönen değeri atayacaktır.
 
       <docs-code language="angular-ts" header="Initialize data from service in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[23,30]"/>
 
-1.  Save the changes to `src/app/home/home.ts` and confirm your app builds without error.
-    Correct any errors before you continue to the next step.
+1.  `src/app/home/home.ts` dosyasındaki değişiklikleri kaydedin ve uygulamanızın hatasız derlendiğini doğrulayın.
+    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you added an Angular service to your app and injected it into the `Home` class.
-This compartmentalizes how your app gets its data.
-For now, the new service gets its data from a static array of data.
-In a later lesson, you'll refactor the service to get its data from an API endpoint.
+SUMMARY: Bu derste, uygulamanıza bir Angular servisi eklediniz ve onu `Home` sınıfına enjekte ettiniz.
+Bu, uygulamanızın verilerini nasıl aldığını bölümlere ayırır.
+Şimdilik, yeni servis verilerini statik bir veri dizisinden alır.
+İlerideki bir derste, servisi bir API uç noktasından veri alacak şekilde yeniden düzenleyeceksiniz.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/di/creating-and-using-services" title="Creating an injectable service"/>

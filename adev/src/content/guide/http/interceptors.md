@@ -1,32 +1,32 @@
 # Interceptors
 
-`HttpClient` supports a form of middleware known as _interceptors_.
+`HttpClient`, _yakalayıcılar_ olarak bilinen bir ara yazılım biçimini destekler.
 
-TLDR: Interceptors are middleware that allows common patterns around retrying, caching, logging, and authentication to be abstracted away from individual requests.
+TLDR: Yakalayıcılar, yeniden deneme, önbellekleme, günlükleme ve kimlik doğrulama gibi yaygın kalıpların bireysel isteklerden soyutlanmasına olanak tanıyan ara yazılımlardır.
 
-`HttpClient` supports two kinds of interceptors: functional and DI-based. Our recommendation is to use functional interceptors because they have more predictable behavior, especially in complex setups. Our examples in this guide use functional interceptors, and we cover [DI-based interceptors](#di-based-interceptors) in their own section at the end.
+`HttpClient` iki tür yakalayıcıyı destekler: fonksiyonel ve DI tabanlı. Önerimiz, özellikle karmaşık kurulumlarda daha öngörülebilir davranışa sahip olan fonksiyonel yakalayıcıları kullanmanızdır. Bu kılavuzdaki örneklerimiz fonksiyonel yakalayıcıları kullanır ve [DI tabanlı yakalayıcıları](#di-based-interceptors) sonunda kendi bölümlerinde ele alırız.
 
 ## Interceptors
 
-Interceptors are generally functions which you can run for each request, and have broad capabilities to affect the contents and overall flow of requests and responses. You can install multiple interceptors, which form an interceptor chain where each interceptor processes the request or response before forwarding it to the next interceptor in the chain.
+Yakalayıcılar genellikle her istek için çalıştırabileceğiniz fonksiyonlardır ve istekler ile yanıtların içeriklerini ve genel akışını etkileme konusunda geniş yeteneklere sahiptirler. Birden fazla yakalayıcı kurabilirsiniz ve bunlar, her yakalayıcının isteği veya yanıtı zincirdeki bir sonraki yakalayıcıya iletmeden önce işlediği bir yakalayıcı zinciri oluşturur.
 
-You can use interceptors to implement a variety of common patterns, such as:
+Yakalayıcıları çeşitli yaygın kalıpları uygulamak için kullanabilirsiniz, örneğin:
 
-- Adding authentication headers to outgoing requests to a particular API.
-- Retrying failed requests with exponential backoff.
-- Caching responses for a period of time, or until invalidated by mutations.
-- Customizing the parsing of responses.
-- Measuring server response times and log them.
-- Driving UI elements such as a loading spinner while network operations are in progress.
-- Collecting and batch requests made within a certain timeframe.
-- Automatically failing requests after a configurable deadline or timeout.
-- Regularly polling the server and refreshing results.
+- Belirli bir API'ye giden isteklere kimlik doğrulama başlıkları ekleme.
+- Başarısız istekleri üstel geri çekilme ile yeniden deneme.
+- Yanıtları belirli bir süre boyunca veya değişikliklerle geçersiz kılınana kadar önbellekleme.
+- Yanıtların ayrıştırılmasını özelleştirme.
+- Sunucu yanıt sürelerini ölçme ve günlükleme.
+- Ağ işlemleri devam ederken yükleme göstergesi gibi kullanıcı arayüzü öğelerini yönetme.
+- Belirli bir zaman dilimi içinde yapılan istekleri toplama ve gruplama.
+- Yapılandırılabilir bir son tarih veya zaman aşımından sonra istekleri otomatik olarak başarısız kılma.
+- Sunucuyu düzenli olarak yoklama ve sonuçları yenileme.
 
 ## Defining an interceptor
 
-The basic form of an interceptor is a function which receives the outgoing `HttpRequest` and a `next` function representing the next processing step in the interceptor chain.
+Bir yakalayıcının temel biçimi, giden `HttpRequest`'i ve yakalayıcı zincirindeki bir sonraki işleme adımını temsil eden bir `next` fonksiyonunu alan bir fonksiyondur.
 
-For example, this `loggingInterceptor` will log the outgoing request URL to `console.log` before forwarding the request:
+Örneğin, bu `loggingInterceptor` isteği iletmeden önce giden istek URL'sini `console.log`'a günlükler:
 
 ```ts
 export function loggingInterceptor(
@@ -38,11 +38,11 @@ export function loggingInterceptor(
 }
 ```
 
-In order for this interceptor to actually intercept requests, you must configure `HttpClient` to use it.
+Bu yakalayıcının gerçekten istekleri yakalaması için `HttpClient`'ı bunu kullanacak şekilde yapılandırmanız gerekir.
 
 ## Configuring interceptors
 
-You declare the set of interceptors to use when configuring `HttpClient` through dependency injection, by using the `withInterceptors` feature:
+Yakalayıcıları kullanacağınız kümeyi, `withInterceptors` özelliğini kullanarak bağımlılık enjeksiyonu aracılığıyla `HttpClient`'ı yapılandırırken bildirirsiniz:
 
 ```ts
 bootstrapApplication(App, {
@@ -50,11 +50,11 @@ bootstrapApplication(App, {
 });
 ```
 
-The interceptors you configure are chained together in the order that you've listed them in the providers. In the above example, the `loggingInterceptor` would process the request and then forward it to the `cachingInterceptor`.
+Yapılandırdığınız yakalayıcılar, providers'da listelediğiniz sırada zincirlenir. Yukarıdaki örnekte, `loggingInterceptor` isteği işler ve ardından `cachingInterceptor`'a iletir.
 
 ### Intercepting response events
 
-An interceptor may transform the `Observable` stream of `HttpEvent`s returned by `next` in order to access or manipulate the response. Because this stream includes all response events, inspecting the `.type` of each event may be necessary in order to identify the final response object.
+Bir yakalayıcı, yanıta erişmek veya onu değiştirmek için `next` tarafından döndürülen `HttpEvent`'lerin `Observable` akışını dönüştürebilir. Bu akış tüm yanıt olaylarını içerdiğinden, son yanıt nesnesini tanımlamak için her olayın `.type`'ını incelemek gerekebilir.
 
 ```ts
 export function loggingInterceptor(
@@ -71,13 +71,13 @@ export function loggingInterceptor(
 }
 ```
 
-TIP: Interceptors naturally associate responses with their outgoing requests, because they transform the response stream in a closure that captures the request object.
+TIP: Yakalayıcılar, istek nesnesini yakalayan bir closure içinde yanıt akışını dönüştürdükleri için yanıtları giden istekleriyle doğal olarak ilişkilendirir.
 
 ## Modifying requests
 
-Most aspects of `HttpRequest` and `HttpResponse` instances are _immutable_, and interceptors cannot directly modify them. Instead, interceptors apply mutations by cloning these objects using the `.clone()` operation, and specifying which properties should be mutated in the new instance. This might involve performing immutable updates on the value itself (like `HttpHeaders` or `HttpParams`).
+`HttpRequest` ve `HttpResponse` örneklerinin çoğu yönü _değiştirilemezdir_ ve yakalayıcılar bunları doğrudan değiştiremez. Bunun yerine, yakalayıcılar `.clone()` işlemini kullanarak bu nesneleri klonlayarak ve yeni örnekte hangi özelliklerin değiştirilmesi gerektiğini belirterek değişiklikleri uygular. Bu, değerin kendisinde değiştirilemez güncellemeler yapmayı içerebilir (`HttpHeaders` veya `HttpParams` gibi).
 
-For example, to add a header to a request:
+Örneğin, bir isteğe başlık eklemek için:
 
 ```ts
 const reqWithHeader = req.clone({
@@ -85,15 +85,15 @@ const reqWithHeader = req.clone({
 });
 ```
 
-This immutability allows most interceptors to be idempotent if the same `HttpRequest` is submitted to the interceptor chain multiple times. This can happen for a few reasons, including when a request is retried after failure.
+Bu değiştirilemezlik, aynı `HttpRequest` yakalayıcı zincirine birden fazla kez gönderildiğinde çoğu yakalayıcının idempotent olmasını sağlar. Bu, bir isteğin başarısızlık sonrası yeniden denenmesi dahil çeşitli nedenlerle gerçekleşebilir.
 
-CRITICAL: The body of a request or response is **not** protected from deep mutations. If an interceptor must mutate the body, take care to handle running multiple times on the same request.
+CRITICAL: Bir istek veya yanıtın gövdesi derin değişikliklere karşı korunmaz. Bir yakalayıcının gövdeyi değiştirmesi gerekiyorsa, aynı istekte birden fazla kez çalışmayı ele almaya dikkat edin.
 
 ## Dependency injection in interceptors
 
-Interceptors are run in the _injection context_ of the injector which registered them, and can use Angular's [`inject`](/api/core/inject) API to retrieve dependencies.
+Yakalayıcılar, onları kaydeden enjektörün _enjeksiyon bağlamında_ çalışır ve bağımlılıkları almak için Angular'ın [`inject`](/api/core/inject) API'sini kullanabilir.
 
-For example, suppose an application has a service called `AuthService`, which creates authentication tokens for outgoing requests. An interceptor can inject and use this service:
+Örneğin, bir uygulamanın giden istekler için kimlik doğrulama belirteçleri oluşturan `AuthService` adında bir servisi olduğunu varsayalım. Bir yakalayıcı bu servisi enjekte edip kullanabilir:
 
 ```ts
 export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
@@ -110,23 +110,23 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
 
 ## Request and response metadata
 
-Often it's useful to include information in a request that's not sent to the backend, but is specifically meant for interceptors. `HttpRequest`s have a `.context` object which stores this kind of metadata as an instance of `HttpContext`. This object functions as a typed map, with keys of type `HttpContextToken`.
+Genellikle bir isteğe arka uca gönderilmeyen, özellikle yakalayıcılara yönelik bilgiler eklemek yararlıdır. `HttpRequest`'ler, bu tür meta verileri bir `HttpContext` örneği olarak depolayan bir `.context` nesnesine sahiptir. Bu nesne, `HttpContextToken` türünde anahtarlara sahip tipli bir harita olarak işlev görür.
 
-To illustrate how this system works, let's use metadata to control whether a caching interceptor is enabled for a given request.
+Bu sistemin nasıl çalıştığını göstermek için, belirli bir istek için bir önbellekleme yakalayıcısının etkin olup olmadığını kontrol etmek üzere meta verileri kullanalım.
 
 ### Defining context tokens
 
-To store whether the caching interceptor should cache a particular request in that request's `.context` map, define a new `HttpContextToken` to act as a key:
+Önbellekleme yakalayıcısının belirli bir isteği önbelleğe alıp almayacağını o isteğin `.context` haritasında saklamak için, anahtar olarak kullanılacak yeni bir `HttpContextToken` tanımlayın:
 
 ```ts
 export const CACHING_ENABLED = new HttpContextToken<boolean>(() => true);
 ```
 
-The provided function creates the default value for the token for requests that haven't explicitly set a value for it. Using a function ensures that if the token's value is an object or array, each request gets its own instance.
+Sağlanan fonksiyon, bunun için açıkça bir değer ayarlanmamış istekler için belirtecin varsayılan değerini oluşturur. Bir fonksiyon kullanmak, belirtecin değeri bir nesne veya dizi ise her isteğin kendi örneğini almasını sağlar.
 
 ### Reading the token in an interceptor
 
-An interceptor can then read the token and choose to apply caching logic or not based on its value:
+Bir yakalayıcı daha sonra belirteci okuyabilir ve değerine göre önbellekleme mantığını uygulayıp uygulamamayı seçebilir:
 
 ```ts
 export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
@@ -142,7 +142,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 
 ### Setting context tokens when making a request
 
-When making a request via the `HttpClient` API, you can provide values for `HttpContextToken`s:
+`HttpClient` API'si aracılığıyla istek yaparken, `HttpContextToken`'lar için değerler sağlayabilirsiniz:
 
 ```ts
 const data$ = http.get('/sensitive/data', {
@@ -150,19 +150,19 @@ const data$ = http.get('/sensitive/data', {
 });
 ```
 
-Interceptors can read these values from the `HttpContext` of the request.
+Yakalayıcılar bu değerleri isteğin `HttpContext`'inden okuyabilir.
 
 ### The request context is mutable
 
-Unlike other properties of `HttpRequest`s, the associated `HttpContext` is _mutable_. If an interceptor changes the context of a request that is later retried, the same interceptor will observe the context mutation when it runs again. This is useful for passing state across multiple retries if needed.
+`HttpRequest`'lerin diğer özelliklerinden farklı olarak, ilişkili `HttpContext` _değiştirilebilirdir_. Bir yakalayıcı daha sonra yeniden denenen bir isteğin bağlamını değiştirirse, aynı yakalayıcı tekrar çalıştığında bağlam değişikliğini gözlemler. Gerektiğinde birden fazla yeniden deneme arasında durum aktarmak için bu kullanışlıdır.
 
 ## Synthetic responses
 
-Most interceptors will simply invoke the `next` handler while transforming either the request or the response, but this is not strictly a requirement. This section discusses several of the ways in which an interceptor may incorporate more advanced behavior.
+Çoğu yakalayıcı, isteği veya yanıtı dönüştürürken basitçe `next` işleyicisini çağıracaktır, ancak bu kesinlikle bir gereklilik değildir. Bu bölüm, bir yakalayıcının daha gelişmiş davranışlar içerebilmesinin çeşitli yollarını açıklar.
 
-Interceptors are not required to invoke `next`. They may instead choose to construct responses through some other mechanism, such as from a cache or by sending the request through an alternate mechanism.
+Yakalayıcıların `next`'i çağırması zorunlu değildir. Bunun yerine, yanıtları bir önbellekten veya isteği alternatif bir mekanizma aracılığıyla göndererek başka bir yolla oluşturmayı seçebilirler.
 
-Constructing a response is possible using the `HttpResponse` constructor:
+`HttpResponse` yapıcısını kullanarak bir yanıt oluşturmak mümkündür:
 
 ```ts
 const resp = new HttpResponse({
@@ -172,9 +172,9 @@ const resp = new HttpResponse({
 
 ## Working with redirect information
 
-When using `HttpClient` with the `withFetch` provider, responses include a `redirected` property that indicates whether the response was the result of a redirect. This property aligns with the native Fetch API specification and can be useful in interceptors for handling redirect scenarios.
+`HttpClient`'ı `withFetch` sağlayıcısı ile kullanırken, yanıtlar yanıtın bir yönlendirmenin sonucu olup olmadığını gösteren bir `redirected` özelliği içerir. Bu özellik yerel Fetch API spesifikasyonu ile uyumludur ve yönlendirme senaryolarını ele almak için yakalayıcılarda kullanışlı olabilir.
 
-An interceptor can access and act upon the redirect information:
+Bir yakalayıcı yönlendirme bilgisine erişebilir ve buna göre davranabilir:
 
 ```ts
 export function redirectTrackingInterceptor(
@@ -192,7 +192,7 @@ export function redirectTrackingInterceptor(
 }
 ```
 
-You can also use the redirect information to implement conditional logic in your interceptors:
+Yakalayıcılarınızda koşullu mantık uygulamak için yönlendirme bilgisini de kullanabilirsiniz:
 
 ```ts
 export function authRedirectInterceptor(
@@ -215,17 +215,17 @@ export function authRedirectInterceptor(
 
 ## Working with response types
 
-When using `HttpClient` with the `withFetch` provider, responses include a `type` property that indicates how the browser handled the response based on CORS policies and request mode. This property aligns with the native Fetch API specification and provides valuable insights for debugging CORS issues and understanding response accessibility.
+`HttpClient`'ı `withFetch` sağlayıcısı ile kullanırken, yanıtlar tarayıcının CORS politikaları ve istek moduna göre yanıtı nasıl işlediğini gösteren bir `type` özelliği içerir. Bu özellik yerel Fetch API spesifikasyonu ile uyumludur ve CORS sorunlarını ayıklamak ve yanıt erişilebilirliğini anlamak için değerli bilgiler sağlar.
 
-The response `type` property can have the following values:
+Yanıt `type` özelliği aşağıdaki değerlere sahip olabilir:
 
-- `'basic'` - Same-origin response with all headers accessible
-- `'cors'` - Cross-origin response with CORS headers properly configured
-- `'opaque'` - Cross-origin response without CORS, headers and body may be limited
-- `'opaqueredirect'` - Response from a redirected request in no-cors mode
-- `'error'` - Network error occurred
+- `'basic'` - Tüm başlıkların erişilebilir olduğu aynı kökenli yanıt
+- `'cors'` - CORS başlıkları doğru şekilde yapılandırılmış çapraz kökenli yanıt
+- `'opaque'` - CORS olmadan çapraz kökenli yanıt, başlıklar ve gövde sınırlı olabilir
+- `'opaqueredirect'` - no-cors modunda yönlendirilmiş bir istekten gelen yanıt
+- `'error'` - Ağ hatası oluştu
 
-An interceptor can use response type information for CORS debugging and error handling:
+Bir yakalayıcı, CORS ayıklama ve hata yönetimi için yanıt türü bilgisini kullanabilir:
 
 ```ts
 export function responseTypeInterceptor(
@@ -258,9 +258,9 @@ export function responseTypeInterceptor(
 
 ## DI-based interceptors
 
-`HttpClient` also supports interceptors which are defined as injectable classes and configured through the DI system. The capabilities of DI-based interceptors are identical to those of functional interceptors, but the configuration mechanism is different.
+`HttpClient` ayrıca enjekte edilebilir sınıflar olarak tanımlanan ve DI sistemi aracılığıyla yapılandırılan yakalayıcıları da destekler. DI tabanlı yakalayıcıların yetenekleri fonksiyonel yakalayıcılarla aynıdır, ancak yapılandırma mekanizması farklıdır.
 
-A DI-based interceptor is an injectable class which implements the `HttpInterceptor` interface:
+DI tabanlı bir yakalayıcı, `HttpInterceptor` arayüzünü uygulayan enjekte edilebilir bir sınıftır:
 
 ```ts
 @Injectable()
@@ -272,7 +272,7 @@ export class LoggingInterceptor implements HttpInterceptor {
 }
 ```
 
-DI-based interceptors are configured through a dependency injection multi-provider:
+DI tabanlı yakalayıcılar, bir bağımlılık enjeksiyonu çoklu sağlayıcı aracılığıyla yapılandırılır:
 
 ```ts
 bootstrapApplication(App, {
@@ -287,4 +287,4 @@ bootstrapApplication(App, {
 });
 ```
 
-DI-based interceptors run in the order that their providers are registered. In an app with an extensive and hierarchical DI configuration, this order can be very hard to predict.
+DI tabanlı yakalayıcılar, sağlayıcılarının kaydedildiği sırada çalışır. Kapsamlı ve hiyerarşik bir DI yapılandırmasına sahip bir uygulamada, bu sırayı tahmin etmek çok zor olabilir.

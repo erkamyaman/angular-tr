@@ -1,3 +1,3 @@
-# Page Not Found 🙃
+# Page Not Found
 
-If you think this is a mistake, please [open an issue](https://github.com/angular/angular/issues/new?template=3-docs-bug.yaml) so we can fix it.
+Bunun bir hata olduğunu düşünüyorsanız, düzeltebilmemiz için lütfen bir [sorun bildirin](https://github.com/angular/angular/issues/new?template=3-docs-bug.yaml).

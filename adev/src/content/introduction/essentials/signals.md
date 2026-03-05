@@ -1,10 +1,10 @@
 <docs-decorative-header title="Signals" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
-Create and manage dynamic data.
+Dinamik veri oluşturun ve yönetin.
 </docs-decorative-header>
 
-In Angular, you use _signals_ to create and manage state. A signal is a lightweight wrapper around a value.
+Angular'da durum oluşturmak ve yönetmek için _sinyaller_ kullanırsınız. Sinyal, bir değerin etrafındaki hafif bir sarmalayıcıdır.
 
-Use the `signal` function to create a signal for holding local state:
+Yerel durumu tutmak üzere bir sinyal oluşturmak için `signal` fonksiyonunu kullanın:
 
 ```typescript
 import {signal} from '@angular/core';
@@ -23,11 +23,11 @@ firstName.set('Jaime');
 firstName.update((name) => name.toUpperCase());
 ```
 
-Angular tracks where signals are read and when they're updated. The framework uses this information to do additional work, such as updating the DOM with new state. This ability to respond to changing signal values over time is known as _reactivity_.
+Angular, sinyallerin nerede okunduğunu ve ne zaman güncellendiğini takip eder. Çerçeve, DOM'u yeni durumla güncellemek gibi ek işlemler yapmak için bu bilgiyi kullanır. Değişen sinyal değerlerine zaman içinde tepki verebilme yeteneği _reaktivite_ olarak bilinir.
 
 ## Computed expressions
 
-A `computed` is a signal that produces its value based on other signals.
+`computed`, değerini diğer sinyallere göre üreten bir sinyaldir.
 
 ```typescript
 import {signal, computed} from '@angular/core';
@@ -38,7 +38,7 @@ const firstNameCapitalized = computed(() => firstName().toUpperCase());
 console.log(firstNameCapitalized()); // MORGAN
 ```
 
-A `computed` signal is read-only; it does not have a `set` or an `update` method. Instead, the value of the `computed` signal automatically changes when any of the signals it reads change:
+Bir `computed` sinyali salt okunurdur; `set` veya `update` metodu yoktur. Bunun yerine, `computed` sinyalinin değeri, okuduğu sinyallerden herhangi biri değiştiğinde otomatik olarak değişir:
 
 ```typescript
 import {signal, computed} from '@angular/core';
@@ -53,7 +53,7 @@ console.log(firstNameCapitalized()); // JAIME
 
 ## Using signals in components
 
-Use `signal` and `computed` inside your components to create and manage state:
+Durum oluşturmak ve yönetmek için bileşenlerinizin içinde `signal` ve `computed` kullanın:
 
 ```ts
 @Component({
@@ -70,11 +70,11 @@ export class UserProfile {
 }
 ```
 
-TIP: Want to know more about Angular Signals? See the [In-depth Signals guide](guide/signals) for the full details.
+TIP: Angular Sinyalleri hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Sinyaller kılavuzuna](guide/signals) bakın.
 
 ## Next Step
 
-Now that you have learned how to declare and manage dynamic data, it's time to learn how to use that data inside of templates.
+Dinamik verileri nasıl tanımlayacağınızı ve yöneteceğinizi öğrendiğinize göre, bu verileri şablonlar içinde nasıl kullanacağınızı öğrenmenin zamanı geldi.
 
 <docs-pill-row>
   <docs-pill title="Dynamic interfaces with templates" href="essentials/templates" />

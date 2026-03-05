@@ -1,114 +1,97 @@
 # Component Lifecycle
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-A component's **lifecycle** is the sequence of steps that happen between the component's creation
-and its destruction. Each step represents a different part of Angular's process for rendering
-components and checking them for updates over time.
+Bir bilesnenin **yasam dongusu**, bilesnenin olusturulmasi ile yok edilmesi arasinda gerceklesen adimlar dizisidir. Her adim, Angular'in bilesenleri render etme ve zaman icinde guncellemeleri kontrol etme surecinin farkli bir bolumunu temsil eder.
 
-In your components, you can implement **lifecycle hooks** to run code during these steps.
-Lifecycle hooks that relate to a specific component instance are implemented as methods on your
-component class. Lifecycle hooks that relate the Angular application as a whole are implemented
-as functions that accept a callback.
+Bilesenlerinizde, bu adimlar sirasinda kod calistirmak icin **yasam dongusu kancalari** uygulayabilirsiniz. Belirli bir bilesen ornegi ile iliskili yasam dongusu kancalari, bilesen sinifinizdaki yontemler olarak uygulanir. Genel Angular uygulamasiyla iliskili yasam dongusu kancalari, bir geri cagrima kabul eden fonksiyonlar olarak uygulanir.
 
-A component's lifecycle is tightly connected to how Angular checks your components for changes over
-time. For the purposes of understanding this lifecycle, you only need to know that Angular walks
-your application tree from top to bottom, checking template bindings for changes. The lifecycle
-hooks described below run while Angular is doing this traversal. This traversal visits each
-component exactly once, so you should always avoid making further state changes in the middle of the
-process.
+Bir bilesnenin yasam dongusu, Angular'in bilesenlerinizi zaman icinde degisiklikler acisindan nasil kontrol ettigiyle yakindan baglantilidir. Bu yasam dongusunu anlamak icin, Angular'in uygulama agacinizda yukaridan asagiya dogru yuruyerek sablon baglamalarindaki degisiklikleri kontrol ettigini bilmeniz yeterlidir. Asagida aciklanan yasam dongusu kancalari, Angular bu gecisi yaparken calisir. Bu gecis her bileseni tam olarak bir kez ziyaret eder, bu nedenle islemin ortasinda daha fazla durum degisikligi yapmaktan her zaman kacinmalisiniz.
 
 ## Summary
 
 <div class="docs-table docs-scroll-track-transparent">
   <table>
     <tr>
-      <td><strong>Phase</strong></td>
-      <td><strong>Method</strong></td>
-      <td><strong>Summary</strong></td>
+      <td><strong>Asama</strong></td>
+      <td><strong>Yontem</strong></td>
+      <td><strong>Ozet</strong></td>
     </tr>
     <tr>
-      <td>Creation</td>
+      <td>Olusturma</td>
       <td><code>constructor</code></td>
       <td>
         <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Classes/constructor" target="_blank">
-          Standard JavaScript class constructor
-        </a>. Runs when Angular instantiates the component.
+          Standart JavaScript sinif constructor'i
+        </a>. Angular bileseni orneklediginde calisir.
       </td>
     </tr>
     <tr>
-      <td rowspan="7">Change<p>Detection</td>
+      <td rowspan="7">Degisiklik<p>Algilama</td>
       <td><code>ngOnInit</code>
       </td>
-      <td>Runs once after Angular has initialized all the component's inputs.</td>
+      <td>Bilesnenin tum girdileri baslatildiktan sonra bir kez calisir.</td>
     </tr>
     <tr>
       <td><code>ngOnChanges</code></td>
-      <td>Runs every time the component's inputs have changed.</td>
+      <td>Bilesnenin girdileri her degistiginde calisir.</td>
     </tr>
     <tr>
       <td><code>ngDoCheck</code></td>
-      <td>Runs every time this component is checked for changes.</td>
+      <td>Bu bilesen degisiklikler icin her kontrol edildiginde calisir.</td>
     </tr>
     <tr>
       <td><code>ngAfterContentInit</code></td>
-      <td>Runs once after the component's <em>content</em> has been initialized.</td>
+      <td>Bilesnenin <em>icerigi</em> baslatildiktan sonra bir kez calisir.</td>
     </tr>
     <tr>
       <td><code>ngAfterContentChecked</code></td>
-      <td>Runs every time this component content has been checked for changes.</td>
+      <td>Bu bilesen icerigi degisiklikler icin her kontrol edildiginde calisir.</td>
     </tr>
     <tr>
       <td><code>ngAfterViewInit</code></td>
-      <td>Runs once after the component's <em>view</em> has been initialized.</td>
+      <td>Bilesnenin <em>gorunumu</em> baslatildiktan sonra bir kez calisir.</td>
     </tr>
     <tr>
       <td><code>ngAfterViewChecked</code></td>
-      <td>Runs every time the component's view has been checked for changes.</td>
+      <td>Bilesnenin gorunumu degisiklikler icin her kontrol edildiginde calisir.</td>
     </tr>
     <tr>
-      <td rowspan="2">Rendering</td>
+      <td rowspan="2">Render Etme</td>
       <td><code>afterNextRender</code></td>
-      <td>Runs once the next time that <strong>all</strong> components have been rendered to the DOM.</td>
+      <td><strong>Tum</strong> bilesenler bir sonraki sefer DOM'a render edildikten sonra bir kez calisir.</td>
     </tr>
     <tr>
       <td><code>afterEveryRender</code></td>
-      <td>Runs every time <strong>all</strong> components have been rendered to the DOM.</td>
+      <td><strong>Tum</strong> bilesenler DOM'a her render edildikten sonra calisir.</td>
     </tr>
     <tr>
-      <td>Destruction</td>
+      <td>Yok Etme</td>
       <td><code>ngOnDestroy</code></td>
-      <td>Runs once before the component is destroyed.</td>
+      <td>Bilesen yok edilmeden once bir kez calisir.</td>
     </tr>
   </table>
 </div>
 
 ### ngOnInit
 
-The `ngOnInit` method runs after Angular has initialized all the components inputs with their
-initial values. A component's `ngOnInit` runs exactly once.
+`ngOnInit` yontemi, Angular bilesnenin tum girdilerini baslangic degerleriyle baslattktan sonra calisir. Bir bilesnenin `ngOnInit`'i tam olarak bir kez calisir.
 
-This step happens _before_ the component's own template is initialized. This means that you can
-update the component's state based on its initial input values.
+Bu adim, bilesnenin kendi sablonunun baslatilmasindan _once_ gerceklesir. Bu, bilesnenin durumunu baslangic girdi degerlerine gore guncelleyebileceginiz anlamina gelir.
 
 ### ngOnChanges
 
-The `ngOnChanges` method runs after any component inputs have changed.
+`ngOnChanges` yontemi, herhangi bir bilesen girdisi degistikten sonra calisir.
 
-This step happens _before_ the component's own template is checked. This means that you can update
-the component's state based on its initial input values.
+Bu adim, bilesnenin kendi sablonunun kontrol edilmesinden _once_ gerceklesir. Bu, bilesnenin durumunu baslangic girdi degerlerine gore guncelleyebileceginiz anlamina gelir.
 
-During initialization, the first `ngOnChanges` runs before `ngOnInit`.
+Baslatma sirasinda, ilk `ngOnChanges` `ngOnInit`'ten once calisir.
 
 #### Inspecting changes
 
-The `ngOnChanges` method accepts one `SimpleChanges` argument. This object is
-a [`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)
-mapping each component input name to a `SimpleChange` object. Each `SimpleChange` contains the
-input's previous value, its current value, and a flag for whether this is the first time the input
-has changed.
+`ngOnChanges` yontemi tek bir `SimpleChanges` argumani kabul eder. Bu nesne, her bilesen girdi adini bir `SimpleChange` nesnesine eslestiren bir [`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)'dur. Her `SimpleChange`, girdinin onceki degerini, mevcut degerini ve girdinin ilk kez degisip degismedigini gosteren bir isaret icerir.
 
-You can optionally pass the current class or this as the first generic argument for stronger type checking.
+Daha guclu tur denetimi icin ilk generic arguman olarak istege bagli olarak mevcut sinifi veya this'i iletebilirsiniz.
 
 ```ts
 @Component({
@@ -127,20 +110,15 @@ export class UserProfile {
 }
 ```
 
-If you provide an `alias` for any input properties, the `SimpleChanges` Record still uses the
-TypeScript property name as a key, rather than the alias.
+Herhangi bir girdi ozelligi icin bir `alias` saglarsaniz, `SimpleChanges` Record'u hala anahtar olarak takma ad yerine TypeScript ozellik adini kullanir.
 
 ### ngOnDestroy
 
-The `ngOnDestroy` method runs once just before a component is destroyed. Angular destroys a
-component when it is no longer shown on the page, such as being hidden by `@if` or upon navigating
-to another page.
+`ngOnDestroy` yontemi, bir bilesen yok edilmeden hemen once bir kez calisir. Angular, bir bileseni sayfada artik gosterilmediginde yok eder, ornegin `@if` ile gizlenme veya baska bir sayfaya navigasyon.
 
 #### DestroyRef
 
-As an alternative to the `ngOnDestroy` method, you can inject an instance of `DestroyRef`. You can
-register a callback to be invoked upon the component's destruction by calling the `onDestroy` method
-of `DestroyRef`.
+`ngOnDestroy` yontemine alternatif olarak, bir `DestroyRef` ornegi enjekte edebilirsiniz. `DestroyRef`'in `onDestroy` yontemini cagirarak bilesnenin yok edilmesi uzerine cagirilacak bir geri cagrima kaydedebilirsiniz.
 
 ```ts
 @Component({
@@ -155,103 +133,70 @@ export class UserProfile {
 }
 ```
 
-You can pass the `DestroyRef` instance to functions or classes outside your component. Use this
-pattern if you have other code that should run some cleanup behavior when the component is
-destroyed.
+`DestroyRef` ornegini bilesen disindaki fonksiyonlara veya siniflara iletebilirsiniz. Bilesen yok edildiginde bazi temizlik davranisi calistirmasi gereken baska kodlariniz varsa bu kalabi kullanin.
 
-You can also use `DestroyRef` to keep setup code close to cleanup code, rather than putting
-all cleanup code in the `ngOnDestroy` method.
+Tum temizlik kodunu `ngOnDestroy` yontemine koymak yerine, kurulum kodunu temizlik koduna yakin tutmak icin de `DestroyRef` kullanabilirsiniz.
 
 ##### Detecting instance destruction
 
-`DestroyRef` provides a `destroyed` property that allows checking whether a given instance has already been destroyed. This is useful for avoiding operations on destroyed components, especially when dealing with delayed or asynchronous logic.
+`DestroyRef`, belirli bir ornegin zaten yok edilip edilmedigini kontrol etmeye olanak taniyan bir `destroyed` ozelligi saglar. Bu, ozellikle gecikmeli veya asenkron mantikla ugrasilirken yok edilmis bilesenler uzerinde islem yapmayi onlemek icin kullanisildir.
 
-By checking `destroyRef.destroyed`, you can prevent executing code after the instance has been cleaned up, avoiding potential errors such as `NG0911: View has already been destroyed.`.
+`destroyRef.destroyed` degerini kontrol ederek, ornek temizlendikten sonra kod calistirmayi onleyerek `NG0911: View has already been destroyed.` gibi olasi hatalari onleyebilirsiniz.
 
 ### ngDoCheck
 
-The `ngDoCheck` method runs before every time Angular checks a component's template for changes.
+`ngDoCheck` yontemi, Angular bir bilesnenin sablonunu degisiklikler icin her kontrol etmeden once calisir.
 
-You can use this lifecycle hook to manually check for state changes outside of Angular's normal
-change detection, manually updating the component's state.
+Bu yasam dongusu kancasini, Angular'in normal degisiklik alglamasinin disindaki durum degisikliklerini manuel olarak kontrol ederek bilesnenin durumunu manuel olarak guncellemek icin kullanabilirsiniz.
 
-This method runs very frequently and can significantly impact your page's performance. Avoid
-defining this hook whenever possible, only using it when you have no alternative.
+Bu yontem cok sik calisir ve sayfa performansinizi onemli olcude etkileyebilir. Bu kancayi mumkun oldugunda tanimlamaktan kacinin ve yalnizca baska bir alternatifiniz olmadiginda kullanin.
 
-During initialization, the first `ngDoCheck` runs after `ngOnInit`.
+Baslatma sirasinda, ilk `ngDoCheck` `ngOnInit`'ten sonra calisir.
 
 ### ngAfterContentInit
 
-The `ngAfterContentInit` method runs once after all the children nested inside the component (its
-_content_) have been initialized.
+`ngAfterContentInit` yontemi, bilesnenin icerisine yuvalanan tum alt elemanlar (_icerigi_) baslatildiktan sonra bir kez calisir.
 
-You can use this lifecycle hook to read the results of
-[content queries](guide/components/queries#content-queries). While you can access the initialized
-state of these queries, attempting to change any state in this method results in an
-[ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100)
+Bu yasam dongusu kancasini [icerik sorgulari](guide/components/queries#content-queries)'nin sonuclarini okumak icin kullanabilirsiniz. Bu sorgularin baslatilmis durumuna erissebilirsiniz, ancak bu yontemde herhangi bir durumu degistirmeye calismak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasina neden olur.
 
 ### ngAfterContentChecked
 
-The `ngAfterContentChecked` method runs every time the children nested inside the component (its
-_content_) have been checked for changes.
+`ngAfterContentChecked` yontemi, bilesnenin icerisine yuvalanan alt elemanlar (_icerigi_) degisiklikler icin her kontrol edildiginde calisir.
 
-This method runs very frequently and can significantly impact your page's performance. Avoid
-defining this hook whenever possible, only using it when you have no alternative.
+Bu yontem cok sik calisir ve sayfa performansinizi onemli olcude etkileyebilir. Bu kancayi mumkun oldugunda tanimlamaktan kacinin ve yalnizca baska bir alternatifiniz olmadiginda kullanin.
 
-While you can access the updated state
-of [content queries](guide/components/queries#content-queries) here, attempting to
-change any state in this method results in
-an [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100).
+[Icerik sorgulari](guide/components/queries#content-queries)'nin guncellenmis durumuna burada erissebilirsiniz, ancak bu yontemde herhangi bir durumu degistirmeye calismak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasina neden olur.
 
 ### ngAfterViewInit
 
-The `ngAfterViewInit` method runs once after all the children in the component's template (its
-_view_) have been initialized.
+`ngAfterViewInit` yontemi, bilesnenin sablonundaki tum alt elemanlar (_gorunumu_) baslatildiktan sonra bir kez calisir.
 
-You can use this lifecycle hook to read the results of
-[view queries](guide/components/queries#view-queries). While you can access the initialized state of
-these queries, attempting to change any state in this method results in an
-[ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100)
+Bu yasam dongusu kancasini [gorunum sorgulari](guide/components/queries#view-queries)'nin sonuclarini okumak icin kullanabilirsiniz. Bu sorgularin baslatilmis durumuna erissebilirsiniz, ancak bu yontemde herhangi bir durumu degistirmeye calismak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasina neden olur.
 
 ### ngAfterViewChecked
 
-The `ngAfterViewChecked` method runs every time the children in the component's template (its
-_view_) have been checked for changes.
+`ngAfterViewChecked` yontemi, bilesnenin sablonundaki alt elemanlar (_gorunumu_) degisiklikler icin her kontrol edildiginde calisir.
 
-This method runs very frequently and can significantly impact your page's performance. Avoid
-defining this hook whenever possible, only using it when you have no alternative.
+Bu yontem cok sik calisir ve sayfa performansinizi onemli olcude etkileyebilir. Bu kancayi mumkun oldugunda tanimlamaktan kacinin ve yalnizca baska bir alternatifiniz olmadiginda kullanin.
 
-While you can access the updated state of [view queries](guide/components/queries#view-queries)
-here, attempting to
-change any state in this method results in
-an [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100).
+[Gorunum sorgulari](guide/components/queries#view-queries)'nin guncellenmis durumuna burada erissebilirsiniz, ancak bu yontemde herhangi bir durumu degistirmeye calismak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasina neden olur.
 
 ### afterEveryRender and afterNextRender
 
-The `afterEveryRender` and `afterNextRender` functions let you register a **render callback** to be
-invoked after Angular has finished rendering _all components_ on the page into the DOM.
+`afterEveryRender` ve `afterNextRender` fonksiyonlari, Angular sayfadaki _tum bilesenleri_ DOM'a render etmeyi bitirdikten sonra cagirilacak bir **render geri cagrisi** kaydetmenize olanak tanir.
 
-These functions are different from the other lifecycle hooks described in this guide. Rather than a
-class method, they are standalone functions that accept a callback. The execution of render
-callbacks are not tied to any specific component instance, but instead an application-wide hook.
+Bu fonksiyonlar, bu rehberde aciklanan diger yasam dongusu kancalarindan farklidir. Bir sinif yontemi olmak yerine, bir geri cagrima kabul eden bagimsiz fonksiyonlardir. Render geri cagrimalarinin calistirilmasi belirli bir bilesen ornegine bagli degildir, bunun yerine uygulama genelinde bir kancadir.
 
-`afterEveryRender` and `afterNextRender` must be called in
-an [injection context](guide/di/dependency-injection-context), typically a
-component's constructor.
+`afterEveryRender` ve `afterNextRender` bir [enjeksiyon baglaminda](guide/di/dependency-injection-context) cagrilmalidir, tipik olarak bilesnenin constructor'inda.
 
-You can use render callbacks to perform manual DOM operations.
-See [Using DOM APIs](guide/components/dom-apis) for guidance on working with the DOM in Angular.
+Manuel DOM islemleri gerceklestirmek icin render geri cagrimalarini kullanabilirsiniz.
+Angular'da DOM ile calisma rehberligi icin [DOM API'lerini Kullanma](guide/components/dom-apis) belgesine bakin.
 
-Render callbacks do not run during server-side rendering or during build-time pre-rendering.
+Render geri cagrilari, sunucu tarafi render etme veya derleme zamani on-render etme sirasinda calismaz.
 
 #### after\*Render phases
 
-When using `afterEveryRender` or `afterNextRender`, you can optionally split the work into phases. The
-phase gives you control over the sequencing of DOM operations, letting you sequence _write_
-operations before _read_ operations in order to minimize
-[layout thrashing](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing). In order to
-communicate across phases, a phase function may return a result value that can be accessed in the
-next phase.
+`afterEveryRender` veya `afterNextRender` kullanirken, isi istege bagli olarak asamalara bollebilirsiniz. Asama, DOM islemlerinin siralamasini kontrol etmenizi saglar ve [duzeni bozmayi](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing) en aza indirmek icin _yazma_ islemlerini _okuma_ islemlerinden once siralamniza olanak tanir. Asamalar arasi iletisim icin, bir asama fonksiyonu sonraki asamada erisilebilecek bir sonuc degeri dondureblir.
 
 ```ts
 import {Component, ElementRef, afterNextRender} from '@angular/core';
@@ -289,23 +234,20 @@ export class UserProfile {
 }
 ```
 
-There are four phases, run in the following order:
+Asagidaki sirada calistirilan dort asama vardir:
 
-| Phase            | Description                                                                                                                                                                                           |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `earlyRead`      | Use this phase to read any layout-affecting DOM properties and styles that are strictly necessary for subsequent calculation. Avoid this phase if possible, preferring the `write` and `read` phases. |
-| `write`          | Use this phase to write layout-affecting DOM properties and styles.                                                                                                                                   |
-| `mixedReadWrite` | Default phase. Use for any operations need to both read and write layout-affecting properties and styles. Avoid this phase if possible, preferring the explicit `write` and `read` phases.            |
-| `read`           | Use this phase to read any layout-affecting DOM properties.                                                                                                                                           |
+| Asama            | Aciklama                                                                                                                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `earlyRead`      | Sonraki hesaplama icin kesinlikle gerekli olan duzeni etkileyen DOM ozelliklerini ve stillerini okumak icin bu asmayi kullanin. Mumkunse bu asamadan kacinin, `write` ve `read` asamalarini tercih edin. |
+| `write`          | Duzeni etkileyen DOM ozelliklerini ve stillerini yazmak icin bu asmayi kullanin.                                                                                                                         |
+| `mixedReadWrite` | Varsayilan asama. Hem duzeni etkileyen ozellikleri hem de stilleri okumasi ve yazmasi gereken islemler icin kullanin. Mumkunse bu asamadan kacinin, acik `write` ve `read` asamalarini tercih edin.      |
+| `read`           | Duzeni etkileyen DOM ozelliklerini okumak icin bu asmayi kullanin.                                                                                                                                       |
 
 ## Lifecycle interfaces
 
-Angular provides a TypeScript interface for each lifecycle method. You can optionally import
-and `implement` these interfaces to ensure that your implementation does not have any typos or
-misspellings.
+Angular, her yasam dongusu yontemi icin bir TypeScript arayuzu saglar. Uygulamanizda yazim hatasi veya imla hatasi olmadigni saglamak icin istege bagli olarak bu arayuzleri icerebilir (import) ve `implement` edebilirsiniz.
 
-Each interface has the same name as the corresponding method without the `ng` prefix. For example,
-the interface for `ngOnInit` is `OnInit`.
+Her arayuz, karsilik gelen yontemle ayni ada sahiptir, ancak `ng` oneki olmadan. Ornegin, `ngOnInit` arayuzu `OnInit`'tir.
 
 ```ts
 @Component({
@@ -320,7 +262,7 @@ export class UserProfile implements OnInit {
 
 ## Execution order
 
-The following diagrams show the execution order of Angular's lifecycle hooks.
+Asagidaki diyagramlar Angular'in yasam dongusu kancalarinin calisma sirasini gostermektedir.
 
 ### During initialization
 
@@ -354,7 +296,4 @@ CHANGE--Rendering-->afterEveryRender
 
 ### Ordering with directives
 
-When you put one or more directives on the same element as a component, either in a template or with
-the `hostDirectives` property, the framework does not guarantee any ordering of a given lifecycle
-hook between the component and the directives on a single element. Never depend on an observed
-ordering, as this may change in later versions of Angular.
+Bir sablonda veya `hostDirectives` ozelligi ile ayni elemana bir veya daha fazla direktif ile birlikte bir bilesen yerlestirdiginizde, framework tek bir eleman uzerindeki bilesen ve direktifler arasinda belirli bir yasam dongusu kancasi icin herhangi bir siralama garantisi vermez. Gozlemlenen bir siralamaya asla guvenmeyin, cunku bu Angular'in sonraki surumlerinde degisebilir.

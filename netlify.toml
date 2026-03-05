@@ -1,0 +1,12 @@
+[build]
+  publish = "public"
+  ignore = "exit 0"
+
+# Cross-Origin Isolation headers
+# SharedArrayBuffer ve WebContainer (tutorials terminal) icin gereklidir
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Resource-Policy = "cross-origin"

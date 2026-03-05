@@ -1,29 +1,29 @@
 # Data resolvers
 
-Data resolvers allow you to fetch data before navigating to a route, ensuring that your components receive the data they need before rendering. This can help prevent the need for loading states and improve the user experience by pre-loading essential data.
+Veri çözücüler, bir rotaya navigasyon yapmadan önce veri çekmenize olanak tanır ve bileşenlerinizin render edilmeden önce ihtiyaç duydukları verileri almasını sağlar. Bu, yükleme durumları ihtiyacını önlemeye ve temel verileri önceden yükleyerek kullanıcı deneyimini iyileştirmeye yardımcı olabilir.
 
 ## What are data resolvers?
 
-A data resolver is a service that implements the `ResolveFn` function. It runs before a route activates and can fetch data from APIs, databases, or other sources. The resolved data becomes available to the component through the `ActivatedRoute`.
+Veri çözücü, `ResolveFn` fonksiyonunu uygulayan bir servistir. Bir rota etkinleştirilmeden önce çalışır ve API'lerden, veritabanlarından veya diğer kaynaklardan veri çekebilir. Çözümlenen veri, `ActivatedRoute` aracılığıyla bileşen tarafından kullanılabilir hale gelir.
 
-Data resolvers have access to [services provided at the route level](guide/di/defining-dependency-providers#route-providers) as well as route-specific information via the `route` argument.
+Veri çözücüler, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
 ## Why use data resolvers?
 
-Data resolvers solve common routing challenges:
+Veri çözücüler yaygın yönlendirme sorunlarını çözer:
 
-- **Prevent empty states**: Components receive data immediately upon loading
-- **Better user experience**: No loading spinners for critical data
-- **Error handling**: Handle data fetching errors before navigation
-- **Data consistency**: Ensure required data is available before rendering which is important for SSR
+- **Boş durumları önleme**: Bileşenler yüklendiğinde verileri anında alır
+- **Daha iyi kullanıcı deneyimi**: Kritik veriler için yükleme göstergeleri gerekmez
+- **Hata yönetimi**: Veri çekme hatalarını navigasyondan önce yönetin
+- **Veri tutarlılığı**: SSR için önemli olan, render etmeden önce gerekli verilerin mevcut olmasını sağlayın
 
 ## Creating a resolver
 
-You create a resolver by writing a function with the `ResolveFn` type.
+`ResolveFn` türünde bir fonksiyon yazarak bir çözücü oluşturursunuz.
 
-It receives the `ActivatedRouteSnapshot` and `RouterStateSnapshot` as parameters.
+Parametre olarak `ActivatedRouteSnapshot` ve `RouterStateSnapshot` alır.
 
-Here is a resolver that gets the user information before rendering a route using the [`inject`](api/core/inject) function:
+İşte [`inject`](api/core/inject) fonksiyonunu kullanarak bir rotayı render etmeden önce kullanıcı bilgilerini alan bir çözücü:
 
 ```ts
 import {inject} from '@angular/core';
@@ -52,7 +52,7 @@ export const settingsResolver: ResolveFn<Settings> = (
 
 ## Configuring routes with resolvers
 
-When you want to add one or more data resolvers to a route, you can add it under the `resolve` key in the route configuration. The `Routes` type defines the structure for route configurations:
+Bir rotaya bir veya daha fazla veri çözücü eklemek istediğinizde, rota yapılandırmasındaki `resolve` anahtarı altına ekleyebilirsiniz. `Routes` türü, rota yapılandırmaları için yapıyı tanımlar:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -69,13 +69,13 @@ export const routes: Routes = [
 ];
 ```
 
-You can learn more about the [`resolve` configuration in the API docs](api/router/Route#resolve).
+[`resolve` yapılandırması hakkında API dokümanlarından](api/router/Route#resolve) daha fazla bilgi edinebilirsiniz.
 
 ## Accessing resolved data in components
 
 ### Using ActivatedRoute
 
-You can access the resolved data in a component by accessing the snapshot data from the `ActivatedRoute` using the `signal` function:
+Çözümlenen verilere, `ActivatedRoute`'tan `signal` fonksiyonunu kullanarak anlık görüntü verilerine erişerek bir bileşende ulaşabilirsiniz:
 
 ```angular-ts
 import {Component, inject, computed} from '@angular/core';
@@ -100,7 +100,7 @@ export class UserDetail {
 
 ### Using withComponentInputBinding
 
-A different approach to accessing the resolved data is to use `withComponentInputBinding()` when configuring your router with `provideRouter`. This allows resolved data to be passed directly as component inputs:
+Çözümlenen verilere erişmenin farklı bir yaklaşımı, yönlendiricinizi `provideRouter` ile yapılandırırken `withComponentInputBinding()` kullanmaktır. Bu, çözümlenen verilerin doğrudan bileşen girişleri olarak aktarılmasına olanak tanır:
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -112,7 +112,7 @@ bootstrapApplication(App, {
 });
 ```
 
-With this configuration, you can define inputs in your component that match the resolver keys using the `input` function and `input.required` for required inputs:
+Bu yapılandırma ile, `input` fonksiyonu ve zorunlu girişler için `input.required` kullanarak çözücü anahtarlarıyla eşleşen girişleri bileşeninizde tanımlayabilirsiniz:
 
 ```angular-ts
 import {Component, input} from '@angular/core';
@@ -131,21 +131,21 @@ export class UserDetail {
 }
 ```
 
-This approach provides better type safety and eliminates the need to inject `ActivatedRoute` just to access resolved data.
+Bu yaklaşım daha iyi tür güvenliği sağlar ve yalnızca çözümlenen verilere erişmek için `ActivatedRoute` enjekte etme ihtiyacını ortadan kaldırır.
 
 ## Error handling in resolvers
 
-In the event of navigation failures, it is important to handle errors gracefully in your data resolvers. Otherwise, a `NavigationError` will occur and the navigation to the current route will fail which will lead to a poor experience for your users.
+Navigasyon hatalarında, veri çözücülerinizde hataları nazikçe yönetmek önemlidir. Aksi takdirde, bir `NavigationError` oluşur ve geçerli rotaya navigasyon başarısız olur, bu da kullanıcılarınız için kötü bir deneyime yol açar.
 
-There are three primary ways to handle errors with data resolvers:
+Veri çözücülerle hataları yönetmenin üç temel yolu vardır:
 
-1. Centralize error handling in `withNavigationErrorHandler`
-2. Manage errors through a subscription to router events
-3. Handle errors directly in the resolver
+1. Hata yönetimini `withNavigationErrorHandler` ile merkezileştirme
+2. Router olaylarına abonelik aracılığıyla hataları yönetme
+3. Hataları doğrudan çözücüde yönetme
 
 ### Centralize error handling in `withNavigationErrorHandler`
 
-The [`withNavigationErrorHandler`](api/router/withNavigationErrorHandler) feature provides a centralized way to handle all navigation errors, including those from failed data resolvers. This approach keeps error handling logic in one place and prevents duplicate error handling code across resolvers.
+[`withNavigationErrorHandler`](api/router/withNavigationErrorHandler) özelliği, başarısız veri çözücülerden kaynaklananlar dahil tüm navigasyon hatalarını yönetmenin merkezi bir yolunu sağlar. Bu yaklaşım, hata yönetimi mantığını tek bir yerde tutar ve çözücüler arasında tekrarlanan hata yönetimi kodunu önler.
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -172,7 +172,7 @@ bootstrapApplication(App, {
 });
 ```
 
-With this configuration, your resolvers can focus on data fetching while letting the centralized handler manage error scenarios:
+Bu yapılandırma ile çözücüleriniz veri çekmeye odaklanabilirken merkezi işleyicinin hata senaryolarını yönetmesine izin verebilirsiniz:
 
 ```ts
 export const userResolver: ResolveFn<User> = (route) => {
@@ -185,7 +185,7 @@ export const userResolver: ResolveFn<User> = (route) => {
 
 ### Managing errors through a subscription to router events
 
-You can also handle resolver errors by subscribing to router events and listening for `NavigationError` events. This approach gives you more granular control over error handling and allows you to implement custom error recovery logic.
+Çözücü hatalarını, router olaylarına abone olarak ve `NavigationError` olaylarını dinleyerek de yönetebilirsiniz. Bu yaklaşım, hata yönetimi üzerinde daha ayrıntılı kontrol sağlar ve özel hata kurtarma mantığı uygulamanıza olanak tanır.
 
 ```angular-ts
 import {Component, inject, signal} from '@angular/core';
@@ -237,15 +237,15 @@ export class App {
 }
 ```
 
-This approach is particularly useful when you need to:
+Bu yaklaşım özellikle şu durumlarda yararlıdır:
 
-- Implement custom retry logic for failed navigation
-- Show specific error messages based on the type of failure
-- Track navigation failures for analytics purposes
+- Başarısız navigasyon için özel yeniden deneme mantığı uygulamak
+- Hata türüne göre belirli hata mesajları göstermek
+- Analitik amaçlarla navigasyon hatalarını izlemek
 
 ### Handling errors directly in the resolver
 
-Here's an updated example of the `userResolver` that logs the error and navigates back to the generic `/users` page using the `Router` service:
+İşte hatayı kaydeden ve `Router` servisini kullanarak genel `/users` sayfasına geri yönlendiren güncellenmiş bir `userResolver` örneği:
 
 ```ts
 import {inject} from '@angular/core';
@@ -270,11 +270,11 @@ export const userResolver: ResolveFn<User | RedirectCommand> = (route) => {
 
 ## Navigation loading considerations
 
-While data resolvers prevent loading states within components, they introduce a different UX consideration: navigation is blocked while resolvers execute. Users may experience delays between clicking a link and seeing the new route, especially with slow network requests.
+Veri çözücüler bileşenler içindeki yükleme durumlarını önlese de, farklı bir UX değerlendirmesi ortaya çıkarır: çözücüler çalışırken navigasyon engellenir. Özellikle yavaş ağ isteklerinde, kullanıcılar bir bağlantıya tıklama ile yeni rotayı görme arasında gecikmeler yaşayabilir.
 
 ### Providing navigation feedback
 
-To improve user experience during resolver execution, you can listen to router events and show loading indicators:
+Çözücü çalışması sırasında kullanıcı deneyimini iyileştirmek için router olaylarını dinleyebilir ve yükleme göstergeleri gösterebilirsiniz:
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -295,20 +295,20 @@ export class App {
 }
 ```
 
-This approach ensures users receive visual feedback that navigation is in progress while resolvers fetch data.
+Bu yaklaşım, çözücüler veri çekerken kullanıcıların navigasyonun devam ettiğine dair görsel geri bildirim almasını sağlar.
 
 ## Best practices
 
-- **Keep resolvers lightweight**: Resolvers should fetch essential data only and not everything the page could possibly need
-- **Handle errors**: Always remember to handle errors gracefully to provide the best experience possible to users
-- **Use caching**: Consider caching resolved data to improve performance
-- **Consider navigation UX**: Implement loading indicators for resolver execution since navigation is blocked during data fetching
-- **Set reasonable timeouts**: Avoid resolvers that could hang indefinitely and block navigation
-- **Type safety**: Use TypeScript interfaces for resolved data
+- **Çözücüleri hafif tutun**: Çözücüler yalnızca temel verileri çekmeli, sayfanın ihtiyaç duyabileceği her şeyi değil
+- **Hataları yönetin**: Kullanıcılara mümkün olan en iyi deneyimi sunmak için hataları her zaman nazikçe yönetmeyi unutmayın
+- **Önbellek kullanın**: Performansı artırmak için çözümlenen verileri önbelleğe almayı düşünün
+- **Navigasyon UX'ini düşünün**: Veri çekme sırasında navigasyon engellendiğinden çözücü çalışması için yükleme göstergeleri uygulayın
+- **Makul zaman aşımları belirleyin**: Navigasyonu süresiz olarak engelleyebilecek çözücülerden kaçının
+- **Tür güvenliği**: Çözümlenen veriler için TypeScript arayüzleri kullanın
 
 ## Reading parent resolved data in child resolvers
 
-Resolvers execute from parent to child. When a parent route defines a resolver, its resolved data is available to child resolvers that run afterward.
+Çözücüler üst rotadan alt rotaya doğru çalışır. Bir üst rota bir çözücü tanımladığında, çözümlenen veriler daha sonra çalışan alt çözücüler tarafından kullanılabilir.
 
 ```ts
 import { inject } from '@angular/core';

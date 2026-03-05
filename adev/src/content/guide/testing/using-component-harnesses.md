@@ -2,11 +2,11 @@
 
 ## Before you start
 
-TIP: This guide assumes you've already read the [component harnesses overview guide](guide/testing/component-harnesses-overview). Read that first if you're new to using component harnesses.
+TIP: Bu kılavuz, [bileşen donanımları genel bakış kılavuzunu](guide/testing/component-harnesses-overview) zaten okuduğunuzu varsayar. Bileşen donanımlarını kullanmaya yeni başlıyorsanız önce onu okuyun.
 
 ### CDK Installation
 
-The [Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories) is a set of behavior primitives for building components. To use the component harnesses, first install `@angular/cdk` from npm. You can do this from your terminal using the Angular CLI:
+[Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories), bileşen oluşturmak için bir davranış temelleri setidir. Bileşen donanımlarını kullanmak için önce npm'den `@angular/cdk` yükleyin. Bunu terminalinizden Angular CLI kullanarak yapabilirsiniz:
 
 ```shell
 ng add @angular/cdk
@@ -14,20 +14,20 @@ ng add @angular/cdk
 
 ## Test harness environments and loaders
 
-You can use component test harnesses in different test environments. Angular CDK supports two built-in environments:
+Bileşen test donanımlarını farklı test ortamlarında kullanabilirsiniz. Angular CDK iki yerleşik ortamı destekler:
 
-- Unit tests with Angular's `TestBed`
-- End-to-end tests with [WebDriver](https://developer.mozilla.org/en-US/docs/Web/WebDriver)
+- Angular'ın `TestBed`'i ile birim testleri
+- [WebDriver](https://developer.mozilla.org/en-US/docs/Web/WebDriver) ile uçtan uca testler
 
-Each environment provides a <strong>harness loader</strong>. The loader creates the harness instances you use throughout your tests. See below for more specific guidance on supported testing environments.
+Her ortam bir <strong>donanım yükleyicisi</strong> sağlar. Yükleyici, testleriniz boyunca kullandığınız donanım örneklerini oluşturur. Desteklenen test ortamları hakkında daha spesifik rehberlik için aşağıya bakın.
 
-Additional testing environments require custom bindings. See the [adding harness support for additional testing environments guide](guide/testing/component-harnesses-testing-environments) for more information.
+Ek test ortamları özel bağlamalar gerektirir. Daha fazla bilgi için [ek test ortamları için donanım desteği ekleme kılavuzuna](guide/testing/component-harnesses-testing-environments) bakın.
 
 ### Using the loader from `TestbedHarnessEnvironment` for unit tests
 
-For unit tests you can create a harness loader from [TestbedHarnessEnvironment](/api/cdk/testing/TestbedHarnessEnvironment). This environment uses a [component fixture](api/core/testing/ComponentFixture) created by Angular's `TestBed`.
+Birim testleri için [TestbedHarnessEnvironment](/api/cdk/testing/TestbedHarnessEnvironment)'dan bir donanım yükleyicisi oluşturabilirsiniz. Bu ortam, Angular'ın `TestBed`'i tarafından oluşturulan bir [bileşen fixture'ı](api/core/testing/ComponentFixture) kullanır.
 
-To create a harness loader rooted at the fixture's root element, use the `loader()` method:
+Fixture'ın kök öğesinde köklenen bir donanım yükleyicisi oluşturmak için `loader()` metodunu kullanın:
 
 ```ts
 const fixture = TestBed.createComponent(MyComponent);
@@ -40,15 +40,15 @@ const loader = TestbedHarnessEnvironment.loader(fixture);
 const myComponentHarness = await loader.getHarness(MyComponent);
 ```
 
-To create a harness loader for harnesses for elements that fall outside the fixture, use the `documentRootLoader()` method. For example, code that displays a floating element or pop-up often attaches DOM elements directly to the document body, such as the `Overlay` service in Angular CDK.
+Fixture dışına düşen öğeler için donanımlar oluşturmak üzere `documentRootLoader()` metodunu kullanın. Örneğin, kayan bir öğe veya açılır pencere görüntüleyen kod genellikle DOM öğelerini doğrudan belge gövdesine ekler, örneğin Angular CDK'daki `Overlay` servisi.
 
-You can also create a harness loader directly with `harnessForFixture()` for a harness at that fixture's root element directly.
+Ayrıca o fixture'ın kök öğesinde doğrudan bir donanım için `harnessForFixture()` ile doğrudan bir donanım yükleyicisi oluşturabilirsiniz.
 
 ### Using the loader from `SeleniumWebDriverHarnessEnvironment` for end-to-end tests
 
-For WebDriver-based end-to-end tests you can create a harness loader with `SeleniumWebDriverHarnessEnvironment`.
+WebDriver tabanlı uçtan uca testler için `SeleniumWebDriverHarnessEnvironment` ile bir donanım yükleyicisi oluşturabilirsiniz.
 
-Use the `loader()` method to get the harness loader instance for the current HTML document, rooted at the document's root element. This environment uses a WebDriver client.
+Mevcut HTML belgesi için donanım yükleyici örneğini almak üzere `loader()` metodunu kullanın; belgenin kök öğesinde köklenir. Bu ortam bir WebDriver istemcisi kullanır.
 
 ```ts
 let wd: webdriver.WebDriver = getMyWebDriverClient();
@@ -59,9 +59,9 @@ const myComponentHarness = await loader.getHarness(MyComponent);
 
 ## Using a harness loader
 
-Harness loader instances correspond to a specific DOM element and are used to create component harness instances for elements under that specific element.
+Donanım yükleyici örnekleri belirli bir DOM öğesine karşılık gelir ve o belirli öğenin altındaki öğeler için bileşen donanımı örnekleri oluşturmak üzere kullanılır.
 
-To get `ComponentHarness` for the first instance of the element, use the `getHarness()` method. To get all `ComponentHarness` instances, use the `getAllHarnesses()` method.
+Öğenin ilk örneği için `ComponentHarness` almak üzere `getHarness()` metodunu kullanın. Tüm `ComponentHarness` örneklerini almak için `getAllHarnesses()` metodunu kullanın.
 
 ```ts
 // Get harness for first instance of the element
@@ -71,19 +71,19 @@ const myComponentHarness = await loader.getHarness(MyComponent);
 const myComponentHarnesses = await loader.getHarnesses(MyComponent);
 ```
 
-In addition to `getHarness` and `getAllHarnesses`, `HarnessLoader` has several other useful methods for querying for harnesses:
+`getHarness` ve `getAllHarnesses`'a ek olarak, `HarnessLoader` donanımları sorgulamak için birkaç başka kullanışlı metoda sahiptir:
 
-- `getHarnessAtIndex(...)`: Gets the harness for a component that matches the given criteria at a specific index.
-- `countHarnesses(...)`: Counts the number of component instances that match the given criteria.
-- `hasHarness(...)`: Checks if at least one component instance matches the given criteria.
+- `getHarnessAtIndex(...)`: Belirli bir dizindeki verilen kriterlere uyan bileşen için donanımı alır.
+- `countHarnesses(...)`: Verilen kriterlere uyan bileşen örneklerinin sayısını sayar.
+- `hasHarness(...)`: Verilen kriterlere uyan en az bir bileşen örneği olup olmadığını kontrol eder.
 
-As an example, consider a reusable dialog-button component that opens a dialog on click. It contains the following components, each with a corresponding harness:
+Örnek olarak, tıklandığında bir diyalog açan yeniden kullanılabilir bir dialog-button bileşeni düşünün. Aşağıdaki bileşenleri içerir ve her birinin karşılık gelen bir donanımı vardır:
 
-- `MyDialogButton` (composes the `MyButton` and `MyDialog` with a convenient API)
-- `MyButton` (a standard button component)
-- `MyDialog` (a dialog appended to `document.body` by `MyDialogButton` upon click)
+- `MyDialogButton` (kullanışlı bir API ile `MyButton` ve `MyDialog`'u bir araya getirir)
+- `MyButton` (standart bir düğme bileşeni)
+- `MyDialog` (tıklamada `MyDialogButton` tarafından `document.body`'ye eklenen bir diyalog)
 
-The following test loads harnesses for each of these components:
+Aşağıdaki test bu bileşenlerin her biri için donanımları yükler:
 
 ```ts
 let fixture: ComponentFixture<MyDialogButton>;
@@ -119,11 +119,11 @@ it('loads harnesses', async () => {
 
 ### Harness behavior in different environments
 
-Harnesses may not behave exactly the same in all environments. Some differences are unavoidable between the real user interaction versus the simulated events generated in unit tests. Angular CDK makes a best effort to normalize the behavior to the extent possible.
+Donanımlar tüm ortamlarda tamamen aynı davranmayabilir. Gerçek kullanıcı etkileşimi ile birim testlerinde oluşturulan simüle edilmiş olaylar arasında bazı farklar kaçınılmazdır. Angular CDK, davranışı mümkün olduğunca normalleştirmek için en iyi çabayı gösterir.
 
 ### Interacting with child elements
 
-To interact with elements below the root element of this harness loader, use the `HarnessLoader` instance of a child element. For the first instance of the child element, use the `getChildLoader()` method. For all instances of the child element, use the `getAllChildLoaders()` method.
+Bu donanım yükleyicisinin kök öğesinin altındaki öğelerle etkileşim kurmak için bir alt öğenin `HarnessLoader` örneğini kullanın. Alt öğenin ilk örneği için `getChildLoader()` metodunu kullanın. Alt öğenin tüm örnekleri için `getAllChildLoaders()` metodunu kullanın.
 
 ```ts
 const myComponentHarness = await loader.getHarness(MyComponent);
@@ -137,14 +137,14 @@ const allChildLoaders = await myComponentHarness.getAllChildLoaders('.child');
 
 ### Filtering harnesses
 
-When a page contains multiple instances of a particular component, you may want to filter based on some property of the component to get a particular component instance. You can use a <strong>harness predicate</strong>, a class used to associate a `ComponentHarness` class with predicates functions that can be used to filter component instances, to do so.
+Bir sayfada belirli bir bileşenin birden fazla örneği olduğunda, bileşenin bazı özelliklerine göre filtreleme yaparak belirli bir bileşen örneği almak isteyebilirsiniz. Bunu yapmak için bir <strong>donanım yüklemi</strong> kullanabilirsiniz; bu, bir `ComponentHarness` sınıfını bileşen örneklerini filtrelemek için kullanılabilecek yüklem fonksiyonlarıyla ilişkilendirmek için kullanılan bir sınıftır.
 
-When you ask a `HarnessLoader` for a harness, you're actually providing a HarnessQuery. A query can be one of two things:
+Bir `HarnessLoader`'dan donanım istediğinizde, aslında bir HarnessQuery sağlıyorsunuz. Bir sorgu iki şeyden biri olabilir:
 
-- A harness constructor. This just gets that harness
-- A `HarnessPredicate`, which gets harnesses that are filtered based on one or more conditions
+- Bir donanım yapıcısı. Bu sadece o donanımı alır
+- Bir `HarnessPredicate`, bir veya daha fazla koşula göre filtrelenmiş donanımları alır
 
-`HarnessPredicate` does support some base filters (selector, ancestor) that work on anything that extends `ComponentHarness`.
+`HarnessPredicate`, `ComponentHarness`'ı genişleten herhangi bir şey üzerinde çalışan bazı temel filtreleri (selector, ancestor) destekler.
 
 ```ts
 // Example of loading a MyButtonComponentHarness with a harness predicate
@@ -154,22 +154,22 @@ const disabledButtonPredicate = new HarnessPredicate(MyButtonComponentHarness, {
 const disabledButton = await loader.getHarness(disabledButtonPredicate);
 ```
 
-However it's common for harnesses to implement a static `with()` method that accepts component-specific filtering options and returns a `HarnessPredicate`.
+Ancak donanımların bileşene özgü filtreleme seçeneklerini kabul eden ve bir `HarnessPredicate` döndüren statik bir `with()` metodu uygulaması yaygındır.
 
 ```ts
 // Example of loading a MyButtonComponentHarness with a specific selector
 const button = await loader.getHarness(MyButtonComponentHarness.with({selector: 'btn'}));
 ```
 
-For more details refer to the specific harness documentation since additional filtering options are specific to each harness implementation.
+Ek filtreleme seçenekleri her donanım uygulamasına özgü olduğundan, daha fazla ayrıntı için spesifik donanım belgelerine başvurun.
 
 ## Using test harness APIs
 
-While every harness defines an API specific to its corresponding component, they all share a common base class, [ComponentHarness](/api/cdk/testing/ComponentHarness). This base class defines a static property, `hostSelector`, that matches the harness class to instances of the component in the DOM.
+Her donanım karşılık gelen bileşenine özgü bir API tanımlasa da, hepsi ortak bir temel sınıfı paylaşır: [ComponentHarness](/api/cdk/testing/ComponentHarness). Bu temel sınıf, donanım sınıfını DOM'daki bileşen örnekleriyle eşleştiren `hostSelector` statik özelliğini tanımlar.
 
-Beyond that, the API of any given harness is specific to its corresponding component; refer to the component's documentation to learn how to use a specific harness.
+Bunun ötesinde, herhangi bir donanımın API'si karşılık gelen bileşenine özgüdür; belirli bir donanımı nasıl kullanacağınızı öğrenmek için bileşenin belgelerine başvurun.
 
-As an example, the following is a test for a component that uses the [Angular Material slider component harness](https://material.angular.dev/components/slider/api#MatSliderHarness):
+Örnek olarak, aşağıda [Angular Material slider bileşeni donanımını](https://material.angular.dev/components/slider/api#MatSliderHarness) kullanan bir bileşen için bir test yer almaktadır:
 
 ```ts
 it('should get value of slider thumb', async () => {
@@ -181,9 +181,9 @@ it('should get value of slider thumb', async () => {
 
 ## Interop with Angular change detection
 
-By default, test harnesses runs Angular's [change detection](/best-practices/runtime-performance) before reading the state of a DOM element and after interacting with a DOM element.
+Varsayılan olarak test donanımları, bir DOM öğesinin durumunu okumadan önce ve bir DOM öğesiyle etkileştikten sonra Angular'ın [değişiklik algılamasını](/best-practices/runtime-performance) çalıştırır.
 
-There may be times that you need finer-grained control over change detection in your tests. such as checking the state of a component while an async operation is pending. In these cases use the `manualChangeDetection` function to disable automatic handling of change detection for a block of code.
+Testlerinizde değişiklik algılama üzerinde daha ince taneli kontrole ihtiyaç duyabileceğiniz zamanlar olabilir, örneğin bir asenkron işlem devam ederken bir bileşenin durumunu kontrol etmek gibi. Bu durumlarda, bir kod bloğu için otomatik değişiklik algılama yönetimini devre dışı bırakmak üzere `manualChangeDetection` fonksiyonunu kullanın.
 
 ```ts
 it('checks state while async action is in progress', async () => {
@@ -200,15 +200,15 @@ it('checks state while async action is in progress', async () => {
 });
 ```
 
-Almost all harness methods are asynchronous and return a `Promise` to support the following:
+Neredeyse tüm donanım metotları asenkrondur ve aşağıdakileri desteklemek için bir `Promise` döndürür:
 
-- Support for unit tests
-- Support for end-to-end tests
-- Insulate tests against changes in asynchronous behavior
+- Birim testleri desteği
+- Uçtan uca testler desteği
+- Testleri asenkron davranıştaki değişikliklere karşı yalıtma
 
-The Angular team recommends using [await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) to improve the test readability. Calling `await` blocks the execution of your test until the associated `Promise` resolves.
+Angular ekibi, test okunabilirliğini artırmak için [await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) kullanmayı önerir. `await` çağrısı, ilişkili `Promise` çözülene kadar testinizin yürütülmesini engeller.
 
-Occasionally, you may want to perform multiple actions simultaneously and wait until they're all done rather than performing each action sequentially. For example, read multiple properties of a single component. In these situations use the `parallel` function to parallelize the operations. The parallel function works similarly to `Promise.all`, while also optimizing change detection checks.
+Bazen birden fazla eylemi aynı anda gerçekleştirmek ve her birini sırayla yapmak yerine hepsinin tamamlanmasını beklemek isteyebilirsiniz. Örneğin, tek bir bileşenin birden fazla özelliğini okumak. Bu durumlarda işlemleri paralel hale getirmek için `parallel` fonksiyonunu kullanın. Parallel fonksiyonu `Promise.all`'a benzer şekilde çalışır ve aynı zamanda değişiklik algılama kontrollerini optimize eder.
 
 ```ts
 it('reads properties in parallel', async () => {

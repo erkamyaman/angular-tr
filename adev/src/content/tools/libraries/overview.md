@@ -1,34 +1,34 @@
 # Overview of Angular libraries
 
-Many applications need to solve the same general problems, such as presenting a unified user interface, presenting data, and allowing data entry.
-Developers can create general solutions for particular domains that can be adapted for re-use in different applications.
-Such a solution can be built as Angular _libraries_ and these libraries can be published and shared as _npm packages_.
+Birçok uygulamanın, birleşik bir kullanıcı arayüzü sunma, veri gösterme ve veri girişine izin verme gibi aynı genel sorunları çözmesi gerekir.
+Geliştiriciler, farklı uygulamalarda yeniden kullanım için uyarlanabilecek belirli alanlar için genel çözümler oluşturabilir.
+Böyle bir çözüm Angular _kütüphaneleri_ olarak oluşturulabilir ve bu kütüphaneler _npm paketleri_ olarak yayınlanıp paylaşılabilir.
 
-An Angular library is an Angular project that differs from an application in that it cannot run on its own.
-A library must be imported and used in an application.
+Angular kütüphanesi, kendi başına çalışamaması bakımından bir uygulamadan farklı olan bir Angular projesidir.
+Bir kütüphane, bir uygulamaya aktarılmalı ve o uygulama içinde kullanılmalıdır.
 
-Libraries extend Angular's base features.
-For example, to add [reactive forms](guide/forms/reactive-forms) to an application, add the library package using `ng add @angular/forms`, then import the `ReactiveFormsModule` from the `@angular/forms` library in your application code.
-Similarly, adding the [service worker](ecosystem/service-workers) library to an Angular application is one of the steps for turning an application into a [Progressive Web App](https://developers.google.com/web/progressive-web-apps) \(PWA\).
-[Angular Material](https://material.angular.dev) is an example of a large, general-purpose library that provides sophisticated, reusable, and adaptable UI components.
+Kütüphaneler Angular'ın temel özelliklerini genişletir.
+Örneğin, bir uygulamaya [reaktif formlar](guide/forms/reactive-forms) eklemek için `ng add @angular/forms` komutuyla kütüphane paketini ekleyin, ardından uygulama kodunuzda `@angular/forms` kütüphanesinden `ReactiveFormsModule`'ü içe aktarın.
+Benzer şekilde, bir Angular uygulamasına [service worker](ecosystem/service-workers) kütüphanesini eklemek, bir uygulamayı [Progressive Web App](https://developers.google.com/web/progressive-web-apps) \(PWA\) haline getirme adımlarından biridir.
+[Angular Material](https://material.angular.dev), gelişmiş, yeniden kullanılabilir ve uyarlanabilir kullanıcı arayüzü bileşenleri sağlayan büyük, genel amaçlı bir kütüphane örneğidir.
 
-Any application developer can use these and other libraries that have been published as npm packages by the Angular team or by third parties.
-See [Using Published Libraries](tools/libraries/using-libraries).
+Herhangi bir uygulama geliştiricisi, Angular ekibi veya üçüncü taraflarca npm paketleri olarak yayınlanan bu ve diğer kütüphaneleri kullanabilir.
+Bkz. [Using Published Libraries](tools/libraries/using-libraries).
 
-HELPFUL: Libraries are intended to be used by Angular applications. To add Angular features to non-Angular web applications, use [Angular custom elements](guide/elements).
+HELPFUL: Kütüphaneler Angular uygulamaları tarafından kullanılmak üzere tasarlanmıştır. Angular olmayan web uygulamalarına Angular özellikleri eklemek için [Angular özel elemanlarını](guide/elements) kullanın.
 
 ## Creating libraries
 
-If you have developed features that are suitable for reuse, you can create your own libraries.
-These libraries can be used locally in your workspace, or you can publish them as [npm packages](reference/configs/npm-packages) to share with other projects or other Angular developers.
-These packages can be published to the npm registry, a private npm Enterprise registry, or a private package management system that supports npm packages.
-See [Creating Libraries](tools/libraries/creating-libraries).
+Yeniden kullanıma uygun özellikler geliştirdiyseniz, kendi kütüphanelerinizi oluşturabilirsiniz.
+Bu kütüphaneler çalışma alanınızda yerel olarak kullanılabilir veya diğer projeler ya da diğer Angular geliştiricileriyle paylaşmak için [npm paketleri](reference/configs/npm-packages) olarak yayınlayabilirsiniz.
+Bu paketler npm kayıt defterine, özel bir npm Enterprise kayıt defterine veya npm paketlerini destekleyen özel bir paket yönetim sistemine yayınlanabilir.
+Bkz. [Creating Libraries](tools/libraries/creating-libraries).
 
-Deciding to package features as a library is an architectural decision. It is comparable to deciding whether a feature is a component or a service, or deciding on the scope of a component.
+Özellikleri kütüphane olarak paketlemeye karar vermek mimari bir karardır. Bir özelliğin bileşen mi yoksa servis mi olacağına veya bir bileşenin kapsamına karar vermeye benzer.
 
-Packaging features as a library forces the artifacts in the library to be decoupled from the application's business logic.
-This can help to avoid various bad practices or architecture mistakes that can make it difficult to decouple and reuse code in the future.
+Özellikleri kütüphane olarak paketlemek, kütüphanedeki yapıtaşlarının uygulamanın iş mantığından ayrıştırılmasını zorunlu kılar.
+Bu, gelecekte kodun ayrıştırılmasını ve yeniden kullanılmasını zorlaştırabilecek çeşitli kötü uygulamaları veya mimari hataları önlemeye yardımcı olabilir.
 
-Putting code into a separate library is more complex than simply putting everything in one application.
-It requires more of an investment in time and thought for managing, maintaining, and updating the library.
-This complexity can pay off when the library is being used in multiple applications.
+Kodu ayrı bir kütüphaneye koymak, her şeyi tek bir uygulamaya koymaktan daha karmaşıktır.
+Kütüphaneyi yönetmek, sürdürmek ve güncellemek için daha fazla zaman ve düşünce yatırımı gerektirir.
+Bu karmaşıklık, kütüphane birden fazla uygulamada kullanıldığında karşılığını verebilir.

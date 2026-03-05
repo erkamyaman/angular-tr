@@ -1,10 +1,10 @@
 # Code coverage
 
-Code coverage reports show you any parts of your code base that might not be properly tested by your unit tests.
+Kod kapsam raporları, birim testleriniz tarafından düzgün şekilde test edilmemiş olabilecek kod tabanınızın herhangi bir bölümünü gösterir.
 
 ## Prerequisites
 
-To generate code coverage reports with Vitest, you must install the `@vitest/coverage-v8` package:
+Vitest ile kod kapsam raporları oluşturmak için `@vitest/coverage-v8` paketini yüklemeniz gerekir:
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
@@ -23,15 +23,15 @@ To generate code coverage reports with Vitest, you must install the `@vitest/cov
 
 ## Generating a report
 
-To generate a coverage report, add the `--coverage` flag to the `ng test` command:
+Bir kapsam raporu oluşturmak için `ng test` komutuna `--coverage` bayrağını ekleyin:
 
 ```shell
 ng test --coverage
 ```
 
-After the tests run, the command creates a new `coverage/` directory in the project. Open the `index.html` file to see a report with your source code and code coverage values.
+Testler çalıştıktan sonra komut, projede yeni bir `coverage/` dizini oluşturur. Kaynak kodunuzu ve kod kapsam değerlerini içeren bir rapor görmek için `index.html` dosyasını açın.
 
-If you want to create code-coverage reports every time you test, you can set the `coverage` option to `true` in your `angular.json` file:
+Her test ettiğinizde kod kapsam raporları oluşturmak istiyorsanız, `angular.json` dosyanızda `coverage` seçeneğini `true` olarak ayarlayabilirsiniz:
 
 ```json
 {
@@ -52,9 +52,9 @@ If you want to create code-coverage reports every time you test, you can set the
 
 ## Enforcing code coverage thresholds
 
-The code coverage percentages let you estimate how much of your code is tested. If your team decides on a minimum amount to be unit tested, you can enforce this minimum in your configuration.
+Kod kapsam yüzdeleri, kodunuzun ne kadarının test edildiğini tahmin etmenize olanak tanır. Ekibiniz birim testi yapılması gereken minimum bir miktar belirlerse, bu minimumu yapılandırmanızda zorunlu kılabilirsiniz.
 
-For example, suppose you want the code base to have a minimum of 80% code coverage. To enable this, add the `coverageThresholds` option to your `angular.json` file:
+Örneğin, kod tabanının minimum %80 kod kapsamına sahip olmasını istediğinizi varsayalım. Bunu etkinleştirmek için `angular.json` dosyanıza `coverageThresholds` seçeneğini ekleyin:
 
 ```json
 {
@@ -79,15 +79,15 @@ For example, suppose you want the code base to have a minimum of 80% code covera
 }
 ```
 
-Now, if your coverage drops below 80% when you run your tests, the command will fail.
+Artık testlerinizi çalıştırdığınızda kapsamınız %80'in altına düşerse, komut başarısız olur.
 
 ## Advanced configuration
 
-You can configure several other coverage options in your `angular.json` file:
+`angular.json` dosyanızda birkaç başka kapsam seçeneğini yapılandırabilirsiniz:
 
-- `coverageInclude`: Glob patterns of files to include in the coverage report.
-- `coverageReporters`: An array of reporters to use (e.g., `html`, `lcov`, `json`).
-- `coverageWatermarks`: An object specifying `[low, high]` watermarks for the HTML reporter, which can affect the color-coding of the report.
+- `coverageInclude`: Kapsam raporuna dahil edilecek dosyaların glob kalıpları.
+- `coverageReporters`: Kullanılacak muhabir dizisi (ör. `html`, `lcov`, `json`).
+- `coverageWatermarks`: HTML muhabiri için `[düşük, yüksek]` filigranlarını belirten ve raporun renk kodlamasını etkileyebilen bir nesne.
 
 ```json
 {

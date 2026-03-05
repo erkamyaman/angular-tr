@@ -1,12 +1,12 @@
 # Testing services
 
-Services typically contain your application's business logic that components rely on. Testing services verifies that the logic works correctly in isolation, independent of any component or template.
+Servisler genellikle bileşenlerin dayandığı uygulamanızın iş mantığını içerir. Servisleri test etmek, mantığın herhangi bir bileşen veya şablondan bağımsız olarak doğru çalıştığını doğrular.
 
-This guide uses [Vitest](https://vitest.dev/), which Angular CLI projects include by default. For more on testing setup, see the [testing overview guide](guide/testing#set-up-for-testing).
+Bu kılavuz, Angular CLI projelerinin varsayılan olarak içerdiği [Vitest](https://vitest.dev/)'i kullanır. Test kurulumu hakkında daha fazla bilgi için [test genel bakış kılavuzuna](guide/testing#set-up-for-testing) bakın.
 
 ## Testing a service
 
-Consider a `Calculator` service that performs basic arithmetic:
+Temel aritmetik işlemleri yapan bir `Calculator` servisi düşünün:
 
 ```ts { header: 'calculator.ts' }
 import {Injectable} from '@angular/core';
@@ -23,7 +23,7 @@ export class Calculator {
 }
 ```
 
-To test this service, configure a `TestBed`, which is Angular's testing utility for creating an isolated testing environment for each test. It sets up dependency injection and lets you retrieve service instances — simulating how Angular wires things together in a real application.
+Bu servisi test etmek için, her test için izole bir test ortamı oluşturan Angular'ın test aracı olan `TestBed`'i yapılandırın. Bağımlılık enjeksiyonunu kurar ve servis örneklerini almanıza olanak tanır - Angular'ın gerçek bir uygulamada her şeyi nasıl birbirine bağladığını simüle eder.
 
 ```ts { header: 'calculator.spec.ts' }
 import {TestBed} from '@angular/core/testing';
@@ -49,13 +49,13 @@ describe('Calculator', () => {
 });
 ```
 
-In the example above, the `beforeEach` block injects a fresh instance of the service before every test. This ensures each test runs in isolation with no leaked state from previous tests.
+Yukarıdaki örnekte, `beforeEach` bloğu her testten önce servisin taze bir örneğini enjekte eder. Bu, her testin önceki testlerden sızmış durum olmadan izole çalışmasını sağlar.
 
 ## Testing services with dependencies
 
-Most services depend on other services to run properly. By default, `TestBed` provides the real implementations of these dependencies, which means your tests exercise the actual code paths your application uses. Sometimes, however, a dependency may be complex, slow, or unpredictable. In those cases, you can substitute it with a controlled replacement.
+Çoğu servis, düzgün çalışmak için diğer servislere bağımlıdır. Varsayılan olarak `TestBed`, bu bağımlılıkların gerçek uygulamalarını sağlar; bu da testlerinizin uygulamanızın kullandığı gerçek kod yollarını çalıştırdığı anlamına gelir. Ancak bazen bir bağımlılık karmaşık, yavaş veya öngörülemez olabilir. Bu durumlarda, kontrollü bir yedek ile değiştirebilirsiniz.
 
-Consider an `OrderTotal` service that relies on a `TaxCalculator` to compute the final price of an order:
+Bir siparişin nihai fiyatını hesaplamak için `TaxCalculator`'a dayanan bir `OrderTotal` servisi düşünün:
 
 ```ts { header: 'tax-calculator.ts' }
 import {Injectable} from '@angular/core';
@@ -82,13 +82,13 @@ export class OrderTotal {
 }
 ```
 
-In this example, `OrderTotal` uses `inject()` to request `TaxCalculator` from Angular's dependency injection system. By default, `TestBed` provides the real `TaxCalculator` which is perfect for simple calculations like this. However, if `TaxCalculator` involved complex logic, network requests, or unpredictable results, you might want to substitute it with a controlled replacement.
+Bu örnekte `OrderTotal`, Angular'ın bağımlılık enjeksiyon sisteminden `TaxCalculator`'ı talep etmek için `inject()` kullanır. Varsayılan olarak `TestBed`, bunun gibi basit hesaplamalar için mükemmel olan gerçek `TaxCalculator`'ı sağlar. Ancak `TaxCalculator` karmaşık mantık, ağ istekleri veya öngörülemez sonuçlar içeriyorsa, kontrollü bir yedek ile değiştirmek isteyebilirsiniz.
 
 ### Replacing a dependency with a stub
 
-A stub is a way to replace a dependency or method with one that returns predictable values, which can make test results easier to verify.
+Bir stub, bir bağımlılığı veya metodu öngörülebilir değerler döndüren biriyle değiştirmenin bir yoludur ve bu da test sonuçlarının doğrulanmasını kolaylaştırabilir.
 
-To test `OrderTotal` without relying on the real `TaxCalculator`, you can provide a stub in the `TestBed` configuration.
+`OrderTotal`'ı gerçek `TaxCalculator`'a dayanmadan test etmek için, `TestBed` yapılandırmasında bir stub sağlayabilirsiniz.
 
 ```ts { header: 'order-total.spec.ts' }
 import {TestBed} from '@angular/core/testing';
@@ -123,11 +123,11 @@ describe('OrderTotal', () => {
 });
 ```
 
-With this stub, whenever `OrderTotal` requests `TaxCalculator`, the `TestBed` knows to use the `taxCalculatorStub` instead. Because the stub always returns 5, the test verifies that `OrderTotal` correctly adds the tax value to the subtotal regardless of whether the tax rate changes in `TaxCalculator`.
+Bu stub ile `OrderTotal` `TaxCalculator`'ı talep ettiğinde, `TestBed` bunun yerine `taxCalculatorStub`'ı kullanmayı bilir. Stub her zaman 5 döndürdüğünden, test `OrderTotal`'ın vergi oranının `TaxCalculator`'da değişip değişmediğinden bağımsız olarak ara toplamına vergi değerini doğru şekilde eklediğini doğrular.
 
 ### Verifying interactions with spies
 
-A stub controls what a dependency returns, but sometimes you also need to verify that a service called its dependency with the correct arguments. This can be accomplished with spies, which track how a function is called. With Vitest, this functionality is built into `vi.fn()` and lets you assert on interactions between services.
+Bir stub, bir bağımlılığın ne döndürdüğünü kontrol eder, ancak bazen bir servisin bağımlılığını doğru argümanlarla çağırdığını da doğrulamanız gerekir. Bu, bir fonksiyonun nasıl çağrıldığını izleyen spy'lar ile gerçekleştirilebilir. Vitest'te bu işlevsellik `vi.fn()` içine yerleştirilmiştir ve servisler arasındaki etkileşimleri doğrulamanıza olanak tanır.
 
 ```ts { header: 'order-total.spec.ts' }
 import {TestBed} from '@angular/core/testing';
@@ -163,10 +163,10 @@ describe('OrderTotal', () => {
 });
 ```
 
-The new test verifies that `OrderTotal` called `TaxCalculator.calculate` when computing the total. This is useful when verifying that the interaction between services happened correctly.
+Yeni test, `OrderTotal`'ın toplamı hesaplarken `TaxCalculator.calculate`'i çağırdığını doğrular. Bu, servisler arasındaki etkileşimin doğru şekilde gerçekleştiğini doğrulamak istediğinizde faydalıdır.
 
 ## Testing HTTP services
 
-Many services use Angular's `HttpClient` to fetch data from a server. Angular provides dedicated testing utilities for `HttpClient` that let you control HTTP responses without making real network requests.
+Birçok servis, sunucudan veri almak için Angular'ın `HttpClient`'ını kullanır. Angular, gerçek ağ istekleri yapmadan HTTP yanıtlarını kontrol etmenize olanak tanıyan `HttpClient` için özel test araçları sağlar.
 
-For details on testing services that use `HttpClient`, see the [HTTP testing guide](guide/http/testing).
+`HttpClient` kullanan servisleri test etme hakkında ayrıntılar için [HTTP test kılavuzuna](guide/http/testing) bakın.

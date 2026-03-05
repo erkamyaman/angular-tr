@@ -1,22 +1,22 @@
 # Angular elements overview
 
-_Angular elements_ are Angular components packaged as _custom elements_ \(also called Web Components\), a web standard for defining new HTML elements in a framework-agnostic way.
+_Angular elements_, Angular bileşenlerinin _özel öğeler_ \(aynı zamanda Web Components olarak da adlandırılır\) olarak paketlenmiş halidir; framework'ten bağımsız bir şekilde yeni HTML öğeleri tanımlamak için bir web standardıdır.
 
-[Custom elements](https://developer.mozilla.org/docs/Web/Web_Components/Using_custom_elements) are a Web Platform feature available on all browsers supported by Angular.
-A custom element extends HTML by allowing you to define a tag whose content is created and controlled by JavaScript code.
-The browser maintains a `CustomElementRegistry` of defined custom elements, which maps an instantiable JavaScript class to an HTML tag.
+[Özel öğeler](https://developer.mozilla.org/docs/Web/Web_Components/Using_custom_elements), Angular tarafından desteklenen tüm tarayıcılarda kullanılabilen bir Web Platformu özelliğidir.
+Özel bir öğe, içeriği JavaScript kodu tarafından oluşturulan ve kontrol edilen bir etiket tanımlamanıza olanak tanıyarak HTML'i genişletir.
+Tarayıcı, bir HTML etiketini somutlaştırılabilir bir JavaScript sınıfına eşleyen tanımlı özel öğelerin bir `CustomElementRegistry`'sini tutar.
 
-The `@angular/elements` package exports a `createCustomElement()` API that provides a bridge from Angular's component interface and change detection functionality to the built-in DOM API.
+`@angular/elements` paketi, Angular'ın bileşen arayüzü ve değişiklik algılama işlevselliğinden yerleşik DOM API'sine köprü sağlayan bir `createCustomElement()` API'si dışa aktarır.
 
-Transforming a component to a custom element makes all the required Angular infrastructure available to the browser.
-Creating a custom element is simple and straightforward, and automatically connects your component-defined view with change detection and data binding, mapping Angular functionality to the corresponding built-in HTML equivalents.
+Bir bileşeni özel öğeye dönüştürmek, gerekli tüm Angular altyapısını tarayıcıya sunar.
+Özel öğe oluşturmak basit ve kolaydır ve bileşen tanımlı görünümünüzü değişiklik algılama ve veri bağlama ile otomatik olarak bağlar, Angular işlevselliğini ilgili yerleşik HTML eşdeğerleriyle eşler.
 
 ## Using custom elements
 
-Custom elements bootstrap themselves - they start when they are added to the DOM, and are destroyed when removed from the DOM.
-Once a custom element is added to the DOM for any page, it looks and behaves like any other HTML element, and does not require any special knowledge of Angular terms or usage conventions.
+Özel öğeler kendilerini başlatır - DOM'a eklendiklerinde başlarlar ve DOM'dan kaldırıldıklarında yok edilirler.
+Bir özel öğe herhangi bir sayfanın DOM'una eklendiğinde, diğer herhangi bir HTML öğesi gibi görünür ve davranır ve Angular terimleri veya kullanım kuralları hakkında özel bir bilgi gerektirmez.
 
-To add the `@angular/elements` package to your workspace, run the following command:
+`@angular/elements` paketini çalışma alanınıza eklemek için aşağıdaki komutu çalıştırın:
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
@@ -35,65 +35,64 @@ To add the `@angular/elements` package to your workspace, run the following comm
 
 ### How it works
 
-The `createCustomElement()` function converts a component into a class that can be registered with the browser as a custom element.
-After you register your configured class with the browser's custom-element registry, use the new element just like a built-in HTML element in content that you add directly into the DOM:
+`createCustomElement()` fonksiyonu, bir bileşeni tarayıcıda özel öğe olarak kaydedilebilen bir sınıfa dönüştürür.
+Yapılandırılmış sınıfınızı tarayıcının özel öğe kayıt defterine kaydettikten sonra, yeni öğeyi doğrudan DOM'a eklediğiniz içerikte yerleşik bir HTML öğesi gibi kullanın:
 
 ```html
 <my-popup message="Use Angular!"></my-popup>
 ```
 
-When your custom element is placed on a page, the browser creates an instance of the registered class and adds it to the DOM.
-The content is provided by the component's template, which uses Angular template syntax, and is rendered using the component and DOM data.
-Input properties in the component correspond to input attributes for the element.
+Özel öğeniz bir sayfaya yerleştirildiğinde, tarayıcı kayıtlı sınıfın bir örneğini oluşturur ve DOM'a ekler.
+İçerik, Angular şablon sözdizimini kullanan bileşenin şablonu tarafından sağlanır ve bileşen ve DOM verileri kullanılarak render edilir.
+Bileşendeki giriş özellikleri, öğe için giriş niteliklerine karşılık gelir.
 
 ## Transforming components to custom elements
 
-Angular provides the `createCustomElement()` function for converting an Angular component, together with its dependencies, to a custom element.
+Angular, bir Angular bileşenini bağımlılıklarıyla birlikte özel bir öğeye dönüştürmek için `createCustomElement()` fonksiyonunu sağlar.
 
-The conversion process implements the `NgElementConstructor` interface, and creates a
-constructor class that is configured to produce a self-bootstrapping instance of your component.
+Dönüştürme işlemi `NgElementConstructor` arayüzünü uygular ve bileşeninizin kendi kendini başlatan bir örneğini üretmek üzere yapılandırılmış bir kurucu sınıf oluşturur.
 
-Use the browser's native [`customElements.define()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/define) function to register the configured constructor and its associated custom-element tag with the browser's [`CustomElementRegistry`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry).
-When the browser encounters the tag for the registered element, it uses the constructor to create a custom-element instance.
+Yapılandırılmış kurucuyu ve ilişkili özel öğe etiketini tarayıcının [`CustomElementRegistry`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry)'sine kaydetmek için tarayıcının yerel [`customElements.define()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/define) fonksiyonunu kullanın.
+Tarayıcı, kayıtlı öğe için etiketi karşılaştığında, bir özel öğe örneği oluşturmak için kurucuyu kullanır.
 
-IMPORTANT: Avoid using the component's selector as the custom element tag name.
-This can lead to unexpected behavior, due to Angular creating two component instances for a single DOM element:
-One regular Angular component and a second one using the custom element.
+IMPORTANT: Bileşenin seçicisini özel öğe etiket adı olarak kullanmaktan kaçının.
+Bu, Angular'ın tek bir DOM öğesi için iki bileşen örneği oluşturması nedeniyle beklenmeyen davranışlara yol açabilir:
+Biri normal Angular bileşeni ve diğeri özel öğeyi kullanan.
 
 ### Mapping
 
-A custom element _hosts_ an Angular component, providing a bridge between the data and logic defined in the component and standard DOM APIs.
-Component properties and logic map directly into HTML attributes and the browser's event system.
+Özel bir öğe, bir Angular bileşenini _barındırır_ ve bileşende tanımlanan veriler ve mantık ile standart DOM API'leri arasında bir köprü sağlar.
+Bileşen özellikleri ve mantığı doğrudan HTML niteliklerine ve tarayıcının olay sistemine eşlenir.
 
-- The creation API parses the component looking for input properties, and defines corresponding attributes for the custom element.
-  It transforms the property names to make them compatible with custom elements, which do not recognize case distinctions.
-  The resulting attribute names use dash-separated lowercase.
-  For example, for a component with `inputProp = input({alias: 'myInputProp'})`, the corresponding custom element defines an attribute `my-input-prop`.
+- Oluşturma API'si, giriş özelliklerini arayan bileşeni ayrıştırır ve özel öğe için karşılık gelen nitelikleri tanımlar.
+  Özellik adlarını, büyük/küçük harf ayrımlarını tanımayan özel öğelerle uyumlu hale getirmek için dönüştürür.
+  Sonuçtaki nitelik adları tire ile ayrılmış küçük harf kullanır.
+  Örneğin, `inputProp = input({alias: 'myInputProp'})` olan bir bileşen için karşılık gelen özel öğe `my-input-prop` niteliğini tanımlar.
 
-- Component outputs are dispatched as HTML [Custom Events](https://developer.mozilla.org/docs/Web/API/CustomEvent), with the name of the custom event matching the output name.
-  For example, for a component with `valueChanged = output()`, the corresponding custom element dispatches events with the name "valueChanged", and the emitted data is stored on the event's `detail` property.
-  If you provide an alias, that value is used; for example, `clicks = output<string>({alias: 'myClick'});` results in dispatch events with the name "myClick".
+- Bileşen çıktıları, özel olayın adının çıktı adıyla eşleştiği HTML [Özel Olaylar](https://developer.mozilla.org/docs/Web/API/CustomEvent) olarak gönderilir.
+  Örneğin, `valueChanged = output()` olan bir bileşen için karşılık gelen özel öğe "valueChanged" adıyla olaylar gönderir ve yayınlanan veriler olayın `detail` özelliğinde saklanır.
+  Bir takma ad sağlarsanız, o değer kullanılır; örneğin, `clicks = output<string>({alias: 'myClick'});` "myClick" adıyla olaylar gönderir.
 
-For more information, see Web Component documentation for [Creating custom events](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events#creating_custom_events).
+Daha fazla bilgi için [Özel olay oluşturma](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events#creating_custom_events) Web Component belgelerine bakın.
 
 ## Example: A Popup Service
 
-Previously, when you wanted to add a component to an application at runtime, you had to define a _dynamic component_, and then you would have to load it, attach it to an element in the DOM, and wire up all of the dependencies, change detection, and event handling.
+Daha önce, çalışma zamanında bir uygulamaya bir bileşen eklemek istediğinizde, bir _dinamik bileşen_ tanımlamanız ve ardından onu yüklemeniz, DOM'daki bir öğeye eklemeniz ve tüm bağımlılıkları, değişiklik algılamayı ve olay işlemeyi bağlamanız gerekiyordu.
 
-Using an Angular custom element makes the process simpler and more transparent, by providing all the infrastructure and framework automatically —all you have to do is define the kind of event handling you want.
-\(You do still have to exclude the component from compilation, if you are not going to use it in your application.\)
+Angular özel öğesi kullanmak, tüm altyapıyı ve framework'ü otomatik olarak sağlayarak süreci daha basit ve daha şeffaf hale getirir - tek yapmanız gereken istediğiniz olay işleme türünü tanımlamaktır.
+\(Bileşeni uygulamanızda kullanmayacaksanız, yine de derlemeden hariç tutmanız gerekir.\)
 
-The following Popup Service example application defines a component that you can either load dynamically or convert to a custom element.
+Aşağıdaki Popup Service örnek uygulaması, dinamik olarak yükleyebileceğiniz veya özel bir öğeye dönüştürebileceğiniz bir bileşen tanımlar.
 
-| Files              | Details                                                                                                                                                                                                             |
-| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `popup.ts`         | Defines a simple pop-up element that displays an input message, with some animation and styling.                                                                                                                    |
-| `popup.service.ts` | Creates an injectable service that provides two different ways to invoke the `Popup`; as a dynamic component, or as a custom element. Notice how much more setup is required for the dynamic-loading method.        |
-| `app.ts`           | Defines the application's root component, which uses the `PopupService` to add the pop-up to the DOM at run time. When the application runs, the root component's constructor converts `Popup` to a custom element. |
+| Files              | Details                                                                                                                                                                                                                 |
+| :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `popup.ts`         | Bazı animasyon ve stillerle bir giriş mesajı görüntüleyen basit bir açılır pencere öğesi tanımlar.                                                                                                                      |
+| `popup.service.ts` | `Popup`'ı çağırmak için iki farklı yol sağlayan enjekte edilebilir bir servis oluşturur; dinamik bileşen olarak veya özel öğe olarak. Dinamik yükleme yöntemi için ne kadar daha fazla kurulum gerektiğine dikkat edin. |
+| `app.ts`           | Uygulamanın kök bileşenini tanımlar ve çalışma zamanında DOM'a açılır pencere eklemek için `PopupService`'i kullanır. Uygulama çalıştığında, kök bileşenin kurucusu `Popup`'ı özel öğeye dönüştürür.                    |
 
-For comparison, the demo shows both methods.
-One button adds the popup using the dynamic-loading method, and the other uses the custom element.
-The result is the same, but the preparation is different.
+Karşılaştırma için demo her iki yöntemi de gösterir.
+Bir düğme dinamik yükleme yöntemini kullanarak açılır pencereyi ekler ve diğeri özel öğeyi kullanır.
+Sonuç aynıdır, ancak hazırlık farklıdır.
 
 <docs-code-multifile>
     <docs-code language="angular-ts" header="popup.ts" path="adev/src/content/examples/elements/src/app/popup.ts"/>
@@ -103,18 +102,18 @@ The result is the same, but the preparation is different.
 
 ## Typings for custom elements
 
-Generic DOM APIs, such as `document.createElement()` or `document.querySelector()`, return an element type that is appropriate for the specified arguments.
-For example, calling `document.createElement('a')` returns an `HTMLAnchorElement`, which TypeScript knows has an `href` property.
-Similarly, `document.createElement('div')` returns an `HTMLDivElement`, which TypeScript knows has no `href` property.
+`document.createElement()` veya `document.querySelector()` gibi genel DOM API'leri, belirtilen argümanlar için uygun bir öğe türü döndürür.
+Örneğin, `document.createElement('a')` çağrısı TypeScript'in `href` özelliğine sahip olduğunu bildiği bir `HTMLAnchorElement` döndürür.
+Benzer şekilde, `document.createElement('div')` TypeScript'in `href` özelliğine sahip olmadığını bildiği bir `HTMLDivElement` döndürür.
 
-When called with unknown elements, such as a custom element name \(`popup-element` in our example\), the methods return a generic type, such as `HTMLElement`, because TypeScript can't infer the correct type of the returned element.
+Bilinmeyen öğelerle, örneğin özel bir öğe adıyla \(örneğimizdeki `popup-element`\) çağrıldığında, yöntemler `HTMLElement` gibi genel bir tür döndürür çünkü TypeScript döndürülen öğenin doğru türünü çıkaramaz.
 
-Custom elements created with Angular extend `NgElement` \(which in turn extends `HTMLElement`\).
-Additionally, these custom elements will have a property for each input of the corresponding component.
-For example, our `popup-element` has a `message` property of type `string`.
+Angular ile oluşturulan özel öğeler `NgElement`'i \(sırasıyla `HTMLElement`'i genişleten\) genişletir.
+Ek olarak, bu özel öğeler ilgili bileşenin her girişi için bir özelliğe sahip olacaktır.
+Örneğin, `popup-element` öğemiz `string` türünde bir `message` özelliğine sahiptir.
 
-There are a few options if you want to get correct types for your custom elements.
-Assume you create a `my-dialog` custom element based on the following component:
+Özel öğeleriniz için doğru türleri almak istiyorsanız birkaç seçenek vardır.
+Aşağıdaki bileşene dayalı bir `my-dialog` özel öğesi oluşturduğunuzu varsayın:
 
 ```ts
 @Component(/* ... */)
@@ -123,8 +122,8 @@ class MyDialog {
 }
 ```
 
-The most straightforward way to get accurate typings is to cast the return value of the relevant DOM methods to the correct type.
-For that, use the `NgElement` and `WithProperties` types \(both exported from `@angular/elements`\):
+Doğru tip bilgisi almanın en basit yolu, ilgili DOM yöntemlerinin dönüş değerini doğru türe dönüştürmektir.
+Bunun için `NgElement` ve `WithProperties` türlerini \(her ikisi de `@angular/elements`'ten dışa aktarılır\) kullanın:
 
 ```ts
 const aDialog = document.createElement('my-dialog') as NgElement &
@@ -134,10 +133,10 @@ aDialog.content = 123; // <-- ERROR: TypeScript knows this should be a string.
 aDialog.body = 'News'; // <-- ERROR: TypeScript knows there is no `body` property on `aDialog`.
 ```
 
-This is a good way to quickly get TypeScript features, such as type checking and autocomplete support, for your custom element.
-But it can get cumbersome if you need it in several places, because you have to cast the return type on every occurrence.
+Bu, özel öğeniz için tür denetimi ve otomatik tamamlama desteği gibi TypeScript özelliklerini hızlıca almanın iyi bir yoludur.
+Ancak birden fazla yerde ihtiyaç duyarsanız zahmetli olabilir çünkü her oluşumda dönüş türünü dönüştürmeniz gerekir.
 
-An alternative way, that only requires defining each custom element's type once, is augmenting the `HTMLElementTagNameMap`, which TypeScript uses to infer the type of a returned element based on its tag name \(for DOM methods such as `document.createElement()`, `document.querySelector()`, etc.\):
+Her özel öğenin türünü yalnızca bir kez tanımlamayı gerektiren alternatif bir yol, TypeScript'in etiket adına dayalı olarak döndürülen öğenin türünü çıkarmak için kullandığı \(`document.createElement()`, `document.querySelector()` gibi DOM yöntemleri için\) `HTMLElementTagNameMap`'i genişletmektir:
 
 ```ts
 
@@ -151,7 +150,7 @@ declare global {
 
 ```
 
-Now, TypeScript can infer the correct type the same way it does for built-in elements:
+Artık TypeScript, yerleşik öğeler için yaptığı gibi doğru türü çıkarabilir:
 
 ```ts
 document.createElement('div'); //--> HTMLDivElement (built-in element)
@@ -162,7 +161,7 @@ document.querySelector('my-other-element'); //--> NgElement & WithProperties<{fo
 
 ## Limitations
 
-Care should be taken when destroying and then re-attaching custom elements created with `@angular/elements` due to issues with the [disconnect()](https://github.com/angular/angular/issues/38778) callback. Cases where you may run into this issue are:
+`@angular/elements` ile oluşturulan özel öğeleri yok edip yeniden eklerken [disconnect()](https://github.com/angular/angular/issues/38778) geri çağırmasıyla ilgili sorunlar nedeniyle dikkatli olunmalıdır. Bu sorunla karşılaşabileceğiniz durumlar şunlardır:
 
-- Rendering a component in an `ng-if` or `ng-repeat` in `AngularJS`
-- Manually detaching and re-attaching an element to the DOM
+- `AngularJS`'te bir `ng-if` veya `ng-repeat` içinde bir bileşen render etme
+- Bir öğeyi DOM'dan manuel olarak ayırma ve yeniden ekleme

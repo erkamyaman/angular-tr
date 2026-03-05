@@ -1,13 +1,12 @@
 # AOT metadata errors
 
-The following are metadata errors you may encounter, with explanations and suggested corrections.
+Aşağıda, karşılaşabileceğiniz meta veri hataları, açıklamaları ve önerilen düzeltmeleri verilmiştir.
 
 ## Expression form not supported
 
-HELPFUL: The compiler encountered an expression it didn't understand while evaluating Angular metadata.
+HELPFUL: Derleyici, Angular meta verisini değerlendirirken anlamadığı bir ifadeyle karşılaştı.
 
-Language features outside of the compiler's [restricted expression syntax](tools/cli/aot-compiler)
-can produce this error, as seen in the following example:
+Derleyicinin [kısıtlı ifade sözdizimi](tools/cli/aot-compiler) dışındaki dil özellikleri, aşağıdaki örnekte görüldüğü gibi bu hataya neden olabilir:
 
 ```ts
 // ERROR
@@ -20,20 +19,18 @@ const prop = typeof Fooish; // typeof is not valid in metadata
   …
 ```
 
-You can use `typeof` and bracket notation in normal application code.
-You just can't use those features within expressions that define Angular metadata.
+Normal uygulama kodunda `typeof` ve köşeli parantez gösterimini kullanabilirsiniz.
+Sadece Angular meta verisini tanımlayan ifadelerde bu özellikleri kullanamazsınız.
 
-Avoid this error by sticking to the compiler's [restricted expression syntax](tools/cli/aot-compiler)
-when writing Angular metadata
-and be wary of new or unusual TypeScript features.
+Angular meta verisi yazarken derleyicinin [kısıtlı ifade sözdizimi](tools/cli/aot-compiler)ne bağlı kalarak bu hatadan kaçının ve yeni veya alışılmadık TypeScript özelliklerine karşı dikkatli olun.
 
 ## Reference to a local (non-exported) symbol
 
 HELPFUL: Reference to a local \(non-exported\) symbol 'symbol name'. Consider exporting the symbol.
 
-The compiler encountered a reference to a locally defined symbol that either wasn't exported or wasn't initialized.
+Derleyici, yerel olarak tanımlanmış ancak ya dışa aktarılmamış ya da başlatılmamış bir sembole başvuru buldu.
 
-Here's a `provider` example of the problem.
+İşte sorunun bir `provider` örneği.
 
 ```ts
 
@@ -51,21 +48,21 @@ export class MyComponent {}
 
 ```
 
-The compiler generates the component factory, which includes the `useValue` provider code, in a separate module. _That_ factory module can't reach back to _this_ source module to access the local \(non-exported\) `foo` variable.
+Derleyici, bileşen fabrikasını ayrı bir modülde oluşturur ve bu fabrika `useValue` sağlayıcı kodunu içerir. _O_ fabrika modülü, yerel \(dışa aktarılmamış\) `foo` değişkenine erişmek için _bu_ kaynak modüle geri dönemez.
 
-You could fix the problem by initializing `foo`.
+Sorunu `foo`'yu başlatarak düzeltebilirsiniz.
 
 ```ts
 let foo = 42; // initialized
 ```
 
-The compiler will [fold](tools/cli/aot-compiler#code-folding) the expression into the provider as if you had written this.
+Derleyici, ifadeyi sağlayıcıya şöyle yazmışsınız gibi [katlar](tools/cli/aot-compiler#code-folding).
 
 ```ts
 providers: [{provide: Foo, useValue: 42}];
 ```
 
-Alternatively, you can fix it by exporting `foo` with the expectation that `foo` will be assigned at runtime when you actually know its value.
+Alternatif olarak, `foo`'nun çalışma zamanında değerini gerçekten bildiğinizde atanacağı beklentisiyle dışa aktararak düzeltebilirsiniz.
 
 ```ts
 // CORRECTED
@@ -81,11 +78,10 @@ export let foo: number; // exported
 export class MyComponent {}
 ```
 
-Adding `export` often works for variables referenced in metadata such as `providers` and `animations` because the compiler can generate _references_ to the exported variables in these expressions. It doesn't need the _values_ of those variables.
+`export` eklemek genellikle `providers` ve `animations` gibi meta verilerde referans verilen değişkenler için işe yarar çünkü derleyici bu ifadelerde dışa aktarılmış değişkenlere _referanslar_ oluşturabilir. Bu değişkenlerin _değerlerine_ ihtiyaç duymaz.
 
-Adding `export` doesn't work when the compiler needs the _actual value_
-in order to generate code.
-For example, it doesn't work for the `template` property.
+Derleyicinin kod oluşturmak için _gerçek değere_ ihtiyaç duyduğunda `export` eklemek işe yaramaz.
+Örneğin, `template` özelliği için işe yaramaz.
 
 ```ts
 // ERROR
@@ -98,18 +94,18 @@ export let someTemplate: string; // exported but not initialized
 export class MyComponent {}
 ```
 
-The compiler needs the value of the `template` property _right now_ to generate the component factory.
-The variable reference alone is insufficient.
-Prefixing the declaration with `export` merely produces a new error, "[`Only initialized variables and constants can be referenced`](#only-initialized-variables-and-constants)".
+Derleyicinin bileşen fabrikasını oluşturmak için `template` özelliğinin değerine _hemen şimdi_ ihtiyacı vardır.
+Tek başına değişken referansı yetersizdir.
+Bildirimin başına `export` eklemek yalnızca yeni bir hata üretir: "[`Only initialized variables and constants can be referenced`](#only-initialized-variables-and-constants)".
 
 ## Only initialized variables and constants
 
 HELPFUL: _Only initialized variables and constants can be referenced because the value of this variable is needed by the template compiler._
 
-The compiler found a reference to an exported variable or static field that wasn't initialized.
-It needs the value of that variable to generate code.
+Derleyici, dışa aktarılmış ancak başlatılmamış bir değişkene veya statik alana referans buldu.
+Kod oluşturmak için o değişkenin değerine ihtiyaç duyar.
 
-The following example tries to set the component's `template` property to the value of the exported `someTemplate` variable which is declared but _unassigned_.
+Aşağıdaki örnek, bileşenin `template` özelliğini, bildirilmiş ancak _atanmamış_ olan dışa aktarılmış `someTemplate` değişkeninin değerine ayarlamaya çalışır.
 
 ```ts
 // ERROR
@@ -122,7 +118,7 @@ export let someTemplate: string;
 export class MyComponent {}
 ```
 
-You'd also get this error if you imported `someTemplate` from some other module and neglected to initialize it there.
+`someTemplate`'i başka bir modülden içe aktarırsanız ve orada başlatmayı ihmal ederseniz de bu hatayı alırsınız.
 
 ```ts
 // ERROR - not initialized there either
@@ -135,10 +131,10 @@ import {someTemplate} from './config';
 export class MyComponent {}
 ```
 
-The compiler cannot wait until runtime to get the template information.
-It must statically derive the value of the `someTemplate` variable from the source code so that it can generate the component factory, which includes instructions for building the element based on the template.
+Derleyici, şablon bilgisini almak için çalışma zamanını bekleyemez.
+Şablona dayalı öğeyi oluşturma talimatlarını içeren bileşen fabrikasını üretebilmek için `someTemplate` değişkeninin değerini kaynak koddan statik olarak türetmelidir.
 
-To correct this error, provide the initial value of the variable in an initializer clause _on the same line_.
+Bu hatayı düzeltmek için, değişkenin başlangıç değerini _aynı satırda_ bir başlatıcı yan tümcesi ile sağlayın.
 
 ```ts
 // CORRECTED
@@ -156,9 +152,9 @@ export class MyComponent {}
 HELPFUL: _Reference to a non-exported class `<class name>`._
 _Consider exporting the class._
 
-Metadata referenced a class that wasn't exported.
+Meta veri, dışa aktarılmamış bir sınıfa referans verdi.
 
-For example, you may have defined a class and used it as an injection token in a providers array but neglected to export that class.
+Örneğin, bir sınıf tanımlamış ve onu bir providers dizisinde enjeksiyon belirteci olarak kullanmış ancak o sınıfı dışa aktarmayı ihmal etmiş olabilirsiniz.
 
 ```ts
 // ERROR
@@ -171,8 +167,8 @@ abstract class MyStrategy { }
   …
 ```
 
-Angular generates a class factory in a separate module and that factory [can only access exported classes](tools/cli/aot-compiler#public-or-protected-symbols).
-To correct this error, export the referenced class.
+Angular, ayrı bir modülde bir sınıf fabrikası oluşturur ve bu fabrika [yalnızca dışa aktarılmış sınıflara erişebilir](tools/cli/aot-compiler#public-or-protected-symbols).
+Bu hatayı düzeltmek için referans verilen sınıfı dışa aktarın.
 
 ```ts
 // CORRECTED
@@ -189,7 +185,7 @@ export abstract class MyStrategy { }
 
 HELPFUL: _Metadata referenced a function that wasn't exported._
 
-For example, you may have set a providers `useFactory` property to a locally defined function that you neglected to export.
+Örneğin, bir providers `useFactory` özelliğini yerel olarak tanımlanmış ve dışa aktarmayı ihmal ettiğiniz bir fonksiyona ayarlamış olabilirsiniz.
 
 ```ts
 // ERROR
@@ -202,8 +198,8 @@ function myStrategy() { … }
   …
 ```
 
-Angular generates a class factory in a separate module and that factory [can only access exported functions](tools/cli/aot-compiler#public-or-protected-symbols).
-To correct this error, export the function.
+Angular, ayrı bir modülde bir sınıf fabrikası oluşturur ve bu fabrika [yalnızca dışa aktarılmış fonksiyonlara erişebilir](tools/cli/aot-compiler#public-or-protected-symbols).
+Bu hatayı düzeltmek için fonksiyonu dışa aktarın.
 
 ```ts
 // CORRECTED
@@ -220,9 +216,9 @@ export function myStrategy() { … }
 
 HELPFUL: _Referencing an exported destructured variable or constant is not supported by the template compiler. Consider simplifying this to avoid destructuring._
 
-The compiler does not support references to variables assigned by [destructuring](https://www.typescriptlang.org/docs/handbook/variable-declarations.html#destructuring).
+Derleyici, [parçalama](https://www.typescriptlang.org/docs/handbook/variable-declarations.html#destructuring) ile atanmış değişkenlere yapılan referansları desteklemez.
 
-For example, you cannot write something like this:
+Örneğin, şöyle bir şey yazamazsınız:
 
 ```ts
 // ERROR
@@ -238,7 +234,7 @@ const {foo, bar} = configuration;
   …
 ```
 
-To correct this error, refer to non-destructured values.
+Bu hatayı düzeltmek için parçalanmamış değerlere başvurun.
 
 ```ts
 // CORRECTED
@@ -255,10 +251,10 @@ import { configuration } from './configuration';
 
 HELPFUL: _The compiler encountered a type and can't determine which module exports that type._
 
-This can happen if you refer to an ambient type.
-For example, the `Window` type is an ambient type declared in the global `.d.ts` file.
+Bu, ortam türüne başvurduğunuzda olabilir.
+Örneğin, `Window` türü global `.d.ts` dosyasında bildirilen bir ortam türüdür.
 
-You'll get an error if you reference it in the component constructor, which the compiler must statically analyze.
+Derleyicinin statik olarak analiz etmesi gereken bileşen yapıcısında başvurursanız bir hata alırsınız.
 
 ```ts
 // ERROR
@@ -268,22 +264,21 @@ export class MyComponent {
 }
 ```
 
-TypeScript understands ambient types so you don't import them.
-The Angular compiler does not understand a type that you neglect to export or import.
+TypeScript ortam türlerini anlar, bu nedenle onları içe aktarmazsınız.
+Angular derleyicisi, dışa aktarmayı veya içe aktarmayı ihmal ettiğiniz bir türü anlamaz.
 
-In this case, the compiler doesn't understand how to inject something with the `Window` token.
+Bu durumda, derleyici `Window` belirteci ile bir şeyin nasıl enjekte edileceğini anlamaz.
 
-Do not refer to ambient types in metadata expressions.
+Meta veri ifadelerinde ortam türlerine başvurmayın.
 
-If you must inject an instance of an ambient type,
-you can finesse the problem in four steps:
+Bir ortam türünün örneğini enjekte etmeniz gerekiyorsa, sorunu dört adımda çözebilirsiniz:
 
-1. Create an injection token for an instance of the ambient type.
-1. Create a factory function that returns that instance.
-1. Add a `useFactory` provider with that factory function.
-1. Use `@Inject` to inject the instance.
+1. Ortam türünün bir örneği için bir enjeksiyon belirteci oluşturun.
+1. O örneği döndüren bir fabrika fonksiyonu oluşturun.
+1. O fabrika fonksiyonuyla bir `useFactory` sağlayıcısı ekleyin.
+1. Örneği enjekte etmek için `@Inject` kullanın.
 
-Here's an illustrative example.
+İşte açıklayıcı bir örnek.
 
 ```ts
 // CORRECTED
@@ -303,10 +298,9 @@ export class MyComponent {
 }
 ```
 
-The `Window` type in the constructor is no longer a problem for the compiler because it
-uses the `@Inject(WINDOW)` to generate the injection code.
+Yapıcıdaki `Window` türü artık derleyici için sorun değildir çünkü enjeksiyon kodunu oluşturmak için `@Inject(WINDOW)`'ı kullanır.
 
-Angular does something similar with the `DOCUMENT` token so you can inject the browser's `document` object \(or an abstraction of it, depending upon the platform in which the application runs\).
+Angular, tarayıcının `document` nesnesini \(veya uygulamanın çalıştığı platforma bağlı olarak onun bir soyutlamasını\) enjekte edebilmeniz için `DOCUMENT` belirteci ile benzer bir şey yapar.
 
 ```ts
 import { Inject }   from '@angular/core';
@@ -322,14 +316,14 @@ export class MyComponent {
 
 HELPFUL: _The compiler expected a name in an expression it was evaluating._
 
-This can happen if you use a number as a property name as in the following example.
+Bu, aşağıdaki örnekte olduğu gibi özellik adı olarak bir sayı kullandığınızda olabilir.
 
 ```ts
 // ERROR
 provider: [{provide: Foo, useValue: {0: 'test'}}];
 ```
 
-Change the name of the property to something non-numeric.
+Özelliğin adını sayısal olmayan bir değere değiştirin.
 
 ```ts
 // CORRECTED
@@ -340,7 +334,7 @@ provider: [{provide: Foo, useValue: {'0': 'test'}}];
 
 HELPFUL: _Angular couldn't determine the value of the [enum member](https://www.typescriptlang.org/docs/handbook/enums.html) that you referenced in metadata._
 
-The compiler can understand simple enum values but not complex values such as those derived from computed properties.
+Derleyici basit enum değerlerini anlayabilir ancak hesaplanan özelliklerden türetilenler gibi karmaşık değerleri anlayamaz.
 
 ```ts
 // ERROR
@@ -359,13 +353,13 @@ enum Colors {
   …
 ```
 
-Avoid referring to enums with complicated initializers or computed properties.
+Karmaşık başlatıcılara veya hesaplanan özelliklere sahip enum'lara başvurmaktan kaçının.
 
 ## Tagged template expressions are not supported
 
 HELPFUL: _Tagged template expressions are not supported in metadata._
 
-The compiler encountered a JavaScript ES2015 [tagged template expression](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Template_literals#Tagged_template_literals) such as the following.
+Derleyici, aşağıdaki gibi bir JavaScript ES2015 [etiketli şablon ifadesiyle](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Template_literals#Tagged_template_literals) karşılaştı.
 
 ```ts
 
@@ -378,14 +372,14 @@ const raw = String.raw`A tagged template ${expression} string`;
 
 ```
 
-[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw) is a _tag function_ native to JavaScript ES2015.
+[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw), JavaScript ES2015'e özgü bir _etiket fonksiyonudur_.
 
-The AOT compiler does not support tagged template expressions; avoid them in metadata expressions.
+AOT derleyicisi etiketli şablon ifadelerini desteklemez; meta veri ifadelerinde bunlardan kaçının.
 
 ## Symbol reference expected
 
 HELPFUL: _The compiler expected a reference to a symbol at the location specified in the error message._
 
-This error can occur if you use an expression in the `extends` clause of a class.
+Bu hata, bir sınıfın `extends` yan tümcesinde bir ifade kullandığınızda oluşabilir.
 
 <!--todo: Chuck: After reviewing your PR comment I'm still at a loss. See [comment there](https://github.com/angular/angular/pull/17712#discussion_r132025495). -->

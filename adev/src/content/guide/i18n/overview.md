@@ -1,20 +1,20 @@
 # Angular Internationalization (i18n)
 
-_Internationalization_, sometimes referenced as i18n, is the process of designing and preparing your project for use in different locales around the world.
-_Localization_ is the process of building versions of your project for different locales.
-The localization process includes the following actions.
+_Uluslararasılaştırma_, bazen i18n olarak da adlandırılır, projenizi dünya genelinde farklı yerel ayarlarda kullanım için tasarlama ve hazırlama sürecidir.
+_Yerelleştirme_, projenizin farklı yerel ayarlar için sürümlerini oluşturma sürecidir.
+Yerelleştirme süreci aşağıdaki eylemleri içerir.
 
-- Extract text for translation into different languages
-- Format data for a specific locale
+- Farklı dillere çevrilmek üzere metin çıkarma
+- Belirli bir yerel ayar için verileri biçimlendirme
 
-A _locale_ identifies a region in which people speak a particular language or language variant.
-Possible regions include countries and geographical regions.
-A locale determines the formatting and parsing of the following details.
+Bir _yerel ayar_, belirli bir dil veya dil varyantının konuşulduğu bir bölgeyi tanımlar.
+Olası bölgeler arasında ülkeler ve coğrafi bölgeler bulunur.
+Bir yerel ayar, aşağıdaki detayların biçimlendirmesini ve ayrıştırmasını belirler.
 
-- Measurement units including date and time, numbers, and currencies
-- Translated names including time zones, languages, and countries
+- Tarih ve saat, sayılar ve para birimleri dahil ölçü birimleri
+- Saat dilimleri, diller ve ülkeler dahil çevrilmiş adlar
 
-For a quick introduction to localization and internationalization watch this video:
+Yerelleştirme ve uluslararasılaştırmaya hızlı bir giriş için bu videoyu izleyin:
 
 <docs-video src="https://www.youtube.com/embed/KNTN-nsbV7M"/>
 
@@ -22,33 +22,33 @@ For a quick introduction to localization and internationalization watch this vid
 
 <docs-card-container>
   <docs-card title="Add the localize package" href="guide/i18n/add-package">
-    Learn how to add the Angular Localize package to your project
+    Angular Localize paketini projenize nasıl ekleyeceğinizi öğrenin
   </docs-card>
   <docs-card title="Refer to locales by ID" href="guide/i18n/locale-id">
-    Learn how to identify and specify a locale identifier for your project
+    Projeniz için bir yerel ayar tanımlayıcısını nasıl tanımlayacağınızı ve belirleyeceğinizi öğrenin
   </docs-card>
   <docs-card title="Format data based on locale" href="guide/i18n/format-data-locale">
-    Learn how to implement localized data pipes and override the locale for your project
+    Yerelleştirilmiş veri pipe'larını nasıl uygulayacağınızı ve projeniz için yerel ayarı nasıl geçersiz kılacağınızı öğrenin
   </docs-card>
   <docs-card title="Prepare component for translation" href="guide/i18n/prepare">
-    Learn how to specify source text for translation
+    Çeviri için kaynak metnini nasıl belirleyeceğinizi öğrenin
   </docs-card>
   <docs-card title="Work with translation files" href="guide/i18n/translation-files">
-    Learn how to review and process translation text
+    Çeviri metnini nasıl inceleyeceğinizi ve işleyeceğinizi öğrenin
   </docs-card>
   <docs-card title="Merge translations into the application" href="guide/i18n/merge">
-    Learn how to merge translations and build your translated application
+    Çevirileri nasıl birleştireceğinizi ve çevrilmiş uygulamanızı nasıl derleyeceğinizi öğrenin
   </docs-card>
   <docs-card title="Deploy multiple locales" href="guide/i18n/deploy">
-    Learn how to deploy multiple locales for your application
+    Uygulamanız için birden fazla yerel ayarı nasıl dağıtacağınızı öğrenin
   </docs-card>
   <docs-card title="Import global variants of the locale data" href="guide/i18n/import-global-variants">
-    Learn how to import locale data for language variants
+    Dil varyantları için yerel ayar verilerini nasıl içe aktaracağınızı öğrenin
   </docs-card>
   <docs-card title="Manage marked text with custom IDs" href="guide/i18n/manage-marked-text">
-    Learn how to implement custom IDs to help you manage your marked text
+    İşaretlenmiş metninizi yönetmenize yardımcı olmak için özel kimlikleri nasıl uygulayacağınızı öğrenin
   </docs-card>
   <docs-card title="Internationalization example" href="guide/i18n/example">
-    Review an example of Angular internationalization.
+    Angular uluslararasılaştırma örneğini inceleyin.
   </docs-card>
 </docs-card-container>

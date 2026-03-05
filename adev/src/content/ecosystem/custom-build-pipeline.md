@@ -1,33 +1,33 @@
 # Custom build pipeline
 
-When building an Angular app we strongly recommend you to use the Angular CLI to leverage its structure-dependent update functionality and build system abstraction. This way your projects benefit from the latest security, performance, and API improvements and transparent build improvements.
+Bir Angular uygulaması oluştururken, yapıya bağlı güncelleme işlevselliğinden ve derleme sistemi soyutlamasından yararlanmak için Angular CLI kullanmanızı şiddetle tavsiye ediyoruz. Bu sayede projeleriniz en son güvenlik, performans ve API iyileştirmelerinden ve şeffaf derleme iyileştirmelerinden faydalanır.
 
-This page explores the **rare use cases** when you need a custom build pipeline that does not use the Angular CLI. All listed tools below are open source build plugins that are maintained by members of the Angular community. To learn more about their support model and maintenance status look at their documentation and GitHub repository URLs.
+Bu sayfa, Angular CLI kullanmayan özel bir derleme hattına ihtiyaç duyduğunuz **nadir kullanım durumlarını** incelemektedir. Aşağıda listelenen tüm araçlar, Angular topluluğu üyeleri tarafından bakımı yapılan açık kaynaklı derleme eklentileridir. Destek modeli ve bakım durumu hakkında daha fazla bilgi edinmek için belgelerine ve GitHub deposu URL'lerine bakın.
 
 ## When should you use a custom build pipeline?
 
-There are some niche use cases when you may want to maintain a custom build pipeline. For example:
+Özel bir derleme hattı kullanmak isteyebileceğiniz bazı niş kullanım durumları vardır. Örneğin:
 
-- You have an existing app using a different toolchain and you’d like to add Angular to it
-- You’re strongly coupled to [module federation](https://module-federation.io/) and unable to adopt bundler-agnostic [native federation](https://www.npmjs.com/package/@angular-architects/native-federation)
-- You’d like to create an short-lived experiment using your favorite build tool
+- Farklı bir araç zinciri kullanan mevcut bir uygulamanız var ve buna Angular eklemek istiyorsunuz
+- [module federation](https://module-federation.io/) ile güçlü bir bağımlılığınız var ve paketleyiciden bağımsız [native federation](https://www.npmjs.com/package/@angular-architects/native-federation) kullanmaya geçemiyorsunuz
+- Favori derleme aracınızı kullanarak kısa süreli bir deney oluşturmak istiyorsunuz
 
 ## What are the options?
 
-Currently, there are two well supported community tools that enable you to create a custom build pipeline with a [Vite plugin](https://www.npmjs.com/package/@analogjs/vite-plugin-angular) and [Rspack plugin](https://www.npmjs.com/package/@nx/angular-rspack). Both of them use underlying abstractions that power the Angular CLI. They allow you to create a flexible build pipeline and require manual maintenance and no automated update experience.
+Şu anda, bir [Vite eklentisi](https://www.npmjs.com/package/@analogjs/vite-plugin-angular) ve [Rspack eklentisi](https://www.npmjs.com/package/@nx/angular-rspack) ile özel bir derleme hattı oluşturmanızı sağlayan iyi desteklenen iki topluluk aracı bulunmaktadır. Her ikisi de Angular CLI'yi destekleyen temel soyutlamaları kullanır. Esnek bir derleme hattı oluşturmanıza olanak tanır ve manuel bakım gerektirir, otomatik güncelleme deneyimi sunmaz.
 
 ### Rspack
 
-Rspack is a Rust-based bundler that aims to provide compatibility with the webpack plugin ecosystem.
+Rspack, webpack eklenti ekosistemiyle uyumluluk sağlamayı amaçlayan Rust tabanlı bir paketleyicidir.
 
-If your project is tightly coupled to the webpack ecosystem, heavily relying on a custom webpack configuration you can leverage Rspack to improve your build times.
+Projeniz webpack ekosistemine sıkı sıkıya bağlıysa ve özel bir webpack yapılandırmasına yoğun şekilde dayanıyorsa, derleme sürelerinizi iyileştirmek için Rspack'ten yararlanabilirsiniz.
 
-You can find more about Angular Rspack on the project’s [documentation website](https://nx.dev/recipes/angular/rspack/introduction).
+Angular Rspack hakkında daha fazla bilgiyi projenin [dokümantasyon web sitesinde](https://nx.dev/recipes/angular/rspack/introduction) bulabilirsiniz.
 
 ### Vite
 
-Vite is a frontend build tool that aims to provide a faster and leaner development experience for modern web projects. Vite is also extensible through its plugin system that allows ecosystems to build integrations with Vite, such as Vitest for unit and browser testing, Storybook for authoring components in isolation, and more. The Angular CLI also uses Vite as its development server.
+Vite, modern web projeleri için daha hızlı ve daha yalın bir geliştirme deneyimi sunmayı amaçlayan bir ön uç derleme aracıdır. Vite, ayrıca ekosistemlerin Vite ile entegrasyonlar oluşturmasına olanak tanıyan eklenti sistemiyle genişletilebilir; birim ve tarayıcı testleri için Vitest, bileşenleri izole bir şekilde geliştirmek için Storybook ve daha fazlası gibi. Angular CLI de geliştirme sunucusu olarak Vite kullanmaktadır.
 
-The [AnalogJS Vite plugin for Angular](https://www.npmjs.com/package/@analogjs/vite-plugin-angular) enables the adoption of Angular with a project or framework that uses or is built on top of Vite. This can consist of developing and building an Angular project with Vite directly, or adding Angular to an existing project or pipeline. One example is integrating Angular UI components into a documentation website using [Astro and Starlight](https://analogjs.org/docs/packages/astro-angular/overview).
+[Angular için AnalogJS Vite eklentisi](https://www.npmjs.com/package/@analogjs/vite-plugin-angular), Vite kullanan veya Vite üzerine kurulmuş bir proje ya da çerçeveyle Angular'ın benimsenmesini sağlar. Bu, doğrudan Vite ile bir Angular projesini geliştirmek ve derlemekten veya mevcut bir projeye ya da hatta Angular eklemekten oluşabilir. Bir örnek, [Astro ve Starlight](https://analogjs.org/docs/packages/astro-angular/overview) kullanarak bir dokümantasyon web sitesine Angular UI bileşenlerini entegre etmektir.
 
-You can learn more about AnalogJS and how to use the plugin through its [documentation page](https://analogjs.org/docs/packages/vite-plugin-angular/overview).
+AnalogJS ve eklentinin nasıl kullanılacağı hakkında daha fazla bilgiyi [dokümantasyon sayfasından](https://analogjs.org/docs/packages/vite-plugin-angular/overview) öğrenebilirsiniz.

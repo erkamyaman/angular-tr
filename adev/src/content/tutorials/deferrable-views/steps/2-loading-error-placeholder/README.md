@@ -1,43 +1,43 @@
 # @loading, @error and @placeholder blocks
 
-Deferrable views let you define content to be shown in different loading states.
+Ertelenebilir görünümler, farklı yükleme durumlarında gösterilecek içerikleri tanımlamanıza olanak tanır.
 
 <div class="docs-table docs-scroll-track-transparent">
   <table>
     <tr>
       <td><code>@placeholder</code></td>
       <td>
-        By default, defer blocks do not render any content before they are triggered. The <code>@placeholder</code> is an optional block that declares content to show before the deferred content loads. Angular replaces the placeholder with the deferred content after loading completes. While this block is optional, the Angular team recommends always including a placeholder.
+        Varsayılan olarak, defer blokları tetiklenmeden önce herhangi bir içerik render etmez. <code>@placeholder</code>, ertelenmiş içerik yüklenmeden önce gösterilecek içeriği bildiren isteğe bağlı bir bloktur. Angular, yükleme tamamlandıktan sonra yer tutucuyu ertelenmiş içerikle değiştirir. Bu blok isteğe bağlı olsa da, Angular ekibi her zaman bir yer tutucu eklemenizi önerir.
         <a href="https://angular.dev/guide/templates/defer#triggers" target="_blank">
-          Learn more in the full deferrable views documentation
+          Tam ertelenebilir görünümler belgelerinde daha fazla bilgi edinin
         </a>
       </td>
     </tr>
     <tr>
       <td><code>@loading</code></td>
       <td>
-        This optional block allows you to declare content to be shown during the loading of any deferred dependencies.
+        Bu isteğe bağlı blok, ertelenmiş bağımlılıkların yüklenmesi sırasında gösterilecek içeriği bildirmenize olanak tanır.
       </td>
     </tr>
     <tr>
       <td><code>@error</code></td>
       <td>
-        This block allows you to declare content which is shown if deferred loading fails.
+        Bu blok, ertelenmiş yükleme başarısız olduğunda gösterilecek içeriği bildirmenize olanak tanır.
       </td>
     </tr>
   </table>
 </div>
 
-The contents of all the above sub-blocks are eagerly loaded. Additionally, some features require a `@placeholder` block.
+Yukarıdaki tüm alt blokların içerikleri hevesli (eagerly) olarak yüklenir. Ek olarak, bazı özellikler bir `@placeholder` bloğu gerektirir.
 
-In this activity, you'll learn how to use the `@loading`, `@error` and `@placeholder` blocks to manage the states of deferrable views.
+Bu aktivitede, ertelenebilir görünümlerin durumlarını yönetmek için `@loading`, `@error` ve `@placeholder` bloklarını nasıl kullanacağınızı öğreneceksiniz.
 
 <hr>
 
 <docs-workflow>
 
 <docs-step title="Add `@placeholder` block">
-In your `app.ts`, add a `@placeholder` block to the `@defer` block.
+`app.ts` dosyanızda, `@defer` bloğuna bir `@placeholder` bloğu ekleyin.
 
 ```angular-html {highlight:[3,4,5]}
 @defer {
@@ -50,7 +50,7 @@ In your `app.ts`, add a `@placeholder` block to the `@defer` block.
 </docs-step>
 
 <docs-step title="Configure the `@placeholder` block">
-The `@placeholder` block accepts an optional parameter to specify the `minimum` amount of time that this placeholder should be shown. This `minimum` parameter is specified in time increments of milliseconds (ms) or seconds (s). This parameter exists to prevent fast flickering of placeholder content in the case that the deferred dependencies are fetched quickly.
+`@placeholder` bloğu, bu yer tutucunun gösterilmesi gereken `minimum` süreyi belirten isteğe bağlı bir parametre kabul eder. Bu `minimum` parametresi milisaniye (ms) veya saniye (s) cinsinden zaman artışlarıyla belirtilir. Bu parametre, ertelenmiş bağımlılıkların hızlıca getirilmesi durumunda yer tutucu içeriğin hızla yanıp sönmesini önlemek için mevcuttur.
 
 ```angular-html {highlight:[3,4,5]}
 @defer {
@@ -63,16 +63,16 @@ The `@placeholder` block accepts an optional parameter to specify the `minimum` 
 </docs-step>
 
 <docs-step title="Add `@loading` block">
-Next add a `@loading` block to the component template.
+Ardından bileşen şablonuna bir `@loading` bloğu ekleyin.
 
-The `@loading` block accepts two optional parameters:
+`@loading` bloğu iki isteğe bağlı parametre kabul eder:
 
-- `minimum`: the amount of time that this block should be shown
-- `after`: the amount of time to wait after loading begins before showing the loading template
+- `minimum`: bu bloğun gösterilmesi gereken süre
+- `after`: yükleme şablonunu göstermeden önce yükleme başladıktan sonra beklenecek süre
 
-Both parameters are specified in time increments of milliseconds (ms) or seconds (s).
+Her iki parametre de milisaniye (ms) veya saniye (s) cinsinden zaman artışlarıyla belirtilir.
 
-Update `app.ts` to include a `@loading` block with a minimum parameter of `1s` as well as an after parameter with the value 500ms to the @loading block.
+`app.ts` dosyasını, `1s` minimum parametresine ve `500ms` değerinde bir after parametresine sahip bir `@loading` bloğu içerecek şekilde güncelleyin.
 
 ```angular-html {highlight:[5,6,7]}
 @defer {
@@ -84,12 +84,12 @@ Update `app.ts` to include a `@loading` block with a minimum parameter of `1s` a
 }
 ```
 
-NOTE: this example uses two parameters, separated by the ; character.
+NOT: bu örnek, ; karakteri ile ayrılmış iki parametre kullanmaktadır.
 
 </docs-step>
 
 <docs-step title="Add `@error` block">
-Finally, add an `@error` block to the `@defer` block.
+Son olarak, `@defer` bloğuna bir `@error` bloğu ekleyin.
 
 ```angular-html {highlight:[7,8,9]}
 @defer {
@@ -106,4 +106,4 @@ Finally, add an `@error` block to the `@defer` block.
 </docs-step>
 </docs-workflow>
 
-Congratulations! At this point, you have a good understanding about deferrable views. Keep up the great work and let's learn about triggers next.
+Tebrikler! Bu noktada, ertelenebilir görünümler hakkında iyi bir anlayışa sahipsiniz. Harika çalışmaya devam edin ve şimdi tetikleyicileri (triggers) öğrenelim.

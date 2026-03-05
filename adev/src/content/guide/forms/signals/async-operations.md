@@ -1,23 +1,23 @@
 # Async operations
 
-Some validation requires data from external sources like backend APIs or third-party services. Signal Forms provides two functions for asynchronous validation: `validateHttp()` for HTTP-based validation and `validateAsync()` for custom resource-based validation.
+Bazı doğrulama işlemleri, backend API'leri veya üçüncü taraf hizmetler gibi harici kaynaklardan veri gerektirir. Signal Forms, asenkron doğrulama için iki fonksiyon sağlar: HTTP tabanlı doğrulama için `validateHttp()` ve özel kaynak tabanlı doğrulama için `validateAsync()`.
 
 ## When to use async validation
 
-Use async validation when your validation logic requires external data. Some common examples include:
+Doğrulama mantığınız harici veri gerektirdiğinde asenkron doğrulama kullanın. Bazı yaygın örnekler şunlardır:
 
-- **Uniqueness checks** - Verify usernames or emails don't already exist
-- **Database lookups** - Check values against server-side data
-- **External API validation** - Validate addresses, tax IDs, or other data with third-party services
-- **Server-side business rules** - Apply validation rules that only the server can verify
+- **Benzersizlik kontrolleri** - Kullanıcı adlarının veya e-postaların zaten mevcut olmadığını doğrulama
+- **Veritabanı aramaları** - Değerleri sunucu tarafı verileriyle karşılaştırma
+- **Harici API doğrulaması** - Adresleri, vergi numaralarını veya diğer verileri üçüncü taraf hizmetlerle doğrulama
+- **Sunucu tarafı iş kuralları** - Yalnızca sunucunun doğrulayabileceği doğrulama kurallarını uygulama
 
-Don't use async validation for checks you can perform synchronously on the client. Use synchronous validation rules like `pattern()`, `email()`, or `validate()` for format validation and static rules.
+İstemcide senkron olarak gerçekleştirebileceğiniz kontroller için asenkron doğrulama kullanmayın. Format doğrulaması ve statik kurallar için `pattern()`, `email()` veya `validate()` gibi senkron doğrulama kurallarını kullanın.
 
 ## How async validation works
 
-Async validation runs only after all synchronous validation passes. While the validation executes, the field's `pending()` signal returns `true`. The validation can target errors to specific fields, and pending requests cancel automatically when field values change.
+Asenkron doğrulama, yalnızca tüm senkron doğrulama geçtikten sonra çalışır. Doğrulama yürütülürken, alanın `pending()` sinyali `true` döndürür. Doğrulama, hataları belirli alanlara hedefleyebilir ve bekleyen istekler alan değerleri değiştiğinde otomatik olarak iptal edilir.
 
-Here's an example checking username availability:
+İşte kullanıcı adı uygunluğunu kontrol eden bir örnek:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -73,22 +73,22 @@ export class Registration {
 }
 ```
 
-The validation flow works like this:
+Doğrulama akışı şu şekilde çalışır:
 
-1. User types a value
-2. Synchronous validation rules run first
-3. If synchronous validation fails, async validation doesn't run
-4. If synchronous validation passes, async validation starts and `pending()` becomes `true`
-5. The request completes and `pending()` becomes `false`
-6. Errors update based on the response
+1. Kullanıcı bir değer yazar
+2. Önce senkron doğrulama kuralları çalışır
+3. Senkron doğrulama başarısız olursa, asenkron doğrulama çalışmaz
+4. Senkron doğrulama başarılı olursa, asenkron doğrulama başlar ve `pending()` `true` olur
+5. İstek tamamlanır ve `pending()` `false` olur
+6. Hatalar yanıta göre güncellenir
 
 ## HTTP validation with validateHttp()
 
-The `validateHttp()` function provides the most common form of async validation. Use it when you need to validate against a REST API or any HTTP endpoint.
+`validateHttp()` fonksiyonu, asenkron doğrulamanın en yaygın biçimini sağlar. Bir REST API veya herhangi bir HTTP uç noktasına karşı doğrulama yapmanız gerektiğinde kullanın.
 
 ### Request function
 
-The `request` function returns either a URL string or an `HttpResourceRequest` object. Return `undefined` to skip the validation:
+`request` fonksiyonu bir URL dizesi veya bir `HttpResourceRequest` nesnesi döndürür. Doğrulamayı atlamak için `undefined` döndürün:
 
 ```ts
 import {Component, signal} from '@angular/core';
@@ -134,7 +134,7 @@ export class Registration {
 }
 ```
 
-For POST requests or custom headers, return an `HttpResourceRequest` object:
+POST istekleri veya özel başlıklar için bir `HttpResourceRequest` nesnesi döndürün:
 
 ```ts
 request: ({value}) => ({
@@ -146,7 +146,7 @@ request: ({value}) => ({
 
 ### Success and error handlers
 
-The `onSuccess` function receives the HTTP response and returns validation errors or `undefined` for valid values:
+`onSuccess` fonksiyonu HTTP yanıtını alır ve doğrulama hataları veya geçerli değerler için `undefined` döndürür:
 
 ```ts
 onSuccess: (response) => {
@@ -159,7 +159,7 @@ onSuccess: (response) => {
 } // prettier-ignore
 ```
 
-Return multiple errors when needed:
+Gerektiğinde birden fazla hata döndürün:
 
 ```ts
 onSuccess: (response) => {
@@ -180,7 +180,7 @@ onSuccess: (response) => {
 } // prettier-ignore
 ```
 
-The `onError` function handles request failures like network errors or HTTP errors:
+`onError` fonksiyonu ağ hataları veya HTTP hataları gibi istek başarısızlıklarını ele alır:
 
 ```ts
 onError: (error) => {
@@ -194,7 +194,7 @@ onError: (error) => {
 
 ### HTTP options
 
-Customize the HTTP request with the `options` parameter:
+HTTP isteğini `options` parametresiyle özelleştirin:
 
 ```ts
 import {HttpHeaders} from '@angular/common/http';
@@ -221,24 +221,24 @@ validateHttp(schemaPath.field, {
 });
 ```
 
-TIP: See the [httpResource API documentation](api/common/http/httpResource) for all available options.
+TIP: Mevcut tüm seçenekler için [httpResource API dokümantasyonuna](api/common/http/httpResource) bakın.
 
 ## Custom async validation with validateAsync()
 
-Most applications should use `validateHttp()` for async validation. It handles HTTP requests with minimal configuration and covers the majority of use cases.
+Çoğu uygulama asenkron doğrulama için `validateHttp()` kullanmalıdır. HTTP isteklerini minimum yapılandırmayla ele alır ve kullanım durumlarının büyük çoğunluğunu kapsar.
 
-`validateAsync()` is a lower-level API that exposes Angular's resource primitive directly. It offers complete control but requires more code and familiarity with Angular's resource API.
+`validateAsync()`, Angular'ın resource temel yapısını doğrudan ortaya çıkaran daha düşük seviyeli bir API'dir. Tam kontrol sunar ancak daha fazla kod ve Angular'ın resource API'si hakkında bilgi gerektirir.
 
-Consider `validateAsync()` only when `validateHttp()` can't meet your needs. Some examples include:
+`validateAsync()` kullanmayı yalnızca `validateHttp()` ihtiyaçlarınızı karşılayamadığında düşünün. Bazı örnekler şunlardır:
 
-- **Non-HTTP validation** - WebSocket connections, IndexedDB lookups, or Web Worker computations
-- **Custom caching strategies** - Application-specific caching beyond simple memoization
-- **Complex retry logic** - Custom backoff strategies or conditional retries
-- **Direct resource access** - When you need the full resource lifecycle
+- **HTTP olmayan doğrulama** - WebSocket bağlantıları, IndexedDB aramaları veya Web Worker hesaplamaları
+- **Özel önbellek stratejileri** - Basit memoizasyonun ötesinde uygulamaya özgü önbellekleme
+- **Karmaşık yeniden deneme mantığı** - Özel geri çekilme stratejileri veya koşullu yeniden denemeler
+- **Doğrudan kaynak erişimi** - Tam kaynak yaşam döngüsüne ihtiyaç duyduğunuzda
 
 ### Creating a custom validation rule
 
-The `validateAsync()` function requires four properties: `params`, `factory`, `onSuccess`, and `onError`. The `params` function returns the parameters for your resource, while `factory` creates the resource:
+`validateAsync()` fonksiyonu dört özellik gerektirir: `params`, `factory`, `onSuccess` ve `onError`. `params` fonksiyonu kaynağınız için parametreleri döndürürken, `factory` kaynağı oluşturur:
 
 ```ts
 import {Component, inject, signal, resource, Signal} from '@angular/core';
@@ -304,11 +304,11 @@ export class Registration {
 }
 ```
 
-The `params` function runs on every value change. Return `undefined` to skip validation. The `factory` function runs once during setup and receives params as a signal. The resource updates automatically when params change.
+`params` fonksiyonu her değer değişikliğinde çalışır. Doğrulamayı atlamak için `undefined` döndürün. `factory` fonksiyonu kurulum sırasında bir kez çalışır ve parametreleri sinyal olarak alır. Kaynak, parametreler değiştiğinde otomatik olarak güncellenir.
 
 ### Using Observable-based services
 
-If your application has existing services that return Observables, use `rxResource` from `@angular/core/rxjs-interop`:
+Uygulamanızda Observable döndüren mevcut hizmetler varsa, `@angular/core/rxjs-interop`'tan `rxResource` kullanın:
 
 ```ts
 import {Component, inject, signal, Signal} from '@angular/core';
@@ -348,18 +348,18 @@ export class Registration {
 }
 ```
 
-The `rxResource` function works directly with Observables and handles subscription cleanup automatically when the field value changes.
+`rxResource` fonksiyonu doğrudan Observable'larla çalışır ve alan değeri değiştiğinde abonelik temizliğini otomatik olarak yönetir.
 
 ## Understanding pending state
 
-When async validation runs, the field's `pending()` signal returns `true`. During this time:
+Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndürür. Bu süre zarfında:
 
-- `valid()` returns `false`
-- `invalid()` returns `false`
-- `errors()` returns an empty array
-- `submit()` waits for validation to complete
+- `valid()` `false` döndürür
+- `invalid()` `false` döndürür
+- `errors()` boş bir dizi döndürür
+- `submit()` doğrulamanın tamamlanmasını bekler
 
-Show the pending state in your template to provide feedback:
+Geri bildirim sağlamak için bekleyen durumu şablonunuzda gösterin:
 
 ```angular-html
 <input [formField]="loginForm.username" />
@@ -375,7 +375,7 @@ Show the pending state in your template to provide feedback:
 }
 ```
 
-Disable form submission while validation is pending:
+Doğrulama beklemedeyken form gönderimini devre dışı bırakın:
 
 ```angular-html
 <button type="submit" [disabled]="loginForm().pending()">
@@ -387,11 +387,11 @@ Disable form submission while validation is pending:
 </button>
 ```
 
-TIP: See the [Field State Management guide](guide/forms/signals/field-state-management) for more patterns using `pending()`, `valid()`, and `invalid()` signals.
+TIP: `pending()`, `valid()` ve `invalid()` sinyallerini kullanan daha fazla kalıp için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın.
 
 ### Validation execution order
 
-Async validation only runs after synchronous validation passes. This prevents unnecessary server requests for invalid input:
+Asenkron doğrulama yalnızca senkron doğrulama geçtikten sonra çalışır. Bu, geçersiz girdi için gereksiz sunucu isteklerini önler:
 
 ```ts
 import {form, required, minLength, validateHttp} from '@angular/forms/signals';
@@ -419,17 +419,17 @@ form(model, (schemaPath) => {
 });
 ```
 
-This execution order improves performance by reducing server load and catching format errors instantly.
+Bu yürütme sırası, sunucu yükünü azaltarak ve format hatalarını anında yakalayarak performansı artırır.
 
 ### Request cancellation
 
-When a field value changes, Signal Forms automatically cancels any pending async validation request for that field. This prevents race conditions and ensures validation always reflects the current value. You don't need to implement cancellation logic yourself.
+Bir alan değeri değiştiğinde, Signal Forms o alan için bekleyen asenkron doğrulama isteğini otomatik olarak iptal eder. Bu, yarış koşullarını önler ve doğrulamanın her zaman mevcut değeri yansıtmasını sağlar. İptal mantığını kendiniz uygulamanız gerekmez.
 
 ## Best practices
 
 ### Combine with synchronous validation
 
-Always validate format before making async requests. This catches errors instantly and prevents unnecessary server requests:
+Asenkron istekler yapmadan önce her zaman formatı doğrulayın. Bu, hataları anında yakalar ve gereksiz sunucu isteklerini önler:
 
 ```ts
 import {form, required, email, validateHttp} from '@angular/forms/signals';
@@ -459,7 +459,7 @@ form(model, (schemaPath) => {
 
 ### Skip validation when appropriate
 
-Return `undefined` from the `request` function to skip validation. Use this to avoid validating empty fields or values that don't meet minimum requirements:
+Doğrulamayı atlamak için `request` fonksiyonundan `undefined` döndürün. Boş alanları veya minimum gereksinimleri karşılamayan değerleri doğrulamaktan kaçınmak için bunu kullanın:
 
 ```ts
 import {validateHttp} from '@angular/forms/signals';
@@ -488,7 +488,7 @@ validateHttp(schemaPath.username, {
 
 ### Handle errors gracefully
 
-Provide clear, user-friendly error messages. Log technical details for debugging but show simple messages to users:
+Açık, kullanıcı dostu hata mesajları sağlayın. Hata ayıklama için teknik ayrıntıları günlüğe kaydedin ancak kullanıcılara basit mesajlar gösterin:
 
 ```ts
 import {validateHttp} from '@angular/forms/signals';
@@ -518,7 +518,7 @@ validateHttp(schemaPath.field, {
 
 ### Show clear feedback
 
-Use the `pending()` signal to show when validation is happening. This helps users understand delays and provides better perceived performance:
+Doğrulamanın ne zaman gerçekleştiğini göstermek için `pending()` sinyalini kullanın. Bu, kullanıcıların gecikmeleri anlamasına yardımcı olur ve daha iyi algılanan performans sağlar:
 
 ```angular-html
 @if (field().pending()) {
@@ -537,16 +537,16 @@ Use the `pending()` signal to show when validation is happening. This helps user
 
 ## Next steps
 
-This guide covered async validation with `validateHttp()` and `validateAsync()`. Related guides explore other aspects of Signal Forms:
+Bu kılavuz `validateHttp()` ve `validateAsync()` ile asenkron doğrulamayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <docs-pill-row>
   <docs-pill href="guide/forms/signals/validation" title="Validation"/>
   <docs-pill href="guide/forms/signals/field-state-management" title="Field State Management"/>
 </docs-pill-row>
 
-For detailed API documentation, see:
+Ayrıntılı API dokümantasyonu için şunlara bakın:
 
-- [`validateHttp()`](api/forms/signals/validateHttp) - HTTP-based async validation
-- [`validateAsync()`](api/forms/signals/validateAsync) - Custom resource-based async validation
-- [`httpResource()`](api/common/http/httpResource) - Angular's HTTP resource API
-- [`resource()`](api/core/resource) - Angular's resource primitive
+- [`validateHttp()`](api/forms/signals/validateHttp) - HTTP tabanlı asenkron doğrulama
+- [`validateAsync()`](api/forms/signals/validateAsync) - Özel kaynak tabanlı asenkron doğrulama
+- [`httpResource()`](api/common/http/httpResource) - Angular'ın HTTP kaynak API'si
+- [`resource()`](api/core/resource) - Angular'ın resource temel yapısı

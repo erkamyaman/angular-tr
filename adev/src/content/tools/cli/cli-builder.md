@@ -1,108 +1,108 @@
 # Angular CLI builders
 
-A number of Angular CLI commands run a complex process on your code, such as building, testing, or serving your application.
-The commands use an internal tool called Architect to run _CLI builders_, which invoke another tool (bundler, test runner, server) to accomplish the desired task.
-Custom builders can perform an entirely new task, or to change which third-party tool is used by an existing command.
+Birçok Angular CLI komutu, kodunuz üzerinde uygulamanızı derleme, test etme veya sunma gibi karmaşık bir süreç çalıştırır.
+Komutlar, istenen görevi gerçekleştirmek için başka bir aracı (paketleyici, test çalıştırıcısı, sunucu) çağıran _CLI builder'larını_ çalıştırmak için Architect adlı dahili bir araç kullanır.
+Özel builder'lar tamamen yeni bir görev gerçekleştirebilir veya mevcut bir komut tarafından kullanılan üçüncü taraf aracını değiştirebilir.
 
-This document explains how CLI builders integrate with the workspace configuration file, and shows how you can create your own builder.
+Bu belge, CLI builder'larının çalışma alanı yapılandırma dosyasıyla nasıl entegre olduğunu açıklar ve kendi builder'ınızı nasıl oluşturabileceğinizi gösterir.
 
-HELPFUL: Find the code from the examples used here in this [GitHub repository](https://github.com/mgechev/cli-builders-demo).
+HELPFUL: Burada kullanılan örneklerdeki kodu bu [GitHub deposunda](https://github.com/mgechev/cli-builders-demo) bulabilirsiniz.
 
 ## CLI builders
 
-The internal Architect tool delegates work to handler functions called _builders_.
-A builder handler function receives two arguments:
+Dahili Architect aracı, _builder_ adı verilen işleyici fonksiyonlara iş devreder.
+Bir builder işleyici fonksiyonu iki argüman alır:
 
-| Argument  | Type             |
+| Argüman   | Tür              |
 | :-------- | :--------------- |
 | `options` | `JSONObject`     |
 | `context` | `BuilderContext` |
 
-The separation of concerns here is the same as with [schematics](tools/cli/schematics-authoring), which are used for other CLI commands that touch your code (such as `ng generate`).
+Buradaki sorumlulukların ayrılması, kodunuza dokunan diğer CLI komutları (örneğin `ng generate`) için kullanılan [şematiklerle](tools/cli/schematics-authoring) aynıdır.
 
-- The `options` object is provided by the CLI user's options and configuration, while the `context` object is provided by the CLI Builder API automatically.
-- In addition to the contextual information, the `context` object also provides access to a scheduling method, `context.scheduleTarget()`.
-  The scheduler executes the builder handler function with a given target configuration.
+- `options` nesnesi CLI kullanıcısının seçenekleri ve yapılandırması tarafından sağlanırken, `context` nesnesi CLI Builder API'si tarafından otomatik olarak sağlanır.
+- Bağlamsal bilgilere ek olarak, `context` nesnesi ayrıca bir zamanlama metoduna, `context.scheduleTarget()`'a erişim sağlar.
+  Zamanlayıcı, belirli bir hedef yapılandırmasıyla builder işleyici fonksiyonunu çalıştırır.
 
-The builder handler function can be synchronous (return a value), asynchronous (return a `Promise`), or watch and return multiple values (return an `Observable`).
-The return values must always be of type `BuilderOutput`.
-This object contains a Boolean `success` field and an optional `error` field that can contain an error message.
+Builder işleyici fonksiyonu senkron (bir değer döndürür), asenkron (bir `Promise` döndürür) veya izleme yaparak birden fazla değer döndürebilir (bir `Observable` döndürür).
+Döndürülen değerler her zaman `BuilderOutput` türünde olmalıdır.
+Bu nesne, bir Boolean `success` alanı ve bir hata mesajı içerebilen isteğe bağlı bir `error` alanı içerir.
 
-Angular provides some builders that are used by the CLI for commands such as `ng build` and `ng test`.
-Default target configurations for these and other built-in CLI builders can be found and configured in the "architect" section of the [workspace configuration file](reference/configs/workspace-config), `angular.json`.
-Also, extend and customize Angular by creating your own builders, which you can run directly using the [`ng run` CLI command](cli/run).
+Angular, `ng build` ve `ng test` gibi komutlar için CLI tarafından kullanılan bazı builder'lar sağlar.
+Bu ve diğer yerleşik CLI builder'ları için varsayılan hedef yapılandırmaları, [çalışma alanı yapılandırma dosyasının](reference/configs/workspace-config) `angular.json` "architect" bölümünde bulunabilir ve yapılandırılabilir.
+Ayrıca, [`ng run` CLI komutuyla](cli/run) doğrudan çalıştırabileceğiniz kendi builder'larınızı oluşturarak Angular'ı genişletin ve özelleştirin.
 
 ### Builder project structure
 
-A builder resides in a "project" folder that is similar in structure to an Angular workspace, with global configuration files at the top level, and more specific configuration in a source folder with the code files that define the behavior.
-For example, your `myBuilder` folder could contain the following files.
+Bir builder, bir Angular çalışma alanına benzer yapıda bir "proje" klasöründe bulunur; üst düzeyde global yapılandırma dosyaları ve kaynak klasöründe davranışı tanımlayan kod dosyalarıyla daha spesifik yapılandırma bulunur.
+Örneğin, `myBuilder` klasörünüz aşağıdaki dosyaları içerebilir.
 
-| Files                    | Purpose                                                                                                   |
-| :----------------------- | :-------------------------------------------------------------------------------------------------------- |
-| `src/my-builder.ts`      | Main source file for the builder definition.                                                              |
-| `src/my-builder.spec.ts` | Source file for tests.                                                                                    |
-| `src/schema.json`        | Definition of builder input options.                                                                      |
-| `builders.json`          | Builders definition.                                                                                      |
-| `package.json`           | Dependencies. See [https://docs.npmjs.com/files/package.json](https://docs.npmjs.com/files/package.json). |
-| `tsconfig.json`          | [TypeScript configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).              |
+| Dosyalar                 | Amaç                                                                                                                  |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `src/my-builder.ts`      | Builder tanımı için ana kaynak dosyası.                                                                               |
+| `src/my-builder.spec.ts` | Testler için kaynak dosyası.                                                                                          |
+| `src/schema.json`        | Builder girdi seçeneklerinin tanımı.                                                                                  |
+| `builders.json`          | Builder'lar tanımı.                                                                                                   |
+| `package.json`           | Bağımlılıklar. [https://docs.npmjs.com/files/package.json](https://docs.npmjs.com/files/package.json) adresine bakın. |
+| `tsconfig.json`          | [TypeScript yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).                         |
 
-Builders can be published to `npm`, see [Publishing your Library](tools/libraries/creating-libraries).
+Builder'lar `npm`'e yayınlanabilir, [Kütüphanenizi Yayınlama](tools/libraries/creating-libraries) belgesine bakın.
 
 ## Creating a builder
 
-As an example, create a builder that copies a file to a new location.
-To create a builder, use the `createBuilder()` CLI Builder function, and return a `Promise<BuilderOutput>` object.
+Örnek olarak, bir dosyayı yeni bir konuma kopyalayan bir builder oluşturun.
+Bir builder oluşturmak için `createBuilder()` CLI Builder fonksiyonunu kullanın ve bir `Promise<BuilderOutput>` nesnesi döndürün.
 
 <docs-code header="src/my-builder.ts (builder skeleton)" path="adev/src/content/examples/cli-builder/src/my-builder.ts" region="builder-skeleton"/>
 
-Now let's add some logic to it.
-The following code retrieves the source and destination file paths from user options and copies the file from the source to the destination \(using the [Promise version of the built-in NodeJS `copyFile()` function](https://nodejs.org/api/fs.html#fs_fspromises_copyfile_src_dest_mode)\).
-If the copy operation fails, it returns an error with a message about the underlying problem.
+Şimdi biraz mantık ekleyelim.
+Aşağıdaki kod, kaynak ve hedef dosya yollarını kullanıcı seçeneklerinden alır ve dosyayı kaynaktan hedefe kopyalar \([yerleşik NodeJS `copyFile()` fonksiyonunun Promise sürümünü](https://nodejs.org/api/fs.html#fs_fspromises_copyfile_src_dest_mode) kullanarak\).
+Kopyalama işlemi başarısız olursa, altta yatan sorun hakkında bir mesajla bir hata döndürür.
 
 <docs-code header="src/my-builder.ts (builder)" path="adev/src/content/examples/cli-builder/src/my-builder.ts" region="builder"/>
 
 ### Handling output
 
-By default, `copyFile()` does not print anything to the process standard output or error.
-If an error occurs, it might be difficult to understand exactly what the builder was trying to do when the problem occurred.
-Add some additional context by logging additional information using the `Logger` API.
-This also lets the builder itself be executed in a separate process, even if the standard output and error are deactivated.
+Varsayılan olarak, `copyFile()` sürecin standart çıktısına veya hatasına hiçbir şey yazdırmaz.
+Bir hata oluşursa, sorun meydana geldiğinde builder'ın tam olarak ne yapmaya çalıştığını anlamak zor olabilir.
+`Logger` API'sini kullanarak ek bilgi loglayarak daha fazla bağlam ekleyin.
+Bu ayrıca builder'ın kendisinin, standart çıktı ve hata devre dışı bırakılmış olsa bile ayrı bir süreçte yürütülmesine olanak tanır.
 
-You can retrieve a `Logger` instance from the context.
+Bağlamdan bir `Logger` örneği alabilirsiniz.
 
 <docs-code header="src/my-builder.ts (handling output)" path="adev/src/content/examples/cli-builder/src/my-builder.ts" region="handling-output"/>
 
 ### Progress and status reporting
 
-The CLI Builder API includes progress and status reporting tools, which can provide hints for certain functions and interfaces.
+CLI Builder API'si, belirli fonksiyonlar ve arayüzler için ipuçları sağlayabilen ilerleme ve durum raporlama araçlarını içerir.
 
-To report progress, use the `context.reportProgress()` method, which takes a current value, optional total, and status string as arguments.
-The total can be any number. For example, if you know how many files you have to process, the total could be the number of files, and current should be the number processed so far.
-The status string is unmodified unless you pass in a new string value.
+İlerleme bildirmek için, argüman olarak geçerli bir değer, isteğe bağlı bir toplam ve durum dizesi alan `context.reportProgress()` metodunu kullanın.
+Toplam herhangi bir sayı olabilir. Örneğin, kaç dosya işlemeniz gerektiğini biliyorsanız, toplam dosya sayısı olabilir ve geçerli şimdiye kadar işlenen sayı olmalıdır.
+Yeni bir dize değeri geçirmediğiniz sürece durum dizesi değiştirilmez.
 
-In our example, the copy operation either finishes or is still executing, so there's no need for a progress report, but you can report status so that a parent builder that called our builder would know what's going on.
-Use the `context.reportStatus()` method to generate a status string of any length.
+Örneğimizde, kopyalama işlemi ya biter ya da hala yürütülmektedir, bu nedenle ilerleme raporu gerekmez, ancak builder'ımızı çağıran bir üst builder'ın neler olduğunu bilmesi için durum raporlayabilirsiniz.
+Herhangi bir uzunlukta bir durum dizesi oluşturmak için `context.reportStatus()` metodunu kullanın.
 
-HELPFUL: There's no guarantee that a long string will be shown entirely; it could be cut to fit the UI that displays it.
+HELPFUL: Uzun bir dizenin tamamen gösterilme garantisi yoktur; onu görüntüleyen kullanıcı arayüzüne sığacak şekilde kesilebilir.
 
-Pass an empty string to remove the status.
+Durumu kaldırmak için boş bir dize geçirin.
 
 <docs-code header="src/my-builder.ts (progress reporting)" path="adev/src/content/examples/cli-builder/src/my-builder.ts" region="progress-reporting"/>
 
 ## Builder input
 
-You can invoke a builder indirectly through a CLI command such as `ng build`, or directly with the Angular CLI `ng run` command.
-In either case, you must provide required inputs, but can let other inputs default to values that are pre-configured for a specific _target_, specified by a [configuration](tools/cli/environments), or set on the command line.
+Bir builder'ı `ng build` gibi bir CLI komutuyla dolaylı olarak veya Angular CLI `ng run` komutuyla doğrudan çağırabilirsiniz.
+Her iki durumda da, gerekli girdileri sağlamanız gerekir, ancak diğer girdilerin bir [yapılandırma](tools/cli/environments) tarafından belirtilen belirli bir _hedef_ için önceden yapılandırılmış değerlere veya komut satırında ayarlanmış değerlere varsayılan olmasına izin verebilirsiniz.
 
 ### Input validation
 
-You define builder inputs in a JSON schema associated with that builder.
-Similar to schematics, the Architect tool collects the resolved input values into an `options` object, and validates their types against the schema before passing them to the builder function.
+Builder girdilerini o builder'la ilişkili bir JSON şemasında tanımlarsınız.
+Şematiklere benzer şekilde, Architect aracı çözümlenen girdi değerlerini bir `options` nesnesine toplar ve builder fonksiyonuna geçirmeden önce türlerini şemaya göre doğrular.
 
-For our example builder, `options` should be a `JsonObject` with two keys:
-a `source` and a `destination`, each of which are a string.
+Örnek builder'ımız için `options`, iki anahtarlı bir `JsonObject` olmalıdır:
+her biri bir dize olan bir `source` ve bir `destination`.
 
-You can provide the following schema for type validation of these values.
+Bu değerlerin tür doğrulaması için aşağıdaki şemayı sağlayabilirsiniz.
 
 ```json {header: "schema.json"}
 {
@@ -119,12 +119,12 @@ You can provide the following schema for type validation of these values.
 }
 ```
 
-HELPFUL: This is a minimal example, but the use of a schema for validation can be very powerful.
-For more information, see the [JSON schemas website](http://json-schema.org).
+HELPFUL: Bu minimal bir örnektir, ancak doğrulama için şema kullanımı çok güçlü olabilir.
+Daha fazla bilgi için [JSON şemaları web sitesine](http://json-schema.org) bakın.
 
-To link our builder implementation with its schema and name, you need to create a _builder definition_ file, which you can point to in `package.json`.
+Builder uygulamamızı şeması ve adıyla bağlamak için `package.json`'da işaret edebileceğiniz bir _builder tanımı_ dosyası oluşturmanız gerekir.
 
-Create a file named `builders.json` that looks like this:
+Şöyle görünen `builders.json` adlı bir dosya oluşturun:
 
 ```json {header: "builders.json"}
 {
@@ -138,7 +138,7 @@ Create a file named `builders.json` that looks like this:
 }
 ```
 
-In the `package.json` file, add a `builders` key that tells the Architect tool where to find our builder definition file.
+`package.json` dosyasında, Architect aracına builder tanımı dosyamızı nerede bulacağını söyleyen bir `builders` anahtarı ekleyin.
 
 ```json {header: "package.json"}
 {
@@ -153,23 +153,23 @@ In the `package.json` file, add a `builders` key that tells the Architect tool w
 }
 ```
 
-The official name of our builder is now `@example/copy-file:copy`.
-The first part of this is the package name and the second part is the builder name as specified in the `builders.json` file.
+Builder'ımızın resmi adı artık `@example/copy-file:copy`'dir.
+İlk kısım paket adıdır ve ikinci kısım `builders.json` dosyasında belirtilen builder adıdır.
 
-These values are accessed on `options.source` and `options.destination`.
+Bu değerlere `options.source` ve `options.destination` üzerinden erişilir.
 
 <docs-code header="src/my-builder.ts (report status)" path="adev/src/content/examples/cli-builder/src/my-builder.ts" region="report-status"/>
 
 ### Target configuration
 
-A builder must have a defined target that associates it with a specific input configuration and project.
+Bir builder'ın, onu belirli bir girdi yapılandırması ve proje ile ilişkilendiren tanımlanmış bir hedefi olmalıdır.
 
-Targets are defined in the `angular.json` [CLI configuration file](reference/configs/workspace-config).
-A target specifies the builder to use, its default options configuration, and named alternative configurations.
-Architect in the Angular CLI uses the target definition to resolve input options for a given run.
+Hedefler, `angular.json` [CLI yapılandırma dosyasında](reference/configs/workspace-config) tanımlanır.
+Bir hedef, kullanılacak builder'ı, varsayılan seçenek yapılandırmasını ve adlandırılmış alternatif yapılandırmaları belirtir.
+Angular CLI'daki Architect, belirli bir çalıştırma için girdi seçeneklerini çözmek üzere hedef tanımını kullanır.
 
-The `angular.json` file has a section for each project, and the "architect" section of each project configures targets for builders used by CLI commands such as 'build', 'test', and 'serve'.
-By default, for example, the `ng build` command runs the builder `@angular-devkit/build-angular:browser` to perform the build task, and passes in default option values as specified for the `build` target in `angular.json`.
+`angular.json` dosyası, her proje için bir bölüme sahiptir ve her projenin "architect" bölümü, 'build', 'test' ve 'serve' gibi CLI komutları tarafından kullanılan builder'lar için hedefleri yapılandırır.
+Örneğin varsayılan olarak, `ng build` komutu derleme görevini gerçekleştirmek için `@angular-devkit/build-angular:browser` builder'ını çalıştırır ve `angular.json`'da `build` hedefi için belirtilen varsayılan seçenek değerlerini geçirir.
 
 ```json {header: "angular.json"}
 {
@@ -203,13 +203,13 @@ By default, for example, the `ng build` command runs the builder `@angular-devki
 }
 ```
 
-The command passes the builder the set of default options specified in the "options" section.
-If you pass the `--configuration=production` flag, it uses the override values specified in the `production` configuration.
-Specify further option overrides individually on the command line.
+Komut, "options" bölümünde belirtilen varsayılan seçenek setini builder'a geçirir.
+`--configuration=production` bayrağını geçirirseniz, `production` yapılandırmasında belirtilen geçersiz kılma değerlerini kullanır.
+Komut satırında tek tek daha fazla seçenek geçersiz kılması belirtin.
 
 #### Target strings
 
-The generic `ng run` CLI command takes as its first argument a target string of the following form.
+Genel `ng run` CLI komutu, ilk argümanı olarak aşağıdaki biçimde bir hedef dizesi alır.
 
 ```shell
 
@@ -217,41 +217,41 @@ project:target[:configuration]
 
 ```
 
-|               | Details                                                                                                               |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------- |
-| project       | The name of the Angular CLI project that the target is associated with.                                               |
-| target        | A named builder configuration from the `architect` section of the `angular.json` file.                                |
-| configuration | (optional) The name of a specific configuration override for the given target, as defined in the `angular.json` file. |
+|               | Ayrıntılar                                                                                                                              |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| project       | Hedefin ilişkili olduğu Angular CLI projesinin adı.                                                                                     |
+| target        | `angular.json` dosyasının `architect` bölümünden adlandırılmış bir builder yapılandırması.                                              |
+| configuration | (isteğe bağlı) `angular.json` dosyasında tanımlandığı şekliyle, belirli bir hedef için adlandırılmış bir yapılandırma geçersiz kılması. |
 
-If your builder calls another builder, it might need to read a passed target string.
-Parse this string into an object by using the `targetFromTargetString()` utility function from `@angular-devkit/architect`.
+Builder'ınız başka bir builder'ı çağırıyorsa, geçirilen bir hedef dizesini okuması gerekebilir.
+Bu dizeyi bir nesneye ayrıştırmak için `@angular-devkit/architect` paketindeki `targetFromTargetString()` yardımcı fonksiyonunu kullanın.
 
 ## Schedule and run
 
-Architect runs builders asynchronously.
-To invoke a builder, you schedule a task to be run when all configuration resolution is complete.
+Architect, builder'ları asenkron olarak çalıştırır.
+Bir builder'ı çağırmak için, tüm yapılandırma çözümlemesi tamamlandığında çalıştırılacak bir görev zamanlarsınız.
 
-The builder function is not executed until the scheduler returns a `BuilderRun` control object.
-The CLI typically schedules tasks by calling the `context.scheduleTarget()` function, and then resolves input options using the target definition in the `angular.json` file.
+Builder fonksiyonu, zamanlayıcı bir `BuilderRun` kontrol nesnesi döndürene kadar yürütülmez.
+CLI genellikle `context.scheduleTarget()` fonksiyonunu çağırarak görevleri zamanlar ve ardından `angular.json` dosyasındaki hedef tanımını kullanarak girdi seçeneklerini çözer.
 
-Architect resolves input options for a given target by taking the default options object, then overwriting values from the configuration, then further overwriting values from the overrides object passed to `context.scheduleTarget()`.
-For the Angular CLI, the overrides object is built from command line arguments.
+Architect, belirli bir hedef için girdi seçeneklerini; varsayılan seçenekler nesnesini alarak, ardından yapılandırmadaki değerleri üzerine yazarak ve ardından `context.scheduleTarget()`'a geçirilen overrides nesnesindeki değerleri daha da üzerine yazarak çözer.
+Angular CLI için overrides nesnesi komut satırı argümanlarından oluşturulur.
 
-Architect validates the resulting options values against the schema of the builder.
-If inputs are valid, Architect creates the context and executes the builder.
+Architect, sonuçta ortaya çıkan seçenek değerlerini builder'ın şemasına göre doğrular.
+Girdiler geçerliyse, Architect bağlamı oluşturur ve builder'ı çalıştırır.
 
-For more information see [Workspace Configuration](reference/configs/workspace-config).
+Daha fazla bilgi için [Çalışma Alanı Yapılandırması](reference/configs/workspace-config) belgesine bakın.
 
-HELPFUL: You can also invoke a builder directly from another builder or test by calling `context.scheduleBuilder()`.
-You pass an `options` object directly to the method, and those option values are validated against the schema of the builder without further adjustment.
+HELPFUL: `context.scheduleBuilder()` çağırarak doğrudan başka bir builder'dan veya testten de bir builder'ı çağırabilirsiniz.
+Bir `options` nesnesini doğrudan metoda geçirirsiniz ve bu seçenek değerleri, daha fazla ayarlama yapılmadan builder'ın şemasına göre doğrulanır.
 
-Only the `context.scheduleTarget()` method resolves the configuration and overrides through the `angular.json` file.
+Yalnızca `context.scheduleTarget()` metodu, yapılandırma ve overrides'ı `angular.json` dosyası aracılığıyla çözer.
 
 ### Default architect configuration
 
-Let's create a simple `angular.json` file that puts target configurations into context.
+Hedef yapılandırmalarını bağlama yerleştiren basit bir `angular.json` dosyası oluşturalım.
 
-You can publish the builder to npm (see [Publishing your Library](tools/libraries/creating-libraries#publishing-your-library)), and install it using the following command:
+Builder'ı npm'e yayınlayabilir ([Kütüphanenizi Yayınlama](tools/libraries/creating-libraries#publishing-your-library) belgesine bakın) ve aşağıdaki komutla yükleyebilirsiniz:
 
 ```shell
 
@@ -259,7 +259,7 @@ npm install @example/copy-file
 
 ```
 
-If you create a new project with `ng new builder-test`, the generated `angular.json` file looks something like this, with only default builder configurations.
+`ng new builder-test` ile yeni bir proje oluşturursanız, oluşturulan `angular.json` dosyası yalnızca varsayılan builder yapılandırmalarıyla şöyle görünür.
 
 ```json {header: "angular.json"}
 {
@@ -291,14 +291,14 @@ If you create a new project with `ng new builder-test`, the generated `angular.j
 
 ### Adding a target
 
-Add a new target that will run our builder to copy a file.
-This target tells the builder to copy the `package.json` file.
+Bir dosyayı kopyalamak için builder'ımızı çalıştıracak yeni bir hedef ekleyin.
+Bu hedef, builder'a `package.json` dosyasını kopyalamasını söyler.
 
-- We will add a new target section to the `architect` object for our project
-- The target named `copy-package` uses our builder, which you published to `@example/copy-file`.
-- The options object provides default values for the two inputs that you defined.
-  - `source` - The existing file you are copying.
-  - `destination` - The path you want to copy to.
+- Projemiz için `architect` nesnesine yeni bir hedef bölümü ekleyeceğiz
+- `copy-package` adlı hedef, `@example/copy-file` olarak yayınladığınız builder'ımızı kullanır.
+- Seçenekler nesnesi, tanımladığınız iki girdi için varsayılan değerleri sağlar.
+  - `source` - Kopyaladığınız mevcut dosya.
+  - `destination` - Kopyalamak istediğiniz yol.
 
 ```json {header: "angular.json"}
 {
@@ -321,7 +321,7 @@ This target tells the builder to copy the `package.json` file.
 
 ### Running the builder
 
-To run our builder with the new target's default configuration, use the following CLI command.
+Builder'ımızı yeni hedefin varsayılan yapılandırmasıyla çalıştırmak için aşağıdaki CLI komutunu kullanın.
 
 ```shell
 
@@ -329,10 +329,10 @@ ng run builder-test:copy-package
 
 ```
 
-This copies the `package.json` file to `package-copy.json`.
+Bu, `package.json` dosyasını `package-copy.json`'a kopyalar.
 
-Use command-line arguments to override the configured defaults.
-For example, to run with a different `destination` value, use the following CLI command.
+Yapılandırılmış varsayılanları geçersiz kılmak için komut satırı argümanlarını kullanın.
+Örneğin, farklı bir `destination` değeriyle çalıştırmak için aşağıdaki CLI komutunu kullanın.
 
 ```shell
 
@@ -340,51 +340,51 @@ ng run builder-test:copy-package --destination=package-other.json
 
 ```
 
-This copies the file to `package-other.json` instead of `package-copy.json`.
-Because you did not override the _source_ option, it will still copy from the default `package.json` file.
+Bu, dosyayı `package-copy.json` yerine `package-other.json`'a kopyalar.
+_source_ seçeneğini geçersiz kılmadığınız için, yine varsayılan `package.json` dosyasından kopyalayacaktır.
 
 ## Testing a builder
 
-Use integration testing for your builder, so that you can use the Architect scheduler to create a context, as in this [example](https://github.com/mgechev/cli-builders-demo).
-In the builder source directory, create a new test file `my-builder.spec.ts`. The test creates new instances of `JsonSchemaRegistry` (for schema validation), `TestingArchitectHost` (an in-memory implementation of `ArchitectHost`), and `Architect`.
+Builder'ınız için entegrasyon testi kullanın, böylece Architect zamanlayıcısını kullanarak bu [örnekteki](https://github.com/mgechev/cli-builders-demo) gibi bir bağlam oluşturabilirsiniz.
+Builder kaynak dizininde `my-builder.spec.ts` adlı yeni bir test dosyası oluşturun. Test, `JsonSchemaRegistry` (şema doğrulama için), `TestingArchitectHost` (`ArchitectHost`'un bellek içi uygulaması) ve `Architect`'in yeni örneklerini oluşturur.
 
-Here's an example of a test that runs the copy file builder.
-The test uses the builder to copy the `package.json` file and validates that the copied file's contents are the same as the source.
+Dosya kopyalama builder'ını çalıştıran bir test örneği burada.
+Test, `package.json` dosyasını kopyalamak için builder'ı kullanır ve kopyalanan dosyanın içeriğinin kaynakla aynı olduğunu doğrular.
 
 <docs-code header="src/my-builder.spec.ts" path="adev/src/content/examples/cli-builder/src/my-builder.spec.ts"/>
 
-HELPFUL: When running this test in your repo, you need the [`ts-node`](https://github.com/TypeStrong/ts-node) package.
-You can avoid this by renaming `my-builder.spec.ts` to `my-builder.spec.js`.
+HELPFUL: Bu testi deponuzda çalıştırırken [`ts-node`](https://github.com/TypeStrong/ts-node) paketine ihtiyacınız vardır.
+`my-builder.spec.ts`'yi `my-builder.spec.js` olarak yeniden adlandırarak bundan kaçınabilirsiniz.
 
 ### Watch mode
 
-Most builders to run once and return. However, this behavior is not entirely compatible with a builder that watches for changes (like a devserver, for example).
-Architect can support watch mode, but there are some things to look out for.
+Çoğu builder bir kez çalışır ve döner. Ancak bu davranış, değişiklikleri izleyen bir builder ile (örneğin bir geliştirme sunucusu) tamamen uyumlu değildir.
+Architect izleme modunu destekleyebilir, ancak dikkat edilmesi gereken bazı şeyler vardır.
 
-- To be used with watch mode, a builder handler function should return an `Observable`.
-  Architect subscribes to the `Observable` until it completes and might reuse it if the builder is scheduled again with the same arguments.
+- İzleme moduyla kullanılmak için, bir builder işleyici fonksiyonu bir `Observable` döndürmelidir.
+  Architect, `Observable`'a tamamlanana kadar abone olur ve builder aynı argümanlarla tekrar zamanlanırsa onu yeniden kullanabilir.
 
-- The builder should always emit a `BuilderOutput` object after each execution.
-  Once it's been executed, it can enter a watch mode, to be triggered by an external event.
-  If an event triggers it to restart, the builder should execute the `context.reportRunning()` function to tell Architect that it is running again.
-  This prevents Architect from stopping the builder if another run is scheduled.
+- Builder, her yürütmeden sonra her zaman bir `BuilderOutput` nesnesi yayınlamalıdır.
+  Yürütüldüğünde, harici bir olay tarafından tetiklenmek üzere izleme moduna girebilir.
+  Bir olay yeniden başlamayı tetiklerse, builder Architect'e tekrar çalıştığını söylemek için `context.reportRunning()` fonksiyonunu çağırmalıdır.
+  Bu, başka bir çalıştırma zamanlanırsa Architect'in builder'ı durdurmasını önler.
 
-When your builder calls `BuilderRun.stop()` to exit watch mode, Architect unsubscribes from the builder's `Observable` and calls the builder's teardown logic to clean up.
-This behavior also allows for long-running builds to be stopped and cleaned up.
+Builder'ınız izleme modundan çıkmak için `BuilderRun.stop()` çağırdığında, Architect builder'ın `Observable`'ından aboneliğini iptal eder ve temizleme mantığını çalıştırmak için builder'ın teardown mantığını çağırır.
+Bu davranış ayrıca uzun süren derlemelerin durdurulmasına ve temizlenmesine olanak tanır.
 
-In general, if your builder is watching an external event, you should separate your run into three phases.
+Genel olarak, builder'ınız harici bir olayı izliyorsa, çalıştırmanızı üç aşamaya ayırmalısınız.
 
-| Phases     | Details                                                                                                                                                                                                                                       |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Running    | The task being performed, such as invoking a compiler. This ends when the compiler finishes and your builder emits a `BuilderOutput` object.                                                                                                  |
-| Watching   | Between two runs, watch an external event stream. For example, watch the file system for any changes. This ends when the compiler restarts, and `context.reportRunning()` is called.                                                          |
-| Completion | Either the task is fully completed, such as a compiler which needs to run a number of times, or the builder run was stopped (using `BuilderRun.stop()`). Architect executes teardown logic and unsubscribes from your builder's `Observable`. |
+| Aşamalar  | Ayrıntılar                                                                                                                                                                                                                                                    |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Çalışma   | Gerçekleştirilen görev, örneğin bir derleyiciyi çağırma. Bu, derleyici bittiğinde ve builder'ınız bir `BuilderOutput` nesnesi yayınladığında sona erer.                                                                                                       |
+| İzleme    | İki çalıştırma arasında harici bir olay akışını izleme. Örneğin, dosya sistemindeki herhangi bir değişikliği izleme. Bu, derleyici yeniden başladığında ve `context.reportRunning()` çağrıldığında sona erer.                                                 |
+| Tamamlama | Görev tamamen tamamlanmış (örneğin birkaç kez çalışması gereken bir derleyici) veya builder çalıştırması durdurulmuş (`BuilderRun.stop()` kullanılarak). Architect teardown mantığını çalıştırır ve builder'ınızın `Observable`'ından aboneliğini iptal eder. |
 
 ## Summary
 
-The CLI Builder API provides a means of changing the behavior of the Angular CLI by using builders to execute custom logic.
+CLI Builder API'si, özel mantığı yürütmek için builder'lar kullanarak Angular CLI'ın davranışını değiştirme aracı sağlar.
 
-- Builders can be synchronous or asynchronous, execute once or watch for external events, and can schedule other builders or targets.
-- Builders have option defaults specified in the `angular.json` configuration file, which can be overwritten by an alternate configuration for the target, and further overwritten by command line flags
-- The Angular team recommends that you use integration tests to test Architect builders. Use unit tests to validate the logic that the builder executes.
-- If your builder returns an `Observable`, it should clean up the builder in the teardown logic of that `Observable`.
+- Builder'lar senkron veya asenkron olabilir, bir kez yürütülebilir veya harici olayları izleyebilir ve diğer builder'ları veya hedefleri zamanlayabilir.
+- Builder'ların `angular.json` yapılandırma dosyasında belirtilen seçenek varsayılanları vardır, bunlar hedef için alternatif bir yapılandırmayla üzerine yazılabilir ve komut satırı bayraklarıyla daha da üzerine yazılabilir
+- Angular ekibi, Architect builder'larını test etmek için entegrasyon testleri kullanmanızı önerir. Builder'ın yürüttüğü mantığı doğrulamak için birim testleri kullanın.
+- Builder'ınız bir `Observable` döndürüyorsa, o `Observable`'ın teardown mantığında builder'ı temizlemelidir.

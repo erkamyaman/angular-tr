@@ -1,13 +1,13 @@
 # Runtime performance optimization
 
-Fast rendering is critical for Angular and we've built the framework with a lot of optimizations in mind to help you develop performant apps. To better understand the performance of your app we offer [Angular DevTools](tools/devtools) and a [video guide](https://www.youtube.com/watch?v=FjyX_hkscII) on how to use Chrome DevTools for profiling. In this section we cover the most common performance optimization techniques.
+Hizli render Angular icin kritik oneme sahiptir ve performansli uygulamalar gelistirmenize yardimci olmak icin framework'u bircok optimizasyon dusunulerek olusturduk. Uygulamanizin performansini daha iyi anlamak icin [Angular DevTools](tools/devtools) ve profil cikarma icin Chrome DevTools'un nasil kullanilacagina dair bir [video kilavuzu](https://www.youtube.com/watch?v=FjyX_hkscII) sunuyoruz. Bu bolumde en yaygin performans optimizasyon tekniklerini ele aliyoruz.
 
-**Change detection** is the process through which Angular checks to see whether your application state has changed, and if any DOM needs to be updated. At a high level, Angular walks your components from top to bottom, looking for changes. Angular runs its change detection mechanism periodically so that changes to the data model are reflected in an application’s view. Change detection can be triggered either manually or through an asynchronous event (for example, a user interaction or an XMLHttpRequest completion).
+**Degisiklik algilama**, Angular'in uygulama durumunuzun degisip degismedigini ve herhangi bir DOM'un guncellenmesi gerekip gerekm edigini kontrol ettigi surectir. Ust duzey de, Angular bilesenlerinizi yukaridan asagiya dogru gezrerek degisiklikleri arar. Angular, veri modelindeki degisikliklerin bir uygulamanin gorunumune yansitilamsi icin degisiklik algilama mekanizmasini periyodik olarak calistirir. Degisiklik algilama, ya manuel olarak ya da bir asenkron olay (ornegin bir kullanici etkilesimi veya bir XMLHttpRequest tamamlanmasi) araciligiyla tetiklenebilir.
 
-Change detection is highly optimized and performant, but it can still cause slowdowns if the application runs it too frequently.
+Degisiklik algilama son derece optimize edilmis ve performanslidir, ancak uygulama onu cok sik calistirirsa yavaslamalara neden olabilir.
 
-In this guide, you’ll learn how to control and optimize the change detection mechanism by skipping parts of your application and running change detection only when necessary.
+Bu kilavuzda, uygulamanizin bolumleri atlayarak ve degisiklik algilamayi yalnizca gerekli oldugunda calistirarak degisiklik algilama mekanizmasini nasil kontrol edip optimize edeceginizi ogreneceksiniz.
 
-Watch this video if you prefer to learn more about performance optimizations in a media format:
+Performans optimizasyonlari hakkinda bir medya formatinda daha fazla bilgi edinmeyi tercih ediyorsaniz bu videoyu izleyin:
 
 <docs-video src="https://www.youtube.com/embed/f8sA-i6gkGQ"/>

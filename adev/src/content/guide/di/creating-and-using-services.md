@@ -1,20 +1,20 @@
 # Creating and using services
 
-Services are reusable pieces of code that can be shared across your Angular application. They typically handle data fetching, business logic, or other functionality that multiple components need to access.
+Servisler, Angular uygulamanız genelinde paylaşılabilen yeniden kullanılabilir kod parçalarıdır. Genellikle veri getirme, iş mantığı veya birden fazla bileşenin erişmesi gereken diğer işlevleri yönetirler.
 
 ## Creating a service
 
-You can create a service with the [Angular CLI](tools/cli) with the following command:
+[Angular CLI](tools/cli) ile aşağıdaki komutu kullanarak bir servis oluşturabilirsiniz:
 
 ```bash
 ng generate service CUSTOM_NAME
 ```
 
-This creates a dedicated `CUSTOM_NAME.ts` file in your `src` directory.
+Bu, `src` dizininizde özel bir `CUSTOM_NAME.ts` dosyası oluşturur.
 
-You can also manually create a service by adding the `@Injectable()` decorator to a TypeScript class. This tells Angular that the service can be injected as a dependency.
+Ayrıca bir TypeScript sınıfına `@Injectable()` dekoratörünü ekleyerek manuel olarak bir servis oluşturabilirsiniz. Bu, Angular'a servisin bir bağımlılık olarak enjekte edilebileceğini söyler.
 
-Here is an example of a service that allows users to add and request data:
+İşte kullanıcıların veri eklemesine ve istemesine olanak tanıyan bir servis örneği:
 
 ```ts
 // 📄 src/app/basic-data-store.ts
@@ -36,17 +36,17 @@ export class BasicDataStore {
 
 ## How services become available
 
-When you use `@Injectable({ providedIn: 'root' })` in your service, Angular:
+Servisinizde `@Injectable({ providedIn: 'root' })` kullandığınızda, Angular:
 
-- **Creates a single instance** (singleton) for your entire application
-- **Makes it available everywhere** without any additional configuration
-- **Enables tree-shaking** so the service is only included in your JavaScript bundle if it's actually used
+- Tüm uygulamanız için **tek bir örnek** (singleton) oluşturur
+- Herhangi bir ek yapılandırma olmadan **her yerde kullanılabilir** hale getirir
+- **Tree-shaking'i etkinleştirir**, böylece servis yalnızca gerçekten kullanılıyorsa JavaScript paketinize dahil edilir
 
-This is the recommended approach for most services.
+Bu, çoğu servis için önerilen yaklaşımdır.
 
 ## Injecting a service
 
-Once you've created a service with `providedIn: 'root'`, you can inject it anywhere in your application using the `inject()` function from `@angular/core`.
+`providedIn: 'root'` ile bir servis oluşturduktan sonra, `@angular/core`'dan `inject()` fonksiyonunu kullanarak uygulamanızın herhangi bir yerinde enjekte edebilirsiniz.
 
 ### Injecting into a component
 
@@ -93,11 +93,11 @@ export class BasicDataStore {
 
 ## Next steps
 
-While `providedIn: 'root'` covers most use cases, Angular offers additional ways to provide services for specialized scenarios:
+`providedIn: 'root'` çoğu kullanım durumunu karşılarken, Angular özel senaryolar için servisleri sağlamanın ek yollarını sunar:
 
-- **Component-specific instances** - When components need their own isolated service instances
-- **Manual configuration** - For services that require runtime configuration
-- **Factory providers** - For dynamic service creation based on runtime conditions
-- **Value providers** - For providing configuration objects or constants
+- **Bileşene özgü örnekler** - Bileşenlerin kendi izole servis örneklerine ihtiyaç duyması durumunda
+- **Manuel yapılandırma** - Çalışma zamanı yapılandırması gerektiren servisler için
+- **Fabrika sağlayıcıları** - Çalışma zamanı koşullarına göre dinamik servis oluşturma için
+- **Değer sağlayıcıları** - Yapılandırma nesneleri veya sabitler sağlamak için
 
-You can learn more about these advanced patterns in the next guide: [defining dependency providers](/guide/di/defining-dependency-providers).
+Bu gelişmiş desenler hakkında daha fazla bilgiyi sonraki kılavuzda bulabilirsiniz: [bağımlılık sağlayıcılarını tanımlama](/guide/di/defining-dependency-providers).

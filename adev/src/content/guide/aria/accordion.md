@@ -8,7 +8,7 @@
 
 ## Overview
 
-An accordion organizes related content into expandable and collapsible sections, reducing page scrolling and helping users focus on relevant information. Each section has a trigger button and a content panel. Clicking a trigger toggles the visibility of its associated panel.
+Bir akordeon, ilgili icerigi genisletilebilir ve daraltilabilir bolumlere duzenleyerek sayfa kaydirmayi azaltir ve kullanicilarin ilgili bilgilere odaklanmasina yardimci olur. Her bolumun bir tetikleyici butonu ve bir icerik paneli vardir. Bir tetikleyiciye tiklamak, iliskili panelin gorunurluğunu degistirir.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts"/>
@@ -18,37 +18,37 @@ An accordion organizes related content into expandable and collapsible sections,
 
 ## Usage
 
-Accordions work well for organizing content into logical groups where users typically need to view one section at a time.
+Akordeonlar, kullanicilarin genellikle ayni anda bir bolumu goruntulemeye ihtiyac duyduklari mantiksal gruplara icerik duzenleme icin iyi calisir.
 
-**Use accordions when:**
+**Akordeon kullanin:**
 
-- Displaying FAQs with multiple questions and answers
-- Organizing long forms into manageable sections
-- Reducing scrolling on content-heavy pages
-- Progressively disclosing related information
+- Birden fazla soru ve yanit iceren SSS gosterimi
+- Uzun formlari yonetilebilir bolumlere duzenleme
+- Icerik agirlikli sayfalarda kaydirmayi azaltma
+- Ilgili bilgileri kademeli olarak aciklama
 
-**Avoid accordions when:**
+**Akordeondan kacinin:**
 
-- Building navigation menus (use the [Menu](guide/aria/menu) component instead)
-- Creating tabbed interfaces (use the [Tabs](guide/aria/tabs) component instead)
-- Showing a single collapsible section (use a disclosure pattern instead)
-- Users need to see multiple sections simultaneously (consider a different layout)
+- Navigasyon menuleri olustururken (bunun yerine [Menu](guide/aria/menu) bilesenini kullanin)
+- Sekmeli arayuzler olustururken (bunun yerine [Tabs](guide/aria/tabs) bilesenini kullanin)
+- Tek bir daraltilabilir bolum gosterirken (bunun yerine bir aciklama kalibi kullanin)
+- Kullanicilarin ayni anda birden fazla bolumu gormesi gerektiginde (farkli bir yerlesim dusunun)
 
 ## Features
 
-- **Expansion modes** - Control whether one or multiple panels can be open at the same time
-- **Keyboard navigation** - Navigate between triggers using arrow keys, Home, and End
-- **Lazy rendering** - Content is only created when a panel first expands, improving initial load performance
-- **Disabled states** - Disable the entire group or individual triggers
-- **Focus management** - Control whether disabled items can receive keyboard focus
-- **Programmatic control** - Expand, collapse, or toggle panels from your component code
-- **RTL support** - Automatic support for right-to-left languages
+- **Genisleme modlari** - Ayni anda bir veya birden fazla panelin acik olup olmayacagini kontrol edin
+- **Klavye navigasyonu** - Ok tuslari, Home ve End ile tetikleyiciler arasinda gezinin
+- **Tembel render** - Icerik yalnizca bir panel ilk kez genisletildiginde olusturulur, ilk yukleme performansini iyilestirir
+- **Devre disi durumlar** - Tum grubu veya bireysel tetikleyicileri devre disi birakin
+- **Odak yonetimi** - Devre disi birakilan ogelerin klavye odagi alip alamayacagini kontrol edin
+- **Programatik kontrol** - Bilesen kodunuzdan panelleri genisletin, daraltın veya degistirin
+- **RTL destegi** - Sagdan sola diller icin otomatik destek
 
 ## Examples
 
 ### Single expansion mode
 
-Set `[multiExpandable]="false"` to allow only one panel to be open at a time. Opening a new panel automatically closes any previously open panel.
+Ayni anda yalnizca bir panelin acik olmasina izin vermek icin `[multiExpandable]="false"` ayarlayin. Yeni bir panel acmak, daha once acik olan paneli otomatik olarak kapatir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -74,11 +74,11 @@ Set `[multiExpandable]="false"` to allow only one panel to be open at a time. Op
   </docs-tab>
 </docs-tab-group>
 
-This mode works well for FAQs or situations where you want users to focus on one answer at a time.
+Bu mod, SSS'ler veya kullanicilarin ayni anda bir yanita odaklanmasini istediginiz durumlar icin iyi calisir.
 
 ### Multiple expansion mode
 
-Set `[multiExpandable]="true"` to allow multiple panels to be open simultaneously. Users can expand as many panels as needed without closing others.
+Birden fazla panelin ayni anda acik olmasina izin vermek icin `[multiExpandable]="true"` ayarlayin. Kullanicilar digerlerini kapatmadan ihtiyac duydugu kadar panel genisletebilir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -104,13 +104,13 @@ Set `[multiExpandable]="true"` to allow multiple panels to be open simultaneousl
   </docs-tab>
 </docs-tab-group>
 
-This mode is useful for form sections or when users need to compare content across multiple panels.
+Bu mod, form bolumleri veya kullanicilarin birden fazla panel arasinda icerigi karsilastirmasi gerektiginde kullanislidir.
 
-NOTE: The `multiExpandable` input defaults to `true`. Set it to `false` explicitly if you want single expansion behavior.
+NOTE: `multiExpandable` girisi varsayilan olarak `true`'dur. Tek genisleme davranisi istiyorsaniz acikca `false` olarak ayarlayin.
 
 ### Disabled accordion items
 
-Disable specific triggers using the `disabled` input. Control how disabled items behave during keyboard navigation using the `softDisabled` input on the accordion group.
+`disabled` girisini kullanarak belirli tetikleyicileri devre disi birakin. Devre disi birakilan ogelerin klavye navigasyonu sirasindaki davranisini akordeon grubundaki `softDisabled` girisi ile kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -136,11 +136,11 @@ Disable specific triggers using the `disabled` input. Control how disabled items
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` (the default), disabled items can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled items are skipped entirely during keyboard navigation.
+`[softDisabled]="true"` oldugunda (varsayilan), devre disi birakilan ogeler odak alabilir ancak etkinlestirilemez. `[softDisabled]="false"` oldugunda, devre disi birakilan ogeler klavye navigasyonu sirasinda tamamen atlanir.
 
 ### Lazy content rendering
 
-Use the `ngAccordionContent` directive on an `ng-template` to defer rendering content until the panel first expands. This improves performance for accordions with heavy content like images, charts, or complex components.
+Panel ilk kez genisletilene kadar icerik render etmeyi ertelemek icin bir `ng-template` uzerinde `ngAccordionContent` yonergesini kullanin. Bu, resimler, grafikler veya karmasik bilesenler gibi agir icerikli akordeonlar icin performansi iyilestirir.
 
 ```angular-html
 <div ngAccordionGroup>
@@ -157,88 +157,88 @@ Use the `ngAccordionContent` directive on an `ng-template` to defer rendering co
 </div>
 ```
 
-By default, content remains in the DOM after the panel collapses. Set `[preserveContent]="false"` to remove the content from the DOM when the panel closes.
+Varsayilan olarak, panel daraltildiktan sonra icerik DOM'da kalir. Panel kapatildiginda icerigi DOM'dan kaldirmak icin `[preserveContent]="false"` ayarlayin.
 
 ## APIs
 
 ### AccordionGroup
 
-The container directive that manages keyboard navigation and expansion behavior for a group of accordion items.
+Bir grup akordeon ogesi icin klavye navigasyonunu ve genisleme davranisini yoneten kapsayici yonerge.
 
 #### Inputs
 
-| Property          | Type      | Default | Description                                                               |
-| ----------------- | --------- | ------- | ------------------------------------------------------------------------- |
-| `disabled`        | `boolean` | `false` | Disables all triggers in the group                                        |
-| `multiExpandable` | `boolean` | `true`  | Whether multiple panels can be expanded simultaneously                    |
-| `softDisabled`    | `boolean` | `true`  | When `true`, disabled items are focusable. When `false`, they are skipped |
-| `wrap`            | `boolean` | `false` | Whether keyboard navigation wraps from last to first item and vice versa  |
+| Property          | Type      | Default | Description                                                                     |
+| ----------------- | --------- | ------- | ------------------------------------------------------------------------------- |
+| `disabled`        | `boolean` | `false` | Gruptaki tum tetikleyicileri devre disi birakir                                 |
+| `multiExpandable` | `boolean` | `true`  | Birden fazla panelin ayni anda genisletilip genisletilemeyecegi                 |
+| `softDisabled`    | `boolean` | `true`  | `true` oldugunda, devre disi ogelere odaklanilabilir. `false` oldugunda atlanir |
+| `wrap`            | `boolean` | `false` | Klavye navigasyonunun son ogeden ilk ogeye ve tam tersi donup donmeyecegi       |
 
 #### Methods
 
-| Method        | Parameters | Description                                                      |
-| ------------- | ---------- | ---------------------------------------------------------------- |
-| `expandAll`   | none       | Expands all panels (only works when `multiExpandable` is `true`) |
-| `collapseAll` | none       | Collapses all panels                                             |
+| Method        | Parameters | Description                                                                    |
+| ------------- | ---------- | ------------------------------------------------------------------------------ |
+| `expandAll`   | none       | Tum panelleri genisletir (yalnizca `multiExpandable` `true` oldugunda calisir) |
+| `collapseAll` | none       | Tum panelleri daraltir                                                         |
 
 ### AccordionTrigger
 
-The directive applied to the button element that toggles panel visibility.
+Panel gorunurluğunu degistiren buton elemanina uygulanan yonerge.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                                                    |
-| ---------- | --------- | ------- | -------------------------------------------------------------- |
-| `id`       | `string`  | auto    | Unique identifier for the trigger                              |
-| `panelId`  | `string`  | —       | **Required.** Must match the `panelId` of the associated panel |
-| `disabled` | `boolean` | `false` | Disables this trigger                                          |
-| `expanded` | `boolean` | `false` | Whether the panel is expanded (supports two-way binding)       |
+| Property   | Type      | Default | Description                                                       |
+| ---------- | --------- | ------- | ----------------------------------------------------------------- |
+| `id`       | `string`  | auto    | Tetikleyici icin benzersiz tanimlayici                            |
+| `panelId`  | `string`  | —       | **Zorunlu.** Iliskili panelin `panelId`'si ile eslesmelidir       |
+| `disabled` | `boolean` | `false` | Bu tetikleyiciyi devre disi birakir                               |
+| `expanded` | `boolean` | `false` | Panelin genisletilmis olup olmadigi (iki yonlu baglama destekler) |
 
 #### Signals
 
-| Property | Type              | Description                             |
-| -------- | ----------------- | --------------------------------------- |
-| `active` | `Signal<boolean>` | Whether the trigger currently has focus |
+| Property | Type              | Description                                 |
+| -------- | ----------------- | ------------------------------------------- |
+| `active` | `Signal<boolean>` | Tetikleyicinin su anda odakta olup olmadigi |
 
 #### Methods
 
-| Method     | Parameters | Description                       |
-| ---------- | ---------- | --------------------------------- |
-| `expand`   | none       | Expands the associated panel      |
-| `collapse` | none       | Collapses the associated panel    |
-| `toggle`   | none       | Toggles the panel expansion state |
+| Method     | Parameters | Description                         |
+| ---------- | ---------- | ----------------------------------- |
+| `expand`   | none       | Iliskili paneli genisletir          |
+| `collapse` | none       | Iliskili paneli daraltir            |
+| `toggle`   | none       | Panel genisleme durumunu degistirir |
 
 ### AccordionPanel
 
-The directive applied to the element containing the collapsible content.
+Daraltilabilir icerigi iceren elemana uygulanan yonerge.
 
 #### Inputs
 
-| Property          | Type      | Default | Description                                                      |
-| ----------------- | --------- | ------- | ---------------------------------------------------------------- |
-| `id`              | `string`  | auto    | Unique identifier for the panel                                  |
-| `panelId`         | `string`  | —       | **Required.** Must match the `panelId` of the associated trigger |
-| `preserveContent` | `boolean` | `true`  | Whether to keep content in DOM after panel collapses             |
+| Property          | Type      | Default | Description                                                        |
+| ----------------- | --------- | ------- | ------------------------------------------------------------------ |
+| `id`              | `string`  | auto    | Panel icin benzersiz tanimlayici                                   |
+| `panelId`         | `string`  | —       | **Zorunlu.** Iliskili tetikleyicinin `panelId`'si ile eslesmelidir |
+| `preserveContent` | `boolean` | `true`  | Panel daraltildiktan sonra icerigin DOM'da tutulup tutulmayacagi   |
 
 #### Signals
 
-| Property  | Type              | Description                             |
-| --------- | ----------------- | --------------------------------------- |
-| `visible` | `Signal<boolean>` | Whether the panel is currently expanded |
+| Property  | Type              | Description                                 |
+| --------- | ----------------- | ------------------------------------------- |
+| `visible` | `Signal<boolean>` | Panelin su anda genisletilmis olup olmadigi |
 
 #### Methods
 
-| Method     | Parameters | Description                 |
-| ---------- | ---------- | --------------------------- |
-| `expand`   | none       | Expands this panel          |
-| `collapse` | none       | Collapses this panel        |
-| `toggle`   | none       | Toggles the expansion state |
+| Method     | Parameters | Description                   |
+| ---------- | ---------- | ----------------------------- |
+| `expand`   | none       | Bu paneli genisletir          |
+| `collapse` | none       | Bu paneli daraltir            |
+| `toggle`   | none       | Genisleme durumunu degistirir |
 
 ### AccordionContent
 
-The structural directive applied to an `ng-template` inside an accordion panel to enable lazy rendering.
+Tembel render etmeyi etkinlestirmek icin akordeon paneli icindeki `ng-template`'e uygulanan yapisal yonerge.
 
-This directive has no inputs, outputs, or methods. Apply it to an `ng-template` element:
+Bu yonergenin girisi, ciktisi veya yontemi yoktur. Bir `ng-template` elemanina uygulayin:
 
 ```angular-html
 <div ngAccordionPanel panelId="item-1">

@@ -1,20 +1,20 @@
 <docs-decorative-header title="Kitchen sink" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
-This is a visual list of all custom components and styles for Angular.dev.
+Bu, Angular.dev için tüm özel bileşenlerin ve stillerin görsel bir listesidir.
 </docs-decorative-header>
 
-As a design system, this page contains visual and Markdown authoring guidance for:
+Bir tasarım sistemi olarak bu sayfa, aşağıdakiler için görsel ve Markdown yazım rehberliği içerir:
 
-- Custom Angular docs elements: [`docs-card`](#cards), [`docs-callout`](#callouts), [`docs-pill`](#pills), and [`docs-steps`](#workflow)
-- Custom text elements: [alerts](#alerts)
-- Code examples: [`docs-code`](#code)
-- Built-in Markdown styled elements: links, lists, [headers](#headers-h2), [horizontal lines](#horizontal-line-divider)
-- and more!
+- Özel Angular dokümantasyon öğeleri: [`docs-card`](#cards), [`docs-callout`](#callouts), [`docs-pill`](#pills) ve [`docs-steps`](#workflow)
+- Özel metin öğeleri: [uyarılar](#alerts)
+- Kod örnekleri: [`docs-code`](#code)
+- Yerleşik Markdown stillendirilmiş öğeler: bağlantılar, listeler, [başlıklar](#headers-h2), [yatay çizgiler](#horizontal-line-divider)
+- ve daha fazlası!
 
-Get ready to:
+Hazır olun:
 
-1. Write...
-2. great...
-3. docs!
+1. Harika...
+2. dokümantasyon...
+3. yazmaya!
 
 ## Headers (h2)
 
@@ -42,13 +42,13 @@ Get ready to:
 
 ### `<docs-card>` Attributes
 
-| Attributes              | Details                                           |
-| :---------------------- | :------------------------------------------------ |
-| `<docs-card-container>` | All cards must be nested inside a container       |
-| `title`                 | Card title                                        |
-| card body contents      | Anything between `<docs-card>` and `</docs-card>` |
-| `link`                  | (Optional) Call to Action link text               |
-| `href`                  | (Optional) Call to Action link href               |
+| Attributes              | Details                                            |
+| :---------------------- | :------------------------------------------------- |
+| `<docs-card-container>` | Tüm kartlar bir kapsayıcı içinde yer almalıdır     |
+| `title`                 | Kart başlığı                                       |
+| card body contents      | `<docs-card>` ve `</docs-card>` arasındaki her şey |
+| `link`                  | (İsteğe bağlı) Eylem çağrısı bağlantı metni        |
+| `href`                  | (İsteğe bağlı) Eylem çağrısı bağlantı href'i       |
 
 ## Callouts
 
@@ -66,15 +66,15 @@ Get ready to:
 
 ### `<docs-callout>` Attributes
 
-| Attributes                                       | Details                                                   |
-| :----------------------------------------------- | :-------------------------------------------------------- |
-| `title`                                          | Callout title                                             |
-| card body contents                               | Anything between `<docs-callout>` and `</docs-callout>`   |
-| `helpful` (default) \| `critical` \| `important` | (Optional) Adds styling and icons based on severity level |
+| Attributes                                       | Details                                                     |
+| :----------------------------------------------- | :---------------------------------------------------------- |
+| `title`                                          | Callout başlığı                                             |
+| card body contents                               | `<docs-callout>` ve `</docs-callout>` arasındaki her şey    |
+| `helpful` (default) \| `critical` \| `important` | (İsteğe bağlı) Ciddiyet seviyesine göre stil ve simge ekler |
 
 ## Pills
 
-Pill rows are helpful as a sort of navigation with links to helpful resources.
+Pill satırları, faydalı kaynaklara bağlantılar içeren bir tür navigasyon olarak kullanışlıdır.
 
 <docs-pill-row id=pill-row>
   <docs-pill href="#pill-row" title="Link"/>
@@ -87,49 +87,49 @@ Pill rows are helpful as a sort of navigation with links to helpful resources.
 
 ### `<docs-pill>` Attributes
 
-| Attributes       | Details                                    |
-| :--------------- | :----------------------------------------- |
-| `<docs-pill-row` | All pills must be nested inside a pill row |
-| `title`          | Pill text                                  |
-| `href`           | Pill href                                  |
+| Attributes       | Details                                           |
+| :--------------- | :------------------------------------------------ |
+| `<docs-pill-row` | Tüm pill'ler bir pill satırı içinde yer almalıdır |
+| `title`          | Pill metni                                        |
+| `href`           | Pill href'i                                       |
 
-Pills may also be used inline by themselves, but we haven't built that out yet.
+Pill'ler tek başlarına satır içi olarak da kullanılabilir, ancak henüz bunu geliştirmedik.
 
 ## Alerts
 
-Alerts are just special paragraphs. They are helpful to call out (not to be confused with call-out) something that's a bit more urgent. They gain font size from context and are available in many levels. Try not to use alerts to render too much content, but rather to enhance and call attention to surrounding content.
+Uyarılar sadece özel paragraflardır. Biraz daha acil olan bir şeyi vurgulamak (callout ile karıştırılmamalıdır) için kullanışlıdırlar. Yazı tipi boyutunu bağlamdan alırlar ve birçok seviyede mevcutturlar. Uyarıları çok fazla içerik oluşturmak için değil, çevredeki içeriği geliştirmek ve dikkat çekmek için kullanmaya çalışın.
 
-Style alerts starting on a new line in Markdown using the format `SEVERITY_LEVEL` + `:` + `ALERT_TEXT`.
+Uyarıları Markdown'da yeni bir satırda `CİDDİYET_SEVİYESİ` + `:` + `UYARI_METNİ` formatını kullanarak stilleyin.
 
-NOTE: Use Note for ancillary/additional information that's not _essential_ to the main text.
+NOTE: Not'u, ana metin için _gerekli_ olmayan ek/tamamlayıcı bilgiler için kullanın.
 
-TIP: Use Tip to call out a specific task/action users can perform, or a fact that plays directly into a task/action.
+TIP: İpucu'yu, kullanıcıların gerçekleştirebileceği belirli bir görev/eylemi veya doğrudan bir görev/eyleme etki eden bir gerçeği vurgulamak için kullanın.
 
-TODO: Use TODO for incomplete documentation that you plan to expand soon. You can also assign the TODO, e.g. TODO(emmatwersky): Text.
+TODO: TODO'yu, yakında genişletmeyi planladığınız eksik dokümantasyon için kullanın. TODO'yu atayabilirsiniz de, ör. TODO(emmatwersky): Metin.
 
-QUESTION: Use Question to pose a question to the reader, kind of like a mini-quiz that they should be able to answer.
+QUESTION: Soru'yu okuyucuya bir soru sormak için kullanın, yanıtlayabilmeleri gereken bir mini sınav gibi.
 
-SUMMARY: Use Summary to provide a two- or three-sentence synopsis of the page or section content, so readers can figure out whether this is the right place for them.
+SUMMARY: Özet'i, sayfanın veya bölümün içeriğinin iki veya üç cümlelik bir özetini sağlamak için kullanın, böylece okuyucular burası kendileri için doğru yer mi anlayabilirler.
 
-TLDR: Use TL;DR (or TLDR) if you can provide the essential information about a page or section in a sentence or two. For example, TLDR: Rhubarb is a cat.
+TLDR: Bir sayfa veya bölüm hakkındaki temel bilgileri bir veya iki cümlede sağlayabiliyorsanız ÖZ (veya TLDR) kullanın. Örneğin, TLDR: Rhubarb bir kedidir.
 
-CRITICAL: Use Critical to call out potential bad stuff or alert the reader they ought to be careful before doing something. For example, Warning: Running `rm` with the `-f` option will delete write-protected files or directories without prompting you.
+CRITICAL: Kritik'i, olası kötü durumları vurgulamak veya okuyucuyu bir şey yapmadan önce dikkatli olması gerektiği konusunda uyarmak için kullanın. Örneğin, Uyarı: `rm`'yi `-f` seçeneğiyle çalıştırmak, sizi uyarmadan yazma korumalı dosya veya dizinleri siler.
 
-IMPORTANT: Use Important for information that's crucial to comprehending the text or to completing some task.
+IMPORTANT: Önemli'yi, metni anlamak veya bir görevi tamamlamak için kritik olan bilgiler için kullanın.
 
-HELPFUL: Use Best practice to call out practices that are known to be successful or better than alternatives.
+HELPFUL: En iyi uygulamayı, başarılı olduğu bilinen veya alternatiflerden daha iyi olan uygulamaları vurgulamak için kullanın.
 
-NOTE: Heads up `developers`! Alerts _can_ have a [link](#alerts) and other nested styles (but try to **use this sparingly**)!.
+NOTE: Dikkat `geliştiriciler`! Uyarılar bir [bağlantı](#alerts) ve diğer iç içe stillere _sahip olabilir_ (ancak bunu **az kullanmaya** çalışın)!
 
 ## Code
 
-You can display `code` using the built in triple backtick:
+Yerleşik üçlü ters tırnak kullanarak `code` görüntüleyebilirsiniz:
 
 ```ts
 example code
 ```
 
-Or using the `<docs-code>` element.
+Veya `<docs-code>` öğesini kullanarak.
 
 <docs-code header="Your first example" language="ts" linenums>
 import { Component } from '@angular/core';
@@ -143,7 +143,7 @@ export class ComponentOverviewComponent {}
 
 ### Styling the example
 
-Here's a code example fully styled:
+İşte tam olarak stillendirilmiş bir kod örneği:
 
 <docs-code
   path="adev/src/content/examples/hello-world/src/app/app.component-old.ts"
@@ -155,13 +155,13 @@ Here's a code example fully styled:
   visibleLines="[3,10]">
 </docs-code>
 
-We also have styling for the terminal, just set the language as `shell`:
+Terminal için de stilimiz var, dili `shell` olarak ayarlamanız yeterli:
 
 ```shell
 npm install @angular/material --save
 ```
 
-You can style standard Markdown triple backticks with attributes for enhanced presentation:
+Geliştirilmiş sunum için standart Markdown üçlü ters tırnakları niteliklerle stillendirebilirsiniz:
 
 ```ts {header:"Awesome Title", linenums, highlight="[2]", hideCopy}
 console.log('Hello, World!');
@@ -170,24 +170,24 @@ console.log('Awesome Angular Docs!');
 
 #### `<docs-code>` Attributes
 
-| Attributes     | Type                 | Details                                                         |
-| :------------- | :------------------- | :-------------------------------------------------------------- |
-| code           | `string`             | Anything between tags is treated as code                        |
-| `path`         | `string`             | Path to code example (root: `content/examples/`)                |
-| `header`       | `string`             | Title of the example (default: `file-name`)                     |
-| `language`     | `string`             | code language                                                   |
-| `linenums`     | `boolean`            | (False) displays line numbers                                   |
-| `highlight`    | `string of number[]` | lines highlighted                                               |
-| `diff`         | `string`             | path to changed code                                            |
-| `visibleLines` | `string of number[]` | range of lines for collapse mode                                |
-| `region`       | `string`             | only show the provided region.                                  |
-| `preview`      | `boolean`            | (False) display preview                                         |
-| `hideCode`     | `boolean`            | (False) Whether to collapse code example by default.            |
-| `hideDollar`   | `boolean`            | (False) Whether to hide the dollar sign in shell code examples. |
+| Attributes     | Type                 | Details                                                                  |
+| :------------- | :------------------- | :----------------------------------------------------------------------- |
+| code           | `string`             | Etiketler arasındaki her şey kod olarak değerlendirilir                  |
+| `path`         | `string`             | Kod örneğinin yolu (kök: `content/examples/`)                            |
+| `header`       | `string`             | Örneğin başlığı (varsayılan: `file-name`)                                |
+| `language`     | `string`             | Kod dili                                                                 |
+| `linenums`     | `boolean`            | (False) satır numaralarını görüntüler                                    |
+| `highlight`    | `string of number[]` | Vurgulanan satırlar                                                      |
+| `diff`         | `string`             | Değiştirilmiş kodun yolu                                                 |
+| `visibleLines` | `string of number[]` | Daraltma modu için satır aralığı                                         |
+| `region`       | `string`             | Yalnızca belirtilen bölgeyi gösterir.                                    |
+| `preview`      | `boolean`            | (False) önizlemeyi görüntüler                                            |
+| `hideCode`     | `boolean`            | (False) Kod örneğinin varsayılan olarak daraltılıp daraltılmayacağı.     |
+| `hideDollar`   | `boolean`            | (False) Shell kod örneklerinde dolar işaretinin gizlenip gizlenmeyeceği. |
 
 ### Multifile examples
 
-You can create multifile examples by wrapping the examples inside a `<docs-code-multifile>`.
+Örnekleri bir `<docs-code-multifile>` içine sararak çoklu dosya örnekleri oluşturabilirsiniz.
 
 <docs-code-multifile
   path="adev/src/content/examples/hello-world/src/app/app.component.ts"
@@ -202,23 +202,23 @@ You can create multifile examples by wrapping the examples inside a `<docs-code-
 
 #### `<docs-code-multifile>` Attributes
 
-| Attributes    | Type      | Details                                                         |
-| :------------ | :-------- | :-------------------------------------------------------------- |
-| body contents | `string`  | nested tabs of `docs-code` examples                             |
-| `path`        | `string`  | Path to code example for preview and external link              |
-| `preview`     | `boolean` | (False) display preview                                         |
-| `hideCode`    | `boolean` | (False) Whether to collapse code example by default.            |
-| `hideDollar`  | `boolean` | (False) Whether to hide the dollar sign in shell code examples. |
+| Attributes    | Type      | Details                                                                  |
+| :------------ | :-------- | :----------------------------------------------------------------------- |
+| body contents | `string`  | İç içe geçmiş `docs-code` örnek sekmeleri                                |
+| `path`        | `string`  | Önizleme ve harici bağlantı için kod örneğinin yolu                      |
+| `preview`     | `boolean` | (False) önizlemeyi görüntüler                                            |
+| `hideCode`    | `boolean` | (False) Kod örneğinin varsayılan olarak daraltılıp daraltılmayacağı.     |
+| `hideDollar`  | `boolean` | (False) Shell kod örneklerinde dolar işaretinin gizlenip gizlenmeyeceği. |
 
 ### Adding `preview` to your code example
 
-Adding the `preview` flag builds a running example of the code below the code snippet. This also automatically adds a button to open the running example in Stackblitz.
+`preview` bayrağını eklemek, kod parçacığının altında kodun çalışan bir örneğini oluşturur. Bu ayrıca otomatik olarak çalışan örneği Stackblitz'de açmak için bir düğme ekler.
 
-NOTE: `preview` only works with standalone.
+NOTE: `preview` yalnızca standalone ile çalışır.
 
 ### Styling example previews with Tailwind CSS
 
-Tailwind utility classes can be used within code examples.
+Tailwind yardımcı sınıfları kod örnekleri içinde kullanılabilir.
 
 <docs-code-multifile
   path="adev/src/content/examples/hello-world/src/app/tailwind-app.component.ts"
@@ -246,24 +246,24 @@ Tailwind utility classes can be used within code examples.
 
 ## Workflow
 
-Style numbered steps using `<docs-step>`. Numbering is created using CSS (handy!).
+Numaralı adımları `<docs-step>` kullanarak stillendirin. Numaralandırma CSS kullanılarak oluşturulur (kullanışlı!).
 
 ### `<docs-workflow>` and `<docs-step>` Attributes
 
-| Attributes         | Details                                           |
-| :----------------- | :------------------------------------------------ |
-| `<docs-workflow>`  | All steps must be nested inside a workflow        |
-| `title`            | Step title                                        |
-| step body contents | Anything between `<docs-step>` and `</docs-step>` |
+| Attributes         | Details                                            |
+| :----------------- | :------------------------------------------------- |
+| `<docs-workflow>`  | Tüm adımlar bir iş akışı içinde yer almalıdır      |
+| `title`            | Adım başlığı                                       |
+| step body contents | `<docs-step>` ve `</docs-step>` arasındaki her şey |
 
-Steps must start on a new line, and can contain `docs-code`s and other nested elements and styles.
+Adımlar yeni bir satırda başlamalıdır ve `docs-code` öğeleri ile diğer iç içe öğeleri ve stilleri içerebilir.
 
 <docs-workflow>
 
 <docs-step title="Install the Angular CLI">
-  You use the Angular CLI to create projects, generate application and library code, and perform a variety of ongoing development tasks such as testing, bundling, and deployment.
+  Projeler oluşturmak, uygulama ve kütüphane kodu üretmek ve test etme, paketleme ve dağıtım gibi çeşitli devam eden geliştirme görevlerini gerçekleştirmek için Angular CLI'ı kullanırsınız.
 
-To install the Angular CLI, open a terminal window and run the following command:
+Angular CLI'ı yüklemek için bir terminal penceresi açın ve aşağıdaki komutu çalıştırın:
 
 ```shell
 npm install -g @angular/cli
@@ -272,42 +272,42 @@ npm install -g @angular/cli
 </docs-step>
 
 <docs-step title="Create a workspace and initial application">
-  You develop apps in the context of an Angular workspace.
+  Uygulamaları bir Angular çalışma alanı bağlamında geliştirirsiniz.
 
-To create a new workspace and initial starter app:
+Yeni bir çalışma alanı ve başlangıç uygulaması oluşturmak için:
 
-- Run the CLI command `ng new` and provide the name `my-app`, as shown here:
+- CLI komutu `ng new`'i çalıştırın ve burada gösterildiği gibi `my-app` adını verin:
 
   ```shell
   ng new my-app
   ```
 
-- The ng new command prompts you for information about features to include in the initial app. Accept the defaults by pressing the Enter or Return key.
+- ng new komutu, başlangıç uygulamasına dahil edilecek özellikler hakkında bilgi ister. Enter veya Return tuşuna basarak varsayılanları kabul edin.
 
-  The Angular CLI installs the necessary Angular npm packages and other dependencies. This can take a few minutes.
+  Angular CLI, gerekli Angular npm paketlerini ve diğer bağımlılıkları yükler. Bu birkaç dakika sürebilir.
 
-  The CLI creates a new workspace and a simple Welcome app, ready to run.
+  CLI, yeni bir çalışma alanı ve çalışmaya hazır basit bir Karşılama uygulaması oluşturur.
   </docs-step>
 
 <docs-step title="Run the application">
-  The Angular CLI includes a server, for you to build and serve your app locally.
+  Angular CLI, uygulamanızı yerel olarak derlemek ve sunmak için bir sunucu içerir.
 
-1. Navigate to the workspace folder, such as `my-app`.
-2. Run the following command:
+1. `my-app` gibi çalışma alanı klasörüne gidin.
+2. Aşağıdaki komutu çalıştırın:
 
    ```shell
    cd my-app
    ng serve --open
    ```
 
-The `ng serve` command launches the server, watches your files, and rebuilds the app as you make changes to those files.
+`ng serve` komutu sunucuyu başlatır, dosyalarınızı izler ve bu dosyalarda değişiklik yaptığınızda uygulamayı yeniden derler.
 
-The `--open` (or just `-o`) option automatically opens your browser to <http://localhost:4200/>.
-If your installation and setup was successful, you should see a page similar to the following.
+`--open` (veya sadece `-o`) seçeneği tarayıcınızı otomatik olarak <http://localhost:4200/> adresinde açar.
+Kurulumunuz ve yapılandırmanız başarılıysa, aşağıdakine benzer bir sayfa görmeniz gerekir.
 </docs-step>
 
 <docs-step title="Final step">
-  That's all the docs components! Now:
+  Tüm dokümantasyon bileşenleri bu kadar! Şimdi:
 
   <docs-pill-row>
     <docs-pill href="#pill-row" title="Go"/>
@@ -321,7 +321,7 @@ If your installation and setup was successful, you should see a page similar to 
 
 ## Images and video
 
-You can add images using the semantic Markdown image:
+Semantik Markdown resmi kullanarak resim ekleyebilirsiniz:
 
 ![Rhubarb the cat](assets/images/kitchen-sink/rhubarb.jpg 'Optional title')
 
@@ -335,13 +335,13 @@ You can add images using the semantic Markdown image:
 ![Lazy loaded image](assets/images/kitchen-sink/rhubarb.jpg {loading: 'lazy'})
 ![Combined attributes](assets/images/kitchen-sink/rhubarb.jpg#small {loading: 'lazy', decoding: 'async', fetchpriority: 'low'})
 
-Embedded videos are created with `docs-video` and just need a `src` and `alt`:
+Gömülü videolar `docs-video` ile oluşturulur ve yalnızca bir `src` ve `alt` gerektirir:
 
 <docs-video src="https://www.youtube.com/embed/O47uUnJjbJc" alt=""/>
 
 ## Charts & Graphs
 
-Write diagrams and charts using [Mermaid](http://mermaid.js.org/) by setting the code language to `mermaid`, all theming is built-in.
+Kod dilini `mermaid` olarak ayarlayarak [Mermaid](http://mermaid.js.org/) kullanarak diyagramlar ve grafikler yazın, tüm tema desteği yerleşiktir.
 
 ```mermaid
     graph TD;
@@ -368,11 +368,11 @@ Write diagrams and charts using [Mermaid](http://mermaid.js.org/) by setting the
 
 ## Horizontal Line Divider
 
-This can be used to separate page sections, like we're about to do below. These styles will be added by default, nothing custom needed.
+Bu, sayfa bölümlerini ayırmak için kullanılabilir, aşağıda yapacağımız gibi. Bu stiller varsayılan olarak eklenecektir, özel bir şey gerekmez.
 
 <hr/>
 
-The end!
+Son!
 
 ## Prefer / Avoid
 

@@ -2,6 +2,6 @@
 
 <docs-card-container>
   <docs-card title="NgModules" link="Learn more" href="guide/ngmodules">
-    NgModules is a concept that commonly used in architecture v16 and earlier to help configure the injector and the compiler and help organize related things together.
+    NgModules, v16 ve önceki mimarilerde enjektörü ve derleyiciyi yapılandırmaya ve ilgili öğeleri bir arada düzenlemeye yardımcı olmak için yaygın olarak kullanılan bir kavramdır.
   </docs-card>
 </docs-card-container>

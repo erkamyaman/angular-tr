@@ -1,11 +1,11 @@
 # Angular Language Service
 
-The Angular Language Service provides code editors with a way to get completions, errors, hints, and navigation inside Angular templates.
-It works with external templates in separate HTML files, and also with in-line templates.
+Angular Dil Servisi, kod editörlerine Angular şablonları içinde tamamlamalar, hatalar, ipuçları ve navigasyon elde etme imkanı sağlar.
+Ayrı HTML dosyalarındaki harici şablonlarla ve satır içi şablonlarla çalışır.
 
 ## Configuring compiler options for the Angular Language Service
 
-To enable the latest Language Service features, set the `strictTemplates` option in `tsconfig.json` by setting `strictTemplates` to `true`, as shown in the following example:
+En son Dil Servisi özelliklerini etkinleştirmek için, aşağıdaki örnekte gösterildiği gibi `tsconfig.json` dosyasında `strictTemplates` seçeneğini `true` olarak ayarlayın:
 
 ```json
 
@@ -15,87 +15,87 @@ To enable the latest Language Service features, set the `strictTemplates` option
 
 ```
 
-For more information, see the [Angular compiler options](reference/configs/angular-compiler-options) guide.
+Daha fazla bilgi için [Angular compiler options](reference/configs/angular-compiler-options) kılavuzuna bakın.
 
 ## Features
 
-Your editor autodetects that you are opening an Angular file.
-It then uses the Angular Language Service to read your `tsconfig.json` file, find all the templates you have in your application, and then provide language services for any templates that you open.
+Editörünüz bir Angular dosyası açtığınızı otomatik olarak algılar.
+Ardından `tsconfig.json` dosyanızı okumak, uygulamanızdaki tüm şablonları bulmak ve açtığınız herhangi bir şablon için dil hizmetleri sağlamak üzere Angular Dil Servisi'ni kullanır.
 
-Language services include:
+Dil hizmetleri şunları içerir:
 
-- Completions lists
-- AOT Diagnostic messages
-- Quick info
-- Go to definition
+- Tamamlama listeleri
+- AOT Tanılama mesajları
+- Hızlı bilgi
+- Tanıma git
 
 ### Autocompletion
 
-Autocompletion can speed up your development time by providing you with contextual possibilities and hints as you type.
-This example shows autocomplete in an interpolation.
-As you type it out, you can press tab to complete.
+Otomatik tamamlama, yazarken bağlamsal olasılıklar ve ipuçları sunarak geliştirme sürenizi hızlandırabilir.
+Bu örnek, bir enterpolasyondaki otomatik tamamlamayı göstermektedir.
+Yazarken tamamlamak için sekme tuşuna basabilirsiniz.
 
 <img alt="autocompletion" src="assets/images/guide/language-service/language-completion.gif">
 
-There are also completions within elements.
-Any elements you have as a component selector will show up in the completion list.
+Öğeler içinde de tamamlamalar mevcuttur.
+Bileşen seçici olarak sahip olduğunuz tüm öğeler tamamlama listesinde görünür.
 
 ### Error checking
 
-The Angular Language Service can forewarn you of mistakes in your code.
-In this example, Angular doesn't know what `orders` is or where it comes from.
+Angular Dil Servisi, kodunuzdaki hataları önceden size bildirebilir.
+Bu örnekte Angular, `orders`'ın ne olduğunu veya nereden geldiğini bilmiyor.
 
 <img alt="error checking" src="assets/images/guide/language-service/language-error.gif">
 
 ### Quick info and navigation
 
-The quick-info feature lets you hover to see where components, directives, and modules come from.
-You can then click "Go to definition" or press F12 to go directly to the definition.
+Hızlı bilgi özelliği, bileşenlerin, direktiflerin ve modüllerin nereden geldiğini görmek için üzerine gelmenize olanak tanır.
+Ardından doğrudan tanıma gitmek için "Go to definition" seçeneğine tıklayabilir veya F12 tuşuna basabilirsiniz.
 
 <img alt="navigation" src="assets/images/guide/language-service/language-navigation.gif">
 
 ## Angular Language Service in your editor
 
-Angular Language Service is currently available as an extension for [Visual Studio Code](https://code.visualstudio.com), [WebStorm](https://www.jetbrains.com/webstorm), [Sublime Text](https://www.sublimetext.com), [Zed](https://zed.dev), [Neovim](https://neovim.io), and [Eclipse IDE](https://www.eclipse.org/eclipseide).
+Angular Dil Servisi şu anda [Visual Studio Code](https://code.visualstudio.com), [WebStorm](https://www.jetbrains.com/webstorm), [Sublime Text](https://www.sublimetext.com), [Zed](https://zed.dev), [Neovim](https://neovim.io) ve [Eclipse IDE](https://www.eclipse.org/eclipseide) için bir uzantı olarak mevcuttur.
 
 ### Visual Studio Code
 
-In [Visual Studio Code](https://code.visualstudio.com), install the extension from the [Extensions: Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template).
-Open the marketplace from the editor using the Extensions icon on the left menu pane, or use VS Quick Open \(⌘+P on Mac, CTRL+P on Windows\) and type "? ext".
-In the marketplace, search for Angular Language Service extension, and click the **Install** button.
+[Visual Studio Code](https://code.visualstudio.com) içinde, uzantıyı [Extensions: Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)'ten yükleyin.
+Sol menü panelindeki Uzantılar simgesini kullanarak editörden marketplace'i açın veya VS Quick Open \(Mac'te ⌘+P, Windows'ta CTRL+P\) kullanın ve "? ext" yazın.
+Marketplace'te Angular Language Service uzantısını arayın ve **Install** düğmesine tıklayın.
 
-The Visual Studio Code integration with the Angular language service is maintained and distributed by the Angular team.
+Visual Studio Code'un Angular dil servisi ile entegrasyonu Angular ekibi tarafından sürdürülmekte ve dağıtılmaktadır.
 
 ### Visual Studio
 
-In [Visual Studio](https://visualstudio.microsoft.com), install the extension from the [Extensions: Marketplace](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.AngularLanguageService).
-Open the marketplace from the editor selecting Extensions on the top menu pane, and then selecting Manage Extensions.
-In the marketplace, search for Angular Language Service extension, and click the **Install** button.
+[Visual Studio](https://visualstudio.microsoft.com) içinde, uzantıyı [Extensions: Marketplace](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.AngularLanguageService)'ten yükleyin.
+Üst menü panelinden Extensions'ı ve ardından Manage Extensions'ı seçerek editörden marketplace'i açın.
+Marketplace'te Angular Language Service uzantısını arayın ve **Install** düğmesine tıklayın.
 
-The Visual Studio integration with the Angular language service is maintained and distributed by Microsoft with help from the Angular team.
-Check out the project [here](https://github.com/microsoft/vs-ng-language-service).
+Visual Studio'nun Angular dil servisi ile entegrasyonu, Angular ekibinin yardımıyla Microsoft tarafından sürdürülmekte ve dağıtılmaktadır.
+Projeye [buradan](https://github.com/microsoft/vs-ng-language-service) göz atabilirsiniz.
 
 ### WebStorm
 
-In [WebStorm](https://www.jetbrains.com/webstorm), enable the plugin [Angular and AngularJS](https://plugins.jetbrains.com/plugin/6971-angular-and-angularjs).
+[WebStorm](https://www.jetbrains.com/webstorm) içinde, [Angular and AngularJS](https://plugins.jetbrains.com/plugin/6971-angular-and-angularjs) eklentisini etkinleştirin.
 
-Since WebStorm 2019.1, the `@angular/language-service` is not required anymore and should be removed from your `package.json`.
+WebStorm 2019.1'den itibaren `@angular/language-service` artık gerekli değildir ve `package.json` dosyanızdan kaldırılmalıdır.
 
 ### Sublime Text
 
-In [Sublime Text](https://www.sublimetext.com), the Language Service supports only in-line templates when installed as a plug-in.
-You need a custom Sublime plug-in \(or modifications to the current plug-in\) for completions in HTML files.
+[Sublime Text](https://www.sublimetext.com) içinde, Dil Servisi eklenti olarak yüklendiğinde yalnızca satır içi şablonları destekler.
+HTML dosyalarındaki tamamlamalar için özel bir Sublime eklentisine \(veya mevcut eklentide değişikliklere\) ihtiyacınız vardır.
 
-To use the Language Service for in-line templates, you must first add an extension to allow TypeScript, then install the Angular Language Service plug-in.
-Starting with TypeScript 2.3, TypeScript has a plug-in model that the language service can use.
+Satır içi şablonlar için Dil Servisi'ni kullanmak üzere önce TypeScript'e izin veren bir uzantı eklemeniz, ardından Angular Language Service eklentisini yüklemeniz gerekir.
+TypeScript 2.3'ten itibaren TypeScript, dil servisinin kullanabileceği bir eklenti modeline sahiptir.
 
-1. Install the latest version of TypeScript in a local `node_modules` directory:
+1. TypeScript'in en son sürümünü yerel bir `node_modules` dizinine yükleyin:
 
    ```shell
    npm install --save-dev typescript
    ```
 
-1. Install the Angular Language Service package in the same location:
+1. Angular Language Service paketini aynı konuma yükleyin:
 
    ```shell
 
@@ -103,7 +103,7 @@ Starting with TypeScript 2.3, TypeScript has a plug-in model that the language s
 
    ```
 
-1. Once the package is installed, add the following to the `"compilerOptions"` section of your project's `tsconfig.json`.
+1. Paket yüklendikten sonra, projenizin `tsconfig.json` dosyasının `"compilerOptions"` bölümüne aşağıdakini ekleyin.
 
    ```json {header:"tsconfig.json"}
    "plugins": [
@@ -111,7 +111,7 @@ Starting with TypeScript 2.3, TypeScript has a plug-in model that the language s
    ]
    ```
 
-1. In your editor's user preferences \(`Cmd+,` or `Ctrl+,`\), add the following:
+1. Editörünüzün kullanıcı tercihlerinde \(`Cmd+,` veya `Ctrl+,`\), aşağıdakini ekleyin:
 
    ```json {header:"Sublime Text user preferences"}
 
@@ -119,25 +119,25 @@ Starting with TypeScript 2.3, TypeScript has a plug-in model that the language s
 
    ```
 
-This lets the Angular Language Service provide diagnostics and completions in `.ts` files.
+Bu, Angular Dil Servisi'nin `.ts` dosyalarında tanılama ve tamamlamalar sağlamasına olanak tanır.
 
 ### Eclipse IDE
 
-Either directly install the "Eclipse IDE for Web and JavaScript developers" package which comes with the Angular Language Server included, or from other Eclipse IDE packages, use Help > Eclipse Marketplace to find and install [Eclipse Wild Web Developer](https://marketplace.eclipse.org/content/wild-web-developer-html-css-javascript-typescript-nodejs-angular-json-yaml-kubernetes-xml).
+Doğrudan Angular Language Server'ı içeren "Eclipse IDE for Web and JavaScript developers" paketini yükleyin veya diğer Eclipse IDE paketlerinden Help > Eclipse Marketplace'i kullanarak [Eclipse Wild Web Developer](https://marketplace.eclipse.org/content/wild-web-developer-html-css-javascript-typescript-nodejs-angular-json-yaml-kubernetes-xml)'ı bulup yükleyin.
 
 ### Neovim
 
 #### Conquer of Completion with Node.js
 
-The Angular Language Service uses the tsserver, which doesn't follow the LSP specifications exactly. Therefore if you are using neovim or vim with JavaScript or TypeScript or Angular you may find that [Conquer of Completion](https://github.com/neoclide/coc.nvim) (COC) has the fullest implementation of the Angular Language Service and the tsserver. This is because COC ports the VSCode implementation of the tsserver which accommodates the tsserver's implementation.
+Angular Dil Servisi, LSP spesifikasyonlarını tam olarak takip etmeyen tsserver'ı kullanır. Bu nedenle, JavaScript veya TypeScript veya Angular ile neovim veya vim kullanıyorsanız, [Conquer of Completion](https://github.com/neoclide/coc.nvim) (COC)'un Angular Dil Servisi ve tsserver'ın en kapsamlı uygulamasına sahip olduğunu görebilirsiniz. Bunun nedeni, COC'un tsserver'ın uygulamasını barındıran VSCode tsserver uygulamasını taşımasıdır.
 
 1. [Setup coc.nvim](https://github.com/neoclide/coc.nvim)
 
-2. Configure the Angular Language Service
+2. Angular Dil Servisi'ni yapılandırın
 
-   Once installed run the `CocConfig` vim command line command to open the config file `coc-settings.json` and add the angular property.
+   Yüklendikten sonra `CocConfig` vim komut satırı komutunu çalıştırarak `coc-settings.json` yapılandırma dosyasını açın ve angular özelliğini ekleyin.
 
-   Make sure to substitute the correct paths to your global `node_modules` such that they go to directories which contain `tsserver` and the `ngserver` respectively.
+   Global `node_modules` dizinlerinize giden doğru yolları, sırasıyla `tsserver` ve `ngserver` içeren dizinlere gidecek şekilde değiştirdiğinizden emin olun.
 
    ```json {header:"CocConfig example file coc-settings.json"}
    {
@@ -158,11 +158,11 @@ The Angular Language Service uses the tsserver, which doesn't follow the LSP spe
    }
    ```
 
-HELPFUL: `/usr/local/lib/node_modules/typescript/lib` and `/usr/local/lib/node_modules/@angular/language-server/bin` above should point to the location of your global node modules, which may be different.
+HELPFUL: Yukarıdaki `/usr/local/lib/node_modules/typescript/lib` ve `/usr/local/lib/node_modules/@angular/language-server/bin` yolları, global node modüllerinizin konumuna işaret etmelidir ve bu konum farklı olabilir.
 
 #### Built In Neovim LSP
 
-Angular Language Service can be used with Neovim by using the [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) plugin.
+Angular Dil Servisi, [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) eklentisi kullanılarak Neovim ile birlikte kullanılabilir.
 
 1. [Install nvim-lspconfig](https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#install)
 
@@ -170,24 +170,24 @@ Angular Language Service can be used with Neovim by using the [nvim-lspconfig](h
 
 ### Zed
 
-In [Zed](https://zed.dev), install the extension from [Extensions: Marketplace](https://zed.dev/extensions/angular).
+[Zed](https://zed.dev) içinde, uzantıyı [Extensions: Marketplace](https://zed.dev/extensions/angular)'ten yükleyin.
 
 ## How the Language Service works
 
-When you use an editor with a language service, the editor starts a separate language-service process and communicates with it through an [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call), using the [Language Server Protocol](https://microsoft.github.io/language-server-protocol).
-When you type into the editor, the editor sends information to the language-service process to track the state of your project.
+Bir dil servisi olan bir editör kullandığınızda, editör ayrı bir dil servisi süreci başlatır ve [Language Server Protocol](https://microsoft.github.io/language-server-protocol) kullanarak bir [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) aracılığıyla onunla iletişim kurar.
+Editöre yazdığınızda, editör projenizin durumunu takip etmek için dil servisi sürecine bilgi gönderir.
 
-When you trigger a completion list within a template, the editor first parses the template into an HTML [abstract syntax tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
-The Angular compiler interprets that tree to determine the context: which module the template is part of, the current scope, the component selector, and where your cursor is in the template AST.
-It can then determine the symbols that could potentially be at that position.
+Bir şablon içinde tamamlama listesini tetiklediğinizde, editör önce şablonu bir HTML [soyut sözdizimi ağacına (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ayrıştırır.
+Angular derleyicisi, bağlamı belirlemek için bu ağacı yorumlar: şablonun hangi modülün parçası olduğunu, mevcut kapsamı, bileşen seçicisini ve imlecinizin şablon AST'sinde nerede olduğunu belirler.
+Ardından o konumda potansiyel olarak bulunabilecek sembolleri belirleyebilir.
 
-It's a little more involved if you are in an interpolation.
-If you have an interpolation of `{{data.---}}` inside a `div` and need the completion list after `data.---`, the compiler can't use the HTML AST to find the answer.
-The HTML AST can only tell the compiler that there is some text with the characters "`{{data.---}}`".
-That's when the template parser produces an expression AST, which resides within the template AST.
-The Angular Language Services then looks at `data.---` within its context, asks the TypeScript Language Service what the members of `data` are, and returns the list of possibilities.
+Bir enterpolasyon içindeyseniz durum biraz daha karmaşıktır.
+Bir `div` içinde `{{data.---}}` enterpolasyonunuz varsa ve `data.---`'den sonraki tamamlama listesine ihtiyacınız varsa, derleyici cevabı bulmak için HTML AST'sini kullanamaz.
+HTML AST'si derleyiciye yalnızca "`{{data.---}}`" karakterlerine sahip bir metin olduğunu söyleyebilir.
+İşte bu noktada şablon ayrıştırıcısı, şablon AST'si içinde bulunan bir ifade AST'si üretir.
+Angular Dil Servisleri daha sonra bağlamı içinde `data.---`'e bakar, TypeScript Dil Servisi'ne `data`'nın üyelerinin ne olduğunu sorar ve olasılıkların listesini döndürür.
 
 ## More information
 
-- For more in-depth information on the implementation, see the [Angular Language Service source](https://github.com/angular/angular/blob/main/packages/language-service/src)
-- For more on the design considerations and intentions, see [design documentation here](https://github.com/angular/vscode-ng-language-service/wiki/Design)
+- Uygulama hakkında daha ayrıntılı bilgi için [Angular Language Service source](https://github.com/angular/angular/blob/main/packages/language-service/src) sayfasına bakın
+- Tasarım kararları ve niyetleri hakkında daha fazla bilgi için [design documentation here](https://github.com/angular/vscode-ng-language-service/wiki/Design) sayfasına bakın

@@ -3,7 +3,7 @@
 
 ## Overview
 
-A pattern that combines readonly combobox with listbox to create single-selection dropdowns with keyboard navigation and screen reader support.
+Klavye navigasyonu ve ekran okuyucu destegi ile tek secimli acilir menuler olusturmak icin salt okunur combobox'i listbox ile birlestiren bir kalip.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -33,39 +33,39 @@ A pattern that combines readonly combobox with listbox to create single-selectio
 
 ## Usage
 
-The select pattern works best when users need to choose a single value from a familiar set of options.
+Select kalibi, kullanicilarin bilinen bir secenek kumesinden tek bir deger secmesi gerektiginde en iyi calisir.
 
-Consider using this pattern when:
+Su durumlarda bu kalibi kullanmayi dusunun:
 
-- **The option list is fixed** (fewer than 20 items) - Users can scan and choose without filtering
-- **Options are familiar** - Users recognize the choices without needing to search
-- **Forms need standard fields** - Country, state, category, or status selection
-- **Settings and configuration** - Dropdown menus for preferences or options
-- **Clear option labels** - Each choice has a distinct, scannable name
+- **Secenek listesi sabit** (20'den az oge) - Kullanicilar filtrelemeye gerek kalmadan tarayip secebilir
+- **Secenekler bilinir** - Kullanicilar arama yapmadan secimleri tanir
+- **Formlar standart alanlar gerektiriyor** - Ulke, il, kategori veya durum secimi
+- **Ayarlar ve yapilandirma** - Tercihler veya secenekler icin acilir menuler
+- **Acik secenek etiketleri** - Her secimin belirgin, taranabilir bir adi var
 
-Avoid this pattern when:
+Su durumlarda bu kaliptan kacinin:
 
-- **The list has more than 20 items** - Use the [Autocomplete pattern](guide/aria/autocomplete) for better filtering
-- **Users need to search options** - [Autocomplete](guide/aria/autocomplete) provides text input and filtering
-- **Multiple selection is needed** - Use the [Multiselect pattern](guide/aria/multiselect) instead
-- **Very few options exist (2-3)** - Radio buttons provide better visibility of all choices
+- **Liste 20'den fazla oge icerir** - Daha iyi filtreleme icin [Autocomplete kalibini](guide/aria/autocomplete) kullanin
+- **Kullanicilarin secenekleri aramasi gerekiyor** - [Autocomplete](guide/aria/autocomplete) metin girisi ve filtreleme saglar
+- **Coklu secim gerekli** - Bunun yerine [Multiselect kalibini](guide/aria/multiselect) kullanin
+- **Cok az secenek var (2-3)** - Radyo butonlari tum secimlerin daha iyi gorunurlugunu saglar
 
 ## Features
 
-The select pattern combines [Combobox](guide/aria/combobox) and [Listbox](guide/aria/listbox) directives to provide a fully accessible dropdown with:
+Select kalibi, tam erisilebilir bir acilir menu saglamak icin [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yonergelerini birlestirir:
 
-- **Keyboard Navigation** - Navigate options with arrow keys, select with Enter, close with Escape
-- **Screen Reader Support** - Built-in ARIA attributes for assistive technologies
-- **Custom Display** - Show selected values with icons, formatting, or rich content
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
-- **Smart Positioning** - CDK Overlay handles viewport edges and scrolling
-- **Bidirectional Text Support** - Automatically handles right-to-left (RTL) languages
+- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Enter ile secin, Escape ile kapatin
+- **Ekran Okuyucu Destegi** - Yardimci teknolojiler icin yerlesik ARIA nitelikleri
+- **Ozel Gorunum** - Secili degerleri simgeler, bicimlendirme veya zengin icerikle gosterin
+- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
+- **Akilli Konumlandirma** - CDK Overlay gorunum alani kenarlarini ve kaydirmayi yonetir
+- **Cift Yonlu Metin Destegi** - Sagdan sola (RTL) dilleri otomatik olarak isler
 
 ## Examples
 
 ### Basic select
 
-Users need a standard dropdown to choose from a list of values. A readonly combobox paired with a listbox provides the familiar select experience with full accessibility support.
+Kullanicilarin bir degerler listesinden secim yapmak icin standart bir acilir menuye ihtiyaci vardir. Salt okunur combobox, listbox ile eslestirildiginde, tam erisilebilirlik destegi ile tanidik select deneyimi saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -93,11 +93,11 @@ Users need a standard dropdown to choose from a list of values. A readonly combo
   </docs-tab>
 </docs-tab-group>
 
-The `readonly` attribute on `ngCombobox` prevents text input while preserving keyboard navigation. Users interact with the dropdown using arrow keys and Enter, just like a native select element.
+`ngCombobox` uzerindeki `readonly` niteligi, klavye navigasyonunu korurken metin girisini engeller. Kullanicilar, yerel select elemani gibi ok tuslari ve Enter kullanarak acilir menuyle etkilesir.
 
 ### Select with custom display
 
-Options often need visual indicators like icons or badges to help users identify choices quickly. Custom templates within options allow rich formatting while maintaining accessibility.
+Seceneklerin genellikle kullanicilarin secimleri hizla tanimasina yardimci olacak simgeler veya rozetler gibi gorsel gostergelere ihtiyaci vardir. Secenekler icindeki ozel sablonlar, erisilebilirligi korurken zengin bicimlendirme saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -125,11 +125,11 @@ Options often need visual indicators like icons or badges to help users identify
   </docs-tab>
 </docs-tab-group>
 
-Each option displays an icon alongside the label. The selected value updates to show the chosen option's icon and text, providing clear visual feedback.
+Her secenek etiketin yaninda bir simge gosterir. Secili deger, secilen secenegin simgesini ve metnini gostermek uzere guncellenir ve net gorsel geri bildirim saglar.
 
 ### Disabled select
 
-Selects can be disabled to prevent user interaction when certain form conditions aren't met. The disabled state provides visual feedback and prevents keyboard interaction.
+Belirli form kosullari karsilanmadiginda kullanici etkilesimini engellemek icin select'ler devre disi birakilabilir. Devre disi durumu gorsel geri bildirim saglar ve klavye etkilesimini engeller.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -157,37 +157,37 @@ Selects can be disabled to prevent user interaction when certain form conditions
   </docs-tab>
 </docs-tab-group>
 
-When disabled, the select shows a disabled visual state and blocks all user interaction. Screen readers announce the disabled state to assistive technology users.
+Devre disi birakildiginda, select devre disi gorsel durum gosterir ve tum kullanici etkilesimini engeller. Ekran okuyuculari yardimci teknoloji kullanicilarina devre disi durumunu duyurur.
 
 ## APIs
 
-The select pattern uses the following directives from Angular's Aria library. See the full API documentation in the linked guides.
+Select kalibi, Angular'in Aria kutuphanesindeki asagidaki yonergeleri kullanir. Baglantili rehberlerdeki tam API dokumantasyonuna bakin.
 
 ### Combobox Directives
 
-The select pattern uses `ngCombobox` with the `readonly` attribute to prevent text input while preserving keyboard navigation.
+Select kalibi, klavye navigasyonunu korurken metin girisini engellemek icin `readonly` niteligi ile `ngCombobox` kullanir.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                               |
-| ---------- | --------- | ------- | ----------------------------------------- |
-| `readonly` | `boolean` | `false` | Set to `true` to create dropdown behavior |
-| `disabled` | `boolean` | `false` | Disables the entire select                |
+| Property   | Type      | Default | Description                                                   |
+| ---------- | --------- | ------- | ------------------------------------------------------------- |
+| `readonly` | `boolean` | `false` | Acilir menu davranisi olusturmak icin `true` olarak ayarlayin |
+| `disabled` | `boolean` | `false` | Tum select'i devre disi birakir                               |
 
-See the [Combobox API documentation](guide/aria/combobox#apis) for complete details on all available inputs and signals.
+Mevcut tum girisler ve sinyaller hakkinda eksiksiz bilgi icin [Combobox API dokumantasyonuna](guide/aria/combobox#apis) bakin.
 
 ### Listbox Directives
 
-The select pattern uses `ngListbox` for the dropdown list and `ngOption` for each selectable item.
+Select kalibi, acilir liste icin `ngListbox` ve her secilebilir oge icin `ngOption` kullanir.
 
 #### Model
 
-| Property | Type    | Description                                                                  |
-| -------- | ------- | ---------------------------------------------------------------------------- |
-| `values` | `any[]` | Two-way bindable array of selected values (contains single value for select) |
+| Property | Type    | Description                                                                    |
+| -------- | ------- | ------------------------------------------------------------------------------ |
+| `values` | `any[]` | Secili degerlerin iki yonlu baglanabilir dizisi (select icin tek deger icerir) |
 
-See the [Listbox API documentation](guide/aria/listbox#apis) for complete details on listbox configuration, selection modes, and option properties.
+Listbox yapilandirmasi, secim modlari ve secenek ozellikleri hakkinda eksiksiz bilgi icin [Listbox API dokumantasyonuna](guide/aria/listbox#apis) bakin.
 
 ### Positioning
 
-The select pattern integrates with [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) for smart positioning. Use `cdkConnectedOverlay` to handle viewport edges and scrolling automatically.
+Select kalibi, akilli konumlandirma icin [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Gorunum alani kenarlarini ve kaydirmayi otomatik olarak yonetmek icin `cdkConnectedOverlay` kullanin.

@@ -1,22 +1,22 @@
 # Add form submission
 
-Finally, let's learn how to handle form submission. You'll learn how to use the `submit()` function to run async operations when the form is valid, and disable the submit button when the form has errors.
+Son olarak, form gönderimini nasıl yöneteceğimizi öğrenelim. Form geçerli olduğunda asenkron işlemleri çalıştırmak için `submit()` fonksiyonunu kullanmayı ve formda hatalar olduğunda gönder düğmesini devre dışı bırakmayı öğreneceksiniz.
 
-In this activity, you'll learn how to:
+Bu aktivitede şunları öğreneceksiniz:
 
-- Import the `submit()` function
-- Create a submission handler method
-- Use `submit()` to run logic only when valid
-- Disable the submit button based on form state
+- `submit()` fonksiyonunu içe aktarma
+- Bir gönderim işleyici metodu oluşturma
+- Yalnızca geçerli olduğunda mantık çalıştırmak için `submit()` kullanma
+- Form durumuna göre gönder düğmesini devre dışı bırakma
 
-Let's complete the form!
+Formu tamamlayalım!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import the submit function">
-Import the `submit` function from `@angular/forms/signals`:
+`@angular/forms/signals` paketinden `submit` fonksiyonunu içe aktarın:
 
 ```ts
 import {form, FormField, required, email, submit} from '@angular/forms/signals';
@@ -25,7 +25,7 @@ import {form, FormField, required, email, submit} from '@angular/forms/signals';
 </docs-step>
 
 <docs-step title="Add the onSubmit method">
-In your component class, add an `onSubmit()` method that handles form submission:
+Bileşen sınıfınızda, form gönderimini yöneten bir `onSubmit()` metodu ekleyin:
 
 ```ts
 onSubmit(event: Event) {
@@ -38,11 +38,11 @@ onSubmit(event: Event) {
 }
 ```
 
-The `submit()` function only runs your async callback if the form is valid. It also handles the form's submission state automatically.
+`submit()` fonksiyonu, asenkron geri çağrınızı yalnızca form geçerli olduğunda çalıştırır. Ayrıca formun gönderim durumunu otomatik olarak yönetir.
 </docs-step>
 
 <docs-step title="Bind the submit handler to the form">
-In your template, bind the `onSubmit()` method to the form's submit event:
+Şablonunuzda, `onSubmit()` metodunu formun submit olayına bağlayın:
 
 ```html
 <form (submit)="onSubmit($event)"></form>
@@ -51,17 +51,17 @@ In your template, bind the `onSubmit()` method to the form's submit event:
 </docs-step>
 
 <docs-step title="Disable the button when form is invalid">
-Update the submit button to be disabled when the form is invalid:
+Form geçersiz olduğunda gönder düğmesini devre dışı bırakmak için güncelleyin:
 
 ```html
 <button type="submit" [disabled]="loginForm().invalid()">Log in</button>
 ```
 
-This prevents submission when the form has validation errors.
+Bu, formda doğrulama hataları olduğunda gönderimi engeller.
 </docs-step>
 
 </docs-workflow>
 
-Congratulations! You've built a complete login form with Signal Forms.
+Tebrikler! Signal Forms ile eksiksiz bir giriş formu oluşturdunuz.
 
-Ready to see what you've learned and explore advanced topics? Continue to [the next steps](/tutorials/signal-forms/6-next-steps)!
+Öğrendiklerinizi gözden geçirmeye ve ileri düzey konuları keşfetmeye hazır mısınız? [Sonraki adımlara](/tutorials/signal-forms/6-next-steps) devam edin!

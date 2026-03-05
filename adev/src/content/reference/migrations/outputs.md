@@ -1,13 +1,11 @@
 # Migration to output function
 
-Angular introduced an improved API for outputs in v17.3 that is considered
-production ready as of v19. This API mimics the `input()` API but is not based on Signals.
-Read more about custom events output function and its benefits in the [dedicated guide](guide/components/outputs).
+Angular, v17.3'te çıktılar için geliştirilmiş bir API tanıttı ve bu API v19 itibarıyla üretime hazır kabul edilmektedir. Bu API, `input()` API'sini taklit eder ancak Signals'e dayalı değildir.
+Özel olaylar output fonksiyonu ve faydaları hakkında daha fazla bilgi için [özel kılavuzu](guide/components/outputs) okuyun.
 
-To support existing projects that would like to use output function, the Angular team
-provides an automated migration that converts `@Output` custom events to the new `output()` API.
+Output fonksiyonunu kullanmak isteyen mevcut projeleri desteklemek için Angular ekibi, `@Output` özel olaylarını yeni `output()` API'sine dönüştüren otomatik bir geçiş sağlar.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```bash
 ng generate @angular/core:output-migration
@@ -15,9 +13,9 @@ ng generate @angular/core:output-migration
 
 ## What does the migration change?
 
-1. `@Output()` class members are updated to their `output()` equivalent.
-2. Imports in the file of components or directives, at Typescript module level, are updated as well.
-3. Migrates the APIs functions like `event.next()`, which use is not recommended, to `event.emit()` and removes `event.complete()` calls.
+1. `@Output()` sınıf üyeleri `output()` eşdeğerlerine güncellenir.
+2. Bileşenlerin veya direktiflerin dosyasındaki TypeScript modül düzeyindeki içe aktarmalar da güncellenir.
+3. Kullanımı önerilmeyen `event.next()` gibi API fonksiyonlarını `event.emit()`'e geçirir ve `event.complete()` çağrılarını kaldırır.
 
 **Before**
 
@@ -55,23 +53,23 @@ export class MyComponent {
 
 ## Configuration options
 
-The migration supports a few options for fine tuning the migration to your specific needs.
+Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
 ### `--path`
 
-If not specified, the migration will ask you for a path and update your whole Angular CLI workspace.
-You can limit the migration to a specific sub-directory using this option.
+Belirtilmezse, geçiş sizden bir yol isteyecek ve tüm Angular CLI çalışma alanınızı güncelleyecektir.
+Bu seçeneği kullanarak geçişi belirli bir alt dizinle sınırlayabilirsiniz.
 
 ### `--analysis-dir`
 
-In large projects you may use this option to reduce the amount of files being analyzed.
-By default, the migration analyzes the whole workspace, regardless of the `--path` option, in
-order to update all references affected by an `@Output()` migration.
+Büyük projelerde, analiz edilen dosya miktarını azaltmak için bu seçeneği kullanabilirsiniz.
+Varsayılan olarak, geçiş `--path` seçeneğinden bağımsız olarak tüm çalışma alanını analiz eder,
+böylece bir `@Output()` geçişinden etkilenen tüm referansları günceller.
 
-With this option, you can limit analysis to a sub-folder. Note that this means that any
-references outside this directory are silently skipped, potentially breaking your build.
+Bu seçenekle, analizi bir alt klasörle sınırlayabilirsiniz. Bu dizin dışındaki herhangi bir
+referansın sessizce atlanacağını ve potansiyel olarak derlemenizi bozabileceğini unutmayın.
 
-Use these options as shown below:
+Bu seçenekleri aşağıda gösterildiği gibi kullanın:
 
 ```bash
 ng generate @angular/core:output-migration --path src/app/sub-folder
@@ -79,9 +77,9 @@ ng generate @angular/core:output-migration --path src/app/sub-folder
 
 ## Exceptions
 
-In some cases, the migration will not touch the code.
-One of these exceptions is the case where the event is used with a `pipe()` method.
-The following code won't be migrated:
+Bazı durumlarda, geçiş koda dokunmayacaktır.
+Bu istisnalardan biri, olayın `pipe()` yöntemiyle kullanıldığı durumdur.
+Aşağıdaki kod geçirilmeyecektir:
 
 ```typescript
 export class MyDialogComponent {

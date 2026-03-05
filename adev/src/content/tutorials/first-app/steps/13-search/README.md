@@ -1,67 +1,67 @@
 # Add the search feature to your app
 
-This tutorial lesson demonstrates how to add a search functionality to your Angular app.
+Bu eğitim dersi, Angular uygulamanıza arama işlevselliğinin nasıl ekleneceğini gösterir.
 
-The app will enable users to search through the data provided by your app and display only the results that match the entered term.
+Uygulama, kullanıcıların uygulamanız tarafından sağlanan veriler arasında arama yapmasını ve yalnızca girilen terimle eşleşen sonuçları görüntülemesini sağlayacaktır.
 
 <docs-video src="https://www.youtube.com/embed/5K10oYJ5Y-E?si=TiuNKx_teR9baO7k&amp;start=457"/>
 
-IMPORTANT: We recommend using your local environment for this step of the tutorial.
+IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
 
 ## What you'll learn
 
-- Your app will use data from a form to search for matching housing locations
-- Your app will display only the matching housing locations
+- Uygulamanız, eşleşen konut konumlarını aramak için bir formdaki verileri kullanacak
+- Uygulamanız yalnızca eşleşen konut konumlarını görüntüleyecek
 
 <docs-workflow>
 
 <docs-step title="Update the home component properties">
-In this step, you'll update the `Home` class to store data in a new array property that you will use for filtering.
+Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri depolamak üzere `Home` sınıfını güncelleyeceksiniz.
 
-1. In `src/app/home/home.ts`, add new property to the class called `filteredLocationList`.
+1. `src/app/home/home.ts` dosyasında, sınıfa `filteredLocationList` adında yeni bir özellik ekleyin.
 
    <docs-code header="Add the filteredLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[27]"/>
 
-   The `filteredLocationList` hold the values that match the search criteria entered by the user.
+   `filteredLocationList`, kullanıcı tarafından girilen arama kriterlerine uyan değerleri tutar.
 
-1. The `filteredLocationList` should contain the total set of housing locations values by default when the page loads. Update the `constructor` for the `Home` to set the value.
+1. `filteredLocationList`, sayfa yüklendiğinde varsayılan olarak tüm konut konumu değerlerini içermelidir. `Home` bileşeninin `constructor`'ını değeri ayarlamak için güncelleyin.
 
    <docs-code header="Set the value of filteredLocationList" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[29,32]"/>
 
 </docs-step>
 
 <docs-step title="Update the home component template">
-The `Home` already contains an input field that you will use to capture input from the user. That string text will be used to filter the results.
+`Home` bileşeninde, kullanıcıdan girdi almak için kullanacağınız bir girdi alanı zaten var. Bu dize metin, sonuçları filtrelemek için kullanılacaktır.
 
-1. Update the `Home` template to include a template variable in the `input` element called `#filter`.
+1. `Home` şablonunu, `input` öğesinde `#filter` adında bir şablon değişkeni içerecek şekilde güncelleyin.
 
    <docs-code language="angular-ts" header="Add a template variable to the input HTML element in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[12]"/>
-   This example uses a [template reference variable](guide/templates) to get access to the `input` element as its value.
+   Bu örnek, `input` öğesine değeri olarak erişmek için bir [şablon referans değişkeni](guide/templates) kullanır.
 
-1. Next, update the component template to attach an event handler to the "Search" button.
+1. Ardından, "Search" düğmesine bir olay işleyici eklemek için bileşen şablonunu güncelleyin.
 
    <docs-code language="angular-ts" header="Bind the button click event to a method in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[13]"/>
 
-   By binding to the `click` event on the `button` element, you are able to call the `filterResults` function. The argument to the function is the `value` property of the `filter` template variable. Specifically, the `.value` property from the `input` HTML element.
+   `button` öğesindeki `click` olayına bağlanarak, `filterResults` fonksiyonunu çağırabilirsiniz. Fonksiyonun argümanı, `filter` şablon değişkeninin `value` özelliğidir. Özellikle, `input` HTML öğesinden gelen `.value` özelliğidir.
 
-1. The last template update is to the `@for` directive. Update the `@for` to iterate over values from the `filteredLocationList` array.
+1. Son şablon güncellemesi `@for` yönergesi içindir. `@for` yönergesini `filteredLocationList` dizisindeki değerler üzerinde yineleme yapacak şekilde güncelleyin.
 
    <docs-code header="Update the @for template directive in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]" language="html"/>
 
 </docs-step>
 
 <docs-step title="Implement the event handler function">
-The template has been updated to bind the `filterResults` function to the `click` event. Next, your task is to implement the `filterResults` function in the `Home` class.
+Şablon, `filterResults` fonksiyonunu `click` olayına bağlamak için güncellendi. Sıradaki göreviniz, `Home` sınıfında `filterResults` fonksiyonunu uygulamaktır.
 
-1.  Update the `Home` class to include the implementation of the `filterResults` function.
+1.  `Home` sınıfını `filterResults` fonksiyonunun uygulamasını içerecek şekilde güncelleyin.
 
     <docs-code header="Add the filterResults function implementation" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[34,43]"/>
 
-    This function uses the `String` `filter` function to compare the value of the `text` parameter against the `housingLocation.city` property. You can update this function to match against any property or multiple properties for a fun exercise.
+    Bu fonksiyon, `text` parametresinin değerini `housingLocation.city` özelliğiyle karşılaştırmak için `String` `filter` fonksiyonunu kullanır. Eğlenceli bir alıştırma olarak bu fonksiyonu herhangi bir özellik veya birden fazla özellikle eşleşecek şekilde güncelleyebilirsiniz.
 
-1.  Save your code.
+1.  Kodunuzu kaydedin.
 
-1.  Refresh the browser and confirm that you can search the housing location data by city when you click the "Search" button after entering text.
+1.  Tarayıcıyı yenileyin ve metin girdikten sonra "Search" düğmesine tıkladığınızda konut konumu verilerini şehre göre arayabildiğinizi doğrulayın.
 
        <img alt="filtered search results based on user input" src="assets/images/tutorials/first-app/homes-app-lesson-13-step-3.png">
 
@@ -69,9 +69,9 @@ The template has been updated to bind the `filterResults` function to the `click
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you updated your app to use template variables to interact with template values, and add search functionality using event binding and array functions.
+SUMMARY: Bu derste, şablon değerleriyle etkileşim kurmak için şablon değişkenleri kullanmak üzere uygulamanızı güncellediniz ve olay bağlama ile dizi fonksiyonları kullanarak arama işlevselliği eklediniz.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates" title="Template Variables"/>

@@ -1,104 +1,104 @@
 # Adding a form to your Angular app
 
-This tutorial lesson demonstrates how to add a form that collects user data to an Angular app.
-This lesson starts with a functional Angular app and shows how to add a form to it.
+Bu eğitim dersi, bir Angular uygulamasına kullanıcı verilerini toplayan bir formun nasıl ekleneceğini gösterir.
+Bu ders, çalışan bir Angular uygulamasıyla başlar ve ona nasıl form ekleneceğini gösterir.
 
-The data that the form collects is sent only to the app's service, which writes it to the browser's console.
-Using a REST API to send and receive the form's data is not covered in this lesson.
+Formun topladığı veriler yalnızca uygulamanın servisine gönderilir ve bu servis verileri tarayıcının konsoluna yazar.
+Form verilerini göndermek ve almak için bir REST API kullanmak bu derste ele alınmamaktadır.
 
 <docs-video src="https://www.youtube.com/embed/kWbk-dOJaNQ?si=FYMXGdUiT-qh321h"/>
 
-IMPORTANT: We recommend using your local environment for this step of the tutorial.
+IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
 
 ## What you'll learn
 
-- Your app has a form into which users can enter data that is sent to your app's service.
-- The service writes the data from the form to the browser's console log.
+- Uygulamanızda, kullanıcıların uygulamanızın servisine gönderilen verileri girebileceği bir form var.
+- Servis, formdaki verileri tarayıcının konsol günlüğüne yazar.
 
 <docs-workflow>
 
 <docs-step title="Add a method to send form data">
-This step adds a method to your app's service that receives the form data to send to the data's destination.
-In this example, the method writes the data from the form to the browser's console log.
+Bu adım, uygulamanızın servisine, form verilerini verilerin hedefine göndermek için alan bir metot ekler.
+Bu örnekte, metot formdaki verileri tarayıcının konsol günlüğüne yazar.
 
-In the **Edit** pane of your IDE:
+IDE'nizin **Edit** bölmesinde:
 
-1.  In `src/app/housing.service.ts`, inside the `HousingService` class, paste this method at the bottom of the class definition.
+1.  `src/app/housing.service.ts` dosyasında, `HousingService` sınıfı içine bu metodu sınıf tanımının en altına yapıştırın.
 
        <docs-code header="Submit method in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[120,124]"/>
 
-1.  Confirm that the app builds without error.
-    Correct any errors before you continue to the next step.
+1.  Uygulamanın hatasız derlendiğini doğrulayın.
+    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>
 
 <docs-step title="Add the form functions to the details page">
-This step adds the code to the details page that handles the form's interactions.
+Bu adım, formun etkileşimlerini yöneten kodu ayrıntılar sayfasına ekler.
 
-In the **Edit** pane of your IDE, in `src/app/details/details.ts`:
+IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
 
-1.  After the `import` statements at the top of the file, add the following code to import the Angular form classes.
+1.  Dosyanın en üstündeki `import` ifadelerinden sonra, Angular form sınıflarını içe aktarmak için aşağıdaki kodu ekleyin.
 
       <docs-code header="Forms imports in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[5]"/>
 
-1.  In the `Details` decorator metadata, update the `imports` property with the following code:
+1.  `Details` dekoratörü meta verilerinde, `imports` özelliğini aşağıdaki kodla güncelleyin:
 
       <docs-code header="imports directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[9]"/>
 
-1.  In the `Details` class, before the `constructor()` method, add the following code to create the form object.
+1.  `Details` sınıfında, `constructor()` metodundan önce form nesnesini oluşturmak için aşağıdaki kodu ekleyin.
 
       <docs-code header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[52,56]"/>
 
-    In Angular, `FormGroup` and `FormControl` are types that enable you to build forms. The `FormControl` type can provide a default value and shape the form data. In this example `firstName` is a `string` and the default value is empty string.
+    Angular'da `FormGroup` ve `FormControl`, form oluşturmanızı sağlayan türlerdir. `FormControl` türü, varsayılan bir değer sağlayabilir ve form verilerini şekillendirebilir. Bu örnekte `firstName` bir `string`'dir ve varsayılan değeri boş dizedir.
 
-1.  In the `Details` class, after the `constructor()` method, add the following code to handle the **Apply now** click.
+1.  `Details` sınıfında, `constructor()` metodundan sonra **Şimdi Başvur** tıklamasını yönetmek için aşağıdaki kodu ekleyin.
 
       <docs-code header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[62,68]"/>
 
-    This button does not exist yet - you will add it in the next step. In the above code, the `FormControl`s may return `null`. This code uses the nullish coalescing operator to default to empty string if the value is `null`.
+    Bu düğme henüz mevcut değil - bir sonraki adımda ekleyeceksiniz. Yukarıdaki kodda, `FormControl`'ler `null` döndürebilir. Bu kod, değer `null` ise varsayılan olarak boş dize kullanmak için nullish birleştirme operatörünü kullanır.
 
-1.  Confirm that the app builds without error.
-    Correct any errors before you continue to the next step.
+1.  Uygulamanın hatasız derlendiğini doğrulayın.
+    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>
 
 <docs-step title="Add the form's markup to the details page">
-This step adds the markup to the details page that displays the form.
+Bu adım, formu görüntüleyen işaretlemeyi ayrıntılar sayfasına ekler.
 
-In the **Edit** pane of your IDE, in `src/app/details/details.ts`:
+IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
 
-1. In the `Details` decorator metadata, update the `template` HTML to match the following code to add the form's markup.
+1. `Details` dekoratörü meta verilerinde, formun işaretlemesini eklemek için `template` HTML'ini aşağıdaki kodla eşleşecek şekilde güncelleyin.
 
    <docs-code language="angular-ts" header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[10,45]"/>
 
-   The template now includes an event handler `(submit)="submitApplication()"`. Angular uses parentheses syntax around the event name to define events in the template code. The code on the right hand side of the equals sign is the code that should be executed when this event is triggered. You can bind to browser events and custom events.
+   Şablon artık bir `(submit)="submitApplication()"` olay işleyicisi içermektedir. Angular, şablon kodunda olayları tanımlamak için olay adının etrafında parantez sözdizimi kullanır. Eşittir işaretinin sağ tarafındaki kod, bu olay tetiklendiğinde yürütülmesi gereken koddur. Tarayıcı olaylarına ve özel olaylara bağlanabilirsiniz.
 
-1. Confirm that the app builds without error.
-   Correct any errors before you continue to the next step.
+1. Uygulamanın hatasız derlendiğini doğrulayın.
+   Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
    <img alt="details page with a form for applying to live at this location" src="assets/images/tutorials/first-app/homes-app-lesson-12-step-3.png">
 
 </docs-step>
 
 <docs-step title="Test your app's new form">
-This step tests the new form to see that when the form data is submitted to the app, the form data appears in the console log.
+Bu adım, form verileri uygulamaya gönderildiğinde form verilerinin konsol günlüğünde göründüğünü görmek için yeni formu test eder.
 
-1. In the **Terminal** pane of your IDE, run `ng serve`, if it isn't already running.
-1. In your browser, open your app at `http://localhost:4200`.
-1. Right click on the app in the browser and from the context menu, choose **Inspect**.
-1. In the developer tools window, choose the **Console** tab.
-   Make sure that the developer tools window is visible for the next steps
-1. In your app:
-   1. Select a housing location and click **Learn more**, to see details about the house.
-   1. In the house's details page, scroll to the bottom to find the new form.
-   1. Enter data into the form's fields - any data is fine.
-   1. Choose **Apply now** to submit the data.
-1. In the developer tools window, review the log output to find your form data.
+1. IDE'nizin **Terminal** bölmesinde, `ng serve` çalışmıyorsa çalıştırın.
+1. Tarayıcınızda, uygulamanızı `http://localhost:4200` adresinde açın.
+1. Tarayıcıda uygulamaya sağ tıklayın ve bağlam menüsünden **İncele**'yi seçin.
+1. Geliştirici araçları penceresinde **Konsol** sekmesini seçin.
+   Sonraki adımlar için geliştirici araçları penceresinin görünür olduğundan emin olun.
+1. Uygulamanızda:
+   1. Bir konut konumu seçin ve ev hakkında ayrıntıları görmek için **Learn more** tıklayın.
+   1. Evin ayrıntılar sayfasında, yeni formu bulmak için en alta kaydırın.
+   1. Form alanlarına veri girin - herhangi bir veri olabilir.
+   1. Verileri göndermek için **Apply now** seçin.
+1. Geliştirici araçları penceresinde, form verilerinizi bulmak için günlük çıktısını inceleyin.
    </docs-step>
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you updated your app to add a form using Angular's forms feature, and connect the data captured in the form to a component using an event handler.
+SUMMARY: Bu derste, Angular'ın form özelliğini kullanarak uygulamanıza bir form eklediniz ve formda yakalanan verileri bir olay işleyici kullanarak bir bileşene bağladınız.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/forms" title="Angular Forms"/>

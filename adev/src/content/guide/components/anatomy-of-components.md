@@ -1,15 +1,15 @@
 <docs-decorative-header title="Anatomy of a component" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-Every component must have:
+Her bilesen sunlara sahip olmalidir:
 
-- A TypeScript class with _behaviors_ such as handling user input and fetching data from a server
-- An HTML template that controls what renders into the DOM
-- A [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) that defines how the component is used in HTML
+- Kullanici girdisini isleme ve sunucudan veri getirme gibi _davranislara_ sahip bir TypeScript sinifi
+- DOM'a neyin render edilecegini kontrol eden bir HTML sablonu
+- Bilesnenin HTML'de nasil kullanilacagini tanimlayan bir [CSS secici](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors)
 
-You provide Angular-specific information for a component by adding a `@Component` [decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) on top of the TypeScript class:
+TypeScript sinifinin uzerine bir `@Component` [dekoratoru](https://www.typescriptlang.org/docs/handbook/decorators.html) ekleyerek Angular'a ozgu bilgileri saglarsiniz:
 
 ```angular-ts {highlight: [1, 2, 3, 4]}
 @Component({
@@ -19,11 +19,11 @@ You provide Angular-specific information for a component by adding a `@Component
 export class ProfilePhoto {}
 ```
 
-For full details on writing Angular templates, including data binding, event handling, and control flow, see the [Templates guide](guide/templates).
+Veri baglama, olay isleme ve kontrol akisi dahil olmak uzere Angular sablonlari yazma hakkinda tum ayrintilar icin [Sablonlar rehberi](guide/templates)'ne bakin.
 
-The object passed to the `@Component` decorator is called the component's **metadata**. This includes the `selector`, `template`, and other properties described throughout this guide.
+`@Component` dekoratorune iletilen nesne, bilesnenin **meta verisi** olarak adlandirilir. Bu, `selector`, `template` ve bu rehber boyunca aciklanan diger ozellikleri icerir.
 
-Components can optionally include a list of CSS styles that apply to that component's DOM:
+Bilesenlerin istege bagli olarak o bilesnenin DOM'una uygulanan CSS stilleri listesi icerebilir:
 
 ```angular-ts {highlight: [4]}
 @Component({
@@ -38,9 +38,9 @@ Components can optionally include a list of CSS styles that apply to that compon
 export class ProfilePhoto {}
 ```
 
-By default, a component's styles only affect elements defined in that component's template. See [Styling Components](guide/components/styling) for details on Angular's approach to styling.
+Varsayilan olarak, bir bilesnenin stilleri yalnizca o bilesnenin sablonunda tanimlanan elemanlari etkiler. Angular'in stillendirme yaklasimi hakkinda ayrintilar icin [Bilesen Stillendirme](guide/components/styling) belgesine bakin.
 
-You can alternatively choose to write your template and styles in separate files:
+Alternatif olarak sablon ve stillerinizi ayri dosyalarda yazmayi secebilirsiniz:
 
 ```ts {highlight: [3,4]}
 @Component({
@@ -51,16 +51,15 @@ You can alternatively choose to write your template and styles in separate files
 export class ProfilePhoto {}
 ```
 
-This can help separate the concerns of _presentation_ from _behavior_ in your project. You can choose one approach for your entire project, or you decide which to use for each component.
+Bu, projenizdeki _sunum_ ve _davranis_ kaygilerini ayirmaya yardimci olabilir. Tum projeniz icin tek bir yaklasim secebilir veya her bilesen icin hangisini kullanacaginiza karar verebilirsiniz.
 
-Both `templateUrl` and `styleUrl` are relative to the directory in which the component resides.
+Hem `templateUrl` hem de `styleUrl`, bilesnenin bulundugu dizine goredir.
 
 ## Using components
 
 ### Imports in the `@Component` decorator
 
-To use a component, [directive](guide/directives), or [pipe](guide/templates/pipes), you must add
-it to the `imports` array in the `@Component` decorator:
+Bir bilesen, [direktif](guide/directives) veya [pipe](guide/templates/pipes) kullanmak icin, onu `@Component` dekoratorundeki `imports` dizisine eklemeniz gerekir:
 
 ```ts
 import {ProfilePhoto} from './profile-photo';
@@ -74,13 +73,13 @@ import {ProfilePhoto} from './profile-photo';
 export class UserProfile {}
 ```
 
-By default, Angular components are _standalone_, meaning that you can directly add them to the `imports` array of other components. Components created with an earlier version of Angular may instead specify `standalone: false` in their `@Component` decorator. For these components, you instead import the `NgModule` in which the component is defined. See the full [`NgModule` guide](guide/ngmodules/overview) for details.
+Varsayilan olarak, Angular bilesenleri _bagimsizdir_ (standalone), yani onlari dogrudan diger bilesenlerin `imports` dizisine ekleyebilirsiniz. Angular'in daha eski bir surumu ile olusturulan bilesenlerde bunun yerine `@Component` dekoratorunde `standalone: false` belirtilebilir. Bu bilesenlerde, bilesnenin tanimlandigi `NgModule`'u icerir (import edersiniz). Ayrintilar icin tam [`NgModule` rehberi](guide/ngmodules/overview)'ne bakin.
 
-Important: In Angular versions before 19.0.0, the `standalone` option defaults to `false`.
+Important: 19.0.0 oncesi Angular surumlerinde `standalone` secenegi varsayilan olarak `false` degerindedir.
 
 ### Showing components in a template
 
-Every component defines a [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors):
+Her bilesen bir [CSS secici](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) tanimlar:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -90,9 +89,9 @@ Every component defines a [CSS selector](https://developer.mozilla.org/docs/Lear
 export class ProfilePhoto { }
 ```
 
-See [Component Selectors](guide/components/selectors) for details about which types of selectors Angular supports and guidance on choosing a selector.
+Angular'in hangi secici turlerini destekledigi ve secici secme rehberligi hakkinda ayrintilar icin [Bilesen Secicileri](guide/components/selectors) belgesine bakin.
 
-You show a component by creating a matching HTML element in the template of _other_ components:
+_Diger_ bilesenlerin sablonunda eslesen bir HTML elemani olusturarak bir bileseni gosterirsiniz:
 
 ```angular-ts {highlight: [8]}
 @Component({
@@ -107,12 +106,11 @@ export class ProfilePhoto {}
 export class UserProfile {}
 ```
 
-Angular creates an instance of the component for every matching HTML element it encounters. The DOM element that matches a component's selector is referred to as that component's **host element**. The contents of a component's template are rendered inside its host element.
+Angular, karsilastigi her eslesen HTML elemani icin bilesnenin bir ornegini olusturur. Bir bilesnenin secicisiyle eslesen DOM elemani, o bilesnenin **host elemani** olarak adlandirilir. Bir bilesnenin sablonunun icerigi, host elemani icerisinde render edilir.
 
-The DOM rendered by a component, corresponding to that component's template, is called that
-component's **view**.
+Bir bilesen tarafindan render edilen, o bilesnenin sablonuna karsilik gelen DOM, o bilesnenin **gorunumu** (view) olarak adlandirilir.
 
-In composing components in this way, **you can think of your Angular application as a tree of components**.
+Bilesenleri bu sekilde birlestirirken, **Angular uygulamanizi bir bilesen agaci olarak dusunebilirsiniz**.
 
 ```mermaid
 flowchart TD
@@ -125,4 +123,4 @@ flowchart TD
     E[UserBio]
 ```
 
-This tree structure is important to understanding several other Angular concepts, including [dependency injection](guide/di) and [child queries](guide/components/queries).
+Bu agac yapisi, [bagimlilik enjeksiyonu](guide/di) ve [alt sorgular](guide/components/queries) dahil olmak uzere bircok Angular kavramini anlamak icin onemlidir.

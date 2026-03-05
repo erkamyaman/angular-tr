@@ -1,19 +1,19 @@
 <docs-decorative-header title="Dependency Injection" imgSrc="adev/src/assets/images/dependency_injection.svg"> <!-- markdownlint-disable-line -->
-Reuse code and control behaviors across your application and tests.
+Uygulamanız ve testleriniz genelinde kodu yeniden kullanın ve davranışları kontrol edin.
 </docs-decorative-header>
 
-When you need to share logic between components, Angular leverages the design pattern of [dependency injection](guide/di) that allows you to create a “service” which allows you to inject code into components while managing it from a single source of truth.
+Bileşenler arasında mantık paylaşmanız gerektiğinde, Angular [bağımlılık enjeksiyonu](guide/di) tasarım kalıbını kullanır. Bu kalıp, tek bir doğruluk kaynağından yönetirken bileşenlere kod enjekte etmenizi sağlayan bir "servis" oluşturmanıza olanak tanır.
 
 ## What are services?
 
-Services are reusable pieces of code that can be injected.
+Servisler, enjekte edilebilen yeniden kullanılabilir kod parçalarıdır.
 
-Similar to defining a component, services are comprised of the following:
+Bir bileşen tanımlamaya benzer şekilde, servisler aşağıdakilerden oluşur:
 
-- A **TypeScript decorator** that declares the class as an Angular service via `@Injectable` and allows you to define what part of the application can access the service via the `providedIn` property (which is typically `'root'`) to allow a service to be accessed anywhere within the application.
-- A **TypeScript class** that defines the desired code that will be accessible when the service is injected
+- Sınıfı `@Injectable` aracılığıyla bir Angular servisi olarak tanımlayan ve servisin uygulamanın hangi bölümünden erişilebileceğini `providedIn` özelliği ile belirlemenize olanak tanıyan bir **TypeScript dekoratörü** (bu genellikle uygulamanın herhangi bir yerinden erişime izin vermek için `'root'` olarak ayarlanır).
+- Servis enjekte edildiğinde erişilebilir olacak istenen kodu tanımlayan bir **TypeScript sınıfı**
 
-Here is an example of a `Calculator` service.
+İşte bir `Calculator` servisi örneği.
 
 ```angular-ts
 import {Injectable} from '@angular/core';
@@ -28,12 +28,12 @@ export class Calculator {
 
 ## How to use a service
 
-When you want to use a service in a component, you need to:
+Bir bileşende servis kullanmak istediğinizde şunları yapmanız gerekir:
 
-1. Import the service
-2. Declare a class field where the service is injected. Assign the class field to the result of the call of the built-in function [`inject`](/api/core/inject) which creates the service
+1. Servisi içe aktarın
+2. Servisin enjekte edildiği bir sınıf alanı tanımlayın. Sınıf alanını, servisi oluşturan yerleşik [`inject`](/api/core/inject) fonksiyonunun çağrısının sonucuna atayın
 
-Here’s what it might look like in the `Receipt` component:
+`Receipt` bileşeninde nasıl görünebileceği aşağıdadır:
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -49,7 +49,7 @@ export class Receipt {
 }
 ```
 
-In this example, the `Calculator` is being used by calling the Angular function [`inject`](/api/core/inject) and passing in the service to it.
+Bu örnekte, `Calculator` Angular'ın [`inject`](/api/core/inject) fonksiyonu çağrılarak ve servis ona geçirilerek kullanılmaktadır.
 
 ## Next Step
 

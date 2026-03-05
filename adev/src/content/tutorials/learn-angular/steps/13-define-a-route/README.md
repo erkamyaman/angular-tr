@@ -1,10 +1,10 @@
 # Define a Route
 
-Now that you've set up the app to use Angular Router, you need to define the routes.
+Uygulamayı Angular Router kullanacak şekilde kurduğunuza göre, artık rotaları tanımlamanız gerekiyor.
 
-NOTE: Learn more about [defining a basic route in the in-depth guide](/guide/routing/define-routes).
+NOTE: [Ayrıntılı kılavuzdaki temel rota tanımlama](/guide/routing/define-routes) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to add and configure routes with your app.
+Bu aktivitede, uygulamanıza rotaları nasıl ekleyeceğinizi ve yapılandıracağınızı öğreneceksiniz.
 
 <hr>
 
@@ -12,12 +12,12 @@ In this activity, you'll learn how to add and configure routes with your app.
 
 <docs-step title="Define a route in `app.routes.ts`">
 
-In your app, there are two pages to display: (1) Home Page and (2) User Page.
+Uygulamanızda gösterilecek iki sayfa vardır: (1) Ana Sayfa ve (2) Kullanıcı Sayfası.
 
-To define a route, add a route object to the `routes` array in `app.routes.ts` that contains:
+Bir rota tanımlamak için, `app.routes.ts` dosyasındaki `routes` dizisine aşağıdakileri içeren bir rota nesnesi ekleyin:
 
-- The `path` of the route (which automatically starts at the root path (i.e., `/`))
-- The `component` that you want the route to display
+- Rotanın `path`'i (otomatik olarak kök yoldan (yani `/`) başlar)
+- Rotanın göstermesini istediğiniz `component`
 
 ```ts
 import {Routes} from '@angular/router';
@@ -31,17 +31,17 @@ export const routes: Routes = [
 ];
 ```
 
-The code above is an example of how `Home` can be added as a route. Now go ahead and implement this along with the `User` in the playground.
+Yukarıdaki kod, `Home`'un bir rota olarak nasıl eklenebileceğine dair bir örnektir. Şimdi devam edin ve bunu `User` ile birlikte oyun alanında uygulayın.
 
-Use `'user'` for the path of `User`.
+`User` için yol olarak `'user'` kullanın.
 
 </docs-step>
 
 <docs-step title="Add title to route definition">
 
-In addition to defining the routes correctly, Angular Router also enables you to set the page title whenever users are navigating by adding the `title` property to each route.
+Rotaları doğru şekilde tanımlamanın yanı sıra, Angular Router kullanıcılar navigasyon yaparken her rotaya `title` özelliği ekleyerek sayfa başlığını ayarlamanızı da sağlar.
 
-In `app.routes.ts`, add the `title` property to the default route (`path: ''`) and the `user` route. Here's an example:
+`app.routes.ts` dosyasında, varsayılan rota (`path: ''`) ve `user` rotası için `title` özelliğini ekleyin. İşte bir örnek:
 
 ```ts {highlight:[7]}
 import {Routes} from '@angular/router';
@@ -60,6 +60,6 @@ export const routes: Routes = [
 
 </docs-workflow>
 
-In the activity, you've learned how to define and configure routes in your Angular app. Nice work. 🙌
+Bu aktivitede, Angular uygulamanızda rotaları nasıl tanımlayacağınızı ve yapılandıracağınızı öğrendiniz. Harika is. 🙌
 
-The journey to fully enabling routing in your app is almost complete, keep going.
+Uygulamanızda yönlendirmeyi tamamen etkinleştirme yolculuğu neredeyse tamamlandı, devam edin.

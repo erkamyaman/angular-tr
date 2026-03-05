@@ -1,10 +1,10 @@
-<h1 align="center">Angular - The modern web developer's platform</h1>
+<h1 align="center">Angular - Modern web geliştiricisinin platformu</h1>
 
 <p align="center">
   <img src="adev/src/assets/images/press-kit/angular_icon_gradient.gif" alt="angular-logo" width="120px" height="120px"/>
   <br>
-  <em>Angular is a development platform for building mobile and desktop web applications
-    <br> using TypeScript/JavaScript and other languages.</em>
+  <em>Angular, TypeScript/JavaScript ve diğer dilleri kullanarak
+    <br> mobil ve masaüstü web uygulamaları geliştirmek için bir platformdur.</em>
   <br>
 </p>
 
@@ -14,9 +14,9 @@
 </p>
 
 <p align="center">
-  <a href="CONTRIBUTING.md">Contributing Guidelines</a>
+  <a href="CONTRIBUTING.md">Katkıda Bulunma Rehberi</a>
   ·
-  <a href="https://github.com/angular/angular/issues">Submit an Issue</a>
+  <a href="https://github.com/angular/angular/issues">Sorun Bildirin</a>
   ·
   <a href="https://blog.angular.dev/">Blog</a>
   <br>
@@ -31,106 +31,106 @@
 
 <hr>
 
-## Documentation
+## Dokümantasyon
 
-Get started with Angular, learn the fundamentals and explore advanced topics on our documentation website.
+Angular ile başlayın, temelleri öğrenin ve dokümantasyon web sitemizde ileri düzey konuları keşfedin.
 
-- [Getting Started][quickstart]
-- [Architecture][architecture]
-- [Components and Templates][componentstemplates]
-- [Forms][forms]
+- [Başlangıç][quickstart]
+- [Mimari][architecture]
+- [Bileşenler ve Şablonlar][componentstemplates]
+- [Formlar][forms]
 - [API][api]
 
-### Advanced
+### İleri Düzey
 
 - [Angular Elements][angularelements]
-- [Server Side Rendering][ssr]
-- [Schematics][schematics]
+- [Sunucu Tarafı Render][ssr]
+- [Şemalar][schematics]
 - [Lazy Loading][lazyloading]
-- [Animations][animations]
+- [Animasyonlar][animations]
 
-### Local Development
+### Yerel Geliştirme
 
-To contribute to the Angular Docs, check out the [Angular.dev README](adev/README.md)
+Angular Dokümantasyonuna katkıda bulunmak için [Angular.dev README](adev/README.md) dosyasına göz atın.
 
-## Development Setup
+## Geliştirme Ortamı Kurulumu
 
-### Prerequisites
+### Ön Koşullar
 
-- Install [Node.js] which includes [Node Package Manager][npm]
+- [Node Package Manager][npm] içeren [Node.js] yükleyin
 
-### Setting Up a Project
+### Proje Kurulumu
 
-Install the Angular CLI globally:
+Angular CLI'yi global olarak yükleyin:
 
 ```
 npm install -g @angular/cli
 ```
 
-Create workspace:
+Çalışma alanı oluşturun:
 
 ```
-ng new [PROJECT NAME]
+ng new [PROJE ADI]
 ```
 
-Run the application:
+Uygulamayı çalıştırın:
 
 ```
-cd [PROJECT NAME]
+cd [PROJE ADI]
 ng serve
 ```
 
-Angular is cross-platform, fast, scalable, has incredible tooling, and is loved by millions.
+Angular platformlar arası çalışır, hızlıdır, ölçeklenebilirdir, inanılmaz araçlara sahiptir ve milyonlarca kişi tarafından sevilmektedir.
 
-## Quickstart
+## Hızlı Başlangıç
 
-[Get started in 5 minutes][quickstart].
+[5 dakikada başlayın][quickstart].
 
-## Ecosystem
+## Ekosistem
 
 <p>
   <img src="/contributing-docs/images/angular-ecosystem-logos.png" alt="angular ecosystem logos" width="500px" height="auto">
 </p>
 
-- [Angular Command Line (CLI)][cli]
+- [Angular Komut Satırı (CLI)][cli]
 - [Angular Material][angularmaterial]
 
-## Changelog
+## Değişiklik Günlüğü
 
-[Learn about the latest improvements][changelog].
+[En son iyileştirmeler hakkında bilgi edinin][changelog].
 
-## Upgrading
+## Güncelleme
 
-Check out our [upgrade guide](https://angular.dev/update-guide/) to find out the best way to upgrade your project.
+Projenizi güncellemenin en iyi yolunu bulmak için [güncelleme rehberimize](https://angular.dev/update-guide/) göz atın.
 
-## Contributing
+## Katkıda Bulunma
 
-### Contributing Guidelines
+### Katkıda Bulunma Rehberi
 
-Read through our [contributing guidelines][contributing] to learn about our submission process, coding rules, and more.
+Gönderim sürecimiz, kodlama kurallarımız ve daha fazlası hakkında bilgi edinmek için [katkıda bulunma rehberimizi][contributing] okuyun.
 
-### Want to Help?
+### Yardım Etmek İster misiniz?
 
-Want to report a bug, contribute some code, or improve the documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues labeled as <kbd>[help wanted](https://github.com/angular/angular/labels/help%20wanted)</kbd> or <kbd>[good first issue](https://github.com/angular/angular/labels/good%20first%20issue)</kbd>.
+Bir hata bildirmek, kod katkısı yapmak veya dokümantasyonu geliştirmek mi istiyorsunuz? Harika! [Katkıda bulunma][contributing] rehberimizi okuyun ve ardından <kbd>[help wanted](https://github.com/angular/angular/labels/help%20wanted)</kbd> veya <kbd>[good first issue](https://github.com/angular/angular/labels/good%20first%20issue)</kbd> etiketli sorunlardan birine göz atın.
 
-### Code of Conduct
+### Davranış Kuralları
 
-Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct][codeofconduct].
+Angular'ı açık ve kapsayıcı tutmamıza yardımcı olun. Lütfen [Davranış Kurallarımızı][codeofconduct] okuyun ve uygulayın.
 
-## Community
+## Topluluk
 
-Join the conversation and help the community.
+Sohbete katılın ve topluluğa yardımcı olun.
 
-- [X (formerly Twitter)][X (formerly Twitter)]
+- [X (eski adıyla Twitter)][X (formerly Twitter)]
 - [Bluesky][bluesky]
 - [Discord][discord]
 - [YouTube][youtube]
 - [StackOverflow][stackoverflow]
-- Find a Local [Meetup][meetup]
+- Yerel bir [Buluşma][meetup] bulun
 
 [![Love Angular badge](https://img.shields.io/badge/angular-love-blue?logo=angular&angular=love)](https://www.github.com/angular/angular)
 
-**Love Angular? Give our repo a star :star: :arrow_up:.**
+**Angular'ı seviyor musunuz? Depomuza bir yıldız verin :star: :arrow_up:.**
 
 [contributing]: CONTRIBUTING.md
 [quickstart]: https://angular.dev/tutorials/learn-angular

@@ -220,7 +220,23 @@
       }
     },
     "onlyBuiltDependencies": [
-      "cypress"
+      "@firebase/util",
+      "@parcel/watcher",
+      "@vscode/vsce-sign",
+      "bufferutil",
+      "core-js",
+      "cypress",
+      "esbuild",
+      "keytar",
+      "less",
+      "lmdb",
+      "msgpackr-extract",
+      "protobufjs",
+      "puppeteer",
+      "re2",
+      "sleep",
+      "unrs-resolver",
+      "utf-8-validate"
     ]
   }
 }

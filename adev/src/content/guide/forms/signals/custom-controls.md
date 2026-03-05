@@ -1,18 +1,18 @@
 # Custom Controls
 
-NOTE: This guide assumes familiarity with [Signal Forms essentials](essentials/signal-forms).
+NOTE: Bu kılavuz, [Signal Forms temelleri](essentials/signal-forms) konusuna aşinalık olduğunu varsayar.
 
-The browser's built-in form controls (like input, select, textarea) handle common cases, but applications often need specialized inputs. A date picker with calendar UI, a rich text editor with formatting toolbar, or a tag selector with autocomplete all require custom implementations.
+Tarayıcının yerleşik form kontrolleri (input, select, textarea gibi) yaygın durumları karşılar, ancak uygulamalar genellikle özelleştirilmiş girdilere ihtiyaç duyar. Takvim arayüzüne sahip bir tarih seçici, biçimlendirme araç çubuğuna sahip bir zengin metin düzenleyici veya otomatik tamamlamalı bir etiket seçici, hepsi özel uygulamalar gerektirir.
 
-Signal Forms works with any component that implements specific interfaces. A **control interface** defines the properties and signals that allow your component to communicate with the form system. When your component implements one of these interfaces, the `[formField]` directive automatically connects your control to form state, validation, and data binding.
+Signal Forms, belirli arayüzleri uygulayan herhangi bir bileşenle çalışır. Bir **kontrol arayüzü**, bileşeninizin form sistemiyle iletişim kurmasını sağlayan özellikleri ve sinyalleri tanımlar. Bileşeniniz bu arayüzlerden birini uyguladığında, `[formField]` direktifi kontrolünüzü otomatik olarak form durumu, doğrulama ve veri bağlamaya bağlar.
 
 ## Creating a basic custom control
 
-Let's start with a minimal implementation and add features as needed.
+Minimal bir uygulama ile başlayalım ve ihtiyaç duydukça özellikler ekleyelim.
 
 ### Minimal input control
 
-A basic custom input only needs to implement the `FormValueControl` interface and define the required `value` model signal.
+Temel bir özel girdi yalnızca `FormValueControl` arayüzünü uygulamak ve gerekli `value` model sinyalini tanımlamak zorundadır.
 
 ```angular-ts
 import {Component, model} from '@angular/core';
@@ -39,10 +39,10 @@ export class BasicInput implements FormValueControl<string> {
 
 ### Minimal checkbox control
 
-A checkbox-style control needs two things:
+Bir onay kutusu tarzı kontrol iki şeye ihtiyaç duyar:
 
-1. Implement the `FormCheckboxControl` interface so the `FormField` directive will recognize it as a form control
-2. Provide a `checked` model signal
+1. `FormField` direktifinin onu bir form kontrolü olarak tanıması için `FormCheckboxControl` arayüzünü uygulaması
+2. Bir `checked` model sinyali sağlaması
 
 ```angular-ts
 import {Component, model, ChangeDetectionStrategy} from '@angular/core';
@@ -69,7 +69,7 @@ export class BasicToggle implements FormCheckboxControl {
 
 ### Using your custom control
 
-Once you've created a control, you can use it anywhere you would use a built-in input by adding the `FormField` directive to it:
+Bir kontrol oluşturduktan sonra, `FormField` direktifini ekleyerek yerleşik bir girdi kullanacağınız her yerde kullanabilirsiniz:
 
 ```angular-ts
 import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
@@ -109,99 +109,99 @@ export class Registration {
 }
 ```
 
-NOTE: The schema callback parameter (`schemaPath` in these examples) is a `SchemaPathTree` object that provides paths to all fields in your form. You can name this parameter anything you like.
+NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`), formunuzdaki tüm alanlara yollar sağlayan bir `SchemaPathTree` nesnesidir. Bu parametreyi istediğiniz gibi adlandırabilirsiniz.
 
-The `[formField]` directive works identically for custom controls and built-in inputs. Signal Forms treats them the same - validation runs, state updates, and data binding works automatically.
+`[formField]` direktifi, özel kontroller ve yerleşik girdiler için aynı şekilde çalışır. Signal Forms bunlara aynı şekilde davranır - doğrulama çalışır, durum güncellenir ve veri bağlama otomatik olarak gerçekleşir.
 
 ## Understanding control interfaces
 
-Now that you've seen custom controls in action, let's explore how they integrate with Signal Forms.
+Özel kontrolleri çalışırken gördüğünüze göre, şimdi Signal Forms ile nasıl entegre olduklarını inceleyelim.
 
 ### Control interfaces
 
-The `BasicInput` and `BasicToggle` components you created implement specific control interfaces that tell Signal Forms how to interact with them.
+Oluşturduğunuz `BasicInput` ve `BasicToggle` bileşenleri, Signal Forms'a onlarla nasıl etkileşim kuracağını söyleyen belirli kontrol arayüzlerini uygular.
 
 #### FormValueControl
 
-`FormValueControl` is the interface for most input types - text inputs, number inputs, date pickers, select dropdowns, and any control that edits a single value. When your component implements this interface:
+`FormValueControl`, çoğu girdi türü için arayüzdür - metin girdileri, sayı girdileri, tarih seçiciler, seçim açılır menüleri ve tek bir değeri düzenleyen herhangi bir kontrol. Bileşeniniz bu arayüzü uyguladığında:
 
-- **Required property**: Your component must provide a `value` model signal
-- **What the FormField directive does**: Binds the form field's value to your control's `value` signal
+- **Gerekli özellik**: Bileşeniniz bir `value` model sinyali sağlamalıdır
+- **FormField direktifinin yaptığı**: Form alanının değerini kontrolünüzün `value` sinyaline bağlar
 
-IMPORTANT: Controls implementing `FormValueControl` must NOT have a `checked` property
+IMPORTANT: `FormValueControl` uygulayan kontrollerde `checked` özelliği bulunmamalıdır
 
 #### FormCheckboxControl
 
-`FormCheckboxControl` is the interface for checkbox-like controls - toggles, switches, and any control that represents a boolean on/off state. When your component implements this interface:
+`FormCheckboxControl`, onay kutusu benzeri kontroller için arayüzdür - geçiş düğmeleri, anahtarlar ve boolean açık/kapalı durumunu temsil eden herhangi bir kontrol. Bileşeniniz bu arayüzü uyguladığında:
 
-- **Required property**: Your component must provide a `checked` model signal
-- **What the FormField directive does**: Binds the form field's value to your control's `checked` signal
+- **Gerekli özellik**: Bileşeniniz bir `checked` model sinyali sağlamalıdır
+- **FormField direktifinin yaptığı**: Form alanının değerini kontrolünüzün `checked` sinyaline bağlar
 
-IMPORTANT: Controls implementing `FormCheckboxControl` must NOT have a `value` property
+IMPORTANT: `FormCheckboxControl` uygulayan kontrollerde `value` özelliği bulunmamalıdır
 
 ### Optional state properties
 
-Both `FormValueControl` and `FormCheckboxControl` extend `FormUiControl` - a base interface that provides optional properties for integrating with form state.
+Hem `FormValueControl` hem de `FormCheckboxControl`, form durumuyla entegrasyon için isteğe bağlı özellikler sağlayan temel arayüz `FormUiControl`'ü genişletir.
 
-All properties are optional. Implement only what your control needs.
+Tüm özellikler isteğe bağlıdır. Yalnızca kontrolünüzün ihtiyaç duyduklarını uygulayın.
 
 #### Interaction state
 
-Track when users interact with your control:
+Kullanıcıların kontrolünüzle ne zaman etkileşim kurduğunu takip edin:
 
-| Property  | Purpose                                          |
-| --------- | ------------------------------------------------ |
-| `touched` | Whether the user has interacted with the field   |
-| `dirty`   | Whether the value differs from its initial state |
+| Property  | Purpose                                           |
+| --------- | ------------------------------------------------- |
+| `touched` | Kullanıcının alanla etkileşim kurup kurmadığı     |
+| `dirty`   | Değerin başlangıç durumundan farklı olup olmadığı |
 
 #### Validation state
 
-Display validation feedback to users:
+Kullanıcılara doğrulama geri bildirimi gösterin:
 
-| Property  | Purpose                                 |
-| --------- | --------------------------------------- |
-| `errors`  | Array of current validation errors      |
-| `valid`   | Whether the field is valid              |
-| `invalid` | Whether the field has validation errors |
-| `pending` | Whether async validation is in progress |
+| Property  | Purpose                                   |
+| --------- | ----------------------------------------- |
+| `errors`  | Mevcut doğrulama hatalarının dizisi       |
+| `valid`   | Alanın geçerli olup olmadığı              |
+| `invalid` | Alanın doğrulama hataları olup olmadığı   |
+| `pending` | Asenkron doğrulamanın devam edip etmediği |
 
 #### Availability state
 
-Control whether users can interact with your field:
+Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
 
-| Property          | Purpose                                                  |
-| ----------------- | -------------------------------------------------------- |
-| `disabled`        | Whether the field is disabled                            |
-| `disabledReasons` | Reasons why the field is disabled                        |
-| `readonly`        | Whether the field is readonly (visible but not editable) |
-| `hidden`          | Whether the field is hidden from view                    |
+| Property          | Purpose                                                     |
+| ----------------- | ----------------------------------------------------------- |
+| `disabled`        | Alanın devre dışı olup olmadığı                             |
+| `disabledReasons` | Alanın neden devre dışı olduğunun nedenleri                 |
+| `readonly`        | Alanın salt okunur olup olmadığı (görünür ama düzenlenemez) |
+| `hidden`          | Alanın görünümden gizli olup olmadığı                       |
 
-NOTE: `disabledReasons` is an array of `DisabledReason` objects. Each object has a `field` property (reference to the field tree) and an optional `message` property. Access the message via `reason.message`.
+NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `field` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
 
 #### Validation constraints
 
-Receive validation constraint values from the form:
+Formdan doğrulama kısıtlama değerlerini alın:
 
 | Property    | Purpose                                              |
 | ----------- | ---------------------------------------------------- |
-| `required`  | Whether the field is required                        |
-| `min`       | Minimum numeric value (`undefined` if no constraint) |
-| `max`       | Maximum numeric value (`undefined` if no constraint) |
-| `minLength` | Minimum string length (undefined if no constraint)   |
-| `maxLength` | Maximum string length (undefined if no constraint)   |
-| `pattern`   | Array of regular expression patterns to match        |
+| `required`  | Alanın zorunlu olup olmadığı                         |
+| `min`       | Minimum sayısal değer (kısıtlama yoksa `undefined`)  |
+| `max`       | Maksimum sayısal değer (kısıtlama yoksa `undefined`) |
+| `minLength` | Minimum dize uzunluğu (kısıtlama yoksa undefined)    |
+| `maxLength` | Maksimum dize uzunluğu (kısıtlama yoksa undefined)   |
+| `pattern`   | Eşleştirilecek düzenli ifade kalıpları dizisi        |
 
 #### Field metadata
 
-| Property | Purpose                                                            |
-| -------- | ------------------------------------------------------------------ |
-| `name`   | The field's name attribute (which is unique across forms and apps) |
+| Property | Purpose                                                              |
+| -------- | -------------------------------------------------------------------- |
+| `name`   | Alanın name niteliği (formlar ve uygulamalar genelinde benzersizdir) |
 
-The "[Adding state signals](#adding-state-signals)" section below shows how to implement these properties in your controls.
+Aşağıdaki "[Adding state signals](#adding-state-signals)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
 
 ### How the FormField directive works
 
-The `[formField]` directive detects which interface your control implements and automatically binds the appropriate signals:
+`[formField]` direktifi, kontrolünüzün hangi arayüzü uyguladığını algılar ve uygun sinyalleri otomatik olarak bağlar:
 
 ```angular-ts
 import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
@@ -232,24 +232,29 @@ export class MyForm {
 }
 ```
 
-TIP: For complete coverage of creating and managing form models, see the [Form Models guide](guide/forms/signals/models).
+TIP: Form modellerini oluşturma ve yönetme konusunda kapsamlı bilgi için [Form Models kılavuzuna](guide/forms/signals/models) bakın.
 
-When you bind `[formField]="userForm.username"`, the FormField directive:
+`[formField]="userForm.username"` bağladığınızda, FormField direktifi:
 
-1. Detects your control implements `FormValueControl`
-2. Internally accesses `userForm.username().value()` and binds it to your control's `value` model signal
-3. Binds form state signals (`disabled()`, `errors()`, etc.) to your control's optional input signals
-4. Updates occur automatically through signal reactivity
+1. Kontrolünüzün `FormValueControl` uyguladığını algılar
+2. Dahili olarak `userForm.username().value()` değerine erişir ve bunu kontrolünüzün `value` model sinyaline bağlar
+3. Form durum sinyallerini (`disabled()`, `errors()`, vb.) kontrolünüzün isteğe bağlı girdi sinyallerine bağlar
+4. Güncellemeler sinyal reaktivitesi aracılığıyla otomatik olarak gerçekleşir
 
 ## Adding state signals
 
-The minimal controls shown above work, but they don't respond to form state. You can add optional input signals to make your controls react to disabled state, display validation errors, and track user interaction.
+Yukarıda gösterilen minimal kontroller çalışır, ancak form durumuna tepki vermezler. Kontrollerinizin devre dışı durumuna tepki vermesi, doğrulama hatalarını göstermesi ve kullanıcı etkileşimini izlemesi için isteğe bağlı girdi sinyalleri ekleyebilirsiniz.
 
-Here's a comprehensive example that implements common state properties:
+İşte yaygın durum özelliklerini uygulayan kapsamlı bir örnek:
 
 ```angular-ts
 import {Component, model, input, ChangeDetectionStrategy} from '@angular/core';
-import {FormValueControl, WithOptionalFieldTree, ValidationError, DisabledReason} from '@angular/forms/signals';
+import {
+  FormValueControl,
+  WithOptionalFieldTree,
+  ValidationError,
+  DisabledReason,
+} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-stateful-input',
@@ -304,7 +309,7 @@ export class StatefulInput implements FormValueControl<string> {
 }
 ```
 
-As a result, you can use the control with validation and state management:
+Sonuç olarak, kontrolü doğrulama ve durum yönetimi ile kullanabilirsiniz:
 
 ```angular-ts
 import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
@@ -333,17 +338,17 @@ export class Login {
 }
 ```
 
-When the user types an invalid email, the FormField directive automatically updates `invalid()` and `errors()`. Your control can display the validation feedback.
+Kullanıcı geçersiz bir e-posta yazdığında, FormField direktifi `invalid()` ve `errors()` değerlerini otomatik olarak günceller. Kontrolünüz doğrulama geri bildirimini gösterebilir.
 
 ### Signal types for state properties
 
-Most state properties use `input()` (read-only from the form). Use `model()` for `touched` when your control updates it on user interaction. The `touched` property uniquely supports `model()`, `input()`, or `OutputRef` depending on your needs.
+Çoğu durum özelliği `input()` (formdan salt okunur) kullanır. Kontrolünüz kullanıcı etkileşiminde güncellediğinde `touched` için `model()` kullanın. `touched` özelliği, ihtiyaçlarınıza bağlı olarak benzersiz bir şekilde `model()`, `input()` veya `OutputRef` desteği sunar.
 
 ## Value transformation
 
-Controls sometimes display values differently than the form model stores them - a date picker might display "January 15, 2024" while storing "2024-01-15", or a currency input might show "$1,234.56" while storing 1234.56.
+Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
 
-Use `linkedSignal()` (from `@angular/core`) to transform the model value for display, and handle input events to parse user input back to the storage format:
+Model değerini görüntüleme için dönüştürmek üzere `linkedSignal()` (`@angular/core`'dan) kullanın ve kullanıcı girdisini depolama biçimine geri ayrıştırmak için girdi olaylarını işleyin:
 
 ```angular-ts
 import {formatCurrency} from '@angular/common';
@@ -383,9 +388,9 @@ function parseCurrency(value: string): number {
 
 ## Validation integration
 
-Controls display validation state but don't perform validation. Validation happens in the form schema - your control receives `invalid()` and `errors()` signals from the FormField directive and displays them (as shown in the StatefulInput example above).
+Kontroller doğrulama durumunu görüntüler ancak doğrulama gerçekleştirmez. Doğrulama form şemasında gerçekleşir - kontrolünüz FormField direktifinden `invalid()` ve `errors()` sinyallerini alır ve bunları görüntüler (yukarıdaki StatefulInput örneğinde gösterildiği gibi).
 
-The FormField directive also passes validation constraint values like `required`, `min`, `max`, `minLength`, `maxLength`, and `pattern`. Your control can use these to enhance the UI:
+FormField direktifi ayrıca `required`, `min`, `max`, `minLength`, `maxLength` ve `pattern` gibi doğrulama kısıtlama değerlerini de iletir. Kontrolünüz bunları arayüzü geliştirmek için kullanabilir:
 
 ```ts
 export class NumberInput implements FormValueControl<number> {
@@ -398,9 +403,9 @@ export class NumberInput implements FormValueControl<number> {
 }
 ```
 
-When you add `min()` and `max()` validation rules to the schema, the FormField directive passes these values to your control. Use them to apply HTML5 attributes or show constraint hints in your template.
+Şemaya `min()` ve `max()` doğrulama kuralları eklediğinizde, FormField direktifi bu değerleri kontrolünüze iletir. Bunları HTML5 nitelikleri uygulamak veya şablonunuzda kısıtlama ipuçları göstermek için kullanın.
 
-IMPORTANT: Don't implement validation logic in your control. Define validation rules in the form schema and let your control display the results:
+IMPORTANT: Kontrolünüzde doğrulama mantığı uygulamayın. Doğrulama kurallarını form şemasında tanımlayın ve kontrolünüzün sonuçları göstermesini sağlayın:
 
 ```ts {avoid}
 // Avoid: Validation in control
@@ -421,7 +426,7 @@ accountForm = form(this.accountModel, (schemaPath) => {
 
 ## Next steps
 
-This guide covered building custom controls that integrate with Signal Forms. Related guides explore other aspects of Signal Forms:
+Bu kılavuz, Signal Forms ile entegre olan özel kontroller oluşturmayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <docs-pill-row>
   <docs-pill href="guide/forms/signals/models" title="Form models" />

@@ -1,10 +1,10 @@
 # Angular CLI MCP Server setup
 
-The Angular CLI includes an experimental [Model Context Protocol (MCP) server](https://modelcontextprotocol.io/) enabling AI assistants in your development environment to interact with the Angular CLI. We've included support for CLI powered code generation, adding packages, and more.
+Angular CLI, geliştirme ortamınızdaki yapay zeka asistanlarının Angular CLI ile etkileşime geçmesini sağlayan deneysel bir [Model Context Protocol (MCP) sunucusu](https://modelcontextprotocol.io/) içerir. CLI destekli kod üretimi, paket ekleme ve daha fazlası için destek ekledik.
 
 ## Available Tools
 
-The Angular CLI MCP server provides several tools to assist you in your development workflow. By default, the following tools are enabled:
+Angular CLI MCP sunucusu, geliştirme iş akışınızda size yardımcı olmak için çeşitli araçlar sağlar. Varsayılan olarak, aşağıdaki araçlar etkindir:
 
 | Name                        | Description                                                                                                                                                                                        | `local-only` | `read-only` |
 | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
@@ -17,7 +17,7 @@ The Angular CLI MCP server provides several tools to assist you in your developm
 
 ### Experimental Tools
 
-Some tools are provided in experimental / preview status since they are new or not fully tested. Enable them individually with the [`--experimental-tool`](#command-options) option and use them with caution.
+Bazı araçlar, yeni oldukları veya tam olarak test edilmedikleri için deneysel / önizleme durumunda sunulmaktadır. Bunları [`--experimental-tool`](#command-options) seçeneğiyle ayrı ayrı etkinleştirin ve dikkatli kullanın.
 
 | Name                       | Description                                                                                                                                                                                                                                                         | `local-only` | `read-only` |
 | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------: | :---------: |
@@ -31,17 +31,17 @@ Some tools are provided in experimental / preview status since they are new or n
 
 ## Get Started
 
-To get started, run the following command in your terminal:
+Başlamak için terminalinizde aşağıdaki komutu çalıştırın:
 
 ```bash
 ng mcp
 ```
 
-When run from an interactive terminal, this command displays instructions on how to configure a host environment to use the MCP server. The following sections provide example configurations for several popular editors and tools.
+Etkileşimli bir terminalden çalıştırıldığında, bu komut MCP sunucusunu kullanmak için bir ana bilgisayar ortamının nasıl yapılandırılacağına dair talimatlar görüntüler. Aşağıdaki bölümler, birçok popüler düzenleyici ve araç için örnek yapılandırmalar sağlar.
 
 ### Cursor
 
-Create a file named `.cursor/mcp.json` in your project's root and add the following configuration. You can also configure it globally in `~/.cursor/mcp.json`.
+Projenizin kök dizininde `.cursor/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. Ayrıca `~/.cursor/mcp.json` dosyasında global olarak da yapılandırabilirsiniz.
 
 ```json
 {
@@ -56,7 +56,7 @@ Create a file named `.cursor/mcp.json` in your project's root and add the follow
 
 ### Firebase Studio
 
-Create a file named `.idx/mcp.json` in your project's root and add the following configuration:
+Projenizin kök dizininde `.idx/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
 
 ```json
 {
@@ -71,7 +71,7 @@ Create a file named `.idx/mcp.json` in your project's root and add the following
 
 ### Gemini CLI
 
-Create a file named `.gemini/settings.json` in your project's root and add the following configuration:
+Projenizin kök dizininde `.gemini/settings.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
 
 ```json
 {
@@ -86,7 +86,7 @@ Create a file named `.gemini/settings.json` in your project's root and add the f
 
 ### JetBrains IDEs
 
-In JetBrains IDEs (like IntelliJ IDEA or WebStorm), after installing the JetBrains AI Assistant plugin, go to `Settings | Tools | AI Assistant | Model Context Protocol (MCP)`. Add a new server (`+`) and select `As JSON`. Then paste the following configuration:
+JetBrains IDE'lerinde (IntelliJ IDEA veya WebStorm gibi), JetBrains AI Assistant eklentisini yükledikten sonra `Settings | Tools | AI Assistant | Model Context Protocol (MCP)` yoluna gidin. Yeni bir sunucu ekleyin (`+`) ve `As JSON` seçeneğini seçin. Ardından aşağıdaki yapılandırmayı yapıştırın:
 
 ```json
 {
@@ -99,11 +99,11 @@ In JetBrains IDEs (like IntelliJ IDEA or WebStorm), after installing the JetBrai
 }
 ```
 
-For the most up-to-date instructions on configuring MCP servers, please refer to the JetBrains documentation: [Connect to an MCP server](https://www.jetbrains.com/help/ai-assistant/mcp.html#connect-to-an-mcp-server).
+MCP sunucularını yapılandırma hakkında en güncel talimatlar için lütfen JetBrains dokümantasyonuna bakın: [Connect to an MCP server](https://www.jetbrains.com/help/ai-assistant/mcp.html#connect-to-an-mcp-server).
 
 ### VS Code
 
-In your project's root, create a file named `.vscode/mcp.json` and add the following configuration. Note the use of the `servers` property.
+Projenizin kök dizininde `.vscode/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. `servers` özelliğinin kullanımına dikkat edin.
 
 ```json
 {
@@ -118,7 +118,7 @@ In your project's root, create a file named `.vscode/mcp.json` and add the follo
 
 ### Other IDEs
 
-For other IDEs, check your IDE's documentation for the proper location of the MCP configuration file (often `mcp.json`). The configuration should contain the following snippet.
+Diğer IDE'ler için, MCP yapılandırma dosyasının (genellikle `mcp.json`) uygun konumu hakkında IDE'nizin dokümantasyonunu kontrol edin. Yapılandırma aşağıdaki snippet'i içermelidir.
 
 ```json
 {
@@ -133,7 +133,7 @@ For other IDEs, check your IDE's documentation for the proper location of the MC
 
 ## Command Options
 
-The `mcp` command can be configured with the following options passed as arguments in your IDE's MCP configuration:
+`mcp` komutu, IDE'nizin MCP yapılandırmasında argüman olarak iletilen aşağıdaki seçeneklerle yapılandırılabilir:
 
 | Option                        | Type      | Description                                                                                                                                                               | Default |
 | :---------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------ |
@@ -141,7 +141,7 @@ The `mcp` command can be configured with the following options passed as argumen
 | `--local-only`                | `boolean` | Only register tools that do not require an internet connection. Your editor or coding agent may still send data over the network.                                         | `false` |
 | `--experimental-tool`<br>`-E` | `string`  | Enable an [experimental tool](#experimental-tools). Separate multiple options by spaces, e.g. `-E tool_a tool_b`. Enable all `devserver.x` tools by using `-E devserver`. |         |
 
-For example, to run the server in read-only mode in VS Code, you would update your `mcp.json` like this:
+Örneğin, VS Code'da sunucuyu salt okunur modda çalıştırmak için `mcp.json` dosyanızı şu şekilde güncellersiniz:
 
 ```json
 {
@@ -156,4 +156,4 @@ For example, to run the server in read-only mode in VS Code, you would update yo
 
 ## Feedback and New Ideas
 
-The Angular team welcomes your feedback on the existing MCP capabilities and any ideas you have for new tools or features. Please share your thoughts by opening an issue on the [angular/angular GitHub repository](https://github.com/angular/angular/issues).
+Angular ekibi, mevcut MCP yetenekleri ve yeni araçlar veya özellikler için fikirleriniz hakkında geri bildirimlerinizi memnuniyetle karşılar. Lütfen [angular/angular GitHub deposunda](https://github.com/angular/angular/issues) bir sorun açarak düşüncelerinizi paylaşın.

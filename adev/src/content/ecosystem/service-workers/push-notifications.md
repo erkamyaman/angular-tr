@@ -1,27 +1,27 @@
 # Push notifications
 
-Push notifications are a compelling way to engage users.
-Through the power of service workers, notifications can be delivered to a device even when your application is not in focus.
+Push bildirimleri, kullanıcılarla etkileşim kurmanın etkileyici bir yoludur.
+Service worker'ların gücüyle, uygulamanız odakta olmasa bile bir cihaza bildirimler iletilebilir.
 
-The Angular service worker enables the display of push notifications and the handling of notification click events.
+Angular service worker'ı, push bildirimlerinin görüntülenmesini ve bildirim tıklama olaylarının işlenmesini sağlar.
 
-HELPFUL: When using the Angular service worker, push notification interactions are handled using the `SwPush` service.
-To learn more about the browser APIs involved see [Push API](https://developer.mozilla.org/docs/Web/API/Push_API) and [Using the Notifications API](https://developer.mozilla.org/docs/Web/API/Notifications_API/Using_the_Notifications_API).
+HELPFUL: Angular service worker kullanılırken, push bildirim etkileşimleri `SwPush` servisi kullanılarak işlenir.
+İlgili tarayıcı API'leri hakkında daha fazla bilgi edinmek için [Push API](https://developer.mozilla.org/docs/Web/API/Push_API) ve [Using the Notifications API](https://developer.mozilla.org/docs/Web/API/Notifications_API/Using_the_Notifications_API) sayfalarına bakın.
 
 ## Notification payload
 
-Invoke push notifications by pushing a message with a valid payload.
-See `SwPush` for guidance.
+Geçerli bir yük ile bir mesaj göndererek push bildirimlerini tetikleyin.
+Rehberlik için `SwPush` belgelerine bakın.
 
-HELPFUL: In Chrome, you can test push notifications without a backend.
-Open Devtools -> Application -> Service Workers and use the `Push` input to send a JSON notification payload.
+HELPFUL: Chrome'da, bir backend olmadan push bildirimlerini test edebilirsiniz.
+Devtools -> Application -> Service Workers'ı açın ve bir JSON bildirim yükü göndermek için `Push` girdisini kullanın.
 
 ## Notification click handling
 
-The default behavior for the `notificationclick` event is to close the notification and notify `SwPush.notificationClicks`.
+`notificationclick` olayı için varsayılan davranış, bildirimi kapatmak ve `SwPush.notificationClicks`'i bilgilendirmektir.
 
-You can specify an additional operation to be executed on `notificationclick` by adding an `onActionClick` property to the `data` object, and providing a `default` entry.
-This is especially useful for when there are no open clients when a notification is clicked.
+`data` nesnesine bir `onActionClick` özelliği ekleyerek ve bir `default` girişi sağlayarak `notificationclick` üzerinde yürütülecek ek bir işlem belirtebilirsiniz.
+Bu, özellikle bir bildirim tıklandığında açık istemci olmadığında kullanışlıdır.
 
 ```json
 {
@@ -38,25 +38,25 @@ This is especially useful for when there are no open clients when a notification
 
 ### Operations
 
-The Angular service worker supports the following operations:
+Angular service worker aşağıdaki işlemleri destekler:
 
-| Operations                  | Details                                                                                                                                          |
-| :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `openWindow`                | Opens a new tab at the specified URL.                                                                                                            |
-| `focusLastFocusedOrOpen`    | Focuses the last focused client. If there is no client open, then it opens a new tab at the specified URL.                                       |
-| `navigateLastFocusedOrOpen` | Focuses the last focused client and navigates it to the specified URL. If there is no client open, then it opens a new tab at the specified URL. |
-| `sendRequest`               | Send a simple GET request to the specified URL.                                                                                                  |
+| İşlemler                    | Ayrıntılar                                                                                                                       |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| `openWindow`                | Belirtilen URL'de yeni bir sekme açar.                                                                                           |
+| `focusLastFocusedOrOpen`    | Son odaklanılan istemciye odaklanır. Açık istemci yoksa, belirtilen URL'de yeni bir sekme açar.                                  |
+| `navigateLastFocusedOrOpen` | Son odaklanılan istemciye odaklanır ve belirtilen URL'ye yönlendirir. Açık istemci yoksa, belirtilen URL'de yeni bir sekme açar. |
+| `sendRequest`               | Belirtilen URL'ye basit bir GET isteği gönderir.                                                                                 |
 
-IMPORTANT: URLs are resolved relative to the service worker's registration scope.<br />If an `onActionClick` item does not define a `url`, then the service worker's registration scope is used.
+IMPORTANT: URL'ler, service worker'ın kayıt kapsamına göre çözümlenir.<br />Bir `onActionClick` öğesi bir `url` tanımlamazsa, service worker'ın kayıt kapsamı kullanılır.
 
 ### Actions
 
-Actions offer a way to customize how the user can interact with a notification.
+Eylemler, kullanıcının bir bildirimle nasıl etkileşim kurabileceğini özelleştirmenin bir yolunu sunar.
 
-Using the `actions` property, you can define a set of available actions.
-Each action is represented as an action button that the user can click to interact with the notification.
+`actions` özelliğini kullanarak, mevcut eylemlerin bir setini tanımlayabilirsiniz.
+Her eylem, kullanıcının bildirimle etkileşim kurmak için tıklayabileceği bir eylem düğmesi olarak temsil edilir.
 
-In addition, using the `onActionClick` property on the `data` object, you can tie each action to an operation to be performed when the corresponding action button is clicked:
+Ayrıca, `data` nesnesindeki `onActionClick` özelliğini kullanarak, ilgili eylem düğmesi tıklandığında gerçekleştirilecek bir işleme her eylemi bağlayabilirsiniz:
 
 ```json
 {
@@ -82,11 +82,11 @@ In addition, using the `onActionClick` property on the `data` object, you can ti
 }
 ```
 
-IMPORTANT: If an action does not have a corresponding `onActionClick` entry, then the notification is closed and `SwPush.notificationClicks` is notified on existing clients.
+IMPORTANT: Bir eylemin karşılık gelen `onActionClick` girişi yoksa, bildirim kapatılır ve mevcut istemcilerde `SwPush.notificationClicks` bilgilendirilir.
 
 ## More on Angular service workers
 
-You might also be interested in the following:
+Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
   <docs-pill href="ecosystem/service-workers/communications" title="Communicating with the Service Worker"/>

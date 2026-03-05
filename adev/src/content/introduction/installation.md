@@ -1,36 +1,36 @@
 <docs-decorative-header title="Installation" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-Get started with Angular quickly with online starters or locally with your terminal.
+Çevrimiçi başlatıcılarla veya terminalinizi kullanarak yerel olarak Angular'a hızlıca başlayın.
 
 ## Play Online
 
-If you just want to play around with Angular in your browser without setting up a project, you can use our online sandbox:
+Angular'ı bir proje oluşturmadan tarayıcınızda denemek istiyorsanız, çevrimiçi deneme alanımızı kullanabilirsiniz:
 
 <docs-card-container>
   <docs-card title="" href="/playground" link="Open on Playground">
-  The fastest way to play with an Angular app. No setup required.
+  Bir Angular uygulamasıyla oynamanın en hızlı yolu. Kurulum gerekmez.
   </docs-card>
 </docs-card-container>
 
 ## Set up a new project locally
 
-If you're starting a new project, you'll most likely want to create a local project so that you can use tooling such as Git.
+Yeni bir projeye başlıyorsanız, Git gibi araçları kullanabilmek için büyük olasılıkla yerel bir proje oluşturmak isteyeceksiniz.
 
 ### Prerequisites
 
-- **Node.js** - [v20.19.0 or newer](/reference/versions)
-- **Text editor** - We recommend [Visual Studio Code](https://code.visualstudio.com/)
-- **Terminal** - Required for running Angular CLI commands
-- **Development Tool** - To improve your development workflow, we recommend the [Angular Language Service](/tools/language-service)
+- **Node.js** - [v20.19.0 veya daha yeni](/reference/versions)
+- **Metin editörü** - [Visual Studio Code](https://code.visualstudio.com/) öneriyoruz
+- **Terminal** - Angular CLI komutlarını çalıştırmak için gereklidir
+- **Geliştirme Aracı** - Geliştirme iş akışınızı iyileştirmek için [Angular Language Service](/tools/language-service) öneriyoruz
 
 ### Instructions
 
-The following guide will walk you through setting up a local Angular project.
+Aşağıdaki kılavuz, yerel bir Angular projesi oluşturma adımlarında size yol gösterecektir.
 
 #### Install Angular CLI
 
-Open a terminal (if you're using [Visual Studio Code](https://code.visualstudio.com/), you can open an [integrated terminal](https://code.visualstudio.com/docs/editor/integrated-terminal)) and run the following command:
+Bir terminal açın ([Visual Studio Code](https://code.visualstudio.com/) kullanıyorsanız, [entegre terminal](https://code.visualstudio.com/docs/editor/integrated-terminal) açabilirsiniz) ve aşağıdaki komutu çalıştırın:
 
 <docs-code-multifile>
   <docs-code
@@ -60,44 +60,44 @@ Open a terminal (if you're using [Visual Studio Code](https://code.visualstudio.
 
 </docs-code-multifile>
 
-If you are having issues running this command in Windows or Unix, check out the [CLI docs](/tools/cli/setup-local#install-the-angular-cli) for more info.
+Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#install-the-angular-cli) göz atın.
 
 #### Create a new project
 
-In your terminal, run the CLI command `ng new` with the desired project name. In the following examples, we'll be using the example project name of `my-first-angular-app`.
+Terminalinizde, istediğiniz proje adıyla `ng new` CLI komutunu çalıştırın. Aşağıdaki örneklerde, `my-first-angular-app` örnek proje adını kullanacağız.
 
 ```shell
 ng new <project-name>
 ```
 
-You will be presented with some configuration options for your project. Use the arrow and enter keys to navigate and select which options you desire.
+Projeniz için bazı yapılandırma seçenekleri sunulacaktır. Seçenekler arasında gezinmek ve istediğinizi seçmek için ok ve enter tuşlarını kullanın.
 
-If you don't have any preferences, just hit the enter key to take the default options and continue with the setup.
+Herhangi bir tercihiniz yoksa, varsayılan seçenekleri kabul etmek ve kuruluma devam etmek için enter tuşuna basmanız yeterlidir.
 
-After you select the configuration options and the CLI runs through the setup, you should see the following message:
+Yapılandırma seçeneklerini belirledikten ve CLI kurulumu tamamladıktan sonra aşağıdaki mesajı görmelisiniz:
 
 ```text
 ✔ Packages installed successfully.
     Successfully initialized git.
 ```
 
-At this point, you're now ready to run your project locally!
+Bu noktada, projenizi yerel olarak çalıştırmaya hazırsınız!
 
 #### Running your new project locally
 
-In your terminal, switch to your new Angular project.
+Terminalinizde, yeni Angular projenize geçin.
 
 ```shell
 cd my-first-angular-app
 ```
 
-All of your dependencies should be installed at this point (which you can verify by checking for the existence of a `node_modules` folder in your project), so you can start your project by running the command:
+Bu noktada tüm bağımlılıklarınız yüklenmiş olmalıdır (bunu projenizde bir `node_modules` klasörünün varlığını kontrol ederek doğrulayabilirsiniz), böylece projenizi aşağıdaki komutu çalıştırarak başlatabilirsiniz:
 
 ```shell
 npm start
 ```
 
-If everything is successful, you should see a similar confirmation message in your terminal:
+Her şey başarılıysa, terminalinizde benzer bir onay mesajı görmelisiniz:
 
 ```text
 Watch mode enabled. Watching for file changes...
@@ -106,12 +106,12 @@ NOTE: Raw file sizes do not reflect development server per-request transformatio
   ➜  press h + enter to show help
 ```
 
-And now you can visit the path in `Local` (e.g., `http://localhost:4200`) to see your application. Happy coding! 🎉
+Artık `Local` kısmındaki adresi (örneğin, `http://localhost:4200`) ziyaret ederek uygulamanızı görebilirsiniz. Keyifli kodlamalar!
 
 ### Using AI for Development
 
-To get started with building in your preferred AI powered IDE, [check out Angular prompt rules and best practices](/ai/develop-with-ai).
+Tercih ettiğiniz yapay zeka destekli IDE'de geliştirmeye başlamak için [Angular prompt kuralları ve en iyi uygulamalarına göz atın](/ai/develop-with-ai).
 
 ## Next steps
 
-Now that you've created your Angular project, you can learn more about Angular in our [Essentials guide](/essentials) or choose a topic in our in-depth guides!
+Angular projenizi oluşturduğunuza göre, [Temel Bilgiler kılavuzumuzda](/essentials) Angular hakkında daha fazla bilgi edinebilir veya detaylı kılavuzlarımızdan bir konu seçebilirsiniz!

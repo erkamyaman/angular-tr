@@ -1,22 +1,22 @@
 # Connect your form to the template
 
-Now, you need to connect your form to the template using the `[formField]` directive. This creates two-way data binding between your form model and the input elements.
+Şimdi, `[formField]` direktifini kullanarak formunuzu şablona bağlamanız gerekiyor. Bu, form modeliniz ile input elemanları arasında iki yönlü veri bağlama oluşturur.
 
-In this lesson, you'll learn how to:
+Bu derste şunları öğreneceksiniz:
 
-- Import the `FormField` directive
-- Use the `[formField]` directive to bind form fields to inputs
-- Connect text inputs and checkboxes to your form
-- Display form field values in the template
+- `FormField` direktifini içe aktarma
+- Form alanlarını input'lara bağlamak için `[formField]` direktifini kullanma
+- Metin input'larını ve onay kutularını formunuza bağlama
+- Form alan değerlerini şablonda görüntüleme
 
-Let's wire up the template!
+Şablonu bağlayalım!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import the FormField directive">
-Import the `FormField` directive from `@angular/forms/signals` and add it to your component's imports array:
+`@angular/forms/signals` paketinden `FormField` direktifini içe aktarın ve bileşeninizin imports dizisine ekleyin:
 
 ```ts
 import { form, FormField } from '@angular/forms/signals';
@@ -33,17 +33,17 @@ import { form, FormField } from '@angular/forms/signals';
 </docs-step>
 
 <docs-step title="Bind the email field">
-In your template, add the `[formField]` directive to the email input:
+Şablonunuzda, e-posta input'una `[formField]` direktifini ekleyin:
 
 ```html
 <input type="email" [formField]="loginForm.email" />
 ```
 
-The `loginForm.email` expression accesses the email field from your form.
+`loginForm.email` ifadesi, formunuzdaki e-posta alanına erişir.
 </docs-step>
 
 <docs-step title="Bind the password field">
-Add the `[formField]` directive to the password input:
+Parola input'una `[formField]` direktifini ekleyin:
 
 ```html
 <input type="password" [formField]="loginForm.password" />
@@ -52,7 +52,7 @@ Add the `[formField]` directive to the password input:
 </docs-step>
 
 <docs-step title="Bind the checkbox field">
-Add the `[formField]` directive to the checkbox input:
+Onay kutusu input'una `[formField]` direktifini ekleyin:
 
 ```html
 <input type="checkbox" [formField]="loginForm.rememberMe" />
@@ -61,7 +61,7 @@ Add the `[formField]` directive to the checkbox input:
 </docs-step>
 
 <docs-step title="Display the form values">
-Below the form, there's a debug section to show current form values. Display each field value using `.value()`:
+Formun altında, mevcut form değerlerini gösteren bir hata ayıklama bölümü var. `.value()` kullanarak her alan değerini görüntüleyin:
 
 ```angular-html
 <p>Email: {{ loginForm.email().value() }}</p>
@@ -69,11 +69,11 @@ Below the form, there's a debug section to show current form values. Display eac
 <p>Remember me: {{ loginForm.rememberMe().value() ? 'Yes' : 'No' }}</p>
 ```
 
-Form field values are signals, so the displayed values update automatically as you type.
+Form alan değerleri sinyaldir, bu nedenle siz yazdıkça görüntülenen değerler otomatik olarak güncellenir.
 </docs-step>
 
 </docs-workflow>
 
-Great work! You've connected your form to the template and displayed the form values. The `[formField]` directive handles two-way data binding automatically - as you type, the `loginModel` signal updates, and the displayed values update immediately.
+Harika iş! Formunuzu şablona bağladınız ve form değerlerini görüntülediniz. `[formField]` direktifi iki yönlü veri bağlamayı otomatik olarak yönetir - siz yazdıkça `loginModel` sinyali güncellenir ve görüntülenen değerler anında güncellenir.
 
-Next, you'll learn [how to add validation to your form](/tutorials/signal-forms/3-add-validation)!
+Ardından, [formunuza doğrulama eklemeyi](/tutorials/signal-forms/3-add-validation) öğreneceksiniz!

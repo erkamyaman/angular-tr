@@ -1,10 +1,8 @@
 # Component host elements
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-Angular creates an instance of a component for every HTML element that matches the component's
-selector. The DOM element that matches a component's selector is that component's **host element**.
-The contents of a component's template are rendered inside its host element.
+Angular, bilesnenin secicisiyle eslesen her HTML elemani icin bilesnenin bir ornegini olusturur. Bir bilesnenin secicisiyle eslesen DOM elemani, o bilesnenin **host elemani**dir. Bir bilesnenin sablonunun icerigi, host elemani icerisinde render edilir.
 
 ```angular-ts
 // Component source
@@ -31,13 +29,11 @@ export class ProfilePhoto {}
 <button>Upload a new profile photo</button>
 ```
 
-In the above example, `<profile-photo>` is the host element of the `ProfilePhoto` component.
+Yukaridaki ornekte, `<profile-photo>` bileseni `ProfilePhoto` bilesnenin host elemanidir.
 
 ## Binding to the host element
 
-A component can bind properties, attributes, styles and events to its host element. This behaves
-identically to bindings on elements inside the component's template, but instead defined with
-the `host` property in the `@Component` decorator:
+Bir bilesen, host elemanina ozellikler, nitelikler, stiller ve olaylar baglayabilir. Bu, bilesnenin sablonu icerisindeki elemanlardaki baglamalarla ayni sekilde calisir, ancak `@Component` dekoratorundeki `host` ozelligi ile tanimlanir:
 
 ```angular-ts
 @Component({
@@ -62,14 +58,13 @@ export class CustomSlider {
 }
 ```
 
-NOTE: The global target names that can be used to prefix an event name are `document:`, `window:` and `body:`.
+NOTE: Bir olay adinin onune eklenebilecek genel hedef adlari `document:`, `window:` ve `body:` dir.
 
 ## The `@HostBinding` and `@HostListener` decorators
 
-You can alternatively bind to the host element by applying the `@HostBinding` and `@HostListener`
-decorator to class members.
+Alternatif olarak, sinif uyelerine `@HostBinding` ve `@HostListener` dekoratorlerini uygulayarak host elemanina baglama yapabilirsiniz.
 
-`@HostBinding` lets you bind host properties and attributes to properties and getters:
+`@HostBinding`, host ozelliklerini ve niteliklerini ozellikler ve getter'lara baglamaniza olanak tanir:
 
 ```ts
 @Component({
@@ -88,8 +83,7 @@ export class CustomSlider {
 }
 ```
 
-`@HostListener` lets you bind event listeners to the host element. The decorator accepts an event
-name and an optional array of arguments:
+`@HostListener`, host elemanina olay dinleyicileri baglamaniza olanak tanir. Dekorator bir olay adi ve istege bagli bir arguman dizisi kabul eder:
 
 ```ts
 export class CustomSlider {
@@ -101,14 +95,12 @@ export class CustomSlider {
 ```
 
 <docs-callout critical title="Prefer using the `host` property over the decorators">
-  **Always prefer using the `host` property over `@HostBinding` and `@HostListener`.** These
-decorators exist exclusively for backwards compatibility.
+  **Her zaman `@HostBinding` ve `@HostListener` yerine `host` ozelligini kullanmayi tercih edin.** Bu dekoratorler yalnizca geriye donuk uyumluluk icin mevcuttur.
 </docs-callout>
 
 ## Binding collisions
 
-When you use a component in a template, you can add bindings to that component instance's element.
-The component may _also_ define host bindings for the same properties or attributes.
+Bir sablonda bilesen kullandiginizda, o bilesen orneginin elemanina baglamalar ekleyebilirsiniz. Bilesen ayni zamanda ayni ozellikler veya nitelikler icin host baglamalari da tanimlayabilir.
 
 ```angular-ts
 @Component({
@@ -125,16 +117,16 @@ export class ProfilePhoto { /* ... */ }
 <profile-photo role="group" [id]="otherId" />
 ```
 
-In cases like this, the following rules determine which value wins:
+Bu gibi durumlarda, hangi degerin kazanacagini asagidaki kurallar belirler:
 
-- If both values are static, the instance binding wins.
-- If one value is static and the other dynamic, the dynamic value wins.
-- If both values are dynamic, the component's host binding wins.
+- Her iki deger de statikse, ornek baglamasi kazanir.
+- Bir deger statik ve digeri dinamikse, dinamik deger kazanir.
+- Her iki deger de dinamikse, bilesnenin host baglamasi kazanir.
 
 ## Styling with CSS custom properties
 
-Developers often rely on [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties) to enable a flexible configuration of their component's styles.
-You can set such custom properties on a host element with a [style binding][style binding](guide/templates/binding#css-style-properties).
+Gelistiriciler, bilesen stillerinin esnek yapilandirilmasini saglamak icin siklikla [CSS Ozel Ozellikleri](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)'ne guvenirler.
+Bu tur ozel ozellikleri host elemani uzerinde bir [stil baglamasi][stil baglamasi](guide/templates/binding#css-style-properties) ile ayarlayabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -148,11 +140,11 @@ export class MyComponent {
 }
 ```
 
-In this example, the `--my-background` CSS custom property is bound to the `color` signal. The value of the custom property will automatically update whenever the `color` signal changes. This will affect the current component and all its children that rely on this custom property.
+Bu ornekte, `--my-background` CSS ozel ozelligi `color` sinyaline baglidir. Ozel ozelligin degeri, `color` sinyali her degistiginde otomatik olarak guncellenecektir. Bu, mevcut bileseni ve bu ozel ozellige dayanan tum alt bilesenleri etkileyecektir.
 
 ### Setting custom properties on children components
 
-Alternatively, it is also possible to set css custom properties on the host element of children components with a [style binding](guide/templates/binding#css-style-properties).
+Alternatif olarak, alt bilesenlerin host elemani uzerinde bir [stil baglamasi](guide/templates/binding#css-style-properties) ile CSS ozel ozelliklerini ayarlamak da mumkundur.
 
 ```angular-ts
 @Component({
@@ -166,7 +158,7 @@ export class MyComponent {
 
 ## Injecting host element attributes
 
-Components and directives can read static attributes from their host element by using `HostAttributeToken` together with the [`inject`](api/core/inject) function.
+Bilesenlere ve direktiflere, [`inject`](api/core/inject) fonksiyonu ile birlikte `HostAttributeToken` kullanarak host elemanlarindan statik nitelikler okunabilir.
 
 ```ts
 import { Component, HostAttributeToken, inject } from '@angular/core';
@@ -184,4 +176,4 @@ export class Button {
 <app-button variation="primary">Click me</app-button>
 ```
 
-HELPFUL: `HostAttributeToken` throws an error if the attribute is missing, unless the injection is marked as optional.
+HELPFUL: Enjeksiyon istege bagli olarak isaretlenmedikce, nitelik eksik oldugunda `HostAttributeToken` bir hata verir.

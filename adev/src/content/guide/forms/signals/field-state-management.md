@@ -1,14 +1,14 @@
 # Field state management
 
-Signal Forms' field state allows you to react to user interactions by providing reactive signals for validation status (such as `valid`, `invalid`, `errors`), interaction tracking (such as `touched`, `dirty`), and availability (such as `disabled`, `hidden`).
+Signal Forms'un alan durumu, doğrulama durumu (`valid`, `invalid`, `errors` gibi), etkileşim takibi (`touched`, `dirty` gibi) ve kullanılabilirlik (`disabled`, `hidden` gibi) için reaktif sinyaller sağlayarak kullanıcı etkileşimlerine tepki vermenize olanak tanır.
 
 ## Understanding field state
 
-When you create a form with the [`form()`](api/forms/signals/form) function, it returns a **field tree** - an object structure that mirrors your form model. Each field in the tree is accessible via dot notation (like [`form.email`](api/forms/signals/form#email)).
+[`form()`](api/forms/signals/form) fonksiyonu ile bir form oluşturduğunuzda, bir **alan ağacı** döndürür - form modelinizi yansıtan bir nesne yapısı. Ağaçtaki her alana nokta gösterimi ile erişilebilir ([`form.email`](api/forms/signals/form#email) gibi).
 
 ### Accessing field state
 
-When you call any field in the field tree as a function (like [`form.email()`](api/forms/signals/form#email)), it returns a `FieldState` object containing reactive signals that track the field's validation, interaction, and availability state. For example, the `invalid()` signal tells you whether the field has validation errors:
+Alan ağacındaki herhangi bir alanı fonksiyon olarak çağırdığınızda ([`form.email()`](api/forms/signals/form#email) gibi), alanın doğrulama, etkileşim ve kullanılabilirlik durumunu izleyen reaktif sinyaller içeren bir `FieldState` nesnesi döndürür. Örneğin, `invalid()` sinyali alanın doğrulama hataları olup olmadığını söyler:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -43,42 +43,42 @@ export class Registration {
 }
 ```
 
-In this example, the template checks `registrationForm.email().invalid()` to determine whether to display an error message.
+Bu örnekte, şablon bir hata mesajı gösterip göstermemeye karar vermek için `registrationForm.email().invalid()` değerini kontrol eder.
 
 ### Field state signals
 
-The most commonly used signal is `value()`, a `WritableSignal` that provides access to the field's current value:
+En yaygın kullanılan sinyal, alanın geçerli değerine erişim sağlayan bir `WritableSignal` olan `value()`'dur:
 
 ```ts
 const emailValue = registrationForm.email().value();
 console.log(emailValue); // Current email string
 ```
 
-Beyond `value()`, field state includes signals for validation, interaction tracking, and availability control:
+`value()` dışında, alan durumu doğrulama, etkileşim takibi ve kullanılabilirlik kontrolü için sinyaller içerir:
 
-| Category                                | Signal       | Description                                                                       |
-| --------------------------------------- | ------------ | --------------------------------------------------------------------------------- |
-| **[Validation](#validation-state)**     | `valid()`    | Field passes all validation rules and has no pending validators                   |
-|                                         | `invalid()`  | Field has validation errors                                                       |
-|                                         | `errors()`   | Array of validation error objects                                                 |
-|                                         | `pending()`  | Async validation in progress                                                      |
-| **[Interaction](#interaction-state)**   | `touched()`  | User has focused and blurred the field (if interactive)                           |
-|                                         | `dirty()`    | User has modified the field (if interactive), even if value matches initial state |
-| **[Availability](#availability-state)** | `disabled()` | Field is disabled and doesn't affect parent form state                            |
-|                                         | `hidden()`   | Indicates field should be hidden; visibility in template is controlled with `@if` |
-|                                         | `readonly()` | Field is readonly and doesn't affect parent form state                            |
+| Category                                | Signal       | Description                                                                           |
+| --------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
+| **[Validation](#validation-state)**     | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
+|                                         | `invalid()`  | Alanın doğrulama hataları var                                                         |
+|                                         | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
+|                                         | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
+| **[Interaction](#interaction-state)**   | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
+|                                         | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
+| **[Availability](#availability-state)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
+|                                         | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |
+|                                         | `readonly()` | Alan salt okunur ve üst form durumunu etkilemiyor                                     |
 
-These signals enable you to build responsive form user experiences that react to user behavior. The sections below explore each category in detail.
+Bu sinyaller, kullanıcı davranışına tepki veren, manuel olay işleme gerektirmeyen duyarlı form kullanıcı deneyimleri oluşturmanızı sağlar. Aşağıdaki bölümler her kategoriyi ayrıntılı olarak inceler.
 
 ## Validation state
 
-Validation state signals tell you whether a field is valid and what errors it contains.
+Doğrulama durumu sinyalleri, bir alanın geçerli olup olmadığını ve hangi hataları içerdiğini söyler.
 
-NOTE: This guide focuses on **using** validation state in your templates and logic (such as reading `valid()`, `invalid()`, `errors()` to display feedback). For information on **defining** validation rules and creating custom validators, see the [Validation guide](guide/forms/signals/validation).
+NOTE: Bu kılavuz, şablonlarınızda ve mantığınızda doğrulama durumunu **kullanmaya** odaklanır (geri bildirim göstermek için `valid()`, `invalid()`, `errors()` okuma gibi). Doğrulama kuralları **tanımlama** ve özel doğrulayıcılar oluşturma hakkında bilgi için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
 ### Checking validity
 
-Use `valid()` and `invalid()` to check validation status:
+Doğrulama durumunu kontrol etmek için `valid()` ve `invalid()` kullanın:
 
 ```angular-ts
 @Component({
@@ -99,26 +99,26 @@ export class Login {
 }
 ```
 
-| Signal      | Returns `true` when                                             |
-| ----------- | --------------------------------------------------------------- |
-| `valid()`   | Field passes all validation rules and has no pending validators |
-| `invalid()` | Field has validation errors                                     |
+| Signal      | Returns `true` when                                                 |
+| ----------- | ------------------------------------------------------------------- |
+| `valid()`   | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur |
+| `invalid()` | Alanın doğrulama hataları var                                       |
 
-When checking validity in code, use `invalid()` instead of `!valid()` if you want to distinguish between "has errors" and "validation pending." The reason for this is that both `valid()` and `invalid()` can be `false` simultaneously when async validation is pending because the field isn't valid yet since validation not complete and is also isn't invalid since no errors have been found yet.
+Kodda geçerlilik kontrol ederken, "hataları var" ile "doğrulama beklemede" durumlarını ayırt etmek istiyorsanız `!valid()` yerine `invalid()` kullanın. Bunun nedeni, asenkron doğrulama beklemedeyken hem `valid()` hem de `invalid()` aynı anda `false` olabilmesidir; çünkü doğrulama henüz tamamlanmadığı için alan geçerli değildir ve henüz hata bulunmadığı için de geçersiz değildir.
 
 ### Reading validation errors
 
-Access the array of validation errors with `errors()`. Each error object contains:
+Doğrulama hatalarının dizisine `errors()` ile erişin. Her hata nesnesi şunları içerir:
 
-| Property    | Description                                                     |
-| ----------- | --------------------------------------------------------------- |
-| `kind`      | The validation rule that failed (such as "required" or "email") |
-| `message`   | Optional human-readable error message                           |
-| `fieldTree` | Reference to the `FieldTree` where the error occurred           |
+| Property    | Description                                                    |
+| ----------- | -------------------------------------------------------------- |
+| `kind`      | Başarısız olan doğrulama kuralı ("required" veya "email" gibi) |
+| `message`   | İsteğe bağlı okunabilir hata mesajı                            |
+| `fieldTree` | Hatanın oluştuğu `FieldTree`'ye referans                       |
 
-NOTE: The `message` property is optional. Validators can provide custom error messages, but if not specified, you may need to map error `kind` values to your own messages.
+NOTE: `message` özelliği isteğe bağlıdır. Doğrulayıcılar özel hata mesajları sağlayabilir, ancak belirtilmezse hata `kind` değerlerini kendi mesajlarınızla eşlemeniz gerekebilir.
 
-Here's an example of how to display errors in your template:
+İşte şablonunuzda hataları nasıl göstereceğinize dair bir örnek:
 
 ```angular-ts
 @Component({
@@ -136,11 +136,11 @@ Here's an example of how to display errors in your template:
 })
 ```
 
-This approach loops through all errors for a field, displaying each error message to the user.
+Bu yaklaşım, bir alan için tüm hataları döngüye alarak her hata mesajını kullanıcıya gösterir.
 
 ### Pending validation
 
-The `pending()` signal indicates async validation is in progress:
+`pending()` sinyali, asenkron doğrulamanın devam ettiğini belirtir:
 
 ```angular-ts
 @Component({
@@ -158,21 +158,21 @@ The `pending()` signal indicates async validation is in progress:
 })
 ```
 
-This signal enables you to show loading states while async validation executes.
+Bu sinyal, asenkron doğrulama yürütülürken yükleme durumları göstermenizi sağlar.
 
 ## Interaction state
 
-Interaction state tracks whether users have interacted with fields, enabling patterns like "show errors only after the user has touched a field."
+Etkileşim durumu, kullanıcıların alanlarla etkileşim kurup kurmadığını izler ve "hataları yalnızca kullanıcı alana dokunduktan sonra göster" gibi kalıpları mümkün kılar.
 
 ### Touched state
 
-The `touched()` signal tracks whether a user has focused and then blurred a field. It becomes `true` when a user focuses and then blurs a field through user interaction (not programmatically). Hidden, disabled, and readonly fields are non-interactive and don't become touched from user interactions.
+`touched()` sinyali, bir kullanıcının bir alana odaklanıp ardından odağı bırakıp bırakmadığını izler. Kullanıcı, kullanıcı etkileşimi (programatik olmayan) yoluyla bir alana odaklanıp ardından odağı bıraktığında `true` olur. Gizli, devre dışı ve salt okunur alanlar etkileşimsizdir ve kullanıcı etkileşimlerinden dokunulmuş hale gelmez.
 
 ### Dirty state
 
-Forms often need to detect whether data has actually changed - for example, to warn users about unsaved changes or to enable a save button only when necessary. The `dirty()` signal tracks whether the user has modified the field.
+Formlar genellikle verilerin gerçekten değişip değişmediğini tespit etmek zorundadır - örneğin, kullanıcıları kaydedilmemiş değişiklikler hakkında uyarmak veya bir kaydet düğmesini yalnızca gerektiğinde etkinleştirmek için. `dirty()` sinyali, kullanıcının alanı değiştirip değiştirmediğini izler.
 
-The `dirty()` signal becomes `true` when the user modifies an interactive field's value, and remains `true` even if the value is changed back to match the initial value:
+`dirty()` sinyali, kullanıcı etkileşimli bir alanın değerini değiştirdiğinde `true` olur ve değer başlangıç değeriyle eşleşecek şekilde geri değiştirilse bile `true` kalır:
 
 ```angular-ts
 @Component({
@@ -193,33 +193,33 @@ export class Profile {
 }
 ```
 
-Use `dirty()` for "unsaved changes" warnings or to enable save buttons only when data has changed.
+"Kaydedilmemiş değişiklikler" uyarıları için veya yalnızca veriler değiştiğinde kaydet düğmelerini etkinleştirmek için `dirty()` kullanın.
 
 ### Touched vs dirty
 
-These signals track different user interactions:
+Bu sinyaller farklı kullanıcı etkileşimlerini izler:
 
-| Signal      | When it becomes true                                                                                                            |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `touched()` | User has focused and blurred an interactive field (even if they didn't change anything)                                         |
-| `dirty()`   | User has modified an interactive field (even if they never blurred it, and even if the current value matches the initial value) |
+| Signal      | When it becomes true                                                                                                    |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `touched()` | Kullanıcı etkileşimli bir alana odaklanmış ve odağı bırakmış (hiçbir şey değiştirmese bile)                             |
+| `dirty()`   | Kullanıcı etkileşimli bir alanı değiştirmiş (odağı hiç bırakmasa bile ve mevcut değer başlangıç değeriyle eşleşse bile) |
 
-A field can be in different combinations:
+Bir alan farklı kombinasyonlarda olabilir:
 
-| State                  | Scenario                                                  |
-| ---------------------- | --------------------------------------------------------- |
-| Touched but not dirty  | User focused and blurred the field but made no changes    |
-| Both touched and dirty | User focused the field, changed the value, and blurred it |
+| State                      | Scenario                                                               |
+| -------------------------- | ---------------------------------------------------------------------- |
+| Dokunulmuş ama kirli değil | Kullanıcı alana odaklanmış ve odağı bırakmış ancak değişiklik yapmamış |
+| Hem dokunulmuş hem kirli   | Kullanıcı alana odaklanmış, değeri değiştirmiş ve odağı bırakmış       |
 
-NOTE: Hidden, disabled, and readonly fields are non-interactive - they don't become touched or dirty from user interactions.
+NOTE: Gizli, devre dışı ve salt okunur alanlar etkileşimsizdir - kullanıcı etkileşimlerinden dokunulmuş veya kirli hale gelmezler.
 
 ## Availability state
 
-Availability state signals control whether fields are interactive, editable, or visible. Disabled, hidden, and readonly fields are non-interactive. They don't affect whether their parent form is valid, touched, or dirty.
+Kullanılabilirlik durumu sinyalleri, alanların etkileşimli, düzenlenebilir veya görünür olup olmadığını kontrol eder. Devre dışı, gizli ve salt okunur alanlar etkileşimsizdir. Üst formlarının geçerli, dokunulmuş veya kirli olup olmadığını etkilemezler.
 
 ### Disabled fields
 
-The `disabled()` signal indicates whether a field accepts user input. Disabled fields appear in the UI but users cannot interact with them.
+`disabled()` sinyali, bir alanın kullanıcı girdisi kabul edip etmediğini belirtir. Devre dışı alanlar arayüzde görünür ancak kullanıcılar bunlarla etkileşim kuramaz.
 
 ```angular-ts
 import { Component, signal } from '@angular/core'
@@ -249,20 +249,20 @@ export class Order {
 }
 ```
 
-In this example, we use `valueOf(schemaPath.total)` to check the value of the `total` field to determine whether `couponCode` should be disabled.
+Bu örnekte, `couponCode`'un devre dışı olup olmadığını belirlemek için `total` alanının değerini kontrol etmek üzere `valueOf(schemaPath.total)` kullanıyoruz.
 
-NOTE: The schema callback parameter (`schemaPath` in these examples) is a `SchemaPathTree` object that provides paths to all fields in your form. You can name this parameter anything you like.
+NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`), formunuzdaki tüm alanlara yollar sağlayan bir `SchemaPathTree` nesnesidir. Bu parametreyi istediğiniz gibi adlandırabilirsiniz.
 
-When defining rules like `disabled()`, `hidden()`, or `readonly()`, the logic callback receives a `FieldContext` object that is typically destructured (such as `({valueOf})`). Two methods commonly used in validation rules are:
+`disabled()`, `hidden()` veya `readonly()` gibi kurallar tanımlarken, mantık geri çağırma fonksiyonu genellikle parçalanan (`({valueOf})` gibi) bir `FieldContext` nesnesi alır. Doğrulama kurallarında yaygın olarak kullanılan iki yöntem:
 
-- `valueOf(schemaPath.otherField)` - Read the value of another field in the form
-- `value()` - A signal containing the value of the field the rule is applied to
+- `valueOf(schemaPath.otherField)` - Formdaki başka bir alanın değerini okur
+- `value()` - Kuralın uygulandığı alanın değerini içeren bir sinyal
 
-Disabled fields don't contribute to the parent form's validation state. Even if a disabled field would be invalid, the parent form can still be valid. The `disabled()` state affects interactivity and validation, but does not change the field's value.
+Devre dışı alanlar, üst formun doğrulama durumuna katkıda bulunmaz. Devre dışı bir alan geçersiz olsa bile, üst form yine de geçerli olabilir. `disabled()` durumu etkileşimi ve doğrulamayı etkiler, ancak alanın değerini değiştirmez.
 
 ### Hidden fields
 
-The `hidden()` signal indicates whether a field is conditionally hidden. Use `hidden()` with `@if` to show or hide fields based on conditions:
+`hidden()` sinyali, bir alanın koşullu olarak gizli olup olmadığını belirtir. Koşullara dayalı olarak alanları göstermek veya gizlemek için `hidden()` ile `@if` kullanın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -297,11 +297,11 @@ export class Profile {
 }
 ```
 
-Hidden fields don't participate in validation. If a required field is hidden, it won't prevent form submission. The `hidden()` state affects availability and validation, but does not change the field's value.
+Gizli alanlar doğrulamaya katılmaz. Zorunlu bir alan gizliyse, form gönderimini engellemez. `hidden()` durumu kullanılabilirliği ve doğrulamayı etkiler, ancak alanın değerini değiştirmez.
 
 ### Readonly fields
 
-The `readonly()` signal indicates whether a field is readonly. Readonly fields display their value but users cannot edit them:
+`readonly()` sinyali, bir alanın salt okunur olup olmadığını belirtir. Salt okunur alanlar değerlerini gösterir ancak kullanıcılar bunları düzenleyemez:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -334,21 +334,21 @@ export class Account {
 }
 ```
 
-NOTE: The `[formField]` directive automatically binds the `readonly` attribute based on the field's `readonly()` state, so you don't need to manually add `[readonly]="field().readonly()"`.
+NOTE: `[formField]` direktifi, alanın `readonly()` durumuna göre `readonly` niteliğini otomatik olarak bağlar, bu yüzden manuel olarak `[readonly]="field().readonly()"` eklemenize gerek yoktur.
 
-Like disabled and hidden fields, readonly fields are non-interactive and don't affect parent form state. The `readonly()` state affects editability and validation, but does not change the field's value.
+Devre dışı ve gizli alanlar gibi, salt okunur alanlar da etkileşimsizdir ve üst form durumunu etkilemez. `readonly()` durumu düzenlenebilirliği ve doğrulamayı etkiler, ancak alanın değerini değiştirmez.
 
 ### When to use each
 
-| State        | Use when                                                            | User can see it | User can interact | Contributes to validation |
-| ------------ | ------------------------------------------------------------------- | --------------- | ----------------- | ------------------------- |
-| `disabled()` | Field temporarily unavailable (such as based on other field values) | Yes             | No                | No                        |
-| `hidden()`   | Field not relevant in current context                               | No (with @if)   | No                | No                        |
-| `readonly()` | Value should be visible but not editable                            | Yes             | No                | No                        |
+| State        | Use when                                                                   | User can see it  | User can interact | Contributes to validation |
+| ------------ | -------------------------------------------------------------------------- | ---------------- | ----------------- | ------------------------- |
+| `disabled()` | Alan geçici olarak kullanılamaz (diğer alan değerlerine bağlı olarak gibi) | Evet             | Hayır             | Hayır                     |
+| `hidden()`   | Alan mevcut bağlamda ilgili değil                                          | Hayır (with @if) | Hayır             | Hayır                     |
+| `readonly()` | Değer görünür olmalı ama düzenlenemez                                      | Evet             | Hayır             | Hayır                     |
 
 ## Form-level state
 
-The root form is also a field in the field tree. When you call it as a function, it also returns a `FieldState` object that aggregates the state of all child fields.
+Kök form da alan ağacındaki bir alandır. Onu fonksiyon olarak çağırdığınızda, tüm alt alanların durumunu toplayan bir `FieldState` nesnesi de döndürür.
 
 ### Accessing form state
 
@@ -369,43 +369,43 @@ export class Login {
 }
 ```
 
-In this example, the form is valid only when all child fields are valid. This allows you to enable/disable submit buttons based on overall form validity.
+Bu örnekte, form yalnızca tüm alt alanlar geçerli olduğunda geçerlidir. Bu, genel form geçerliliğine göre gönder düğmelerini etkinleştirmenizi/devre dışı bırakmanızı sağlar.
 
 ### Form-level signals
 
-Because the root form is a field, it has the same signals (such as `valid()`, `invalid()`, `touched()`, `dirty()`, etc.).
+Kök form bir alan olduğu için, aynı sinyallere sahiptir (`valid()`, `invalid()`, `touched()`, `dirty()`, vb. gibi).
 
 | Signal      | Form-level behavior                                            |
 | ----------- | -------------------------------------------------------------- |
-| `valid()`   | All interactive fields are valid and no validators are pending |
-| `invalid()` | At least one interactive field has validation errors           |
-| `pending()` | At least one interactive field has pending async validation    |
-| `touched()` | User has touched at least one interactive field                |
-| `dirty()`   | User has modified at least one interactive field               |
+| `valid()`   | Tüm etkileşimli alanlar geçerli ve bekleyen doğrulayıcı yok    |
+| `invalid()` | En az bir etkileşimli alanın doğrulama hataları var            |
+| `pending()` | En az bir etkileşimli alanın bekleyen asenkron doğrulaması var |
+| `touched()` | Kullanıcı en az bir etkileşimli alana dokunmuş                 |
+| `dirty()`   | Kullanıcı en az bir etkileşimli alanı değiştirmiş              |
 
 ### When to use form-level vs field-level
 
-**Use form-level state for:**
+**Form düzeyinde durumu şunlar için kullanın:**
 
-- Submit button enabled/disabled state
-- "Save" button state
-- Overall form validity checks
-- Unsaved changes warnings
+- Gönder düğmesi etkin/devre dışı durumu
+- "Kaydet" düğmesi durumu
+- Genel form geçerlilik kontrolleri
+- Kaydedilmemiş değişiklik uyarıları
 
-**Use field-level state for:**
+**Alan düzeyinde durumu şunlar için kullanın:**
 
-- Individual field error messages
-- Field-specific styling
-- Per-field validation feedback
-- Conditional field availability
+- Bireysel alan hata mesajları
+- Alana özgü stil
+- Alan bazında doğrulama geri bildirimi
+- Koşullu alan kullanılabilirliği
 
 ## State propagation
 
-Field state propagates from child fields up through parent field groups to the root form.
+Alan durumu, alt alanlardan üst alan grupları aracılığıyla kök forma kadar yukarı yayılır.
 
 ### How child state affects parent forms
 
-When a child field becomes invalid, its parent field group becomes invalid, and so does the root form. When a child becomes touched or dirty, the parent field group and root form reflect that change. This aggregation allows you to check validity at any level - field or entire form.
+Bir alt alan geçersiz olduğunda, üst alan grubu da geçersiz olur ve kök form da öyle. Bir alt alan dokunulmuş veya kirli olduğunda, üst alan grubu ve kök form bu değişikliği yansıtır. Bu toplama, herhangi bir düzeyde - alan veya tüm form - geçerliliği kontrol etmenizi sağlar.
 
 ```ts
 const userModel = signal({
@@ -429,7 +429,7 @@ userForm.profile.firstName().invalid() === true;
 
 ### Hidden, disabled, and readonly fields
 
-Hidden, disabled, and readonly fields are non-interactive and don't affect parent form state:
+Gizli, devre dışı ve salt okunur alanlar etkileşimsizdir ve üst form durumunu etkilemez:
 
 ```ts
 const orderModel = signal({
@@ -443,17 +443,17 @@ const orderForm = form(orderModel, (schemaPath) => {
 });
 ```
 
-In this example, when `shippingAddress` is hidden, it doesn't affect form validity. As a result, even if `shippingAddress` is empty and required, the form can be valid.
+Bu örnekte, `shippingAddress` gizli olduğunda form geçerliliğini etkilemez. Sonuç olarak, `shippingAddress` boş ve zorunlu olsa bile form geçerli olabilir.
 
-This behavior prevents hidden, disabled, or readonly fields from blocking form submission or affecting validation, touched, and dirty state.
+Bu davranış, gizli, devre dışı veya salt okunur alanların form gönderimini engellemesini veya doğrulama, dokunulmuş ve kirli durumunu etkilemesini önler.
 
 ## Using state in templates
 
-Field state signals integrate seamlessly with Angular templates, enabling reactive form user experiences without manual event handling.
+Alan durumu sinyalleri, Angular şablonlarıyla sorunsuz bir şekilde entegre olarak manuel olay işleme gerektirmeden reaktif form kullanıcı deneyimleri sağlar.
 
 ### Conditional error display
 
-Show errors only after a user has interacted with a field:
+Hataları yalnızca kullanıcı alanla etkileşim kurduktan sonra gösterin:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -482,11 +482,11 @@ export class Signup {
 }
 ```
 
-This pattern prevents showing errors before users have had a chance to interact with the field. Errors appear only after the user has focused and then left the field.
+Bu kalıp, kullanıcılar alanla etkileşim kurma fırsatı bulmadan hataların gösterilmesini önler. Hatalar yalnızca kullanıcı alana odaklanıp ardından alandan ayrıldıktan sonra görünür.
 
 ### Conditional field availability
 
-Use the `hidden()` signal with `@if` to show or hide fields conditionally:
+Alanları koşullu olarak göstermek veya gizlemek için `hidden()` sinyalini `@if` ile kullanın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -521,11 +521,11 @@ export class Order {
 }
 ```
 
-Hidden fields don't participate in validation, allowing the form to be submitted even if the hidden field would otherwise be invalid.
+Gizli alanlar doğrulamaya katılmaz, bu da gizli alan aksi takdirde geçersiz olsa bile formun gönderilmesine olanak tanır.
 
 ### Tracking values for array fields
 
-In signal forms, a `@for` block over a set of fields should be tracked by field identity.
+Signal forms'da, bir alan kümesi üzerindeki `@for` bloğu alan kimliğine göre izlenmelidir.
 
 ```angular-ts
 @Component({
@@ -542,17 +542,17 @@ export class App {
 }
 ```
 
-The forms system is already tracking the model values within the array and maintaining a stable identity of the fields it creates automatically.
+Form sistemi zaten dizi içindeki model değerlerini izlemekte ve oluşturduğu alanların kararlı kimliğini otomatik olarak sürdürmektedir.
 
-When an item changes, it may represent a new logical entity even if some of its properties look the same. Tracking by identity ensures the framework treats it as a distinct item rather than reusing existing UI elements. This prevents stateful elements, like form inputs, from being incorrectly shared and keeps bindings aligned with the correct part of the model.
+Bir öğe değiştiğinde, bazı özellikleri aynı görünse bile yeni bir mantıksal varlığı temsil edebilir. Kimliğe göre izleme, çerçevenin mevcut arayüz öğelerini yeniden kullanmak yerine onu ayrı bir öğe olarak ele almasını sağlar. Bu, form girdileri gibi durumsal öğelerin yanlış paylaşılmasını önler ve bağlamaları modelin doğru kısmıyla hizalı tutar.
 
 ## Using field state in component logic
 
-Field state signals work with Angular's reactive primitives like `computed()` and `effect()` for advanced form logic.
+Alan durumu sinyalleri, gelişmiş form mantığı için Angular'ın `computed()` ve `effect()` gibi reaktif temel yapılarıyla çalışır.
 
 ### Validation checks before submission
 
-Check form validity in component methods:
+Bileşen yöntemlerinde form geçerliliğini kontrol edin:
 
 ```ts
 export class Registration {
@@ -583,11 +583,11 @@ export class Registration {
 }
 ```
 
-This ensures only valid, fully-validated data reaches your API.
+Bu, yalnızca geçerli ve tamamen doğrulanmış verilerin API'nize ulaşmasını sağlar.
 
 ### Derived state with computed
 
-Create computed signals based on field state to automatically update when the underlying field state changes:
+Alan durumu değiştiğinde otomatik olarak güncellenen, alan durumuna dayalı hesaplanmış sinyaller oluşturun:
 
 ```ts
 export class Password {
@@ -614,11 +614,11 @@ export class Password {
 
 ### Programmatic state changes
 
-While field state typically updates through user interactions (typing, focusing, blurring), you sometimes need to control it programmatically. Common scenarios include form submission and resetting forms.
+Alan durumu genellikle kullanıcı etkileşimleri (yazma, odaklanma, odağı bırakma) aracılığıyla güncellenir, ancak bazen programatik olarak kontrol etmeniz gerekir. Yaygın senaryolar arasında form gönderimi ve formları sıfırlama yer alır.
 
 #### Form submission
 
-Signal Forms provides a `FormRoot` directive that simplifies form submission. It automatically prevents the default browser form submission behavior and sets the `novalidate` attribute on the `<form>` element.
+Signal Forms, form gönderimini basitleştiren bir `FormRoot` direktifi sağlar. Varsayılan tarayıcı form gönderim davranışını otomatik olarak engeller ve `<form>` elemanına `novalidate` niteliğini ayarlar.
 
 ```angular-ts
 @Component({
@@ -656,13 +656,13 @@ export class Registration {
 }
 ```
 
-When you use `FormRoot`, submitting the form automatically calls the `submit()` function, which marks all fields as touched (revealing validation errors) and executes your `action` callback if the form is valid.
+`FormRoot` kullandığınızda, formu göndermek otomatik olarak `submit()` fonksiyonunu çağırır; bu fonksiyon tüm alanları dokunulmuş olarak işaretler (doğrulama hatalarını ortaya çıkarır) ve form geçerliyse `action` geri çağırma fonksiyonunuzu çalıştırır.
 
-You can also submit a form manually, without using the directive, by calling `submit(this.registrationForm)`. When explicitly calling the `submit` function like this, you can pass a `FormSubmitOptions` to override the default `submission` logic for the form: `submit(this.registrationForm, {action: () => /* ... */ })`.
+Ayrıca direktif kullanmadan, `submit(this.registrationForm)` çağırarak bir formu manuel olarak da gönderebilirsiniz. `submit` fonksiyonunu bu şekilde açıkça çağırırken, formun varsayılan `submission` mantığını geçersiz kılmak için bir `FormSubmitOptions` iletebilirsiniz: `submit(this.registrationForm, {action: () => /* ... */ })`.
 
 #### Resetting forms after submission
 
-After successfully submitting a form, you may want to return it to its initial state - clearing both user interaction history and field values. The `reset()` method clears the touched and dirty flags. You can also pass an optional value to `reset()` to update the model data:
+Bir formu başarıyla gönderdikten sonra, onu başlangıç durumuna döndürmek isteyebilirsiniz - hem kullanıcı etkileşim geçmişini hem de alan değerlerini temizleyerek. `reset()` yöntemi dokunulmuş ve kirli bayraklarını temizler. Model verilerini güncellemek için `reset()` fonksiyonuna isteğe bağlı bir değer de iletebilirsiniz:
 
 ```ts
 export class Contact {
@@ -680,11 +680,11 @@ export class Contact {
 }
 ```
 
-This ensures the form is ready for new input without showing stale error messages or dirty state indicators.
+Bu, formun eski hata mesajları veya kirli durum göstergeleri göstermeden yeni girdi için hazır olmasını sağlar.
 
 ## Styling based on validation state
 
-You can apply custom styles to your form by binding CSS classes based on the validation state:
+Doğrulama durumuna dayalı olarak CSS sınıflarını bağlayarak formunuza özel stiller uygulayabilirsiniz:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -719,11 +719,11 @@ export class StyleExample {
 }
 ```
 
-Checking both `touched()` and validation state ensures styles only appear after the user has interacted with the field.
+Hem `touched()` hem de doğrulama durumunu kontrol etmek, stillerin yalnızca kullanıcı alanla etkileşim kurduktan sonra görünmesini sağlar.
 
 ## Next steps
 
-This guide covered validation and availability status handling, interaction tracking and field state propagation. Related guides explore other aspects of Signal Forms:
+Bu kılavuz, doğrulama ve kullanılabilirlik durumu işleme, etkileşim takibi ve alan durumu yayılımını ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <!-- TODO: UNCOMMENT WHEN THE GUIDES ARE AVAILABLE -->
 <docs-pill-row>

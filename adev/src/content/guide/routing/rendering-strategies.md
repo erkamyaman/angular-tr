@@ -1,134 +1,134 @@
 # Rendering strategies in Angular
 
-This guide helps you choose the right rendering strategy for different parts of your Angular application.
+Bu kılavuz, Angular uygulamanızın farklı bölümleri için doğru render stratejisini seçmenize yardımcı olur.
 
 ## What are rendering strategies?
 
-Rendering strategies determine when and where your Angular application's HTML content is generated. Each strategy offers different trade-offs between initial page load performance, interactivity, SEO capabilities, and server resource usage.
+Render stratejileri, Angular uygulamanızın HTML içeriğinin ne zaman ve nerede oluşturulacağını belirler. Her strateji, başlangıç sayfa yükleme performansı, etkileşim, SEO yetenekleri ve sunucu kaynak kullanımı arasında farklı dengeler sunar.
 
-Angular supports three primary rendering strategies:
+Angular üç birincil render stratejisini destekler:
 
-- **Client-Side Rendering (CSR)** - Content is rendered entirely in the browser
-- **Static Site Generation (SSG/Prerendering)** - Content is pre-rendered at build time
-- **Server-Side Rendering (SSR)** - Content is rendered on the server for the initial request for a route
+- **İstemci Tarafında Render (CSR)** - İçerik tamamen tarayıcıda render edilir
+- **Statik Site Oluşturma (SSG/Prerendering)** - İçerik derleme zamanında önceden render edilir
+- **Sunucu Tarafında Render (SSR)** - İçerik, bir rota için ilk istek sırasında sunucuda render edilir
 
 ## Client-Side Rendering (CSR)
 
-**CSR is Angular's default.** Content renders entirely in the browser after JavaScript loads.
+**CSR, Angular'ın varsayılanıdır.** İçerik, JavaScript yüklendikten sonra tamamen tarayıcıda render edilir.
 
 ### When to use CSR
 
-✅ It can be a good fit for:
+Uygun olabilecek durumlar:
 
-- Interactive applications (dashboards, admin panels)
-- Real-time applications
-- Internal tools where SEO doesn't matter
-- Single-page applications with complex client-side state
+- Etkileşimli uygulamalar (panolar, yönetici panelleri)
+- Gerçek zamanlı uygulamalar
+- SEO'nun önemli olmadığı dahili araçlar
+- Karmaşık istemci tarafı durumuna sahip tek sayfalık uygulamalar
 
-❌ When possible, consider avoiding it for:
+Mümkünse kaçınılması gereken durumlar:
 
-- Public-facing content that needs SEO
-- Pages where initial load performance is critical
+- SEO'ya ihtiyaç duyan kamuya açık içerik
+- İlk yükleme performansının kritik olduğu sayfalar
 
 ### CSR trade-offs
 
-| Aspect            | Impact                                                   |
-| :---------------- | :------------------------------------------------------- |
-| **SEO**           | Poor - content not visible to crawlers until JS executes |
-| **Initial load**  | Slower - must download and execute JavaScript first      |
-| **Interactivity** | Immediate once loaded                                    |
-| **Server needs**  | Minimal outside of some configuration                    |
-| **Complexity**    | Simplest because it works with minimum configuration     |
+| Yön                 | Etki                                                            |
+| :------------------ | :-------------------------------------------------------------- |
+| **SEO**             | Zayıf - JS çalışana kadar içerik tarayıcılar için görünür değil |
+| **İlk yükleme**     | Daha yavaş - önce JavaScript indirilip çalıştırılmalı           |
+| **Etkileşim**       | Yüklendikten sonra anında                                       |
+| **Sunucu ihtiyacı** | Bazı yapılandırma dışında minimum                               |
+| **Karmaşıklık**     | En basit çünkü minimum yapılandırma ile çalışır                 |
 
 ## Static Site Generation (SSG/Prerendering)
 
-**SSG pre-renders pages at build time** into static HTML files. The server sends pre-built HTML for the initial page load. After hydration, your app runs entirely in the browser like a traditional SPA - subsequent navigation, route changes, and API calls all happen client-side without server rendering.
+**SSG, sayfaları derleme zamanında** statik HTML dosyalarına önceden render eder. Sunucu, ilk sayfa yüklemesi için önceden oluşturulmuş HTML gönderir. Hidrasyon sonrasında uygulamanız geleneksel bir SPA gibi tamamen tarayıcıda çalışır - sonraki navigasyon, rota değişiklikleri ve API çağrıları sunucu render'ı olmadan istemci tarafında gerçekleşir.
 
 ### When to use SSG
 
-✅ It can be a good fit for:
+Uygun olabilecek durumlar:
 
-- Marketing pages and landing pages
-- Blog posts and documentation
-- Product catalogs with stable content
-- Content that doesn't change per-user
+- Pazarlama sayfaları ve açılış sayfaları
+- Blog yazıları ve dokümantasyon
+- Sabit içerikli ürün katalogları
+- Kullanıcıya göre değişmeyen içerik
 
-❌ When possible, consider avoiding it for:
+Mümkünse kaçınılması gereken durumlar:
 
-- User-specific content
-- Frequently changing data
-- Real-time information
+- Kullanıcıya özel içerik
+- Sık değişen veriler
+- Gerçek zamanlı bilgiler
 
 ### SSG trade-offs
 
-| Aspect              | Impact                                      |
-| :------------------ | :------------------------------------------ |
-| **SEO**             | Excellent - full HTML available immediately |
-| **Initial load**    | Fastest - pre-generated HTML                |
-| **Interactivity**   | After hydration completes                   |
-| **Server needs**    | None for serving (CDN-friendly)             |
-| **Build time**      | Longer - generates all pages upfront        |
-| **Content updates** | Requires rebuild and redeploy               |
+| Yön                       | Etki                                        |
+| :------------------------ | :------------------------------------------ |
+| **SEO**                   | Mükemmel - tam HTML anında kullanılabilir   |
+| **İlk yükleme**           | En hızlı - önceden oluşturulmuş HTML        |
+| **Etkileşim**             | Hidrasyon tamamlandıktan sonra              |
+| **Sunucu ihtiyacı**       | Sunma için gerekli değil (CDN dostu)        |
+| **Derleme süresi**        | Daha uzun - tüm sayfaları önceden oluşturur |
+| **İçerik güncellemeleri** | Yeniden derleme ve dağıtım gerektirir       |
 
-📖 **Implementation:** See [Customizing build-time prerendering](guide/ssr#customizing-build-time-prerendering-ssg) in the SSR guide.
+**Uygulama:** SSR kılavuzundaki [Derleme zamanı ön render'ı özelleştirme](guide/ssr#customizing-build-time-prerendering-ssg) bölümüne bakın.
 
 ## Server-Side Rendering (SSR)
 
-**SSR generates HTML on the server for the initial request for a route**, providing dynamic content with good SEO. The server renders HTML and sends it to the client.
+**SSR, bir rota için ilk istek sırasında sunucuda HTML oluşturur** ve iyi SEO ile dinamik içerik sağlar. Sunucu HTML'yi render eder ve istemciye gönderir.
 
-Once the client renders the page, Angular [hydrates](/guide/hydration#what-is-hydration) the app and it then runs entirely in the browser like a traditional SPA - subsequent navigation, route changes, and API calls all happen client-side without additional server rendering.
+İstemci sayfayı render ettikten sonra, Angular uygulamayı [hidratasyon](/guide/hydration#what-is-hydration) ile canlandırır ve ardından uygulama geleneksel bir SPA gibi tamamen tarayıcıda çalışır - sonraki navigasyon, rota değişiklikleri ve API çağrıları ek sunucu render'ı olmadan istemci tarafında gerçekleşir.
 
 ### When to use SSR
 
-✅ It can be a good fit for:
+Uygun olabilecek durumlar:
 
-- E-commerce product pages (dynamic pricing/inventory)
-- News sites and social media feeds
-- Personalized content that changes frequently
+- E-ticaret ürün sayfaları (dinamik fiyatlandırma/envanter)
+- Haber siteleri ve sosyal medya akışları
+- Sık değişen kişiselleştirilmiş içerik
 
-❌ When possible, consider avoiding it for:
+Mümkünse kaçınılması gereken durumlar:
 
-- Static content (use SSG instead)
-- When server costs are a concern
+- Statik içerik (bunun yerine SSG kullanın)
+- Sunucu maliyetlerinin endişe kaynağı olduğu durumlar
 
 ### SSR trade-offs
 
-| Aspect              | Impact                                              |
-| :------------------ | :-------------------------------------------------- |
-| **SEO**             | Excellent - full HTML for crawlers                  |
-| **Initial load**    | Fast - immediate content visibility                 |
-| **Interactivity**   | Delayed until hydration                             |
-| **Server needs**    | Requires server                                     |
-| **Personalization** | Full access to user context                         |
-| **Server costs**    | Higher - renders on the initial request for a route |
+| Yön                    | Etki                                                |
+| :--------------------- | :-------------------------------------------------- |
+| **SEO**                | Mükemmel - tarayıcılar için tam HTML                |
+| **İlk yükleme**        | Hızlı - anında içerik görünürlüğü                   |
+| **Etkileşim**          | Hidrasyona kadar gecikmiş                           |
+| **Sunucu ihtiyacı**    | Sunucu gerektirir                                   |
+| **Kişiselleştirme**    | Kullanıcı bağlamına tam erişim                      |
+| **Sunucu maliyetleri** | Daha yüksek - bir rota için ilk istekte render eder |
 
-📖 **Implementation:** See [Server routing](guide/ssr#server-routing) and [Authoring server-compatible components](guide/ssr#authoring-server-compatible-components) in the SSR guide.
+**Uygulama:** SSR kılavuzundaki [Sunucu yönlendirme](guide/ssr#server-routing) ve [Sunucu uyumlu bileşenler yazma](guide/ssr#authoring-server-compatible-components) bölümlerine bakın.
 
 ## Choosing the Right Strategy
 
 ### Decision matrix
 
-| If you need...             | Use this strategy | Why                                              |
-| :------------------------- | :---------------- | :----------------------------------------------- |
-| **SEO + Static content**   | SSG               | Pre-rendered HTML, fastest load                  |
-| **SEO + Dynamic content**  | SSR               | Fresh content on the initial request for a route |
-| **No SEO + Interactivity** | CSR               | Simplest, no server needed                       |
-| **Mixed requirements**     | Hybrid            | Different strategies per route                   |
+| İhtiyacınız...           | Kullanılacak strateji | Neden                                         |
+| :----------------------- | :-------------------- | :-------------------------------------------- |
+| **SEO + Statik içerik**  | SSG                   | Önceden render edilmiş HTML, en hızlı yükleme |
+| **SEO + Dinamik içerik** | SSR                   | Bir rota için ilk istekte taze içerik         |
+| **SEO yok + Etkileşim**  | CSR                   | En basit, sunucu gerekmez                     |
+| **Karma gereksinimler**  | Hibrit                | Rota başına farklı stratejiler                |
 
 ## Making SSR/SSG Interactive with Hydration
 
-When using SSR or SSG, Angular "hydrates" the server-rendered HTML to make it interactive.
+SSR veya SSG kullanırken, Angular sunucu tarafında render edilmiş HTML'yi etkileşimli hale getirmek için "hidratasyon" yapar.
 
-**Available strategies:**
+**Mevcut stratejiler:**
 
-- **Full hydration** - Entire app becomes interactive at once (default)
-- **Incremental hydration** - Parts become interactive as needed (better performance)
-- **Event replay** - Captures clicks before hydration completes
+- **Tam hidrasyon** - Tüm uygulama bir seferde etkileşimli hale gelir (varsayılan)
+- **Artımlı hidrasyon** - Parçalar gerektiğinde etkileşimli hale gelir (daha iyi performans)
+- **Olay tekrarı** - Hidrasyon tamamlanmadan önce tıklamaları yakalar
 
-📖 **Learn more:**
+**Daha fazla bilgi:**
 
-- [Hydration guide](guide/hydration) - Complete hydration setup
-- [Incremental hydration](guide/incremental-hydration) - Advanced hydration with `@defer` blocks
+- [Hidrasyon kılavuzu](guide/hydration) - Tam hidrasyon kurulumu
+- [Artımlı hidrasyon](guide/incremental-hydration) - `@defer` blokları ile gelişmiş hidrasyon
 
 ## Next steps
 

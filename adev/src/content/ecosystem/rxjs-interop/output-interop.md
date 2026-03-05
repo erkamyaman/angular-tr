@@ -1,12 +1,12 @@
 # RxJS interop with component and directive outputs
 
-TIP: This guide assumes you're familiar with [component and directive outputs](guide/components/outputs).
+TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/outputs) aşina olduğunuzu varsayar.
 
-The `@angular/rxjs-interop` package offers two APIs related to component and directive outputs.
+`@angular/rxjs-interop` paketi, bileşen ve direktif çıktılarıyla ilgili iki API sunar.
 
 ## Creating an output based on an RxJs Observable
 
-The `outputFromObservable` lets you create a component or directive output that emits based on an RxJS observable:
+`outputFromObservable`, bir RxJS observable'a dayalı olarak yayın yapan bir bileşen veya direktif çıktısı oluşturmanıza olanak tanır:
 
 ```ts {highlight:[11]}
 import {Directive} from '@angular/core';
@@ -23,15 +23,15 @@ class Draggable {
 }
 ```
 
-The `outputFromObservable` function has special meaning to the Angular compiler. **You may only call `outputFromObservable` in component and directive property initializers.**
+`outputFromObservable` fonksiyonunun Angular derleyicisi için özel bir anlamı vardır. **`outputFromObservable`'ı yalnızca bileşen ve direktif özellik başlatıcılarında çağırabilirsiniz.**
 
-When you `subscribe` to the output, Angular automatically forwards the subscription to the underlying observable. Angular stops forwarding values when the component or directive is destroyed.
+Çıktıya `subscribe` olduğunuzda, Angular aboneliği otomatik olarak temel observable'a yönlendirir. Angular, bileşen veya direktif yok edildiğinde değerleri yönlendirmeyi durdurur.
 
-HELPFUL: Consider using `output()` directly if you can emit values imperatively.
+HELPFUL: Değerleri zorunlu olarak yayabiliyorsanız doğrudan `output()` kullanmayı düşünün.
 
 ## Creating an RxJS Observable from a component or directive output
 
-The `outputToObservable` function lets you create an RxJS observable from a component output.
+`outputToObservable` fonksiyonu, bir bileşen çıktısından RxJS observable oluşturmanıza olanak tanır.
 
 ```ts {highlight:[11]}
 import {outputToObservable} from '@angular/core/rxjs-interop';
@@ -49,4 +49,4 @@ outputToObservable(slider.valueChange) // Observable<number>
     .subscribe(...);
 ```
 
-HELPFUL: Consider using the `subscribe` method on `OutputRef` directly if it meets your needs.
+HELPFUL: İhtiyaçlarınızı karşılıyorsa doğrudan `OutputRef` üzerindeki `subscribe` metodunu kullanmayı düşünün.

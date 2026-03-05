@@ -1,37 +1,37 @@
 # Getting started with NgOptimizedImage
 
-The `NgOptimizedImage` directive makes it easy to adopt performance best practices for loading images.
+`NgOptimizedImage` direktifi, görsel yükleme için performans en iyi uygulamalarını benimsemeyi kolaylaştırır.
 
-The directive ensures that the loading of the [Largest Contentful Paint (LCP)](http://web.dev/lcp) image is prioritized by:
+Direktif, [Largest Contentful Paint (LCP)](http://web.dev/lcp) görselinin yüklenmesinin önceliklendirilmesini şu şekilde sağlar:
 
-- Automatically setting the `fetchpriority` attribute on the `<img>` tag
-- Lazy loading other images by default
-- Automatically generating a preconnect link tag in the document head
-- Automatically generating a `srcset` attribute
-- Generating a [preload hint](https://developer.mozilla.org/docs/Web/HTML/Link_types/preload) if app is using SSR
+- `<img>` etiketinde `fetchpriority` niteliğini otomatik olarak ayarlama
+- Diğer görselleri varsayılan olarak tembel yükleme
+- Belge başlığında otomatik olarak bir preconnect bağlantı etiketi oluşturma
+- Otomatik olarak bir `srcset` niteliği oluşturma
+- Uygulama SSR kullanıyorsa bir [preload ipucu](https://developer.mozilla.org/docs/Web/HTML/Link_types/preload) oluşturma
 
-In addition to optimizing the loading of the LCP image, `NgOptimizedImage` enforces a number of image best practices, such as:
+LCP görselinin yüklenmesini optimize etmenin yanı sıra, `NgOptimizedImage` aşağıdakiler gibi bir dizi görsel en iyi uygulamasını zorlar:
 
-- Using [image CDN URLs to apply image optimizations](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options)
-- Preventing layout shift by requiring `width` and `height`
-- Warning if `width` or `height` have been set incorrectly
-- Warning if the image will be visually distorted when rendered
+- [Görsel optimizasyonları uygulamak için görsel CDN URL'lerini](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options) kullanma
+- `width` ve `height` gerektirerek düzen kaymasını önleme
+- `width` veya `height` yanlış ayarlanmışsa uyarı verme
+- Görsel render edildiğinde görsel olarak bozulacaksa uyarı verme
 
-If you're using a background image in CSS, [start here](#how-to-migrate-your-background-image).
+CSS'te bir arka plan görseli kullanıyorsanız, [buradan başlayın](#how-to-migrate-your-background-image).
 
-**NOTE: Although the `NgOptimizedImage` directive was made a stable feature in Angular version 15, it has been backported and is available as a stable feature in versions 13.4.0 and 14.3.0 as well.**
+**NOTE: `NgOptimizedImage` direktifi Angular sürüm 15'te kararlı bir özellik haline getirilmiş olsa da, geriye taşınmış ve 13.4.0 ile 14.3.0 sürümlerinde de kararlı bir özellik olarak mevcuttur.**
 
 ## Getting Started
 
 <docs-workflow>
 <docs-step title="Import `NgOptimizedImage` directive">
-Import `NgOptimizedImage` directive from `@angular/common`:
+`NgOptimizedImage` direktifini `@angular/common`'dan içe aktarın:
 
 ```ts
 import {NgOptimizedImage} from '@angular/common';
 ```
 
-and include it into the `imports` array of a standalone component or an NgModule:
+ve bağımsız bir bileşenin veya NgModule'ün `imports` dizisine ekleyin:
 
 ```ts
 imports: [
@@ -42,92 +42,92 @@ imports: [
 
 </docs-step>
 <docs-step title="(Optional) Set up a Loader">
-An image loader is not **required** in order to use NgOptimizedImage, but using one with an image CDN enables powerful performance features, including automatic `srcset`s for your images.
+NgOptimizedImage'ı kullanmak için bir görsel yükleyici **gerekli** değildir, ancak bir görsel CDN ile birini kullanmak, görselleriniz için otomatik `srcset`'ler dahil güçlü performans özelliklerini etkinleştirir.
 
-A brief guide for setting up a loader can be found in the [Configuring an Image Loader](#configuring-an-image-loader-for-ngoptimizedimage) section at the end of this page.
+Bir yükleyici kurma hakkında kısa bir kılavuz, bu sayfanın sonundaki [Görsel Yükleyici Yapılandırma](#configuring-an-image-loader-for-ngoptimizedimage) bölümünde bulunabilir.
 </docs-step>
 <docs-step title="Enable the directive">
-To activate the `NgOptimizedImage` directive, replace your image's `src` attribute with `ngSrc`.
+`NgOptimizedImage` direktifini etkinleştirmek için görselinizin `src` niteliğini `ngSrc` ile değiştirin.
 
 ```html
 <img ngSrc="cat.jpg" />
 ```
 
-If you're using a [built-in third-party loader](#built-in-loaders), make sure to omit the base URL path from `src`, as that will be prepended automatically by the loader.
+Bir [yerleşik üçüncü taraf yükleyici](#built-in-loaders) kullanıyorsanız, yükleyici tarafından otomatik olarak ekleneceği için `src`'den temel URL yolunu çıkardığınızdan emin olun.
 </docs-step>
 <docs-step title="Mark images as `priority`">
-Always mark the [LCP image](https://web.dev/lcp/#what-elements-are-considered) on your page as `priority` to prioritize its loading.
+Yüklenmesini önceliklendirmek için sayfanızdaki [LCP görselini](https://web.dev/lcp/#what-elements-are-considered) her zaman `priority` olarak işaretleyin.
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" priority />
 ```
 
-Marking an image as `priority` applies the following optimizations:
+Bir görseli `priority` olarak işaretlemek aşağıdaki optimizasyonları uygular:
 
-- Sets `fetchpriority=high` (read more about priority hints [here](https://web.dev/priority-hints))
-- Sets `loading=eager` (read more about native lazy loading [here](https://web.dev/browser-level-image-lazy-loading))
-- Automatically generates a [preload link element](https://developer.mozilla.org/docs/Web/HTML/Link_types/preload) if [rendering on the server](guide/ssr).
+- `fetchpriority=high` ayarlar (öncelik ipuçları hakkında daha fazla bilgi [burada](https://web.dev/priority-hints))
+- `loading=eager` ayarlar (yerel tembel yükleme hakkında daha fazla bilgi [burada](https://web.dev/browser-level-image-lazy-loading))
+- [Sunucuda render ediliyorsa](guide/ssr) otomatik olarak bir [preload bağlantı öğesi](https://developer.mozilla.org/docs/Web/HTML/Link_types/preload) oluşturur.
 
-Angular displays a warning during development if the LCP element is an image that does not have the `priority` attribute. A page’s LCP element can vary based on a number of factors - such as the dimensions of a user's screen, so a page may have multiple images that should be marked `priority`. See [CSS for Web Vitals](https://web.dev/css-web-vitals/#images-and-largest-contentful-paint-lcp) for more details.
+Angular, LCP öğesi `priority` niteliğine sahip olmayan bir görsel ise geliştirme sırasında bir uyarı görüntüler. Bir sayfanın LCP öğesi, kullanıcının ekranının boyutları gibi birçok faktöre göre değişebilir, bu nedenle bir sayfada `priority` olarak işaretlenmesi gereken birden fazla görsel olabilir. Daha fazla ayrıntı için [CSS for Web Vitals](https://web.dev/css-web-vitals/#images-and-largest-contentful-paint-lcp) bölümüne bakın.
 </docs-step>
 <docs-step title="Include Width and Height">
-In order to prevent [image-related layout shifts](https://web.dev/css-web-vitals/#images-and-layout-shifts), NgOptimizedImage requires that you specify a height and width for your image, as follows:
+[Görselle ilgili düzen kaymalarını](https://web.dev/css-web-vitals/#images-and-layout-shifts) önlemek için NgOptimizedImage, görseliniz için aşağıdaki gibi bir yükseklik ve genişlik belirtmenizi gerektirir:
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" />
 ```
 
-For **responsive images** (images which you've styled to grow and shrink relative to the viewport), the `width` and `height` attributes should be the intrinsic size of the image file. For responsive images it's also important to [set a value for `sizes`.](#responsive-images)
+**Duyarlı görseller** (görünüm alanına göre büyüyüp küçülecek şekilde stillendirilmiş görseller) için `width` ve `height` nitelikleri görsel dosyasının gerçek boyutu olmalıdır. Duyarlı görseller için ayrıca [`sizes` için bir değer ayarlamak](#responsive-images) da önemlidir.
 
-For **fixed size images**, the `width` and `height` attributes should reflect the desired rendered size of the image. The aspect ratio of these attributes should always match the intrinsic aspect ratio of the image.
+**Sabit boyutlu görseller** için `width` ve `height` nitelikleri görselin istenen render boyutunu yansıtmalıdır. Bu niteliklerin en-boy oranı her zaman görselin gerçek en-boy oranıyla eşleşmelidir.
 
-NOTE: If you don't know the size of your images, consider using "fill mode" to inherit the size of the parent container, as described below.
+NOTE: Görsellerinizin boyutunu bilmiyorsanız, üst kapsayıcının boyutunu devralmak için aşağıda açıklanan "fill modunu" kullanmayı düşünün.
 </docs-step>
 </docs-workflow>
 
 ## Using `fill` mode
 
-In cases where you want to have an image fill a containing element, you can use the `fill` attribute. This is often useful when you want to achieve a "background image" behavior. It can also be helpful when you don't know the exact width and height of your image, but you do have a parent container with a known size that you'd like to fit your image into (see "object-fit" below).
+Bir görselin bir kapsayıcı öğeyi doldurmasını istediğiniz durumlarda `fill` niteliğini kullanabilirsiniz. Bu, genellikle bir "arka plan görseli" davranışı elde etmek istediğinizde kullanışlıdır. Ayrıca görselinizin tam genişlik ve yüksekliğini bilmediğinizde, ancak görselinizi sığdırmak istediğiniz bilinen bir boyuta sahip bir üst kapsayıcınız olduğunda da yardımcı olabilir (aşağıdaki "object-fit" bölümüne bakın).
 
-When you add the `fill` attribute to your image, you do not need and should not include a `width` and `height`, as in this example:
+Görselinize `fill` niteliğini eklediğinizde, bu örnekte olduğu gibi bir `width` ve `height` eklemenize gerek yoktur ve eklememelisiniz:
 
 ```html
 <img ngSrc="cat.jpg" fill />
 ```
 
-You can use the [object-fit](https://developer.mozilla.org/docs/Web/CSS/object-fit) CSS property to change how the image will fill its container. If you style your image with `object-fit: "contain"`, the image will maintain its aspect ratio and be "letterboxed" to fit the element. If you set `object-fit: "cover"`, the element will retain its aspect ratio, fully fill the element, and some content may be "cropped" off.
+Görselin kapsayıcısını nasıl dolduracağını değiştirmek için [object-fit](https://developer.mozilla.org/docs/Web/CSS/object-fit) CSS özelliğini kullanabilirsiniz. Görselinizi `object-fit: "contain"` ile stillerseniz, görsel en-boy oranını koruyacak ve öğeye sığacak şekilde "letterbox" yapılacaktır. `object-fit: "cover"` ayarlarsanız, öğe en-boy oranını koruyacak, öğeyi tamamen dolduracak ve bazı içerikler "kırpılabilir".
 
-See visual examples of the above at the [MDN object-fit documentation.](https://developer.mozilla.org/docs/Web/CSS/object-fit)
+Yukarıdakilerin görsel örnekleri için [MDN object-fit belgelerine](https://developer.mozilla.org/docs/Web/CSS/object-fit) bakın.
 
-You can also style your image with the [object-position property](https://developer.mozilla.org/docs/Web/CSS/object-position) to adjust its position within its containing element.
+Ayrıca görselin kapsayıcı öğe içindeki konumunu ayarlamak için [object-position özelliğiyle](https://developer.mozilla.org/docs/Web/CSS/object-position) stilleyebilirsiniz.
 
-IMPORTANT: For the "fill" image to render properly, its parent element **must** be styled with `position: "relative"`, `position: "fixed"`, or `position: "absolute"`.
+IMPORTANT: "fill" görselinin düzgün render edilmesi için üst öğesi `position: "relative"`, `position: "fixed"` veya `position: "absolute"` ile stillendirilmiş **olmalıdır**.
 
 ## How to migrate your background image
 
-Here's a simple step-by-step process for migrating from `background-image` to `NgOptimizedImage`. For these steps, we'll refer to the element that has an image background as the "containing element":
+`background-image`'dan `NgOptimizedImage`'a geçiş için basit bir adım adım süreç. Bu adımlar için, görsel arka planına sahip öğeyi "kapsayıcı öğe" olarak adlandıracağız:
 
-1. Remove the `background-image` style from the containing element.
-2. Ensure that the containing element has `position: "relative"`, `position: "fixed"`, or `position: "absolute"`.
-3. Create a new image element as a child of the containing element, using `ngSrc` to enable the `NgOptimizedImage` directive.
-4. Give that element the `fill` attribute. Do not include a `height` and `width`.
-5. If you believe this image might be your [LCP element](https://web.dev/lcp/), add the `priority` attribute to the image element.
+1. `background-image` stilini kapsayıcı öğeden kaldırın.
+2. Kapsayıcı öğenin `position: "relative"`, `position: "fixed"` veya `position: "absolute"` değerine sahip olduğundan emin olun.
+3. `NgOptimizedImage` direktifini etkinleştirmek için `ngSrc` kullanarak kapsayıcı öğenin alt öğesi olarak yeni bir görsel öğesi oluşturun.
+4. O öğeye `fill` niteliğini verin. Bir `height` ve `width` eklemeyin.
+5. Bu görselin [LCP öğeniz](https://web.dev/lcp/) olabileceğini düşünüyorsanız, görsel öğesine `priority` niteliğini ekleyin.
 
-You can adjust how the background image fills the container as described in the [Using fill mode](#using-fill-mode) section.
+Arka plan görselinin kapsayıcıyı nasıl doldurduğunu [Fill modunu kullanma](#using-fill-mode) bölümünde açıklandığı gibi ayarlayabilirsiniz.
 
 ## Using placeholders
 
 ### Automatic placeholders
 
-NgOptimizedImage can display an automatic low-resolution placeholder for your image if you're using a CDN or image host that provides automatic image resizing. Take advantage of this feature by adding the `placeholder` attribute to your image:
+NgOptimizedImage, otomatik görsel yeniden boyutlandırma sağlayan bir CDN veya görsel barındırıcı kullanıyorsanız görseliniz için otomatik düşük çözünürlüklü bir yer tutucu görüntüleyebilir. Görselinize `placeholder` niteliğini ekleyerek bu özellikten yararlanın:
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" placeholder />
 ```
 
-Adding this attribute automatically requests a second, smaller version of the image using your specified image loader. This small image will be applied as a `background-image` style with a CSS blur while your image loads. If no image loader is provided, no placeholder image can be generated and an error will be thrown.
+Bu niteliği eklemek, belirttiğiniz görsel yükleyicisini kullanarak otomatik olarak ikinci, daha küçük bir görsel sürümü ister. Bu küçük görsel, görseliniz yüklenirken CSS bulanıklaştırma ile bir `background-image` stili olarak uygulanır. Hiçbir görsel yükleyici sağlanmazsa, yer tutucu görsel oluşturulamaz ve bir hata fırlatılır.
 
-The default size for generated placeholders is 30px wide. You can change this size by specifying a pixel value in the `IMAGE_CONFIG` provider, as seen below:
+Oluşturulan yer tutucular için varsayılan boyut 30px genişliktedir. Bu boyutu, aşağıda görüldüğü gibi `IMAGE_CONFIG` sağlayıcısında bir piksel değeri belirterek değiştirebilirsiniz:
 
 ```ts
 providers: [
@@ -140,21 +140,21 @@ providers: [
 ],
 ```
 
-If you want sharp edges around your blurred placeholder, you can wrap your image in a containing `<div>` with the `overflow: hidden` style. As long as the `<div>` is the same size as the image (such as by using the `width: fit-content` style), the "fuzzy edges" of the placeholder will be hidden.
+Bulanık yer tutucunuzun etrafında keskin kenarlar istiyorsanız, görselinizi `overflow: hidden` stiliyle bir kapsayıcı `<div>` ile sarabilirsiniz. `<div>`, görsel ile aynı boyutta olduğu sürece (örneğin `width: fit-content` stili kullanarak), yer tutucunun "bulanık kenarları" gizlenecektir.
 
 ### Data URL placeholders
 
-You can also specify a placeholder using a base64 [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URLs) without an image loader. The data url format is `data:image/[imagetype];[data]`, where `[imagetype]` is the image format, just as `png`, and `[data]` is a base64 encoding of the image. That encoding can be done using the command line or in JavaScript. For specific commands, see [the MDN documentation](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URLs#encoding_data_into_base64_format). An example of a data URL placeholder with truncated data is shown below:
+Ayrıca bir görsel yükleyici olmadan base64 [veri URL'si](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URLs) kullanarak bir yer tutucu belirtebilirsiniz. Veri url formatı `data:image/[imagetype];[data]` şeklindedir; burada `[imagetype]` görsel formatıdır, örneğin `png`, ve `[data]` görselin base64 kodlamasıdır. Bu kodlama komut satırı veya JavaScript ile yapılabilir. Belirli komutlar için [MDN belgelerine](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URLs#encoding_data_into_base64_format) bakın. Kısaltılmış veriye sahip bir veri URL yer tutucu örneği aşağıda gösterilmiştir:
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" placeholder="data:image/png;base64,iVBORw0K..." />
 ```
 
-However, large data URLs increase the size of your Angular bundles and slow down page load. If you cannot use an image loader, the Angular team recommends keeping base64 placeholder images smaller than 4KB and using them exclusively on critical images. In addition to decreasing placeholder dimensions, consider changing image formats or parameters used when saving images. At very low resolutions, these parameters can have a large effect on file size.
+Ancak, büyük veri URL'leri Angular paketlerinizin boyutunu artırır ve sayfa yüklemesini yavaşlatır. Bir görsel yükleyici kullanamıyorsanız, Angular ekibi base64 yer tutucu görsellerini 4KB'den küçük tutmanızı ve bunları yalnızca kritik görsellerde kullanmanızı önerir. Yer tutucu boyutlarını küçültmenin yanı sıra, görselleri kaydederken kullanılan görsel formatlarını veya parametreleri değiştirmeyi düşünün. Çok düşük çözünürlüklerde, bu parametreler dosya boyutu üzerinde büyük bir etkiye sahip olabilir.
 
 ### Non-blurred placeholders
 
-By default, NgOptimizedImage applies a CSS blur effect to image placeholders. To render a placeholder without blur, provide a `placeholderConfig` argument with an object that includes the `blur` property, set to false. For example:
+Varsayılan olarak, NgOptimizedImage görsel yer tutucularına CSS bulanıklaştırma efekti uygular. Bir yer tutucuyu bulanıklaştırma olmadan render etmek için, `blur` özelliğini false olarak ayarlanmış bir nesne ile bir `placeholderConfig` argümanı sağlayın. Örneğin:
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" placeholder [placeholderConfig]="{blur: false}" />
@@ -162,27 +162,27 @@ By default, NgOptimizedImage applies a CSS blur effect to image placeholders. To
 
 ## Adjusting image styling
 
-Depending on the image's styling, adding `width` and `height` attributes may cause the image to render differently. `NgOptimizedImage` warns you if your image styling renders the image at a distorted aspect ratio.
+Görselin stiline bağlı olarak, `width` ve `height` niteliklerini eklemek görselin farklı şekilde render edilmesine neden olabilir. `NgOptimizedImage`, görsel stiliniz görseli bozulmuş bir en-boy oranıyla render ederse sizi uyarır.
 
-You can typically fix this by adding `height: auto` or `width: auto` to your image styles. For more information, see the [web.dev article on the `<img>` tag](https://web.dev/patterns/web-vitals-patterns/images/img-tag).
+Bunu genellikle görsel stillerinize `height: auto` veya `width: auto` ekleyerek düzeltebilirsiniz. Daha fazla bilgi için [`<img>` etiketi hakkında web.dev makalesine](https://web.dev/patterns/web-vitals-patterns/images/img-tag) bakın.
 
-If the `width` and `height` attribute on the image are preventing you from sizing the image the way you want with CSS, consider using `fill` mode instead, and styling the image's parent element.
+Görseldeki `width` ve `height` nitelikleri CSS ile görseli istediğiniz şekilde boyutlandırmanızı engelliyorsa, bunun yerine `fill` modunu kullanmayı ve görselin üst öğesini stillemeyi düşünün.
 
 ## Performance Features
 
-NgOptimizedImage includes a number of features designed to improve loading performance in your app. These features are described in this section.
+NgOptimizedImage, uygulamanızda yükleme performansını artırmak için tasarlanmış birçok özellik içerir. Bu özellikler bu bölümde açıklanmaktadır.
 
 ### Add resource hints
 
-A [`preconnect` resource hint](https://web.dev/preconnect-and-dns-prefetch) for your image origin ensures that the LCP image loads as quickly as possible.
+Görsel kaynağınız için bir [`preconnect` kaynak ipucu](https://web.dev/preconnect-and-dns-prefetch), LCP görselinin mümkün olduğunca hızlı yüklenmesini sağlar.
 
-Preconnect links are automatically generated for domains provided as an argument to a [loader](#optional-set-up-a-loader). If an image origin cannot be automatically identified, and no preconnect link is detected for the LCP image, `NgOptimizedImage` will warn during development. In that case, you should manually add a resource hint to `index.html`. Within the `<head>` of the document, add a `link` tag with `rel="preconnect"`, as shown below:
+Preconnect bağlantıları, bir [yükleyiciye](#optional-set-up-a-loader) argüman olarak sağlanan alanlar için otomatik olarak oluşturulur. Bir görsel kaynağı otomatik olarak tanımlanamıyorsa ve LCP görseli için bir preconnect bağlantısı algılanmıyorsa, `NgOptimizedImage` geliştirme sırasında uyarı verir. Bu durumda, belge başlığına manuel olarak bir kaynak ipucu eklemelisiniz. Belgenin `<head>` bölümünde, aşağıda gösterildiği gibi `rel="preconnect"` ile bir `link` etiketi ekleyin:
 
 ```html
 <link rel="preconnect" href="https://my.cdn.origin" />
 ```
 
-To disable preconnect warnings, inject the `PRECONNECT_CHECK_BLOCKLIST` token:
+Preconnect uyarılarını devre dışı bırakmak için `PRECONNECT_CHECK_BLOCKLIST` token'ını enjekte edin:
 
 ```ts
 
@@ -192,17 +192,17 @@ providers: [
 
 ```
 
-See more information on automatic preconnect generation [here](#why-is-a-preconnect-element-not-being-generated-for-my-image-domain).
+Otomatik preconnect oluşturma hakkında daha fazla bilgi için [buraya](#why-is-a-preconnect-element-not-being-generated-for-my-image-domain) bakın.
 
 ### Request images at the correct size with automatic `srcset`
 
-Defining a [`srcset` attribute](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/srcset) ensures that the browser requests an image at the right size for your user's viewport, so it doesn't waste time downloading an image that's too large. `NgOptimizedImage` generates an appropriate `srcset` for the image, based on the presence and value of the [`sizes` attribute](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) on the image tag.
+Bir [`srcset` niteliği](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/srcset) tanımlamak, tarayıcının kullanıcınızın görünüm alanı için doğru boyutta bir görsel istemesini sağlar, böylece çok büyük bir görseli indirmek için zaman kaybedilmez. `NgOptimizedImage`, görsel etiketindeki [`sizes` niteliğinin](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) varlığına ve değerine dayalı olarak görsel için uygun bir `srcset` oluşturur.
 
 #### Fixed-size images
 
-If your image should be "fixed" in size (i.e. the same size across devices, except for [pixel density](https://web.dev/codelab-density-descriptors/)), there is no need to set a `sizes` attribute. A `srcset` can be generated automatically from the image's width and height attributes with no further input required.
+Görselinizin "sabit" boyutta olması gerekiyorsa (yani cihazlar arasında aynı boyut, [piksel yoğunluğu](https://web.dev/codelab-density-descriptors/) hariç), bir `sizes` niteliği ayarlamaya gerek yoktur. Görselin genişlik ve yükseklik niteliklerinden başka bir girdi gerektirmeden otomatik olarak bir `srcset` oluşturulabilir.
 
-Example srcset generated:
+Oluşturulan srcset örneği:
 
 ```html
 <img ... srcset="image-400w.jpg 1x, image-800w.jpg 2x" />
@@ -210,19 +210,19 @@ Example srcset generated:
 
 #### Responsive images
 
-If your image should be responsive (i.e. grow and shrink according to viewport size), then you will need to define a [`sizes` attribute](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) to generate the `srcset`.
+Görselinizin duyarlı olması gerekiyorsa (yani görünüm alanı boyutuna göre büyüyüp küçülüyorsa), `srcset`'i oluşturmak için bir [`sizes` niteliği](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) tanımlamanız gerekir.
 
-If you haven't used `sizes` before, a good place to start is to set it based on viewport width. For example, if your CSS causes the image to fill 100% of viewport width, set `sizes` to `100vw` and the browser will select the image in the `srcset` that is closest to the viewport width (after accounting for pixel density). If your image is only likely to take up half the screen (ex: in a sidebar), set `sizes` to `50vw` to ensure the browser selects a smaller image. And so on.
+Daha önce `sizes` kullanmadıysanız, görünüm alanı genişliğine göre ayarlamak iyi bir başlangıç noktasıdır. Örneğin, CSS'iniz görselin görünüm alanı genişliğinin %100'ünü doldurmasına neden oluyorsa, `sizes`'ı `100vw` olarak ayarlayın ve tarayıcı `srcset`'teki görünüm alanı genişliğine en yakın görseli seçecektir (piksel yoğunluğunu hesaba kattıktan sonra). Görselinizin yalnızca ekranın yarısını kaplayacağı tahmin ediliyorsa (örneğin bir kenar çubuğunda), tarayıcının daha küçük bir görsel seçmesini sağlamak için `sizes`'ı `50vw` olarak ayarlayın. Ve böyle devam eder.
 
-If you find that the above does not cover your desired image behavior, see the documentation on [advanced sizes values](#advanced-sizes-values).
+Yukarıdakilerin istediğiniz görsel davranışını karşılamadığını fark ederseniz, [gelişmiş sizes değerleri](#advanced-sizes-values) belgelerine bakın.
 
-Note that `NgOptimizedImage` automatically prepends `"auto"` to the provided `sizes` value. This is an optimization that increases the accuracy of srcset selection on browsers which support `sizes="auto"`, and is ignored by browsers which do not.
+`NgOptimizedImage`'ın sağlanan `sizes` değerinin başına otomatik olarak `"auto"` eklediğini unutmayın. Bu, `sizes="auto"` destekleyen tarayıcılarda srcset seçiminin doğruluğunu artıran bir optimizasyondur ve desteklemeyen tarayıcılar tarafından göz ardı edilir.
 
-By default, the responsive breakpoints are:
+Varsayılan olarak, duyarlı kesme noktaları şunlardır:
 
 `[16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840]`
 
-If you would like to customize these breakpoints, you can do so using the `IMAGE_CONFIG` provider:
+Bu kesme noktalarını özelleştirmek istiyorsanız, `IMAGE_CONFIG` sağlayıcısını kullanarak yapabilirsiniz:
 
 ```ts
 providers: [
@@ -235,13 +235,13 @@ providers: [
 ],
 ```
 
-If you would like to manually define a `srcset` attribute, you can provide your own using the `ngSrcset` attribute:
+Bir `srcset` niteliğini manuel olarak tanımlamak isterseniz, `ngSrcset` niteliğini kullanarak kendinizinkini sağlayabilirsiniz:
 
 ```html
 <img ngSrc="hero.jpg" ngSrcset="100w, 200w, 300w" />
 ```
 
-If the `ngSrcset` attribute is present, `NgOptimizedImage` generates and sets the `srcset` based on the sizes included. Do not include image file names in `ngSrcset` - the directive infers this information from `ngSrc`. The directive supports both width descriptors (e.g. `100w`) and density descriptors (e.g. `1x`).
+`ngSrcset` niteliği mevcutsa, `NgOptimizedImage` dahil edilen boyutlara dayalı olarak `srcset`'i oluşturur ve ayarlar. `ngSrcset`'e görsel dosya adlarını eklemeyin - direktif bu bilgiyi `ngSrc`'den çıkarır. Direktif hem genişlik tanımlayıcılarını (örneğin `100w`) hem de yoğunluk tanımlayıcılarını (örneğin `1x`) destekler.
 
 ```html
 <img ngSrc="hero.jpg" ngSrcset="100w, 200w, 300w" sizes="50vw" />
@@ -249,7 +249,7 @@ If the `ngSrcset` attribute is present, `NgOptimizedImage` generates and sets th
 
 ### Disabling automatic srcset generation
 
-To disable srcset generation for a single image, you can add the `disableOptimizedSrcset` attribute on the image:
+Tek bir görsel için srcset oluşturmayı devre dışı bırakmak amacıyla görsele `disableOptimizedSrcset` niteliğini ekleyebilirsiniz:
 
 ```html
 <img ngSrc="about.jpg" disableOptimizedSrcset />
@@ -257,7 +257,7 @@ To disable srcset generation for a single image, you can add the `disableOptimiz
 
 ### Disabling image lazy loading
 
-By default, `NgOptimizedImage` sets `loading=lazy` for all images that are not marked `priority`. You can disable this behavior for non-priority images by setting the `loading` attribute. This attribute accepts values: `eager`, `auto`, and `lazy`. [See the documentation for the standard image `loading` attribute for details](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/loading#value).
+Varsayılan olarak, `NgOptimizedImage` `priority` olarak işaretlenmeyen tüm görseller için `loading=lazy` ayarlar. Öncelikli olmayan görseller için bu davranışı `loading` niteliğini ayarlayarak devre dışı bırakabilirsiniz. Bu nitelik şu değerleri kabul eder: `eager`, `auto` ve `lazy`. [Ayrıntılar için standart görsel `loading` niteliği belgelerine bakın](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/loading#value).
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" loading="eager" />
@@ -265,10 +265,10 @@ By default, `NgOptimizedImage` sets `loading=lazy` for all images that are not m
 
 ### Controlling image decoding
 
-By default, `NgOptimizedImage` sets `decoding="auto"` for all images. This allows the browser to decide the optimal time to decode an image after it has been fetched. When an image is marked as `priority`, Angular automatically sets `decoding="sync"` to ensure the image is decoded and painted as early as possible helping improve **Largest Contentful Paint (LCP)** performance.
+Varsayılan olarak, `NgOptimizedImage` tüm görseller için `decoding="auto"` ayarlar. Bu, tarayıcının bir görseli getirdikten sonra onu çözme için en uygun zamanı belirlemesine olanak tanır. Bir görsel `priority` olarak işaretlendiğinde, Angular otomatik olarak `decoding="sync"` ayarlayarak görselin en erken zamanda çözümlenmesini ve boyanmasını sağlar ve **Largest Contentful Paint (LCP)** performansını iyileştirmeye yardımcı olur.
 
-You can still override this behavior by explicitly setting the `decoding` attribute.  
-[See the documentation for the standard image `decoding` attribute for details](https://developer.mozilla.org/docs/Web/HTML/Element/img#decoding).
+Bu davranışı açıkça `decoding` niteliğini ayarlayarak geçersiz kılabilirsiniz.
+[Ayrıntılar için standart görsel `decoding` niteliği belgelerine bakın](https://developer.mozilla.org/docs/Web/HTML/Element/img#decoding).
 
 ```html
 <!-- Default: decoding is 'auto' -->
@@ -284,37 +284,37 @@ You can still override this behavior by explicitly setting the `decoding` attrib
 <img ngSrc="hero.jpg" width="1600" height="900" decoding="sync" />
 ```
 
-**Allowed values**
+**İzin verilen değerler**
 
-- `auto` (default): lets the browser choose the optimal strategy.
-- `async`: decodes the image asynchronously, avoiding main‑thread blocking where possible.
-- `sync`: decodes the image immediately; can block rendering but ensures pixels are ready as soon as the image is available.
+- `auto` (varsayılan): tarayıcının en uygun stratejiyi seçmesine izin verir.
+- `async`: görseli asenkron olarak çözer, mümkün olduğunda ana iş parçacığı engellemesini önler.
+- `sync`: görseli hemen çözer; render'ı engelleyebilir ancak görsel mevcut olduğunda piksellerin hazır olmasını sağlar.
 
 ### Advanced 'sizes' values
 
-You may want to have images displayed at varying widths on differently-sized screens. A common example of this pattern is a grid- or column-based layout that renders a single column on mobile devices, and two columns on larger devices. You can capture this behavior in the `sizes` attribute, using a "media query" syntax, such as the following:
+Görsellerin farklı boyutlu ekranlarda farklı genişliklerde görüntülenmesini isteyebilirsiniz. Bunun yaygın bir örneği, mobil cihazlarda tek sütun ve daha büyük cihazlarda iki sütun render eden ızgara veya sütun tabanlı bir düzendir. Bu davranışı aşağıdaki gibi bir "medya sorgusu" sözdizimi kullanarak `sizes` niteliğinde yakalayabilirsiniz:
 
 ```html
 <img ngSrc="cat.jpg" width="400" height="200" sizes="(max-width: 768px) 100vw, 50vw" />
 ```
 
-The `sizes` attribute in the above example says "I expect this image to be 100 percent of the screen width on devices under 768px wide. Otherwise, I expect it to be 50 percent of the screen width.
+Yukarıdaki örnekteki `sizes` niteliği "768px'den dar cihazlarda bu görselin ekran genişliğinin yüzde 100'ü olmasını bekliyorum. Aksi takdirde, ekran genişliğinin yüzde 50'si olmasını bekliyorum" demektedir.
 
-For additional information about the `sizes` attribute, see [web.dev](https://web.dev/learn/design/responsive-images/#sizes) or [mdn](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes).
+`sizes` niteliği hakkında ek bilgi için [web.dev](https://web.dev/learn/design/responsive-images/#sizes) veya [mdn](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) adresine bakın.
 
 ## Configuring an image loader for `NgOptimizedImage`
 
-A "loader" is a function that generates an [image transformation URL](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options) for a given image file. When appropriate, `NgOptimizedImage` sets the size, format, and image quality transformations for an image.
+Bir "yükleyici", belirli bir görsel dosyası için bir [görsel dönüştürme URL'si](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options) oluşturan bir fonksiyondur. Uygun olduğunda, `NgOptimizedImage` bir görsel için boyut, format ve görsel kalitesi dönüşümlerini ayarlar.
 
-`NgOptimizedImage` provides both a generic loader that applies no transformations, as well as loaders for various third-party image services. It also supports writing your own custom loader.
+`NgOptimizedImage`, hiçbir dönüşüm uygulamayan genel bir yükleyicinin yanı sıra çeşitli üçüncü taraf görsel servisleri için yükleyiciler sağlar. Ayrıca kendi özel yükleyicinizi yazmayı da destekler.
 
-| Loader type                            | Behavior                                                                                                                                                                                                                       |
-| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Generic loader                         | The URL returned by the generic loader will always match the value of `src`. In other words, this loader applies no transformations. Sites that use Angular to serve images are the primary intended use case for this loader. |
-| Loaders for third-party image services | The URL returned by the loaders for third-party image services will follow API conventions used by that particular image service.                                                                                              |
-| Custom loaders                         | A custom loader's behavior is defined by its developer. You should use a custom loader if your image service isn't supported by the loaders that come preconfigured with `NgOptimizedImage`.                                   |
+| Loader type                                      | Behavior                                                                                                                                                                                                                                       |
+| :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Genel yükleyici                                  | Genel yükleyici tarafından döndürülen URL her zaman `src` değeriyle eşleşir. Başka bir deyişle, bu yükleyici hiçbir dönüşüm uygulamaz. Görselleri sunmak için Angular kullanan siteler, bu yükleyicinin birincil amaçlanan kullanım durumudur. |
+| Üçüncü taraf görsel servisleri için yükleyiciler | Üçüncü taraf görsel servisleri için yükleyiciler tarafından döndürülen URL, o belirli görsel servisi tarafından kullanılan API kurallarını izler.                                                                                              |
+| Özel yükleyiciler                                | Bir özel yükleyicinin davranışı geliştiricisi tarafından tanımlanır. Görsel servisiniz `NgOptimizedImage` ile önceden yapılandırılmış yükleyiciler tarafından desteklenmiyorsa özel bir yükleyici kullanmalısınız.                             |
 
-Based on the image services commonly used with Angular applications, `NgOptimizedImage` provides loaders preconfigured to work with the following image services:
+Angular uygulamalarıyla yaygın olarak kullanılan görsel servislerine dayalı olarak, `NgOptimizedImage` aşağıdaki görsel servisleriyle çalışmak üzere önceden yapılandırılmış yükleyiciler sağlar:
 
 | Image Service             | Angular API               | Documentation                                                               |
 | :------------------------ | :------------------------ | :-------------------------------------------------------------------------- |
@@ -324,11 +324,11 @@ Based on the image services commonly used with Angular applications, `NgOptimize
 | Imgix                     | `provideImgixLoader`      | [Documentation](https://docs.imgix.com/)                                    |
 | Netlify                   | `provideNetlifyLoader`    | [Documentation](https://docs.netlify.com/image-cdn/overview/)               |
 
-To use the **generic loader** no additional code changes are necessary. This is the default behavior.
+**Genel yükleyiciyi** kullanmak için ek kod değişikliği gerekmez. Bu varsayılan davranıştır.
 
 ### Built-in Loaders
 
-To use an existing loader for a **third-party image service**, add the provider factory for your chosen service to the `providers` array. In the example below, the Imgix loader is used:
+**Üçüncü taraf görsel servisi** için mevcut bir yükleyici kullanmak üzere, seçtiğiniz servis için sağlayıcı fabrikasını `providers` dizisine ekleyin. Aşağıdaki örnekte Imgix yükleyicisi kullanılmaktadır:
 
 ```ts
 providers: [
@@ -336,17 +336,17 @@ providers: [
 ],
 ```
 
-The base URL for your image assets should be passed to the provider factory as an argument. For most sites, this base URL should match one of the following patterns:
+Görsel varlıklarınızın temel URL'si, sağlayıcı fabrikasına argüman olarak geçirilmelidir. Çoğu site için bu temel URL aşağıdaki kalıplardan biriyle eşleşmelidir:
 
 - <https://yoursite.yourcdn.com>
 - <https://subdomain.yoursite.com>
 - <https://subdomain.yourcdn.com/yoursite>
 
-You can learn more about the base URL structure in the docs of a corresponding CDN provider.
+Temel URL yapısı hakkında daha fazla bilgiyi ilgili CDN sağlayıcısının belgelerinde öğrenebilirsiniz.
 
 ### Custom Loaders
 
-To use a **custom loader**, provide your loader function as a value for the `IMAGE_LOADER` DI token. In the example below, the custom loader function returns a URL starting with `https://example.com` that includes `src`, `width`, and `height` as URL parameters.
+**Özel yükleyici** kullanmak için, yükleyici fonksiyonunuzu `IMAGE_LOADER` DI token'ı için bir değer olarak sağlayın. Aşağıdaki örnekte, özel yükleyici fonksiyonu `https://example.com` ile başlayan ve URL parametreleri olarak `src`, `width` ve `height` içeren bir URL döndürür.
 
 ```ts
 providers: [
@@ -359,25 +359,25 @@ providers: [
 ],
 ```
 
-A loader function for the `NgOptimizedImage` directive takes an object with the `ImageLoaderConfig` type (from `@angular/common`) as its argument and returns the absolute URL of the image asset. The `ImageLoaderConfig` object contains the `src` property, and optional `width`, `height`, and `loaderParams` properties.
+`NgOptimizedImage` direktifi için bir yükleyici fonksiyonu, argüman olarak `ImageLoaderConfig` türünde (`@angular/common`'dan) bir nesne alır ve görsel varlığının mutlak URL'sini döndürür. `ImageLoaderConfig` nesnesi `src` özelliğini ve isteğe bağlı `width`, `height` ve `loaderParams` özelliklerini içerir.
 
-NOTE: even though the `width` property may not always be present, a custom loader must use it to support requesting images at various widths in order for `ngSrcset` to work properly.
+NOTE: `width` özelliği her zaman mevcut olmasa da, özel bir yükleyicinin `ngSrcset`'in düzgün çalışması için çeşitli genişliklerde görsel istemeyi desteklemek üzere bunu kullanması gerekir.
 
 ### The `loaderParams` Property
 
-There is an additional attribute supported by the `NgOptimizedImage` directive, called `loaderParams`, which is specifically designed to support the use of custom loaders. The `loaderParams` attribute takes an object with any properties as a value, and does not do anything on its own. The data in `loaderParams` is added to the `ImageLoaderConfig` object passed to your custom loader, and can be used to control the behavior of the loader.
+`NgOptimizedImage` direktifi tarafından desteklenen, özellikle özel yükleyicilerin kullanımını desteklemek için tasarlanmış `loaderParams` adlı ek bir nitelik vardır. `loaderParams` niteliği, değer olarak herhangi bir özelliğe sahip bir nesne alır ve kendi başına hiçbir şey yapmaz. `loaderParams`'taki veriler, özel yükleyicinize geçirilen `ImageLoaderConfig` nesnesine eklenir ve yükleyicinin davranışını kontrol etmek için kullanılabilir.
 
-A common use for `loaderParams` is controlling advanced image CDN features.
+`loaderParams` için yaygın bir kullanım, gelişmiş görsel CDN özelliklerini kontrol etmektir.
 
 ### Using the `transform` property with built-in loaders
 
-The built-in loaders for Cloudinary, Cloudflare, ImageKit, and Imgix support a special `transform` property within `loaderParams`. This property allows you to apply custom image transformations provided by your CDN.
+Cloudinary, Cloudflare, ImageKit ve Imgix için yerleşik yükleyiciler, `loaderParams` içinde özel bir `transform` özelliğini destekler. Bu özellik, CDN'niz tarafından sağlanan özel görsel dönüşümlerini uygulamanıza olanak tanır.
 
-The `transform` property accepts two formats:
+`transform` özelliği iki format kabul eder:
 
 #### String format
 
-Provide transformations as a comma-separated string using your CDN's transformation syntax:
+CDN'nizin dönüşüm sözdizimini kullanarak dönüşümleri virgülle ayrılmış bir dize olarak sağlayın:
 
 ```html
 <img
@@ -390,7 +390,7 @@ Provide transformations as a comma-separated string using your CDN's transformat
 
 #### Object format
 
-Provide transformations as an object with key-value pairs.
+Dönüşümleri anahtar-değer çiftleri ile bir nesne olarak sağlayın.
 
 ```html
 <img
@@ -401,11 +401,11 @@ Provide transformations as an object with key-value pairs.
 />
 ```
 
-NOTE: The `transform` property is not supported by the Netlify loader, as Netlify's image CDN does not provide custom transformation parameters.
+NOTE: `transform` özelliği Netlify yükleyicisi tarafından desteklenmez çünkü Netlify'ın görsel CDN'si özel dönüşüm parametreleri sağlamaz.
 
 ### Example custom loader
 
-The following shows an example of a custom loader function. This example function concatenates `src`, `width`, and `height`, and uses `loaderParams` to control a custom CDN feature for rounded corners:
+Aşağıda bir özel yükleyici fonksiyonu örneği gösterilmektedir. Bu örnek fonksiyon `src`, `width` ve `height`'ı birleştirir ve yuvarlatılmış köşeler için özel bir CDN özelliğini kontrol etmek üzere `loaderParams`'ı kullanır:
 
 ```ts
 const myCustomLoader = (config: ImageLoaderConfig) => {
@@ -424,7 +424,7 @@ const myCustomLoader = (config: ImageLoaderConfig) => {
 };
 ```
 
-Note that in the above example, we've invented the 'roundedCorners' property name to control a feature of our custom loader. We could then use this feature when creating an image, as follows:
+Yukarıdaki örnekte, özel yükleyicimizin bir özelliğini kontrol etmek için 'roundedCorners' özellik adını icat ettik. Daha sonra bu özelliği bir görsel oluştururken aşağıdaki gibi kullanabiliriz:
 
 ```html
 <img ngSrc="profile.jpg" width="300" height="300" [loaderParams]="{roundedCorners: true}" />
@@ -434,17 +434,17 @@ Note that in the above example, we've invented the 'roundedCorners' property nam
 
 ### Does NgOptimizedImage support the `background-image` css property?
 
-The NgOptimizedImage does not directly support the `background-image` css property, but it is designed to easily accommodate the use case of having an image as the background of another element.
+NgOptimizedImage, `background-image` CSS özelliğini doğrudan desteklemez, ancak bir görselin başka bir öğenin arka planı olarak kullanılması durumunu kolayca karşılamak için tasarlanmıştır.
 
-For a step-by-step process for migration from `background-image` to `NgOptimizedImage`, see the [How to migrate your background image](#how-to-migrate-your-background-image) section above.
+`background-image`'dan `NgOptimizedImage`'a geçiş için adım adım bir süreç için yukarıdaki [Arka plan görselinizi nasıl geçirirsiniz](#how-to-migrate-your-background-image) bölümüne bakın.
 
 ### Why can't I use `src` with `NgOptimizedImage`?
 
-The `ngSrc` attribute was chosen as the trigger for NgOptimizedImage due to technical considerations around how images are loaded by the browser. NgOptimizedImage makes programmatic changes to the `loading` attribute -- if the browser sees the `src` attribute before those changes are made, it will begin eagerly downloading the image file, and the loading changes will be ignored.
+`ngSrc` niteliği, görsellerin tarayıcı tarafından nasıl yüklendiğiyle ilgili teknik nedenlerle NgOptimizedImage'ın tetikleyicisi olarak seçilmiştir. NgOptimizedImage, `loading` niteliğinde programatik değişiklikler yapar -- tarayıcı bu değişiklikler yapılmadan önce `src` niteliğini görürse, görsel dosyasını hevesle indirmeye başlar ve yükleme değişiklikleri göz ardı edilir.
 
 ### Why is a preconnect element not being generated for my image domain?
 
-Preconnect generation is performed based on static analysis of your application. That means that the image domain must be directly included in the loader parameter, as in the following example:
+Preconnect oluşturma, uygulamanızın statik analizine dayalı olarak gerçekleştirilir. Bu, görsel alanının aşağıdaki örnekte olduğu gibi doğrudan yükleyici parametresine dahil edilmesi gerektiği anlamına gelir:
 
 ```ts
 providers: [
@@ -452,34 +452,34 @@ providers: [
 ],
 ```
 
-If you use a variable to pass the domain string to the loader, or you're not using a loader, the static analysis will not be able to identify the domain, and no preconnect link will be generated. In this case you should manually add a preconnect link to the document head, as [described above](#add-resource-hints).
+Alan dizesini yükleyiciye geçirmek için bir değişken kullanırsanız veya bir yükleyici kullanmıyorsanız, statik analiz alanı tanımlayamaz ve hiçbir preconnect bağlantısı oluşturulmaz. Bu durumda, [yukarıda açıklandığı gibi](#add-resource-hints) belge başlığına manuel olarak bir preconnect bağlantısı eklemelisiniz.
 
 ### Can I use two different image domains in the same page?
 
-The [image loaders](#configuring-an-image-loader-for-ngoptimizedimage) provider pattern is designed to be as simple as possible for the common use case of having only a single image CDN used within a component. However, it's still very possible to manage multiple image CDNs using a single provider.
+[Görsel yükleyicileri](#configuring-an-image-loader-for-ngoptimizedimage) sağlayıcı kalıbı, bir bileşen içinde yalnızca tek bir görsel CDN kullanmanın yaygın kullanım durumu için mümkün olduğunca basit olacak şekilde tasarlanmıştır. Ancak, tek bir sağlayıcı kullanarak birden fazla görsel CDN'yi yönetmek yine de oldukça mümkündür.
 
-To do this, we recommend writing a [custom image loader](#custom-loaders) which uses the [`loaderParams` property](#the-loaderparams-property) to pass a flag that specifies which image CDN should be used, and then invokes the appropriate loader based on that flag.
+Bunu yapmak için, hangi görsel CDN'sinin kullanılacağını belirten bir bayrak geçirmek üzere [`loaderParams` özelliğini](#the-loaderparams-property) kullanan bir [özel görsel yükleyici](#custom-loaders) yazmanızı ve ardından bu bayrağa göre uygun yükleyiciyi çağırmanızı öneririz.
 
 ### Can you add a new built-in loader for my preferred CDN?
 
-For maintenance reasons, we don't currently plan to support additional built-in loaders in the Angular repository. Instead, we encourage developers to publish any additional image loaders as third-party packages.
+Bakım nedenleriyle, şu anda Angular deposunda ek yerleşik yükleyicileri desteklemeyi planlamıyoruz. Bunun yerine, geliştiricileri ek görsel yükleyicilerini üçüncü taraf paketler olarak yayınlamaya teşvik ediyoruz.
 
 ### Can I use this with the `<picture>` tag
 
-No, but this is on our roadmap, so stay tuned.
+Hayır, ancak bu yol haritamızda, bu yüzden takipte kalın.
 
-If you're waiting on this feature, please upvote the Github issue [here](https://github.com/angular/angular/issues/56594).
+Bu özelliği bekliyorsanız, lütfen [buradaki](https://github.com/angular/angular/issues/56594) Github sorununu oylayın.
 
 ### How do I find my LCP image with Chrome DevTools?
 
-1. Using the performance tab of the Chrome DevTools, click on the "start profiling and reload page" button on the top left. It looks like a page refresh icon.
+1. Chrome DevTools'un performans sekmesini kullanarak, sol üstteki "profillemeyi başlat ve sayfayı yeniden yükle" düğmesine tıklayın. Sayfa yenileme simgesi gibi görünür.
 
-2. This will trigger a profiling snapshot of your Angular application.
+2. Bu, Angular uygulamanızın bir profilleme anlık görüntüsünü tetikler.
 
-3. Once the profiling result is available, select "LCP" in the timings section.
+3. Profilleme sonucu mevcut olduğunda, zamanlama bölümünde "LCP"yi seçin.
 
-4. A summary entry should appear in the panel at the bottom. You can find the LCP element in the row for "related node". Clicking on it will reveal the element in the Elements panel.
+4. Alt panelde bir özet girişi görünmelidir. LCP öğesini "ilgili düğüm" satırında bulabilirsiniz. Üzerine tıklamak, Öğeler panelinde öğeyi gösterecektir.
 
 <img alt="LCP in the Chrome DevTools" src="assets/images/guide/image-optimization/devtools-lcp.png">
 
-NOTE: This only identifies the LCP element within the viewport of the page you are testing. It is also recommended to use mobile emulation to identify the LCP element for smaller screens.
+NOTE: Bu yalnızca test ettiğiniz sayfanın görünüm alanı içindeki LCP öğesini tanımlar. Daha küçük ekranlar için LCP öğesini tanımlamak amacıyla mobil emülasyonu kullanmanız da önerilir.

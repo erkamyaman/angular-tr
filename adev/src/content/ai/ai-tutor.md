@@ -1,93 +1,93 @@
 # Angular AI Tutor
 
-The Angular AI Tutor is designed to interactively guide you step-by-step through building a complete, modern Angular application from the ground up. You'll learn the latest patterns and best practices by building a real, tangible project: a **"Smart Recipe Box"** for creating and managing recipes.
+Angular AI Tutor, sıfırdan eksiksiz, modern bir Angular uygulaması oluşturma sürecinde size adım adım etkileşimli olarak rehberlik etmek için tasarlanmıştır. Gerçek, somut bir proje oluşturarak en son kalıpları ve en iyi uygulamaları öğreneceksiniz: tarifleri oluşturmak ve yönetmek için bir **"Akıllı Tarif Kutusu"**.
 
-Our goal is to foster critical thinking and help you retain what you learn. Instead of just giving you code, the tutor will explain concepts, show you examples, and then give you project-specific exercises to solve on your own.
+Amacımız eleştirel düşünmeyi teşvik etmek ve öğrendiklerinizi kalıcı hale getirmenize yardımcı olmaktır. Sadece kod vermek yerine, eğitmen kavramları açıklayacak, örnekler gösterecek ve ardından kendi başınıza çözmeniz için projeye özgü alıştırmalar verecektir.
 
 ## Get Started
 
-You can access the AI tutor via the [Angular MCP server](ai/mcp).
+Yapay zeka eğitmenine [Angular MCP sunucusu](ai/mcp) aracılığıyla erişebilirsiniz.
 
-1. [Install](ai/mcp#get-started) the Angular MCP server
-2. Create a new Angular project `ng new <project-name>`
-3. Navigate to your new project (`cd <project-name>`) in an AI-powered editor or tool, like the [Gemini CLI](https://geminicli.com/)
-4. Enter a prompt like `launch the Angular AI tutor`
+1. Angular MCP sunucusunu [kurun](ai/mcp#get-started)
+2. Yeni bir Angular projesi oluşturun `ng new <project-name>`
+3. [Gemini CLI](https://geminicli.com/) gibi yapay zeka destekli bir düzenleyici veya araçta yeni projenize gidin (`cd <project-name>`)
+4. `launch the Angular AI tutor` gibi bir prompt girin
    ![A screenshot demonstrating how to launch the Angular AI Tutor in the Gemini CLI.](assets/images/launch-ai-tutor.png 'Launch the Angular AI Tutor')
 
 ## Using the AI Tutor
 
-Each module begins with a brief concept explanation.
+Her modül kısa bir kavram açıklaması ile başlar.
 ![A screenshot of the Angular AI Tutor presenting a brief concept explanation.](assets/images/ai-tutor-preview-1.png 'Angular AI Tutor explanation')
-If applicable, the tutor will present a code example to demonstrate the concept.
+Uygulanabilir olduğunda, eğitmen kavramı göstermek için bir kod örneği sunacaktır.
 ![A screenshot of the Angular AI Tutor showing a code example.](assets/images/ai-tutor-preview-2.png 'Angular AI Tutor code example')
-The tutor will also provide an open-ended exercise to test your understanding.
+Eğitmen ayrıca anlayışınızı test etmek için açık uçlu bir alıştırma sağlayacaktır.
 ![A screenshot of the Angular AI Tutor providing an exercise.](assets/images/ai-tutor-preview-3.png 'Angular AI Tutor exercise')
-Finally, the tutor will check your work before moving onto the next module.
+Son olarak, eğitmen bir sonraki modüle geçmeden önce çalışmanızı kontrol edecektir.
 ![A screenshot of the Angular AI Tutor checking the user's work.](assets/images/ai-tutor-preview-4.png 'Angular AI Tutor check')
 
 ## How It Works: The Learning Cycle
 
-For each new topic, you'll follow a learning loop that emphasizes critical thinking to help you better retain what you learn.
+Her yeni konu için, öğrendiklerinizi daha iyi aklınızda tutmanıza yardımcı olmak amacıyla eleştirel düşünmeyi vurgulayan bir öğrenme döngüsü izleyeceksiniz.
 
-1. **Learn the Concept:** The tutor will briefly explain a core Angular feature and show you a generic code example to illustrate it.
-2. **Apply Your Knowledge:** You'll immediately get a hands-on exercise. The tutor presents these exercises at a high level with objectives and expected outcomes, encouraging you to think through the solution yourself.
-3. **Get Feedback & Support:** When you're ready, let the tutor know. It will **automatically read your project files** to verify your solution is correct. If you get stuck, you are in complete control. You can ask for a **"hint"** for more guidance, or get step-by-step instructions by typing **"detailed guide"** or **"step-by-step instructions."**
+1. **Learn the Concept:** Eğitmen kısaca temel bir Angular özelliğini açıklayacak ve bunu göstermek için genel bir kod örneği gösterecektir.
+2. **Apply Your Knowledge:** Hemen uygulamalı bir alıştırma alacaksınız. Eğitmen bu alıştırmaları hedefler ve beklenen sonuçlarla üst düzeyde sunar ve çözümü kendiniz düşünmenizi teşvik eder.
+3. **Get Feedback & Support:** Hazır olduğunuzda eğitmene bildirin. Çözümünüzün doğru olduğunu doğrulamak için **proje dosyalarınızı otomatik olarak okuyacaktır**. Takılırsanız, tamamen kontrolde olursunuz. Daha fazla rehberlik için **"hint"** isteyebilir veya **"detailed guide"** veya **"step-by-step instructions"** yazarak adım adım talimatlar alabilirsiniz.
 
-Once you've succeeded, the tutor will move directly to the next topic. You can also ask the tutor for more information on a topic or ask any related Angular questions at any time.
+Başarılı olduktan sonra eğitmen doğrudan bir sonraki konuya geçecektir. Ayrıca istediğiniz zaman eğitmenden bir konu hakkında daha fazla bilgi isteyebilir veya ilgili herhangi bir Angular sorusu sorabilirsiniz.
 
 ---
 
 ## **Features & Commands**
 
-You are in control of your learning experience. Use these features at any time:
+Öğrenme deneyiminizin kontrolü sizdedir. Bu özellikleri istediğiniz zaman kullanın:
 
 ### **Leave and Come Back**
 
-Feel free to take a break. Your progress is tied to your project's code. When you return for a new session, the tutor will automatically analyze your files to determine exactly where you left off, allowing you to seamlessly pick up right where you were.
+Mola vermekten çekinmeyin. İlerlemeniz projenizin koduna bağlıdır. Yeni bir oturum için döndüğünüzde, eğitmen tam olarak nerede kaldığınızı belirlemek için dosyalarınızı otomatik olarak analiz edecek ve kaldığınız yerden sorunsuz bir şekilde devam etmenizi sağlayacaktır.
 
-**Pro Tip:** We highly recommend using Git to save your progress. After completing a module, it's a great idea to commit your changes (e.g., `git commit -m "Complete Phase 1, Module 8"`). This acts as a personal checkpoint you can always return to.
+**Profesyonel İpucu:** İlerlemenizi kaydetmek için Git kullanmanızı şiddetle tavsiye ederiz. Bir modülü tamamladıktan sonra, değişikliklerinizi kaydetmek harika bir fikirdir (örneğin, `git commit -m "Complete Phase 1, Module 8"`). Bu, her zaman dönebileceğiniz kişisel bir kontrol noktası görevi görür.
 
 ### **Adjust Your Experience Level**
 
-You can set your experience level to **Beginner (1-3)**, **Intermediate (4-7)**, or **Experienced (8-10)**. You can change this setting at any time during your session, and the tutor will immediately adapt its teaching style to match.
+Deneyim seviyenizi **Beginner (1-3)**, **Intermediate (4-7)** veya **Experienced (8-10)** olarak ayarlayabilirsiniz. Bu ayarı oturumunuz sırasında istediğiniz zaman değiştirebilirsiniz ve eğitmen öğretme stilini hemen buna uyarlayacaktır.
 
-**Example Prompts:**
+**Örnek Promptlar:**
 
 - "Set my experience level to beginner."
 - "Change my rating to 8."
 
 ### **See the Full Learning Plan**
 
-Want to see the big picture or check how far you've come? Just ask for the table of contents.
+Büyük resmi görmek veya ne kadar ilerlediğinizi kontrol etmek mi istiyorsunuz? İçindekiler tablosunu sormanız yeterli.
 
-**Example Prompts:**
+**Örnek Promptlar:**
 
 - "Where are we?"
 - "Show the table of contents."
 - "Show the plan."
 
-The tutor will display the full learning plan and mark your current location.
+Eğitmen tam öğrenme planını görüntüleyecek ve mevcut konumunuzu işaretleyecektir.
 
 ### **A Note on Styling**
 
-The tutor will apply basic styling to your application to keep things looking clean. You are highly encouraged to apply your own styling to make the app your own.
+Eğitmen, düzenli bir görünüm sağlamak için uygulamanıza temel stil uygulayacaktır. Uygulamayı kendinize ait hale getirmek için kendi stilinizi uygulamanız şiddetle teşvik edilmektedir.
 
 ### **Skip the Current Module**
 
-If you'd rather move on to the next topic in the learning path, you can ask the tutor to skip the current exercise.
+Öğrenme yolundaki bir sonraki konuya geçmeyi tercih ediyorsanız, eğitmenden mevcut alıştırmayı atlamasını isteyebilirsiniz.
 
-**Example Prompts:**
+**Örnek Promptlar:**
 
 - "Skip this section."
 - "Auto-complete this step for me."
 
-The tutor will ask for confirmation and then present you with the complete code solution for the current module and attempt to automatically apply any required updates to ensure you can continue smoothly with the next module.
+Eğitmen onay isteyecek ve ardından mevcut modülün tam kod çözümünü sunacak ve bir sonraki modüle sorunsuz devam edebilmenizi sağlamak için gerekli güncellemeleri otomatik olarak uygulamaya çalışacaktır.
 
 ### **Jump to Any Topic**
 
-If you want to learn about a specific topic out of order (e.g., jump from the basics to forms), you can. The tutor will provide the necessary code to update your project to the correct starting point for the selected module and attempt to automatically apply any required updates.
+Sıra dışı belirli bir konu hakkında bilgi edinmek istiyorsanız (örneğin, temellerden formlara atlamak), yapabilirsiniz. Eğitmen, projenizi seçilen modül için doğru başlangıç noktasına güncellemek üzere gerekli kodu sağlayacak ve gerekli güncellemeleri otomatik olarak uygulamaya çalışacaktır.
 
-**Example Prompts:**
+**Örnek Promptlar:**
 
 - "Take me to the forms lesson."
 - "I want to learn about Route Guards now."
@@ -97,20 +97,20 @@ If you want to learn about a specific topic out of order (e.g., jump from the ba
 
 ## **Troubleshooting**
 
-If the tutor doesn't respond correctly or you suspect an issue with your application, here are a few things to try:
+Eğitmen doğru yanıt vermezse veya uygulamanızda bir sorun olduğundan şüpheleniyorsanız, deneyebileceğiniz birkaç şey:
 
-1. **Type "proceed":** This can often nudge the tutor to continue to the next step in the event it gets stuck.
-2. **Correct the Tutor:** If the tutor is mistaken about your progress (e.g., it says you're on Module 3 but you've completed Module 8), just tell it. For example: _"I'm actually on Module 8."_ The tutor will re-evaluate your code and adjust.
-3. **Verify Your UI:** If you want to confirm what your application's user interface should look like, just ask the tutor. For example: _"What should I see in my UI?"_
-4. **Reload the Browser Window:** A refresh can solve many issues related to your application.
-5. **Hard Restart the Browser:** Errors are sometimes only surfaced in the browser's developer console. A hard restart can help clear underlying issues related to the application.
-6. **Start a New Chat:** You can always start a new chat to remove the existing history and begin fresh. The tutor will read your files to find the latest step you were on.
+1. **"proceed" yazın:** Bu, eğitmenin takılması durumunda bir sonraki adıma devam etmesini sağlayabilir.
+2. **Eğitmeni Düzeltin:** Eğitmen ilerlemeniz hakkında yanılıyorsa (örneğin, Modül 3'te olduğunuzu söylüyor ama siz Modül 8'i tamamladıysanız), sadece söyleyin. Örneğin: _"I'm actually on Module 8."_ Eğitmen kodunuzu yeniden değerlendirecek ve uyum sağlayacaktır.
+3. **Kullanıcı Arayüzünüzü Doğrulayın:** Uygulamanızın kullanıcı arayüzünün nasıl görünmesi gerektiğini onaylamak istiyorsanız, eğitmene sorun. Örneğin: _"What should I see in my UI?"_
+4. **Tarayıcı Penceresini Yeniden Yükleyin:** Bir yenileme, uygulamanızla ilgili birçok sorunu çözebilir.
+5. **Tarayıcıyı Zorla Yeniden Başlatın:** Hatalar bazen yalnızca tarayıcının geliştirici konsolunda görünür. Zorla yeniden başlatma, uygulamayla ilgili altta yatan sorunları temizlemeye yardımcı olabilir.
+6. **Yeni Bir Sohbet Başlatın:** Mevcut geçmişi kaldırmak ve yeniden başlamak için her zaman yeni bir sohbet başlatabilirsiniz. Eğitmen, bulunduğunuz en son adımı bulmak için dosyalarınızı okuyacaktır.
 
 ## **Your Learning Journey: The Phased Path**
 
-You will build your application over a five-phase journey. You can follow this path from start to finish to create a complete, fully-functional Angular application. Each module builds logically upon the last, taking you from the basics to advanced, real-world features.
+Uygulamanızı beş aşamalı bir yolculuk boyunca oluşturacaksınız. Eksiksiz, tam işlevli bir Angular uygulaması oluşturmak için bu yolu baştan sona takip edebilirsiniz. Her modül mantıksal olarak bir öncekinin üzerine inşa ederek sizi temellerden gelişmiş, gerçek dünya özelliklerine taşır.
 
-**A Note on Automated Setup:** Some modules require a setup step, like creating interfaces or mock data. In these cases, the tutor will present you with the code and file instructions. You will be responsible for creating and modifying these files as instructed before the exercise begins.
+**Otomatik Kurulum Hakkında Not:** Bazı modüller, arayüzler veya sahte veriler oluşturma gibi bir kurulum adımı gerektirir. Bu durumlarda, eğitmen size kodu ve dosya talimatlarını sunacaktır. Alıştırma başlamadan önce talimat verilen şekilde bu dosyaları oluşturmak ve değiştirmek sizin sorumluluğunuzdadır.
 
 ### **Phase 1: Angular Fundamentals**
 
@@ -143,7 +143,7 @@ You will build your application over a five-phase journey. You can follow this p
 
 ### **Phase 5: Experimental Signal Forms (⚠️ WARNING: Subject to Change)**
 
-**CRITICAL NOTE FOR THIS PHASE:** Signal Forms are currently an [**EXPERIMENTAL** feature](/reference/releases#experimental). The API may change significantly in future Angular releases. Please proceed with the understanding that this section demonstrates a cutting-edge feature.
+**BU AŞAMA ICIN KRITIK NOT:** Signal Forms su anda [**DENEYSEL** bir ozelliktir](/reference/releases#experimental). API, gelecekteki Angular surumlerinde onemli olcude degisebilir. Lutfen bu bolumun son teknoloji bir ozelligi gosterdigini bilerek devam edin.
 
 - **Module 18**: **Introduction to Signal Forms**
 - **Module 19**: **Submitting & Resetting**
@@ -154,6 +154,6 @@ You will build your application over a five-phase journey. You can follow this p
 
 ## **A Note on AI & Feedback**
 
-This tutor is powered by a Large Language Model (LLM). While we've worked hard to make it an expert, AIs can make mistakes. If you encounter an explanation or code example that seems incorrect, please let us know. You can correct the tutor, and it will use your feedback to adjust its response.
+Bu egitmen bir Buyuk Dil Modeli (LLM) tarafindan desteklenmektedir. Onu bir uzman yapmak icin cok calistigimiz halde, yapay zekalar hata yapabilir. Yanlis gorunen bir aciklama veya kod ornegiyle karsilastirsaniz, lutfen bize bildirin. Egitmeni duzeltebilirsiniz ve yanitini buna gore ayarlayacaktir.
 
-For any technical bugs or feature requests, please [submit an issue](https://github.com/angular/angular-cli/issues).
+Herhangi bir teknik hata veya ozellik talebi icin lutfen [bir sorun gonderin](https://github.com/angular/angular-cli/issues).

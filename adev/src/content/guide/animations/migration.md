@@ -1,24 +1,24 @@
 # Migrating away from Angular's Animations package
 
-The `@angular/animations` package is deprecated as of v20.2, which also introduced the new `animate.enter` and `animate.leave` feature to add animations to your application. Using these new features, you can replace all animations based on `@angular/animations` with plain CSS or JS animation libraries. Removing `@angular/animations` from your application can significantly reduce the size of your JavaScript bundle. Native CSS animations generally offer superior performance, as they can benefit from hardware acceleration. This guide walks through the process of refactoring your code from `@angular/animations` to native CSS animations.
+`@angular/animations` paketi v20.2 itibariyla kullanim disi birakilmistir (deprecated). Ayni surumde uygulamaniza animasyonlar eklemek icin yeni `animate.enter` ve `animate.leave` ozelligi de tanitilmistir. Bu yeni ozellikleri kullanarak, `@angular/animations` tabanli tum animasyonlari duz CSS veya JS animasyon kutuphaneleri ile degistirebilirsiniz. `@angular/animations`'i uygulamanizdan kaldirmak JavaScript paketinizin boyutunu onemli olcude azaltabilir. Yerel CSS animasyonlari genellikle donanim hizlandirmasindan yararlanabildiikleri icin ustun performans sunar. Bu rehber, kodunuzu `@angular/animations`'dan yerel CSS animasyonlarina yeniden duzenleme surecini anlatir.
 
 ## How to write animations in native CSS
 
-If you've never written any native CSS animations, there are a number of excellent guides to get you started. Here's a few of them:  
-[MDN's CSS Animations guide](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations)  
-[W3Schools CSS3 Animations guide](https://www.w3schools.com/css/css3_animations.asp)  
-[The Complete CSS Animations Tutorial](https://www.lambdatest.com/blog/css-animations-tutorial/)  
+Daha once yerel CSS animasyonlari yazmadiysaniz, baslangic icin bir dizi mukemmel rehber vardir. Bunlardan birkaci:
+[MDN's CSS Animations guide](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations)
+[W3Schools CSS3 Animations guide](https://www.w3schools.com/css/css3_animations.asp)
+[The Complete CSS Animations Tutorial](https://www.lambdatest.com/blog/css-animations-tutorial/)
 [CSS Animation for Beginners](https://thoughtbot.com/blog/css-animation-for-beginners)
 
-and a couple of videos:  
-[Learn CSS Animation in 9 Minutes](https://www.youtube.com/watch?v=z2LQYsZhsFw)  
+ve birkaç video:
+[Learn CSS Animation in 9 Minutes](https://www.youtube.com/watch?v=z2LQYsZhsFw)
 [Net Ninja CSS Animation Tutorial Playlist](https://www.youtube.com/watch?v=jgw82b5Y2MU&list=PL4cUxeGkcC9iGYgmEd2dm3zAKzyCGDtM5)
 
-Check some of these various guides and tutorials out, and then come back to this guide.
+Bu cesitli rehber ve egitimlerin bazilarina goz atin, ardindan bu rehbere geri donun.
 
 ## Creating Reusable Animations
 
-Just like with the animations package, you can create reusable animations that can be shared across your application. The animations package version of this had you using the `animation()` function in a shared typescript file. The native CSS version of this is similar, but lives in a shared CSS file.
+Animasyon paketinde oldugu gibi, uygulamaniz genelinde paylasabileceginiz yeniden kullanilabilir animasyonlar olusturabilirsiniz. Animasyon paketinin surumu, paylasilmis bir TypeScript dosyasinda `animation()` fonksiyonunu kullanmanizi gerektiriyordu. Yerel CSS surumu benzerdir, ancak paylasilmis bir CSS dosyasinda yer alir.
 
 #### With Animations Package
 
@@ -28,43 +28,43 @@ Just like with the animations package, you can create reusable animations that c
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="animation-shared"/>
 
-Adding the class `animated-class` to an element would trigger the animation on that element.
+`animated-class` sinifini bir elemana eklemek, o eleman uzerinde animasyonu tetikler.
 
 ## Animating a Transition
 
 ### Animating State and Styles
 
-The animations package allowed you to define various states using the [`state()`](api/animations/state) function within a component. Examples might be an `open` or `closed` state containing the styles for each respective state within the definition. For example:
+Animasyon paketi, bir bilesen icinde [`state()`](api/animations/state) fonksiyonunu kullanarak cesitli durumlar tanimlmaniza izin veriyordu. Ornekler, her ilgili durumun taniminda yer alan stillerle birlikte `open` veya `closed` durumu olabilir. Ornegin:
 
 #### With Animations Package
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="state1"/>
 
-This same behavior can be accomplished natively by using CSS classes either using a keyframe animation or transition styling.
+Ayni davranis, anahtar kare animasyonu veya gecis stili kullanan CSS siniflari ile yerel olarak gerceklestirilebilir.
 
 #### With Native CSS
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="animation-states"/>
 
-Triggering the `open` or `closed` state is done by toggling classes on the element in your component. You can find examples of how to do this in our [template guide](guide/templates/binding#css-class-and-style-property-bindings).
+`open` veya `closed` durumunu tetiklemek, bileseninizdeki eleman uzerinde siniflari degistirerek yapilir. Bunu nasil yapacaginiza dair ornekleri [sablon rehberimizde](guide/templates/binding#css-class-and-style-property-bindings) bulabilirsiniz.
 
-You can see similar examples in the template guide for [animating styles directly](guide/templates/binding#css-style-properties).
+[Stilleri dogrudan animasyonlama](guide/templates/binding#css-style-properties) icin sablon rehberinde benzer ornekler gorebilirsiniz.
 
 ### Transitions, Timing, and Easing
 
-The animations package `animate()` function allows for providing timing, like duration, delays and easing. This can be done natively with CSS using several css properties or shorthand properties.
+Animasyon paketinin `animate()` fonksiyonu, sure, gecikme ve yumusaklik gibi zamanlama saglamaniza olanak tanir. Bu, CSS'de bircak CSS ozelligi veya kisayol ozellikleri kullanilarak yerel olarak yapilabilir.
 
-Specify `animation-duration`, `animation-delay`, and `animation-timing-function` for a keyframe animation in CSS, or alternatively use the `animation` shorthand property.
+CSS'de bir anahtar kare animasyonu icin `animation-duration`, `animation-delay` ve `animation-timing-function` belirtin veya alternatif olarak `animation` kisayol ozelligini kullanin.
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="animation-timing"/>
 
-Similarly, you can use `transition-duration`, `transition-delay`, and `transition-timing-function` and the `transition` shorthand for animations that are not using `@keyframes`.
+Benzer sekilde, `@keyframes` kullanmayan animasyonlar icin `transition-duration`, `transition-delay`, `transition-timing-function` ve `transition` kisayolunu kullanabilirsiniz.
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="transition-timing"/>
 
 ### Triggering an Animation
 
-The animations package required specifying triggers using the `trigger()` function and nesting all of your states within it. With native CSS, this is unnecessary. Animations can be triggered by toggling CSS styles or classes. Once a class is present on an element, the animation will occur. Removing the class will revert the element back to whatever CSS is defined for that element. This results in significantly less code to do the same animation. Here's an example:
+Animasyon paketi, `trigger()` fonksiyonunu kullanarak tetikleyiciler belirtmeyi ve tum durumlarinizi onun icinde ic ice yerlestirmeyi gerektiriyordu. Yerel CSS ile buna gerek yoktur. Animasyonlar CSS stilleri veya siniflari degistirerek tetiklenebilir. Bir sinif bir elemanda mevcut oldigunda, animasyon gerceklesir. Sinifi kaldirmak, elemani o eleman icin tanimlanmis CSS'e geri dondurecektir. Bu, ayni animasyonu yapmak icin onemli olcude daha az kodla sonuclanir. Iste bir ornek:
 
 #### With Animations Package
 
@@ -86,13 +86,13 @@ The animations package required specifying triggers using the `trigger()` functi
 
 ### Predefined State and wildcard matching
 
-The animations package offers the ability to match your defined states to a transition via strings. For example, animating from open to closed would be `open => closed`. You can use wildcards to match any state to a target state, like `* => closed` and the `void` keyword can be used for entering and exiting states. For example: `* => void` for when an element leaves a view or `void => *` for when the element enters a view.
+Animasyon paketi, tanimladiginiz durumlari dizeler araciligiyla bir gecisle eslestirme yetenegini sunuyordu. Ornegin, aciktan kapaliya animasyonlamak `open => closed` seklinde olurdu. Herhangi bir durumu hedef durumla eslestirmek icin `* => closed` gibi joker karakterler kullanabilirsiniz ve giris ve cikis durumlari icin `void` anahtar sozcugu kullanilabilir. Ornegin: bir eleman gorünumden ayrilirken `* => void` veya eleman gorünume girerken `void => *`.
 
-These state matching patterns are not needed at all when animating with CSS directly. You can manage what transitions and `@keyframes` animations apply based on whatever classes you set and / or styles you set on the elements. You can also add `@starting-style` to control how the element looks upon immediately entering the DOM.
+Bu durum esleme kaliplari, dogrudan CSS ile animasyon yaparken hic gerekli degildir. Elemanlara ayarladiginiz siniflara ve/veya stillere gore hangi gecislerin ve `@keyframes` animasyonlarinin uygulanacagini yonetebilirsiniz. Ayrica elemanin DOM'a girdigi andaki gorunumunu kontrol etmek icin `@starting-style` ekleyebilirsiniz.
 
 ### Automatic Property Calculation with Wildcards
 
-The animations package offers the ability to animate things that have been historically difficult to animate, like animating a set height to `height: auto`. You can now do this with pure CSS as well.
+Animasyon paketi, `height: auto`'ya animasyon yapmak gibi tarihsel olarak animasyonlanmasi zor olan seyleri animasyonlama yetenegini sunuyordu. Artik bunu saf CSS ile de yapabilirsiniz.
 
 #### With Animations Package
 
@@ -102,7 +102,7 @@ The animations package offers the ability to animate things that have been histo
     <docs-code header="auto-height.css" path="adev/src/content/examples/animations/src/app/animations-package/auto-height.css" />
 </docs-code-multifile>
 
-You can use css-grid to animate to auto height.
+Otomatik yukseklige animasyon yapmak icin css-grid kullanabilirsiniz.
 
 #### With Native CSS
 
@@ -112,11 +112,11 @@ You can use css-grid to animate to auto height.
     <docs-code header="auto-height.css" path="adev/src/content/examples/animations/src/app/native-css/auto-height.css"  />
 </docs-code-multifile>
 
-If you don't have to worry about supporting all browsers, you can also check out `calc-size()`, which is the true solution to animating auto height. See [MDN's docs](https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size) and (this tutorial)[https://frontendmasters.com/blog/one-of-the-boss-battles-of-css-is-almost-won-transitioning-to-auto/] for more information.
+Tum tarayicilari destekleme konusunda endiselenmeniz gerekmiyorsa, otomatik yukseklige animasyon yapmanin gercek cozumu olan `calc-size()`'i da inceleyebilirsiniz. Daha fazla bilgi icin [MDN belgelerine](https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size) ve (bu egitime)[https://frontendmasters.com/blog/one-of-the-boss-battles-of-css-is-almost-won-transitioning-to-auto/] bakin.
 
 ### Animate entering and leaving a view
 
-The animations package offered the previously mentioned pattern matching for entering and leaving but also included the shorthand aliases of `:enter` and `:leave`.
+Animasyon paketi, giris ve cikis icin daha once bahsedilen kalip eslemeyi sunuyordu ve ayrica `:enter` ve `:leave` kisayol takma adlarini da iceriyordu.
 
 #### With Animations Package
 
@@ -142,11 +142,11 @@ The animations package offered the previously mentioned pattern matching for ent
     <docs-code header="remove.css" path="adev/src/content/examples/animations/src/app/native-css/remove.css"  />
 </docs-code-multifile>
 
-For more information on `animate.enter` and `animate.leave`, see the [Enter and Leave animations guide](guide/animations).
+`animate.enter` ve `animate.leave` hakkinda daha fazla bilgi icin [Giris ve Cikis animasyonlari rehberine](guide/animations) bakin.
 
 ### Animating increment and decrement
 
-Along with the aforementioned `:enter` and `:leave`, there's also `:increment` and `:decrement`. You can animate these also by adding and removing classes. Unlike the animation package built-in aliases, there is no automatic application of classes when the values go up or down. You can apply the appropriate classes programmatically. Here's an example:
+Daha once bahsedilen `:enter` ve `:leave`'e ek olarak, `:increment` ve `:decrement` de vardir. Bunlari da siniflar ekleyip kaldirarak animasyonlayabilirsiniz. Animasyon paketinin yerlesik takma adlarinin aksine, degerler yukarı veya asagi gittiginde siniflarin otomatik olarak uygulanmasi yoktur. Uygun siniflari programatik olarak uygulayabilirsiniz. Iste bir ornek:
 
 #### With Animations Package
 
@@ -166,13 +166,13 @@ Along with the aforementioned `:enter` and `:leave`, there's also `:increment` a
 
 ### Parent / Child Animations
 
-Unlike the animations package, when multiple animations are specified within a given component, no animation has priority over another and nothing blocks any animation from firing. Any sequencing of animations would have to be handled by your definition of your CSS animation, using animation / transition delay, and / or using `animationend` or `transitionend` to handle adding the next css to be animated.
+Animasyon paketinden farkli olarak, belirli bir bilesen icinde birden fazla animasyon belirlendiginde, hicbir animasyonun digerine onceligi yoktur ve hicbir sey herhangi bir animasyonun calismesini engellemez. Animasyonlarin siralanmasi, CSS animasyonunuzun tanimi, animasyon/gecis gecikmesi ve/veya sonraki animasyonlanacak CSS'i eklemeyi islemek icin `animationend` veya `transitionend` kullanilarak yonetilmelidir.
 
 ### Disabling an animation or all animations
 
-With native CSS animations, if you'd like to disable the animations that you've specified, you have multiple options.
+Yerel CSS animasyonlariyla, belirttiginiz animasyonlari devre disi birakmak istiyorsaniz, birden fazla seceeneginiz vardir.
 
-1. Create a custom class that forces animation and transition to `none`.
+1. Animasyon ve gecisi `none` olarak zorlayan ozel bir sinif olusturun.
 
 ```css
 .no-animation {
@@ -181,43 +181,43 @@ With native CSS animations, if you'd like to disable the animations that you've 
 }
 ```
 
-Applying this class to an element prevents any animation from firing on that element. You could alternatively scope this to your entire DOM or section of your DOM to enforce this behavior. However, this prevents animation events from firing. If you are awaiting animation events for element removal, this solution won't work. A workaround is to set durations to 1 millisecond instead.
+Bu sinifi bir elemana uygulamak, o eleman uzerindeki herhangi bir animasyonun calismesini engeller. Alternatif olarak, bu davranisi uygulamak icin bunu tum DOM'unuza veya DOM'unuzun bir bolumune kapsayabilirsiniz. Ancak bu, animasyon olaylarinin calismesini engeller. Eleman kaldirma icin animasyon olaylarini bekliyorsaniz, bu cozum ise yaramaz. Gecici bir cozum, sureleri 1 milisaniyeye ayarlamaktir.
 
-2. Use the [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) media query to ensure no animations play for users that prefer less animation.
+2. Daha az animasyon tercih eden kullanicilar icin hicbir animasyonun calmamasini saglamak icin [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) medya sorgusunu kullanin.
 
-3. Prevent adding animation classes programatically
+3. Programatik olarak animasyon siniflari eklemeyi engelleyin
 
 ### Animation Callbacks
 
-The animations package exposed callbacks for you to use in the case that you want to do something when the animation has finished. Native CSS animations also have these callbacks.
+Animasyon paketi, animasyon bittiginde bir seyler yapmak istemeniz durumunda kullanmaniz icin geri cagirmalar sunuyordu. Yerel CSS animasyonlarinin da bu geri cagirmalari vardir.
 
-[`OnAnimationStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)  
-[`OnAnimationEnd`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event)  
-[`OnAnimationIteration`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationitration_event)  
+[`OnAnimationStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)
+[`OnAnimationEnd`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event)
+[`OnAnimationIteration`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationitration_event)
 [`OnAnimationCancel`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationcancel_event)
 
-[`OnTransitionStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionstart_event)  
-[`OnTransitionRun`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionrun_event)  
-[`OnTransitionEnd`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event)  
+[`OnTransitionStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionstart_event)
+[`OnTransitionRun`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionrun_event)
+[`OnTransitionEnd`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event)
 [`OnTransitionCancel`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitioncancel_event)
 
-The Web Animations API has a lot of additional functionality. [Take a look at the documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API) to see all the available animation APIs.
+Web Animations API bircok ek islev sunar. Mevcut tum animasyon API'lerini gormek icin [belgelere goz atin](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
 
-NOTE: Be aware of bubbling issues with these callbacks. If you are animating children and parents, the events bubble up from children to parents. Consider stopping propagation or looking at more details within the event to determine if you're responding to the desired event target rather than an event bubbling up from a child node. You can examine the `animationname` property or the properties being transitioned to verify you have the right nodes.
+NOTE: Bu geri cagirmalarla kabarciklanma sorunlarina dikkat edin. Alt ve ust elemanlari animasyonluyorsaniz, olaylar alt elemanlardan ust elemanlara dogru kabarciklanir. Bir alt dugumden kabarciklanan bir olaya degil, istediginiz olay hedefine yanit verdiginizden emin olmak icin yayilimi durdurun veya olay icindeki daha fazla ayrinti inceleyin. Dogru dugumlere sahip oldugunuzu dogrulamak icin `animationname` ozelligini veya gecisi yapilan ozellikleri inceleyebilirsiniz.
 
 ## Complex Sequences
 
-The animations package has built-in functionality for creating complex sequences. These sequences are all entirely possible without the animations package.
+Animasyon paketi karmasik diziler olusturmak icin yerlesik islevsellige sahiptir. Bu dizilerin tumu animasyon paketi olmadan tamamen mumkundur.
 
 ### Targeting specific elements
 
-In the animations package, you could target specific elements by using the `query()` function to find specific elements by a CSS class name, similar to [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector). This is unnecessary in a native CSS animation world. Instead, you can use your CSS selectors to target sub-classes and apply any desired `transform` or `animation`.
+Animasyon paketinde, [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector)'a benzer bir CSS sinif adi ile belirli elemanlari bulmak icin `query()` fonksiyonunu kullanarak belirli elemanlari hedefleyebilirdiniz. Yerel CSS animasyon dunyasinda buna gerek yoktur. Bunun yerine, alt siniflari hedeflemek ve istediginiz `transform` veya `animation`'i uygulamak icin CSS secicilerinizi kullanabilirsiniz.
 
-To toggle classes for child nodes within a template, you can use class and style bindings to add the animations at the right points.
+Bir sablon icindeki alt dugumlerin siniflari icin degistirmek icin, animasyonlari dogru noktalarda eklemek icin sinif ve stil baglamalarini kullanabilirsiniz.
 
 ### Stagger()
 
-The `stagger()` function allowed you to delay the animation of each item in a list of items by a specified time to create a cascade effect. You can replicate this behavior in native CSS by utilizing `animation-delay` or `transition-delay`. Here is an example of what that CSS might look like.
+`stagger()` fonksiyonu, kademeli bir etki olusturmak icin bir listedeki her ogenin animasyonunu belirtilen bir sure geciktirmenize olanak taniyordu. Bu davranisi `animation-delay` veya `transition-delay` kullanarak yerel CSS'de kopyalayabilirsiniz. Bu CSS'nin nasil gorunebilecegine dair bir ornek.
 
 #### With Animations Package
 
@@ -237,7 +237,7 @@ The `stagger()` function allowed you to delay the animation of each item in a li
 
 ### Parallel Animations
 
-The animations package has a `group()` function to play multiple animations at the same time. In CSS, you have full control over animation timing. If you have multiple animations defined, you can apply all of them at once.
+Animasyon paketinde ayni anda birden fazla animasyon oynatmak icin `group()` fonksiyonu vardir. CSS'de animasyon zamanlamasi uzerinde tam kontrol sahibisiniz. Tanimlanmis birden fazla animasyonunuz varsa, hepsini ayni anda uygulayabilirsiniz.
 
 ```css
 .target-element {
@@ -247,11 +247,11 @@ The animations package has a `group()` function to play multiple animations at t
 }
 ```
 
-In this example, the `rotate` and `fade-in` animations fire at the same time.
+Bu ornekte, `rotate` ve `fade-in` animasyonlari ayni anda baslar.
 
 ### Animating the items of a reordering list
 
-Items reordering in a list works out of the box using the previously described techniques. No additional special work is required. Items in a `@for` loop will be removed and re-added properly, which will fire off animations using `@starting-styles` for entry animations. Alternatively, you can use `animate.enter` for this same behavior. Use `animate.leave` to animate elements as they are removed, as seen in the example above.
+Listede yeniden siralanan ogeler, daha once aciklanan teknikleri kullanarak kutudan cikar cikmaz calisir. Ek ozel bir calisma gerekmez. Bir `@for` dongusundeki ogeler duzgun sekilde kaldirilip yeniden eklenecek, bu da giris animasyonlari icin `@starting-styles` kullanilarak animasyonlari tetikleyecektir. Alternatif olarak, ayni davranis icin `animate.enter` kullanabilirsiniz. Yukaridaki ornekte gorulduğu gibi elemanlar kaldirilirken animasyonlamak icin `animate.leave` kullanin.
 
 #### With Animations Package
 
@@ -271,10 +271,10 @@ Items reordering in a list works out of the box using the previously described t
 
 ## Migrating usages of AnimationPlayer
 
-The `AnimationPlayer` class allows access to an animation to do more advanced things like pause, play, restart, and finish an animation through code. All of these things can be handled natively as well.
+`AnimationPlayer` sinifi, duraklatma, oynatma, yeniden baslatma ve bir animasyonu kod araciligiyla bitirme gibi daha gelismis seyler yapabilmek icin bir animasyona erisim saglar. Tum bunlar yerel olarak da ele alinabilir.
 
-You can retrieve animations off an element directly using [`Element.getAnimations()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAnimations). This returns an array of every [`Animation`](https://developer.mozilla.org/en-US/docs/Web/API/Animation) on that element. You can use the `Animation` API to do much more than you could with what the `AnimationPlayer` from the animations package offered. From here you can `cancel()`, `play()`, `pause()`, `reverse()` and much more. This native API should provide everything you need to control your animations.
+[`Element.getAnimations()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAnimations) kullanarak bir elemandaki animasyonlari dogrudan alabilirsiniz. Bu, o elemandaki her [`Animation`](https://developer.mozilla.org/en-US/docs/Web/API/Animation)'in bir dizisini dondurur. Animasyon paketinin `AnimationPlayer`'inin sundugu seylerden cok daha fazlasini yapmak icin `Animation` API'sini kullanabilirsiniz. Buradan `cancel()`, `play()`, `pause()`, `reverse()` ve cok daha fazlasini yapabilirsiniz. Bu yerel API, animasyonlarinizi kontrol etmeniz icin ihtiyaciniz olan her seyi saglamalidir.
 
 ## Route Transitions
 
-You can use view transitions to animate between routes. See the [Route Transition Animations Guide](guide/routing/route-transition-animations) to get started.
+Rotalar arasinda animasyon yapmak icin gorünum gecislerini kullanabilirsiniz. Baslamak icin [Rota Gecis Animasyonlari Rehberine](guide/routing/route-transition-animations) bakin.

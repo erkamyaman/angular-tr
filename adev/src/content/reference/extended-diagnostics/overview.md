@@ -1,12 +1,12 @@
 # Extended Diagnostics
 
-There are many coding patterns that are technically valid to the compiler or runtime, but which may have complex nuances or caveats.
-These patterns may not have the intended effect expected by a developer, which often leads to bugs.
-The Angular compiler includes "extended diagnostics" which identify many of these patterns, in order to warn developers about the potential issues and enforce common best practices within a codebase.
+Teknik olarak derleyici veya çalışma zamanı için geçerli olan, ancak karmaşık nüansları veya uyarıları olabilen birçok kodlama kalıbı vardır.
+Bu kalıplar, bir geliştiricinin beklediği etkiyi yaratmayabilir ve bu durum genellikle hatalara yol açar.
+Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir kod tabanı içinde yaygın en iyi uygulamaları zorunlu kılmak amacıyla bu kalıpların çoğunu tanımlayan "genişletilmiş tanılama" özelliğini içerir.
 
 ## Diagnostics
 
-Currently, Angular supports the following extended diagnostics:
+Şu anda Angular aşağıdaki genişletilmiş tanılamaları desteklemektedir:
 
 | Code     | Name                                                                  |
 | :------- | :-------------------------------------------------------------------- |
@@ -29,16 +29,16 @@ Currently, Angular supports the following extended diagnostics:
 
 ## Configuration
 
-Extended diagnostics are warnings by default and do not block compilation.
-Each diagnostic can be configured as either:
+Genişletilmiş tanılamalar varsayılan olarak uyarıdır ve derlemeyi engellemez.
+Her tanılama şu şekilde yapılandırılabilir:
 
-| Error category | Effect                                                                                                                                                                   |
-| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `warning`      | Default - The compiler emits the diagnostic as a warning but does not block compilation. The compiler will still exist with status code 0, even if warnings are emitted. |
-| `error`        | The compiler emits the diagnostic as an error and fails the compilation. The compiler will exit with a non-zero status code if one or more errors are emitted.           |
-| `suppress`     | The compiler does _not_ emit the diagnostic at all.                                                                                                                      |
+| Error category | Effect                                                                                                                                                              |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `warning`      | Varsayılan - Derleyici tanılamayı bir uyarı olarak verir ancak derlemeyi engellemez. Uyarılar verilse bile derleyici yine de 0 durum kodu ile çıkış yapar.          |
+| `error`        | Derleyici tanılamayı bir hata olarak verir ve derlemeyi başarısız kılar. Bir veya daha fazla hata verilirse derleyici sıfır olmayan bir durum kodu ile çıkış yapar. |
+| `suppress`     | Derleyici tanılamayı hiç _vermez_.                                                                                                                                  |
 
-Check severity can be configured as an [Angular compiler option](reference/configs/angular-compiler-options):
+Kontrol ciddiyeti bir [Angular derleyici seçeneği](reference/configs/angular-compiler-options) olarak yapılandırılabilir:
 
 ```json
 {
@@ -53,37 +53,36 @@ Check severity can be configured as an [Angular compiler option](reference/confi
 }
 ```
 
-The `checks` field maps the name of individual diagnostics to their associated category.
-See [Diagnostics](#diagnostics) for a complete list of extended diagnostics and the name to use for configuring them.
+`checks` alanı, bireysel tanılamaların adlarını ilişkili kategorileriyle eşler.
+Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Diagnostics](#diagnostics) bölümüne bakın.
 
-The `defaultCategory` field is used for any diagnostics that are not explicitly listed under `checks`.
-If not set, such diagnostics will be treated as `warning`.
+`defaultCategory` alanı, `checks` altında açıkça listelenmemiş tüm tanılamalar için kullanılır.
+Ayarlanmazsa, bu tür tanılamalar `warning` olarak değerlendirilir.
 
-Extended diagnostics will emit when [`strictTemplates`](tools/cli/template-typecheck#strict-mode) is enabled.
-This is required to allow the compiler to better understand Angular template types and provide accurate and meaningful diagnostics.
+Genişletilmiş tanılamalar [`strictTemplates`](tools/cli/template-typecheck#strict-mode) etkinleştirildiğinde verilir.
+Bu, derleyicinin Angular şablon türlerini daha iyi anlamasını ve doğru ve anlamlı tanılamalar sağlamasını mümkün kılmak için gereklidir.
 
 ## Semantic Versioning
 
-The Angular team intends to add or enable new extended diagnostics in **minor** versions of Angular (see [semver](https://docs.npmjs.com/about-semantic-versioning)).
-This means that upgrading Angular may show new warnings in your existing codebase.
-This enables the team to deliver features more quickly and to make extended diagnostics more accessible to developers.
+Angular ekibi, Angular'ın **minor** sürümlerinde yeni genişletilmiş tanılamalar eklemeyi veya etkinleştirmeyi planlamaktadır (bkz. [semver](https://docs.npmjs.com/about-semantic-versioning)).
+Bu, Angular'ı yükseltmenin mevcut kod tabanınızda yeni uyarılar gösterebileceği anlamına gelir.
+Bu, ekibin özellikleri daha hızlı sunmasını ve genişletilmiş tanılamaları geliştiriciler için daha erişilebilir hale getirmesini sağlar.
 
-However, setting `"defaultCategory": "error"` will promote such warnings to hard errors.
-This can cause a minor version upgrade to introduce compilation errors, which may be seen as a semver non-compliant breaking change.
-Any new diagnostics can be suppressed or demoted to warnings via the above [configuration](#configuration), so the impact of a new diagnostic should be minimal to
-projects that treat extended diagnostics as errors by default.
-Defaulting to error is a very powerful tool; just be aware of this semver caveat when deciding if `error` is the right default for your project.
+Ancak, `"defaultCategory": "error"` ayarı bu tür uyarıları kesin hatalara yükseltir.
+Bu, bir minor sürüm yükseltmesinin derleme hataları oluşturmasına neden olabilir ve bu durum semver uyumlu olmayan bir kırılma değişikliği olarak görülebilir.
+Herhangi bir yeni tanılama, yukarıdaki [yapılandırma](#configuration) aracılığıyla bastırılabilir veya uyarılara düşürülebilir, bu nedenle genişletilmiş tanılamaları varsayılan olarak hata olarak değerlendiren projeler üzerindeki etkisi minimum olmalıdır.
+Varsayılan olarak hata kullanmak çok güçlü bir araçtır; projeniz için `error`'ın doğru varsayılan olup olmadığına karar verirken bu semver uyarısını göz önünde bulundurun.
 
 ## New Diagnostics
 
-The Angular team is always open to suggestions about new diagnostics that could be added.
-Extended diagnostics should generally:
+Angular ekibi, eklenebilecek yeni tanılamalar hakkında önerilere her zaman açıktır.
+Genişletilmiş tanılamalar genel olarak şunları yapmalıdır:
 
-- Detect a common, non-obvious developer mistake with Angular templates
-- Clearly articulate why this pattern can lead to bugs or unintended behavior
-- Suggest one or more clear solutions
-- Have a low, preferably zero, false-positive rate
-- Apply to the vast majority of Angular applications (not specific to an unofficial library)
-- Improve program correctness or performance (not style, that responsibility falls to a linter)
+- Angular şablonlarında yaygın, belirgin olmayan bir geliştirici hatasını tespit etmelidir
+- Bu kalıbın neden hatalara veya istenmeyen davranışlara yol açabileceğini açıkça belirtmelidir
+- Bir veya daha fazla net çözüm önermelidir
+- Düşük, tercihen sıfır, yanlış pozitif oranına sahip olmalıdır
+- Angular uygulamalarının büyük çoğunluğuna uygulanmalıdır (resmi olmayan bir kütüphaneye özgü değil)
+- Program doğruluğunu veya performansını iyileştirmelidir (stil değil, bu sorumluluk bir linter'a aittir)
 
-If you have an idea for an extended diagnostic which fits these criteria, consider filing a [feature request](https://github.com/angular/angular/issues/new?template=2-feature-request.yaml).
+Bu kriterlere uyan bir genişletilmiş tanılama fikriniz varsa, bir [özellik isteği](https://github.com/angular/angular/issues/new?template=2-feature-request.yaml) açmayı düşünün.

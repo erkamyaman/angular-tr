@@ -1,38 +1,28 @@
 # Advanced component configuration
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
 ## ChangeDetectionStrategy
 
-The `@Component` decorator accepts a `changeDetection` option that controls the component's **change
-detection mode**. There are two change detection mode options.
+`@Component` dekoratoru, bilesnenin **degisiklik algilama modunu** kontrol eden bir `changeDetection` secenegi kabul eder. Iki degisiklik algilama modu secenegi vardir.
 
-**`ChangeDetectionStrategy.Eager`/`Default`** is, unsurprisingly, the default strategy. In this mode,
-Angular checks whether the component's DOM needs an update whenever any activity may have occurred
-application-wide. Activities that trigger this checking include user interaction, network response,
-timers, and more.
+**`ChangeDetectionStrategy.Eager`/`Default`**, sasirtici olmayan bir sekilde varsayilan stratejidir. Bu modda Angular, uygulama genelinde herhangi bir aktivite gerceklestiginde bilesnenin DOM'unun guncellenmesi gerekip gerekmedigini kontrol eder. Bu kontrolu tetikleyen aktiviteler arasinda kullanici etkilesimi, ag yaniti, zamanlayicilar ve daha fazlasi yer alir.
 
-**`ChangeDetectionStrategy.OnPush`** is an optional mode that reduces the amount of checking Angular
-needs to perform. In this mode, the framework only checks if a component's DOM needs an update when:
+**`ChangeDetectionStrategy.OnPush`**, Angular'in yapmasi gereken kontrol miktarini azaltan istege bagli bir moddur. Bu modda framework, bir bilesnenin DOM'unun guncellenmesi gerekip gerekmedigini yalnizca su durumlarda kontrol eder:
 
-- A component input has changes as a result of a binding in a template, or
-- An event listener in this component runs
-- The component is explicitly marked for check, via `ChangeDetectorRef.markForCheck` or something which wraps it, like `AsyncPipe`.
+- Bir bilesen girdisi, bir sablondaki baglama sonucunda degismisse, veya
+- Bu bilesnedeki bir olay dinleyicisi calisirsa
+- Bilesen, `ChangeDetectorRef.markForCheck` veya onu sarmalayan `AsyncPipe` gibi bir sey araciligiyla acikca kontrol icin isaretlenmisse.
 
-Additionally, when an OnPush component is checked, Angular _also_ checks all of its ancestor
-components, traversing upwards through the application tree.
+Ek olarak, bir OnPush bileseni kontrol edildiginde, Angular uygulama agaci boyunca yukari dogru ilerleyerek tum ust bilesenleri de kontrol eder.
 
 ## PreserveWhitespaces
 
-By default, Angular removes and collapses superfluous whitespace in templates, most commonly from
-newlines and indentation. You can change this setting by explicitly setting `preserveWhitespaces` to
-`true` in a component's metadata.
+Varsayilan olarak Angular, sablonlardaki gereksiz bosluk karakterlerini kaldirir ve daraltir; bunlar en yaygin olarak yeni satirlar ve girintilerdir. Bu ayari, bilesnenin meta verilerinde `preserveWhitespaces` degerini acikca `true` olarak ayarlayarak degistirebilirsiniz.
 
 ## Custom element schemas
 
-By default, Angular throws an error when it encounters an unknown HTML element. You can
-disable this behavior for a component by including `CUSTOM_ELEMENTS_SCHEMA` in the `schemas`
-property in your component metadata.
+Varsayilan olarak Angular, bilinmeyen bir HTML elemani ile karsilastiginda hata verir. Bilesen meta verilerinizdeki `schemas` ozelligine `CUSTOM_ELEMENTS_SCHEMA` ekleyerek bir bilesen icin bu davranisi devre disi birakabilirsiniz.
 
 ```angular-ts
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
@@ -45,4 +35,4 @@ import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 export class ComponentWithCustomElements { }
 ```
 
-Angular does not support any other schemas at this time.
+Angular su anda baska hicbir semayi desteklememektedir.

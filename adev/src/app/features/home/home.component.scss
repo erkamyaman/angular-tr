@@ -187,8 +187,35 @@ section {
   }
 
   .search-field {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
     @include mq.for-tablet-down() {
       display: none;
+    }
+  }
+
+  .adev-github-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    background: var(--primary-contrast);
+    color: var(--page-background);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      opacity: 0.85;
     }
   }
 

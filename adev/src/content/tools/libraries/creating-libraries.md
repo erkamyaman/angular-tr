@@ -1,13 +1,13 @@
 # Creating libraries
 
-This page provides a conceptual overview of how to create and publish new libraries to extend Angular functionality.
+Bu sayfa, Angular işlevselliğini genişletmek için yeni kütüphanelerin nasıl oluşturulacağı ve yayınlanacağına dair kavramsal bir genel bakış sunar.
 
-If you find that you need to solve the same problem in more than one application \(or want to share your solution with other developers\), you have a candidate for a library.
-A simple example might be a button that sends users to your company website, that would be included in all applications that your company builds.
+Birden fazla uygulamada aynı sorunu çözmeniz gerektiğini fark ederseniz \(veya çözümünüzü diğer geliştiricilerle paylaşmak isterseniz\), bir kütüphane adayınız var demektir.
+Basit bir örnek, kullanıcıları şirket web sitenize yönlendiren ve şirketinizin oluşturduğu tüm uygulamalarda yer alacak bir düğme olabilir.
 
 ## Getting started
 
-Use the Angular CLI to generate a new library skeleton in a new workspace with the following commands.
+Aşağıdaki komutlarla yeni bir çalışma alanında yeni bir kütüphane iskeleti oluşturmak için Angular CLI'yi kullanın.
 
 ```shell
 
@@ -19,24 +19,24 @@ ng generate library my-lib
 
 <docs-callout title="Naming your library">
 
-You should be very careful when choosing the name of your library if you want to publish it later in a public package registry such as npm.
-See [Publishing your library](tools/libraries/creating-libraries#publishing-your-library).
+Kütüphanenizi daha sonra npm gibi herkese açık bir paket kayıt defterinde yayınlamak istiyorsanız, adını seçerken çok dikkatli olmalısınız.
+Bkz. [Publishing your library](tools/libraries/creating-libraries#publishing-your-library).
 
-Avoid using a name that is prefixed with `ng-`, such as `ng-library`.
-The `ng-` prefix is a reserved keyword used from the Angular framework and its libraries.
-The `ngx-` prefix is preferred as a convention used to denote that the library is suitable for use with Angular.
-It is also an excellent indication to consumers of the registry to differentiate between libraries of different JavaScript frameworks.
+`ng-library` gibi `ng-` ön ekiyle başlayan bir ad kullanmaktan kaçının.
+`ng-` ön eki, Angular framework'ü ve kütüphaneleri tarafından kullanılan ayrılmış bir anahtar kelimedir.
+`ngx-` ön eki, kütüphanenin Angular ile kullanıma uygun olduğunu belirtmek için kullanılan bir gelenektir.
+Ayrıca kayıt defteri tüketicilerinin farklı JavaScript framework'lerinin kütüphanelerini ayırt etmeleri için mükemmel bir göstergedir.
 
 </docs-callout>
 
-The `ng generate` command creates the `projects/my-lib` folder in your workspace, which contains a component.
+`ng generate` komutu, çalışma alanınızda bir bileşen içeren `projects/my-lib` klasörünü oluşturur.
 
-HELPFUL: For more details on how a library project is structured, refer to the [Library project files](reference/configs/file-structure#library-project-files) section of the [Project File Structure guide](reference/configs/file-structure).
+HELPFUL: Bir kütüphane projesinin nasıl yapılandırıldığına ilişkin daha fazla ayrıntı için [Project File Structure kılavuzunun](reference/configs/file-structure) [Library project files](reference/configs/file-structure#library-project-files) bölümüne bakın.
 
-Use the monorepo model to use the same workspace for multiple projects.
-See [Setting up for a multi-project workspace](reference/configs/file-structure#multiple-projects).
+Aynı çalışma alanını birden fazla proje için kullanmak üzere monorepo modelini kullanın.
+Bkz. [Setting up for a multi-project workspace](reference/configs/file-structure#multiple-projects).
 
-When you generate a new library, the workspace configuration file, `angular.json`, is updated with a project of type `library`.
+Yeni bir kütüphane oluşturduğunuzda, çalışma alanı yapılandırma dosyası `angular.json`, `library` türünde bir projeyle güncellenir.
 
 ```json
 
@@ -54,7 +54,7 @@ When you generate a new library, the workspace configuration file, `angular.json
 
 ```
 
-Build, test, and lint the project with CLI commands:
+CLI komutlarıyla projeyi derleyin, test edin ve lint yapın:
 
 ```shell
 
@@ -64,79 +64,78 @@ ng lint my-lib
 
 ```
 
-Notice that the configured builder for the project is different from the default builder for application projects.
-This builder, among other things, ensures that the library is always built with the [AOT compiler](tools/cli/aot-compiler).
+Proje için yapılandırılmış builder'ın, uygulama projeleri için varsayılan builder'dan farklı olduğuna dikkat edin.
+Bu builder, diğer şeylerin yanı sıra, kütüphanenin her zaman [AOT derleyicisi](tools/cli/aot-compiler) ile derlenmesini sağlar.
 
-To make library code reusable you must define a public API for it.
-This "user layer" defines what is available to consumers of your library.
-A user of your library should be able to access public functionality \(such as service providers and general utility functions\) through a single import path.
+Kütüphane kodunu yeniden kullanılabilir hale getirmek için bunun için bir genel API tanımlamalısınız.
+Bu "kullanıcı katmanı", kütüphanenizin tüketicilerine neyin sunulduğunu tanımlar.
+Kütüphanenizin bir kullanıcısı, genel işlevselliğe \(servis sağlayıcıları ve genel yardımcı fonksiyonlar gibi\) tek bir içe aktarma yolu aracılığıyla erişebilmelidir.
 
-The public API for your library is maintained in the `public-api.ts` file in your library folder.
-Anything exported from this file is made public when your library is imported into an application.
+Kütüphanenizin genel API'si, kütüphane klasörünüzdeki `public-api.ts` dosyasında yönetilir.
+Bu dosyadan dışa aktarılan her şey, kütüphaneniz bir uygulamaya aktarıldığında herkese açık hale gelir.
 
-Your library should supply documentation \(typically a README file\) for installation and maintenance.
+Kütüphaneniz, kurulum ve bakım için belgeler \(genellikle bir README dosyası\) sağlamalıdır.
 
 ## Refactoring parts of an application into a library
 
-To make your solution reusable, you need to adjust it so that it does not depend on application-specific code.
-Here are some things to consider in migrating application functionality to a library.
+Çözümünüzü yeniden kullanılabilir hale getirmek için, uygulamaya özel koda bağımlı olmayacak şekilde ayarlamanız gerekir.
+Uygulama işlevselliğini bir kütüphaneye taşırken dikkate alınması gereken bazı noktalar şunlardır.
 
-- Declarations such as components and pipes should be designed as stateless, meaning they don't rely on or alter external variables.
-  If you do rely on state, you need to evaluate every case and decide whether it is application state or state that the library would manage.
+- Bileşenler ve pipe'lar gibi bildirimler durumsuz olarak tasarlanmalıdır, yani harici değişkenlere bağlı olmamalı veya bunları değiştirmemelidir.
+  Duruma bağlıysanız, her durumu değerlendirmeli ve bunun uygulama durumu mu yoksa kütüphanenin yöneteceği bir durum mu olduğuna karar vermelisiniz.
 
-- Any observables that the components subscribe to internally should be cleaned up and disposed of during the lifecycle of those components
-- Components should expose their interactions through inputs for providing context, and outputs for communicating events to other components
+- Bileşenlerin dahili olarak abone olduğu tüm observable'lar, bu bileşenlerin yaşam döngüsü sırasında temizlenmeli ve elden çıkarılmalıdır
+- Bileşenler etkileşimlerini, bağlam sağlamak için input'lar ve diğer bileşenlere olay iletmek için output'lar aracılığıyla açığa çıkarmalıdır
 
-- Check all internal dependencies.
-  - For custom classes or interfaces used in components or service, check whether they depend on additional classes or interfaces that also need to be migrated
-  - Similarly, if your library code depends on a service, that service needs to be migrated
-  - If your library code or its templates depend on other libraries \(such as Angular Material, for instance\), you must configure your library with those dependencies
+- Tüm dahili bağımlılıkları kontrol edin.
+  - Bileşenlerde veya servislerde kullanılan özel sınıflar veya arayüzler için, bunların da taşınması gereken ek sınıflara veya arayüzlere bağlı olup olmadığını kontrol edin
+  - Benzer şekilde, kütüphane kodunuz bir servise bağlıysa, o servisin de taşınması gerekir
+  - Kütüphane kodunuz veya şablonları diğer kütüphanelere \(örneğin Angular Material gibi\) bağlıysa, kütüphanenizi bu bağımlılıklarla yapılandırmalısınız
 
-- Consider how you provide services to client applications.
-  - Services should declare their own providers, rather than declaring providers in the NgModule or a component.
-    Declaring a provider makes that service _tree-shakable_.
-    This practice lets the compiler leave the service out of the bundle if it never gets injected into the application that imports the library.
-    For more about this, see [Tree-shakable providers](guide/di/lightweight-injection-tokens).
+- İstemci uygulamalarına servisleri nasıl sağladığınızı düşünün.
+  - Servisler, NgModule veya bir bileşende sağlayıcı bildirmek yerine kendi sağlayıcılarını bildirmelidir.
+    Bir sağlayıcı bildirmek, o servisi _tree-shakable_ yapar.
+    Bu uygulama, derleyicinin kütüphaneyi içe aktaran uygulamaya hiç enjekte edilmeyen servisi paket dışında bırakmasına olanak tanır.
+    Bu konuda daha fazla bilgi için bkz. [Tree-shakable providers](guide/di/lightweight-injection-tokens).
 
-  - If you register global service providers expose a `provideXYZ()` provider function.
-  - If your library provides optional services that might not be used by all client applications, support proper tree-shaking for that case by using the [lightweight token design pattern](guide/di/lightweight-injection-tokens)
+  - Global servis sağlayıcıları kaydediyorsanız bir `provideXYZ()` sağlayıcı fonksiyonu sunun.
+  - Kütüphaneniz tüm istemci uygulamaları tarafından kullanılmayabilecek isteğe bağlı servisler sağlıyorsa, bu durum için [hafif token tasarım deseni](guide/di/lightweight-injection-tokens) kullanarak uygun tree-shaking desteği sağlayın
 
 ## Integrating with the CLI using code-generation schematics
 
-A library typically includes _reusable code_ that defines components, services, and other Angular artifacts \(pipes, directives\) that you import into a project.
-A library is packaged into an npm package for publishing and sharing.
-This package can also include schematics that provide instructions for generating or transforming code directly in your project, in the same way that the CLI creates a generic new component with `ng generate component`.
-A schematic that is packaged with a library can, for example, provide the Angular CLI with the information it needs to generate a component that configures and uses a particular feature, or set of features, defined in that library.
-One example of this is [Angular Material's navigation schematic](https://material.angular.dev/guide/schematics#navigation-schematic) which configures the CDK's [BreakpointObserver](https://material.angular.dev/cdk/layout/overview#breakpointobserver) and uses it with Material's [MatSideNav](https://material.angular.dev/components/sidenav/overview) and [MatToolbar](https://material.angular.dev/components/toolbar/overview) components.
+Bir kütüphane genellikle bir projeye aktardığınız bileşenler, servisler ve diğer Angular yapıtaşlarını \(pipe'lar, direktifler\) tanımlayan _yeniden kullanılabilir kod_ içerir.
+Bir kütüphane, yayınlama ve paylaşım için bir npm paketine paketlenir.
+Bu paket ayrıca, CLI'nin `ng generate component` ile genel yeni bir bileşen oluşturmasıyla aynı şekilde, doğrudan projenizde kod oluşturmak veya dönüştürmek için talimatlar sağlayan şematikler de içerebilir.
+Bir kütüphaneyle paketlenmiş bir şematik, örneğin Angular CLI'ye, o kütüphanede tanımlanmış belirli bir özelliği veya özellik kümesini yapılandıran ve kullanan bir bileşen oluşturmak için gereken bilgileri sağlayabilir.
+Bunun bir örneği, CDK'nın [BreakpointObserver](https://material.angular.dev/cdk/layout/overview#breakpointobserver)'ını yapılandıran ve bunu Material'in [MatSideNav](https://material.angular.dev/components/sidenav/overview) ve [MatToolbar](https://material.angular.dev/components/toolbar/overview) bileşenleriyle kullanan [Angular Material'in navigasyon şematiği](https://material.angular.dev/guide/schematics#navigation-schematic)dir.
 
-Create and include the following kinds of schematics:
+Aşağıdaki türde şematikler oluşturun ve dahil edin:
 
-- Include an installation schematic so that `ng add` can add your library to a project
-- Include generation schematics in your library so that `ng generate` can scaffold your defined artifacts \(components, services, tests\) in a project
-- Include an update schematic so that `ng update` can update your library's dependencies and provide migrations for breaking changes in new releases
+- `ng add`'in kütüphanenizi bir projeye ekleyebilmesi için bir kurulum şematiği dahil edin
+- `ng generate`'in tanımladığınız yapıtaşlarını \(bileşenler, servisler, testler\) bir projede iskele olarak oluşturabilmesi için kütüphanenize oluşturma şematikleri dahil edin
+- `ng update`'in kütüphanenizin bağımlılıklarını güncelleyebilmesi ve yeni sürümlerdeki kırılma değişiklikleri için geçişler sağlayabilmesi için bir güncelleme şematiği dahil edin
 
-What you include in your library depends on your task.
-For example, you could define a schematic to create a dropdown that is pre-populated with canned data to show how to add it to an application.
-If you want a dropdown that would contain different passed-in values each time, your library could define a schematic to create it with a given configuration.
-Developers could then use `ng generate` to configure an instance for their own application.
+Kütüphanenize neleri dahil edeceğiniz görevinize bağlıdır.
+Örneğin, bir uygulamaya nasıl ekleneceğini göstermek için önceden doldurulmuş verilerle bir açılır menü oluşturan bir şematik tanımlayabilirsiniz.
+Her seferinde farklı aktarılan değerler içerecek bir açılır menü istiyorsanız, kütüphaneniz belirli bir yapılandırmayla oluşturmak için bir şematik tanımlayabilir.
+Geliştiriciler daha sonra kendi uygulamaları için bir örnek yapılandırmak üzere `ng generate` komutunu kullanabilir.
 
-Suppose you want to read a configuration file and then generate a form based on that configuration.
-If that form needs additional customization by the developer who is using your library, it might work best as a schematic.
-However, if the form will always be the same and not need much customization by developers, then you could create a dynamic component that takes the configuration and generates the form.
-In general, the more complex the customization, the more useful the schematic approach.
+Bir yapılandırma dosyasını okumak ve ardından bu yapılandırmaya dayalı bir form oluşturmak istediğinizi varsayalım.
+Bu form, kütüphanenizi kullanan geliştirici tarafından ek özelleştirme gerektiriyorsa, bir şematik olarak en iyi şekilde çalışabilir.
+Ancak form her zaman aynı olacak ve geliştiriciler tarafından fazla özelleştirme gerektirmeyecekse, yapılandırmayı alan ve formu oluşturan dinamik bir bileşen oluşturabilirsiniz.
+Genel olarak, özelleştirme ne kadar karmaşıksa, şematik yaklaşımı o kadar kullanışlıdır.
 
-For more information, see [Schematics Overview](tools/cli/schematics) and [Schematics for Libraries](tools/cli/schematics-for-libraries).
+Daha fazla bilgi için bkz. [Schematics Overview](tools/cli/schematics) ve [Schematics for Libraries](tools/cli/schematics-for-libraries).
 
 ## Publishing your library
 
-Use the Angular CLI and the npm package manager to build and publish your library as an npm package.
+Kütüphanenizi bir npm paketi olarak derlemek ve yayınlamak için Angular CLI'yi ve npm paket yöneticisini kullanın.
 
-Angular CLI uses a tool called [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/master/README.md) to create packages from your compiled code that can be published to npm.
-See [Building libraries with Ivy](tools/libraries/creating-libraries#publishing-libraries) for information on the distribution formats supported by `ng-packagr` and guidance on how
-to choose the right format for your library.
+Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/master/README.md) adlı bir araç kullanır.
+`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Building libraries with Ivy](tools/libraries/creating-libraries#publishing-libraries).
 
-You should always build libraries for distribution using the `production` configuration.
-This ensures that generated output uses the appropriate optimizations and the correct package format for npm.
+Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını kullanarak derlemelisiniz.
+Bu, oluşturulan çıktının uygun optimizasyonları ve npm için doğru paket formatını kullanmasını sağlar.
 
 ```shell
 
@@ -148,13 +147,12 @@ npm publish
 
 ## Managing assets in a library
 
-In your Angular library, the distributable can include additional assets like theming files, Sass mixins, or documentation \(like a changelog\).
-For more information [copy assets into your library as part of the build](https://github.com/ng-packagr/ng-packagr/blob/master/docs/copy-assets.md) and [embed assets in component styles](https://github.com/ng-packagr/ng-packagr/blob/master/docs/embed-assets-css.md).
+Angular kütüphanenizde, dağıtılabilir paket tema dosyaları, Sass mixin'leri veya belgeler \(değişiklik günlüğü gibi\) gibi ek varlıklar içerebilir.
+Daha fazla bilgi için [varlıkları derlemenin bir parçası olarak kütüphanenize kopyalama](https://github.com/ng-packagr/ng-packagr/blob/master/docs/copy-assets.md) ve [varlıkları bileşen stillerine gömme](https://github.com/ng-packagr/ng-packagr/blob/master/docs/embed-assets-css.md) konularına bakın.
 
-IMPORTANT: When including additional assets like Sass mixins or pre-compiled CSS.
-You need to add these manually to the conditional ["exports"](tools/libraries/angular-package-format#exports) in the `package.json` of the primary entrypoint.
+IMPORTANT: Sass mixin'leri veya önceden derlenmiş CSS gibi ek varlıklar dahil ederken, bunları birincil giriş noktasının `package.json` dosyasındaki koşullu ["exports"](tools/libraries/angular-package-format#exports) bölümüne manuel olarak eklemeniz gerekir.
 
-`ng-packagr` will merge handwritten `"exports"` with the auto-generated ones, allowing for library authors to configure additional export subpaths, or custom conditions.
+`ng-packagr`, elle yazılmış `"exports"` ile otomatik oluşturulanları birleştirir ve kütüphane yazarlarının ek dışa aktarma alt yolları veya özel koşullar yapılandırmasına olanak tanır.
 
 ```json
 
@@ -172,28 +170,28 @@ You need to add these manually to the conditional ["exports"](tools/libraries/an
 
 ```
 
-The above is an extract from the [@angular/material](https://unpkg.com/browse/@angular/material/package.json) distributable.
+Yukarıdaki, [@angular/material](https://unpkg.com/browse/@angular/material/package.json) dağıtılabilir paketinden bir alıntıdır.
 
 ## Peer dependencies
 
-Angular libraries should list any `@angular/*` dependencies the library depends on as peer dependencies.
-This ensures that when modules ask for Angular, they all get the exact same module.
-If a library lists `@angular/core` in `dependencies` instead of `peerDependencies`, it might get a different Angular module instead, which would cause your application to break.
+Angular kütüphaneleri, kütüphanenin bağımlı olduğu tüm `@angular/*` bağımlılıklarını eş bağımlılıklar olarak listelemelidir.
+Bu, modüller Angular istediğinde hepsinin tam olarak aynı modülü almasını sağlar.
+Bir kütüphane `@angular/core`'u `peerDependencies` yerine `dependencies`'te listelerse, farklı bir Angular modülü alabilir ve bu da uygulamanızın bozulmasına neden olabilir.
 
 ## Using your own library in applications
 
-You don't have to publish your library to the npm package manager to use it in the same workspace, but you do have to build it first.
+Kütüphanenizi aynı çalışma alanında kullanmak için npm paket yöneticisine yayınlamanız gerekmez, ancak önce derlemeniz gerekir.
 
-To use your own library in an application:
+Kendi kütüphanenizi bir uygulamada kullanmak için:
 
-- Build the library.
-  You cannot use a library before it is built.
+- Kütüphaneyi derleyin.
+  Derlenmeden önce bir kütüphaneyi kullanamazsınız.
 
 ```shell
   ng build my-lib
 ```
 
-- In your applications, import from the library by name:
+- Uygulamalarınızda kütüphaneden ada göre içe aktarın:
 
 ```ts
 import {myExport} from 'my-lib';
@@ -201,24 +199,24 @@ import {myExport} from 'my-lib';
 
 ### Building and rebuilding your library
 
-The build step is important if you haven't published your library as an npm package and then installed the package back into your application from npm.
-For instance, if you clone your git repository and run `npm install`, your editor shows the `my-lib` imports as missing if you haven't yet built your library.
+Kütüphanenizi npm paketi olarak yayınlamadıysanız ve ardından paketi npm'den uygulamanıza geri yüklemediyseniz derleme adımı önemlidir.
+Örneğin, git deponuzu klonlayıp `npm install` çalıştırırsanız, kütüphanenizi henüz derlemediyseniz editörünüz `my-lib` içe aktarımlarını eksik olarak gösterir.
 
-HELPFUL: When you import something from a library in an Angular application, Angular looks for a mapping between the library name and a location on disk.
-When you install a library package, the mapping is in the `node_modules` folder.
-When you build your own library, it has to find the mapping in your `tsconfig` paths.
+HELPFUL: Bir Angular uygulamasında bir kütüphaneden bir şey içe aktardığınızda, Angular kütüphane adı ile disk üzerindeki bir konum arasında bir eşleme arar.
+Bir kütüphane paketi yüklediğinizde, eşleme `node_modules` klasöründedir.
+Kendi kütüphanenizi derlediğinizde, eşlemeyi `tsconfig` yollarınızda bulması gerekir.
 
-Generating a library with the Angular CLI automatically adds its path to the `tsconfig` file.
-The Angular CLI uses the `tsconfig` paths to tell the build system where to find the library.
+Angular CLI ile bir kütüphane oluşturmak, yolunu otomatik olarak `tsconfig` dosyasına ekler.
+Angular CLI, derleme sistemine kütüphaneyi nerede bulacağını söylemek için `tsconfig` yollarını kullanır.
 
-For more information, see [Path mapping overview](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping).
+Daha fazla bilgi için bkz. [Path mapping overview](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping).
 
-You can rebuild your library whenever you make changes to it, but this extra step takes time.
-_Incremental builds_ functionality improves the library-development experience.
-Every time a file is changed a partial build is performed that emits the amended files.
+Kütüphanenizde her değişiklik yaptığınızda yeniden derleyebilirsiniz, ancak bu ek adım zaman alır.
+_Artımlı derleme_ işlevselliği kütüphane geliştirme deneyimini iyileştirir.
+Bir dosya her değiştirildiğinde, değiştirilen dosyaları yayan kısmi bir derleme gerçekleştirilir.
 
-Incremental builds can be run as a background process in your development environment.
-To take advantage of this feature add the `--watch` flag to the build command:
+Artımlı derlemeler, geliştirme ortamınızda arka plan işlemi olarak çalıştırılabilir.
+Bu özellikten yararlanmak için derleme komutuna `--watch` bayrağını ekleyin:
 
 ```shell
 
@@ -226,32 +224,31 @@ ng build my-lib --watch
 
 ```
 
-IMPORTANT: The CLI `build` command uses a different builder and invokes a different build tool for libraries than it does for applications.
+IMPORTANT: CLI `build` komutu, kütüphaneler için uygulamalardan farklı bir builder kullanır ve farklı bir derleme aracı çağırır.
 
-- The build system for applications, `@angular-devkit/build-angular`, is based on `webpack`, and is included in all new Angular CLI projects
-- The build system for libraries is based on `ng-packagr`.
-  It is only added to your dependencies when you add a library using `ng generate library my-lib`.
+- Uygulamalar için derleme sistemi `@angular-devkit/build-angular`, `webpack` tabanlıdır ve tüm yeni Angular CLI projelerine dahildir
+- Kütüphaneler için derleme sistemi `ng-packagr` tabanlıdır.
+  Yalnızca `ng generate library my-lib` kullanarak bir kütüphane eklediğinizde bağımlılıklarınıza eklenir.
 
-The two build systems support different things, and even where they support the same things, they do those things differently.
-This means that the TypeScript source can result in different JavaScript code in a built library than it would in a built application.
+İki derleme sistemi farklı şeyleri destekler ve aynı şeyleri desteklediklerinde bile bunları farklı şekilde yaparlar.
+Bu, TypeScript kaynağının derlenmiş bir kütüphanede, derlenmiş bir uygulamadakinden farklı JavaScript koduna dönüşebileceği anlamına gelir.
 
-For this reason, an application that depends on a library should only use TypeScript path mappings that point to the _built library_.
-TypeScript path mappings should _not_ point to the library source `.ts` files.
+Bu nedenle, bir kütüphaneye bağımlı olan bir uygulama yalnızca _derlenmiş kütüphaneye_ işaret eden TypeScript yol eşlemelerini kullanmalıdır.
+TypeScript yol eşlemeleri kütüphane kaynağı `.ts` dosyalarına _işaret etmemelidir_.
 
 ### Linking libraries for local development
 
-This section explains how to use your package manager's local linking feature
-(such as [`npm link`](https://docs.npmjs.com/cli/v11/commands/npm-link) or [`pnpm link`](https://pnpm.io/cli/link)) to test a standalone Angular library with an external application during
-local development, without relying on the monorepo workspace structure or publishing to the NPM registry.
+Bu bölüm, monorepo çalışma alanı yapısına veya NPM kayıt defterine yayınlamaya bağlı kalmadan, yerel geliştirme sırasında bağımsız bir Angular kütüphanesini harici bir uygulama ile test etmek için paket yöneticinizin yerel bağlama özelliğini
+([`npm link`](https://docs.npmjs.com/cli/v11/commands/npm-link) veya [`pnpm link`](https://pnpm.io/cli/link) gibi) nasıl kullanacağınızı açıklar.
 
-NOTE: If your library and application are in the same Angular workspace (a monorepo setup), the standard monorepo workflow automatically handles the linking and is generally more efficient. This local linking approach is best when:
+NOTE: Kütüphaneniz ve uygulamanız aynı Angular çalışma alanındaysa (monorepo kurulumu), standart monorepo iş akışı bağlamayı otomatik olarak yönetir ve genellikle daha verimlidir. Bu yerel bağlama yaklaşımı en iyi şu durumlarda kullanılır:
 
-- You are developing a standalone library and need to test changes with an external, consuming application.
-- You are testing library changes in a consuming application outside the monorepo workspace.
+- Bağımsız bir kütüphane geliştiriyorsunuz ve değişiklikleri harici, tüketen bir uygulama ile test etmeniz gerekiyor.
+- Kütüphane değişikliklerini monorepo çalışma alanı dışındaki tüketen bir uygulamada test ediyorsunuz.
 
 #### Configuring the consuming application
 
-To use linked libraries, you need to configure your application's `angular.json` file with the following settings:
+Bağlanmış kütüphaneleri kullanmak için uygulamanızın `angular.json` dosyasını aşağıdaki ayarlarla yapılandırmanız gerekir:
 
 ```json
 {
@@ -289,51 +286,51 @@ To use linked libraries, you need to configure your application's `angular.json`
 
 **Configuration options explained:**
 
-- `preserveSymlinks: true`: Instructs the build system to follow the symlinks created by your package manager's linking command instead of resolving to the symlink's original location. This is essential to avoid multiple copies of the dependent node packages.
-- `sourceMap.vendor`: Enabling vendor source maps (especially `vendor: true`) for easier debugging of linked library code.
-- `prebundle.exclude`: By default, the Angular CLI can pre-bundle all node dependencies. Excluding your library ensures that the linked source code is properly watched and rebuilt when changes occur.
+- `preserveSymlinks: true`: Derleme sistemine, sembolik bağlantının orijinal konumuna çözümlemek yerine paket yöneticinizin bağlama komutuyla oluşturulan sembolik bağlantıları takip etmesini söyler. Bu, bağımlı node paketlerinin birden fazla kopyasını önlemek için gereklidir.
+- `sourceMap.vendor`: Bağlanmış kütüphane kodunun daha kolay hata ayıklaması için satıcı kaynak haritalarını etkinleştirme (özellikle `vendor: true`).
+- `prebundle.exclude`: Varsayılan olarak, Angular CLI tüm node bağımlılıklarını önceden paketleyebilir. Kütüphanenizi hariç tutmak, bağlanmış kaynak kodunun düzgün şekilde izlenmesini ve değişiklikler olduğunda yeniden derlenmesini sağlar.
 
 ## Publishing libraries
 
-There are two distribution formats to use when publishing a library:
+Bir kütüphaneyi yayınlarken kullanılacak iki dağıtım formatı vardır:
 
-| Distribution formats        | Details                                                                                                                                                                                                                                                                                                                                  |
-| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Partial-Ivy \(recommended\) | Contains portable code that can be consumed by Ivy applications built with any version of Angular from v12 onwards.                                                                                                                                                                                                                      |
-| Full-Ivy                    | Contains private Angular Ivy instructions, which are not guaranteed to work across different versions of Angular. This format requires that the library and application are built with the _exact_ same version of Angular. This format is useful for environments where all library and application code is built directly from source. |
+| Distribution formats        | Details                                                                                                                                                                                                                                                                                                           |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Partial-Ivy \(recommended\) | v12'den itibaren Angular'ın herhangi bir sürümüyle derlenen Ivy uygulamaları tarafından tüketilebilen taşınabilir kod içerir.                                                                                                                                                                                     |
+| Full-Ivy                    | Angular'ın farklı sürümleri arasında çalışması garanti edilmeyen özel Angular Ivy talimatları içerir. Bu format, kütüphanenin ve uygulamanın _tam olarak_ aynı Angular sürümüyle derlenmesini gerektirir. Bu format, tüm kütüphane ve uygulama kodunun doğrudan kaynaktan derlendiği ortamlar için kullanışlıdır. |
 
-For publishing to npm use the partial-Ivy format as it is stable between patch versions of Angular.
+npm'e yayınlamak için, Angular'ın yama sürümleri arasında kararlı olduğu için partial-Ivy formatını kullanın.
 
-Avoid compiling libraries with full-Ivy code if you are publishing to npm because the generated Ivy instructions are not part of Angular's public API, and so might change between patch versions.
+Oluşturulan Ivy talimatları Angular'ın genel API'sinin bir parçası olmadığından ve yama sürümleri arasında değişebileceğinden, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
 
 ## Ensuring library version compatibility
 
-The Angular version used to build an application should always be the same or greater than the Angular versions used to build any of its dependent libraries.
-For example, if you had a library using Angular version 13, the application that depends on that library should use Angular version 13 or later.
-Angular does not support using an earlier version for the application.
+Bir uygulamayı derlemek için kullanılan Angular sürümü her zaman, bağımlı kütüphanelerinin herhangi birini derlemek için kullanılan Angular sürümleriyle aynı veya daha yüksek olmalıdır.
+Örneğin, Angular sürüm 13 kullanan bir kütüphaneniz varsa, o kütüphaneye bağımlı olan uygulama Angular sürüm 13 veya üstünü kullanmalıdır.
+Angular, uygulama için daha eski bir sürüm kullanmayı desteklemez.
 
-If you intend to publish your library to npm, compile with partial-Ivy code by setting `"compilationMode": "partial"` in `tsconfig.prod.json`.
-This partial format is stable between different versions of Angular, so is safe to publish to npm.
-Code with this format is processed during the application build using the same version of the Angular compiler, ensuring that the application and all of its libraries use a single version of Angular.
+Kütüphanenizi npm'e yayınlamak istiyorsanız, `tsconfig.prod.json`'da `"compilationMode": "partial"` ayarlayarak partial-Ivy koduyla derleyin.
+Bu kısmi format, Angular'ın farklı sürümleri arasında kararlıdır, bu nedenle npm'e yayınlamak güvenlidir.
+Bu formattaki kod, uygulama derlemesi sırasında Angular derleyicisinin aynı sürümü kullanılarak işlenir ve uygulamanın ve tüm kütüphanelerinin tek bir Angular sürümü kullanmasını sağlar.
 
-Avoid compiling libraries with full-Ivy code if you are publishing to npm because the generated Ivy instructions are not part of Angular's public API, and so might change between patch versions.
+Oluşturulan Ivy talimatları Angular'ın genel API'sinin bir parçası olmadığından ve yama sürümleri arasında değişebileceğinden, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
 
-If you've never published a package in npm before, you must create a user account.
-Read more in [Publishing npm Packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+npm'de daha önce hiç paket yayınlamadıysanız, bir kullanıcı hesabı oluşturmanız gerekir.
+Daha fazla bilgi için bkz. [Publishing npm Packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
 ## Consuming partial-Ivy code outside the Angular CLI
 
-An application installs many Angular libraries from npm into its `node_modules` directory.
-However, the code in these libraries cannot be bundled directly along with the built application as it is not fully compiled.
-To finish compilation, use the Angular linker.
+Bir uygulama, `node_modules` dizinine npm'den birçok Angular kütüphanesi yükler.
+Ancak bu kütüphanelerdeki kod, tam olarak derlenmediği için doğrudan derlenmiş uygulamayla birlikte paketlenemez.
+Derlemeyi tamamlamak için Angular bağlayıcısını kullanın.
 
-For applications that don't use the Angular CLI, the linker is available as a [Babel](https://babeljs.io) plugin.
-The plugin is to be imported from `@angular/compiler-cli/linker/babel`.
+Angular CLI kullanmayan uygulamalar için bağlayıcı, bir [Babel](https://babeljs.io) eklentisi olarak mevcuttur.
+Eklenti, `@angular/compiler-cli/linker/babel`'den içe aktarılır.
 
-The Angular linker Babel plugin supports build caching, meaning that libraries only need to be processed by the linker a single time, regardless of other npm operations.
+Angular bağlayıcı Babel eklentisi derleme önbelleklemeyi destekler, yani kütüphanelerin diğer npm işlemlerinden bağımsız olarak bağlayıcı tarafından yalnızca bir kez işlenmesi gerekir.
 
-Example of integrating the plugin into a custom [webpack](https://webpack.js.org) build by registering the linker as a [Babel](https://babeljs.io) plugin using [babel-loader](https://webpack.js.org/loaders/babel-loader/#options).
+Bağlayıcıyı, [babel-loader](https://webpack.js.org/loaders/babel-loader/#options) kullanarak [Babel](https://babeljs.io) eklentisi olarak kaydederek özel bir [webpack](https://webpack.js.org) derlemesine entegre etme örneği.
 
 <docs-code header="webpack.config.mjs" path="adev/src/content/examples/angular-linker-plugin/webpack.config.mjs" region="webpack-config"/>
 
-HELPFUL: The Angular CLI integrates the linker plugin automatically, so if consumers of your library are using the CLI, they can install Ivy-native libraries from npm without any additional configuration.
+HELPFUL: Angular CLI bağlayıcı eklentisini otomatik olarak entegre eder, dolayısıyla kütüphanenizin tüketicileri CLI kullanıyorsa, herhangi bir ek yapılandırma olmadan npm'den Ivy-native kütüphaneleri yükleyebilirler.

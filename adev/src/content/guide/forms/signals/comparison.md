@@ -1,25 +1,25 @@
 # Comparison with other form approaches
 
-Angular provides three approaches to building forms: Signal Forms, Reactive Forms, and Template-driven Forms. Each has distinct patterns for managing state, validation, and data flow. This guide helps you understand the differences and choose the right approach for your project.
+Angular, form oluşturmak için üç yaklaşım sunar: Signal Forms, Reactive Forms ve Template-driven Forms. Her birinin durum yönetimi, doğrulama ve veri akışı için farklı kalıpları vardır. Bu kılavuz, farklılıkları anlamanıza ve projeniz için doğru yaklaşımı seçmenize yardımcı olur.
 
-NOTE: Signal Forms are [experimental](reference/releases#experimental) as of Angular v21. The API may change before stabilizing.
+NOTE: Signal Forms, Angular v21 itibarıyla [deneyseldir](reference/releases#experimental). API, kararlı hale gelmeden önce değişebilir.
 
 ## Quick comparison
 
-| Feature          | Signal Forms                       | Reactive Forms                        | Template-driven Forms   |
-| ---------------- | ---------------------------------- | ------------------------------------- | ----------------------- |
-| Source of truth  | User-defined writable signal model | `FormControl`/`FormGroup`             | User model in component |
-| Type safety      | Inferred from model                | Explicit with typed forms             | Minimal                 |
-| Validation       | Schema with path-based validators  | List of validators passed to Controls | Directive-based         |
-| State management | Signal-based                       | Observable-based                      | Angular-managed         |
-| Setup            | Signal + schema function           | FormControl tree                      | NgModel in template     |
-| Best for         | Signal-based apps                  | Complex forms                         | Simple forms            |
-| Learning curve   | Medium                             | Medium-High                           | Low                     |
-| Status           | Experimental (v21+)                | Stable                                | Stable                  |
+| Feature          | Signal Forms                                | Reactive Forms                           | Template-driven Forms        |
+| ---------------- | ------------------------------------------- | ---------------------------------------- | ---------------------------- |
+| Source of truth  | Kullanıcı tanımlı yazılabilir sinyal modeli | `FormControl`/`FormGroup`                | Bileşendeki kullanıcı modeli |
+| Type safety      | Modelden çıkarılır                          | Tipli formlarla açık                     | Minimal                      |
+| Validation       | Yol tabanlı doğrulayıcılarla şema           | Kontrollere iletilen doğrulayıcı listesi | Direktif tabanlı             |
+| State management | Sinyal tabanlı                              | Observable tabanlı                       | Angular tarafından yönetilir |
+| Setup            | Sinyal + şema fonksiyonu                    | FormControl ağacı                        | Şablonda NgModel             |
+| Best for         | Sinyal tabanlı uygulamalar                  | Karmaşık formlar                         | Basit formlar                |
+| Learning curve   | Orta                                        | Orta-Yüksek                              | Düşük                        |
+| Status           | Deneysel (v21+)                             | Kararlı                                  | Kararlı                      |
 
 ## By example: Login form
 
-The best way to understand the differences is to see the same form implemented in all three approaches.
+Farklılıkları anlamanın en iyi yolu, aynı formun her üç yaklaşımda uygulandığını görmektir.
 
 <docs-code-multifile>
   <docs-code language="angular-ts" header="Signal forms" path="adev/src/content/examples/signal-forms/src/comparison/app/signal-forms.ts"/>
@@ -29,41 +29,41 @@ The best way to understand the differences is to see the same form implemented i
 
 ## Understanding the differences
 
-The three approaches make different design choices that affect how you write and maintain your forms. These differences stem from where each approach stores form state and how it manages validation.
+Üç yaklaşım, formlarınızı nasıl yazdığınızı ve sürdürdüğünüzü etkileyen farklı tasarım tercihleri yapar. Bu farklılıklar, her yaklaşımın form durumunu nerede sakladığından ve doğrulamayı nasıl yönettiğinden kaynaklanır.
 
 ### Where your form data lives
 
-The most fundamental difference is where each approach considers the "source of truth" for form values.
+En temel fark, her yaklaşımın form değerleri için "doğruluk kaynağı"nı nerede gördüğüdür.
 
-Signal Forms stores data in a writable signal. When you need the current form values, you call the signal:
+Signal Forms verileri yazılabilir bir sinyalde saklar. Mevcut form değerlerine ihtiyaç duyduğunuzda sinyali çağırırsınız:
 
 ```ts
 const credentials = this.loginModel(); // { email: '...', password: '...' }
 ```
 
-This keeps your form data in a single reactive container that automatically notifies Angular when values change. The form structure mirrors your data model exactly.
+Bu, form verilerinizi değerler değiştiğinde Angular'ı otomatik olarak bilgilendiren tek bir reaktif konteyner içinde tutar. Form yapısı, veri modelinizi tam olarak yansıtır.
 
-Reactive Forms stores data inside FormControl and FormGroup instances. You access values through the form hierarchy:
+Reactive Forms verileri FormControl ve FormGroup örneklerinin içinde saklar. Değerlere form hiyerarşisi aracılığıyla erişirsiniz:
 
 ```ts
 const credentials = this.loginForm.value; // { email: '...', password: '...' }
 ```
 
-This separates form state management from your component's data model. The form structure is explicit but requires more setup code.
+Bu, form durum yönetimini bileşeninizin veri modelinden ayırır. Form yapısı açıktır ancak daha fazla kurulum kodu gerektirir.
 
-Template-driven Forms stores data in component properties. You access values directly:
+Template-driven Forms verileri bileşen özelliklerinde saklar. Değerlere doğrudan erişirsiniz:
 
 ```ts
 const credentials = {email: this.email, password: this.password};
 ```
 
-This is the most direct approach but requires manually assembling values when you need them. Angular manages form state through directives in the template.
+Bu en doğrudan yaklaşımdır ancak ihtiyaç duyduğunuzda değerleri manuel olarak bir araya getirmenizi gerektirir. Angular, form durumunu şablondaki direktifler aracılığıyla yönetir.
 
 ### How validation works
 
-Each approach defines validation rules differently, affecting where your validation logic lives and how you maintain it.
+Her yaklaşım doğrulama kurallarını farklı şekilde tanımlar; bu, doğrulama mantığınızın nerede yaşadığını ve nasıl sürdürdüğünüzü etkiler.
 
-Signal Forms uses a schema function where you bind validators to field paths:
+Signal Forms, doğrulayıcıları alan yollarına bağladığınız bir şema fonksiyonu kullanır:
 
 ```ts
 loginForm = form(this.loginModel, (fieldPath) => {
@@ -72,9 +72,9 @@ loginForm = form(this.loginModel, (fieldPath) => {
 });
 ```
 
-All validation rules live together in one place. The schema function runs once during form creation, and validators execute automatically when field values change. Error messages are part of the validation definition.
+Tüm doğrulama kuralları tek bir yerde bir arada bulunur. Şema fonksiyonu form oluşturma sırasında bir kez çalışır ve doğrulayıcılar alan değerleri değiştiğinde otomatik olarak yürütülür. Hata mesajları doğrulama tanımının bir parçasıdır.
 
-Reactive Forms attaches validators when creating controls:
+Reactive Forms, kontrolleri oluştururken doğrulayıcıları ekler:
 
 ```ts
 loginForm = new FormGroup({
@@ -82,21 +82,21 @@ loginForm = new FormGroup({
 });
 ```
 
-Validators are tied to individual controls in the form structure. This distributes validation across your form definition. Error messages typically live in your template.
+Doğrulayıcılar, form yapısındaki bireysel kontrollere bağlıdır. Bu, doğrulamayı form tanımınız boyunca dağıtır. Hata mesajları genellikle şablonunuzda bulunur.
 
-Template-driven Forms uses directive attributes in the template:
+Template-driven Forms, şablonda direktif niteliklerini kullanır:
 
 ```html
 <input [(ngModel)]="email" required email />
 ```
 
-Validation rules live in your template alongside the HTML. This keeps validation close to the UI but spreads logic across template and component.
+Doğrulama kuralları, HTML'nin yanında şablonunuzda bulunur. Bu, doğrulamayı kullanıcı arayüzüne yakın tutar ancak mantığı şablon ve bileşen arasında yayar.
 
 ### Type safety and autocomplete
 
-TypeScript integration differs significantly between approaches, affecting how much the compiler helps you avoid errors.
+TypeScript entegrasyonu yaklaşımlar arasında önemli ölçüde farklılık gösterir ve derleyicinin hataları önlemenize ne kadar yardımcı olduğunu etkiler.
 
-Signal Forms infers types from your model structure:
+Signal Forms türleri model yapınızdan çıkarır:
 
 ```ts
 const loginModel = signal({email: '', password: ''});
@@ -104,9 +104,9 @@ const loginForm = form(loginModel);
 // TypeScript knows: loginForm.email exists and returns FieldState<string>
 ```
 
-You define your data shape once in the signal, and TypeScript automatically knows what fields exist and their types. Accessing `loginForm.username` (which doesn't exist) produces a type error.
+Veri şeklinizi sinyalde bir kez tanımlarsınız ve TypeScript otomatik olarak hangi alanların var olduğunu ve türlerini bilir. `loginForm.username`'e (mevcut olmayan) erişmek bir tür hatası üretir.
 
-Reactive Forms requires explicit type annotations with typed forms:
+Reactive Forms, tipli formlarla açık tür ek açıklamaları gerektirir:
 
 ```ts
 const loginForm = new FormGroup({
@@ -116,9 +116,9 @@ const loginForm = new FormGroup({
 // TypeScript knows: loginForm.controls.email is FormControl<string>
 ```
 
-You specify types for each control individually. TypeScript validates your form structure, but you maintain type information separately from your data model.
+Her kontrol için türleri ayrı ayrı belirtirsiniz. TypeScript form yapınızı doğrular, ancak tür bilgisini veri modelinizden ayrı olarak sürdürürsünüz.
 
-Template-driven Forms offers minimal type safety:
+Template-driven Forms minimum düzeyde tür güvenliği sunar:
 
 ```ts
 email = '';
@@ -126,38 +126,38 @@ password = '';
 // TypeScript only knows these are strings, no form-level typing
 ```
 
-TypeScript understands your component properties but has no knowledge of form structure or validation. You lose compile-time checking for form operations.
+TypeScript bileşen özelliklerinizi anlar ancak form yapısı veya doğrulama hakkında bilgisi yoktur. Form işlemleri için derleme zamanı kontrolünü kaybedersiniz.
 
 ## Choose your approach
 
 ### Use Signal Forms if:
 
-- You're building new signal-based applications (Angular v21+)
-- You want type safety inferred from your model structure
-- You're comfortable working with experimental features
-- Schema-based validation appeals to you
-- Your team is familiar with signals
+- Yeni sinyal tabanlı uygulamalar geliştiriyorsanız (Angular v21+)
+- Model yapınızdan çıkarılan tür güvenliği istiyorsanız
+- Deneysel özelliklerle çalışmaktan rahat hissediyorsanız
+- Şema tabanlı doğrulama size çekici geliyorsa
+- Ekibiniz sinyallere aşinaysa
 
 ### Use Reactive Forms if:
 
-- You need production-ready stability
-- You're building complex, dynamic forms
-- You prefer observable-based patterns
-- You need fine-grained control over form state
-- You're working on an existing reactive forms codebase
+- Üretime hazır kararlılığa ihtiyaç duyuyorsanız
+- Karmaşık, dinamik formlar oluşturuyorsanız
+- Observable tabanlı kalıpları tercih ediyorsanız
+- Form durumu üzerinde ayrıntılı kontrol istiyorsanız
+- Mevcut bir reactive forms kod tabanı üzerinde çalışıyorsanız
 
 ### Use Template-driven Forms if:
 
-- You're building simple forms (login, contact, search)
-- You're doing rapid prototyping
-- Your form logic is straightforward
-- You prefer keeping form logic in templates
-- You're working on an existing template-driven codebase
+- Basit formlar oluşturuyorsanız (giriş, iletişim, arama)
+- Hızlı prototipleme yapıyorsanız
+- Form mantığınız basit ve doğrudansa
+- Form mantığını şablonlarda tutmayı tercih ediyorsanız
+- Mevcut bir template-driven kod tabanı üzerinde çalışıyorsanız
 
 ## Next steps
 
-To learn more about each approach:
+Her yaklaşım hakkında daha fazla bilgi edinmek için:
 
-- **Signal Forms**: See the [Overview guide](guide/forms/signals/overview) to get started, or dive into [Form Models](guide/forms/signals/models), [Validation](guide/forms/signals/validation), and [Field State Management](guide/forms/signals/field-state-management)
-- **Reactive Forms**: See the [Reactive Forms guide](guide/forms/reactive-forms) in Angular documentation
-- **Template-driven Forms**: See the [Template-driven Forms guide](guide/forms/template-driven-forms) in Angular documentation
+- **Signal Forms**: Başlamak için [Genel Bakış kılavuzuna](guide/forms/signals/overview) bakın veya [Form Modelleri](guide/forms/signals/models), [Doğrulama](guide/forms/signals/validation) ve [Alan Durumu Yönetimi](guide/forms/signals/field-state-management) konularına dalın
+- **Reactive Forms**: Angular dokümantasyonundaki [Reactive Forms kılavuzuna](guide/forms/reactive-forms) bakın
+- **Template-driven Forms**: Angular dokümantasyonundaki [Template-driven Forms kılavuzuna](guide/forms/template-driven-forms) bakın

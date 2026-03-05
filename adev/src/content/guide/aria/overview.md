@@ -3,9 +3,9 @@
 
 ## What is Angular Aria?
 
-Building accessible components seems straightforward, but implementing them according to the W3C Accessibility Guidelines requires significant effort and accessibility expertise.
+Erisilebilir bilesenler olusturmak basit gorunse de, bunlari W3C Erisilebilirlik Yonergelerine gore uygulamak onemli caba ve erisilebilirlik uzmanligi gerektirir.
 
-Angular Aria is a collection of headless, accessible directives that implement common WAI-ARIA patterns. The directives handle keyboard interactions, ARIA attributes, focus management, and screen reader support. All you have to do is provide the HTML structure, CSS styling, and business logic!
+Angular Aria, yaygin WAI-ARIA kaliplarini uygulayan basliklsiz (headless), erisilebilir yonergeler koleksiyonudur. Yonergeler klavye etkilesimlerini, ARIA niteliklerini, odak yonetimini ve ekran okuyucu destegini ele alir. Tek yapmaniz gereken HTML yapisini, CSS stilini ve is mantigini saglamaktir!
 
 ## Installation
 
@@ -15,7 +15,7 @@ npm install @angular/aria
 
 ## Showcase
 
-For example, let's take a toolbar menu. While it may appear to be a "simple" row of buttons tied with specific logic, keyboard navigation and screen readers add a lot of unexpected complexity to those unfamiliar with accessibility.
+Ornegin, bir arac cubugu menusunu ele alalim. Belirli bir mantikla baglanmis "basit" bir buton satiri gibi gorunse de, klavye navigasyonu ve ekran okuyuculari, erisilebilirlige asina olmayanlar icin bircok beklenmedik karmasiklik ekler.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -43,60 +43,60 @@ For example, let's take a toolbar menu. While it may appear to be a "simple" row
   </docs-tab>
 </docs-tab-group>
 
-In this one scenario, developers need to consider:
+Bu tek senaryoda gelisitiricilerin dikkate almasi gerekenler:
 
-- **Keyboard navigation**. Users need to open the menu with Enter or Space, navigate options with arrow keys, select with Enter, and close with Escape.
-- **Screen readers** need to announce the menu's state, the number of options, and which option has focus.
-- **Focus management** needs to move logically between the trigger and menu items.
-- **Right-to-left languages** require the ability to navigate in reverse.
+- **Klavye navigasyonu**. Kullanicilarin menuyu Enter veya Bosluk ile acmasi, secenekler arasinda ok tuslariyla gezinmesi, Enter ile secmesi ve Escape ile kapatmasi gerekir.
+- **Ekran okuyucularin** menunun durumunu, secenek sayisini ve hangi secenegin odakta oldugunu duyurmasi gerekir.
+- **Odak yonetimi** tetikleyici ve menu ogeleri arasinda mantiksal olarak hareket etmelidir.
+- **Sagdan sola diller** ters yonde gezinme yetenegini gerektirir.
 
 ## What's included?
 
-Angular Aria includes directives with comprehensive documentation, working examples and API references for common interactive patterns:
+Angular Aria, yaygin etkilesimli kalipler icin kapsamli dokumantasyon, calisan ornekler ve API referanslari ile yonergeler icerir:
 
 ### Search and selection
 
-| Component                               | Description                                                    |
-| --------------------------------------- | -------------------------------------------------------------- |
-| [Autocomplete](guide/aria/autocomplete) | Text input with filtered suggestions that appear as users type |
-| [Listbox](guide/aria/listbox)           | Single or multi-select option lists with keyboard navigation   |
-| [Select](guide/aria/select)             | Single-selection dropdown pattern with keyboard navigation     |
-| [Multiselect](guide/aria/multiselect)   | Multiple-selection dropdown pattern with compact display       |
-| [Combobox](guide/aria/combobox)         | Primitive directive that coordinates a text input with a popup |
+| Component                               | Description                                                           |
+| --------------------------------------- | --------------------------------------------------------------------- |
+| [Autocomplete](guide/aria/autocomplete) | Kullanicilar yazarken filtrelenmis onerilerin gorundugu metin girisi  |
+| [Listbox](guide/aria/listbox)           | Klavye navigasyonu ile tekli veya coklu secim secenek listeleri       |
+| [Select](guide/aria/select)             | Klavye navigasyonu ile tek secimli acilir menu kalıbi                 |
+| [Multiselect](guide/aria/multiselect)   | Kompakt goruntuyle coklu secimli acilir menu kalibi                   |
+| [Combobox](guide/aria/combobox)         | Bir metin girisi ile bir acilir pencereyi koordine eden temel yonerge |
 
 ### Navigation and call to actions
 
-| Component                     | Description                                                |
-| ----------------------------- | ---------------------------------------------------------- |
-| [Menu](guide/aria/menu)       | Dropdown menus with nested submenus and keyboard shortcuts |
-| [Menubar](guide/aria/menubar) | Horizontal navigation bar for persistent application menus |
-| [Toolbar](guide/aria/toolbar) | Grouped sets of controls with logical keyboard navigation  |
+| Component                     | Description                                                       |
+| ----------------------------- | ----------------------------------------------------------------- |
+| [Menu](guide/aria/menu)       | Ic ice alt menuler ve klavye kisayollari ile acilir menuler       |
+| [Menubar](guide/aria/menubar) | Kalici uygulama menuleri icin yatay navigasyon cubugu             |
+| [Toolbar](guide/aria/toolbar) | Mantiksal klavye navigasyonu ile gruplandirılmis kontrol kumeleri |
 
 ### Content organization
 
-| Component                         | Description                                                            |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| [Accordion](guide/aria/accordion) | Collapsible content panels that can expand individually or exclusively |
-| [Tabs](guide/aria/tabs)           | Tabbed interfaces with automatic or manual activation modes            |
-| [Tree](guide/aria/tree)           | Hierarchical lists with expand/collapse functionality                  |
-| [Grid](guide/aria/grid)           | Two-dimensional data display with cell-by-cell keyboard navigation     |
+| Component                         | Description                                                             |
+| --------------------------------- | ----------------------------------------------------------------------- |
+| [Accordion](guide/aria/accordion) | Tek tek veya ozel olarak genisleyebilen daraltilabilir icerik panelleri |
+| [Tabs](guide/aria/tabs)           | Otomatik veya manuel etkinlestirme modlariyla sekmeli arayuzler         |
+| [Tree](guide/aria/tree)           | Genisletme/daraltma islevi ile hiyerarsik listeler                      |
+| [Grid](guide/aria/grid)           | Hucre hucre klavye navigasyonu ile iki boyutlu veri gosterimi           |
 
 ## When to use Angular Aria
 
-Angular Aria works well when you need accessible interactive components that are WCAG compliant with custom styling. Examples include:
+Angular Aria, ozel stilleme ile WCAG uyumlu erisilebilir etkilesimli bilesenllere ihtiyac duydugunuzda iyi calisir. Ornekler:
 
-- **Building a design system** - Your team maintains a component library with specific visual standards that need accessible implementations
-- **Enterprise component libraries** - You're creating reusable components for multiple applications within an organization
-- **Custom brand requirements** - The interface needs to match precise design specifications that pre-styled component libraries cannot easily accommodate
+- **Bir tasarim sistemi olusturmak** - Ekibiniz, erisilebilir uygulamalara ihtiyac duyan belirli gorsel standartlara sahip bir bilesen kutuphanesi yonetiyorsa
+- **Kurumsal bilesen kutuphaneleri** - Bir organizasyon icindeki birden fazla uygulama icin yeniden kullanilabilir bilesenler olusturuyorsaniz
+- **Ozel marka gereksinimleri** - Arayuzun, onceden stillendirilmis bilesen kutuphanelerinin kolayca karsilayamayacagi hassas tasarim ozelliklerine uymasi gerekiyorsa
 
 ## When not to use Angular Aria
 
-Angular Aria might not fit every scenario:
+Angular Aria her senaryoya uymayabilir:
 
-- **Pre-styled components** - If you need components that look complete without custom styling, use Angular Material instead
-- **Simple forms** - Native HTML form controls like `<button>` and `<input type="radio">` provide built-in accessibility for straightforward use cases
-- **Rapid prototyping** - When validating concepts quickly, pre-styled component libraries reduce initial development time
+- **Onceden stillendirilmis bilesenler** - Ozel stilleme olmadan eksiksiz gorunen bilesenlere ihtiyaciniz varsa, bunun yerine Angular Material kullanin
+- **Basit formlar** - `<button>` ve `<input type="radio">` gibi yerel HTML form kontrolleri basit kullanim durumlari icin yerlesik erisilebilirlik saglar
+- **Hizli prototipleme** - Kavramlari hizla dogrularken, onceden stillendirilmis bilesen kutuphaneleri ilk gelistirme suresini azaltir
 
 ## Next steps
 
-Check out a component from the side nav or [list above](#whats-included), or start with [Toolbar](guide/aria/toolbar) to see a complete example of how Angular Aria directives work!
+Yan navigasyondan veya [yukaridaki listeden](#whats-included) bir bilesene goz atin veya Angular Aria yonergelerinin nasil calistiginın tam bir ornegini gormek icin [Toolbar](guide/aria/toolbar) ile baslayin!

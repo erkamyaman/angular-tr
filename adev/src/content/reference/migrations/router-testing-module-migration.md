@@ -1,10 +1,10 @@
 # RouterTestingModule migration
 
-This schematic migrates usages of `RouterTestingModule` inside tests to `RouterModule`.
+Bu şematik, testlerdeki `RouterTestingModule` kullanımlarını `RouterModule`'e geçirir.
 
-When a test imports `SpyLocation` from `@angular/common/testing` and uses `urlChanges` property , the schematic will also add `provideLocationMocks()` to preserve the original behavior.
+Bir test `@angular/common/testing`'den `SpyLocation`'ı içe aktarıyorsa ve `urlChanges` özelliğini kullanıyorsa, şematik orijinal davranışı korumak için `provideLocationMocks()` da ekleyecektir.
 
-Run the schematic with:
+Şematiği şu komutla çalıştırın:
 
 ```shell
 ng generate @angular/core:router-testing-module-migration
@@ -12,9 +12,9 @@ ng generate @angular/core:router-testing-module-migration
 
 ## Options
 
-| Option | Details                                                                                                                       |
-| :----- | :---------------------------------------------------------------------------------------------------------------------------- |
-| `path` | The path (relative to project root) to migrate. Defaults to `./`. Use this to incrementally migrate a subset of your project. |
+| Seçenek | Ayrıntılar                                                                                                                                  |
+| :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `path`  | Geçirilecek yol (proje köküne göreceli). Varsayılan değer `./`'dir. Projenizin bir alt kümesini aşamalı olarak geçirmek için bunu kullanın. |
 
 ## Examples
 

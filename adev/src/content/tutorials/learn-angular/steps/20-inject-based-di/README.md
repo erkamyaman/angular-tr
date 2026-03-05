@@ -1,14 +1,14 @@
 # Inject-based dependency injection
 
-Creating an injectable service is the first part of the dependency injection (DI) system in Angular. How do you inject a service into a component? Angular has a convenient function called `inject()` that can be used in the proper context.
+Enjekte edilebilir bir servis oluşturmak, Angular'daki bağımlılık enjeksiyonu (DI) sisteminin ilk kısmıdır. Bir servisi bir bileşene nasıl enjekte edersiniz? Angular'ın uygun bağlamda kullanılabilecek `inject()` adında pratik bir fonksiyonu vardır.
 
-NOTE: Injection contexts are beyond the scope of this tutorial, but you can learn more in the [dependency injection (DI) essentials guide](/essentials/dependency-injection) and [DI context guide](guide/di/dependency-injection-context).
+NOTE: Enjeksiyon bağlamları bu eğitimin kapsamı dışındadır, ancak [bağımlılık enjeksiyonu (DI) temel kılavuzundan](/essentials/dependency-injection) ve [DI bağlam kılavuzundan](guide/di/dependency-injection-context) daha fazla bilgi edinebilirsiniz.
 
-In this activity, you'll learn how to inject a service and use it in a component.
+Bu aktivitede, bir servisi nasıl enjekte edeceğinizi ve bir bileşende nasıl kullanacağınızı öğreneceksiniz.
 
 <hr>
 
-It is often helpful to initialize class properties with values provided by the DI system. Here's an example:
+Sınıf özelliklerini DI sistemi tarafından sağlanan değerlerle başlatmak genellikle faydalıdır. İşte bir örnek:
 
 ```ts {highlight:[3]}
 @Component({...})
@@ -21,17 +21,17 @@ class PetCareDashboard {
 
 <docs-step title="Inject the `CarService`">
 
-In `app.ts`, using the `inject()` function inject the `CarService` and assign it to a property called `carService`
+`app.ts` dosyasında, `inject()` fonksiyonunu kullanarak `CarService`'i enjekte edin ve `carService` adında bir özelliğe atayın.
 
-NOTE: Notice the difference between the property `carService` and the class `CarService`.
+NOTE: `carService` özelliği ile `CarService` sınıfı arasındaki farka dikkat edin.
 
 </docs-step>
 
 <docs-step title="Use the `carService` instance">
 
-Calling `inject(CarService)` gave you an instance of the `CarService` that you can use in your application, stored in the `carService` property.
+`inject(CarService)` çağrısı, uygulamanızda kullanabileceğiniz bir `CarService` örneği verdi ve bu `carService` özelliğinde saklandı.
 
-Initialize the `display` property with the following implementation:
+`display` özelliğini aşağıdaki uygulama ile başlatın:
 
 ```ts
 display = this.carService.getCars().join(' ⭐️ ');
@@ -41,7 +41,7 @@ display = this.carService.getCars().join(' ⭐️ ');
 
 <docs-step title="Update the `App` template">
 
-Update the component template in `app.ts` with the following code:
+`app.ts` dosyasındaki bileşen şablonunu aşağıdaki kodla güncelleyin:
 
 ```ts
 template: `<p>Car Listing: {{ display }}</p>`,
@@ -51,4 +51,4 @@ template: `<p>Car Listing: {{ display }}</p>`,
 
 </docs-workflow>
 
-You've just injected your first service into a component - fantastic effort.
+İlk servisinizi bir bileşene enjekte ettiniz - harika çaba.

@@ -1,29 +1,29 @@
 # Background processing using web workers
 
-[Web workers](https://developer.mozilla.org/docs/Web/API/Web_Workers_API) let you run CPU-intensive computations in a background thread, freeing the main thread to update the user interface.
-Application's performing a lot of computations, like generating Computer-Aided Design \(CAD\) drawings or doing heavy geometric calculations, can use web workers to increase performance.
+[Web worker'lar](https://developer.mozilla.org/docs/Web/API/Web_Workers_API), CPU yoğun hesaplamaları bir arka plan iş parçacığında çalıştırmanıza olanak tanıyarak ana iş parçacığını kullanıcı arayüzünü güncellemek için serbest bırakır.
+Bilgisayar Destekli Tasarım \(CAD\) çizimleri oluşturma veya ağır geometrik hesaplamalar yapma gibi çok sayıda hesaplama gerçekleştiren uygulamalar, performansı artırmak için web worker'ları kullanabilir.
 
-HELPFUL: The Angular CLI does not support running itself in a web worker.
+HELPFUL: Angular CLI, kendisinin bir web worker içinde çalıştırılmasını desteklemez.
 
 ## Adding a web worker
 
-To add a web worker to an existing project, use the Angular CLI `ng generate` command.
+Mevcut bir projeye web worker eklemek için Angular CLI `ng generate` komutunu kullanın.
 
 ```shell
 ng generate web-worker <location>
 ```
 
-You can add a web worker anywhere in your application.
-For example, to add a web worker to the root component, `src/app/app.component.ts`, run the following command.
+Uygulamanızın herhangi bir yerine web worker ekleyebilirsiniz.
+Örneğin, kök bileşen olan `src/app/app.component.ts` dosyasına bir web worker eklemek için aşağıdaki komutu çalıştırın.
 
 ```shell
 ng generate web-worker app
 ```
 
-The command performs the following actions.
+Komut aşağıdaki işlemleri gerçekleştirir.
 
-1. Configures your project to use web workers, if it isn't already.
-1. Adds the following scaffold code to `src/app/app.worker.ts` to receive messages.
+1. Projenizi web worker'ları kullanacak şekilde yapılandırır (henüz yapılandırılmadıysa).
+1. Mesajları almak için `src/app/app.worker.ts` dosyasına aşağıdaki iskelet kodunu ekler.
 
    ```ts {header:"src/app/app.worker.ts"}
    addEventListener('message', ({data}) => {
@@ -32,7 +32,7 @@ The command performs the following actions.
    });
    ```
 
-1. Adds the following scaffold code to `src/app/app.component.ts` to use the worker.
+1. Worker'ı kullanmak için `src/app/app.component.ts` dosyasına aşağıdaki iskelet kodunu ekler.
 
    ```ts {header:"src/app/app.component.ts"}
    if (typeof Worker !== 'undefined') {
@@ -48,8 +48,8 @@ The command performs the following actions.
    }
    ```
 
-After you create this initial scaffold, you must refactor your code to use the web worker by sending messages to and from the worker.
+Bu başlangıç iskeleti oluşturduktan sonra, worker'a mesaj göndererek ve worker'dan mesaj alarak web worker'ı kullanmak üzere kodunuzu yeniden düzenlemelisiniz.
 
-IMPORTANT: Some environments or platforms, such as `@angular/platform-server` used in [Server-side Rendering](guide/ssr), don't support web workers.
+IMPORTANT: `@angular/platform-server` gibi [Sunucu taraflı Renderlama](guide/ssr) için kullanılan bazı ortamlar veya platformlar web worker'ları desteklemez.
 
-To ensure that your application works in these environments, you must provide a fallback mechanism to perform the computations that the worker would otherwise perform.
+Uygulamanızın bu ortamlarda çalışmasını sağlamak için, worker'ın normalde gerçekleştireceği hesaplamaları yapmak üzere bir yedek mekanizma sağlamalısınız.

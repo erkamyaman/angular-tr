@@ -2,25 +2,25 @@
 
 ## What is hydration
 
-Hydration is the process that restores the server-side rendered application on the client. This includes things like reusing the server rendered DOM structures, persisting the application state, transferring application data that was retrieved already by the server, and other processes.
+Hidrasyon, sunucu tarafında render edilmiş uygulamayı istemcide geri yükleme işlemidir. Bu, sunucu tarafında render edilmiş DOM yapılarının yeniden kullanılması, uygulama durumunun korunması, sunucu tarafından zaten alınmış olan uygulama verilerinin aktarılması ve diğer işlemleri içerir.
 
 ## Why is hydration important?
 
-Hydration improves application performance by avoiding extra work to re-create DOM nodes. Instead, Angular tries to match existing DOM elements to the applications structure at runtime and reuses DOM nodes when possible. This results in a performance improvement that can be measured using [Core Web Vitals (CWV)](https://web.dev/learn-core-web-vitals/) statistics, such as reducing the First Input Delay ([FID](https://web.dev/fid/)) and Largest Contentful Paint ([LCP](https://web.dev/lcp/)), as well as Cumulative Layout Shift ([CLS](https://web.dev/cls/)). Improving these numbers also affects things like SEO performance.
+Hidrasyon, DOM düğümlerini yeniden oluşturmak için gereken ekstra işi önleyerek uygulama performansını artırır. Bunun yerine, Angular mevcut DOM öğelerini çalışma zamanında uygulama yapısıyla eşleştirmeye çalışır ve mümkün olduğunda DOM düğümlerini yeniden kullanır. Bu, [Core Web Vitals (CWV)](https://web.dev/learn-core-web-vitals/) istatistikleri kullanılarak ölçülebilen bir performans iyileştirmesi sağlar; örneğin First Input Delay ([FID](https://web.dev/fid/)) ve Largest Contentful Paint ([LCP](https://web.dev/lcp/)) azaltılması ile Cumulative Layout Shift ([CLS](https://web.dev/cls/)) iyileştirilmesi gibi. Bu sayıların iyileştirilmesi ayrıca SEO performansı gibi konuları da etkiler.
 
-Without hydration enabled, server-side rendered Angular applications will destroy and re-render the application's DOM, which may result in a visible UI flicker. This re-rendering can negatively impact [Core Web Vitals](https://web.dev/learn-core-web-vitals/) like [LCP](https://web.dev/lcp/) and cause a layout shift. Enabling hydration allows the existing DOM to be re-used and prevents a flicker.
+Hidrasyon etkinleştirilmeden, sunucu tarafında render edilmiş Angular uygulamaları uygulamanın DOM'unu yok edip yeniden render eder ve bu da görünür bir UI titremesine neden olabilir. Bu yeniden render işlemi, [Core Web Vitals](https://web.dev/learn-core-web-vitals/) değerlerini, örneğin [LCP](https://web.dev/lcp/)'yi olumsuz etkileyebilir ve düzen kaymasına neden olabilir. Hidrasyonun etkinleştirilmesi, mevcut DOM'un yeniden kullanılmasını sağlar ve titremeyi önler.
 
 ## How do you enable hydration in Angular
 
-Hydration can be enabled for server-side rendered (SSR) applications only. Follow the [Angular SSR Guide](guide/ssr) to enable server-side rendering first.
+Hidrasyon yalnızca sunucu tarafında render edilmiş (SSR) uygulamalar için etkinleştirilebilir. Önce sunucu tarafı render işlemini etkinleştirmek için [Angular SSR Kılavuzu](guide/ssr)'nu takip edin.
 
 ### Using Angular CLI
 
-If you've used Angular CLI to enable SSR (either by enabling it during application creation or later via `ng add @angular/ssr`), the code that enables hydration should already be included into your application.
+SSR'yi etkinleştirmek için Angular CLI kullandıysanız (uygulama oluşturma sırasında veya daha sonra `ng add @angular/ssr` aracılığıyla), hidrasyonu etkinleştiren kod zaten uygulamanıza dahil edilmiş olmalıdır.
 
 ### Manual setup
 
-If you have a custom setup and didn't use Angular CLI to enable SSR, you can enable hydration manually by visiting your main application component or module and importing `provideClientHydration` from `@angular/platform-browser`. You'll then add that provider to your app's bootstrapping providers list.
+Özel bir kurulumunuz varsa ve SSR'yi etkinleştirmek için Angular CLI kullanmadıysanız, ana uygulama bileşeninizi veya modülünüzü ziyaret ederek ve `@angular/platform-browser`'dan `provideClientHydration`'ı içe aktararak hidrasyonu manuel olarak etkinleştirebilirsiniz. Ardından bu sağlayıcıyı uygulamanızın başlatma sağlayıcıları listesine eklersiniz.
 
 ```typescript
 import {
@@ -34,7 +34,7 @@ bootstrapApplication(App, {
 });
 ```
 
-Alternatively if you are using NgModules, you would add `provideClientHydration` to your root app module's provider list.
+Alternatif olarak, NgModules kullanıyorsanız, `provideClientHydration`'ı kök uygulama modülünüzün sağlayıcı listesine eklersiniz.
 
 ```typescript
 import {provideClientHydration} from '@angular/platform-browser';
@@ -49,21 +49,21 @@ import {NgModule} from '@angular/core';
 export class AppModule {}
 ```
 
-IMPORTANT: Make sure that the `provideClientHydration()` call is also included into a set of providers that is used to bootstrap an application on the **server**. In applications with the default project structure (generated by the `ng new` command), adding a call to the root `AppModule` should be sufficient, since this module is imported by the server module. If you use a custom setup, add the `provideClientHydration()` call to the providers list in the server bootstrap configuration.
+IMPORTANT: `provideClientHydration()` çağrısının **sunucuda** uygulamayı başlatmak için kullanılan sağlayıcı setine de dahil edildiğinden emin olun. Varsayılan proje yapısına sahip uygulamalarda (`ng new` komutuyla oluşturulan), çağrıyı kök `AppModule`'e eklemek yeterli olmalıdır, çünkü bu modül sunucu modülü tarafından içe aktarılır. Özel bir kurulum kullanıyorsanız, `provideClientHydration()` çağrısını sunucu başlatma yapılandırmasındaki sağlayıcılar listesine ekleyin.
 
 ### Verify that hydration is enabled
 
-After you've configured hydration and have started up your server, load your application in the browser.
+Hidrasyonu yapılandırdıktan ve sunucunuzu başlattıktan sonra, uygulamanızı tarayıcıda yükleyin.
 
-HELPFUL: You will likely need to fix instances of Direct DOM Manipulation before hydration will fully work either by switching to Angular constructs or by using `ngSkipHydration`. See [Constraints](#constraints), [Direct DOM Manipulation](#direct-dom-manipulation), and [How to skip hydration for particular components](#how-to-skip-hydration-for-particular-components) for more details.
+HELPFUL: Hidrasyonun tam olarak çalışması için muhtemelen Doğrudan DOM Manipülasyonu örneklerini düzeltmeniz gerekecektir; bunun için Angular yapılarına geçiş yapabilir veya `ngSkipHydration` kullanabilirsiniz. Daha fazla ayrıntı için [Kısıtlamalar](#constraints), [Doğrudan DOM Manipülasyonu](#direct-dom-manipulation) ve [Belirli bileşenler için hidrasyon nasıl atlanır](#how-to-skip-hydration-for-particular-components) bölümlerine bakın.
 
-While running an application in dev mode, you can confirm hydration is enabled by opening the Developer Tools in your browser and viewing the console. You should see a message that includes hydration-related stats, such as the number of components and nodes hydrated. Angular calculates the stats based on all components rendered on a page, including those that come from third-party libraries.
+Uygulamanızı geliştirme modunda çalıştırırken, tarayıcınızda Geliştirici Araçları'nı açarak ve konsolu görüntüleyerek hidrasyonun etkin olduğunu doğrulayabilirsiniz. Hidrasyon ile ilgili istatistikleri içeren bir mesaj görmelisiniz; örneğin hidrasyon yapılan bileşen ve düğüm sayısı gibi. Angular, bir sayfada render edilen tüm bileşenlere dayalı olarak istatistikleri hesaplar ve bunlara üçüncü taraf kütüphanelerden gelen bileşenler de dahildir.
 
-You can also use [Angular DevTools browser extension](tools/devtools) to see hydration status of components on a page. Angular DevTools also allows to enable an overlay to indicate which parts of the page were hydrated. If there is a hydration mismatch error - DevTools would also highlight a component that caused the error.
+Ayrıca [Angular DevTools tarayıcı uzantısını](tools/devtools) kullanarak bir sayfadaki bileşenlerin hidrasyon durumunu görebilirsiniz. Angular DevTools, sayfanın hangi bölümlerinin hidrasyon yapıldığını gösteren bir katman etkinleştirmenize de olanak tanır. Bir hidrasyon uyumsuzluk hatası varsa, DevTools hataya neden olan bileşeni de vurgular.
 
 ## Capturing and replaying events
 
-When an application is rendered on the server, it is visible in a browser as soon as produced HTML loads. Users may assume that they can interact with the page, but event listeners are not attached until hydration completes. Starting from v18, you can enable the Event Replay feature that allows to capture all events that happen before hydration and replay those events once hydration has completed. You can enable it using the `withEventReplay()` function, for example:
+Bir uygulama sunucuda render edildiğinde, üretilen HTML yüklenir yüklenmez tarayıcıda görünür hale gelir. Kullanıcılar sayfayla etkileşime geçebileceklerini varsayabilir, ancak olay dinleyicileri hidrasyon tamamlanana kadar eklenmez. v18'den itibaren, hidrasyon öncesinde gerçekleşen tüm olayları yakalayan ve hidrasyon tamamlandıktan sonra bu olayları yeniden oynatan Olay Tekrarı özelliğini etkinleştirebilirsiniz. Bunu `withEventReplay()` fonksiyonu ile etkinleştirebilirsiniz, örneğin:
 
 ```typescript
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
@@ -75,86 +75,86 @@ bootstrapApplication(App, {
 
 ### How event replay works
 
-Event Replay is a feature that improves user experience by capturing user events that were triggered before the hydration process is complete. Then those events are replayed, ensuring none of that interaction was lost.
+Olay Tekrarı, hidrasyon işlemi tamamlanmadan önce tetiklenen kullanıcı olaylarını yakalayarak kullanıcı deneyimini iyileştiren bir özelliktir. Ardından bu olaylar yeniden oynatılır ve bu etkileşimin hiçbirinin kaybolmaması sağlanır.
 
-The Event Replay is divided into three main phases:
+Olay Tekrarı üç ana aşamaya ayrılır:
 
-- **Capturing user interactions**<br>
-  Prior to **Hydration**, Event Replay captures and stores all interactions that the user may perform, such as clicks and other browser native events.
+- **Kullanıcı etkileşimlerinin yakalanması**<br>
+  **Hidrasyon** öncesinde, Olay Tekrarı kullanıcının gerçekleştirebileceği tıklamalar ve diğer tarayıcı yerel olayları gibi tüm etkileşimleri yakalar ve saklar.
 
-- **Storing events**<br>
-  The **Event Contract** keeps in memory all the interactions recorded in the previous step, ensuring that they are not lost for later replay.
+- **Olayların saklanması**<br>
+  **Olay Sözleşmesi**, bir önceki adımda kaydedilen tüm etkileşimleri bellekte tutar ve daha sonra tekrar oynatılmak üzere kaybolmamalarını sağlar.
 
-- **Relaunch of events**<br>
-  Once **Hydration** is complete, Angular re-invokes the captured events.
+- **Olayların yeniden başlatılması**<br>
+  **Hidrasyon** tamamlandıktan sonra, Angular yakalanan olayları yeniden çağırır.
 
-Event replay supports _native browser events_, for example `click`, `mouseover`, and `focusin`. If you'd like to learn more about JSAction, the library that powers event replay, you can read more [on the readme](https://github.com/angular/angular/tree/main/packages/core/primitives/event-dispatch#readme).
+Olay tekrarı _yerel tarayıcı olaylarını_ destekler, örneğin `click`, `mouseover` ve `focusin`. Olay tekrarını güçlendiren kütüphane olan JSAction hakkında daha fazla bilgi edinmek istiyorsanız, [readme dosyasında](https://github.com/angular/angular/tree/main/packages/core/primitives/event-dispatch#readme) daha fazla bilgi bulabilirsiniz.
 
 ---
 
-This feature ensures a consistent user experience, preventing user actions performed before Hydration from being ignored.
+Bu özellik, Hidrasyon öncesinde gerçekleştirilen kullanıcı eylemlerinin göz ardı edilmesini önleyerek tutarlı bir kullanıcı deneyimi sağlar.
 
-NOTE: If you have [incremental hydration](guide/incremental-hydration) enabled, event replay is automatically enabled under the hood.
+NOTE: [Artımlı hidrasyon](guide/incremental-hydration) etkinleştirdiyseniz, olay tekrarı arka planda otomatik olarak etkinleştirilir.
 
 ## Constraints
 
-Hydration imposes a few constraints on your application that are not present without hydration enabled. Your application must have the same generated DOM structure on both the server and the client. The process of hydration expects the DOM tree to have the same structure in both places. This also includes whitespaces and comment nodes that Angular produces during the rendering on the server. Those whitespaces and nodes must be present in the HTML generated by the server-side rendering process.
+Hidrasyon, hidrasyon etkinleştirilmeden mevcut olmayan uygulamanıza bazı kısıtlamalar getirir. Uygulamanız hem sunucuda hem de istemcide aynı üretilmiş DOM yapısına sahip olmalıdır. Hidrasyon işlemi, DOM ağacının her iki yerde de aynı yapıya sahip olmasını bekler. Bu, Angular'ın sunucuda render sırasında ürettiği boşlukları ve yorum düğümlerini de içerir. Bu boşluklar ve düğümler, sunucu tarafı render işlemi tarafından üretilen HTML'de mevcut olmalıdır.
 
-IMPORTANT: The HTML produced by the server side rendering operation **must not** be altered between the server and the client.
+IMPORTANT: Sunucu tarafı render işlemi tarafından üretilen HTML, sunucu ve istemci arasında **değiştirilmemelidir**.
 
-If there is a mismatch between server and client DOM tree structures, the hydration process will encounter problems attempting to match up what was expected to what is actually present in the DOM. Components that do direct DOM manipulation using native DOM APIs are the most common culprit.
+Sunucu ve istemci DOM ağaç yapıları arasında bir uyumsuzluk varsa, hidrasyon işlemi beklenen ile DOM'da gerçekte bulunan arasında eşleştirme yapmaya çalışırken sorunlarla karşılaşır. Yerel DOM API'lerini kullanarak doğrudan DOM manipülasyonu yapan bileşenler en yaygın nedendir.
 
 ### Direct DOM Manipulation
 
-If you have components that manipulate the DOM using native DOM APIs or use `innerHTML` or `outerHTML`, the hydration process will encounter errors. Specific cases where DOM manipulation is a problem are situations like accessing the `document`, querying for specific elements, and injecting additional nodes using `appendChild`. Detaching DOM nodes and moving them to other locations will also result in errors.
+Yerel DOM API'lerini kullanarak DOM'u manipüle eden veya `innerHTML` ya da `outerHTML` kullanan bileşenleriniz varsa, hidrasyon işlemi hatalarla karşılaşır. DOM manipülasyonunun sorun olduğu belirli durumlar `document`'e erişme, belirli öğeleri sorgulama ve `appendChild` kullanarak ek düğümler ekleme gibi durumlardır. DOM düğümlerini ayırma ve başka konumlara taşıma da hatalara neden olur.
 
-This is because Angular is unaware of these DOM changes and cannot resolve them during the hydration process. Angular will expect a certain structure, but it will encounter a different structure when attempting to hydrate. This mismatch will result in hydration failure and throw a DOM mismatch error ([see below](#errors)).
+Bunun nedeni, Angular'ın bu DOM değişikliklerinden haberdar olmaması ve hidrasyon işlemi sırasında bunları çözememesidir. Angular belirli bir yapı bekler, ancak hidrasyon yapmaya çalışırken farklı bir yapıyla karşılaşır. Bu uyumsuzluk, hidrasyon hatasına neden olur ve bir DOM uyumsuzluk hatası fırlatır ([aşağıya bakın](#errors)).
 
-It is best to refactor your component to avoid this sort of DOM manipulation. Try to use Angular APIs to do this work, if you can. If you cannot refactor this behavior, use the `ngSkipHydration` attribute ([described below](#how-to-skip-hydration-for-particular-components)) until you can refactor into a hydration friendly solution.
+Bileşeninizi bu tür DOM manipülasyonundan kaçınmak için yeniden düzenlemeniz en iyisidir. Mümkünse bu işi yapmak için Angular API'lerini kullanmayı deneyin. Bu davranışı yeniden düzenleyemiyorsanız, hidrasyon dostu bir çözüme geçene kadar `ngSkipHydration` niteliğini ([aşağıda açıklanmıştır](#how-to-skip-hydration-for-particular-components)) kullanın.
 
 ### Valid HTML structure
 
-There are a few cases where if you have a component template that does not have valid HTML structure, this could result in a DOM mismatch error during hydration.
+Bileşen şablonunuz geçerli bir HTML yapısına sahip değilse, hidrasyon sırasında DOM uyumsuzluk hatasına neden olabilecek birkaç durum vardır.
 
-As an example, here are some of the most common cases of this issue.
+Örneğin, bu sorunun en yaygın durumlarından bazıları şunlardır.
 
-- `<table>` without a `<tbody>`
-- `<div>` inside a `<p>`
-- `<a>` inside another `<a>`
+- `<tbody>` olmayan `<table>`
+- `<p>` içinde `<div>`
+- Başka bir `<a>` içinde `<a>`
 
-If you are uncertain about whether your HTML is valid, you can use a [syntax validator](https://validator.w3.org/) to check it.
+HTML'inizin geçerli olup olmadığından emin değilseniz, kontrol etmek için bir [sözdizimi doğrulayıcı](https://validator.w3.org/) kullanabilirsiniz.
 
-NOTE: While the HTML standard does not require the `<tbody>` element inside tables, modern browsers automatically create a `<tbody>` element in tables that do not declare one. Because of this inconsistency, always explicitly declare a `<tbody>` element in tables to avoid hydration errors.
+NOTE: HTML standardı tablolarda `<tbody>` öğesini gerektirmese de, modern tarayıcılar `<tbody>` bildirmeyen tablolarda otomatik olarak bir `<tbody>` öğesi oluşturur. Bu tutarsızlık nedeniyle, hidrasyon hatalarını önlemek için tablolarda her zaman açıkça bir `<tbody>` öğesi bildirin.
 
 ### Preserve Whitespaces Configuration
 
-When using the hydration feature, we recommend using the default setting of `false` for `preserveWhitespaces`. If this setting is not in your tsconfig, the value will be `false` and no changes are required. If you choose to enable preserving whitespaces by adding `preserveWhitespaces: true` to your tsconfig, it is possible you may encounter issues with hydration. This is not yet a fully supported configuration.
+Hidrasyon özelliğini kullanırken, `preserveWhitespaces` için varsayılan `false` ayarını kullanmanızı öneririz. Bu ayar tsconfig'inizde yoksa, değer `false` olacaktır ve herhangi bir değişiklik gerekmez. Tsconfig'inize `preserveWhitespaces: true` ekleyerek boşlukların korunmasını etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir.
 
-HELPFUL: Make sure that this setting is set **consistently** in `tsconfig.server.json` for your server and `tsconfig.app.json` for your browser builds. A mismatched value will cause hydration to break.
+HELPFUL: Bu ayarın, sunucunuz için `tsconfig.server.json`'da ve tarayıcı derlemeleriniz için `tsconfig.app.json`'da **tutarlı** olarak ayarlandığından emin olun. Uyumsuz bir değer hidrasyonun bozulmasına neden olur.
 
-If you choose to set this setting in your tsconfig, we recommend to set it only in `tsconfig.app.json` which by default the `tsconfig.server.json` will inherit it from.
+Bu ayarı tsconfig'inizde ayarlamayı seçerseniz, bunu yalnızca `tsconfig.app.json`'da ayarlamanızı öneririz; varsayılan olarak `tsconfig.server.json` bunu ondan devralacaktır.
 
 ### Custom or Noop Zone.js are not yet supported
 
-Hydration relies on a signal from Zone.js when it becomes stable inside an application, so that Angular can start the serialization process on the server or post-hydration cleanup on the client to remove DOM nodes that remained unclaimed.
+Hidrasyon, uygulama içinde kararlı hale geldiğinde Zone.js'den gelen bir sinyale dayanır; böylece Angular sunucuda serileştirme işlemini veya istemcide hidrasyon sonrası temizliği başlatabilir ve sahipsiz kalan DOM düğümlerini kaldırabilir.
 
-Providing a custom or a "noop" Zone.js implementation may lead to a different timing of the "stable" event, thus triggering the serialization or the cleanup too early or too late. This is not yet a fully supported configuration and you may need to adjust the timing of the `onStable` event in the custom Zone.js implementation.
+Özel veya "noop" bir Zone.js uygulaması sağlamak, "kararlı" olayının farklı zamanlamasına yol açabilir ve bu da serileştirme veya temizliğin çok erken veya çok geç tetiklenmesine neden olabilir. Bu henüz tam olarak desteklenen bir yapılandırma değildir ve özel Zone.js uygulamanızda `onStable` olayının zamanlamasını ayarlamanız gerekebilir.
 
 ## Errors
 
-There are several hydration related errors you may encounter ranging from node mismatches to cases when the `ngSkipHydration` was used on an invalid host node. The most common error case that may occur is due to direct DOM manipulation using native APIs that results in hydration being unable to find or match the expected DOM tree structure on the client that was rendered by the server. The other case you may encounter this type of error was mentioned in the [Valid HTML structure](#valid-html-structure) section earlier. So, make sure the HTML in your templates are using valid structure, and you'll avoid that error case.
+Düğüm uyumsuzluklarından `ngSkipHydration`'ın geçersiz bir ana düğümde kullanıldığı durumlara kadar karşılaşabileceğiniz birkaç hidrasyon ile ilgili hata vardır. Oluşabilecek en yaygın hata durumu, yerel API'ler kullanılarak doğrudan DOM manipülasyonu nedeniyle hidrasyonun istemcide sunucu tarafından render edilen beklenen DOM ağaç yapısını bulamaması veya eşleştirememesidir. Bu tür bir hatayla karşılaşabileceğiniz diğer durum, daha önce [Geçerli HTML yapısı](#valid-html-structure) bölümünde belirtilmiştir. Bu nedenle, şablonlarınızdaki HTML'in geçerli bir yapı kullandığından emin olun ve bu hata durumundan kaçınmış olursunuz.
 
-For a full reference on hydration related errors, visit the [Errors Reference Guide](/errors).
+Hidrasyon ile ilgili hataların tam referansı için [Hatalar Referans Kılavuzu](/errors)'nu ziyaret edin.
 
 ## How to skip hydration for particular components
 
-Some components may not work properly with hydration enabled due to some of the aforementioned issues, like [Direct DOM Manipulation](#direct-dom-manipulation). As a workaround, you can add the `ngSkipHydration` attribute to a component's tag in order to skip hydrating the entire component.
+Yukarıda bahsedilen [Doğrudan DOM Manipülasyonu](#direct-dom-manipulation) gibi bazı sorunlar nedeniyle bazı bileşenler hidrasyon etkinleştirildiğinde düzgün çalışmayabilir. Geçici çözüm olarak, bileşenin tamamının hidrasyon yapılmasını atlamak için bileşenin etiketine `ngSkipHydration` niteliğini ekleyebilirsiniz.
 
 ```angular-html
 <app-example ngSkipHydration />
 ```
 
-Alternatively you can set `ngSkipHydration` as a host binding.
+Alternatif olarak `ngSkipHydration`'ı bir host bağlayıcı olarak ayarlayabilirsiniz.
 
 ```typescript
 @Component({
@@ -164,21 +164,21 @@ Alternatively you can set `ngSkipHydration` as a host binding.
 class ExampleComponent {}
 ```
 
-The `ngSkipHydration` attribute will force Angular to skip hydrating the entire component and its children. Using this attribute means that the component will behave as if hydration is not enabled, meaning it will destroy and re-render itself.
+`ngSkipHydration` niteliği, Angular'ı bileşenin tamamı ve alt bileşenleri için hidrasyonu atlamaya zorlar. Bu niteliği kullanmak, bileşenin hidrasyon etkinleştirilmemiş gibi davranacağı anlamına gelir; yani kendini yok edip yeniden render edecektir.
 
-HELPFUL: This will fix rendering issues, but it means that for this component (and its children), you don't get the benefits of hydration. You will need to adjust your component's implementation to avoid hydration-breaking patterns (i.e. Direct DOM Manipulation) to be able to remove the skip hydration annotation.
+HELPFUL: Bu, render sorunlarını düzeltecektir, ancak bu bileşen (ve alt bileşenleri) için hidrasyonun faydalarından yararlanamayacağınız anlamına gelir. Hidrasyon atlama notasyonunu kaldırabilmek için bileşeninizin uygulamasını hidrasyon bozan kalıplardan (yani Doğrudan DOM Manipülasyonu) kaçınacak şekilde ayarlamanız gerekecektir.
 
-The `ngSkipHydration` attribute can only be used on component host nodes. Angular throws an error if this attribute is added to other nodes.
+`ngSkipHydration` niteliği yalnızca bileşen ana düğümlerinde kullanılabilir. Angular, bu nitelik diğer düğümlere eklenirse hata fırlatır.
 
-Keep in mind that adding the `ngSkipHydration` attribute to your root application component would effectively disable hydration for your entire application. Be careful and thoughtful about using this attribute. It is intended as a last resort workaround. Components that break hydration should be considered bugs that need to be fixed.
+`ngSkipHydration` niteliğini kök uygulama bileşeninize eklemenin tüm uygulamanız için hidrasyonu etkili bir şekilde devre dışı bırakacağını unutmayın. Bu niteliği kullanırken dikkatli ve düşünceli olun. Son çare geçici çözüm olarak tasarlanmıştır. Hidrasyonu bozan bileşenler, düzeltilmesi gereken hatalar olarak değerlendirilmelidir.
 
 ## Hydration Timing and Application Stability
 
-Application stability is an important part of the hydration process. Hydration and any post-hydration processes only occur once the application has reported stability. There are a number of ways that stability can be delayed. Examples include setting timeouts and intervals, unresolved promises, and pending microtasks. In those cases, you may encounter the [Application remains unstable](errors/NG0506) error, which indicates that your app has not yet reached the stable state after 10 seconds. If you're finding that your application is not hydrating right away, take a look at what is impacting application stability and refactor to avoid causing these delays.
+Uygulama kararlılığı hidrasyon sürecinin önemli bir parçasıdır. Hidrasyon ve hidrasyon sonrası işlemler yalnızca uygulama kararlılığını bildirdikten sonra gerçekleşir. Kararlılığı geciktirebilecek birçok yol vardır. Örnekler arasında zamanlayıcılar ve aralıklar ayarlama, çözülmemiş promise'ler ve bekleyen mikro görevler bulunur. Bu durumlarda, uygulamanızın 10 saniye sonra hala kararlı duruma ulaşmadığını gösteren [Uygulama kararsız kalıyor](errors/NG0506) hatasıyla karşılaşabilirsiniz. Uygulamanızın hemen hidrasyon yapmadığını fark ediyorsanız, uygulama kararlılığını neyin etkilediğine bakın ve bu gecikmelere neden olmayı önlemek için yeniden düzenleyin.
 
 ### Debugging Application Stability
 
-The `provideStabilityDebugging` utility helps identify why your application fails to stabilize. This utility is provided by default in dev mode when using `provideClientHydration`. You can also add it manually to the application providers for use in production bundles or when using SSR without hydration, for example. The feature logs information to the console if the application takes longer than expected to stabilize.
+`provideStabilityDebugging` yardımcı aracı, uygulamanızın neden kararlı hale gelemediğini belirlemenize yardımcı olur. Bu yardımcı araç, `provideClientHydration` kullanıldığında geliştirme modunda varsayılan olarak sağlanır. Ayrıca, örneğin üretim paketlerinde veya hidrasyon olmadan SSR kullanırken kullanmak için uygulama sağlayıcılarına manuel olarak da ekleyebilirsiniz. Bu özellik, uygulama kararlı hale gelmesi beklenenden uzun sürerse konsola bilgi kaydeder.
 
 ```typescript
 import {provideStabilityDebugging} from '@angular/core';
@@ -190,15 +190,15 @@ bootstrapApplication(App, {
 });
 ```
 
-When enabled, the utility logs pending tasks (`PendingTasks`) to the console. If your application uses Zone.js, you can also import `zone.js/plugins/task-tracking` to see which macrotasks are keeping the Angular Zone from stabilizing. This plugin provides the stack trace of the macrotask creation, effectively helping you identify the source of the delay.
+Etkinleştirildiğinde, yardımcı araç bekleyen görevleri (`PendingTasks`) konsola kaydeder. Uygulamanız Zone.js kullanıyorsa, Angular Zone'unun kararlı hale gelmesini engelleyen makro görevleri görmek için `zone.js/plugins/task-tracking`'i de içe aktarabilirsiniz. Bu eklenti, makro görev oluşturmanın yığın izini sağlayarak gecikmenin kaynağını etkili bir şekilde belirlemenize yardımcı olur.
 
-IMPORTANT: Angular does not remove the zone.js task tracking plugin or this utility from production bundles. Use them only for temporary debugging of stability issues during development, including for optimized production builds.
+IMPORTANT: Angular, zone.js görev izleme eklentisini veya bu yardımcı aracı üretim paketlerinden kaldırmaz. Bunları yalnızca geliştirme sırasında kararlılık sorunlarının geçici hata ayıklaması için kullanın; optimize edilmiş üretim derlemeleri dahil.
 
 ## I18N
 
-HELPFUL: By default, Angular will skip hydration for components that use i18n blocks, effectively re-rendering those components from scratch.
+HELPFUL: Varsayılan olarak Angular, i18n blokları kullanan bileşenler için hidrasyonu atlar ve bu bileşenleri sıfırdan yeniden render eder.
 
-To enable hydration for i18n blocks, you can add [`withI18nSupport`](/api/platform-browser/withI18nSupport) to your `provideClientHydration` call.
+i18n blokları için hidrasyonu etkinleştirmek amacıyla `provideClientHydration` çağrınıza [`withI18nSupport`](/api/platform-browser/withI18nSupport) ekleyebilirsiniz.
 
 ```typescript
 import {
@@ -215,16 +215,16 @@ bootstrapApplication(App, {
 
 ## Consistent rendering across server-side and client-side
 
-Avoid introducing `@if` blocks and other conditionals that display different content when server-side rendering than client-side rendering, such as using an `@if` block with Angular's `isPlatformBrowser` function. These rendering differences cause layout shifts, negatively impacting end-user experience and core web vitals.
+Sunucu tarafı render ile istemci tarafı render arasında farklı içerik görüntüleyen `@if` blokları ve diğer koşullu ifadeleri kullanmaktan kaçının; örneğin Angular'ın `isPlatformBrowser` fonksiyonu ile bir `@if` bloğu kullanmak gibi. Bu render farklılıkları düzen kaymalarına neden olur ve son kullanıcı deneyimini ve core web vitals'ı olumsuz etkiler.
 
 ## Third Party Libraries with DOM Manipulation
 
-There are a number of third party libraries that depend on DOM manipulation to be able to render. D3 charts is a prime example. These libraries worked without hydration, but they may cause DOM mismatch errors when hydration is enabled. For now, if you encounter DOM mismatch errors using one of these libraries, you can add the `ngSkipHydration` attribute to the component that renders using that library.
+Render yapabilmek için DOM manipülasyonuna bağımlı birçok üçüncü taraf kütüphanesi vardır. D3 grafikleri bunun başlıca örneğidir. Bu kütüphaneler hidrasyon olmadan çalışıyordu, ancak hidrasyon etkinleştirildiğinde DOM uyumsuzluk hatalarına neden olabilirler. Şimdilik, bu kütüphanelerden birini kullanırken DOM uyumsuzluk hatalarıyla karşılaşırsanız, o kütüphaneyi kullanarak render yapan bileşene `ngSkipHydration` niteliğini ekleyebilirsiniz.
 
 ## Third Party Scripts with DOM Manipulation
 
-Many third party scripts, such as ad trackers and analytics, modify the DOM before hydration can occur. These scripts may cause hydration errors because the page no longer matches the structure expected by Angular. Prefer deferring this type of script until after hydration whenever possible. Consider using [`AfterNextRender`](api/core/afterNextRender) to delay the script until post-hydration processes have occurred.
+Reklam takipçileri ve analitik gibi birçok üçüncü taraf betiği, hidrasyon gerçekleşmeden önce DOM'u değiştirir. Bu betikler, sayfa artık Angular'ın beklediği yapıyla eşleşmediği için hidrasyon hatalarına neden olabilir. Mümkün olduğunda bu tür betikleri hidrasyon sonrasına ertelemeyi tercih edin. Betiği hidrasyon sonrası işlemler gerçekleştikten sonra geciktirmek için [`AfterNextRender`](api/core/afterNextRender) kullanmayı düşünün.
 
 ## Incremental Hydration
 
-Incremental hydration is an advanced form of hydration that allows for more granular control over when hydration happens. See the [incremental hydration guide](guide/incremental-hydration) for more information.
+Artımlı hidrasyon, hidrasyonun ne zaman gerçekleşeceği üzerinde daha ayrıntılı kontrol sağlayan gelişmiş bir hidrasyon biçimidir. Daha fazla bilgi için [artımlı hidrasyon kılavuzuna](guide/incremental-hydration) bakın.

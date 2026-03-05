@@ -1,49 +1,49 @@
 # Use @for to list objects in component
 
-This tutorial lesson demonstrates how to use `@for` block in Angular templates in order to display dynamically repeated data in a template.
+Bu eğitim dersi, bir şablonda dinamik olarak tekrarlanan verileri görüntülemek için Angular şablonlarında `@for` bloğunun nasıl kullanılacağını gösterir.
 
 <docs-video src="https://www.youtube.com/embed/eM3zi_n7lNs?si=MIl5NcRxvcLjYt5f&amp;start=477"/>
 
-NOTE: This video reflects an older syntax, but the main concepts remain valid.
+NOTE: Bu video eski bir sözdizimini yansıtmaktadır, ancak temel kavramlar geçerliliğini korumaktadır.
 
 ## What you'll learn
 
-- You will have added a data set to the app
-- Your app will display a list of elements from the new data set using `@for`
+- Uygulamaya bir veri seti eklemiş olacaksınız
+- Uygulamanız, `@for` kullanarak yeni veri setindeki öğelerin bir listesini görüntüleyecek
 
 ## Conceptual preview of `@for`
 
-In Angular, `@for` is a specific type of [control flow block](/guide/templates/control-flow) used to dynamically repeat data in a template. In plain JavaScript you would use a for loop - `@for` provides similar functionality for Angular templates.
+Angular'da `@for`, bir şablonda verileri dinamik olarak tekrarlamak için kullanılan belirli bir [kontrol akışı bloğu](/guide/templates/control-flow) türüdür. Düz JavaScript'te bir for döngüsü kullanırsınız - `@for` Angular şablonları için benzer işlevsellik sağlar.
 
-You can utilize `@for` to iterate over arrays and even asynchronous values. In this lesson, you'll add a new array of data to iterate over.
+`@for` kullanarak diziler ve hatta asenkron değerler üzerinde yineleme yapabilirsiniz. Bu derste, üzerinde yineleme yapılacak yeni bir veri dizisi ekleyeceksiniz.
 
-For a more in depth explanation, please refer to the [control flow](guide/templates/control-flow#repeat-content-with-the-for-block) guide.
+Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/templates/control-flow#repeat-content-with-the-for-block) kılavuzuna bakın.
 
 <docs-workflow>
 
 <docs-step title="Add housing data to the `Home`">
 
-In the `Home` there is only a single housing location. In this step, you will add an array of `HousingLocation` entries.
+`Home` bileşeninde yalnızca tek bir konut konumu var. Bu adımda, bir `HousingLocation` girişleri dizisi ekleyeceksiniz.
 
-1. In `src/app/home/home.ts`, remove the `housingLocation` property from the `Home` class.
-1. Update the `Home` class to have a property called `housingLocationList`. Update your code to match the following code:
+1. `src/app/home/home.ts` dosyasında, `Home` sınıfından `housingLocation` özelliğini kaldırın.
+1. `Home` sınıfını `housingLocationList` adında bir özelliğe sahip olacak şekilde güncelleyin. Kodunuzu aşağıdaki kodla eşleşecek şekilde güncelleyin:
    <docs-code language="angular-ts"  header="Add housingLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="26-131"/>
 
-   IMPORTANT: Do not remove the `@Component` decorator, you will update that code in an upcoming step.
+   IMPORTANT: `@Component` dekoratörünü kaldırmayın, bu kodu yaklaşan bir adımda güncelleyeceksiniz.
 
 </docs-step>
 
 <docs-step title="Update the `Home` template to use `@for`">
-Now the app has a dataset that you can use to display the entries in the browser using the `@for` block.
+Artık uygulamanın tarayıcıdaki girişleri `@for` bloğunu kullanarak görüntülemek için kullanabileceği bir veri seti var.
 
-1. Update the `<app-housing-location>` tag in the template code to this:
+1. Şablon kodundaki `<app-housing-location>` etiketini şu şekilde güncelleyin:
    <docs-code language="angular-ts"  header="Add @for to Home template in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[15,19]"/>
 
-   Note, in the code `[housingLocation] = "housingLocation"` the `housingLocation` value now refers to the variable used in the `@for` block. Before this change, it referred to the property on the `Home` class.
+   Kodda `[housingLocation] = "housingLocation"` ifadesindeki `housingLocation` değerinin artık `@for` bloğunda kullanılan değişkene referans verdiğini unutmayın. Bu değişiklikten önce, `Home` sınıfındaki özelliğe referans veriyordu.
 
-1. Save all changes.
+1. Tüm değişiklikleri kaydedin.
 
-1. Refresh the browser and confirm that the app now renders a grid of housing locations.
+1. Tarayıcıyı yenileyin ve uygulamanın artık bir konut konumları ızgarası işlediğini doğrulayın.
 
 <section class="lightbox">
 <img alt="browser frame of homes-app displaying logo, filter text input box, search button and a grid of housing location cards" src="assets/images/tutorials/first-app/homes-app-lesson-08-step-2.png">
@@ -53,11 +53,11 @@ Now the app has a dataset that you can use to display the entries in the browser
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you used the `@for` block to repeat data dynamically in Angular templates. You also added a new array of data to be used in the Angular app. The application now dynamically renders a list of housing locations in the browser.
+SUMMARY: Bu derste, Angular şablonlarında verileri dinamik olarak tekrarlamak için `@for` bloğunu kullandınız. Ayrıca Angular uygulamasında kullanılmak üzere yeni bir veri dizisi eklediniz. Uygulama artık tarayıcıda konut konumlarının bir listesini dinamik olarak işliyor.
 
-The app is taking shape, great job.
+Uygulama şekilleniyor, harika iş.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates/control-flow" title="Control flow blocks"/>

@@ -1,18 +1,18 @@
 # Form models
 
-Form models are the foundation of Signal Forms, serving as the single source of truth for your form data. This guide explores how to create form models, update them, and design them for maintainability.
+Form modelleri, Signal Forms'un temelidir ve form verileriniz için tek doğruluk kaynağı olarak hizmet eder. Bu kılavuz, form modellerinin nasıl oluşturulacağını, güncelleneceğini ve sürdürülebilirlik için nasıl tasarlanacağını inceler.
 
-NOTE: Form models are distinct from Angular's `model()` signal used for component two-way binding. A form model is a writable signal that stores form data, while `model()` creates inputs/outputs for parent/child component communication.
+NOTE: Form modelleri, bileşen çift yönlü bağlama için kullanılan Angular'ın `model()` sinyalinden farklıdır. Form modeli, form verilerini saklayan yazılabilir bir sinyaldir, `model()` ise ebeveyn/alt bileşen iletişimi için girdiler/çıktılar oluşturur.
 
 ## What form models solve
 
-Forms require managing data that changes over time. Without a clear structure, this data can become scattered across component properties, making it difficult to track changes, validate input, or submit data to a server.
+Formlar, zamanla değişen verileri yönetmeyi gerektirir. Net bir yapı olmadan, bu veriler bileşen özellikleri arasında dağılabilir ve bu da değişiklikleri takip etmeyi, girdiyi doğrulamayı veya verileri bir sunucuya göndermeyi zorlaştırır.
 
-Form models solve this by centralizing form data in a single writable signal. When the model updates, the form automatically reflects those changes. When users interact with the form, the model updates accordingly.
+Form modelleri, form verilerini tek bir yazılabilir sinyalde merkezileştirerek bu sorunu çözer. Model güncellendiğinde, form bu değişiklikleri otomatik olarak yansıtır. Kullanıcılar formla etkileşime girdiğinde, model buna göre güncellenir.
 
 ## Creating models
 
-A form model is a writable signal created with Angular's `signal()` function. The signal holds an object that represents your form's data structure.
+Form modeli, Angular'ın `signal()` fonksiyonuyla oluşturulan yazılabilir bir sinyaldir. Sinyal, formunuzun veri yapısını temsil eden bir nesne tutar.
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -36,13 +36,13 @@ export class LoginComponent {
 }
 ```
 
-The [`form()`](api/forms/signals/form) function accepts the model signal and creates a **field tree** - a special object structure that mirrors your model's shape. The field tree is both navigable (access child fields with dot notation like `loginForm.email`) and callable (call a field as a function to access its state).
+[`form()`](api/forms/signals/form) fonksiyonu model sinyalini kabul eder ve bir **alan ağacı** oluşturur -- modelinizin şeklini yansıtan özel bir nesne yapısı. Alan ağacı hem gezinilebilir (nokta gösterimi ile alt alanlara erişim, örn. `loginForm.email`) hem de çağrılabilirdir (durumuna erişmek için bir alanı fonksiyon olarak çağırın).
 
-The `[formField]` directive binds each input element to its corresponding field in the field tree, enabling automatic two-way synchronization between the UI and model.
+`[formField]` direktifi, her girdi öğesini alan ağacındaki karşılık gelen alana bağlayarak kullanıcı arayüzü ile model arasında otomatik çift yönlü senkronizasyon sağlar.
 
 ### Using TypeScript types
 
-While TypeScript infers types from object literals, defining explicit types improves code quality and provides better IntelliSense support.
+TypeScript nesne sabitlerinden türleri çıkarsa da, açık türler tanımlamak kod kalitesini artırır ve daha iyi IntelliSense desteği sağlar.
 
 ```ts
 interface LoginData {
@@ -60,22 +60,22 @@ export class LoginComponent {
 }
 ```
 
-With explicit types, the field tree provides full type safety. Accessing `loginForm.email` is typed as `FieldTree<string>`, and attempting to access a non-existent property results in a compile-time error.
+Açık türlerle, alan ağacı tam tür güvenliği sağlar. `loginForm.email`'e erişim `FieldTree<string>` olarak türlendirilir ve var olmayan bir özelliğe erişme girişimi derleme zamanı hatasına neden olur.
 
 ```ts
-// TypeScript knows this is FieldTree<string>
+// TypeScript bunun FieldTree<string> olduğunu bilir
 const emailField = loginForm.email;
 
-// TypeScript error: Property 'username' does not exist
+// TypeScript hatası: 'username' özelliği mevcut değil
 const usernameField = loginForm.username;
 ```
 
 ### Initializing all fields
 
-Form models should provide initial values for all fields you want to include in the field tree.
+Form modelleri, alan ağacına dahil etmek istediğiniz tüm alanlar için başlangıç değerleri sağlamalıdır.
 
 ```ts {prefer}
-// Good: All fields initialized
+// İyi: Tüm alanlar başlatılmış
 const userModel = signal({
   name: '',
   email: '',
@@ -84,15 +84,15 @@ const userModel = signal({
 ```
 
 ```ts {avoid}
-// Avoid: Missing initial value
+// Kaçının: Eksik başlangıç değeri
 const userModel = signal({
   name: '',
   email: '',
-  // age field is not defined - cannot access userForm.age
+  // age alanı tanımlı değil - userForm.age'e erişilemiyor
 });
 ```
 
-For optional fields, explicitly set them to an empty value or `null`:
+Opsiyonel alanlar için, bunları açıkça boş bir değere veya `null`'a ayarlayın:
 
 ```ts
 interface UserData {
@@ -108,41 +108,41 @@ const userModel = signal<UserData>({
 });
 ```
 
-HELPFUL: Native text controls like `<input type=text>` and `<textarea>` don't support `null`, use `''` to represent an empty value.
+HELPFUL: `<input type=text>` ve `<textarea>` gibi yerel metin kontrolleri `null`'ı desteklemez, boş bir değeri temsil etmek için `''` kullanın.
 
-Fields set to `undefined` are excluded from the field tree. A model with `{value: undefined}` behaves identically to `{}` - accessing the field returns `undefined` rather than a `FieldTree`.
+`undefined` olarak ayarlanan alanlar alan ağacından hariç tutulur. `{value: undefined}` içeren bir model `{}` ile aynı şekilde davranır -- alana erişim bir `FieldTree` yerine `undefined` döndürür.
 
 ## Reading model values
 
-You can access form values in two ways: directly from the model signal, or through individual fields. Each approach serves a different purpose.
+Form değerlerine iki şekilde erişebilirsiniz: doğrudan model sinyalinden veya bireysel alanlar aracılığıyla. Her yaklaşım farklı bir amaca hizmet eder.
 
 ### Reading from the model
 
-Access the model signal when you need the complete form data, such as during form submission:
+Form gönderimi sırasında olduğu gibi tam form verilerine ihtiyacınız olduğunda model sinyaline erişin:
 
 ```ts
 async onSubmit() {
   const formData = this.loginModel();
   console.log(formData.email, formData.password);
 
-  // Send to server
+  // Sunucuya gönder
   await this.authService.login(formData);
 }
 ```
 
-The model signal returns the entire data object, making it ideal for operations that work with the complete form state.
+Model sinyali tüm veri nesnesini döndürür ve bu da onu tam form durumuyla çalışan işlemler için ideal kılar.
 
 ### Reading from field state
 
-Each field in the field tree is a function. Calling a field returns a `FieldState` object containing reactive signals for the field's value, validation status, and interaction state.
+Alan ağacındaki her alan bir fonksiyondur. Bir alanı çağırmak, alanın değeri, doğrulama durumu ve etkileşim durumu için reaktif sinyaller içeren bir `FieldState` nesnesi döndürür.
 
-Access field state when working with individual fields in templates or reactive computations:
+Şablonlarda veya reaktif hesaplamalarda bireysel alanlarla çalışırken alan durumuna erişin:
 
 ```angular-ts
 @Component({
   template: `
-    <p>Current email: {{ loginForm.email().value() }}</p>
-    <p>Password length: {{ passwordLength() }}</p>
+    <p>Mevcut e-posta: {{ loginForm.email().value() }}</p>
+    <p>Şifre uzunluğu: {{ passwordLength() }}</p>
   `,
 })
 export class LoginComponent {
@@ -155,18 +155,18 @@ export class LoginComponent {
 }
 ```
 
-Field state provides reactive signals for each field's value, making it suitable for displaying field-specific information or creating derived state.
+Alan durumu, her alanın değeri için reaktif sinyaller sağlar ve bu da onu alana özgü bilgileri görüntülemek veya türetilmiş durum oluşturmak için uygun kılar.
 
-TIP: Field state includes many more signals beyond `value()`, such as validation state (e.g., valid, invalid, errors), interaction tracking (e.g., touched, dirty), and visibility (e.g., hidden, disabled).
+TIP: Alan durumu `value()` ötesinde birçok sinyal daha içerir; doğrulama durumu (örn. valid, invalid, errors), etkileşim takibi (örn. touched, dirty) ve görünürlük (örn. hidden, disabled) gibi.
 
 <!-- TODO: UNCOMMENT BELOW WHEN GUIDE IS AVAILABLE -->
-<!-- See the [Field State Management guide](guide/forms/signals/field-state-management) for complete coverage. -->
+<!-- Tam kapsam için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın. -->
 
 ## Updating form models programmatically
 
 ### Replacing form models with `set()`
 
-Use `set()` on the form model to replace the entire value:
+Tüm değeri değiştirmek için form modelinde `set()` kullanın:
 
 ```ts
 loadUserData() {
@@ -186,11 +186,11 @@ resetForm() {
 }
 ```
 
-This approach works well when loading data from an API or resetting the entire form.
+Bu yaklaşım, bir API'den veri yüklerken veya tüm formu sıfırlarken iyi çalışır.
 
 ### Update a single field directly with `set()` or `update()`
 
-Use `set()` on individual field values to directly update the field state:
+Alan durumunu doğrudan güncellemek için bireysel alan değerlerinde `set()` kullanın:
 
 ```ts
 clearEmail() {
@@ -202,11 +202,11 @@ incrementAge() {
 }
 ```
 
-These are also known as "field-level updates." They automatically propagate to the model signal and keep both in sync.
+Bunlar "alan düzeyinde güncellemeler" olarak da bilinir. Model sinyaline otomatik olarak yayılır ve her ikisini de senkronize tutar.
 
 ### Example: Loading data from an API
 
-A common pattern involves fetching data and populating the model:
+Yaygın bir kalıp, veri çekmeyi ve modeli doldurmayı içerir:
 
 ```ts
 export class UserProfileComponent {
@@ -230,31 +230,31 @@ export class UserProfileComponent {
 }
 ```
 
-The form fields automatically update when the model changes, displaying the fetched data without additional code.
+Model değiştiğinde form alanları otomatik olarak güncellenir ve ek kod olmadan çekilen verileri görüntüler.
 
 ## Two-way data binding
 
-The `[formField]` directive creates automatic two-way synchronization between the model, form state, and UI.
+`[formField]` direktifi, model, form durumu ve kullanıcı arayüzü arasında otomatik çift yönlü senkronizasyon oluşturur.
 
 ### How data flows
 
-Changes flow bidirectionally:
+Değişiklikler çift yönlü olarak akar:
 
-**User input → Model:**
+**Kullanıcı girdisi -> Model:**
 
-1. User types in an input element
-2. The `[formField]` directive detects the change
-3. Field state updates
-4. Model signal updates
+1. Kullanıcı bir girdi öğesine yazar
+2. `[formField]` direktifi değişikliği algılar
+3. Alan durumu güncellenir
+4. Model sinyali güncellenir
 
-**Programmatic update → UI:**
+**Programatik güncelleme -> Kullanıcı Arayüzü:**
 
-1. Code updates the model with `set()` or `update()`
-2. Model signal notifies subscribers
-3. Field state updates
-4. The `[formField]` directive updates the input element
+1. Kod modeli `set()` veya `update()` ile günceller
+2. Model sinyali aboneleri bilgilendirir
+3. Alan durumu güncellenir
+4. `[formField]` direktifi girdi öğesini günceller
 
-This synchronization happens automatically. You don't write subscriptions or event handlers to keep the model and UI in sync.
+Bu senkronizasyon otomatik olarak gerçekleşir. Modeli ve kullanıcı arayüzünü senkronize tutmak için abonelik veya olay yöneticisi yazmazsınız.
 
 ### Example: Both directions
 
@@ -262,8 +262,8 @@ This synchronization happens automatically. You don't write subscriptions or eve
 @Component({
   template: `
     <input type="text" [formField]="userForm.name" />
-    <button (click)="setName('Bob')">Set Name to Bob</button>
-    <p>Current name: {{ userModel().name }}</p>
+    <button (click)="setName('Bob')">Adı Bob Olarak Ayarla</button>
+    <p>Mevcut ad: {{ userModel().name }}</p>
   `,
 })
 export class UserComponent {
@@ -272,23 +272,23 @@ export class UserComponent {
 
   setName(name: string) {
     this.userForm.name().value.set(name);
-    // Input automatically displays 'Bob'
+    // Girdi otomatik olarak 'Bob' görüntüler
   }
 }
 ```
 
-When the user types in the input, `userModel().name` updates. When the button is clicked, the input value changes to "Bob". No manual synchronization code is required.
+Kullanıcı girdiye yazdığında, `userModel().name` güncellenir. Düğmeye tıklandığında, girdi değeri "Bob" olarak değişir. Manuel senkronizasyon kodu gerekmez.
 
 ## Model structure patterns
 
-Form models can be flat objects or contain nested objects and arrays. The structure you choose affects how you access fields and organize validation.
+Form modelleri düz nesneler olabilir veya iç içe nesneler ve diziler içerebilir. Seçtiğiniz yapı, alanlara nasıl eriştiğinizi ve doğrulamayı nasıl organize ettiğinizi etkiler.
 
 ### Flat vs nested models
 
-Flat form models keep all fields at the top level:
+Düz form modelleri tüm alanları en üst seviyede tutar:
 
 ```ts
-// Flat structure
+// Düz yapı
 const userModel = signal({
   name: '',
   email: '',
@@ -299,10 +299,10 @@ const userModel = signal({
 });
 ```
 
-Nested models group related fields:
+İç içe modeller ilişkili alanları gruplar:
 
 ```ts
-// Nested structure
+// İç içe yapı
 const userModel = signal({
   name: '',
   email: '',
@@ -315,21 +315,21 @@ const userModel = signal({
 });
 ```
 
-**Use flat structures when:**
+**Düz yapıları şu durumlarda kullanın:**
 
-- Fields don't have clear conceptual groupings
-- You want simpler field access (`userForm.city` vs `userForm.address.city`)
-- Validation rules span multiple potential groups
+- Alanların net kavramsal gruplandırmaları yoksa
+- Daha basit alan erişimi istiyorsanız (`userForm.city` vs `userForm.address.city`)
+- Doğrulama kuralları birden fazla olası grubu kapsıyorsa
 
-**Use nested structures when:**
+**İç içe yapıları şu durumlarda kullanın:**
 
-- Fields form a clear conceptual group (like an address)
-- The grouped data matches your API structure
-- You want to validate the group as a unit
+- Alanlar net bir kavramsal grup oluşturuyorsa (adres gibi)
+- Gruplanmış veriler API yapınızla eşleşiyorsa
+- Grubu bir birim olarak doğrulamak istiyorsanız
 
 ### Working with nested objects
 
-You can access nested fields by following the object path:
+Nesne yolunu takip ederek iç içe alanlara erişebilirsiniz:
 
 ```ts
 const userModel = signal({
@@ -345,12 +345,12 @@ const userModel = signal({
 
 const userForm = form(userModel);
 
-// Access nested fields
+// İç içe alanlara erişim
 userForm.profile.firstName; // FieldTree<string>
 userForm.settings.theme; // FieldTree<string>
 ```
 
-In templates, you bind nested fields the same way as top-level fields:
+Şablonlarda, iç içe alanları üst düzey alanlarla aynı şekilde bağlarsınız:
 
 ```angular-ts
 @Component({
@@ -368,7 +368,7 @@ In templates, you bind nested fields the same way as top-level fields:
 
 ### Working with arrays
 
-Models can include arrays for collections of items:
+Modeller, öğe koleksiyonları için diziler içerebilir:
 
 ```ts
 const orderModel = signal({
@@ -378,18 +378,18 @@ const orderModel = signal({
 
 const orderForm = form(orderModel);
 
-// Access array items by index
+// Dizi öğelerine dizine göre erişim
 orderForm.items[0].product; // FieldTree<string>
 orderForm.items[0].quantity; // FieldTree<number>
 ```
 
-Array items containing objects automatically receive tracking identities, which helps maintain field state even when items change position in the array. This ensures validation state and user interactions persist correctly when arrays are reordered.
+Nesne içeren dizi öğeleri otomatik olarak takip kimlikleri alır ve bu, öğeler dizide konum değiştirdiğinde bile alan durumunu korumanıza yardımcı olur. Bu, diziler yeniden sıralandığında doğrulama durumunun ve kullanıcı etkileşimlerinin doğru şekilde korunmasını sağlar.
 
-<!-- TBD: For dynamic arrays and complex array operations, see the [Working with arrays guide](guide/forms/signals/arrays). -->
+<!-- TBD: Dinamik diziler ve karmaşık dizi işlemleri için [Dizilerle çalışma kılavuzuna](guide/forms/signals/arrays) bakın. -->
 
 ## Next steps
 
-This guide covered creating models and updating values. Related guides explore other aspects of Signal Forms:
+Bu kılavuz, modeller oluşturmayı ve değerleri güncellemeyi ele aldı. İlgili kılavuzlar, Signal Forms'un diğer yönlerini inceler:
 
 <!-- TODO: UNCOMMENT WHEN THE GUIDES ARE AVAILABLE -->
 <docs-pill-row>

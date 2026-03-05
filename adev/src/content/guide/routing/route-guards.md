@@ -1,36 +1,36 @@
 # Control route access with guards
 
-CRITICAL: Never rely on client-side guards as the sole source of access control. All JavaScript that runs in a web browser can be modified by the user running the browser. Always enforce user authorization server-side, in addition to any client-side guards.
+CRITICAL: İstemci tarafı koruyucularına erişim kontrolünün tek kaynağı olarak asla güvenmeyin. Web tarayıcısında çalışan tüm JavaScript, tarayıcıyı çalıştıran kullanıcı tarafından değiştirilebilir. İstemci tarafı koruyucularına ek olarak, kullanıcı yetkilendirmesini her zaman sunucu tarafında uygulayın.
 
-Route guards are functions that control whether a user can navigate to or leave a particular route. They are like checkpoints that manage whether a user can access specific routes. Common examples of using route guards include authentication and access control.
+Rota koruyucuları, bir kullanıcının belirli bir rotaya gidip gidemeyeceğini veya rotadan ayrılıp ayrılamayacağını kontrol eden fonksiyonlardır. Bunlar, kullanıcının belirli rotalara erişip erişemeyeceğini yöneten kontrol noktaları gibidir. Rota koruyucularının yaygın kullanım örnekleri arasında kimlik doğrulama ve erişim kontrolü yer alır.
 
 ## Creating a route guard
 
-You can generate a route guard using the Angular CLI:
+Angular CLI kullanarak bir rota koruyucusu oluşturabilirsiniz:
 
 ```bash
 ng generate guard CUSTOM_NAME
 ```
 
-This will prompt you to select which [type of route guard](#types-of-route-guards) to use and then create the corresponding `CUSTOM_NAME-guard.ts` file.
+Bu, hangi [rota koruyucusu türünü](#types-of-route-guards) kullanacağınızı seçmenizi isteyecek ve ardından ilgili `CUSTOM_NAME-guard.ts` dosyasını oluşturacaktır.
 
-TIP: You can also create a route guard manually by creating a separate TypeScript file in your Angular project. Developers typically add a suffix of `-guard.ts` in the filename to distinguish it from other files.
+TIP: Angular projenizde ayrı bir TypeScript dosyası oluşturarak da elle bir rota koruyucusu oluşturabilirsiniz. Geliştiriciler genellikle dosyayı diğer dosyalardan ayırt etmek için dosya adına `-guard.ts` son eki ekler.
 
 ## Route guard return types
 
-All route guards share the same possible return types. This gives you flexibility in how you control navigation:
+Tüm rota koruyucuları aynı olası dönüş türlerini paylaşır. Bu, navigasyonu nasıl kontrol ettiğiniz konusunda esneklik sağlar:
 
-| Return types                    | Description                                                                       |
-| ------------------------------- | --------------------------------------------------------------------------------- |
-| `boolean`                       | `true` allows navigation, `false` blocks it (see note for `CanMatch` route guard) |
-| `UrlTree` or `RedirectCommand`  | Redirects to another route instead of blocking                                    |
-| `Promise<T>` or `Observable<T>` | Router uses the first emitted value and then unsubscribes                         |
+| Dönüş türleri                     | Açıklama                                                                                |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| `boolean`                         | `true` navigasyona izin verir, `false` engeller (`CanMatch` koruyucusu için nota bakın) |
+| `UrlTree` veya `RedirectCommand`  | Engellemek yerine başka bir rotaya yönlendirir                                          |
+| `Promise<T>` veya `Observable<T>` | Yönlendirici ilk yayılan değeri kullanır ve ardından abonelikten çıkar                  |
 
-NOTE: `CanMatch` behaves differently— when it returns `false`, Angular tries other matching routes instead of completely blocking navigation.
+NOTE: `CanMatch` farklı davranır — `false` döndürdüğünde, Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
 
 ## Types of route guards
 
-Angular provides four types of route guards, each serving different purposes:
+Angular, her biri farklı amaçlara hizmet eden dört tür rota koruyucusu sağlar:
 
 <docs-pill-row>
   <docs-pill href="#canactivate" title="CanActivate"/>
@@ -39,18 +39,18 @@ Angular provides four types of route guards, each serving different purposes:
   <docs-pill href="#canmatch" title="CanMatch"/>
 </docs-pill-row>
 
-All the guards have access to [services provided at the route level](guide/di/defining-dependency-providers#route-providers) as well as route-specific information via the `route` argument.
+Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
 ### CanActivate
 
-The `CanActivate` guard determines whether a user can access a route. It is most commonly used for authentication and authorization.
+`CanActivate` koruyucusu, bir kullanıcının bir rotaya erişip erişemeyeceğini belirler. En yaygın olarak kimlik doğrulama ve yetkilendirme için kullanılır.
 
-It has access to the following default arguments:
+Aşağıdaki varsayılan argümanlara erişimi vardır:
 
-- `route`: `ActivatedRouteSnapshot` - Contains information about the route being activated
-- `state`: `RouterStateSnapshot` - Contains the router's current state
+- `route`: `ActivatedRouteSnapshot` - Etkinleştirilen rota hakkında bilgi içerir
+- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-It can return the [standard return guard types](#route-guard-return-types).
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const authGuard: CanActivateFn = (
@@ -62,20 +62,20 @@ export const authGuard: CanActivateFn = (
 };
 ```
 
-Tip: If you need to redirect the user, return a [`URLTree`](api/router/UrlTree) or [`RedirectCommand`](api/router/RedirectCommand). Do **not** return `false` and then programmatically `navigate` the user.
+Tip: Kullanıcıyı yönlendirmeniz gerekiyorsa, bir [`URLTree`](api/router/UrlTree) veya [`RedirectCommand`](api/router/RedirectCommand) döndürün. `false` döndürüp ardından programatik olarak kullanıcıyı `navigate` etmeyin.
 
-For more information, check out the [API docs for CanActivateFn](api/router/CanActivateFn).
+Daha fazla bilgi için [CanActivateFn API dokümanlarına](api/router/CanActivateFn) göz atın.
 
 ### CanActivateChild
 
-The `CanActivateChild` guard determines whether a user can access child routes of a particular parent route. This is useful when you want to protect an entire section of nested routes. In other words, `canActivateChild` runs for _all_ children. If there is a child component with another child component underneath of it, `canActivateChild` will run once for both components.
+`CanActivateChild` koruyucusu, bir kullanıcının belirli bir üst rotanın alt rotalarına erişip erişemeyeceğini belirler. Bu, iç içe rotaların tüm bir bölümünü korumak istediğinizde kullanışlıdır. Başka bir deyişle, `canActivateChild` _tüm_ alt rotalar için çalışır. Altında başka bir alt bileşen bulunan bir alt bileşen varsa, `canActivateChild` her iki bileşen için de bir kez çalışır.
 
-It has access to the following default arguments:
+Aşağıdaki varsayılan argümanlara erişimi vardır:
 
-- `childRoute`: `ActivatedRouteSnapshot` - Contains information about the "future" snapshot (i.e., state the router is attempting to navigate to) of the child route being activated
-- `state`: `RouterStateSnapshot` - Contains the router's current state
+- `childRoute`: `ActivatedRouteSnapshot` - Etkinleştirilen alt rotanın "gelecek" anlık görüntüsü (yani yönlendiricinin navigasyon yapmaya çalıştığı durum) hakkında bilgi içerir
+- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-It can return the [standard return guard types](#route-guard-return-types).
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const adminChildGuard: CanActivateChildFn = (
@@ -87,20 +87,20 @@ export const adminChildGuard: CanActivateChildFn = (
 };
 ```
 
-For more information, check out the [API docs for CanActivateChildFn](api/router/CanActivateChildFn).
+Daha fazla bilgi için [CanActivateChildFn API dokümanlarına](api/router/CanActivateChildFn) göz atın.
 
 ### CanDeactivate
 
-The `CanDeactivate` guard determines whether a user can leave a route. A common scenario is preventing navigation away from unsaved forms.
+`CanDeactivate` koruyucusu, bir kullanıcının bir rotadan ayrılıp ayrılamayacağını belirler. Yaygın bir senaryo, kaydedilmemiş formlardan navigasyonu önlemektir.
 
-It has access to the following default arguments:
+Aşağıdaki varsayılan argümanlara erişimi vardır:
 
-- `component`: `T` - The component instance being deactivated
-- `currentRoute`: `ActivatedRouteSnapshot` - Contains information about the current route
-- `currentState`: `RouterStateSnapshot` - Contains the current router state
-- `nextState`: `RouterStateSnapshot` - Contains the next router state being navigated to
+- `component`: `T` - Devre dışı bırakılan bileşen örneği
+- `currentRoute`: `ActivatedRouteSnapshot` - Geçerli rota hakkında bilgi içerir
+- `currentState`: `RouterStateSnapshot` - Geçerli yönlendirici durumunu içerir
+- `nextState`: `RouterStateSnapshot` - Navigasyon yapılan sonraki yönlendirici durumunu içerir
 
-It can return the [standard return guard types](#route-guard-return-types).
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const unsavedChangesGuard: CanDeactivateFn<Form> = (
@@ -115,18 +115,18 @@ export const unsavedChangesGuard: CanDeactivateFn<Form> = (
 };
 ```
 
-For more information, check out the [API docs for CanDeactivateFn](api/router/CanDeactivateFn).
+Daha fazla bilgi için [CanDeactivateFn API dokümanlarına](api/router/CanDeactivateFn) göz atın.
 
 ### CanMatch
 
-The `CanMatch` guard determines whether a route can be matched during path matching. Unlike other guards, rejection falls through to try other matching routes instead of blocking navigation entirely. This can be useful for feature flags, A/B testing, or conditional route loading.
+`CanMatch` koruyucusu, yol eşleştirme sırasında bir rotanın eşleşip eşleşemeyeceğini belirler. Diğer koruyuculardan farklı olarak, reddedilme navigasyonu tamamen engellemek yerine diğer eşleşen rotaları denemeye geçer. Bu, özellik bayrakları, A/B testi veya koşullu rota yüklemesi için yararlı olabilir.
 
-It has access to the following default arguments:
+Aşağıdaki varsayılan argümanlara erişimi vardır:
 
-- `route`: `Route` - The route configuration being evaluated
-- `segments`: `UrlSegment[]` - The URL segments that have not been consumed by previous parent route evaluations
+- `route`: `Route` - Değerlendirilen rota yapılandırması
+- `segments`: `UrlSegment[]` - Önceki üst rota değerlendirmeleri tarafından tüketilmemiş URL segmentleri
 
-It can return the [standard return guard types](#route-guard-return-types), but when it returns `false`, Angular tries other matching routes instead of completely blocking navigation.
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir, ancak `false` döndürdüğünde Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
 
 ```ts
 export const featureToggleGuard: CanMatchFn = (route: Route, segments: UrlSegment[]) => {
@@ -135,7 +135,7 @@ export const featureToggleGuard: CanMatchFn = (route: Route, segments: UrlSegmen
 };
 ```
 
-It can also allow you to use different components for the same path.
+Aynı yol için farklı bileşenler kullanmanıza da olanak tanır.
 
 ```ts
 // 📄 routes.ts
@@ -153,15 +153,15 @@ const routes: Routes = [
 ];
 ```
 
-In this example, when the user visits `/dashboard`, the first one that matches the correct guard will be used.
+Bu örnekte, kullanıcı `/dashboard` adresini ziyaret ettiğinde, doğru koruyucuyla eşleşen ilk rota kullanılır.
 
-For more information, check out the [API docs for CanMatchFn](api/router/CanMatchFn).
+Daha fazla bilgi için [CanMatchFn API dokümanlarına](api/router/CanMatchFn) göz atın.
 
 ## Applying guards to routes
 
-Once you've created your route guards, you need to configure them in your route definitions.
+Rota koruyucularınızı oluşturduktan sonra, bunları rota tanımlarınızda yapılandırmanız gerekir.
 
-Guards are specified as arrays in the route configuration in order to allow you to apply multiple guards to a single route. They are executed in the order they appear in the array.
+Koruyucular, tek bir rotaya birden fazla koruyucu uygulamanıza olanak tanımak için rota yapılandırmasında dizi olarak belirtilir. Dizide göründükleri sırayla çalıştırılırlar.
 
 ```ts
 import {Routes} from '@angular/router';

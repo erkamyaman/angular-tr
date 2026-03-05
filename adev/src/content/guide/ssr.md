@@ -1,32 +1,32 @@
 # Server and hybrid rendering
 
-Angular ships all applications as client-side rendered (CSR) by default. While this approach delivers an initial payload that's lightweight, it introduces trade-offs including slower load times, degraded performance metrics, and higher resource demands since the user's device performs most of the computations. As a result, many applications achieve significant performance improvements by integrating server-side rendering (SSR) into a hybrid rendering strategy.
+Angular, tüm uygulamaları varsayılan olarak istemci tarafında render edilmiş (CSR) olarak gönderir. Bu yaklaşım hafif bir başlangıç yükü sağlarken, daha yavaş yükleme süreleri, düşük performans metrikleri ve daha yüksek kaynak talepleri gibi ödünler getirir; çünkü kullanıcının cihazı hesaplamaların çoğunu yapar. Sonuç olarak, birçok uygulama sunucu tarafı render'ı (SSR) hibrit bir render stratejisine entegre ederek önemli performans iyileştirmeleri elde eder.
 
 ## What is hybrid rendering?
 
-Hybrid rendering allows developers to leverage the benefits of server-side rendering (SSR), pre-rendering (also known as "static site generation" or SSG) and client-side rendering (CSR) to optimize your Angular application. It gives you fine-grained control over how the different parts of your app are rendered to give your users the best experience possible.
+Hibrit render, geliştiricilerin Angular uygulamanızı optimize etmek için sunucu tarafı render (SSR), ön-render (aynı zamanda "statik site oluşturma" veya SSG olarak bilinir) ve istemci tarafı render (CSR) avantajlarından yararlanmasına olanak tanır. Uygulamanızın farklı bölümlerinin nasıl render edileceği üzerinde ayrıntılı kontrol sağlayarak kullanıcılarınıza mümkün olan en iyi deneyimi sunar.
 
 ## Setting up hybrid rendering
 
-You can create a **new** project with hybrid rendering by using the server-side rendering flag (i.e., `--ssr`) with the Angular CLI `ng new` command:
+`--ssr` bayrağını Angular CLI `ng new` komutuyla kullanarak hibrit render ile **yeni** bir proje oluşturabilirsiniz:
 
 ```shell
 ng new --ssr
 ```
 
-You can also enable hybrid rendering by adding server-side rendering to an existing project with the `ng add` command:
+Mevcut bir projeye `ng add` komutuyla sunucu tarafı render ekleyerek de hibrit render'ı etkinleştirebilirsiniz:
 
 ```shell
 ng add @angular/ssr
 ```
 
-NOTE: By default, Angular prerenders your entire application and generates a server file. To disable this and create a fully static app, set `outputMode` to `static`. To enable SSR, update the server routes to use `RenderMode.Server`. For more details, see [`Server routing`](#server-routing) and [`Generate a fully static application`](#generate-a-fully-static-application).
+NOTE: Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve bir sunucu dosyası oluşturur. Bunu devre dışı bırakıp tamamen statik bir uygulama oluşturmak için `outputMode`'u `static` olarak ayarlayın. SSR'yi etkinleştirmek için sunucu rotalarını `RenderMode.Server` kullanacak şekilde güncelleyin. Daha fazla ayrıntı için [`Server routing`](#server-routing) ve [`Generate a fully static application`](#generate-a-fully-static-application) bölümlerine bakın.
 
 ## Server routing
 
 ### Configuring server routes
 
-You can create a server route config by declaring an array of [`ServerRoute`](api/ssr/ServerRoute 'API reference') objects. This configuration typically lives in a file named `app.routes.server.ts`.
+Bir [`ServerRoute`](api/ssr/ServerRoute 'API reference') nesneleri dizisi bildirerek sunucu rota yapılandırması oluşturabilirsiniz. Bu yapılandırma genellikle `app.routes.server.ts` adlı bir dosyada bulunur.
 
 ```typescript
 // app.routes.server.ts
@@ -52,7 +52,7 @@ export const serverRoutes: ServerRoute[] = [
 ];
 ```
 
-You can add this config to your application with [`provideServerRendering`](api/ssr/provideServerRendering 'API reference') using the [`withRoutes`](api/ssr/withRoutes 'API reference') function:
+Bu yapılandırmayı [`withRoutes`](api/ssr/withRoutes 'API reference') fonksiyonunu kullanarak [`provideServerRendering`](api/ssr/provideServerRendering 'API reference') ile uygulamanıza ekleyebilirsiniz:
 
 ```typescript
 import {provideServerRendering, withRoutes} from '@angular/ssr';
@@ -67,7 +67,7 @@ const serverConfig: ApplicationConfig = {
 };
 ```
 
-When using the [App shell pattern](ecosystem/service-workers/app-shell), you must specify the component to be used as the app shell for client-side rendered routes. To do this, use the [`withAppShell`](api/ssr/withAppShell 'API reference') feature:
+[App shell kalıbını](ecosystem/service-workers/app-shell) kullanırken, istemci tarafında render edilen rotalar için app shell olarak kullanılacak bileşeni belirtmeniz gerekir. Bunu yapmak için [`withAppShell`](api/ssr/withAppShell 'API reference') özelliğini kullanın:
 
 ```typescript
 import {provideServerRendering, withRoutes, withAppShell} from '@angular/ssr';
@@ -83,59 +83,59 @@ const serverConfig: ApplicationConfig = {
 
 ### Rendering modes
 
-The server routing configuration lets you specify how each route in your application should render by setting a [`RenderMode`](api/ssr/RenderMode 'API reference'):
+Sunucu rota yapılandırması, uygulamanızdaki her rotanın nasıl render edileceğini bir [`RenderMode`](api/ssr/RenderMode 'API reference') ayarlayarak belirtmenize olanak tanır:
 
 | Rendering mode      | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Server (SSR)**    | Renders the application on the server for each request, sending a fully populated HTML page to the browser. |
-| **Client (CSR)**    | Renders the application in the browser. This is the default Angular behavior.                               |
-| **Prerender (SSG)** | Prerenders the application at build time, generating static HTML files for each route.                      |
+| **Server (SSR)**    | Her istek için uygulamayı sunucuda render eder ve tarayıcıya tamamen doldurulmuş bir HTML sayfası gönderir. |
+| **Client (CSR)**    | Uygulamayı tarayıcıda render eder. Bu, varsayılan Angular davranışıdır.                                     |
+| **Prerender (SSG)** | Derleme zamanında uygulamayı ön-render eder ve her rota için statik HTML dosyaları oluşturur.               |
 
 #### Choosing a rendering mode
 
-Each rendering mode has different benefits and drawbacks. You can choose rendering modes based on the specific needs of your application.
+Her render modunun farklı avantajları ve dezavantajları vardır. Uygulamanızın belirli ihtiyaçlarına göre render modları seçebilirsiniz.
 
 ##### Client-side rendering (CSR)
 
-Client-side rendering has the simplest development model, as you can write code that assumes it always runs in a web browser. This lets you use a wide range of client-side libraries that also assume they run in a browser.
+İstemci tarafı render, en basit geliştirme modeline sahiptir çünkü her zaman bir web tarayıcısında çalıştığını varsayan kod yazabilirsiniz. Bu, tarayıcıda çalıştığını varsayan geniş bir istemci tarafı kütüphane yelpazesi kullanmanızı sağlar.
 
-Client-side rendering generally has worse performance than other rendering modes, as it must download, parse, and execute your page's JavaScript before the user can see any rendered content. If your page fetches more data from the server as it renders, users also have to wait for those additional requests before they can view the complete content.
+İstemci tarafı render genellikle diğer render modlarından daha kötü performansa sahiptir çünkü kullanıcı render edilmiş herhangi bir içeriği görmeden önce sayfanızın JavaScript'ini indirmesi, ayrıştırması ve çalıştırması gerekir. Sayfanız render sırasında sunucudan daha fazla veri alıyorsa, kullanıcılar tam içeriği görüntülemek için bu ek istekleri de beklemek zorundadır.
 
-If your page is indexed by search crawlers, client-side rendering may negatively affect search engine optimization (SEO), as search crawlers have limits to how much JavaScript they execute when indexing a page.
+Sayfanız arama motorları tarafından dizine ekleniyorsa, istemci tarafı render arama motoru optimizasyonunu (SEO) olumsuz etkileyebilir çünkü arama motorlarının bir sayfayı dizine eklerken çalıştırdıkları JavaScript miktarında sınırlamalar vardır.
 
-When client-side rendering, the server does not need to do any work to render a page beyond serving static JavaScript assets. You may consider this factor if server cost is a concern.
+İstemci tarafı render sırasında, sunucunun statik JavaScript varlıkları sunmak dışında bir sayfa render etmek için herhangi bir iş yapması gerekmez. Sunucu maliyeti bir endişeyse bu faktörü değerlendirebilirsiniz.
 
-Applications that support installable, offline experiences with [service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) can rely on client-side rendering without needing to communicate with a server.
+[Service worker'lar](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) ile kurulabilir, çevrimdışı deneyimleri destekleyen uygulamalar, bir sunucuyla iletişim kurmaya gerek kalmadan istemci tarafı render'a güvenebilir.
 
 ##### Server-side rendering (SSR)
 
-Server-side rendering offers faster page loads than client-side rendering. Instead of waiting for JavaScript to download and run, the server directly renders an HTML document upon receiving a request from the browser. The user experiences only the latency necessary for the server to fetch data and render the requested page. This mode also eliminates the need for additional network requests from the browser, as your code can fetch data during rendering on the server.
+Sunucu tarafı render, istemci tarafı render'a göre daha hızlı sayfa yüklemeleri sunar. JavaScript'in indirilmesini ve çalıştırılmasını beklemek yerine, sunucu tarayıcıdan bir istek aldığında doğrudan bir HTML belgesi render eder. Kullanıcı yalnızca sunucunun veri getirmesi ve istenen sayfayı render etmesi için gereken gecikmeyi yaşar. Bu mod ayrıca tarayıcıdan ek ağ istekleri yapma ihtiyacını da ortadan kaldırır çünkü kodunuz sunucuda render sırasında veri getirebilir.
 
-Server-side rendering generally has excellent search engine optimization (SEO), as search crawlers receive a fully rendered HTML document.
+Sunucu tarafı render genellikle mükemmel arama motoru optimizasyonuna (SEO) sahiptir çünkü arama motorları tamamen render edilmiş bir HTML belgesi alır.
 
-Server-side rendering requires you to author code that does not strictly depend on browser APIs and limits your selection of JavaScript libraries that assume they run in a browser.
+Sunucu tarafı render, tarayıcı API'lerine kesinlikle bağımlı olmayan kod yazmanızı gerektirir ve tarayıcıda çalıştığını varsayan JavaScript kütüphanesi seçiminizi sınırlar.
 
-When server-side rendering, your server runs Angular to produce an HTML response for every request which may increase server hosting costs.
+Sunucu tarafı render sırasında, sunucunuz her istek için bir HTML yanıtı üretmek üzere Angular'ı çalıştırır ve bu da sunucu barındırma maliyetlerini artırabilir.
 
 ##### Build-time prerendering
 
-Prerendering offers faster page loads than both client-side rendering and server-side rendering. Because prerendering creates HTML documents at _build-time_, the server can directly respond to requests with the static HTML document without any additional work.
+Ön-render, hem istemci tarafı render hem de sunucu tarafı render'a göre daha hızlı sayfa yüklemeleri sunar. Ön-render, HTML belgelerini _derleme zamanında_ oluşturduğundan, sunucu herhangi bir ek iş yapmadan isteklere doğrudan statik HTML belgesiyle yanıt verebilir.
 
-Prerendering requires that all information necessary to render a page is available at _build-time_. This means that prerendered pages cannot include any data to the specific user loading the page. Prerendering is primarily useful for pages that are the same for all users of your application.
+Ön-render, bir sayfayı render etmek için gerekli tüm bilgilerin _derleme zamanında_ mevcut olmasını gerektirir. Bu, ön-render edilmiş sayfaların sayfayı yükleyen belirli kullanıcıya ait herhangi bir veri içeremeyeceği anlamına gelir. Ön-render, temel olarak uygulamanızın tüm kullanıcıları için aynı olan sayfalar için kullanışlıdır.
 
-Because prerendering occurs at build-time, it may add significant time to your production builds. Using [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') to produce a large number of HTML documents may affect the total file size of your deployments, and thus lead to slower deployments.
+Ön-render derleme zamanında gerçekleştiğinden, üretim derlemelerinize önemli süre ekleyebilir. Çok sayıda HTML belgesi üretmek için [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') kullanmak, dağıtımlarınızın toplam dosya boyutunu etkileyebilir ve dolayısıyla daha yavaş dağıtımlara yol açabilir.
 
-Prerendering generally has excellent search engine optimization (SEO), as search crawlers receive a fully rendered HTML document.
+Ön-render genellikle mükemmel arama motoru optimizasyonuna (SEO) sahiptir çünkü arama motorları tamamen render edilmiş bir HTML belgesi alır.
 
-Prerendering requires you to author code that does not strictly depend on browser APIs and limits your selection of JavaScript libraries that assume they run in a browser.
+Ön-render, tarayıcı API'lerine kesinlikle bağımlı olmayan kod yazmanızı gerektirir ve tarayıcıda çalıştığını varsayan JavaScript kütüphanesi seçiminizi sınırlar.
 
-Prerendering incurs extremely little overhead per server request, as your server responds with static HTML documents. Static files are also easily cached by Content Delivery Networks (CDNs), browsers, and intermediate caching layers for even faster subsequent page loads. Fully static sites can also be deployed solely through a CDN or static file server, eliminating the need to maintain a custom server runtime for your application. This enhances scalability by offloading work from an application web server, making it particularly beneficial for high-traffic applications.
+Ön-render, sunucu isteği başına son derece az ek yük getirir çünkü sunucunuz statik HTML belgeleriyle yanıt verir. Statik dosyalar ayrıca daha hızlı sonraki sayfa yüklemeleri için İçerik Dağıtım Ağları (CDN'ler), tarayıcılar ve ara önbellekleme katmanları tarafından kolayca önbelleğe alınabilir. Tamamen statik siteler yalnızca bir CDN veya statik dosya sunucusu aracılığıyla da dağıtılabilir ve uygulamanız için özel bir sunucu çalışma zamanı sürdürme ihtiyacını ortadan kaldırır. Bu, bir uygulama web sunucusundan işi boşaltarak ölçeklenebilirliği artırır ve özellikle yüksek trafikli uygulamalar için faydalı olur.
 
-NOTE: When using Angular service worker, the first request is server-rendered, but all subsequent requests are handled by the service worker and rendered client-side.
+NOTE: Angular service worker kullanırken, ilk istek sunucuda render edilir, ancak sonraki tüm istekler service worker tarafından işlenir ve istemci tarafında render edilir.
 
 ### Setting headers and status codes
 
-You can set custom headers and status codes for individual server routes using the `headers` and `status` properties in the `ServerRoute` configuration.
+`ServerRoute` yapılandırmasındaki `headers` ve `status` özelliklerini kullanarak bireysel sunucu rotaları için özel başlıklar ve durum kodları ayarlayabilirsiniz.
 
 ```typescript
 // app.routes.server.ts
@@ -156,27 +156,27 @@ export const serverRoutes: ServerRoute[] = [
 
 ### Redirects
 
-Angular handles redirects specified by the [`redirectTo`](api/router/Route#redirectTo 'API reference') property in route configurations, differently on the server-side.
+Angular, rota yapılandırmalarındaki [`redirectTo`](api/router/Route#redirectTo 'API reference') özelliği tarafından belirtilen yönlendirmeleri sunucu tarafında farklı şekilde işler.
 
 **Server-Side Rendering (SSR)**
-Redirects are performed using standard HTTP redirects (e.g., 301, 302) within the server-side rendering process.
+Yönlendirmeler, sunucu tarafı render işlemi içinde standart HTTP yönlendirmeleri (örneğin, 301, 302) kullanılarak gerçekleştirilir.
 
 **Prerendering (SSG)**
-Redirects are implemented as "soft redirects" using [`<meta http-equiv="refresh">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#refresh) tags in the prerendered HTML.
+Yönlendirmeler, ön-render edilmiş HTML'de [`<meta http-equiv="refresh">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#refresh) etiketleri kullanılarak "yumuşak yönlendirmeler" olarak uygulanır.
 
 ### Customizing build-time prerendering (SSG)
 
-When using [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference'), you can specify several configuration options to customize the prerendering and serving process.
+[`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') kullanırken, ön-render ve sunma işlemini özelleştirmek için birçok yapılandırma seçeneği belirleyebilirsiniz.
 
 #### Parameterized routes
 
-For each route with [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference'), you can specify a [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') function. This function lets you control which specific parameters produce separate prerendered documents.
+[`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') ile her rota için, hangi belirli parametrelerin ayrı ön-render edilmiş belgeler üreteceğini kontrol etmenize olanak tanıyan bir [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu belirtebilirsiniz.
 
-The [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') function returns a `Promise` that resolves to an array of objects. Each object is a key-value map of route parameter name to value. For example, if you define a route like `post/:id`, `getPrerenderParams ` could return the array `[{id: 123}, {id: 456}]`, and thus render separate documents for `post/123` and `post/456`.
+[`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu, bir nesneler dizisine çözümlenen bir `Promise` döndürür. Her nesne, rota parametre adından değere bir anahtar-değer eşlemesidir. Örneğin, `post/:id` gibi bir rota tanımlarsanız, `getPrerenderParams` `[{id: 123}, {id: 456}]` dizisini döndürebilir ve böylece `post/123` ve `post/456` için ayrı belgeler render eder.
 
-The body of [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') can use Angular's [`inject`](api/core/inject 'API reference') function to inject dependencies and perform any work to determine which routes to prerender. This typically includes making requests to fetch data to construct the array of parameter values.
+[`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') gövdesi, bağımlılıkları enjekte etmek ve hangi rotaların ön-render edileceğini belirlemek için herhangi bir iş yapmak üzere Angular'ın [`inject`](api/core/inject 'API reference') fonksiyonunu kullanabilir. Bu genellikle parametre değerleri dizisini oluşturmak için veri getirme isteklerinde bulunmayı içerir.
 
-You can also use this function with catch-all routes (e.g., `/**`), where the parameter name will be `"**"` and the return value will be the segments of the path, such as `foo/bar`. These can be combined with other parameters (e.g., `/post/:id/**`) to handle more complex route configuration.
+Bu fonksiyonu ayrıca catch-all rotalarla (örneğin, `/**`) kullanabilirsiniz; burada parametre adı `"**"` olacak ve dönüş değeri yolun segmentleri olacaktır, örneğin `foo/bar`. Bunlar daha karmaşık rota yapılandırmasını işlemek için diğer parametrelerle (örneğin, `/post/:id/**`) birleştirilebilir.
 
 ```ts
 // app.routes.server.ts
@@ -206,19 +206,19 @@ export const serverRoutes: ServerRoute[] = [
 ];
 ```
 
-Because [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') exclusively applies to [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference'), this function always runs at _build-time_. `getPrerenderParams` must not rely on any browser-specific or server-specific APIs for data.
+[`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') yalnızca [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') için geçerli olduğundan, bu fonksiyon her zaman _derleme zamanında_ çalışır. `getPrerenderParams`, veri için tarayıcıya özgü veya sunucuya özgü API'lere güvenmemelidir.
 
-IMPORTANT: When using [`inject`](api/core/inject 'API reference') inside `getPrerenderParams`, please remember that `inject` must be used synchronously. It cannot be invoked within asynchronous callbacks or following any `await` statements. For more information, refer to `runInInjectionContext`.
+IMPORTANT: `getPrerenderParams` içinde [`inject`](api/core/inject 'API reference') kullanırken, `inject`'in senkron olarak kullanılması gerektiğini lütfen unutmayın. Asenkron geri çağırmalarda veya herhangi bir `await` ifadesinden sonra çağrılamaz. Daha fazla bilgi için `runInInjectionContext`'e bakın.
 
 #### Fallback strategies
 
-When using [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') mode, you can specify a fallback strategy to handle requests for paths that haven't been prerendered.
+[`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') modu kullanırken, ön-render edilmemiş yollar için istekleri işlemek üzere bir geri dönüş stratejisi belirleyebilirsiniz.
 
-The available fallback strategies are:
+Kullanılabilir geri dönüş stratejileri şunlardır:
 
-- **Server:** Falls back to server-side rendering. This is the **default** behavior if no `fallback` property is specified.
-- **Client:** Falls back to client-side rendering.
-- **None:** No fallback. Angular will not handle requests for paths that are not prerendered.
+- **Server:** Sunucu tarafı render'a geri döner. Herhangi bir `fallback` özelliği belirtilmezse bu **varsayılan** davranıştır.
+- **Client:** İstemci tarafı render'a geri döner.
+- **None:** Geri dönüş yok. Angular, ön-render edilmemiş yollar için istekleri işlemez.
 
 ```ts
 // app.routes.server.ts
@@ -241,9 +241,9 @@ export const serverRoutes: ServerRoute[] = [
 
 ## Authoring server-compatible components
 
-Some common browser APIs and capabilities might not be available on the server. Applications cannot make use of browser-specific global objects like `window`, `document`, `navigator`, or `location` as well as certain properties of `HTMLElement`.
+Bazı yaygın tarayıcı API'leri ve yetenekleri sunucuda mevcut olmayabilir. Uygulamalar `window`, `document`, `navigator` veya `location` gibi tarayıcıya özgü genel nesneleri ve `HTMLElement`'in belirli özelliklerini kullanamazlar.
 
-In general, code which relies on browser-specific symbols should only be executed in the browser, not on the server. This can be enforced through the `afterEveryRender` and `afterNextRender` lifecycle hooks. These are only executed on the browser and skipped on the server.
+Genel olarak, tarayıcıya özgü sembollere dayanan kod yalnızca tarayıcıda çalıştırılmalıdır, sunucuda değil. Bu, `afterEveryRender` ve `afterNextRender` yaşam döngüsü kancaları aracılığıyla sağlanabilir. Bunlar yalnızca tarayıcıda çalıştırılır ve sunucuda atlanır.
 
 ```angular-ts
 import {Component, viewChild, afterNextRender} from '@angular/core';
@@ -264,20 +264,20 @@ export class MyComponent {
 }
 ```
 
-NOTE: Prefer [platform-specific providers](guide/ssr#providing-platform-specific-implementations) over runtime checks with `isPlatformBrowser` or `isPlatformServer`.
+NOTE: `isPlatformBrowser` veya `isPlatformServer` ile çalışma zamanı kontrolleri yerine [platforma özgü sağlayıcıları](guide/ssr#providing-platform-specific-implementations) tercih edin.
 
-IMPORTANT: Avoid using `isPlatformBrowser` in templates with `@if` or other conditionals to render different content on server and client. This causes hydration mismatches and layout shifts, negatively impacting user experience and [Core Web Vitals](https://web.dev/learn-core-web-vitals/). Instead, use `afterNextRender` for browser-specific initialization and keep rendered content consistent across platforms.
+IMPORTANT: Sunucu ve istemcide farklı içerik render etmek için `@if` veya diğer koşullu ifadelerle şablonlarda `isPlatformBrowser` kullanmaktan kaçının. Bu, hidrasyon uyumsuzluklarına ve düzen kaymalarına neden olarak kullanıcı deneyimini ve [Core Web Vitals](https://web.dev/learn-core-web-vitals/) değerlerini olumsuz etkiler. Bunun yerine, tarayıcıya özgü başlatma için `afterNextRender` kullanın ve render edilen içeriği platformlar arasında tutarlı tutun.
 
 ## Setting providers on the server
 
-On the server side, top level provider values are set once when the application code is initially parsed and evaluated.
-This means that providers configured with `useValue` will keep their value across multiple requests, until the server application is restarted.
+Sunucu tarafında, üst düzey sağlayıcı değerleri, uygulama kodu ilk kez ayrıştırılıp değerlendirildiğinde bir kez ayarlanır.
+Bu, `useValue` ile yapılandırılmış sağlayıcıların sunucu uygulaması yeniden başlatılana kadar birden fazla istek boyunca değerlerini koruyacağı anlamına gelir.
 
-If you want to generate a new value for each request, use a factory provider with `useFactory`. The factory function will run for every incoming request, ensuring that a new value is created and assigned to the token each time.
+Her istek için yeni bir değer oluşturmak istiyorsanız, `useFactory` ile bir fabrika sağlayıcısı kullanın. Fabrika fonksiyonu her gelen istek için çalışır ve her seferinde yeni bir değer oluşturulup token'a atanmasını sağlar.
 
 ## Providing platform-specific implementations
 
-When your application needs different behavior on the browser and server, provide separate service implementations for each platform. This approach centralizes platform logic in dedicated services.
+Uygulamanız tarayıcı ve sunucuda farklı davranış gerektirdiğinde, her platform için ayrı servis uygulamaları sağlayın. Bu yaklaşım, platform mantığını özel servislerde merkezileştirir.
 
 ```ts
 export abstract class AnalyticsService {
@@ -285,7 +285,7 @@ export abstract class AnalyticsService {
 }
 ```
 
-Create the browser implementation:
+Tarayıcı uygulamasını oluşturun:
 
 ```ts
 @Injectable()
@@ -296,7 +296,7 @@ export class BrowserAnalyticsService implements AnalyticsService {
 }
 ```
 
-Create the server implementation:
+Sunucu uygulamasını oluşturun:
 
 ```ts
 @Injectable()
@@ -307,7 +307,7 @@ export class ServerAnalyticsService implements AnalyticsService {
 }
 ```
 
-Register the browser implementation in your main application configuration:
+Ana uygulama yapılandırmanızda tarayıcı uygulamasını kaydedin:
 
 ```ts
 // app.config.ts
@@ -316,7 +316,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-Override with the server implementation in your server configuration:
+Sunucu yapılandırmanızda sunucu uygulamasıyla geçersiz kılın:
 
 ```ts
 // app.config.server.ts
@@ -325,7 +325,7 @@ const serverConfig: ApplicationConfig = {
 };
 ```
 
-Inject and use the service in your components:
+Servisi bileşenlerinize enjekte edin ve kullanın:
 
 ```ts
 @Component({
@@ -342,7 +342,7 @@ export class Checkout {
 
 ## Accessing Document via DI
 
-When working with server-side rendering, you should avoid directly referencing browser-specific globals like `document`. Instead, use the [`DOCUMENT`](api/core/DOCUMENT) token to access the document object in a platform-agnostic way.
+Sunucu tarafı render ile çalışırken, `document` gibi tarayıcıya özgü global değişkenlere doğrudan başvurmaktan kaçınmalısınız. Bunun yerine, belge nesnesine platforma agnostik bir şekilde erişmek için [`DOCUMENT`](api/core/DOCUMENT) token'ını kullanın.
 
 ```ts
 import {Injectable, inject, DOCUMENT} from '@angular/core';
@@ -362,15 +362,15 @@ export class CanonicalLinkService {
 }
 ```
 
-HELPFUL: For managing meta tags, Angular provides the `Meta` service.
+HELPFUL: Meta etiketlerini yönetmek için Angular `Meta` servisini sağlar.
 
 ## Accessing Request and Response via DI
 
-The `@angular/core` package provides several tokens for interacting with the server-side rendering environment. These tokens give you access to crucial information and objects within your Angular application during SSR.
+`@angular/core` paketi, sunucu tarafı render ortamıyla etkileşim için birkaç token sağlar. Bu token'lar, SSR sırasında Angular uygulamanızdaki önemli bilgilere ve nesnelere erişmenizi sağlar.
 
-- **[`REQUEST`](api/core/REQUEST 'API reference'):** Provides access to the current request object, which is of type [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) from the Web API. This allows you to access headers, cookies, and other request information.
-- **[`RESPONSE_INIT`](api/core/RESPONSE_INIT 'API reference'):** Provides access to the response initialization options, which is of type [`ResponseInit`](https://developer.mozilla.org/en-US/docs/Web/API/Response/Response#parameters) from the Web API. This allows you to set headers and the status code for the response dynamically. Use this token to set headers or status codes that need to be determined at runtime.
-- **[`REQUEST_CONTEXT`](api/core/REQUEST_CONTEXT 'API reference'):** Provides access to additional context related to the current request. This context can be passed as the second parameter of the [`handle`](api/ssr/AngularAppEngine#handle 'API reference') function. Typically, this is used to provide additional request-related information that is not part of the standard Web API.
+- **[`REQUEST`](api/core/REQUEST 'API reference'):** Web API'sinden [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) türünde olan mevcut istek nesnesine erişim sağlar. Bu, başlıklara, çerezlere ve diğer istek bilgilerine erişmenize olanak tanır.
+- **[`RESPONSE_INIT`](api/core/RESPONSE_INIT 'API reference'):** Web API'sinden [`ResponseInit`](https://developer.mozilla.org/en-US/docs/Web/API/Response/Response#parameters) türünde olan yanıt başlatma seçeneklerine erişim sağlar. Bu, yanıt için başlıkları ve durum kodunu dinamik olarak ayarlamanıza olanak tanır. Çalışma zamanında belirlenmesi gereken başlıkları veya durum kodlarını ayarlamak için bu token'ı kullanın.
+- **[`REQUEST_CONTEXT`](api/core/REQUEST_CONTEXT 'API reference'):** Mevcut istekle ilgili ek bağlam sağlar. Bu bağlam, [`handle`](api/ssr/AngularAppEngine#handle 'API reference') fonksiyonunun ikinci parametresi olarak geçirilebilir. Genellikle, standart Web API'sinin parçası olmayan ek istekle ilgili bilgi sağlamak için kullanılır.
 
 ```angular-ts
 import {inject, REQUEST} from '@angular/core';
@@ -390,22 +390,22 @@ export class MyComponent {
 <!-- UL is used below as otherwise the list will not be include as part of the note. -->
 <!-- prettier-ignore-start -->
 
-IMPORTANT: The above tokens will be `null` in the following scenarios:<ul class="docs-list">
-  <li>During the build processes.</li>
-  <li>When the application is rendered in the browser (CSR).</li>
-  <li>When performing static site generation (SSG).</li>
-  <li>During route extraction in development (at the time of the request).</li>
+IMPORTANT: Yukarıdaki token'lar aşağıdaki senaryolarda `null` olacaktır:<ul class="docs-list">
+  <li>Derleme işlemleri sırasında.</li>
+  <li>Uygulama tarayıcıda (CSR) render edildiğinde.</li>
+  <li>Statik site oluşturma (SSG) yapılırken.</li>
+  <li>Geliştirme sırasında rota çıkarma esnasında (istek anında).</li>
 </ul>
 
 <!-- prettier-ignore-end -->
 
 ## Generate a fully static application
 
-By default, Angular prerenders your entire application and generates a server file for handling requests. This allows your app to serve pre-rendered content to users. However, if you prefer a fully static site without a server, you can opt out of this behavior by setting the `outputMode` to `static` in your `angular.json` configuration file.
+Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve istekleri işlemek için bir sunucu dosyası oluşturur. Bu, uygulamanızın kullanıcılara ön-render edilmiş içerik sunmasına olanak tanır. Ancak, sunucu olmadan tamamen statik bir site tercih ediyorsanız, `angular.json` yapılandırma dosyanızda `outputMode`'u `static` olarak ayarlayarak bu davranıştan çıkabilirsiniz.
 
-When `outputMode` is set to `static`, Angular generates pre-rendered HTML files for each route at build time, but it does not generate a server file or require a Node.js server to serve the app. This is useful for deploying to static hosting providers where a backend server is not needed.
+`outputMode` `static` olarak ayarlandığında, Angular derleme zamanında her rota için ön-render edilmiş HTML dosyaları oluşturur, ancak bir sunucu dosyası oluşturmaz veya uygulamayı sunmak için bir Node.js sunucusu gerektirmez. Bu, bir arka uç sunucusunun gerekli olmadığı statik barındırma sağlayıcılarına dağıtım için kullanışlıdır.
 
-To configure this, update your `angular.json` file as follows:
+Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncelleyin:
 
 ```json
 {
@@ -425,14 +425,14 @@ To configure this, update your `angular.json` file as follows:
 
 ## Caching data when using HttpClient
 
-`HttpClient` caches outgoing network requests when running on the server. This information is serialized and transferred to the browser as part of the initial HTML sent from the server. In the browser, `HttpClient` checks whether it has data in the cache and if so, reuses it instead of making a new HTTP request during initial application rendering. `HttpClient` stops using the cache once an application becomes [stable](api/core/ApplicationRef#isStable) while running in a browser.
+`HttpClient`, sunucuda çalışırken giden ağ isteklerini önbelleğe alır. Bu bilgi serileştirilir ve sunucudan gönderilen ilk HTML'in bir parçası olarak tarayıcıya aktarılır. Tarayıcıda, `HttpClient` önbellekte veri olup olmadığını kontrol eder ve varsa, ilk uygulama render'ı sırasında yeni bir HTTP isteği yapmak yerine onu yeniden kullanır. `HttpClient`, bir uygulama tarayıcıda çalışırken [kararlı](api/core/ApplicationRef#isStable) hale geldikten sonra önbelleği kullanmayı bırakır.
 
 ### Configuring the caching options
 
-You can customize how Angular caches HTTP responses during server‑side rendering (SSR) and reuses them during hydration by configuring `HttpTransferCacheOptions`.  
-This configuration is provided globally using `withHttpTransferCacheOptions` inside `provideClientHydration()`.
+Angular'ın sunucu tarafı render (SSR) sırasında HTTP yanıtlarını nasıl önbelleğe aldığını ve hidrasyon sırasında yeniden kullandığını `HttpTransferCacheOptions` yapılandırarak özelleştirebilirsiniz.
+Bu yapılandırma, `provideClientHydration()` içinde `withHttpTransferCacheOptions` kullanılarak global olarak sağlanır.
 
-By default, `HttpClient` caches all `HEAD` and `GET` requests which don't contain `Authorization` or `Proxy-Authorization` headers. You can override those settings by using `withHttpTransferCacheOptions` to the hydration configuration.
+Varsayılan olarak, `HttpClient` `Authorization` veya `Proxy-Authorization` başlıkları içermeyen tüm `HEAD` ve `GET` isteklerini önbelleğe alır. Bu ayarları hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -456,8 +456,8 @@ bootstrapApplication(App, {
 
 ### `includeHeaders`
 
-Specifies which headers from the server response should be included in cached entries.  
-No headers are included by default.
+Sunucu yanıtından hangi başlıkların önbelleğe alınan girişlere dahil edilmesi gerektiğini belirtir.
+Varsayılan olarak hiçbir başlık dahil edilmez.
 
 ```ts
 withHttpTransferCacheOptions({
@@ -465,14 +465,14 @@ withHttpTransferCacheOptions({
 });
 ```
 
-IMPORTANT: Avoid including sensitive headers like authentication tokens. These can leak user‑specific data between requests.
+IMPORTANT: Kimlik doğrulama token'ları gibi hassas başlıkları dahil etmekten kaçının. Bunlar, istekler arasında kullanıcıya özgü verilerin sızmasına neden olabilir.
 
 ---
 
 ### `includePostRequests`
 
-By default, only `GET` and `HEAD` requests are cached.  
-You can enable caching for `POST` requests when they are used as read operations such as GraphQL queries.
+Varsayılan olarak, yalnızca `GET` ve `HEAD` istekleri önbelleğe alınır.
+GraphQL sorguları gibi okuma işlemleri olarak kullanıldığında `POST` istekleri için önbelleğe almayı etkinleştirebilirsiniz.
 
 ```ts
 withHttpTransferCacheOptions({
@@ -480,14 +480,14 @@ withHttpTransferCacheOptions({
 });
 ```
 
-Use this only when `POST` requests are **idempotent** and safe to reuse between server and client renders.
+Bunu yalnızca `POST` istekleri **idempotent** olduğunda ve sunucu ile istemci render'ları arasında yeniden kullanılması güvenli olduğunda kullanın.
 
 ---
 
 ### `includeRequestsWithAuthHeaders`
 
-Determines whether requests containing `Authorization` or `Proxy‑Authorization` headers are eligible for caching.  
-By default, these are excluded to prevent caching user‑specific responses.
+`Authorization` veya `Proxy-Authorization` başlıkları içeren isteklerin önbelleğe alma için uygun olup olmadığını belirler.
+Varsayılan olarak, kullanıcıya özgü yanıtların önbelleğe alınmasını önlemek için bunlar hariç tutulur.
 
 ```ts
 withHttpTransferCacheOptions({
@@ -495,11 +495,11 @@ withHttpTransferCacheOptions({
 });
 ```
 
-Enable only when authentication headers do **not** affect the response content (for example, public tokens for analytics APIs).
+Bunu yalnızca kimlik doğrulama başlıkları yanıt içeriğini **etkilemediğinde** (örneğin, analitik API'leri için genel token'lar) etkinleştirin.
 
 ### Per‑request overrides
 
-You can override caching behavior for a specific request using the `transferCache` request option.
+`transferCache` istek seçeneğini kullanarak belirli bir istek için önbelleğe alma davranışını geçersiz kılabilirsiniz.
 
 ```ts
 // Include specific headers for this request
@@ -508,11 +508,11 @@ http.get('/api/profile', {transferCache: {includeHeaders: ['CustomHeader']}});
 
 ### Disabling caching
 
-You can disable HTTP caching of requests sent from the server either globally or individually.
+Sunucudan gönderilen isteklerin HTTP önbelleğe alınmasını global olarak veya bireysel olarak devre dışı bırakabilirsiniz.
 
 #### Globally
 
-To disable caching for all requests in your application, use the `withNoHttpTransferCache` feature:
+Uygulamanızdaki tüm istekler için önbelleğe almayı devre dışı bırakmak için `withNoHttpTransferCache` özelliğini kullanın:
 
 ```ts
 import {
@@ -528,7 +528,7 @@ bootstrapApplication(App, {
 
 #### Filtering
 
-You can also selectively disable caching for certain requests using the [`filter`](api/common/http/HttpTransferCacheOptions) option in `withHttpTransferCacheOptions`. For example, you can disable caching for a specific API endpoint:
+Belirli istekler için önbelleğe almayı seçici olarak devre dışı bırakmak amacıyla `withHttpTransferCacheOptions` içindeki [`filter`](api/common/http/HttpTransferCacheOptions) seçeneğini de kullanabilirsiniz. Örneğin, belirli bir API uç noktası için önbelleğe almayı devre dışı bırakabilirsiniz:
 
 ```ts
 import {
@@ -548,23 +548,23 @@ bootstrapApplication(App, {
 });
 ```
 
-Use this option to exclude endpoints with user‑specific or dynamic data (for example `/api/profile`).
+Bu seçeneği, kullanıcıya özgü veya dinamik verilere sahip uç noktaları (örneğin `/api/profile`) hariç tutmak için kullanın.
 
 #### Per-request
 
-To disable caching for an individual request, you can specify the [`transferCache`](api/common/http/HttpRequest#transferCache) option in an `HttpRequest`.
+Bireysel bir istek için önbelleğe almayı devre dışı bırakmak amacıyla, bir `HttpRequest`'te [`transferCache`](api/common/http/HttpRequest#transferCache) seçeneğini belirtebilirsiniz.
 
 ```ts
 httpClient.get('/api/sensitive-data', {transferCache: false});
 ```
 
-NOTE: If your application uses different HTTP origins to make API calls on the server and on the client, the `HTTP_TRANSFER_CACHE_ORIGIN_MAP` token allows you to establish a mapping between those origins, so that `HttpTransferCache` feature can recognize those requests as the same ones and reuse the data cached on the server during hydration on the client.
+NOTE: Uygulamanız sunucu ve istemcide API çağrıları yapmak için farklı HTTP kaynakları kullanıyorsa, `HTTP_TRANSFER_CACHE_ORIGIN_MAP` token'ı bu kaynaklar arasında bir eşleme oluşturmanıza olanak tanır, böylece `HttpTransferCache` özelliği bu istekleri aynı istekler olarak tanıyabilir ve istemcide hidrasyon sırasında sunucuda önbelleğe alınan verileri yeniden kullanabilir.
 
 ## Configuring a server
 
 ### Node.js
 
-The `@angular/ssr/node` extends `@angular/ssr` specifically for Node.js environments. It provides APIs that make it easier to implement server-side rendering within your Node.js application. For a complete list of functions and usage examples, refer to the [`@angular/ssr/node` API reference](api/ssr/node/AngularNodeAppEngine) API reference.
+`@angular/ssr/node`, Node.js ortamları için özelleştirilmiş `@angular/ssr`'yi genişletir. Node.js uygulamanızda sunucu tarafı render'ı uygulamayı kolaylaştıran API'ler sağlar. Fonksiyonların tam listesi ve kullanım örnekleri için [`@angular/ssr/node` API referansına](api/ssr/node/AngularNodeAppEngine) bakın.
 
 ```ts
 // server.ts
@@ -599,7 +599,7 @@ export const reqHandler = createNodeRequestHandler(app);
 
 ### Non-Node.js
 
-The `@angular/ssr` provides essential APIs for server-side rendering your Angular application on platforms other than Node.js. It leverages the standard [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) and [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) objects from the Web API, enabling you to integrate Angular SSR into various server environments. For detailed information and examples, refer to the [`@angular/ssr` API reference](api/ssr/AngularAppEngine).
+`@angular/ssr`, Node.js dışındaki platformlarda Angular uygulamanızı sunucu tarafı render etmek için temel API'ler sağlar. Web API'sinden standart [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) ve [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) nesnelerini kullanır ve Angular SSR'yi çeşitli sunucu ortamlarına entegre etmenizi sağlar. Ayrıntılı bilgi ve örnekler için [`@angular/ssr` API referansına](api/ssr/AngularAppEngine) bakın.
 
 ```ts
 // server.ts
@@ -619,4 +619,4 @@ export const reqHandler = createRequestHandler(async (req: Request) => {
 
 ## Security
 
-For detailed information on preventing Server-Side Request Forgery (SSRF) and configuring allowed hosts, see the [Server-side security](best-practices/security#preventing-server-side-request-forgery-ssrf) guide.
+Sunucu Tarafı İstek Sahteciliğini (SSRF) önleme ve izin verilen ana bilgisayarları yapılandırma hakkında ayrıntılı bilgi için [Sunucu tarafı güvenlik](best-practices/security#preventing-server-side-request-forgery-ssrf) kılavuzuna bakın.

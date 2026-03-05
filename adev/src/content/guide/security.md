@@ -1,111 +1,111 @@
 # Security
 
-This topic describes Angular's built-in protections against common web application vulnerabilities and attacks such as cross-site scripting attacks.
-It doesn't cover application-level security, such as authentication and authorization.
+Bu konu, Angular'ın siteler arası komut dosyası çalıştırma saldırıları gibi yaygın web uygulama güvenlik açıkları ve saldırılarına karşı yerleşik korumaları açıklamaktadır.
+Kimlik doğrulama ve yetkilendirme gibi uygulama düzeyinde güvenliği kapsamaz.
 
-For more information about the attacks and mitigations described below, see the [Open Web Application Security Project (OWASP) Guide](https://www.owasp.org/index.php/Category:OWASP_Guide_Project).
+Aşağıda açıklanan saldırılar ve azaltma yöntemleri hakkında daha fazla bilgi için [Open Web Application Security Project (OWASP) Kılavuzu](https://www.owasp.org/index.php/Category:OWASP_Guide_Project)'na bakın.
 
 <a id="report-issues"></a>
 
 <docs-callout title="Reporting vulnerabilities">
 
-Angular is part of Google [Open Source Software Vulnerability Reward Program](https://bughunters.google.com/about/rules/6521337925468160/google-open-source-software-vulnerability-reward-program-rules). For vulnerabilities in Angular, please submit your report at [https://bughunters.google.com](https://bughunters.google.com/report).
+Angular, Google [Açık Kaynak Yazılım Güvenlik Açığı Ödül Programı](https://bughunters.google.com/about/rules/6521337925468160/google-open-source-software-vulnerability-reward-program-rules)'nın bir parçasıdır. Angular'daki güvenlik açıkları için lütfen raporunuzu [https://bughunters.google.com](https://bughunters.google.com/report) adresinden gönderin.
 
-For more information about how Google handles security issues, see [Google's security philosophy](https://www.google.com/about/appsecurity).
+Google'ın güvenlik sorunlarını nasıl ele aldığı hakkında daha fazla bilgi için [Google'ın güvenlik felsefesi](https://www.google.com/about/appsecurity)'ne bakın.
 
 </docs-callout>
 
 ## Best practices
 
-These are some best practices to ensure that your Angular application is secure.
+Angular uygulamanızın güvenli olmasını sağlamak için bazı en iyi uygulamalar şunlardır.
 
-1. **Keep current with the latest Angular library releases** - The Angular libraries get regular updates, and these updates might fix security defects discovered in previous versions. Check the Angular [change log](https://github.com/angular/angular/blob/main/CHANGELOG.md) for security-related updates.
-2. **Don't alter your copy of Angular** - Private, customized versions of Angular tend to fall behind the current version and might not include important security fixes and enhancements. Instead, share your Angular improvements with the community and make a pull request.
-3. **Avoid Angular APIs marked in the documentation as "_Security Risk_"** - For more information, see the [Trusting safe values](#trusting-safe-values) section of this page.
+1. **En son Angular kütüphane sürümleriyle güncel kalın** - Angular kütüphaneleri düzenli olarak güncellenir ve bu güncellemeler önceki sürümlerde keşfedilen güvenlik açıklarını düzeltebilir. Güvenlikle ilgili güncellemeler için Angular [değişiklik günlüğünü](https://github.com/angular/angular/blob/main/CHANGELOG.md) kontrol edin.
+2. **Angular kopyanızı değiştirmeyin** - Özel, kişiselleştirilmiş Angular sürümleri mevcut sürümün gerisinde kalma eğilimindedir ve önemli güvenlik düzeltmeleri ve iyileştirmeler içermeyebilir. Bunun yerine, Angular iyileştirmelerinizi toplulukla paylaşın ve bir pull request yapın.
+3. **Belgelerde "_Güvenlik Riski_" olarak işaretlenmiş Angular API'lerinden kaçının** - Daha fazla bilgi için bu sayfanın [Güvenli değerlere güvenme](#trusting-safe-values) bölümüne bakın.
 
 ## Preventing cross-site scripting (XSS)
 
-[Cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) enables attackers to inject malicious code into web pages.
-Such code can then, for example, steal user and login data, or perform actions that impersonate the user.
-This is one of the most common attacks on the web.
+[Siteler arası komut dosyası çalıştırma (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) saldırganların web sayfalarına kötü amaçlı kod enjekte etmesine olanak tanır.
+Bu tür kodlar daha sonra, örneğin kullanıcı ve giriş verilerini çalabilir veya kullanıcıyı taklit eden eylemler gerçekleştirebilir.
+Bu, web üzerindeki en yaygın saldırılardan biridir.
 
-To block XSS attacks, you must prevent malicious code from entering the Document Object Model (DOM).
-For example, if attackers can trick you into inserting a `<script>` tag in the DOM, they can run arbitrary code on your website.
-The attack isn't limited to `<script>` tags —many elements and properties in the DOM allow code execution, for example, `<img alt="" onerror="...">` and `<a href="javascript:...">`.
-If attacker-controlled data enters the DOM, expect security vulnerabilities.
+XSS saldırılarını engellemek için kötü amaçlı kodun Belge Nesne Modeli'ne (DOM) girmesini engellemeniz gerekir.
+Örneğin, saldırganlar sizi DOM'a bir `<script>` etiketi eklemeye kandırabilirse, web sitenizde rastgele kod çalıştırabilirler.
+Saldırı `<script>` etiketleriyle sınırlı değildir - DOM'daki birçok öğe ve özellik kod çalıştırmaya izin verir, örneğin `<img alt="" onerror="...">` ve `<a href="javascript:...">`.
+Saldırgan kontrollü veriler DOM'a girerse, güvenlik açıkları bekleyin.
 
 ### Angular's cross-site scripting security model
 
-To systematically block XSS bugs, Angular treats all values as untrusted by default.
-When a value is inserted into the DOM from a template binding, or interpolation, Angular sanitizes and escapes untrusted values.
-If a value was already sanitized outside of Angular and is considered safe, communicate this to Angular by marking the [value as trusted](#trusting-safe-values).
+XSS hatalarını sistematik olarak engellemek için Angular, varsayılan olarak tüm değerleri güvenilmez olarak değerlendirir.
+Bir değer şablon bağlayıcı veya enterpolasyon yoluyla DOM'a eklendiğinde, Angular güvenilmez değerleri sterilize eder ve kaçırır.
+Bir değer Angular dışında zaten sterilize edilmişse ve güvenli kabul ediliyorsa, değeri [güvenilir olarak işaretleyerek](#trusting-safe-values) bunu Angular'a bildirin.
 
-Unlike values to be used for rendering, Angular templates are considered trusted by default, and should be treated as executable code.
-Never create templates by concatenating user input and template syntax.
-Doing this would enable attackers to [inject arbitrary code](https://en.wikipedia.org/wiki/Code_injection) into your application.
-To prevent these vulnerabilities, always use the default [Ahead-Of-Time (AOT) template compiler](#use-the-aot-template-compiler) in production deployments.
+Render için kullanılacak değerlerin aksine, Angular şablonları varsayılan olarak güvenilir kabul edilir ve çalıştırılabilir kod olarak değerlendirilmelidir.
+Asla kullanıcı girişi ve şablon sözdizimini birleştirerek şablonlar oluşturmayın.
+Bunu yapmak, saldırganların uygulamanıza [rastgele kod enjekte etmesine](https://en.wikipedia.org/wiki/Code_injection) olanak tanır.
+Bu güvenlik açıklarını önlemek için üretim dağıtımlarında her zaman varsayılan [Ahead-Of-Time (AOT) şablon derleyicisini](#use-the-aot-template-compiler) kullanın.
 
-An extra layer of protection can be provided through the use of Content security policy and Trusted Types.
-These web platform features operate at the DOM level which is the most effective place to prevent XSS issues. Here they can't be bypassed using other, lower-level APIs.
-For this reason, it is strongly encouraged to take advantage of these features. To do this, configure the [content security policy](#content-security-policy) for the application and enable [trusted types enforcement](#enforcing-trusted-types).
+İçerik güvenlik politikası ve Güvenilir Türler kullanımıyla ek bir koruma katmanı sağlanabilir.
+Bu web platform özellikleri, XSS sorunlarını önlemek için en etkili yer olan DOM düzeyinde çalışır. Burada diğer, daha düşük seviyeli API'ler kullanılarak atlanamaz.
+Bu nedenle, bu özelliklerden yararlanmanız kesinlikle teşvik edilir. Bunu yapmak için uygulama için [içerik güvenlik politikasını](#content-security-policy) yapılandırın ve [güvenilir tür uygulamasını](#enforcing-trusted-types) etkinleştirin.
 
 ### Sanitization and security contexts
 
-_Sanitization_ is the inspection of an untrusted value, turning it into a value that's safe to insert into the DOM.
-In many cases, sanitization doesn't change a value at all.
-Sanitization depends on a context.
-For example, a value that's harmless in CSS is potentially dangerous in a URL.
+_Sterilizasyon_, güvenilmez bir değerin incelenmesi ve DOM'a eklenmesi güvenli olan bir değere dönüştürülmesidir.
+Birçok durumda, sterilizasyon bir değeri hiç değiştirmez.
+Sterilizasyon bağlama bağlıdır.
+Örneğin, CSS'de zararsız olan bir değer bir URL'de potansiyel olarak tehlikeli olabilir.
 
-Angular defines the following security contexts:
+Angular aşağıdaki güvenlik bağlamlarını tanımlar:
 
-| Security contexts | Details                                                                           |
-| :---------------- | :-------------------------------------------------------------------------------- |
-| HTML              | Used when interpreting a value as HTML, for example, when binding to `innerHtml`. |
-| Style             | Used when binding CSS into the `style` property.                                  |
-| URL               | Used for URL properties, such as `<a href>`.                                      |
-| Resource URL      | A URL that is loaded and executed as code, for example, in `<script src>`.        |
+| Security contexts | Details                                                                              |
+| :---------------- | :----------------------------------------------------------------------------------- |
+| HTML              | Bir değer HTML olarak yorumlandığında kullanılır, örneğin `innerHtml`'e bağlanırken. |
+| Style             | CSS'yi `style` özelliğine bağlarken kullanılır.                                      |
+| URL               | URL özellikleri için kullanılır, örneğin `<a href>`.                                 |
+| Resource URL      | Kod olarak yüklenen ve çalıştırılan bir URL, örneğin `<script src>` içinde.          |
 
-Angular sanitizes untrusted values for HTML and URLs. Sanitizing resource URLs isn't possible because they contain arbitrary code.
-In development mode, Angular prints a console warning when it has to change a value during sanitization.
+Angular, HTML ve URL'ler için güvenilmez değerleri sterilize eder. Kaynak URL'lerini sterilize etmek mümkün değildir çünkü rastgele kod içerirler.
+Geliştirme modunda Angular, sterilizasyon sırasında bir değeri değiştirmek zorunda kaldığında konsola bir uyarı yazdırır.
 
 ### Sanitization example
 
-The following template binds the value of `htmlSnippet`. Once by interpolating it into an element's content, and once by binding it to the `innerHTML` property of an element:
+Aşağıdaki şablon, `htmlSnippet`'in değerini bağlar. Bir kez bir öğenin içeriğine enterpolasyon yaparak ve bir kez bir öğenin `innerHTML` özelliğine bağlayarak:
 
 <docs-code header="inner-html-binding.component.html" path="adev/src/content/examples/security/src/app/inner-html-binding.component.html"/>
 
-Interpolated content is always escaped —the HTML isn't interpreted and the browser displays angle brackets in the element's text content.
+Enterpolasyonlu içerik her zaman kaçırılır - HTML yorumlanmaz ve tarayıcı öğenin metin içeriğinde açılı parantezleri görüntüler.
 
-For the HTML to be interpreted, bind it to an HTML property such as `innerHTML`.
-Be aware that binding a value that an attacker might control into `innerHTML` normally causes an XSS vulnerability.
-For example, one could run JavaScript in a following way:
+HTML'in yorumlanması için, onu `innerHTML` gibi bir HTML özelliğine bağlayın.
+Bir saldırganın kontrol edebileceği bir değeri `innerHTML`'e bağlamanın normalde bir XSS güvenlik açığına neden olduğunu unutmayın.
+Örneğin, JavaScript aşağıdaki şekilde çalıştırılabilir:
 
 <docs-code header="inner-html-binding.component.ts (class)" path="adev/src/content/examples/security/src/app/inner-html-binding.component.ts" region="class"/>
 
-Angular recognizes the value as unsafe and automatically sanitizes it, which removes the `script` element but keeps safe content such as the `<b>` element.
+Angular değeri güvensiz olarak tanır ve otomatik olarak sterilize eder; `script` öğesini kaldırır ancak `<b>` öğesi gibi güvenli içeriği korur.
 
 <img alt="A screenshot showing interpolated and bound HTML values" src="assets/images/guide/security/binding-inner-html.png#small">
 
 ### Direct use of the DOM APIs and explicit sanitization calls
 
-Unless you enforce Trusted Types, the built-in browser DOM APIs don't automatically protect you from security vulnerabilities.
-For example, `document`, the node available through `ElementRef`, and many third-party APIs contain unsafe methods.
-Likewise, if you interact with other libraries that manipulate the DOM, you likely won't have the same automatic sanitization as with Angular interpolations.
-Avoid directly interacting with the DOM and instead use Angular templates where possible.
+Güvenilir Türleri zorlamadığınız sürece, yerleşik tarayıcı DOM API'leri sizi güvenlik açıklarından otomatik olarak korumaz.
+Örneğin, `document`, `ElementRef` aracılığıyla kullanılabilir düğüm ve birçok üçüncü taraf API güvensiz yöntemler içerir.
+Aynı şekilde, DOM'u manipüle eden diğer kütüphanelerle etkileşime geçerseniz, muhtemelen Angular enterpolasyonlarıyla aynı otomatik sterilizasyona sahip olmayacaksınız.
+DOM ile doğrudan etkileşimden kaçının ve mümkün olduğunda Angular şablonlarını kullanın.
 
-For cases where this is unavoidable, use the built-in Angular sanitization functions.
-Sanitize untrusted values with the [DomSanitizer.sanitize](api/platform-browser/DomSanitizer#sanitize) method and the appropriate `SecurityContext`.
-That function also accepts values that were marked as trusted using the `bypassSecurityTrust` functions, and does not sanitize them, as [described below](#trusting-safe-values).
+Bunun kaçınılmaz olduğu durumlar için yerleşik Angular sterilizasyon fonksiyonlarını kullanın.
+Güvenilmez değerleri [DomSanitizer.sanitize](api/platform-browser/DomSanitizer#sanitize) yöntemi ve uygun `SecurityContext` ile sterilize edin.
+Bu fonksiyon ayrıca `bypassSecurityTrust` fonksiyonları kullanılarak güvenilir olarak işaretlenmiş değerleri de kabul eder ve [aşağıda açıklandığı](#trusting-safe-values) gibi bunları sterilize etmez.
 
 ### Trusting safe values
 
-Sometimes applications genuinely need to include executable code, display an `<iframe>` from some URL, or construct potentially dangerous URLs.
-To prevent automatic sanitization in these situations, tell Angular that you inspected a value, checked how it was created, and made sure it is secure.
-Do _be careful_.
-If you trust a value that might be malicious, you are introducing a security vulnerability into your application.
-If in doubt, find a professional security reviewer.
+Bazen uygulamaların gerçekten çalıştırılabilir kod içermesi, bir URL'den bir `<iframe>` görüntülemesi veya potansiyel olarak tehlikeli URL'ler oluşturması gerekir.
+Bu durumlarda otomatik sterilizasyonu önlemek için Angular'a bir değeri incelediğinizi, nasıl oluşturulduğunu kontrol ettiğinizi ve güvenli olduğundan emin olduğunuzu söyleyin.
+_Dikkatli_ olun.
+Kötü amaçlı olabilecek bir değere güvenirseniz, uygulamanıza bir güvenlik açığı eklemiş olursunuz.
+Şüpheniz varsa, profesyonel bir güvenlik uzmanı bulun.
 
-To mark a value as trusted, inject `DomSanitizer` and call one of the following methods:
+Bir değeri güvenilir olarak işaretlemek için `DomSanitizer`'ı enjekte edin ve aşağıdaki yöntemlerden birini çağırın:
 
 - `bypassSecurityTrustHtml`
 - `bypassSecurityTrustScript`
@@ -113,22 +113,22 @@ To mark a value as trusted, inject `DomSanitizer` and call one of the following 
 - `bypassSecurityTrustUrl`
 - `bypassSecurityTrustResourceUrl`
 
-Remember, whether a value is safe depends on context, so choose the right context for your intended use of the value.
-Imagine that the following template needs to bind a URL to a `javascript:alert(...)` call:
+Bir değerin güvenli olup olmadığının bağlama bağlı olduğunu unutmayın, bu nedenle değerinizin amaçlanan kullanımı için doğru bağlamı seçin.
+Aşağıdaki şablonun bir URL'yi `javascript:alert(...)` çağrısına bağlaması gerektiğini düşünün:
 
 <docs-code header="bypass-security.component.html (URL)" path="adev/src/content/examples/security/src/app/bypass-security.component.html" region="URL"/>
 
-Normally, Angular automatically sanitizes the URL, disables the dangerous code, and in development mode, logs this action to the console.
-To prevent this, mark the URL value as a trusted URL using the `bypassSecurityTrustUrl` call:
+Normalde Angular, URL'yi otomatik olarak sterilize eder, tehlikeli kodu devre dışı bırakır ve geliştirme modunda bu eylemi konsola kaydeder.
+Bunu önlemek için `bypassSecurityTrustUrl` çağrısını kullanarak URL değerini güvenilir bir URL olarak işaretleyin:
 
 <docs-code header="bypass-security.component.ts (trust-url)" path="adev/src/content/examples/security/src/app/bypass-security.component.ts" region="trust-url"/>
 
 <img alt="A screenshot showing an alert box created from a trusted URL" src="assets/images/guide/security/bypass-security-component.png#medium">
 
-If you need to convert user input into a trusted value, use a component method.
-The following template lets users enter a YouTube video ID and load the corresponding video in an `<iframe>`.
-The `<iframe src>` attribute is a resource URL security context, because an untrusted source can, for example, smuggle in file downloads that unsuspecting users could run.
-To prevent this, call a method on the component to construct a trusted video URL, which causes Angular to let binding into `<iframe src>`:
+Kullanıcı girişini güvenilir bir değere dönüştürmeniz gerekiyorsa, bir bileşen yöntemi kullanın.
+Aşağıdaki şablon, kullanıcıların bir YouTube video kimliği girmesine ve ilgili videoyu bir `<iframe>` içinde yüklemesine olanak tanır.
+`<iframe src>` niteliği bir kaynak URL güvenlik bağlamıdır çünkü güvenilmez bir kaynak, şüphelenmeyen kullanıcıların çalıştırabileceği dosya indirmelerini gizlice yerleştirebilir.
+Bunu önlemek için güvenilir bir video URL'si oluşturmak için bileşen üzerinde bir yöntem çağırın; bu, Angular'ın `<iframe src>` bağlamasına izin vermesine neden olur:
 
 <docs-code header="bypass-security.component.html (iframe)" path="adev/src/content/examples/security/src/app/bypass-security.component.html" region="iframe"/>
 
@@ -136,23 +136,23 @@ To prevent this, call a method on the component to construct a trusted video URL
 
 ### Content security policy
 
-Content Security Policy \(CSP\) is a defense-in-depth technique to prevent XSS.
-To enable CSP, configure your web server to return an appropriate `Content-Security-Policy` HTTP header.
-Read more about content security policy at the [Web Fundamentals guide](https://developers.google.com/web/fundamentals/security/csp) on the Google Developers website.
+İçerik Güvenlik Politikası \(CSP\), XSS'i önlemek için derinlemesine bir savunma tekniğidir.
+CSP'yi etkinleştirmek için web sunucunuzu uygun bir `Content-Security-Policy` HTTP başlığı döndürecek şekilde yapılandırın.
+İçerik güvenlik politikası hakkında daha fazla bilgiyi Google Developers web sitesindeki [Web Fundamentals kılavuzunda](https://developers.google.com/web/fundamentals/security/csp) bulabilirsiniz.
 
-The minimal policy required for a brand-new Angular application is:
+Yeni bir Angular uygulaması için gereken minimum politika şudur:
 
 ```txt
 default-src 'self'; style-src 'self' 'nonce-randomNonceGoesHere'; script-src 'self' 'nonce-randomNonceGoesHere';
 ```
 
-When serving your Angular application, the server should include a randomly-generated nonce in the HTTP header for each request.
-You must provide this nonce to Angular so that the framework can render `<style>` elements.
-You can set the nonce for Angular in one of the following ways:
+Angular uygulamanızı sunarken, sunucu her istek için HTTP başlığına rastgele oluşturulmuş bir nonce eklemelidir.
+Bu nonce'u Angular'a sağlamalısınız, böylece framework `<style>` öğelerini render edebilir.
+Angular için nonce'u aşağıdaki yollardan biriyle ayarlayabilirsiniz:
 
-1. Set the `autoCsp` option to `true` the [workspace configuration](reference/configs/workspace-config#extra-build-and-test-options).
-1. Set the `ngCspNonce` attribute on the root application element as `<app ngCspNonce="randomNonceGoesHere"></app>`. Use this approach if you have access to server-side templating that can add the nonce both to the header and the `index.html` when constructing the response.
-1. Provide the nonce using the `CSP_NONCE` injection token. Use this approach if you have access to the nonce at runtime and you want to be able to cache the `index.html`.
+1. [Çalışma alanı yapılandırmasında](reference/configs/workspace-config#extra-build-and-test-options) `autoCsp` seçeneğini `true` olarak ayarlayın.
+1. Kök uygulama öğesinde `ngCspNonce` niteliğini `<app ngCspNonce="randomNonceGoesHere"></app>` olarak ayarlayın. Yanıtı oluştururken nonce'u hem başlığa hem de `index.html`'ye ekleyebilen sunucu tarafı şablonlamaya erişiminiz varsa bu yaklaşımı kullanın.
+1. `CSP_NONCE` enjeksiyon token'ını kullanarak nonce'u sağlayın. Çalışma zamanında nonce'a erişiminiz varsa ve `index.html`'yi önbelleğe alabilmek istiyorsanız bu yaklaşımı kullanın.
 
 ```ts
 import {bootstrapApplication, CSP_NONCE} from '@angular/core';
@@ -170,75 +170,75 @@ bootstrapApplication(AppComponent, {
 
 <docs-callout title="Unique nonces">
 
-Always ensure that the nonces you provide are <strong>unique per request</strong> and that they are not predictable or guessable.
-If an attacker can predict future nonces, they can circumvent the protections offered by CSP.
+Sağladığınız nonce'ların her zaman <strong>istek başına benzersiz</strong> olduğundan ve tahmin edilemez veya kestirilemez olduğundan emin olun.
+Bir saldırgan gelecekteki nonce'ları tahmin edebilirse, CSP tarafından sunulan korumaları aşabilir.
 
 </docs-callout>
 
-NOTE: If you want to [inline the critical CSS](/tools/cli/build#critical-css-inlining) of your application, you can not use the `CSP_NONCE` token, and should prefer the `autoCsp` option or set the `ngCspNonce` attribute on the root application element.
+NOTE: Uygulamanızın [kritik CSS'ini satır içi yapmak](/tools/cli/build#critical-css-inlining) istiyorsanız, `CSP_NONCE` token'ını kullanamazsınız ve `autoCsp` seçeneğini veya kök uygulama öğesinde `ngCspNonce` niteliğini ayarlamayı tercih etmelisiniz.
 
-If you cannot generate nonces in your project, you can allow inline styles by adding `'unsafe-inline'` to the `style-src` section of the CSP header.
+Projenizde nonce oluşturamıyorsanız, CSP başlığının `style-src` bölümüne `'unsafe-inline'` ekleyerek satır içi stillere izin verebilirsiniz.
 
-| Sections                                         | Details                                                                                                                                                                                                         |
-| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `default-src 'self';`                            | Allows the page to load all its required resources from the same origin.                                                                                                                                        |
-| `style-src 'self' 'nonce-randomNonceGoesHere';`  | Allows the page to load global styles from the same origin \(`'self'`\) and styles inserted by Angular with the `nonce-randomNonceGoesHere`.                                                                    |
-| `script-src 'self' 'nonce-randomNonceGoesHere';` | Allows the page to load JavaScript from the same origin \(`'self'`\) and scripts inserted by the Angular CLI with the `nonce-randomNonceGoesHere`. This is only required if you're using critical CSS inlining. |
+| Sections                                         | Details                                                                                                                                                                                                                           |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default-src 'self';`                            | Sayfanın gerekli tüm kaynaklarını aynı kaynaktan yüklemesine izin verir.                                                                                                                                                          |
+| `style-src 'self' 'nonce-randomNonceGoesHere';`  | Sayfanın global stilleri aynı kaynaktan \(`'self'`\) ve Angular tarafından `nonce-randomNonceGoesHere` ile eklenen stilleri yüklemesine izin verir.                                                                               |
+| `script-src 'self' 'nonce-randomNonceGoesHere';` | Sayfanın JavaScript'i aynı kaynaktan \(`'self'`\) ve Angular CLI tarafından `nonce-randomNonceGoesHere` ile eklenen komut dosyalarını yüklemesine izin verir. Bu yalnızca kritik CSS satır içi ekleme kullanıyorsanız gereklidir. |
 
-Angular itself requires only these settings to function correctly.
-As your project grows, you may need to expand your CSP settings to accommodate extra features specific to your application.
+Angular'ın düzgün çalışması için yalnızca bu ayarlar gereklidir.
+Projeniz büyüdükçe, uygulamanıza özgü ekstra özellikler için CSP ayarlarınızı genişletmeniz gerekebilir.
 
 ### Enforcing Trusted Types
 
-It is recommended that you use [Trusted Types](https://w3c.github.io/trusted-types/dist/spec/) as a way to help secure your applications from cross-site scripting attacks.
-Trusted Types is a [web platform](https://en.wikipedia.org/wiki/Web_platform) feature that can help you prevent cross-site scripting attacks by enforcing safer coding practices.
-Trusted Types can also help simplify the auditing of application code.
+Uygulamalarınızı siteler arası komut dosyası çalıştırma saldırılarından korumaya yardımcı olmak için bir yol olarak [Güvenilir Türler](https://w3c.github.io/trusted-types/dist/spec/) kullanmanız önerilir.
+Güvenilir Türler, daha güvenli kodlama uygulamalarını zorlayarak siteler arası komut dosyası çalıştırma saldırılarını önlemeye yardımcı olabilen bir [web platform](https://en.wikipedia.org/wiki/Web_platform) özelliğidir.
+Güvenilir Türler ayrıca uygulama kodunun denetimini basitleştirmeye de yardımcı olabilir.
 
 <docs-callout title="Trusted types">
 
-Trusted Types might not yet be available in all browsers your application targets.
-In the case your Trusted-Types-enabled application runs in a browser that doesn't support Trusted Types, the features of the application are preserved. Your application is guarded against XSS by way of Angular's DomSanitizer.
-See [caniuse.com/trusted-types](https://caniuse.com/trusted-types) for the current browser support.
+Güvenilir Türler, uygulamanızın hedeflediği tüm tarayıcılarda henüz mevcut olmayabilir.
+Güvenilir Türler etkinleştirilmiş uygulamanız Güvenilir Türleri desteklemeyen bir tarayıcıda çalışırsa, uygulamanın özellikleri korunur. Uygulamanız Angular'ın DomSanitizer'ı aracılığıyla XSS'e karşı korunur.
+Güncel tarayıcı desteği için [caniuse.com/trusted-types](https://caniuse.com/trusted-types) adresine bakın.
 
 </docs-callout>
 
-To enforce Trusted Types for your application, you must configure your application's web server to emit HTTP headers with one of the following Angular policies:
+Uygulamanız için Güvenilir Türleri zorlamak amacıyla, uygulamanızın web sunucusunu aşağıdaki Angular politikalarından biriyle HTTP başlıkları yayacak şekilde yapılandırmanız gerekir:
 
-| Policies                 | Detail                                                                                                                                                                                                                                                                                     |
-| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `angular`                | This policy is used in security-reviewed code that is internal to Angular, and is required for Angular to function when Trusted Types are enforced. Any inline template values or content sanitized by Angular is treated as safe by this policy.                                          |
-| `angular#bundler`        | This policy is used by the Angular CLI bundler when creating lazy chunk files.                                                                                                                                                                                                             |
-| `angular#unsafe-bypass`  | This policy is used for applications that use any of the methods in Angular's [DomSanitizer](api/platform-browser/DomSanitizer) that bypass security, such as `bypassSecurityTrustHtml`. Any application that uses these methods must enable this policy.                                  |
-| `angular#unsafe-jit`     | This policy is used by the [Just-In-Time (JIT) compiler](api/core/Compiler). You must enable this policy if your application interacts directly with the JIT compiler or is running in JIT mode using the [platform browser dynamic](api/platform-browser-dynamic/platformBrowserDynamic). |
-| `angular#unsafe-upgrade` | This policy is used by the [@angular/upgrade](api/upgrade/static/UpgradeModule) package. You must enable this policy if your application is an AngularJS hybrid.                                                                                                                           |
+| Policies                 | Detail                                                                                                                                                                                                                                                                                                              |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `angular`                | Bu politika, Angular'ın iç güvenlik incelemesinden geçmiş kodunda kullanılır ve Güvenilir Türler zorlandığında Angular'ın çalışması için gereklidir. Angular tarafından sterilize edilen tüm satır içi şablon değerleri veya içerikler bu politika tarafından güvenli olarak değerlendirilir.                       |
+| `angular#bundler`        | Bu politika, Angular CLI paketleyicisi tarafından tembel yük (lazy chunk) dosyaları oluştururken kullanılır.                                                                                                                                                                                                        |
+| `angular#unsafe-bypass`  | Bu politika, Angular'ın [DomSanitizer](api/platform-browser/DomSanitizer) güvenliğini atlayan `bypassSecurityTrustHtml` gibi yöntemlerini kullanan uygulamalar için kullanılır. Bu yöntemleri kullanan herhangi bir uygulama bu politikayı etkinleştirmelidir.                                                      |
+| `angular#unsafe-jit`     | Bu politika, [Just-In-Time (JIT) derleyici](api/core/Compiler) tarafından kullanılır. Uygulamanız doğrudan JIT derleyicisi ile etkileşime giriyorsa veya [platform browser dynamic](api/platform-browser-dynamic/platformBrowserDynamic) kullanarak JIT modunda çalışıyorsa bu politikayı etkinleştirmeniz gerekir. |
+| `angular#unsafe-upgrade` | Bu politika, [@angular/upgrade](api/upgrade/static/UpgradeModule) paketi tarafından kullanılır. Uygulamanız bir AngularJS hibriti ise bu politikayı etkinleştirmeniz gerekir.                                                                                                                                       |
 
-You should configure the HTTP headers for Trusted Types in the following locations:
+Güvenilir Türler için HTTP başlıklarını aşağıdaki konumlarda yapılandırmalısınız:
 
-- Production serving infrastructure
-- Angular CLI \(`ng serve`\), using the `headers` property in the `angular.json` file, for local development and end-to-end testing
-- Karma \(`ng test`\), using the `customHeaders` property in the `karma.config.js` file, for unit testing
+- Üretim sunma altyapısı
+- Yerel geliştirme ve uçtan uca test için `angular.json` dosyasındaki `headers` özelliğini kullanarak Angular CLI \(`ng serve`\)
+- Birim testi için `karma.config.js` dosyasındaki `customHeaders` özelliğini kullanarak Karma \(`ng test`\)
 
-The following is an example of a header specifically configured for Trusted Types and Angular:
+Aşağıda Güvenilir Türler ve Angular için özel olarak yapılandırılmış bir başlık örneği verilmiştir:
 
 ```html
 Content-Security-Policy: trusted-types angular; require-trusted-types-for 'script';
 ```
 
-An example of a header specifically configured for Trusted Types and Angular applications that use any of Angular's methods in [DomSanitizer](api/platform-browser/DomSanitizer) that bypasses security:
+Angular'ın güvenliği atlayan [DomSanitizer](api/platform-browser/DomSanitizer) yöntemlerinden herhangi birini kullanan Güvenilir Türler ve Angular uygulamaları için özel olarak yapılandırılmış bir başlık örneği:
 
 ```html
 Content-Security-Policy: trusted-types angular angular#unsafe-bypass; require-trusted-types-for
 'script';
 ```
 
-The following is an example of a header specifically configured for Trusted Types and Angular applications using JIT:
+Aşağıda JIT kullanan Güvenilir Türler ve Angular uygulamaları için özel olarak yapılandırılmış bir başlık örneği verilmiştir:
 
 ```html
 Content-Security-Policy: trusted-types angular angular#unsafe-jit; require-trusted-types-for
 'script';
 ```
 
-The following is an example of a header specifically configured for Trusted Types and Angular applications that use lazy loading of modules:
+Aşağıda modüllerin tembel yüklemesini kullanan Güvenilir Türler ve Angular uygulamaları için özel olarak yapılandırılmış bir başlık örneği verilmiştir:
 
 ```html
 Content-Security-Policy: trusted-types angular angular#bundler; require-trusted-types-for 'script';
@@ -246,82 +246,82 @@ Content-Security-Policy: trusted-types angular angular#bundler; require-trusted-
 
 <docs-callout title="Community contributions">
 
-To learn more about troubleshooting Trusted Type configurations, the following resource might be helpful:
+Güvenilir Tür yapılandırmalarında sorun giderme hakkında daha fazla bilgi edinmek için aşağıdaki kaynak yardımcı olabilir:
 
-[Prevent DOM-based cross-site scripting vulnerabilities with Trusted Types](https://web.dev/trusted-types/#how-to-use-trusted-types)
+[Güvenilir Türlerle DOM tabanlı siteler arası komut dosyası çalıştırma güvenlik açıklarını önleme](https://web.dev/trusted-types/#how-to-use-trusted-types)
 
 </docs-callout>
 
 ### Use the AOT template compiler
 
-The AOT template compiler prevents a whole class of vulnerabilities called template injection, and greatly improves application performance.
-The AOT template compiler is the default compiler used by Angular CLI applications, and you should use it in all production deployments.
+AOT şablon derleyicisi, şablon enjeksiyonu olarak adlandırılan tüm bir güvenlik açığı sınıfını önler ve uygulama performansını büyük ölçüde artırır.
+AOT şablon derleyicisi, Angular CLI uygulamaları tarafından kullanılan varsayılan derleyicidir ve tüm üretim dağıtımlarında kullanmalısınız.
 
-An alternative to the AOT compiler is the JIT compiler which compiles templates to executable template code within the browser at runtime.
-Angular trusts template code, so dynamically generating templates and compiling them, in particular templates containing user data, circumvents Angular's built-in protections. This is a security anti-pattern.
-For information about dynamically constructing forms in a safe way, see the [Dynamic Forms](guide/forms/dynamic-forms) guide.
+AOT derleyicisine bir alternatif, çalışma zamanında tarayıcıda şablonları çalıştırılabilir şablon koduna derleyen JIT derleyicisidir.
+Angular şablon koduna güvenir, bu nedenle dinamik olarak şablon oluşturmak ve derlemek, özellikle kullanıcı verisi içeren şablonlar, Angular'ın yerleşik korumalarını atlar. Bu bir güvenlik anti-kalıbıdır.
+Formları güvenli bir şekilde dinamik olarak oluşturma hakkında bilgi için [Dinamik Formlar](guide/forms/dynamic-forms) kılavuzuna bakın.
 
 ### Server-side XSS protection
 
-HTML constructed on the server is vulnerable to injection attacks.
-Injecting template code into an Angular application is the same as injecting executable code into the application:
-It gives the attacker full control over the application.
-To prevent this, use a templating language that automatically escapes values to prevent XSS vulnerabilities on the server.
-Don't create Angular templates on the server side using a templating language. This carries a high risk of introducing template-injection vulnerabilities.
+Sunucuda oluşturulan HTML, enjeksiyon saldırılarına karşı savunmasızdır.
+Bir Angular uygulamasına şablon kodu enjekte etmek, uygulamaya çalıştırılabilir kod enjekte etmekle aynıdır:
+Saldırgana uygulama üzerinde tam kontrol verir.
+Bunu önlemek için sunucuda XSS güvenlik açıklarını önlemek amacıyla değerleri otomatik olarak kaçıran bir şablon dili kullanın.
+Sunucu tarafında bir şablon dili kullanarak Angular şablonları oluşturmayın. Bu, şablon enjeksiyonu güvenlik açıkları oluşturma riski yüksektir.
 
 ## HTTP-level vulnerabilities
 
-Angular has built-in support to help prevent two common HTTP vulnerabilities, cross-site request forgery \(CSRF or XSRF\) and cross-site script inclusion \(XSSI\).
-Both of these must be mitigated primarily on the server side, but Angular provides helpers to make integration on the client side easier.
+Angular, iki yaygın HTTP güvenlik açığını önlemeye yardımcı olmak için yerleşik desteğe sahiptir: siteler arası istek sahteciliği \(CSRF veya XSRF\) ve siteler arası komut dosyası dahil etme \(XSSI\).
+Her ikisi de öncelikle sunucu tarafında azaltılmalıdır, ancak Angular istemci tarafındaki entegrasyonu kolaylaştırmak için yardımcılar sağlar.
 
 ### Cross-site request forgery
 
-In a cross-site request forgery \(CSRF or XSRF\), an attacker tricks the user into visiting a different web page \(such as `evil.com`\) with malignant code. This web page secretly sends a malicious request to the application's web server \(such as `example-bank.com`\).
+Siteler arası istek sahteciliğinde \(CSRF veya XSRF\), bir saldırgan kullanıcıyı kötü amaçlı koda sahip farklı bir web sayfasını \(örneğin `evil.com`\) ziyaret etmeye kandırır. Bu web sayfası gizlice uygulamanın web sunucusuna \(örneğin `example-bank.com`\) kötü amaçlı bir istek gönderir.
 
-Assume the user is logged into the application at `example-bank.com`.
-The user opens an email and clicks a link to `evil.com`, which opens in a new tab.
+Kullanıcının `example-bank.com` uygulamasına giriş yapmış olduğunu varsayın.
+Kullanıcı bir e-posta açar ve yeni bir sekmede açılan `evil.com`'a bir bağlantıya tıklar.
 
-The `evil.com` page immediately sends a malicious request to `example-bank.com`.
-Perhaps it's a request to transfer money from the user's account to the attacker's account.
-The browser automatically sends the `example-bank.com` cookies, including the authentication cookie, with this request.
+`evil.com` sayfası hemen `example-bank.com`'a kötü amaçlı bir istek gönderir.
+Belki de kullanıcının hesabından saldırganın hesabına para transferi isteğidir.
+Tarayıcı, kimlik doğrulama çerezi dahil `example-bank.com` çerezlerini bu istekle birlikte otomatik olarak gönderir.
 
-If the `example-bank.com` server lacks XSRF protection, it can't tell the difference between a legitimate request from the application and the forged request from `evil.com`.
+`example-bank.com` sunucusu XSRF korumasına sahip değilse, uygulamadan gelen meşru bir istek ile `evil.com`'dan gelen sahte istek arasındaki farkı anlayamaz.
 
-To prevent this, the application must ensure that a user request originates from the real application, not from a different site.
-The server and client must cooperate to thwart this attack.
+Bunu önlemek için uygulama, bir kullanıcı isteğinin farklı bir siteden değil, gerçek uygulamadan kaynaklandığından emin olmalıdır.
+Bu saldırıyı engellemek için sunucu ve istemci işbirliği yapmalıdır.
 
-In a common anti-XSRF technique, the application server sends a randomly created authentication token in a cookie.
-The client code reads the cookie and adds a custom request header with the token in all following requests.
-The server compares the received cookie value to the request header value and rejects the request if the values are missing or don't match.
+Yaygın bir anti-XSRF tekniğinde, uygulama sunucusu bir çerezde rastgele oluşturulmuş bir kimlik doğrulama token'ı gönderir.
+İstemci kodu çerezi okur ve sonraki tüm isteklerde token'lı özel bir istek başlığı ekler.
+Sunucu, alınan çerez değerini istek başlığı değeriyle karşılaştırır ve değerler eksikse veya eşleşmiyorsa isteği reddeder.
 
-This technique is effective because all browsers implement the _same origin policy_.
-Only code from the website on which cookies are set can read the cookies from that site and set custom headers on requests to that site.
-That means only your application can read this cookie token and set the custom header.
-The malicious code on `evil.com` can't.
+Bu teknik etkilidir çünkü tüm tarayıcılar _aynı kaynak politikasını_ uygular.
+Yalnızca çerezlerin ayarlandığı web sitesindeki kod, o siteden çerezleri okuyabilir ve o siteye yapılan isteklerde özel başlıklar ayarlayabilir.
+Bu, yalnızca uygulamanızın bu çerez token'ını okuyabileceği ve özel başlığı ayarlayabileceği anlamına gelir.
+`evil.com`'daki kötü amaçlı kod yapamaz.
 
 ### `HttpClient` XSRF/CSRF security
 
-`HttpClient` supports a [common mechanism](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) used to prevent XSRF attacks. When performing HTTP requests, an interceptor reads a token from a cookie, by default `XSRF-TOKEN`, and sets it as an HTTP header, `X-XSRF-TOKEN`. Because only code that runs on your domain could read the cookie, the backend can be certain that the HTTP request came from your client application and not an attacker.
+`HttpClient`, XSRF saldırılarını önlemek için kullanılan [yaygın bir mekanizmayı](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) destekler. HTTP istekleri gerçekleştirirken, bir interceptor varsayılan olarak `XSRF-TOKEN` adlı bir çerezden bir token okur ve onu `X-XSRF-TOKEN` HTTP başlığı olarak ayarlar. Yalnızca alanınızda çalışan kod çerezi okuyabildiğinden, arka uç HTTP isteğinin bir saldırgandan değil istemci uygulamanızdan geldiğinden emin olabilir.
 
-By default, an interceptor sends this header on all mutating requests (such as `POST`) to relative and same origin URLs, but not on `GET` or `HEAD` requests.
+Varsayılan olarak, bir interceptor bu başlığı tüm değiştirici isteklerde (örneğin `POST`) göreceli ve aynı kaynaklı URL'lere gönderir, ancak `GET` veya `HEAD` isteklerinde göndermez.
 
 <docs-callout helpful title="Why not protect GET requests?">
-CSRF protection is only needed for requests that can change state on the backend. By their nature, CSRF attacks cross domain boundaries, and the web's [same-origin policy](https://developer.mozilla.org/docs/Web/Security/Same-origin_policy) will prevent an attacking page from retrieving the results of authenticated `GET` requests.
+CSRF koruması yalnızca arka uçtaki durumu değiştirebilecek istekler için gereklidir. Doğası gereği, CSRF saldırıları alan sınırlarını aşar ve web'in [aynı kaynak politikası](https://developer.mozilla.org/docs/Web/Security/Same-origin_policy) saldıran bir sayfanın kimliği doğrulanmış `GET` isteklerinin sonuçlarını almasını engeller.
 </docs-callout>
 
-To take advantage of this, your server needs to set a token in a JavaScript readable session cookie called `XSRF-TOKEN` on either the page load or the first GET request. On subsequent requests the server can verify that the cookie matches the `X-XSRF-TOKEN` HTTP header, and therefore be sure that only code running on your domain could have sent the request. The token must be unique for each user and must be verifiable by the server; this prevents the client from making up its own tokens. Set the token to a digest of your site's authentication cookie with a salt for added security.
+Bundan yararlanmak için sunucunuzun sayfa yüklemesinde veya ilk GET isteğinde `XSRF-TOKEN` adlı JavaScript tarafından okunabilir bir oturum çerezinde bir token ayarlaması gerekir. Sonraki isteklerde sunucu, çerezin `X-XSRF-TOKEN` HTTP başlığıyla eşleştiğini doğrulayabilir ve bu nedenle yalnızca alanınızda çalışan kodun isteği gönderebileceğinden emin olabilir. Token her kullanıcı için benzersiz olmalı ve sunucu tarafından doğrulanabilir olmalıdır; bu, istemcinin kendi token'larını oluşturmasını engeller. Token'ı, ek güvenlik için bir tuz ile sitenizin kimlik doğrulama çerezinin bir özetine ayarlayın.
 
-To prevent collisions in environments where multiple Angular apps share the same domain or subdomain, give each application a unique cookie name.
+Birden fazla Angular uygulamasının aynı alan veya alt alanı paylaştığı ortamlarda çakışmaları önlemek için her uygulamaya benzersiz bir çerez adı verin.
 
 <docs-callout important title="HttpClient supports only the client half of the XSRF protection scheme">
-  Your backend service must be configured to set the cookie for your page, and to verify that the header is present on all eligible requests. Failing to do so renders Angular's default protection ineffective.
+  Arka uç hizmetiniz sayfanız için çerezi ayarlayacak ve tüm uygun isteklerde başlığın mevcut olduğunu doğrulayacak şekilde yapılandırılmalıdır. Bunu yapmamak Angular'ın varsayılan korumasını etkisiz kılar.
 </docs-callout>
 
 ### Configure custom cookie/header names
 
-If your backend service uses different names for the XSRF token cookie or header, use `withXsrfConfiguration` to override the defaults.
+Arka uç hizmetiniz XSRF token çerezi veya başlığı için farklı adlar kullanıyorsa, varsayılanları geçersiz kılmak için `withXsrfConfiguration` kullanın.
 
-Add it to the `provideHttpClient` call as follows:
+`provideHttpClient` çağrısına aşağıdaki gibi ekleyin:
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -338,7 +338,7 @@ export const appConfig: ApplicationConfig = {
 
 ### Disabling XSRF protection
 
-If the built-in XSRF protection mechanism doesn't work for your application, you can disable it using the `withNoXsrfProtection` feature:
+Yerleşik XSRF koruma mekanizması uygulamanız için çalışmıyorsa, `withNoXsrfProtection` özelliğini kullanarak devre dışı bırakabilirsiniz:
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -346,43 +346,43 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-For information about CSRF at the Open Web Application Security Project \(OWASP\), see [Cross-Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf) and [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
-The Stanford University paper [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf) is a rich source of detail.
+Open Web Application Security Project \(OWASP\) adresindeki CSRF hakkında bilgi için [Cross-Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf) ve [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) sayfalarına bakın.
+Stanford Üniversitesi makalesi [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf) zengin bir ayrıntı kaynağıdır.
 
-See also Dave Smith's [talk on XSRF at AngularConnect 2016](https://www.youtube.com/watch?v=9inczw6qtpY 'Cross Site Request Funkery Securing Your Angular Apps From Evil Doers').
+Ayrıca Dave Smith'in [AngularConnect 2016'daki XSRF konuşmasına](https://www.youtube.com/watch?v=9inczw6qtpY 'Cross Site Request Funkery Securing Your Angular Apps From Evil Doers') da bakın.
 
 ### Cross-site script inclusion (XSSI)
 
-Cross-site script inclusion, also known as JSON vulnerability, can allow an attacker's website to read data from a JSON API.
-The attack works on older browsers by overriding built-in JavaScript object constructors, and then including an API URL using a `<script>` tag.
+Siteler arası komut dosyası dahil etme, JSON güvenlik açığı olarak da bilinir ve bir saldırganın web sitesinin bir JSON API'sinden veri okumasına izin verebilir.
+Saldırı, yerleşik JavaScript nesne oluşturucularını geçersiz kılarak ve ardından bir `<script>` etiketi kullanarak bir API URL'si dahil ederek eski tarayıcılarda çalışır.
 
-This attack is only successful if the returned JSON is executable as JavaScript.
-Servers can prevent an attack by prefixing all JSON responses to make them non-executable, by convention, using the well-known string `")]}',\n"`.
+Bu saldırı yalnızca döndürülen JSON JavaScript olarak çalıştırılabilir olduğunda başarılıdır.
+Sunucular, tüm JSON yanıtlarının önüne gelenek olarak bilinen `")]}',\n"` dizesini ekleyerek yanıtları çalıştırılamaz hale getirerek saldırıyı önleyebilir.
 
-Angular's `HttpClient` library recognizes this convention and automatically strips the string `")]}',\n"` from all responses before further parsing.
+Angular'ın `HttpClient` kütüphanesi bu geleneği tanır ve daha fazla ayrıştırmadan önce tüm yanıtlardan `")]}',\n"` dizesini otomatik olarak çıkarır.
 
-For more information, see the XSSI section of this [Google web security blog post](https://security.googleblog.com/2011/05/website-security-for-webmasters.html).
+Daha fazla bilgi için bu [Google web güvenliği blog yazısının](https://security.googleblog.com/2011/05/website-security-for-webmasters.html) XSSI bölümüne bakın.
 
 ## Preventing Server-Side Request Forgery (SSRF)
 
-Angular includes strict validation for `Host`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `X-Forwarded-Prefix` and `X-Forwarded-Port` headers in the request handling pipeline to prevent header-based [Server-Side Request Forgery (SSRF)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/SSRF).
+Angular, başlık tabanlı [Sunucu Tarafı İstek Sahteciliğini (SSRF)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/SSRF) önlemek için istek işleme hattında `Host`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `X-Forwarded-Prefix` ve `X-Forwarded-Port` başlıkları için katı doğrulama içerir.
 
-The validation rules are:
+Doğrulama kuralları şunlardır:
 
-- `Host` and `X-Forwarded-Host` headers are validated against a strict allowlist and cannot contain path separators.
-- `X-Forwarded-Port` header must be numeric.
-- `X-Forwarded-Proto` header must be `http` or `https`.
-- `X-Forwarded-Prefix` header must not start with multiple `/` or `\` or contain `.`, `..` path segments.
+- `Host` ve `X-Forwarded-Host` başlıkları katı bir izin listesine göre doğrulanır ve yol ayırıcıları içeremez.
+- `X-Forwarded-Port` başlığı sayısal olmalıdır.
+- `X-Forwarded-Proto` başlığı `http` veya `https` olmalıdır.
+- `X-Forwarded-Prefix` başlığı birden fazla `/` veya `\` ile başlamamalı veya `.`, `..` yol segmentleri içermemelidir.
 
-Invalid or disallowed headers now trigger an error log. Requests with unrecognized hostnames will result in a Client-Side Rendered (CSR) page if `allowedHosts` is defined; if not, a `400 Bad Request` is issued. Note that in a future major release, all unrecognized hostnames will default to a `400 Bad Request` regardless of `allowedHosts` settings.
+Geçersiz veya izin verilmeyen başlıklar artık bir hata günlüğü tetikler. `allowedHosts` tanımlıysa, tanınmayan ana bilgisayar adlarına sahip istekler İstemci Tarafında Render Edilmiş (CSR) bir sayfa ile sonuçlanır; tanımlı değilse, `400 Bad Request` verilir. Gelecekteki bir büyük sürümde, tüm tanınmayan ana bilgisayar adlarının `allowedHosts` ayarlarından bağımsız olarak varsayılan olarak `400 Bad Request` ile sonuçlanacağını unutmayın.
 
-NOTE: Most cloud providers and CDN providers perform automatic validation of these headers before a request ever reaches the application origin. This inherent filtering significantly reduces the practical attack surface.
+NOTE: Çoğu bulut sağlayıcısı ve CDN sağlayıcısı, bir istek uygulama kaynağına ulaşmadan önce bu başlıkların otomatik doğrulamasını gerçekleştirir. Bu doğal filtreleme, pratik saldırı yüzeyini önemli ölçüde azaltır.
 
 ### Configuring allowed hosts
 
-To allow specific hostnames, you need to add them to the allowlist. This is critical for ensuring your application works correctly and securely when deployed. The patterns support wildcards for flexible hostname matching.
+Belirli ana bilgisayar adlarına izin vermek için bunları izin listesine eklemeniz gerekir. Bu, uygulamanızın dağıtıldığında doğru ve güvenli bir şekilde çalışmasını sağlamak için kritik öneme sahiptir. Kalıplar, esnek ana bilgisayar adı eşleştirmesi için joker karakterleri destekler.
 
-You can configure the `allowedHosts` option in your `angular.json`:
+`angular.json` dosyanızda `allowedHosts` seçeneğini yapılandırabilirsiniz:
 
 ```json {hideCopy}
 {
@@ -409,7 +409,7 @@ You can configure the `allowedHosts` option in your `angular.json`:
 }
 ```
 
-You can also configure `allowedHosts` when initializing the application engine:
+Uygulama motorunu başlatırken de `allowedHosts` yapılandırabilirsiniz:
 
 ```typescript
 const appEngine = new AngularAppEngine({
@@ -421,7 +421,7 @@ const nodeAppEngine = new AngularNodeAppEngine({
 });
 ```
 
-For the Node.js variant `AngularNodeAppEngine`, you can also provide `NG_ALLOWED_HOSTS` (comma-separated list) environment variable for authorizing hosts.
+Node.js varyantı `AngularNodeAppEngine` için, ana bilgisayarları yetkilendirmek amacıyla `NG_ALLOWED_HOSTS` (virgülle ayrılmış liste) ortam değişkenini de sağlayabilirsiniz.
 
 ```bash {hideDollar}
 export NG_ALLOWED_HOSTS="example.com,*.trusted-example.com"
@@ -429,5 +429,5 @@ export NG_ALLOWED_HOSTS="example.com,*.trusted-example.com"
 
 ## Auditing Angular applications
 
-Angular applications must follow the same security principles as regular web applications, and must be audited as such.
-Angular-specific APIs that should be audited in a security review, such as the [_bypassSecurityTrust_](#trusting-safe-values) methods, are marked in the documentation as security sensitive.
+Angular uygulamaları, normal web uygulamalarıyla aynı güvenlik ilkelerine uymalı ve bu şekilde denetlenmelidir.
+Güvenlik incelemesinde denetlenmesi gereken [_bypassSecurityTrust_](#trusting-safe-values) yöntemleri gibi Angular'a özgü API'ler, belgelerde güvenlik açısından hassas olarak işaretlenmiştir.

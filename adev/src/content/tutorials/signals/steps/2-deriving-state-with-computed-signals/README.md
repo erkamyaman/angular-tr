@@ -1,17 +1,17 @@
 # Deriving state with computed signals
 
-Now that you've learned [how to create and update signals](/tutorials/signals/1-creating-your-first-signal), let's learn about computed signals. Computed signals are derived values that automatically update when their dependencies change. They're perfect for creating reactive calculations based on other signals.
+Artık [sinyal oluşturmayı ve güncellemeyi](/tutorials/signals/1-creating-your-first-signal) öğrendiğinize göre, hesaplanmış (computed) sinyalleri öğrenelim. Hesaplanmış sinyaller, bağımlılıkları değiştiğinde otomatik olarak güncellenen türetilmiş değerlerdir. Diğer sinyallere dayalı reaktif hesaplamalar oluşturmak için mükemmeldirler.
 
-In this activity, you'll learn how to use the `computed()` function to create derived state that updates automatically when the underlying signals change.
+Bu aktivitede, bağımlı sinyaller değiştiğinde otomatik olarak güncellenen türetilmiş durum oluşturmak için `computed()` fonksiyonunu nasıl kullanacağınızı öğreneceksiniz.
 
-Let's enhance our user status system by adding computed values that derive information from our user status signal. The starter code now includes three status options: `'online'`, `'away'`, and `'offline'`.
+Kullanıcı durum sinyalimizden bilgi türeten hesaplanmış değerler ekleyerek kullanıcı durum sistemimizi geliştirelim. Başlangıç kodu artık üç durum seçeneği içeriyor: `'online'`, `'away'` ve `'offline'`.
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import computed function">
-Add `computed` to your existing imports.
+Mevcut içe aktarmalarınıza `computed` ekleyin.
 
 ```ts
 // Add computed to existing imports
@@ -21,17 +21,17 @@ import {Component, signal, computed, ChangeDetectionStrategy} from '@angular/cor
 </docs-step>
 
 <docs-step title="Create a computed signal for notifications">
-Add a computed signal that determines if notifications should be enabled based on user status.
+Kullanıcı durumuna göre bildirimlerin etkinleştirilip etkinleştirilmeyeceğini belirleyen bir hesaplanmış sinyal ekleyin.
 
 ```ts
 notificationsEnabled = computed(() => this.userStatus() === 'online');
 ```
 
-This computed signal will automatically recalculate whenever the `userStatus` signal changes. Notice how we call `this.userStatus()` inside the computed function to read the signal's value.
+Bu hesaplanmış sinyal, `userStatus` sinyali her değiştiğinde otomatik olarak yeniden hesaplanacaktır. Sinyalin değerini okumak için hesaplanmış fonksiyonun içinde `this.userStatus()` çağrısını nasıl yaptığımıza dikkat edin.
 </docs-step>
 
 <docs-step title="Create a computed signal for a descriptive message">
-Add a computed signal that creates a descriptive message based on the user status.
+Kullanıcı durumuna göre açıklayıcı bir mesaj oluşturan bir hesaplanmış sinyal ekleyin.
 
 ```ts
 statusMessage = computed(() => {
@@ -49,11 +49,11 @@ statusMessage = computed(() => {
 });
 ```
 
-This shows how computed signals can handle more complex logic with switch statements and string transformations.
+Bu, hesaplanmış sinyallerin switch ifadeleri ve dize dönüşümleriyle daha karmaşık mantığı nasıl işleyebileceğini gösterir.
 </docs-step>
 
 <docs-step title="Create a computed signal that calculates working hours availability">
-Add a computed signal that calculates if the user is within their working hours.
+Kullanıcının çalışma saatleri içinde olup olmadığını hesaplayan bir hesaplanmış sinyal ekleyin.
 
 ```ts
 isWithinWorkingHours = computed(() => {
@@ -64,13 +64,13 @@ isWithinWorkingHours = computed(() => {
 });
 ```
 
-This demonstrates how computed signals can perform calculations and combine multiple data sources. The value updates automatically when the `userStatus` changes.
+Bu, hesaplanmış sinyallerin nasıl hesaplamalar yapabildiğini ve birden fazla veri kaynağını birleştirebildiğini gösterir. `userStatus` değiştiğinde değer otomatik olarak güncellenir.
 </docs-step>
 
 <docs-step title="Display the computed values in the template">
-The template already has placeholders showing "Loading...". Replace them with your computed signals:
+Şablonda zaten "Loading..." gösteren yer tutucular var. Bunları hesaplanmış sinyallerinizle değiştirin:
 
-1. For notifications, replace `Loading...` with an `@if` block:
+1. Bildirimler için, `Loading...` yerine bir `@if` bloğu koyun:
 
    ```angular-html
    @if (notificationsEnabled()) {
@@ -80,13 +80,13 @@ The template already has placeholders showing "Loading...". Replace them with yo
    }
    ```
 
-1. For the message, replace `Loading...` with:
+1. Mesaj için, `Loading...` yerine şunu koyun:
 
    ```angular-html
    {{ statusMessage() }}
    ```
 
-1. For working hours, replace `Loading...` with an `@if` block:
+1. Çalışma saatleri için, `Loading...` yerine bir `@if` bloğu koyun:
 
    ```angular-html
    @if (isWithinWorkingHours()) {
@@ -96,18 +96,18 @@ The template already has placeholders showing "Loading...". Replace them with yo
    }
    ```
 
-Notice how computed signals are called just like regular signals - with parentheses!
+Hesaplanmış sinyallerin normal sinyaller gibi - parantezlerle - çağrıldığına dikkat edin!
 </docs-step>
 
 </docs-workflow>
 
-Excellent! You've now learned how to create computed signals.
+Mükemmel! Artık hesaplanmış sinyaller oluşturmayı öğrendiniz.
 
-Here are some key points to remember:
+Hatırlanması gereken bazı önemli noktalar:
 
-- **Computed signals are reactive**: They automatically update when their dependencies change
-- **They're read-only**: You can't directly set computed values, they're derived from other signals
-- **They can contain complex logic**: Use them for calculations, transformations, and derived state
-- **They provide a way to make performant computations based on dynamic state**: Angular only recalculates them when their dependencies actually change
+- **Hesaplanmış sinyaller reaktiftir**: Bağımlılıkları değiştiğinde otomatik olarak güncellenir
+- **Salt okunurdur**: Hesaplanmış değerleri doğrudan ayarlayamazsınız, diğer sinyallerden türetilirler
+- **Karmaşık mantık içerebilirler**: Hesaplamalar, dönüşümler ve türetilmiş durum için kullanın
+- **Dinamik duruma dayalı performanslı hesaplamalar yapmanın bir yolunu sağlarlar**: Angular, yalnızca bağımlılıkları gerçekten değiştiğinde bunları yeniden hesaplar
 
-In the next lesson, you'll learn about [a different way to derive state with linkedSignals](/tutorials/signals/3-deriving-state-with-linked-signals)!
+Bir sonraki derste, [linkedSignal ile durum türetmenin farklı bir yolunu](/tutorials/signals/3-deriving-state-with-linked-signals) öğreneceksiniz!

@@ -1,0 +1,63 @@
+name: Deploy to Netlify (angular-tr)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'adev/src/content/**'
+      - 'adev/src/**/*.html'
+      - 'adev/src/**/*.ts'
+      - 'adev/src/**/*.scss'
+      - 'adev/angular.json'
+      - 'netlify.toml'
+      - '.github/workflows/deploy.yml'
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.30.0'
+
+      - name: Bazel cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel
+          key: bazel-${{ runner.os }}-${{ hashFiles('.bazelversion', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm bazel build //adev:build
+
+      - name: Prepare public directory
+        run: |
+          mkdir -p public
+          cp -rL dist/bin/adev/dist/browser/. public/
+          cp public/index.csr.html public/index.html
+          echo "/*    /index.html   200" > public/_redirects
+
+      - name: Deploy to Netlify
+        run: |
+          npm install -g netlify-cli
+          netlify deploy --dir=public --prod --no-build
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

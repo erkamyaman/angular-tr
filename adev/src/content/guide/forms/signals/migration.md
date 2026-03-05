@@ -1,23 +1,20 @@
 # Migrating existing forms to Signal Forms
 
-This guide provides strategies for migrating existing codebases to Signal Forms, focusing on interoperability with
-existing Reactive Forms.
+Bu kılavuz, mevcut kod tabanlarını Signal Forms'a taşımak için stratejiler sunar ve mevcut Reactive Forms ile birlikte çalışabilirliğe odaklanır.
 
 ## Top-down migration using `compatForm`
 
-Sometimes you may want to use existing reactive `FormControl` instances within a Signal Form. This is useful for
-controls that involve:
+Bazen mevcut reaktif `FormControl` örneklerini bir Signal Form içinde kullanmak isteyebilirsiniz. Bu, aşağıdakileri içeren kontroller için kullanışlıdır:
 
-- Complex asynchronous logic.
-- Intricate RxJS operators that are not yet ported.
-- Integration with existing third-party libraries.
+- Karmaşık asenkron mantık.
+- Henüz taşınmamış karmaşık RxJS operatörleri.
+- Mevcut üçüncü taraf kütüphanelerle entegrasyon.
 
 ### Integrating a `FormControl` into a signal form
 
-Consider an existing `passwordControl` that uses a specialized `enterprisePasswordValidator`. Instead of rewriting the
-validator, you can bridge the control into your signal state.
+Özelleştirilmiş bir `enterprisePasswordValidator` kullanan mevcut bir `passwordControl` düşünün. Doğrulayıcıyı yeniden yazmak yerine, kontrolü sinyal durumunuza köprüleyebilirsiniz.
 
-We can do it using `compatForm`:
+Bunu `compatForm` kullanarak yapabiliriz:
 
 ```typescript
 import {signal} from '@angular/core';
@@ -48,7 +45,7 @@ const isPasswordValid = f.password().valid();
 const passwordErrors = f.password().errors(); // Returns CompatValidationError if the existing validator fails
 ```
 
-In the template, use standard reactive syntax by binding the underlying control:
+Şablonda, temel kontrolü bağlayarak standart reaktif sözdizimini kullanın:
 
 ```angular-html
 <form novalidate>
@@ -83,8 +80,7 @@ In the template, use standard reactive syntax by binding the underlying control:
 
 ### Integrating a `FormGroup` into a signal form
 
-You can also wrap an entire `FormGroup`. This is common when a reusable sub-section of a form—such as an
-**Address Block**—is still managed by existing Reactive Forms.
+Ayrıca bir `FormGroup`'un tamamını da sarmalayabilirsiniz. Bu, formun yeniden kullanılabilir bir alt bölümünün - örneğin bir **Adres Bloğu** - hâlâ mevcut Reactive Forms tarafından yönetildiği durumlarda yaygındır.
 
 ```typescript
 import {signal} from '@angular/core';
@@ -109,8 +105,7 @@ const f = compatForm(checkoutModel, (p) => {
 });
 ```
 
-The `shippingAddress` field acts as a branch in your Signal Form tree. You can bind these nested controls in your
-template by accessing the underlying existing controls via `.control()`:
+`shippingAddress` alanı, Signal Form ağacınızda bir dal olarak işlev görür. Bu iç içe geçmiş kontrolleri, temel mevcut kontrollere `.control()` üzerinden erişerek şablonunuzda bağlayabilirsiniz:
 
 ```angular-html
 <form novalidate>
@@ -181,7 +176,7 @@ template by accessing the underlying existing controls via `.control()`:
 
 ### Accessing values
 
-While `compatForm` proxies value access on the `FormControl` level, the full form value preserves the control:
+`compatForm` değer erişimini `FormControl` düzeyinde proxy yaparken, tam form değeri kontrolü korur:
 
 ```typescript
 const passwordControl = new FormControl('password' /** ... */);
@@ -196,7 +191,7 @@ form.password().value(); // 'password'
 form().value(); // { email: '', password: FormControl}
 ```
 
-If you need the whole form value, you'd have to build it manually:
+Tüm form değerine ihtiyacınız varsa, bunu manuel olarak oluşturmanız gerekir:
 
 ```typescript
 const formValue = computed(() => ({
@@ -209,8 +204,7 @@ const formValue = computed(() => ({
 
 ### Integrating a Signal Form into a `FormGroup`
 
-You can use `SignalFormControl` to expose a signal-based form as a standard `FormControl`. This is useful when you want
-to migrate leaf nodes of a form to Signals while keeping the parent `FormGroup` structure.
+Sinyal tabanlı bir formu standart bir `FormControl` olarak dışa aktarmak için `SignalFormControl` kullanabilirsiniz. Bu, üst `FormGroup` yapısını korurken formun yaprak düğümlerini Sinyallere taşımak istediğinizde kullanışlıdır.
 
 ```typescript
 import {Component, signal} from '@angular/core';
@@ -235,18 +229,17 @@ export class UserProfile {
 }
 ```
 
-The `SignalFormControl` synchronizes values and validation status bi-directionally:
+`SignalFormControl`, değerleri ve doğrulama durumunu çift yönlü olarak senkronize eder:
 
-- **Signal -> Control**: Changing `email.set(...)` updates `emailControl.value` and the parent `form.value`.
-- **Control -> Signal**: Typing in the input (updating `emailControl`) updates the `email` signal.
-- **Validation**: Schema validators (like `required`) propagate errors to `emailControl.errors`.
+- **Signal -> Control**: `email.set(...)` değişikliği `emailControl.value` ve üst `form.value` değerini günceller.
+- **Control -> Signal**: Girdiye yazma (`emailControl`'ü güncelleme) `email` sinyalini günceller.
+- **Validation**: Şema doğrulayıcıları (`required` gibi) hataları `emailControl.errors`'a yayar.
 
 ### Disabling/Enabling control.
 
-Imperative APIs for changing the enabled/disabled state (like `enable()`, `disable()`) are intentionally not supported
-in `SignalFormControl`. This is because the state of the control should be derived from the signal state and rules.
+Etkin/devre dışı durumunu değiştirmek için zorunlu API'ler (`enable()`, `disable()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez. Bunun nedeni, kontrolün durumunun sinyal durumundan ve kurallardan türetilmesi gerektiğidir.
 
-Attempting to call disable/enable would throw an error.
+disable/enable çağırmaya çalışmak bir hata fırlatır.
 
 ```typescript {avoid}
 import {signal, effect} from '@angular/core';
@@ -269,7 +262,7 @@ export class UserProfile {
 }
 ```
 
-Instead, use disabled rule:
+Bunun yerine, disabled kuralını kullanın:
 
 ```typescript {prefer}
 import {signal} from '@angular/core';
@@ -294,10 +287,9 @@ export class UserProfile {
 
 ### Dynamic manipulation
 
-Imperative APIs for adding or removing validators (like `addValidators()`, `removeValidators()`, `setValidators()`) are
-intentionally not supported in `SignalFormControl`.
+Doğrulayıcı eklemek veya kaldırmak için zorunlu API'ler (`addValidators()`, `removeValidators()`, `setValidators()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez.
 
-Attempting to call these methods will throw an error.
+Bu yöntemleri çağırmaya çalışmak bir hata fırlatır.
 
 ```typescript {avoid}
 export class UserProfile {
@@ -316,7 +308,7 @@ export class UserProfile {
 }
 ```
 
-Instead, use `applyWhen` rule to conditionally apply validators:
+Bunun yerine, doğrulayıcıları koşullu olarak uygulamak için `applyWhen` kuralını kullanın:
 
 ```typescript {prefer}
 import {signal} from '@angular/core';
@@ -341,16 +333,13 @@ export class UserProfile {
 
 ### Manual Error Selection
 
-The `setErrors()` and `markAsPending()` methods are not supported. In Signal Forms, errors are derived from validation
-rules and async validation status. If you need to report an error, it should be done declaratively via a validation rule
-in the schema.
+`setErrors()` ve `markAsPending()` yöntemleri desteklenmez. Signal Forms'ta hatalar doğrulama kurallarından ve asenkron doğrulama durumundan türetilir. Bir hata bildirmeniz gerekiyorsa, bu şemadaki bir doğrulama kuralı aracılığıyla bildirimsel olarak yapılmalıdır.
 
 ## Automatic status classes
 
-Reactive/Template Forms automatically adds [class attributes](/guide/forms/template-driven-forms#track-control-states) (
-such as `.ng-valid` or `.ng-dirty`) to facilitate styling control states. Signal Forms does not do that.
+Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#track-control-states) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
 
-If you want to preserve this behavior, you can provide the `NG_STATUS_CLASSES` preset:
+Bu davranışı korumak istiyorsanız, `NG_STATUS_CLASSES` ön ayarını sağlayabilirsiniz:
 
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';
@@ -365,7 +354,7 @@ bootstrapApplication(App, {
 });
 ```
 
-You can also provide your own custom configuration to apply whatever classes you wish based on you custom logic:
+Ayrıca kendi özel mantığınıza dayalı olarak istediğiniz sınıfları uygulamak için kendi özel yapılandırmanızı da sağlayabilirsiniz:
 
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';

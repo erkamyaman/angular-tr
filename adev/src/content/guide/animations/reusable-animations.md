@@ -1,33 +1,33 @@
 # Reusable animations
 
-IMPORTANT: The `@angular/animations` package is now deprecated. The Angular team recommends using native CSS with `animate.enter` and `animate.leave` for animations for all new code. Learn more at the new enter and leave [animation guide](guide/animations). Also see [Migrating away from Angular's Animations package](guide/animations/migration) to learn how you can start migrating to pure CSS animations in your apps.
+IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
 
-This topic provides some examples of how to create reusable animations.
+Bu konu, yeniden kullanilabilir animasyonlarin nasil olusturulacagina dair bazi ornekler saglar.
 
 ## Create reusable animations
 
-To create a reusable animation, use the [`animation()`](api/animations/animation) function to define an animation in a separate `.ts` file and declare this animation definition as a `const` export variable.
-You can then import and reuse this animation in any of your application components using the [`useAnimation()`](api/animations/useAnimation) function.
+Yeniden kullanilabilir bir animasyon olusturmak icin, [`animation()`](api/animations/animation) fonksiyonunu kullanarak ayri bir `.ts` dosyasinda bir animasyon tanimlayin ve bu animasyon tanimini bir `const` dis aktarim degiskeni olarak bildirin.
+Daha sonra bu animasyonu [`useAnimation()`](api/animations/useAnimation) fonksiyonunu kullanarak uygulamanizin herhangi bir bileseninde iceri aktarabilir ve yeniden kullanabilirsiniz.
 
 <docs-code header="animations.ts" path="adev/src/content/examples/animations/src/app/animations.1.ts" region="animation-const"/>
 
-In the preceding code snippet, `transitionAnimation` is made reusable by declaring it as an export variable.
+Onceki kod parcasinda, `transitionAnimation` bir dis aktarim degiskeni olarak bildirilerek yeniden kullanilabilir hale getirilmistir.
 
-HELPFUL: The `height`, `opacity`, `backgroundColor`, and `time` inputs are replaced during runtime.
+HELPFUL: `height`, `opacity`, `backgroundColor` ve `time` girisleri calisma zamaninda degistirilir.
 
-You can also export a part of an animation.
-For example, the following snippet exports the animation `trigger`.
+Ayrica bir animasyonun bir bolumunu de dis aktarabilirsiniz.
+Ornegin, asagidaki kod parcasi animasyon `trigger`'ini dis aktarir.
 
 <docs-code header="animations.1.ts" path="adev/src/content/examples/animations/src/app/animations.1.ts" region="trigger-const"/>
 
-From this point, you can import reusable animation variables in your component class.
-For example, the following code snippet imports the `transitionAnimation` variable and uses it via the `useAnimation()` function.
+Bu noktadan itibaren, bilesen sinifinizda yeniden kullanilabilir animasyon degiskenlerini iceri aktarabilirsiniz.
+Ornegin, asagidaki kod parcasi `transitionAnimation` degiskenini iceri aktarir ve `useAnimation()` fonksiyonu araciligiyla kullanir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.3.ts" region="reusable"/>
 
 ## More on Angular animations
 
-You might also be interested in the following:
+Asagidakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
   <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>

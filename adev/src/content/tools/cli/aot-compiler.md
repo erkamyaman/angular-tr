@@ -1,46 +1,46 @@
 # Ahead-of-time (AOT) compilation
 
-An Angular application consists mainly of components and their HTML templates.
-Because the components and templates provided by Angular cannot be understood by the browser directly, Angular applications require a compilation process before they can run in a browser.
+Bir Angular uygulaması esas olarak bileşenlerden ve bunların HTML şablonlarından oluşur.
+Angular tarafından sağlanan bileşenler ve şablonlar doğrudan tarayıcı tarafından anlaşılamadığından, Angular uygulamalarının tarayıcıda çalışabilmeleri için bir derleme sürecinden geçmeleri gerekir.
 
-The Angular ahead-of-time (AOT) compiler converts your Angular HTML and TypeScript code into efficient JavaScript code during the build phase _before_ the browser downloads and runs that code.
-Compiling your application during the build process provides a faster rendering in the browser.
+Angular önceden derleme (AOT) derleyicisi, tarayıcı bu kodu indirip çalıştırmadan _önce_ derleme aşamasında Angular HTML ve TypeScript kodunuzu verimli JavaScript koduna dönüştürür.
+Uygulamanızı derleme sürecinde derlemek, tarayıcıda daha hızlı bir oluşturma sağlar.
 
-This guide explains how to specify metadata and apply available compiler options to compile your applications efficiently using the AOT compiler.
+Bu kılavuz, AOT derleyicisini kullanarak uygulamalarınızı verimli bir şekilde derlemek için meta verileri nasıl belirteceğinizi ve mevcut derleyici seçeneklerini nasıl uygulayacağınızı açıklar.
 
-HELPFUL: [Watch Alex Rickabaugh explain the Angular compiler](https://www.youtube.com/watch?v=anphffaCZrQ) at AngularConnect 2019.
+HELPFUL: [Alex Rickabaugh'un AngularConnect 2019'da Angular derleyicisini açıkladığını izleyin](https://www.youtube.com/watch?v=anphffaCZrQ).
 
-Here are some reasons you might want to use AOT.
+AOT kullanmak istemenizin bazı nedenleri şunlardır.
 
-| Reasons                                 | Details                                                                                                                                                                                                                                            |
-| :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Faster rendering                        | With AOT, the browser downloads a pre-compiled version of the application. The browser loads executable code so it can render the application immediately, without waiting to compile the application first.                                       |
-| Fewer asynchronous requests             | The compiler _inlines_ external HTML templates and CSS style sheets within the application JavaScript, eliminating separate ajax requests for those source files.                                                                                  |
-| Smaller Angular framework download size | There's no need to download the Angular compiler if the application is already compiled. The compiler is roughly half of Angular itself, so omitting it dramatically reduces the application payload.                                              |
-| Detect template errors earlier          | The AOT compiler detects and reports template binding errors during the build step before users can see them.                                                                                                                                      |
-| Better security                         | AOT compiles HTML templates and components into JavaScript files long before they are served to the client. With no templates to read and no risky client-side HTML or JavaScript evaluation, there are fewer opportunities for injection attacks. |
+| Nedenler                                  | Ayrıntılar                                                                                                                                                                                                                                        |
+| :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Daha hızlı oluşturma                      | AOT ile tarayıcı, uygulamanın önceden derlenmiş bir sürümünü indirir. Tarayıcı çalıştırılabilir kodu yükler, böylece önce uygulamayı derlemeyi beklemeden uygulamayı hemen oluşturabilir.                                                         |
+| Daha az asenkron istek                    | Derleyici, harici HTML şablonlarını ve CSS stil sayfalarını uygulama JavaScript'i içine _satır içi_ yerleştirir ve bu kaynak dosyaları için ayrı ajax isteklerini ortadan kaldırır.                                                               |
+| Daha küçük Angular çerçeve indirme boyutu | Uygulama zaten derlenmişse Angular derleyicisini indirmeye gerek yoktur. Derleyici Angular'ın kabaca yarısı kadardır, bu nedenle onu atlamak uygulama yükünü önemli ölçüde azaltır.                                                               |
+| Şablon hatalarını daha erken tespit etme  | AOT derleyicisi, kullanıcılar göremeden önce derleme adımında şablon bağlama hatalarını tespit eder ve bildirir.                                                                                                                                  |
+| Daha iyi güvenlik                         | AOT, HTML şablonlarını ve bileşenleri istemciye sunulmadan çok önce JavaScript dosyalarına derler. Okunacak şablon ve riskli istemci tarafı HTML veya JavaScript değerlendirmesi olmadığından, enjeksiyon saldırıları için daha az fırsat vardır. |
 
 ## Choosing a compiler
 
-Angular offers two ways to compile your application:
+Angular, uygulamanızı derlemek için iki yol sunar:
 
-| Angular compile       | Details                                                                                           |
+| Angular derleme       | Ayrıntılar                                                                                        |
 | :-------------------- | :------------------------------------------------------------------------------------------------ |
-| Just-in-Time \(JIT\)  | Compiles your application in the browser at runtime. This was the default until Angular 8.        |
-| Ahead-of-Time \(AOT\) | Compiles your application and libraries at build time. This is the default starting in Angular 9. |
+| Just-in-Time \(JIT\)  | Uygulamanızı çalışma zamanında tarayıcıda derler. Angular 8'e kadar varsayılandı.                 |
+| Ahead-of-Time \(AOT\) | Uygulamanızı ve kütüphanelerinizi derleme zamanında derler. Angular 9'dan itibaren varsayılandır. |
 
-When you run the [`ng build`](cli/build) \(build only\) or [`ng serve`](cli/serve) \(build and serve locally\) CLI commands, the type of compilation \(JIT or AOT\) depends on the value of the `aot` property in your build configuration specified in `angular.json`.
-By default, `aot` is set to `true` for new CLI applications.
+[`ng build`](cli/build) \(yalnızca derleme\) veya [`ng serve`](cli/serve) \(derleme ve yerel olarak sunma\) CLI komutlarını çalıştırdığınızda, derleme türü \(JIT veya AOT\) `angular.json` içindeki derleme yapılandırmanızda belirtilen `aot` özelliğinin değerine bağlıdır.
+Varsayılan olarak, yeni CLI uygulamaları için `aot` değeri `true` olarak ayarlanmıştır.
 
-See the [CLI command reference](cli) and [Building and serving Angular apps](tools/cli/build) for more information.
+Daha fazla bilgi için [CLI komut referansına](cli) ve [Angular uygulamaları derleme ve sunma](tools/cli/build) belgesine bakın.
 
 ## How AOT works
 
-The Angular AOT compiler extracts **metadata** to interpret the parts of the application that Angular is supposed to manage.
-You can specify the metadata explicitly in **decorators** such as `@Component()`, or implicitly in the constructor declarations of the decorated classes.
-The metadata tells Angular how to construct instances of your application classes and interact with them at runtime.
+Angular AOT derleyicisi, Angular'ın yönetmesi gereken uygulama parçalarını yorumlamak için **meta veri** çıkarır.
+Meta veriyi `@Component()` gibi **dekoratörlerde** açıkça veya dekoratör uygulanmış sınıfların yapıcı bildirimlerinde örtük olarak belirtebilirsiniz.
+Meta veri, Angular'a uygulama sınıflarınızın örneklerini nasıl oluşturacağını ve çalışma zamanında onlarla nasıl etkileşime geçeceğini söyler.
 
-In the following example, the `@Component()` metadata object and the class constructor tell Angular how to create and display an instance of `Typical`.
+Aşağıdaki örnekte, `@Component()` meta veri nesnesi ve sınıf yapıcısı Angular'a bir `Typical` örneğini nasıl oluşturacağını ve görüntüleyeceğini söyler.
 
 ```angular-ts
 @Component({
@@ -53,75 +53,75 @@ export class Typical {
 }
 ```
 
-The Angular compiler extracts the metadata _once_ and generates a _factory_ for `Typical`.
-When it needs to create a `Typical` instance, Angular calls the factory, which produces a new visual element, bound to a new instance of the component class with its injected dependency.
+Angular derleyicisi, meta veriyi _bir kez_ çıkarır ve `Typical` için bir _fabrika_ oluşturur.
+Bir `Typical` örneği oluşturması gerektiğinde, Angular fabrikayı çağırır; bu fabrika, enjekte edilen bağımlılığı ile bileşen sınıfının yeni bir örneğine bağlı yeni bir görsel öğe üretir.
 
 ### Compilation phases
 
-There are three phases of AOT compilation.
+AOT derlemesinin üç aşaması vardır.
 
-|     | Phase                  | Details                                                                                                                                                                                                                                                                                                        |
-| :-- | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | code analysis          | In this phase, the TypeScript compiler and _AOT collector_ create a representation of the source. The collector does not attempt to interpret the metadata it collects. It represents the metadata as best it can and records errors when it detects a metadata syntax violation.                              |
-| 2   | code generation        | In this phase, the compiler's `StaticReflector` interprets the metadata collected in phase 1, performs additional validation of the metadata, and throws an error if it detects a metadata restriction violation.                                                                                              |
-| 3   | template type checking | In this optional phase, the Angular _template compiler_ uses the TypeScript compiler to validate the binding expressions in templates. You can enable this phase explicitly by setting the `strictTemplates` configuration option; see [Angular compiler options](reference/configs/angular-compiler-options). |
+|     | Aşama               | Ayrıntılar                                                                                                                                                                                                                                                                                                                              |
+| :-- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | kod analizi         | Bu aşamada, TypeScript derleyicisi ve _AOT toplayıcısı_ kaynağın bir temsilini oluşturur. Toplayıcı, topladığı meta veriyi yorumlamaya çalışmaz. Meta veriyi olabildiğince iyi temsil eder ve bir meta veri sözdizimi ihlali tespit ettiğinde hataları kaydeder.                                                                        |
+| 2   | kod oluşturma       | Bu aşamada, derleyicinin `StaticReflector`'ı 1. aşamada toplanan meta veriyi yorumlar, meta verinin ek doğrulamasını yapar ve bir meta veri kısıtlama ihlali tespit ederse bir hata fırlatır.                                                                                                                                           |
+| 3   | şablon tür denetimi | Bu isteğe bağlı aşamada, Angular _şablon derleyicisi_ şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır. Bu aşamayı `strictTemplates` yapılandırma seçeneğini ayarlayarak açıkça etkinleştirebilirsiniz; [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın. |
 
 ### Metadata restrictions
 
-You write metadata in a _subset_ of TypeScript that must conform to the following general constraints:
+Meta veriyi, aşağıdaki genel kısıtlamalara uyması gereken bir TypeScript _alt kümesinde_ yazarsınız:
 
-- Limit [expression syntax](#expression-syntax-limitations) to the supported subset of JavaScript
-- Only reference exported symbols after [code folding](#code-folding)
-- Only call [functions supported](#supported-classes-and-functions) by the compiler
-- Input/Outputs and data-bound class members must be public or protected.For additional guidelines and instructions on preparing an application for AOT compilation, see [Angular: Writing AOT-friendly applications](https://medium.com/sparkles-blog/angular-writing-aot-friendly-applications-7b64c8afbe3f).
+- [İfade sözdizimini](#expression-syntax-limitations) desteklenen JavaScript alt kümesiyle sınırlayın
+- [Kod katlama](#code-folding) sonrasında yalnızca dışa aktarılmış sembollere başvurun
+- Yalnızca derleyici tarafından [desteklenen fonksiyonları](#supported-classes-and-functions) çağırın
+- Input/Output'lar ve veriye bağlı sınıf üyeleri public veya protected olmalıdır. Bir uygulamayı AOT derleme için hazırlama hakkında ek yönergeler ve talimatlar için [Angular: AOT-dostu uygulamalar yazma](https://medium.com/sparkles-blog/angular-writing-aot-friendly-applications-7b64c8afbe3f) makalesine bakın.
 
-HELPFUL: Errors in AOT compilation commonly occur because of metadata that does not conform to the compiler's requirements \(as described more fully below\).
-For help in understanding and resolving these problems, see [AOT Metadata Errors](tools/cli/aot-metadata-errors).
+HELPFUL: AOT derlemesindeki hatalar genellikle derleyicinin gereksinimlerine uymayan meta veriler nedeniyle oluşur \(aşağıda daha ayrıntılı açıklanmıştır\).
+Bu sorunları anlamada ve çözmede yardım için [AOT Meta Veri Hataları](tools/cli/aot-metadata-errors) belgesine bakın.
 
 ### Configuring AOT compilation
 
-You can provide options in the [TypeScript configuration file](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) that controls the compilation process.
-See [Angular compiler options](reference/configs/angular-compiler-options) for a complete list of available options.
+Derleme sürecini kontrol eden [TypeScript yapılandırma dosyasında](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) seçenekler sağlayabilirsiniz.
+Mevcut seçeneklerin eksiksiz listesi için [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın.
 
 ## Phase 1: Code analysis
 
-The TypeScript compiler does some of the analytic work of the first phase.
-It emits the `.d.ts` _type definition files_ with type information that the AOT compiler needs to generate application code.
-At the same time, the AOT **collector** analyzes the metadata recorded in the Angular decorators and outputs metadata information in **`.metadata.json`** files, one per `.d.ts` file.
+TypeScript derleyicisi, ilk aşamanın analitik çalışmasının bir kısmını yapar.
+AOT derleyicisinin uygulama kodu oluşturmak için ihtiyaç duyduğu tür bilgisine sahip `.d.ts` _tür tanım dosyalarını_ yayar.
+Aynı zamanda, AOT **toplayıcısı** Angular dekoratörlerinde kaydedilen meta veriyi analiz eder ve her `.d.ts` dosyası için bir tane olmak üzere **`.metadata.json`** dosyalarında meta veri bilgisini çıkarır.
 
-You can think of `.metadata.json` as a diagram of the overall structure of a decorator's metadata, represented as an [abstract syntax tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+`.metadata.json`'ı, bir dekoratörün meta verisinin genel yapısının bir diyagramı olarak düşünebilirsiniz; [soyut sözdizim ağacı (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) olarak temsil edilir.
 
-HELPFUL: Angular's [schema.ts](https://github.com/angular/angular/blob/main/packages/compiler-cli/src/metadata/schema.ts) describes the JSON format as a collection of TypeScript interfaces.
+HELPFUL: Angular'ın [schema.ts](https://github.com/angular/angular/blob/main/packages/compiler-cli/src/metadata/schema.ts) dosyası, JSON formatını TypeScript arayüzleri koleksiyonu olarak tanımlar.
 
 ### Expression syntax limitations
 
-The AOT collector only understands a subset of JavaScript.
-Define metadata objects with the following limited syntax:
+AOT toplayıcısı yalnızca JavaScript'in bir alt kümesini anlar.
+Meta veri nesnelerini aşağıdaki sınırlı sözdizimi ile tanımlayın:
 
-| Syntax                    | Example                                                    |
-| :------------------------ | :--------------------------------------------------------- |
-| Literal object            | `{cherry: true, apple: true, mincemeat: false}`            |
-| Literal array             | `['cherries', 'flour', 'sugar']`                           |
-| Spread in literal array   | `['apples', 'flour', …]`                                   |
-| Calls                     | `bake(ingredients)`                                        |
-| New                       | `new Oven()`                                               |
-| Property access           | `pie.slice`                                                |
-| Array index               | `ingredients[0]`                                           |
-| Identity reference        | `Component`                                                |
-| A template string         | <code>`pie is ${multiplier} times better than cake`</code> |
-| Literal string            | `'pi'`                                                     |
-| Literal number            | `3.14153265`                                               |
-| Literal boolean           | `true`                                                     |
-| Literal null              | `null`                                                     |
-| Supported prefix operator | `!cake`                                                    |
-| Supported binary operator | `a+b`                                                      |
-| Conditional operator      | `a ? b : c`                                                |
-| Parentheses               | `(a+b)`                                                    |
+| Sözdizimi                  | Örnek                                                      |
+| :------------------------- | :--------------------------------------------------------- |
+| Literal nesne              | `{cherry: true, apple: true, mincemeat: false}`            |
+| Literal dizi               | `['cherries', 'flour', 'sugar']`                           |
+| Literal dizide yayılma     | `['apples', 'flour', ...]`                                 |
+| Çağrılar                   | `bake(ingredients)`                                        |
+| New                        | `new Oven()`                                               |
+| Özellik erişimi            | `pie.slice`                                                |
+| Dizi indeksi               | `ingredients[0]`                                           |
+| Kimlik referansı           | `Component`                                                |
+| Şablon dizesi              | <code>`pie is ${multiplier} times better than cake`</code> |
+| Literal dize               | `'pi'`                                                     |
+| Literal sayı               | `3.14153265`                                               |
+| Literal boolean            | `true`                                                     |
+| Literal null               | `null`                                                     |
+| Desteklenen önek operatörü | `!cake`                                                    |
+| Desteklenen ikili operatör | `a+b`                                                      |
+| Koşul operatörü            | `a ? b : c`                                                |
+| Parantezler                | `(a+b)`                                                    |
 
-If an expression uses unsupported syntax, the collector writes an error node to the `.metadata.json` file.
-The compiler later reports the error if it needs that piece of metadata to generate the application code.
+Bir ifade desteklenmeyen sözdizimi kullanırsa, toplayıcı `.metadata.json` dosyasına bir hata düğümü yazar.
+Derleyici, uygulama kodunu oluşturmak için o meta veri parçasına ihtiyaç duyarsa daha sonra hatayı bildirir.
 
-HELPFUL: If you want `ngc` to report syntax errors immediately rather than produce a `.metadata.json` file with errors, set the `strictMetadataEmit` option in the TypeScript configuration file.
+HELPFUL: `ngc`'nin bir hatalı `.metadata.json` dosyası üretmek yerine sözdizimi hatalarını hemen bildirmesini istiyorsanız, TypeScript yapılandırma dosyasında `strictMetadataEmit` seçeneğini ayarlayın.
 
 ```json
 
@@ -132,14 +132,13 @@ HELPFUL: If you want `ngc` to report syntax errors immediately rather than produ
 
 ```
 
-Angular libraries have this option to ensure that all Angular `.metadata.json` files are clean and it is a best practice to do the same when building your own libraries.
+Angular kütüphaneleri, tüm Angular `.metadata.json` dosyalarının temiz olmasını sağlamak için bu seçeneğe sahiptir ve kendi kütüphanelerinizi oluştururken de aynısını yapmanız en iyi uygulamadır.
 
 ### No arrow functions
 
-The AOT compiler does not support [function expressions](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/function)
-and [arrow functions](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Arrow_functions), also called _lambda_ functions.
+AOT derleyicisi, _lambda_ fonksiyonları olarak da adlandırılan [fonksiyon ifadelerini](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/function) ve [ok fonksiyonlarını](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Arrow_functions) desteklemez.
 
-Consider the following component decorator:
+Aşağıdaki bileşen dekoratörünü düşünün:
 
 ```ts
 
@@ -150,11 +149,11 @@ Consider the following component decorator:
 
 ```
 
-The AOT collector does not support the arrow function, `() => new Server()`, in a metadata expression.
-It generates an error node in place of the function.
-When the compiler later interprets this node, it reports an error that invites you to turn the arrow function into an _exported function_.
+AOT toplayıcısı, bir meta veri ifadesindeki ok fonksiyonunu `() => new Server()` desteklemez.
+Fonksiyon yerine bir hata düğümü oluşturur.
+Derleyici daha sonra bu düğümü yorumladığında, ok fonksiyonunu _dışa aktarılmış bir fonksiyona_ dönüştürmenizi öneren bir hata bildirir.
 
-You can fix the error by converting to this:
+Hatayı şuna dönüştürerek düzeltebilirsiniz:
 
 ```ts
 
@@ -169,21 +168,21 @@ export function serverFactory() {
 
 ```
 
-In version 5 and later, the compiler automatically performs this rewriting while emitting the `.js` file.
+Sürüm 5 ve sonrasında, derleyici `.js` dosyasını yayarken bu yeniden yazmayı otomatik olarak gerçekleştirir.
 
 ### Code folding
 
-The compiler can only resolve references to **_exported_** symbols.
-The collector, however, can evaluate an expression during collection and record the result in the `.metadata.json`, rather than the original expression.
-This allows you to make limited use of non-exported symbols within expressions.
+Derleyici yalnızca **_dışa aktarılmış_** sembollere yapılan referansları çözebilir.
+Ancak toplayıcı, toplama sırasında bir ifadeyi değerlendirebilir ve orijinal ifade yerine sonucu `.metadata.json`'a kaydedebilir.
+Bu, ifadeler içinde dışa aktarılmamış sembollerin sınırlı kullanımına izin verir.
 
-For example, the collector can evaluate the expression `1 + 2 + 3 + 4` and replace it with the result, `10`.
-This process is called _folding_.
-An expression that can be reduced in this manner is _foldable_.
+Örneğin, toplayıcı `1 + 2 + 3 + 4` ifadesini değerlendirebilir ve sonucu `10` ile değiştirebilir.
+Bu süreç _katlama_ olarak adlandırılır.
+Bu şekilde indirgenebilen bir ifade _katlanabilir_'dir.
 
-The collector can evaluate references to module-local `const` declarations and initialized `var` and `let` declarations, effectively removing them from the `.metadata.json` file.
+Toplayıcı, modül-yerel `const` bildirimleri ve başlatılmış `var` ve `let` bildirimlerine yapılan referansları değerlendirebilir ve bunları `.metadata.json` dosyasından etkili bir şekilde kaldırabilir.
 
-Consider the following component definition:
+Aşağıdaki bileşen tanımını düşünün:
 
 ```angular-ts
 const template = '<div>{{hero().name}}</div>';
@@ -197,9 +196,9 @@ export class Hero {
 }
 ```
 
-The compiler could not refer to the `template` constant because it isn't exported.
-The collector, however, can fold the `template` constant into the metadata definition by in-lining its contents.
-The effect is the same as if you had written:
+Derleyici, dışa aktarılmadığı için `template` sabitine başvuramaz.
+Ancak toplayıcı, içeriğini satır içi yerleştirerek `template` sabitini meta veri tanımına _katlayabilir_.
+Etki, şöyle yazmışsınız gibi olur:
 
 ```angular-ts
 @Component({
@@ -211,9 +210,9 @@ export class Hero {
 }
 ```
 
-There is no longer a reference to `template` and, therefore, nothing to trouble the compiler when it later interprets the _collector's_ output in `.metadata.json`.
+Artık `template`'e bir referans yoktur ve bu nedenle derleyici daha sonra _toplayıcının_ `.metadata.json` çıktısını yorumladığında sorun yaratacak hiçbir şey yoktur.
 
-You can take this example a step further by including the `template` constant in another expression:
+Bu örneği, `template` sabitini başka bir ifadeye dahil ederek bir adım daha ileri götürebilirsiniz:
 
 ```angular-ts
 const template = '<div>{{hero().name}}</div>';
@@ -227,7 +226,7 @@ export class Hero {
 }
 ```
 
-The collector reduces this expression to its equivalent _folded_ string:
+Toplayıcı bu ifadeyi eşdeğer _katlanmış_ dizesine indirger:
 
 ```angular-ts
 '<div>{{hero().name}}</div><div>{{hero().title}}</div>';
@@ -235,67 +234,67 @@ The collector reduces this expression to its equivalent _folded_ string:
 
 #### Foldable syntax
 
-The following table describes which expressions the collector can and cannot fold:
+Aşağıdaki tablo, toplayıcının hangi ifadeleri katlayıp katlamayacağını açıklar:
 
-| Syntax                           | Foldable                                 |
-| :------------------------------- | :--------------------------------------- |
-| Literal object                   | yes                                      |
-| Literal array                    | yes                                      |
-| Spread in literal array          | no                                       |
-| Calls                            | no                                       |
-| New                              | no                                       |
-| Property access                  | yes, if target is foldable               |
-| Array index                      | yes, if target and index are foldable    |
-| Identity reference               | yes, if it is a reference to a local     |
-| A template with no substitutions | yes                                      |
-| A template with substitutions    | yes, if the substitutions are foldable   |
-| Literal string                   | yes                                      |
-| Literal number                   | yes                                      |
-| Literal boolean                  | yes                                      |
-| Literal null                     | yes                                      |
-| Supported prefix operator        | yes, if operand is foldable              |
-| Supported binary operator        | yes, if both left and right are foldable |
-| Conditional operator             | yes, if condition is foldable            |
-| Parentheses                      | yes, if the expression is foldable       |
+| Sözdizimi                  | Katlanabilir                            |
+| :------------------------- | :-------------------------------------- |
+| Literal nesne              | evet                                    |
+| Literal dizi               | evet                                    |
+| Literal dizide yayılma     | hayır                                   |
+| Çağrılar                   | hayır                                   |
+| New                        | hayır                                   |
+| Özellik erişimi            | evet, hedef katlanabilirse              |
+| Dizi indeksi               | evet, hedef ve indeks katlanabilirse    |
+| Kimlik referansı           | evet, yerel bir referans ise            |
+| Değiştirmesiz şablon       | evet                                    |
+| Değiştirmeli şablon        | evet, değiştirmeler katlanabilirse      |
+| Literal dize               | evet                                    |
+| Literal sayı               | evet                                    |
+| Literal boolean            | evet                                    |
+| Literal null               | evet                                    |
+| Desteklenen önek operatörü | evet, işlenen katlanabilirse            |
+| Desteklenen ikili operatör | evet, hem sol hem de sağ katlanabilirse |
+| Koşul operatörü            | evet, koşul katlanabilirse              |
+| Parantezler                | evet, ifade katlanabilirse              |
 
-If an expression is not foldable, the collector writes it to `.metadata.json` as an [AST](https://en.wikipedia.org/wiki/Abstract*syntax*tree) for the compiler to resolve.
+Bir ifade katlanabilir değilse, toplayıcı onu derleyicinin çözmesi için bir [AST](https://en.wikipedia.org/wiki/Abstract*syntax*tree) olarak `.metadata.json`'a yazar.
 
 ## Phase 2: code generation
 
-The collector makes no attempt to understand the metadata that it collects and outputs to `.metadata.json`.
-It represents the metadata as best it can and records errors when it detects a metadata syntax violation.
-It's the compiler's job to interpret the `.metadata.json` in the code generation phase.
+Toplayıcı, topladığı ve `.metadata.json`'a çıkardığı meta veriyi anlamaya çalışmaz.
+Meta veriyi olabildiğince iyi temsil eder ve bir meta veri sözdizimi ihlali tespit ettiğinde hataları kaydeder.
+Kod oluşturma aşamasında `.metadata.json`'ı yorumlamak derleyicinin işidir.
 
-The compiler understands all syntax forms that the collector supports, but it may reject _syntactically_ correct metadata if the _semantics_ violate compiler rules.
+Derleyici, toplayıcının desteklediği tüm sözdizimi biçimlerini anlar, ancak meta verinin _semantiği_ derleyici kurallarını ihlal ediyorsa _sözdizimsel olarak_ doğru meta veriyi reddedebilir.
 
 ### Public or protected symbols
 
-The compiler can only reference _exported symbols_.
+Derleyici yalnızca \_dışa aktarılmış sembol_lere başvurabilir.
 
-- Decorated component class members must be public or protected.
-  You cannot make an `input()` property private.
+- Dekoratör uygulanmış bileşen sınıf üyeleri public veya protected olmalıdır.
+  Bir `input()` özelliğini private yapamazsınız.
 
-- Data bound properties must also be public or protected
+- Veriye bağlı özellikler de public veya protected olmalıdır
 
 ### Supported classes and functions
 
-The collector can represent a function call or object creation with `new` as long as the syntax is valid.
-The compiler, however, can later refuse to generate a call to a _particular_ function or creation of a _particular_ object.
+Toplayıcı, sözdizimi geçerli olduğu sürece bir fonksiyon çağrısını veya `new` ile nesne oluşturmayı temsil edebilir.
+Ancak derleyici, daha sonra belirli bir fonksiyona çağrı yapmayı veya belirli bir nesne oluşturmayı reddedebilir.
 
-The compiler can only create instances of certain classes, supports only core decorators, and only supports calls to macros \(functions or static methods\) that return expressions.
+Derleyici yalnızca belirli sınıfların örneklerini oluşturabilir, yalnızca çekirdek dekoratörleri destekler ve yalnızca ifade döndüren makrolara \(fonksiyonlar veya statik metotlar\) yapılan çağrıları destekler.
 
-| Compiler action      | Details                                                                                                                                                |
-| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| New instances        | The compiler only allows metadata that create instances of the class `InjectionToken` from `@angular/core`.                                            |
-| Supported decorators | The compiler only supports metadata for the [Angular decorators in the `@angular/core` module](/api?type=decorator).                                   |
-| Function calls       | Factory functions must be exported, named functions. The AOT compiler does not support lambda expressions \("arrow functions"\) for factory functions. |
+| Derleyici eylemi         | Ayrıntılar                                                                                                                                                                      |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Yeni örnekler            | Derleyici yalnızca `@angular/core`'dan `InjectionToken` sınıfının örneklerini oluşturan meta verilere izin verir.                                                               |
+| Desteklenen dekoratörler | Derleyici yalnızca [`@angular/core` modülündeki Angular dekoratörleri](/api?type=decorator) için meta verileri destekler.                                                       |
+| Fonksiyon çağrıları      | Fabrika fonksiyonları dışa aktarılmış, adlandırılmış fonksiyonlar olmalıdır. AOT derleyicisi, fabrika fonksiyonları için lambda ifadelerini \("ok fonksiyonları"\) desteklemez. |
 
 ### Functions and static method calls
 
-The collector accepts any function or static method that contains a single `return` statement.
-The compiler, however, only supports macros in the form of functions or static methods that return an _expression_.
+Toplayıcı, tek bir `return` ifadesi içeren herhangi bir fonksiyonu veya statik metodu kabul eder.
+Ancak derleyici, yalnızca bir _ifade_ döndüren fonksiyonlar veya statik metotlar biçimindeki makroları destekler.
 
-For example, consider the following function:
+Örneğin, aşağıdaki fonksiyonu düşünün:
 
 ```ts
 export function wrapInArray<T>(value: T): T[] {
@@ -303,9 +302,9 @@ export function wrapInArray<T>(value: T): T[] {
 }
 ```
 
-You can call the `wrapInArray` in a metadata definition because it returns the value of an expression that conforms to the compiler's restrictive JavaScript subset.
+`wrapInArray`'i bir meta veri tanımında çağırabilirsiniz çünkü derleyicinin kısıtlı JavaScript alt kümesine uyan bir ifadenin değerini döndürür.
 
-You might use `wrapInArray()` like this:
+`wrapInArray()`'i şu şekilde kullanabilirsiniz:
 
 ```ts
 @NgModule({
@@ -314,7 +313,7 @@ You might use `wrapInArray()` like this:
 export class TypicalModule {}
 ```
 
-The compiler treats this usage as if you had written:
+Derleyici bu kullanımı, şöyle yazmışsınız gibi değerlendirir:
 
 ```ts
 @NgModule({
@@ -323,17 +322,16 @@ The compiler treats this usage as if you had written:
 export class TypicalModule {}
 ```
 
-The Angular [`RouterModule`](api/router/RouterModule) exports two macro static methods, `forRoot` and `forChild`, to help declare root and child routes.
-Review the [source code](https://github.com/angular/angular/blob/main/packages/router/src/router_module.ts#L139 'RouterModule.forRoot source code')
-for these methods to see how macros can simplify configuration of complex [NgModules](guide/ngmodules/overview).
+Angular [`RouterModule`](api/router/RouterModule), kök ve alt rotaları bildirmeye yardımcı olan iki makro statik metot, `forRoot` ve `forChild`, dışa aktarır.
+Makroların karmaşık [NgModules](guide/ngmodules/overview) yapılandırmasını nasıl basitleştirebileceğini görmek için bu metotların [kaynak kodunu](https://github.com/angular/angular/blob/main/packages/router/src/router_module.ts#L139 'RouterModule.forRoot source code') inceleyin.
 
 ### Metadata rewriting
 
-The compiler treats object literals containing the fields `useClass`, `useValue`, `useFactory`, and `data` specially, converting the expression initializing one of these fields into an exported variable that replaces the expression.
-This process of rewriting these expressions removes all the restrictions on what can be in them because
-the compiler doesn't need to know the expression's value — it just needs to be able to generate a reference to the value.
+Derleyici, `useClass`, `useValue`, `useFactory` ve `data` alanlarını içeren nesne literallerini özel olarak ele alır ve bu alanlardan birini başlatan ifadeyi, ifadeyi dışa aktarılmış bir değişkenle değiştirir.
+Bu ifadelerin yeniden yazılması süreci, içlerinde ne olabileceğine dair tüm kısıtlamaları kaldırır çünkü
+derleyicinin ifadenin değerini bilmesine gerek yoktur — yalnızca değere bir referans oluşturabilmesi gerekir.
 
-You might write something like:
+Şöyle bir şey yazabilirsiniz:
 
 ```ts
 class TypicalServer {}
@@ -344,8 +342,8 @@ class TypicalServer {}
 export class TypicalModule {}
 ```
 
-Without rewriting, this would be invalid because lambdas are not supported and `TypicalServer` is not exported.
-To allow this, the compiler automatically rewrites this to something like:
+Yeniden yazma olmadan, lambda'lar desteklenmediği ve `TypicalServer` dışa aktarılmadığı için bu geçersiz olurdu.
+Buna izin vermek için derleyici bunu otomatik olarak şöyle bir şeye yeniden yazar:
 
 ```ts
 class TypicalServer {}
@@ -358,25 +356,23 @@ export const θ0 = () => new TypicalServer();
 export class TypicalModule {}
 ```
 
-This allows the compiler to generate a reference to `θ0` in the factory without having to know what the value of `θ0` contains.
+Bu, derleyicinin `θ0`'ın ne içerdiğini bilmeden fabrikada `θ0`'a bir referans oluşturmasına olanak tanır.
 
-The compiler does the rewriting during the emit of the `.js` file.
-It does not, however, rewrite the `.d.ts` file, so TypeScript doesn't recognize it as being an export.
-And it does not interfere with the ES module's exported API.
+Derleyici, `.js` dosyasının yayınlanması sırasında yeniden yazmayı gerçekleştirir.
+Ancak `.d.ts` dosyasını yeniden yazmaz, bu nedenle TypeScript bunu bir dışa aktarma olarak tanımaz.
+Ve ES modülünün dışa aktarılan API'sine müdahale etmez.
 
 ## Phase 3: Template type checking
 
-One of the Angular compiler's most helpful features is the ability to type-check expressions within templates, and catch any errors before they cause crashes at runtime.
-In the template type-checking phase, the Angular template compiler uses the TypeScript compiler to validate the binding expressions in templates.
+Angular derleyicisinin en yararlı özelliklerinden biri, şablonlardaki ifadeleri tür denetleme ve çalışma zamanında çökmelere neden olmadan önce hataları yakalama yeteneğidir.
+Şablon tür denetimi aşamasında, Angular şablon derleyicisi şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır.
 
-Enable this phase explicitly by adding the compiler option `"fullTemplateTypeCheck"` in the `"angularCompilerOptions"` of the project's TypeScript configuration file
-(see [Angular Compiler Options](reference/configs/angular-compiler-options)).
+Bu aşamayı, projenin TypeScript yapılandırma dosyasındaki `"angularCompilerOptions"` içine `"fullTemplateTypeCheck"` derleyici seçeneğini ekleyerek açıkça etkinleştirin
+([Angular Derleyici Seçenekleri](reference/configs/angular-compiler-options) belgesine bakın).
 
-Template validation produces error messages when a type error is detected in a template binding
-expression, similar to how type errors are reported by the TypeScript compiler against code in a `.ts`
-file.
+Şablon doğrulaması, bir şablon bağlama ifadesinde bir tür hatası tespit edildiğinde, TypeScript derleyicisinin `.ts` dosyasındaki koda karşı tür hatalarını bildirmesine benzer şekilde hata mesajları üretir.
 
-For example, consider the following component:
+Örneğin, aşağıdaki bileşeni düşünün:
 
 ```angular-ts
 @Component({
@@ -388,7 +384,7 @@ class MyComponent {
 }
 ```
 
-This produces the following error:
+Bu, aşağıdaki hatayı üretir:
 
 ```shell {hideCopy}
 
@@ -396,18 +392,16 @@ my.component.ts.MyComponent.html(1,1): : Property 'addresss' does not exist on t
 
 ```
 
-The file name reported in the error message, `my.component.ts.MyComponent.html`, is a synthetic file
-generated by the template compiler that holds contents of the `MyComponent` class template.
-The compiler never writes this file to disk.
-The line and column numbers are relative to the template string in the `@Component` annotation of the class, `MyComponent` in this case.
-If a component uses `templateUrl` instead of `template`, the errors are reported in the HTML file referenced by the `templateUrl` instead of a synthetic file.
+Hata mesajında bildirilen dosya adı `my.component.ts.MyComponent.html`, `MyComponent` sınıf şablonunun içeriğini tutan şablon derleyicisi tarafından oluşturulan sentetik bir dosyadır.
+Derleyici bu dosyayı hiçbir zaman diske yazmaz.
+Satır ve sütun numaraları, bu durumda `MyComponent` sınıfının `@Component` anotasyonundaki şablon dizesine göredir.
+Bir bileşen `template` yerine `templateUrl` kullanıyorsa, hatalar sentetik bir dosya yerine `templateUrl` tarafından referans verilen HTML dosyasında bildirilir.
 
-The error location is the beginning of the text node that contains the interpolation expression with the error.
-If the error is in an attribute binding such as `[value]="person.address.street"`, the error
-location is the location of the attribute that contains the error.
+Hata konumu, hatalı enterpolasyon ifadesini içeren metin düğümünün başlangıcıdır.
+Hata `[value]="person.address.street"` gibi bir öznitelik bağlamasındaysa, hata konumu hatayı içeren özniteliğin konumudur.
 
-The validation uses the TypeScript type checker and the options supplied to the TypeScript compiler to control how detailed the type validation is.
-For example, if the `strictTypeChecks` is specified, the error
+Doğrulama, tür doğrulamasının ne kadar ayrıntılı olacağını kontrol etmek için TypeScript tür denetleyicisini ve TypeScript derleyicisine sağlanan seçenekleri kullanır.
+Örneğin, `strictTypeChecks` belirtilmişse, yukarıdaki hata mesajının yanı sıra
 
 ```shell {hideCopy}
 
@@ -415,13 +409,12 @@ my.component.ts.MyComponent.html(1,1): : Object is possibly 'undefined'
 
 ```
 
-is reported as well as the above error message.
+hatası da bildirilir.
 
 ### Type narrowing
 
-The expression used in an `ngIf` directive is used to narrow type unions in the Angular
-template compiler, the same way the `if` expression does in TypeScript.
-For example, to avoid `Object is possibly 'undefined'` error in the template above, modify it to only emit the interpolation if the value of `person` is initialized as shown below:
+Bir `ngIf` direktifinde kullanılan ifade, TypeScript'te `if` ifadesinin yaptığı gibi Angular şablon derleyicisinde tür birleşimlerini daraltmak için kullanılır.
+Örneğin, yukarıdaki şablondaki `Object is possibly 'undefined'` hatasını önlemek için, aşağıda gösterildiği gibi yalnızca `person` değeri başlatılmışsa enterpolasyonu yayınlayacak şekilde değiştirin:
 
 ```angular-ts
 @Component({
@@ -433,16 +426,16 @@ class MyComponent {
 }
 ```
 
-Using `*ngIf` allows the TypeScript compiler to infer that the `person` used in the binding expression will never be `undefined`.
+`*ngIf` kullanmak, TypeScript derleyicisinin bağlama ifadesinde kullanılan `person`'ın asla `undefined` olmayacağını çıkarsamasına olanak tanır.
 
-For more information about input type narrowing, see [Improving template type checking for custom directives](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives).
+Girdi tür daraltma hakkında daha fazla bilgi için [Özel direktifler için şablon tür denetimini iyileştirme](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) belgesine bakın.
 
 ### Non-null type assertion operator
 
-Use the non-null type assertion operator to suppress the `Object is possibly 'undefined'` error when it is inconvenient to use `*ngIf` or when some constraint in the component ensures that the expression is always non-null when the binding expression is interpolated.
+`*ngIf` kullanmanın uygun olmadığı veya bileşendeki bazı kısıtlamaların bağlama ifadesi enterpolasyon yapıldığında ifadenin her zaman non-null olmasını sağladığı durumlarda `Object is possibly 'undefined'` hatasını bastırmak için non-null tür onaylama operatörünü kullanın.
 
-In the following example, the `person` and `address` properties are always set together, implying that `address` is always non-null if `person` is non-null.
-There is no convenient way to describe this constraint to TypeScript and the template compiler, but the error is suppressed in the example by using `address!.street`.
+Aşağıdaki örnekte, `person` ve `address` özellikleri her zaman birlikte ayarlanır, bu da `person` non-null ise `address`'in her zaman non-null olduğu anlamına gelir.
+Bu kısıtlamayı TypeScript ve şablon derleyicisine tanımlamanın uygun bir yolu yoktur, ancak örnekte `address!.street` kullanılarak hata bastırılmıştır.
 
 ```angular-ts
 @Component({
@@ -460,9 +453,9 @@ class MyComponent {
 }
 ```
 
-The non-null assertion operator should be used sparingly as refactoring of the component might break this constraint.
+Non-null onaylama operatörü dikkatli kullanılmalıdır çünkü bileşenin yeniden yapılandırılması bu kısıtlamayı bozabilir.
 
-In this example it is recommended to include the checking of `address` in the `*ngIf` as shown below:
+Bu örnekte, `address` kontrolünün aşağıda gösterildiği gibi `*ngIf` içine dahil edilmesi önerilir:
 
 ```angular-ts
 @Component({

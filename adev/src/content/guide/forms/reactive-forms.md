@@ -1,60 +1,60 @@
 # Reactive forms
 
-Reactive forms provide a model-driven approach to handling form inputs whose values change over time.
-This guide shows you how to create and update a basic form control, progress to using multiple controls in a group, validate form values, and create dynamic forms where you can add or remove controls at run time.
+Reaktif formlar, değerleri zamanla değişen form girdilerini yönetmek için model odaklı bir yaklaşım sunar.
+Bu kılavuz, temel bir form kontrolünü nasıl oluşturacağınızı ve güncelleyeceğinizi, bir grupta birden fazla kontrolü kullanmaya nasıl geçeceğinizi, form değerlerini nasıl doğrulayacağınızı ve çalışma zamanında kontroller ekleyip kaldırabileceğiniz dinamik formlar oluşturmayı gösterir.
 
 ## Overview of reactive forms
 
-Reactive forms use an explicit and immutable approach to managing the state of a form at a given point in time.
-Each change to the form state returns a new state, which maintains the integrity of the model between changes.
-Reactive forms are built around observable streams, where form inputs and values are provided as streams of input values, which can be accessed synchronously.
+Reaktif formlar, belirli bir zamanda formun durumunu yönetmek için açık ve değişmez bir yaklaşım kullanır.
+Form durumundaki her değişiklik yeni bir durum döndürür ve değişiklikler arasında modelin bütünlüğünü korur.
+Reaktif formlar, observable akışlar etrafında inşa edilmiştir; burada form girdileri ve değerleri, senkron olarak erişilebilen girdi değeri akışları olarak sağlanır.
 
-Reactive forms also provide a straightforward path to testing because you are assured that your data is consistent and predictable when requested.
-Any consumers of the streams have access to manipulate that data safely.
+Reaktif formlar ayrıca test etmek için basit bir yol sağlar çünkü verilerinizin istendiğinde tutarlı ve öngörülebilir olduğundan emin olursunuz.
+Akışların tüm tüketicileri bu verilere güvenli bir şekilde erişebilir ve işleyebilir.
 
-Reactive forms differ from [template-driven forms](guide/forms/template-driven-forms) in distinct ways.
-Reactive forms provide synchronous access to the data model, immutability with observable operators, and change tracking through observable streams.
+Reaktif formlar, [şablon odaklı formlardan](guide/forms/template-driven-forms) belirgin şekillerde farklıdır.
+Reaktif formlar, veri modeline senkron erişim, observable operatörleriyle değişmezlik ve observable akışlar aracılığıyla değişiklik takibi sağlar.
 
-Template-driven forms let direct access modify data in your template, but are less explicit than reactive forms because they rely on directives embedded in the template, along with mutable data to track changes asynchronously.
-See the [Forms Overview](guide/forms) for detailed comparisons between the two paradigms.
+Şablon odaklı formlar, şablonunuzdaki verilere doğrudan erişim ve değiştirme izni verir, ancak reaktif formlardan daha az açıktır çünkü şablona gömülü direktiflere dayanırlar ve değişiklikleri asenkron olarak takip etmek için değiştirilebilir veriler kullanırlar.
+İki paradigma arasındaki ayrıntılı karşılaştırmalar için [Formlara Genel Bakış](guide/forms) bölümüne bakın.
 
 ## Adding a basic form control
 
-There are three steps to using form controls.
+Form kontrollerini kullanmanın üç adımı vardır.
 
-1. Generate a new component and register the reactive forms module. This module declares the reactive-form directives that you need to use reactive forms.
-1. Instantiate a new `FormControl`.
-1. Register the `FormControl` in the template.
+1. Yeni bir bileşen oluşturun ve reaktif formlar modülünü kaydedin. Bu modül, reaktif formları kullanmak için ihtiyaç duyduğunuz reaktif form direktiflerini bildirir.
+1. Yeni bir `FormControl` örneği oluşturun.
+1. `FormControl`'ü şablonda kaydedin.
 
-You can then display the form by adding the component to the template.
+Daha sonra bileşeni şablona ekleyerek formu görüntüleyebilirsiniz.
 
-The following examples show how to add a single form control.
-In the example, the user enters their name into an input field, captures that input value, and displays the current value of the form control element.
+Aşağıdaki örnekler, tek bir form kontrolünün nasıl ekleneceğini gösterir.
+Örnekte, kullanıcı bir girdi alanına adını girer, bu girdi değeri yakalanır ve form kontrol öğesinin geçerli değeri görüntülenir.
 
 <docs-workflow>
 
 <docs-step title="Generate a new component and import the ReactiveFormsModule">
-Use the CLI command `ng generate component` to generate a component in your project and import `ReactiveFormsModule` from the `@angular/forms` package and add it to your Component's `imports` array.
+`@angular/forms` paketinden `ReactiveFormsModule`'ü içe aktarıp Component'inizin `imports` dizisine eklemek için CLI komutu `ng generate component` kullanarak projenizde bir bileşen oluşturun.
 
 <docs-code header="name-editor.component.ts (excerpt)" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.ts" region="imports" />
 </docs-step>
 
 <docs-step title="Declare a FormControl instance">
-Use the constructor of `FormControl` to set its initial value, which in this case is an empty string. By creating these controls in your component class, you get immediate access to listen for, update, and validate the state of the form input.
+Başlangıç değerini ayarlamak için `FormControl` yapıcısını kullanın; bu örnekte boş bir dizedir. Bu kontrolleri bileşen sınıfınızda oluşturarak, form girdisinin durumunu dinlemek, güncellemek ve doğrulamak için anında erişim elde edersiniz.
 
 <docs-code header="name-editor.component.ts" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.ts" region="create-control"/>
 </docs-step>
 
 <docs-step title="Register the control in the template">
-After you create the control in the component class, you must associate it with a form control element in the template. Update the template with the form control using the `formControl` binding provided by `FormControlDirective`, which is also included in the `ReactiveFormsModule`.
+Kontrolü bileşen sınıfında oluşturduktan sonra, onu şablondaki bir form kontrol öğesiyle ilişkilendirmeniz gerekir. `ReactiveFormsModule`'de de bulunan `FormControlDirective` tarafından sağlanan `formControl` bağlamasını kullanarak şablonu form kontrolüyle güncelleyin.
 
 <docs-code header="name-editor.component.html" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.html" region="control-binding" />
 
-Using the template binding syntax, the form control is now registered to the `name` input element in the template. The form control and DOM element communicate with each other: the view reflects changes in the model, and the model reflects changes in the view.
+Şablon bağlama sözdizimini kullanarak, form kontrolü artık şablondaki `name` girdi öğesine kaydedilmiştir. Form kontrolü ve DOM öğesi birbirleriyle iletişim kurar: görünüm modeldeki değişiklikleri yansıtır ve model görünümdeki değişiklikleri yansıtır.
 </docs-step>
 
 <docs-step title="Display the component">
-The `FormControl` assigned to the `name` property is displayed when the `<app-name-editor>` component is added to a template.
+`name` özelliğine atanan `FormControl`, `<app-name-editor>` bileşeni bir şablona eklendiğinde görüntülenir.
 
 <docs-code header="app.component.html (name editor)" path="adev/src/content/examples/reactive-forms/src/app/app.component.1.html" region="app-name-editor"/>
 </docs-step>
@@ -62,57 +62,57 @@ The `FormControl` assigned to the `name` property is displayed when the `<app-na
 
 ### Displaying a form control value
 
-You can display the value in the following ways.
+Değeri aşağıdaki yollarla görüntüleyebilirsiniz.
 
-- Through the `valueChanges` observable where you can listen for changes in the form's value in the template using `AsyncPipe` or in the component class using the `subscribe()` method
-- With the `value` property, which gives you a snapshot of the current value
+- `valueChanges` observable'ı aracılığıyla; şablonda `AsyncPipe` kullanarak veya bileşen sınıfında `subscribe()` yöntemiyle formun değerindeki değişiklikleri dinleyebilirsiniz
+- Geçerli değerin anlık görüntüsünü veren `value` özelliğiyle
 
-The following example shows you how to display the current value using interpolation in the template.
+Aşağıdaki örnek, şablonda interpolasyon kullanarak geçerli değerin nasıl görüntüleneceğini gösterir.
 
 <docs-code header="name-editor.component.html (control value)" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.html" region="display-value"/>
 
-The displayed value changes as you update the form control element.
+Görüntülenen değer, form kontrol öğesini güncellediğinizde değişir.
 
-Reactive forms provide access to information about a given control through properties and methods provided with each instance.
-These properties and methods of the underlying [AbstractControl](api/forms/AbstractControl 'API reference') class are used to control form state and determine when to display messages when handling [input validation](#validating-form-input 'Learn more about validating form input').
+Reaktif formlar, her örnekle sağlanan özellikler ve yöntemler aracılığıyla belirli bir kontrol hakkında bilgiye erişim sağlar.
+Altta yatan [AbstractControl](api/forms/AbstractControl 'API reference') sınıfının bu özellikleri ve yöntemleri, form durumunu kontrol etmek ve [girdi doğrulamasını](#validating-form-input 'Learn more about validating form input') yönetirken mesajların ne zaman görüntüleneceğini belirlemek için kullanılır.
 
-Read about other `FormControl` properties and methods in the [API Reference](api/forms/FormControl 'Detailed syntax reference').
+Diğer `FormControl` özellikleri ve yöntemleri hakkında [API Referansı](api/forms/FormControl 'Detailed syntax reference') bölümünden bilgi alabilirsiniz.
 
 ### Replacing a form control value
 
-Reactive forms have methods to change a control's value programmatically, which gives you the flexibility to update the value without user interaction.
-A form control instance provides a `setValue()` method that updates the value of the form control and validates the structure of the value provided against the control's structure.
-For example, when retrieving form data from a backend API or service, use the `setValue()` method to update the control to its new value, replacing the old value entirely.
+Reaktif formlar, bir kontrolün değerini programatik olarak değiştirmek için yöntemlere sahiptir ve bu size kullanıcı etkileşimi olmadan değeri güncelleme esnekliği sağlar.
+Bir form kontrol örneği, form kontrolünün değerini güncelleyen ve sağlanan değerin yapısını kontrolün yapısına göre doğrulayan bir `setValue()` yöntemi sağlar.
+Örneğin, bir arka uç API'sinden veya hizmetinden form verilerini alırken, kontrolü yeni değerine güncellemek ve eski değeri tamamen değiştirmek için `setValue()` yöntemini kullanın.
 
-The following example adds a method to the component class to update the value of the control to _Nancy_ using the `setValue()` method.
+Aşağıdaki örnek, `setValue()` yöntemini kullanarak kontrolün değerini _Nancy_ olarak güncellemek için bileşen sınıfına bir yöntem ekler.
 
 <docs-code header="name-editor.component.ts (update value)" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.ts" region="update-value"/>
 
-Update the template with a button to simulate a name update.
-When you click the **Update Name** button, the value entered in the form control element is reflected as its current value.
+Bir ad güncellemesini simüle etmek için şablonu bir düğmeyle güncelleyin.
+**Update Name** düğmesine tıkladığınızda, form kontrol öğesine girilen değer geçerli değeri olarak yansıtılır.
 
 <docs-code header="name-editor.component.html (update value)" path="adev/src/content/examples/reactive-forms/src/app/name-editor/name-editor.component.html" region="update-value"/>
 
-The form model is the source of truth for the control, so when you click the button, the value of the input is changed within the component class, overriding its current value.
+Form modeli kontrol için doğruluk kaynağıdır, bu nedenle düğmeye tıkladığınızda girdinin değeri bileşen sınıfı içinde değiştirilir ve geçerli değerini geçersiz kılar.
 
-HELPFUL: In this example, you're using a single control.
-When using the `setValue()` method with a [form group](#grouping-form-controls) or [form array](#creating-dynamic-forms) instance, the value needs to match the structure of the group or array.
+HELPFUL: Bu örnekte tek bir kontrol kullanıyorsunuz.
+`setValue()` yöntemini bir [form grubu](#grouping-form-controls) veya [form dizisi](#creating-dynamic-forms) örneğiyle kullanırken, değerin grubun veya dizinin yapısıyla eşleşmesi gerekir.
 
 ## Grouping form controls
 
-Forms typically contain several related controls.
-Reactive forms provide two ways of grouping multiple related controls into a single input form.
+Formlar genellikle birbiriyle ilişkili birkaç kontrol içerir.
+Reaktif formlar, birden fazla ilişkili kontrolü tek bir girdi formunda gruplamak için iki yol sunar.
 
-| Form groups | Details                                                                                                                                                                                                                                                |
-| :---------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Form group  | Defines a form with a fixed set of controls that you can manage together. Form group basics are discussed in this section. You can also [nest form groups](#creating-nested-form-groups 'See more about nesting groups') to create more complex forms. |
-| Form array  | Defines a dynamic form, where you can add and remove controls at run time. You can also nest form arrays to create more complex forms. For more about this option, see [Creating dynamic forms](#creating-dynamic-forms).                              |
+| Form grupları | Ayrıntılar                                                                                                                                                                                                                                                                              |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Form grubu    | Birlikte yönetebileceğiniz sabit bir kontrol kümesi ile bir form tanımlar. Form grubu temelleri bu bölümde tartışılmaktadır. Daha karmaşık formlar oluşturmak için [form gruplarını iç içe yerleştirebilirsiniz](#creating-nested-form-groups 'See more about nesting groups').         |
+| Form dizisi   | Çalışma zamanında kontroller ekleyip kaldırabileceğiniz dinamik bir form tanımlar. Daha karmaşık formlar oluşturmak için form dizilerini de iç içe yerleştirebilirsiniz. Bu seçenek hakkında daha fazla bilgi için [Dinamik formlar oluşturma](#creating-dynamic-forms) bölümüne bakın. |
 
-Just as a form control instance gives you control over a single input field, a form group instance tracks the form state of a group of form control instances \(for example, a form\).
-Each control in a form group instance is tracked by name when creating the form group.
-The following example shows how to manage multiple form control instances in a single group.
+Bir form kontrol örneğinin tek bir girdi alanı üzerinde kontrol sağlaması gibi, bir form grubu örneği de bir form kontrol örnekleri grubunun form durumunu takip eder \(örneğin, bir form\).
+Form grubu oluşturulurken, form grubundaki her kontrol ada göre takip edilir.
+Aşağıdaki örnek, birden fazla form kontrol örneğinin tek bir grupta nasıl yönetileceğini gösterir.
 
-Generate a `ProfileEditor` component and import the `FormGroup` and `FormControl` classes from the `@angular/forms` package.
+Bir `ProfileEditor` bileşeni oluşturun ve `@angular/forms` paketinden `FormGroup` ve `FormControl` sınıflarını içe aktarın.
 
 ```shell
 ng generate component ProfileEditor
@@ -120,154 +120,154 @@ ng generate component ProfileEditor
 
 <docs-code header="profile-editor.component.ts (imports)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.ts" region="imports"/>
 
-To add a form group to this component, take the following steps.
+Bu bileşene bir form grubu eklemek için aşağıdaki adımları izleyin.
 
-1. Create a `FormGroup` instance.
-1. Associate the `FormGroup` model and view.
-1. Save the form data.
+1. Bir `FormGroup` örneği oluşturun.
+1. `FormGroup` modelini ve görünümü ilişkilendirin.
+1. Form verilerini kaydedin.
 
 <docs-workflow>
 
 <docs-step title="Create a FormGroup instance">
-Create a property in the component class named `profileForm` and set the property to a new form group instance. To initialize the form group, provide the constructor with an object of named keys mapped to their control.
+Bileşen sınıfında `profileForm` adlı bir özellik oluşturun ve özelliğin değerini yeni bir form grubu örneği olarak ayarlayın. Form grubunu başlatmak için yapıcıya, adlandırılmış anahtarları kontrollerine eşleyen bir nesne sağlayın.
 
-For the profile form, add two form control instances with the names `firstName` and `lastName`
+Profil formu için, `firstName` ve `lastName` adlarıyla iki form kontrol örneği ekleyin
 
 <docs-code header="profile-editor.component.ts (form group)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.ts" region="formgroup"/>
 
-The individual form controls are now collected within a group. A `FormGroup` instance provides its model value as an object reduced from the values of each control in the group. A form group instance has the same properties (such as `value` and `untouched`) and methods (such as `setValue()`) as a form control instance.
+Bireysel form kontrolleri artık bir grup içinde toplanmıştır. Bir `FormGroup` örneği, model değerini gruptaki her kontrolün değerlerinden oluşan bir nesne olarak sağlar. Bir form grubu örneği, bir form kontrol örneğiyle aynı özelliklere (örneğin `value` ve `untouched`) ve yöntemlere (örneğin `setValue()`) sahiptir.
 </docs-step>
 
 <docs-step title="Associate the FormGroup model and view">
-A form group tracks the status and changes for each of its controls, so if one of the controls changes, the parent control also emits a new status or value change. The model for the group is maintained from its members. After you define the model, you must update the template to reflect the model in the view.
+Bir form grubu, kontrollerinin her biri için durum ve değişiklikleri takip eder, bu nedenle kontrollerden biri değişirse, üst kontrol de yeni bir durum veya değer değişikliği yayar. Grubun modeli, üyelerinden sürdürülür. Modeli tanımladıktan sonra, görünümdeki modeli yansıtmak için şablonu güncellemeniz gerekir.
 
 <docs-code header="profile-editor.component.html (template form group)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.html" region="formgroup"/>
 
-Just as a form group contains a group of controls, the _profileForm_ `FormGroup` is bound to the `form` element with the `FormGroup` directive, creating a communication layer between the model and the form containing the inputs. The `formControlName` input provided by the `FormControlName` directive binds each individual input to the form control defined in `FormGroup`. The form controls communicate with their respective elements. They also communicate changes to the form group instance, which provides the source of truth for the model value.
+Bir form grubunun bir kontrol grubunu içermesi gibi, _profileForm_ `FormGroup`'u, `FormGroup` direktifiyle `form` öğesine bağlanır ve model ile girdileri içeren form arasında bir iletişim katmanı oluşturur. `FormControlName` direktifi tarafından sağlanan `formControlName` girdisi, her bireysel girdiyi `FormGroup`'ta tanımlanan form kontrolüne bağlar. Form kontrolleri ilgili öğeleriyle iletişim kurar. Ayrıca değişiklikleri, model değeri için doğruluk kaynağını sağlayan form grubu örneğine de iletirler.
 </docs-step>
 
 <docs-step title="Save form data">
-The `ProfileEditor` component accepts input from the user, but in a real scenario you want to capture the form value and make it available for further processing outside the component. The `FormGroup` directive listens for the `submit` event emitted by the `form` element and emits an `ngSubmit` event that you can bind to a callback function. Add an `ngSubmit` event listener to the `form` tag with the `onSubmit()` callback method.
+`ProfileEditor` bileşeni kullanıcıdan girdi kabul eder, ancak gerçek bir senaryoda form değerini yakalamak ve bileşen dışında daha fazla işlem için kullanılabilir hale getirmek istersiniz. `FormGroup` direktifi, `form` öğesi tarafından yayılan `submit` olayını dinler ve bir geri çağırma fonksiyonuna bağlayabileceğiniz bir `ngSubmit` olayı yayar. `onSubmit()` geri çağırma yöntemiyle `form` etiketine bir `ngSubmit` olay dinleyicisi ekleyin.
 
 <docs-code header="profile-editor.component.html (submit event)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.html" region="ng-submit"/>
 
-The `onSubmit()` method in the `ProfileEditor` component captures the current value of `profileForm`. Use `EventEmitter` to keep the form encapsulated and to provide the form value outside the component. The following example uses `console.warn` to log a message to the browser console.
+`ProfileEditor` bileşenindeki `onSubmit()` yöntemi, `profileForm`'un geçerli değerini yakalar. Formu kapsüllenmiş tutmak ve form değerini bileşen dışında sağlamak için `EventEmitter` kullanın. Aşağıdaki örnek, tarayıcı konsoluna bir mesaj kaydetmek için `console.warn` kullanır.
 
 <docs-code header="profile-editor.component.ts (submit method)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="on-submit"/>
 
-The `submit` event is emitted by the `form` tag using the built-in DOM event. You trigger the event by clicking a button with `submit` type. This lets the user press the **Enter** key to submit the completed form.
+`submit` olayı, yerleşik DOM olayı kullanılarak `form` etiketi tarafından yayılır. `submit` türünde bir düğmeye tıklayarak olayı tetiklersiniz. Bu, kullanıcının tamamlanmış formu göndermek için **Enter** tuşuna basmasına olanak tanır.
 
-Use a `button` element to add a button to the bottom of the form to trigger the form submission.
+Form gönderimini tetiklemek için formun altına bir düğme eklemek üzere bir `button` öğesi kullanın.
 
 <docs-code header="profile-editor.component.html (submit button)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.html" region="submit-button"/>
 
-The button in the preceding snippet also has a `disabled` binding attached to it to disable the button when `profileForm` is invalid. You aren't performing any validation yet, so the button is always enabled. Basic form validation is covered in the [Validating form input](#validating-form-input) section.
+Önceki kod parçacığındaki düğme, `profileForm` geçersiz olduğunda düğmeyi devre dışı bırakmak için kendisine bağlı bir `disabled` bağlamasına da sahiptir. Henüz herhangi bir doğrulama yapmıyorsunuz, bu nedenle düğme her zaman etkindir. Temel form doğrulama, [Form girdisini doğrulama](#validating-form-input) bölümünde ele alınmaktadır.
 </docs-step>
 
 <docs-step title="Display the component">
-To display the `ProfileEditor` component that contains the form, add it to a component template.
+Formu içeren `ProfileEditor` bileşenini görüntülemek için, onu bir bileşen şablonuna ekleyin.
 
 <docs-code header="app.component.html (profile editor)" path="adev/src/content/examples/reactive-forms/src/app/app.component.1.html" region="app-profile-editor"/>
 
-`ProfileEditor` lets you manage the form control instances for the `firstName` and `lastName` controls within the form group instance.
+`ProfileEditor`, form grubu örneği içindeki `firstName` ve `lastName` kontrolleri için form kontrol örneklerini yönetmenize olanak tanır.
 
 ### Creating nested form groups
 
-Form groups can accept both individual form control instances and other form group instances as children.
-This makes composing complex form models easier to maintain and logically group together.
+Form grupları, alt öğe olarak hem bireysel form kontrol örneklerini hem de diğer form grubu örneklerini kabul edebilir.
+Bu, karmaşık form modellerinin oluşturulmasını kolaylaştırır ve mantıksal olarak birlikte gruplandırır.
 
-When building complex forms, managing the different areas of information is easier in smaller sections.
-Using a nested form group instance lets you break large forms groups into smaller, more manageable ones.
+Karmaşık formlar oluştururken, bilgilerin farklı alanlarını daha küçük bölümlerde yönetmek daha kolaydır.
+İç içe yerleştirilmiş bir form grubu örneği kullanmak, büyük form gruplarını daha küçük, daha yönetilebilir gruplara bölmenize olanak tanır.
 
-To make more complex forms, use the following steps.
+Daha karmaşık formlar oluşturmak için aşağıdaki adımları kullanın.
 
-1. Create a nested group.
-1. Group the nested form in the template.
+1. İç içe bir grup oluşturun.
+1. İç içe formu şablonda gruplayın.
 
-Some types of information naturally fall into the same group.
-A name and address are typical examples of such nested groups, and are used in the following examples.
+Bazı bilgi türleri doğal olarak aynı gruba düşer.
+Bir ad ve adres, bu tür iç içe grupların tipik örnekleridir ve aşağıdaki örneklerde kullanılmaktadır.
 
 <docs-workflow>
 <docs-step title="Create a nested group">
-To create a nested group in `profileForm`, add a nested `address` element to the form group instance.
+`profileForm`'da iç içe bir grup oluşturmak için, form grubu örneğine iç içe bir `address` öğesi ekleyin.
 
 <docs-code header="profile-editor.component.ts (nested form group)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.ts" region="nested-formgroup"/>
 
-In this example, `address group` combines the current `firstName` and `lastName` controls with the new `street`, `city`, `state`, and `zip` controls. Even though the `address` element in the form group is a child of the overall `profileForm` element in the form group, the same rules apply with value and status changes. Changes in status and value from the nested form group propagate to the parent form group, maintaining consistency with the overall model.
+Bu örnekte, `address group` mevcut `firstName` ve `lastName` kontrollerini yeni `street`, `city`, `state` ve `zip` kontrolleriyle birleştirir. Form grubundaki `address` öğesi, form grubundaki genel `profileForm` öğesinin bir alt öğesi olmasına rağmen, değer ve durum değişiklikleri için aynı kurallar geçerlidir. İç içe form grubundaki durum ve değer değişiklikleri, üst form grubuna yayılır ve genel modelle tutarlılığı korur.
 </docs-step>
 
 <docs-step title="Group the nested form in the template">
-After you update the model in the component class, update the template to connect the form group instance and its input elements. Add the `address` form group containing the `street`, `city`, `state`, and `zip` fields to the `ProfileEditor` template.
+Bileşen sınıfındaki modeli güncelledikten sonra, form grubu örneğini ve girdi öğelerini bağlamak için şablonu güncelleyin. `street`, `city`, `state` ve `zip` alanlarını içeren `address` form grubunu `ProfileEditor` şablonuna ekleyin.
 
 <docs-code header="profile-editor.component.html (template nested form group)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.html" region="formgroupname"/>
 
-The `ProfileEditor` form is displayed as one group, but the model is broken down further to represent the logical grouping areas.
+`ProfileEditor` formu tek bir grup olarak görüntülenir, ancak model mantıksal gruplama alanlarını temsil etmek üzere daha ayrıntılı olarak bölünmüştür.
 
-Display the value for the form group instance in the component template using the `value` property and `JsonPipe`.
+Form grubu örneğinin değerini bileşen şablonunda `value` özelliği ve `JsonPipe` kullanarak görüntüleyin.
 </docs-step>
 </docs-workflow>
 
 ### Updating parts of the data model
 
-When updating the value for a form group instance that contains multiple controls, you might only want to update parts of the model.
-This section covers how to update specific parts of a form control data model.
+Birden fazla kontrol içeren bir form grubu örneğinin değerini güncellerken, modelin yalnızca belirli bölümlerini güncellemek isteyebilirsiniz.
+Bu bölüm, form kontrol veri modelinin belirli bölümlerinin nasıl güncelleneceğini kapsar.
 
-There are two ways to update the model value:
+Model değerini güncellemenin iki yolu vardır:
 
-| Methods        | Details                                                                                                                                                               |
-| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `setValue()`   | Set a new value for an individual control. The `setValue()` method strictly adheres to the structure of the form group and replaces the entire value for the control. |
-| `patchValue()` | Replace any properties defined in the object that have changed in the form model.                                                                                     |
+| Yöntemler      | Ayrıntılar                                                                                                                                             |
+| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `setValue()`   | Bireysel bir kontrol için yeni bir değer ayarlayın. `setValue()` yöntemi, form grubunun yapısına kesinlikle uyar ve kontrolün tüm değerini değiştirir. |
+| `patchValue()` | Form modelinde değişen nesne içinde tanımlanan özellikleri değiştirin.                                                                                 |
 
-The strict checks of the `setValue()` method help catch nesting errors in complex forms, while `patchValue()` fails silently on those errors.
+`setValue()` yönteminin katı kontrolleri, karmaşık formlardaki iç içe yerleştirme hatalarını yakalamaya yardımcı olurken, `patchValue()` bu hatalarda sessizce başarısız olur.
 
-In `ProfileEditorComponent`, use the `updateProfile` method with the following example to update the first name and street address for the user.
+`ProfileEditorComponent`'te, kullanıcı için ad ve sokak adresini güncellemek üzere `updateProfile` yöntemini aşağıdaki örnekle kullanın.
 
 <docs-code header="profile-editor.component.ts (patch value)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.ts" region="patch-value"/>
 
-Simulate an update by adding a button to the template to update the user profile on demand.
+Kullanıcı profilini talep üzerine güncellemek için şablona bir düğme ekleyerek bir güncellemeyi simüle edin.
 
 <docs-code header="profile-editor.component.html (update value)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.html" region="patch-value"/>
 
-When a user clicks the button, the `profileForm` model is updated with new values for `firstName` and `street`. Notice that `street` is provided in an object inside the `address` property.
-This is necessary because the `patchValue()` method applies the update against the model structure.
-`PatchValue()` only updates properties that the form model defines.
+Kullanıcı düğmeye tıkladığında, `profileForm` modeli `firstName` ve `street` için yeni değerlerle güncellenir. `street`'in `address` özelliği içinde bir nesne olarak sağlandığına dikkat edin.
+Bu gereklidir çünkü `patchValue()` yöntemi güncellemeyi model yapısına göre uygular.
+`PatchValue()` yalnızca form modelinin tanımladığı özellikleri günceller.
 
 ## Using the FormBuilder service to generate controls
 
-Creating form control instances manually can become repetitive when dealing with multiple forms.
-The `FormBuilder` service provides convenient methods for generating controls.
+Birden fazla formla uğraşırken form kontrol örneklerini manuel olarak oluşturmak tekrarlayıcı hale gelebilir.
+`FormBuilder` hizmeti, kontroller oluşturmak için kullanışlı yöntemler sağlar.
 
-Use the following steps to take advantage of this service.
+Bu hizmetten yararlanmak için aşağıdaki adımları kullanın.
 
-1. Import the `FormBuilder` class.
-1. Inject the `FormBuilder` service.
-1. Generate the form contents.
+1. `FormBuilder` sınıfını içe aktarın.
+1. `FormBuilder` hizmetini enjekte edin.
+1. Form içeriklerini oluşturun.
 
-The following examples show how to refactor the `ProfileEditor` component to use the form builder service to create form control and form group instances.
+Aşağıdaki örnekler, form kontrol ve form grubu örnekleri oluşturmak için form oluşturucu hizmetini kullanmak üzere `ProfileEditor` bileşenini nasıl yeniden düzenleyeceğinizi gösterir.
 
 <docs-workflow>
 <docs-step title="Import the FormBuilder class">
-Import the `FormBuilder` class from the `@angular/forms` package.
+`@angular/forms` paketinden `FormBuilder` sınıfını içe aktarın.
 
 <docs-code header="profile-editor.component.ts (import)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="form-builder-imports"/>
 
 </docs-step>
 
 <docs-step title="Inject the FormBuilder service">
-The `FormBuilder` service is an injectable provider from the reactive forms module. Use the `inject()` function to inject this dependency in your component.
+`FormBuilder` hizmeti, reaktif formlar modülünden enjekte edilebilen bir sağlayıcıdır. Bu bağımlılığı bileşeninize enjekte etmek için `inject()` fonksiyonunu kullanın.
 
 <docs-code header="profile-editor.component.ts (property init)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="inject-form-builder"/>
 
 </docs-step>
 <docs-step title="Generate form controls">
-The `FormBuilder` service has three methods: `control()`, `group()`, and `array()`. These are factory methods for generating instances in your component classes including form controls, form groups, and form arrays. Use the `group` method to create the `profileForm` controls.
+`FormBuilder` hizmetinin üç yöntemi vardır: `control()`, `group()` ve `array()`. Bunlar, bileşen sınıflarınızda form kontrolleri, form grupları ve form dizileri dahil olmak üzere örnekler oluşturmak için fabrika yöntemleridir. `profileForm` kontrollerini oluşturmak için `group` yöntemini kullanın.
 
 <docs-code header="profile-editor.component.ts (form builder)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="form-builder"/>
 
-In the preceding example, you use the `group()` method with the same object to define the properties in the model. The value for each control name is an array containing the initial value as the first item in the array.
+Önceki örnekte, modeldeki özellikleri tanımlamak için aynı nesneyle `group()` yöntemini kullanırsınız. Her kontrol adının değeri, dizideki ilk öğe olarak başlangıç değerini içeren bir dizidir.
 
-TIP: You can define the control with just the initial value, but if your controls need sync or async validation, add sync and async validators as the second and third items in the array. Compare using the form builder to creating the instances manually.
+TIP: Kontrolü yalnızca başlangıç değeriyle tanımlayabilirsiniz, ancak kontrolleriniz senkron veya asenkron doğrulamaya ihtiyaç duyuyorsa, dizide ikinci ve üçüncü öğe olarak senkron ve asenkron doğrulayıcıları ekleyin. Örnekleri manuel olarak oluşturma ile form oluşturucuyu kullanmayı karşılaştırın.
 
   <docs-code-multifile>
     <docs-code header="profile-editor.component.ts (instances)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.1.ts" region="formgroup-compare"/>
@@ -279,112 +279,112 @@ TIP: You can define the control with just the initial value, but if your control
 
 ## Validating form input
 
-_Form validation_ is used to ensure that user input is complete and correct.
-This section covers adding a single validator to a form control and displaying the overall form status.
-Form validation is covered more extensively in the [Form Validation](guide/forms/form-validation) guide.
+_Form doğrulama_, kullanıcı girdisinin eksiksiz ve doğru olmasını sağlamak için kullanılır.
+Bu bölüm, bir form kontrolüne tek bir doğrulayıcı eklemeyi ve genel form durumunu görüntülemeyi kapsar.
+Form doğrulama, [Form Doğrulama](guide/forms/form-validation) kılavuzunda daha kapsamlı olarak ele alınmaktadır.
 
-Use the following steps to add form validation.
+Form doğrulama eklemek için aşağıdaki adımları kullanın.
 
-1. Import a validator function in your form component.
-1. Add the validator to the field in the form.
-1. Add logic to handle the validation status.
+1. Form bileşeninize bir doğrulayıcı fonksiyonu içe aktarın.
+1. Doğrulayıcıyı formdaki alana ekleyin.
+1. Doğrulama durumunu yönetmek için mantık ekleyin.
 
-The most common validation is making a field required.
-The following example shows how to add a required validation to the `firstName` control and display the result of validation.
+En yaygın doğrulama, bir alanı zorunlu yapmaktır.
+Aşağıdaki örnek, `firstName` kontrolüne zorunlu doğrulama eklemeyi ve doğrulama sonucunu görüntülemeyi gösterir.
 
 <docs-workflow>
 <docs-step title="Import a validator function">
-Reactive forms include a set of validator functions for common use cases. These functions receive a control to validate against and return an error object or a null value based on the validation check.
+Reaktif formlar, yaygın kullanım durumları için bir dizi doğrulayıcı fonksiyon içerir. Bu fonksiyonlar, doğrulanacak bir kontrol alır ve doğrulama kontrolüne göre bir hata nesnesi veya null değer döndürür.
 
-Import the `Validators` class from the `@angular/forms` package.
+`@angular/forms` paketinden `Validators` sınıfını içe aktarın.
 
 <docs-code header="profile-editor.component.ts (import)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="validator-imports"/>
 </docs-step>
 
 <docs-step title="Make a field required">
-In the `ProfileEditor` component, add the `Validators.required` static method as the second item in the array for the `firstName` control.
+`ProfileEditor` bileşeninde, `firstName` kontrolü için dizideki ikinci öğe olarak `Validators.required` statik yöntemini ekleyin.
 
 <docs-code header="profile-editor.component.ts (required validator)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="required-validator"/>
 </docs-step>
 
 <docs-step title="Display form status">
-When you add a required field to the form control, its initial status is invalid. This invalid status propagates to the parent form group element, making its status invalid. Access the current status of the form group instance through its `status` property.
+Form kontrolüne zorunlu bir alan eklediğinizde, başlangıç durumu geçersiz olur. Bu geçersiz durum üst form grubu öğesine yayılır ve durumunu geçersiz yapar. Form grubu örneğinin geçerli durumuna `status` özelliği aracılığıyla erişin.
 
-Display the current status of `profileForm` using interpolation.
+`profileForm`'un geçerli durumunu interpolasyon kullanarak görüntüleyin.
 
 <docs-code header="profile-editor.component.html (display status)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.html" region="display-status"/>
 
-The **Submit** button is disabled because `profileForm` is invalid due to the required `firstName` form control. After you fill out the `firstName` input, the form becomes valid and the **Submit** button is enabled.
+Zorunlu `firstName` form kontrolü nedeniyle `profileForm` geçersiz olduğu için **Submit** düğmesi devre dışıdır. `firstName` girdisini doldurduktan sonra form geçerli hale gelir ve **Submit** düğmesi etkinleşir.
 
-For more on form validation, visit the [Form Validation](guide/forms/form-validation) guide.
+Form doğrulama hakkında daha fazla bilgi için [Form Doğrulama](guide/forms/form-validation) kılavuzunu ziyaret edin.
 </docs-step>
 </docs-workflow>
 
 ## Creating dynamic forms
 
-`FormArray` is an alternative to `FormGroup` for managing any number of unnamed controls.
-As with form group instances, you can dynamically insert and remove controls from form array instances, and the form array instance value and validation status is calculated from its child controls.
-However, you don't need to define a key for each control by name, so this is a great option if you don't know the number of child values in advance.
+`FormArray`, herhangi bir sayıda adlandırılmamış kontrolü yönetmek için `FormGroup`'a bir alternatiftir.
+Form grubu örneklerinde olduğu gibi, form dizisi örneklerinden kontrolleri dinamik olarak ekleyip kaldırabilirsiniz ve form dizisi örneğinin değeri ile doğrulama durumu, alt kontrollerinden hesaplanır.
+Ancak, her kontrol için ada göre bir anahtar tanımlamanız gerekmez, bu nedenle önceden alt değerlerin sayısını bilmediğinizde bu harika bir seçenektir.
 
-To define a dynamic form, take the following steps.
+Dinamik bir form tanımlamak için aşağıdaki adımları izleyin.
 
-1. Import the `FormArray` class.
-1. Define a `FormArray` control.
-1. Access the `FormArray` control with a getter method.
-1. Display the form array in a template.
+1. `FormArray` sınıfını içe aktarın.
+1. Bir `FormArray` kontrolü tanımlayın.
+1. `FormArray` kontrolüne bir getter yöntemiyle erişin.
+1. Form dizisini bir şablonda görüntüleyin.
 
-The following example shows you how to manage an array of _aliases_ in `ProfileEditor`.
+Aşağıdaki örnek, `ProfileEditor`'da bir _takma adlar_ dizisini nasıl yöneteceğinizi gösterir.
 
 <docs-workflow>
 <docs-step title="Import the `FormArray` class">
-Import the `FormArray` class from `@angular/forms` to use for type information. The `FormBuilder` service is ready to create a `FormArray` instance.
+Tür bilgisi için kullanmak üzere `@angular/forms`'dan `FormArray` sınıfını içe aktarın. `FormBuilder` hizmeti bir `FormArray` örneği oluşturmaya hazırdır.
 
 <docs-code header="profile-editor.component.ts (import)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="form-array-imports"/>
 </docs-step>
 
 <docs-step title="Define a `FormArray` control">
-You can initialize a form array with any number of controls, from zero to many, by defining them in an array. Add an `aliases` property to the form group instance for `profileForm` to define the form array.
+Bir form dizisini sıfırdan çoğa kadar herhangi bir sayıda kontrol ile başlatabilirsiniz, bunları bir dizide tanımlayarak. Form dizisini tanımlamak için `profileForm` form grubu örneğine bir `aliases` özelliği ekleyin.
 
-Use the `FormBuilder.array()` method to define the array, and the `FormBuilder.control()` method to populate the array with an initial control.
+Diziyi tanımlamak için `FormBuilder.array()` yöntemini ve diziyi bir başlangıç kontrolüyle doldurmak için `FormBuilder.control()` yöntemini kullanın.
 
 <docs-code header="profile-editor.component.ts (aliases form array)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="aliases"/>
 
-The aliases control in the form group instance is now populated with a single control until more controls are added dynamically.
+Form grubu örneğindeki aliases kontrolü artık tek bir kontrolle doldurulmuştur ve dinamik olarak daha fazla kontrol eklenene kadar böyle kalır.
 </docs-step>
 
 <docs-step title="Access the `FormArray` control">
-A getter provides access to the aliases in the form array instance compared to repeating the `profileForm.get()` method to get each instance. The form array instance represents an undefined number of controls in an array. It's convenient to access a control through a getter, and this approach is straightforward to repeat for additional controls. <br />
+Bir getter, form dizisi örneğindeki takma adlara, her örneği almak için `profileForm.get()` yöntemini tekrarlamaya kıyasla erişim sağlar. Form dizisi örneği, bir dizideki tanımlanmamış sayıda kontrolü temsil eder. Bir kontrole getter aracılığıyla erişmek uygundur ve ek kontroller için tekrarlanması kolaydır. <br />
 
-Use the getter syntax to create an `aliases` class property to retrieve the alias's form array control from the parent form group.
+Üst form grubundan alias form dizisi kontrolünü almak üzere bir `aliases` sınıf özelliği oluşturmak için getter sözdizimini kullanın.
 
 <docs-code header="profile-editor.component.ts (aliases getter)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="aliases-getter"/>
 
-Because the returned control is of the type `AbstractControl`, you need to provide an explicit type to access the method syntax for the form array instance. Define a method to dynamically insert an alias control into the alias's form array. The `FormArray.push()` method inserts the control as a new item in the array, and you can also pass an array of controls to FormArray.push() to register multiple controls at once.
+Döndürülen kontrol `AbstractControl` türünde olduğundan, form dizisi örneği için yöntem sözdizimine erişmek üzere açık bir tür sağlamanız gerekir. Alias form dizisine dinamik olarak bir alias kontrolü eklemek için bir yöntem tanımlayın. `FormArray.push()` yöntemi kontrolü diziye yeni bir öğe olarak ekler ve ayrıca birden fazla kontrolü aynı anda kaydetmek için FormArray.push() yöntemine bir kontrol dizisi de iletebilirsiniz.
 
 <docs-code header="profile-editor.component.ts (add alias)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.ts" region="add-alias"/>
 
-In the template, each control is displayed as a separate input field.
+Şablonda, her kontrol ayrı bir girdi alanı olarak görüntülenir.
 
 </docs-step>
 
 <docs-step title="Display the form array in the template">
 
-To attach the aliases from your form model, you must add it to the template. Similar to the `formGroupName` input provided by `FormGroupNameDirective`, `formArrayName` binds communication from the form array instance to the template with `FormArrayNameDirective`.
+Form modelinizdeki takma adları eklemek için bunları şablona eklemeniz gerekir. `FormGroupNameDirective` tarafından sağlanan `formGroupName` girdisine benzer şekilde, `formArrayName` form dizisi örneğinden şablona `FormArrayNameDirective` ile iletişimi bağlar.
 
-Add the following template HTML after the `<div>` closing the `formGroupName` element.
+`formGroupName` öğesini kapatan `<div>`'den sonra aşağıdaki şablon HTML'sini ekleyin.
 
 <docs-code header="profile-editor.component.html (aliases form array template)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.html" region="formarrayname"/>
 
-The `@for` block iterates over each form control instance provided by the aliases form array instance. Because form array elements are unnamed, you assign the index to the `i` variable and pass it to each control to bind it to the `formControlName` input.
+`@for` bloğu, aliases form dizisi örneği tarafından sağlanan her form kontrol örneği üzerinde yineleme yapar. Form dizisi öğeleri adlandırılmamış olduğundan, dizini `i` değişkenine atarsınız ve `formControlName` girdisine bağlamak için her kontrole iletirsiniz.
 
-Each time a new alias instance is added, the new form array instance is provided its control based on the index. This lets you track each individual control when calculating the status and value of the root control.
+Her yeni alias örneği eklendiğinde, yeni form dizisi örneğine dizine göre kontrolü sağlanır. Bu, kök kontrolün durumunu ve değerini hesaplarken her bireysel kontrolü takip etmenize olanak tanır.
 
 </docs-step>
 
 ### Using `FormArrayDirective` for top-level form arrays
 
-You can bind a `FormArray` directly to a `<form>` element by using the `FormArrayDirective`.  
-This is useful when the form does not use a top-level `FormGroup`, and the array itself represents the full form model.
+Bir `FormArray`'i `FormArrayDirective` kullanarak doğrudan bir `<form>` öğesine bağlayabilirsiniz.
+Bu, form üst düzey bir `FormGroup` kullanmadığında ve dizinin kendisi tam form modelini temsil ettiğinde kullanışlıdır.
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -409,28 +409,28 @@ export class FormArrayExampleComponent {
 
 <docs-step title="Add an alias">
 
-Initially, the form contains one `Alias` field. To add another field, click the **Add Alias** button. You can also validate the array of aliases reported by the form model displayed by `Form Value` at the bottom of the template. Instead of a form control instance for each alias, you can compose another form group instance with additional fields. The process of defining a control for each item is the same.
+Başlangıçta form bir `Alias` alanı içerir. Başka bir alan eklemek için **Add Alias** düğmesine tıklayın. Ayrıca şablonun altındaki `Form Value` tarafından bildirilen takma adlar dizisini de doğrulayabilirsiniz. Her takma ad için bir form kontrol örneği yerine, ek alanlarla başka bir form grubu örneği oluşturabilirsiniz. Her öğe için bir kontrol tanımlama süreci aynıdır.
 </docs-step>
 
 </docs-workflow>
 
 ## Unified control state change events
 
-All form controls expose a single unified stream of **control state change events** through the `events` observable on `AbstractControl` (`FormControl`, `FormGroup`, `FormArray`, and `FormRecord`).
-This unified stream lets you react to **value**, **status**, **pristine**, **touched** and **reset** state changes and also for **form-level actions** such as **submit** , allowing you to handle all updates with a one subscription instead of wiring multiple observables.
+Tüm form kontrolleri, `AbstractControl` (`FormControl`, `FormGroup`, `FormArray` ve `FormRecord`) üzerindeki `events` observable'ı aracılığıyla tek bir birleşik **kontrol durum değişikliği olayları** akışı sunar.
+Bu birleşik akış, **değer**, **durum**, **pristine**, **touched** ve **reset** durum değişikliklerine ve ayrıca **submit** gibi **form düzeyinde eylemlere** tepki vermenize olanak tanır; böylece birden fazla observable bağlamak yerine tek bir abonelikle tüm güncellemeleri yönetebilirsiniz.
 
 ### Event types
 
-Each item emitted by `events` is an instance of a specific event class:
+`events` tarafından yayılan her öğe, belirli bir olay sınıfının bir örneğidir:
 
-- **`ValueChangeEvent`** — when the control’s **value** changes.
-- **`StatusChangeEvent`** — when the control’s **validation status** updates to one of the `FormControlStatus` values (`VALID`, `INVALID`, `PENDING`, or `DISABLED`).
-- **`PristineChangeEvent`** — when the control’s **pristine/dirty** state changes.
-- **`TouchedChangeEvent`** — when the control’s **touched/untouched** state changes.
-- **`FormResetEvent`** — when a control or form is reset, either via the `reset()` API or a native action.
-- **`FormSubmittedEvent`** — when the form is submitted.
+- **`ValueChangeEvent`** -- kontrolün **değeri** değiştiğinde.
+- **`StatusChangeEvent`** -- kontrolün **doğrulama durumu** `FormControlStatus` değerlerinden birine (`VALID`, `INVALID`, `PENDING` veya `DISABLED`) güncellendiğinde.
+- **`PristineChangeEvent`** -- kontrolün **pristine/dirty** durumu değiştiğinde.
+- **`TouchedChangeEvent`** -- kontrolün **touched/untouched** durumu değiştiğinde.
+- **`FormResetEvent`** -- bir kontrol veya form, `reset()` API'si veya yerel bir eylem aracılığıyla sıfırlandığında.
+- **`FormSubmittedEvent`** -- form gönderildiğinde.
 
-All event classes extend `ControlEvent` and include a `source` reference to the `AbstractControl` that originated the change, which is useful in large forms.
+Tüm olay sınıfları `ControlEvent`'i genişletir ve değişikliği başlatan `AbstractControl`'e bir `source` referansı içerir; bu büyük formlarda kullanışlıdır.
 
 ```ts
 import {Component} from '@angular/core';
@@ -486,7 +486,7 @@ export class UnifiedEventsBasicComponent {
 
 ### Filtering specific events
 
-Prefer RxJS operators when you only need a subset of event types.
+Yalnızca bir olay türü alt kümesine ihtiyacınız olduğunda RxJS operatörlerini tercih edin.
 
 ```ts
 import {filter} from 'rxjs/operators';
@@ -499,7 +499,7 @@ control.events
 
 ### Unifying from multiple subscriptions
 
-**Before**
+**Önce**
 
 ```ts
 import {combineLatest} from 'rxjs/operators';
@@ -509,7 +509,7 @@ combineLatest([control.valueChanges, control.statusChanges]).subscribe(([value, 
 });
 ```
 
-**After**
+**Sonra**
 
 ```ts
 control.events.subscribe((e) => {
@@ -517,13 +517,13 @@ control.events.subscribe((e) => {
 });
 ```
 
-NOTE: On value change, the emit happens right after a value of this control is updated. The value of a parent control (for example if this FormControl is a part of a FormGroup) is updated later, so accessing a value of a parent control (using the `value` property) from the callback of this event might result in getting a value that has not been updated yet. Subscribe to the `events` of the parent control instead.
+NOTE: Değer değişikliğinde, yayılma bu kontrolün değeri güncellendikten hemen sonra gerçekleşir. Bir üst kontrolün değeri (örneğin bu FormControl bir FormGroup'un parçasıysa) daha sonra güncellenir, bu nedenle bu olayın geri çağırmasından bir üst kontrolün değerine (`value` özelliği kullanarak) erişmek, henüz güncellenmemiş bir değer almanızla sonuçlanabilir. Bunun yerine üst kontrolün `events`'ine abone olun.
 
 ## Managing form control state
 
-Reactive forms track control state through **touched/untouched** and **pristine/dirty**. Angular updates these automatically during DOM interactions, but you can also manage them programmatically.
+Reaktif formlar, **touched/untouched** ve **pristine/dirty** ile kontrol durumunu takip eder. Angular bunları DOM etkileşimleri sırasında otomatik olarak günceller, ancak bunları programatik olarak da yönetebilirsiniz.
 
-**[`markAsTouched`](api/forms/FormControl#markAsTouched)** — Marks a control or form as touched by focus and blur events that do not change the value. Propagates to parent controls by default.
+**[`markAsTouched`](api/forms/FormControl#markAsTouched)** -- Bir kontrolü veya formu, değeri değiştirmeyen odaklanma ve odak kaybetme olayları tarafından dokunulmuş olarak işaretler. Varsayılan olarak üst kontrollere yayılır.
 
 ```ts
 // Show validation errors after user leaves a field
@@ -533,7 +533,7 @@ onEmailBlur() {
 }
 ```
 
-**[`markAsUntouched`](api/forms/FormControl#markAsUntouched)** — Marks a control or form as untouched. Cascades to all child controls and recalculates the touched status of all parent controls.
+**[`markAsUntouched`](api/forms/FormControl#markAsUntouched)** -- Bir kontrolü veya formu dokunulmamış olarak işaretler. Tüm alt kontrollere basamaklanır ve tüm üst kontrollerin dokunulmuş durumunu yeniden hesaplar.
 
 ```ts
 // Reset form state after successful submission
@@ -543,7 +543,7 @@ onSubmitSuccess() {
 }
 ```
 
-**[`markAsDirty`](api/forms/FormControl#markAsDirty)** — Marks a control or form as dirty, meaning the value has been changed. Propagates to parent controls by default.
+**[`markAsDirty`](api/forms/FormControl#markAsDirty)** -- Bir kontrolü veya formu değiştirilmiş olarak işaretler, yani değer değiştirilmiştir. Varsayılan olarak üst kontrollere yayılır.
 
 ```ts
 // Mark programmatically changed values as modified
@@ -554,7 +554,7 @@ autofillAddress() {
 }
 ```
 
-**[`markAsPristine`](api/forms/FormControl#markAsPristine)** — Marks a control or form as pristine. Marks all child controls as pristine and recalculates the pristine status of all parent controls.
+**[`markAsPristine`](api/forms/FormControl#markAsPristine)** -- Bir kontrolü veya formu saf (pristine) olarak işaretler. Tüm alt kontrolleri saf olarak işaretler ve tüm üst kontrollerin saf durumunu yeniden hesaplar.
 
 ```ts
 // Reset pristine state after saving to track new changes
@@ -565,7 +565,7 @@ saveForm() {
 }
 ```
 
-**[`markAllAsDirty`](api/forms/FormControl#markAllAsDirty)** — Marks the control or form and all its descendant controls as dirty.
+**[`markAllAsDirty`](api/forms/FormControl#markAllAsDirty)** -- Kontrolü veya formu ve tüm alt kontrollerini değiştirilmiş olarak işaretler.
 
 ```ts
 // Mark imported data as dirty
@@ -575,7 +575,7 @@ loadData(data: FormData) {
 }
 ```
 
-**[`markAllAsTouched`](api/forms/FormControl#markAllAsTouched)** — Marks the control or form and all its descendant controls as touched. Useful for showing validation errors across the entire form.
+**[`markAllAsTouched`](api/forms/FormControl#markAllAsTouched)** -- Kontrolü veya formu ve tüm alt kontrollerini dokunulmuş olarak işaretler. Tüm form genelinde doğrulama hatalarını göstermek için kullanışlıdır.
 
 ```ts
 // Show all validation errors before submission
@@ -590,11 +590,11 @@ onSubmit() {
 
 ## Controlling event emission and propagation
 
-When updating form controls programmatically, you have precise control over how changes propagate through the form hierarchy and whether events are emitted.
+Form kontrollerini programatik olarak güncellerken, değişikliklerin form hiyerarşisi boyunca nasıl yayılacağı ve olayların yayılıp yayılmayacağı üzerinde hassas kontrole sahipsiniz.
 
 ### Understanding event emission
 
-By default `emitEvent: true`, any change to a control emits events through the `valueChanges` and `statusChanges` observables. Setting `emitEvent: false` suppresses these emissions, which is useful when setting values programmatically without triggering reactive behavior like auto-save, avoiding circular updates between controls, or performing bulk updates where events should emit only once at the end.
+Varsayılan olarak `emitEvent: true`'dur; bir kontrole yapılan herhangi bir değişiklik, `valueChanges` ve `statusChanges` observable'ları aracılığıyla olayları yayar. `emitEvent: false` ayarı bu yayımları bastırır; bu, otomatik kaydetme gibi reaktif davranışları tetiklemeden değerleri programatik olarak ayarlamak, kontroller arasındaki döngüsel güncellemeleri önlemek veya olayların yalnızca sonunda bir kez yayılması gereken toplu güncellemeler yapmak için kullanışlıdır.
 
 ```ts
 @Component({
@@ -622,7 +622,7 @@ export class BlogPostEditor {
 
 ### Understanding propagation control
 
-By default `onlySelf: false` , updates cascade to parent controls, recalculating their values and validation status. Setting `onlySelf: true` isolates the update to the current control, preventing parent notification. This is useful for batch operations where you want to manually trigger the parent update once.
+Varsayılan olarak `onlySelf: false`'tur; güncellemeler üst kontrollere basamaklanır ve değerleri ile doğrulama durumlarını yeniden hesaplar. `onlySelf: true` ayarı güncellemeyi geçerli kontrolle sınırlar ve üst bildirimini engeller. Bu, üst güncellemeyi bir kez manuel olarak tetiklemek istediğiniz toplu işlemler için kullanışlıdır.
 
 ```ts
 updatePostalCodeValidator(country: string) {
@@ -639,16 +639,16 @@ updatePostalCodeValidator(country: string) {
 
 ## Utility functions for narrowing form control types
 
-Angular provides four utility functions that help determine the concrete type of an `AbstractControl`. These functions act as **type guards** and narrow the control type when they return `true`, which lets you safely access subtype-specific properties inside the same block.
+Angular, bir `AbstractControl`'ün somut türünü belirlemeye yardımcı olan dört yardımcı fonksiyon sağlar. Bu fonksiyonlar **tür koruyucuları** olarak hareket eder ve `true` döndürdüklerinde kontrol türünü daraltır; bu da aynı blok içinde alt tipe özgü özelliklere güvenli bir şekilde erişmenize olanak tanır.
 
-| Utility function | Details                                             |
-| :--------------- | :-------------------------------------------------- |
-| `isFormControl`  | Returns `true` when the control is a `FormControl`. |
-| `isFormGroup`    | Returns `true` when the control is a `FormGroup`    |
-| `isFormRecord`   | Returns `true` when the control is a `FormRecord`   |
-| `isFormArray`    | Returns `true` when the control is a `FormArray`    |
+| Yardımcı fonksiyon | Ayrıntılar                                           |
+| :----------------- | :--------------------------------------------------- |
+| `isFormControl`    | Kontrol bir `FormControl` olduğunda `true` döndürür. |
+| `isFormGroup`      | Kontrol bir `FormGroup` olduğunda `true` döndürür    |
+| `isFormRecord`     | Kontrol bir `FormRecord` olduğunda `true` döndürür   |
+| `isFormArray`      | Kontrol bir `FormArray` olduğunda `true` döndürür    |
 
-These helpers are particularly useful in **custom validators**, where the function signature receives an `AbstractControl`, but the logic is intended for a specific control kind.
+Bu yardımcılar, fonksiyon imzası bir `AbstractControl` alan ancak mantığın belirli bir kontrol türü için tasarlandığı **özel doğrulayıcılarda** özellikle kullanışlıdır.
 
 ```ts
 import {AbstractControl, isFormArray} from '@angular/forms';
@@ -666,27 +666,27 @@ export function positiveValues(control: AbstractControl) {
 
 ## Reactive forms API summary
 
-The following table lists the base classes and services used to create and manage reactive form controls.
-For complete syntax details, see the API reference documentation for the [Forms package](api#forms 'API reference').
+Aşağıdaki tablo, reaktif form kontrollerini oluşturmak ve yönetmek için kullanılan temel sınıfları ve hizmetleri listeler.
+Tam sözdizimi ayrıntıları için [Forms paketi](api#forms 'API reference') API referans belgelerine bakın.
 
 ### Classes
 
-| Class             | Details                                                                                                                                                                                 |
-| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AbstractControl` | The abstract base class for the concrete form control classes `FormControl`, `FormGroup`, and `FormArray`. It provides their common behaviors and properties.                           |
-| `FormControl`     | Manages the value and validity status of an individual form control. It corresponds to an HTML form control such as `<input>` or `<select>`.                                            |
-| `FormGroup`       | Manages the value and validity state of a group of `AbstractControl` instances. The group's properties include its child controls. The top-level form in your component is `FormGroup`. |
-| `FormArray`       | Manages the value and validity state of a numerically indexed array of `AbstractControl` instances.                                                                                     |
-| `FormBuilder`     | An injectable service that provides factory methods for creating control instances.                                                                                                     |
-| `FormRecord`      | Tracks the value and validity state of a collection of `FormControl` instances, each of which has the same value type.                                                                  |
+| Sınıf             | Ayrıntılar                                                                                                                                                                      |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `AbstractControl` | `FormControl`, `FormGroup` ve `FormArray` somut form kontrol sınıfları için soyut temel sınıf. Ortak davranışlarını ve özelliklerini sağlar.                                    |
+| `FormControl`     | Bireysel bir form kontrolünün değerini ve geçerlilik durumunu yönetir. `<input>` veya `<select>` gibi bir HTML form kontrolüne karşılık gelir.                                  |
+| `FormGroup`       | Bir `AbstractControl` örnekleri grubunun değerini ve geçerlilik durumunu yönetir. Grubun özellikleri, alt kontrollerini içerir. Bileşeninizdeki üst düzey form `FormGroup`'tur. |
+| `FormArray`       | Sayısal olarak indekslenmiş bir `AbstractControl` örnekleri dizisinin değerini ve geçerlilik durumunu yönetir.                                                                  |
+| `FormBuilder`     | Kontrol örnekleri oluşturmak için fabrika yöntemleri sağlayan enjekte edilebilir bir hizmet.                                                                                    |
+| `FormRecord`      | Her biri aynı değer türüne sahip bir `FormControl` örnekleri koleksiyonunun değerini ve geçerlilik durumunu takip eder.                                                         |
 
 ### Directives
 
-| Directive              | Details                                                                                    |
-| :--------------------- | :----------------------------------------------------------------------------------------- |
-| `FormControlDirective` | Syncs a standalone `FormControl` instance to a form control element.                       |
-| `FormControlName`      | Syncs `FormControl` in an existing `FormGroup` instance to a form control element by name. |
-| `FormGroupDirective`   | Syncs an existing `FormGroup` instance to a DOM element.                                   |
-| `FormGroupName`        | Syncs a nested `FormGroup` instance to a DOM element.                                      |
-| `FormArrayName`        | Syncs a nested `FormArray` instance to a DOM element.                                      |
-| `FormArrayDirective`   | Syncs a standalone `FormArray` instance to a DOM element.                                  |
+| Direktif               | Ayrıntılar                                                                                            |
+| :--------------------- | :---------------------------------------------------------------------------------------------------- |
+| `FormControlDirective` | Bağımsız bir `FormControl` örneğini bir form kontrol öğesine senkronize eder.                         |
+| `FormControlName`      | Mevcut bir `FormGroup` örneğindeki `FormControl`'ü ada göre bir form kontrol öğesine senkronize eder. |
+| `FormGroupDirective`   | Mevcut bir `FormGroup` örneğini bir DOM öğesine senkronize eder.                                      |
+| `FormGroupName`        | İç içe bir `FormGroup` örneğini bir DOM öğesine senkronize eder.                                      |
+| `FormArrayName`        | İç içe bir `FormArray` örneğini bir DOM öğesine senkronize eder.                                      |
+| `FormArrayDirective`   | Bağımsız bir `FormArray` örneğini bir DOM öğesine senkronize eder.                                    |

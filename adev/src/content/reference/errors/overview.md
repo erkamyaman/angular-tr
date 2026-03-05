@@ -2,7 +2,7 @@
 
 ## Runtime errors
 
-| Code      | Name                                                                                 |
+| Kod       | Ad                                                                                   |
 | :-------- | :----------------------------------------------------------------------------------- |
 | `NG0100`  | [Expression Changed After Checked](errors/NG0100)                                    |
 | `NG0200`  | [Circular Dependency in DI](errors/NG0200)                                           |
@@ -46,7 +46,7 @@
 
 ## Compiler errors
 
-| Code     | Name                                                       |
+| Kod      | Ad                                                         |
 | :------- | :--------------------------------------------------------- |
 | `NG1001` | [Argument Not Literal](errors/NG1001)                      |
 | `NG2003` | [Missing Token](errors/NG2003)                             |

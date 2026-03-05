@@ -1,31 +1,31 @@
 # Composing Components
 
-You've learned to update the component template, component logic, and component styles, but how do you use a component in your application?
+Bileşen şablonunu, bileşen mantığını ve bileşen stillerini güncellemeyi öğrendiniz, peki bir bileşeni uygulamanızda nasıl kullanırsınız?
 
-The `selector` property of the component configuration gives you a name to use when referencing the component in another template. You use the `selector` like an HTML tag, for example `app-user` would be `<app-user />` in the template.
+Bileşen yapılandırmasının `selector` özelliği, bileşene başka bir şablonda referans verirken kullanabileceğiniz bir ad sağlar. `selector`'ı bir HTML etiketi gibi kullanırsınız; örneğin `app-user`, şablonda `<app-user />` şeklinde olur.
 
-NOTE: Learn more about [using components in the essentials guide](/essentials/components#using-components).
+NOTE: [Temel bilgiler kılavuzundaki bileşen kullanımı](/essentials/components#using-components) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to compose components.
+Bu aktivitede, bileşenleri nasıl bir araya getireceğinizi öğreneceksiniz.
 
 <hr/>
 
-In this example, there are two components `User` and `App`.
+Bu örnekte iki bileşen vardır: `User` ve `App`.
 
 <docs-workflow>
 
 <docs-step title="Add a reference to `User`">
-Update the `App` template to include a reference to the `User` which uses the selector `app-user`. Be sure to add `User` to the imports array of `App`, this makes it available for use in the `App` template.
+`App` şablonunu, `app-user` seçicisini kullanan `User` bileşenine bir referans içerecek şekilde güncelleyin. `User`'ı `App`'in imports dizisine eklediğinizden emin olun; bu, bileşenin `App` şablonunda kullanılabilir olmasını sağlar.
 
 ```angular-html
 template: `<app-user />`, imports: [User]
 ```
 
-The component now displays the message `Username: youngTech`. You can update the template code to include more markup.
+Bileşen artık `Username: youngTech` mesajını gösterir. Daha fazla işaretleme eklemek için şablon kodunu güncelleyebilirsiniz.
 </docs-step>
 
 <docs-step title="Add more markup">
-Because you can use any HTML markup that you want in a template, try updating the template for `App` to also include more HTML elements. This example will add a `<section>` element as the parent of the `<app-user>` element.
+Bir şablonda istediğiniz herhangi bir HTML işaretlemesini kullanabildiğiniz için, `App` şablonunu daha fazla HTML öğesi içerecek şekilde güncellemeyi deneyin. Bu örnek, `<app-user>` öğesinin üst öğesi olarak bir `<section>` öğesi ekleyecektir.
 
 ```angular-html
 template: `
@@ -36,6 +36,6 @@ template: `
 </docs-step>
 
 </docs-workflow>
-You can use as much HTML markup and as many components as you need to bring your app idea to reality. You can even have multiple copies of your component on the same page.
+Uygulama fikrinizi gerçeğe dönüştürmek için istediğiniz kadar HTML işaretlemesi ve bileşen kullanabilirsiniz. Aynı sayfada bileşeninizin birden fazla kopyasına bile sahip olabilirsiniz.
 
-That's a great segue, how would you conditionally show a component based on data? Head to the next section to find out.
+Bu güzel bir geçiş noktası; verilere dayalı olarak bir bileşeni koşullu olarak nasıl gösterirsiniz? Öğrenmek için bir sonraki bölüme geçin.

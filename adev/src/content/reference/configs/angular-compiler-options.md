@@ -1,234 +1,234 @@
 # Angular compiler options
 
-When you use [ahead-of-time compilation (AOT)](tools/cli/aot-compiler), you can control how your application is compiled by specifying Angular compiler options in the [TypeScript configuration file](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+[Önceden derleme (AOT)](tools/cli/aot-compiler) kullandığınızda, [TypeScript yapılandırma dosyasında](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) Angular derleyici seçeneklerini belirterek uygulamanızın nasıl derleneceğini kontrol edebilirsiniz.
 
-The Angular options object, `angularCompilerOptions`, is a sibling to the `compilerOptions` object that supplies standard options to the TypeScript compiler.
+Angular seçenekler nesnesi `angularCompilerOptions`, TypeScript derleyicisine standart seçenekler sağlayan `compilerOptions` nesnesinin kardeşidir.
 
 <docs-code header="tsconfig.json" path="adev/src/content/examples/angular-compiler-options/tsconfig.json" region="angular-compiler-options"/>
 
 ## Configuration inheritance with `extends`
 
-Like the TypeScript compiler, the Angular AOT compiler also supports `extends` in the `angularCompilerOptions` section of the TypeScript configuration file.
-The `extends` property is at the top level, parallel to `compilerOptions` and `angularCompilerOptions`.
+TypeScript derleyicisi gibi, Angular AOT derleyicisi de TypeScript yapılandırma dosyasının `angularCompilerOptions` bölümünde `extends` özelliğini destekler.
+`extends` özelliği, `compilerOptions` ve `angularCompilerOptions` ile paralel olarak en üst düzeyde bulunur.
 
-A TypeScript configuration can inherit settings from another file using the `extends` property.
-The configuration options from the base file are loaded first, then overridden by those in the inheriting configuration file.
+Bir TypeScript yapılandırması, `extends` özelliğini kullanarak başka bir dosyadan ayarları devralabilir.
+Temel dosyadaki yapılandırma seçenekleri önce yüklenir, ardından devralan yapılandırma dosyasındakiler tarafından geçersiz kılınır.
 
-For example:
+Örneğin:
 
 <docs-code header="tsconfig.app.json" path="adev/src/content/examples/angular-compiler-options/tsconfig.app.json" region="angular-compiler-options-app"/>
 
-For more information, see the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+Daha fazla bilgi için [TypeScript El Kitabı](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)'na bakın.
 
 ## Template options
 
-The following options are available for configuring the Angular AOT compiler.
+Aşağıdaki seçenekler Angular AOT derleyicisini yapılandırmak için kullanılabilir.
 
 ### `annotationsAs`
 
-Modifies how Angular-specific annotations are emitted to improve tree-shaking.
-Non-Angular annotations are not affected.
-One of `static fields` or `decorators`. The default value is `static fields`.
+Angular'a özgü açıklamaların tree-shaking'i iyileştirmek için nasıl yayılacağını değiştirir.
+Angular dışındaki açıklamalar etkilenmez.
+`static fields` veya `decorators` değerlerinden biri. Varsayılan değer `static fields`'dır.
 
-- By default, the compiler replaces decorators with a static field in the class, which allows advanced tree-shakers like [Closure compiler](https://github.com/google/closure-compiler) to remove unused classes
-- The `decorators` value leaves the decorators in place, which makes compilation faster.
-  TypeScript emits calls to the `__decorate` helper.
-  Use `--emitDecoratorMetadata` for runtime reflection.
+- Varsayılan olarak, derleyici dekoratörleri sınıfta statik bir alan ile değiştirir; bu, [Closure compiler](https://github.com/google/closure-compiler) gibi gelişmiş tree-shaker'ların kullanılmayan sınıfları kaldırmasına olanak tanır
+- `decorators` değeri dekoratörleri yerinde bırakır, bu da derlemeyi daha hızlı hale getirir.
+  TypeScript, `__decorate` yardımcısına çağrılar yayar.
+  Çalışma zamanı yansıması için `--emitDecoratorMetadata` kullanın.
 
-  HELPFUL: That the resulting code cannot tree-shake properly.
+  HELPFUL: Elde edilen kodun düzgün bir şekilde tree-shake yapılamayacağını unutmayın.
 
 ### `annotateForClosureCompiler`
 
 <!-- vale Angular.Angular_Spelling = NO -->
 
-When `true`, use [Tsickle](https://github.com/angular/tsickle) to annotate the emitted JavaScript with [JSDoc](https://jsdoc.app) comments needed by the [Closure Compiler](https://github.com/google/closure-compiler).
-Default is `false`.
+`true` olduğunda, yayılan JavaScript'i [Closure Compiler](https://github.com/google/closure-compiler) tarafından ihtiyaç duyulan [JSDoc](https://jsdoc.app) yorumlarıyla açıklamak için [Tsickle](https://github.com/angular/tsickle) kullanır.
+Varsayılan değer `false`'tur.
 
 <!-- vale Angular.Angular_Spelling = YES -->
 
 ### `compilationMode`
 
-Specifies the compilation mode to use.
-The following modes are available:
+Kullanılacak derleme modunu belirtir.
+Aşağıdaki modlar mevcuttur:
 
-| Modes       | Details                                                                                             |
-| :---------- | :-------------------------------------------------------------------------------------------------- |
-| `'full'`    | Generates fully AOT-compiled code according to the version of Angular that is currently being used. |
-| `'partial'` | Generates code in a stable, but intermediate form suitable for a published library.                 |
+| Modlar      | Ayrıntılar                                                                      |
+| :---------- | :------------------------------------------------------------------------------ |
+| `'full'`    | Şu anda kullanılmakta olan Angular sürümüne göre tam AOT derlenmiş kod üretir.  |
+| `'partial'` | Yayımlanmış bir kütüphane için uygun, kararlı ancak ara bir biçimde kod üretir. |
 
-The default value is `'full'`.
+Varsayılan değer `'full'`'dur.
 
-For most applications, `'full'` is the correct compilation mode.
+Çoğu uygulama için `'full'` doğru derleme modudur.
 
-Use `'partial'` for independently published libraries, such as NPM packages.
-`'partial'` compilations output a stable, intermediate format which better supports usage by applications built at different Angular versions from the library.
-Libraries built at "HEAD" alongside their applications and using the same version of Angular such as in a mono-repository can use `'full'` since there is no risk of version skew.
+Bağımsız olarak yayımlanan kütüphaneler için, NPM paketleri gibi, `'partial'` kullanın.
+`'partial'` derlemeleri, kütüphaneden farklı Angular sürümlerinde oluşturulan uygulamalar tarafından kullanımı daha iyi destekleyen kararlı, ara bir biçim çıktısı verir.
+Uygulamalarıyla birlikte "HEAD"de oluşturulan ve mono-depo gibi aynı Angular sürümünü kullanan kütüphaneler, sürüm uyumsuzluğu riski olmadığından `'full'` kullanabilir.
 
 ### `disableExpressionLowering`
 
-When `true`, the default, transforms code that is or could be used in an annotation, to allow it to be imported from template factory modules.
-See [metadata rewriting](tools/cli/aot-compiler#metadata-rewriting) for more information.
+`true` olduğunda (varsayılan), bir açıklamada kullanılan veya kullanılabilecek kodu, şablon fabrika modüllerinden içe aktarılmasına izin vermek için dönüştürür.
+Daha fazla bilgi için [metadata yeniden yazma](tools/cli/aot-compiler#metadata-rewriting) bölümüne bakın.
 
-When `false`, disables this rewriting, requiring the rewriting to be done manually.
+`false` olduğunda, bu yeniden yazmayı devre dışı bırakır ve yeniden yazmanın manuel olarak yapılmasını gerektirir.
 
 ### `disableTypeScriptVersionCheck`
 
-When `true`, the compiler does not look at the TypeScript version and does not report an error when an unsupported version of TypeScript is used.
-Not recommended, as unsupported versions of TypeScript might have undefined behavior.
-Default is `false`.
+`true` olduğunda, derleyici TypeScript sürümüne bakmaz ve desteklenmeyen bir TypeScript sürümü kullanıldığında hata bildirmez.
+Desteklenmeyen TypeScript sürümlerinin tanımsız davranışlara sahip olabileceğinden önerilmez.
+Varsayılan değer `false`'tur.
 
 ### `enableI18nLegacyMessageIdFormat`
 
-Instructs the Angular template compiler to create legacy ids for messages that are tagged in templates by the `i18n` attribute.
-See [Mark text for translations][GuideI18nCommonPrepareMarkTextInComponentTemplate] for more information about marking messages for localization.
+Angular şablon derleyicisine, şablonlarda `i18n` özelliği ile etiketlenen mesajlar için eski kimlikler oluşturma talimatı verir.
+Mesajları yerelleştirme için işaretleme hakkında daha fazla bilgi için [Bileşen şablonunda metin işaretleme][GuideI18nCommonPrepareMarkTextInComponentTemplate] bölümüne bakın.
 
-Set this option to `false` unless your project relies upon translations that were created earlier using legacy IDs.
-Default is `true`.
+Projeniz eski kimlikler kullanılarak oluşturulan çevirilere dayanmıyorsa bu seçeneği `false` olarak ayarlayın.
+Varsayılan değer `true`'dur.
 
-The pre-Ivy message extraction tooling created a variety of legacy formats for extracted message IDs.
-These message formats have some issues, such as whitespace handling and reliance upon information inside the original HTML of a template.
+Ivy öncesi mesaj çıkarma araçları, çıkarılan mesaj kimlikleri için çeşitli eski biçimler oluşturuyordu.
+Bu mesaj biçimlerinde, boşluk işleme ve bir şablonun orijinal HTML'sindeki bilgilere bağımlılık gibi bazı sorunlar vardır.
 
-The new message format is more resilient to whitespace changes, is the same across all translation file formats, and can be created directly from calls to `$localize`.
-This allows `$localize` messages in application code to use the same ID as identical `i18n` messages in component templates.
+Yeni mesaj biçimi, boşluk değişikliklerine karşı daha dayanıklıdır, tüm çeviri dosyası biçimlerinde aynıdır ve doğrudan `$localize` çağrılarından oluşturulabilir.
+Bu, uygulama kodundaki `$localize` mesajlarının, bileşen şablonlarındaki aynı `i18n` mesajlarıyla aynı kimliği kullanmasına olanak tanır.
 
 ### `enableResourceInlining`
 
-When `true`, replaces the `templateUrl` and `styleUrls` properties in all `@Component` decorators with inline content in the `template` and `styles` properties.
+`true` olduğunda, tüm `@Component` dekoratörlerindeki `templateUrl` ve `styleUrls` özelliklerini `template` ve `styles` özelliklerindeki satır içi içerikle değiştirir.
 
-When enabled, the `.js` output of `ngc` does not include any lazy-loaded template or style URLs.
+Etkinleştirildiğinde, `ngc`'nin `.js` çıktısı herhangi bir tembel yüklenen şablon veya stil URL'si içermez.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
 
 ### `enableLegacyTemplate`
 
-When `true`, enables the deprecated `<template>` element in place of `<ng-template>`.
-Default is `false`.
-Might be required by some third-party Angular libraries.
+`true` olduğunda, `<ng-template>` yerine kullanımdan kaldırılmış `<template>` öğesini etkinleştirir.
+Varsayılan değer `false`'tur.
+Bazı üçüncü taraf Angular kütüphaneleri tarafından gerekli olabilir.
 
 ### `flatModuleId`
 
-The module ID to use for importing a flat module \(when `flatModuleOutFile` is `true`\).
-References created by the template compiler use this module name when importing symbols from the flat module.
-Ignored if `flatModuleOutFile` is `false`.
+Düz bir modülü içe aktarmak için kullanılan modül kimliği \(`flatModuleOutFile` `true` olduğunda\).
+Şablon derleyicisi tarafından oluşturulan referanslar, düz modülden semboller içe aktarırken bu modül adını kullanır.
+`flatModuleOutFile` `false` ise yok sayılır.
 
 ### `flatModuleOutFile`
 
-When `true`, generates a flat module index of the given filename and the corresponding flat module metadata.
-Use to create flat modules that are packaged similarly to `@angular/core` and `@angular/common`.
-When this option is used, the `package.json` for the library should refer to the created flat module index instead of the library index file.
+`true` olduğunda, verilen dosya adının düz modül dizini ve karşılık gelen düz modül metadata'sını oluşturur.
+`@angular/core` ve `@angular/common`'a benzer şekilde paketlenen düz modüller oluşturmak için kullanın.
+Bu seçenek kullanıldığında, kütüphanenin `package.json` dosyası, kütüphane dizin dosyası yerine oluşturulan düz modül dizinine referans vermelidir.
 
-Produces only one `.metadata.json` file, which contains all the metadata necessary for symbols exported from the library index.
-In the created `.ngfactory.js` files, the flat module index is used to import symbols. Symbols that include both the public API from the library index and shrouded internal symbols.
+Kütüphane dizininden dışa aktarılan semboller için gerekli tüm metadata'yı içeren yalnızca bir `.metadata.json` dosyası üretir.
+Oluşturulan `.ngfactory.js` dosyalarında, sembolleri içe aktarmak için düz modül dizini kullanılır. Semboller, kütüphane dizinindeki genel API'yi ve gizlenmiş iç sembolleri içerir.
 
-By default, the `.ts` file supplied in the `files` field is assumed to be the library index.
-If more than one `.ts` file is specified, `libraryIndex` is used to select the file to use.
-If more than one `.ts` file is supplied without a `libraryIndex`, an error is produced.
+Varsayılan olarak, `files` alanında sağlanan `.ts` dosyasının kütüphane dizini olduğu varsayılır.
+Birden fazla `.ts` dosyası belirtilmişse, kullanılacak dosyayı seçmek için `libraryIndex` kullanılır.
+Birden fazla `.ts` dosyası `libraryIndex` olmadan sağlanırsa bir hata üretilir.
 
-A flat module index `.d.ts` and `.js` is created with the given `flatModuleOutFile` name in the same location as the library index `.d.ts` file.
+Düz modül dizini `.d.ts` ve `.js`, kütüphane dizini `.d.ts` dosyasıyla aynı konumda verilen `flatModuleOutFile` adıyla oluşturulur.
 
-For example, if a library uses the `public_api.ts` file as the library index of the module, the `tsconfig.json` `files` field would be `["public_api.ts"]`.
-The `flatModuleOutFile` option could then be set, for example, to `"index.js"`, which produces `index.d.ts` and `index.metadata.json` files.
-The `module` field of the library's `package.json` would be `"index.js"` and the `typings` field would be `"index.d.ts"`.
+Örneğin, bir kütüphane modülün kütüphane dizini olarak `public_api.ts` dosyasını kullanıyorsa, `tsconfig.json` `files` alanı `["public_api.ts"]` olur.
+`flatModuleOutFile` seçeneği daha sonra örneğin `"index.js"` olarak ayarlanabilir, bu da `index.d.ts` ve `index.metadata.json` dosyaları üretir.
+Kütüphanenin `package.json`'ındaki `module` alanı `"index.js"` ve `typings` alanı `"index.d.ts"` olur.
 
 ### `fullTemplateTypeCheck`
 
-When `true`, the recommended value, enables the binding expression validation phase of the template compiler. This phase uses TypeScript to verify binding expressions.
-For more information, see [Template type checking](tools/cli/template-typecheck).
+`true` olduğunda (önerilen değer), şablon derleyicisinin bağlama ifadesi doğrulama aşamasını etkinleştirir. Bu aşama, bağlama ifadelerini doğrulamak için TypeScript kullanır.
+Daha fazla bilgi için [Şablon tür denetimi](tools/cli/template-typecheck) bölümüne bakın.
 
-Default is `false`, but when you use the Angular CLI command `ng new --strict`, it is set to `true` in the new project's configuration.
+Varsayılan değer `false`'tur, ancak Angular CLI komutu `ng new --strict` kullandığınızda, yeni projenin yapılandırmasında `true` olarak ayarlanır.
 
-IMPORTANT: The `fullTemplateTypeCheck` option has been deprecated in Angular 13 in favor of the `strictTemplates` family of compiler options.
+IMPORTANT: `fullTemplateTypeCheck` seçeneği, `strictTemplates` derleyici seçenekleri ailesi lehine Angular 13'te kullanımdan kaldırılmıştır.
 
 ### `generateCodeForLibraries`
 
-When `true`, creates factory files \(`.ngfactory.js` and `.ngstyle.js`\) for `.d.ts` files with a corresponding `.metadata.json` file. The default value is `true`.
+`true` olduğunda, karşılık gelen `.metadata.json` dosyası olan `.d.ts` dosyaları için fabrika dosyaları \(`.ngfactory.js` ve `.ngstyle.js`\) oluşturur. Varsayılan değer `true`'dur.
 
-When `false`, factory files are created only for `.ts` files.
-Do this when using factory summaries.
+`false` olduğunda, fabrika dosyaları yalnızca `.ts` dosyaları için oluşturulur.
+Fabrika özetleri kullanırken bunu yapın.
 
 ### `preserveWhitespaces`
 
-When `false`, the default, removes blank text nodes from compiled templates, which results in smaller emitted template factory modules.
-Set to `true` to preserve blank text nodes.
+`false` olduğunda (varsayılan), derlenmiş şablonlardan boş metin düğümlerini kaldırır, bu da daha küçük yayılan şablon fabrika modülleriyle sonuçlanır.
+Boş metin düğümlerini korumak için `true` olarak ayarlayın.
 
-HELPFUL: When using hydration, it is recommended that you use `preserveWhitespaces: false`, which is the default value. If you choose to enable preserving whitespaces by adding `preserveWhitespaces: true` to your tsconfig, it is possible you may encounter issues with hydration. This is not yet a fully supported configuration. Ensure this is also consistently set between the server and client tsconfig files. See the [hydration guide](guide/hydration#preserve-whitespaces-configuration) for more details.
+HELPFUL: Hidrasyon kullanırken, varsayılan değer olan `preserveWhitespaces: false` kullanmanız önerilir. Boşlukları korumayı `preserveWhitespaces: true` ekleyerek etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir. Bunun sunucu ve istemci tsconfig dosyaları arasında tutarlı bir şekilde ayarlandığından emin olun. Daha fazla ayrıntı için [hidrasyon kılavuzuna](guide/hydration#preserve-whitespaces-configuration) bakın.
 
 ### `skipMetadataEmit`
 
-When `true`, does not produce `.metadata.json` files.
-Default is `false`.
+`true` olduğunda, `.metadata.json` dosyaları üretmez.
+Varsayılan değer `false`'tur.
 
-The `.metadata.json` files contain information needed by the template compiler from a `.ts` file that is not included in the `.d.ts` file produced by the TypeScript compiler.
-This information includes, for example, the content of annotations, such as a component's template, which TypeScript emits to the `.js` file but not to the `.d.ts` file.
+`.metadata.json` dosyaları, TypeScript derleyicisi tarafından üretilen `.d.ts` dosyasına dahil edilmeyen, bir `.ts` dosyasından şablon derleyicisi tarafından ihtiyaç duyulan bilgileri içerir.
+Bu bilgiler, örneğin bir bileşenin şablonu gibi, TypeScript'in `.js` dosyasına yayıp `.d.ts` dosyasına yaymadığı açıklamaların içeriğini kapsar.
 
-You can set to `true` when using factory summaries, because the factory summaries include a copy of the information that is in the `.metadata.json` file.
+Fabrika özetleri kullanırken `true` olarak ayarlayabilirsiniz, çünkü fabrika özetleri `.metadata.json` dosyasındaki bilgilerin bir kopyasını içerir.
 
-Set to `true` if you are using TypeScript's `--outFile` option, because the metadata files are not valid for this style of TypeScript output.
-The Angular community does not recommend using `--outFile` with Angular.
-Use a bundler, such as [webpack](https://webpack.js.org), instead.
+TypeScript'in `--outFile` seçeneğini kullanıyorsanız `true` olarak ayarlayın, çünkü metadata dosyaları bu tarz TypeScript çıktısı için geçerli değildir.
+Angular topluluğu, Angular ile `--outFile` kullanılmasını önermez.
+Bunun yerine [webpack](https://webpack.js.org) gibi bir paketleyici kullanın.
 
 ### `skipTemplateCodegen`
 
-When `true`, does not emit `.ngfactory.js` and `.ngstyle.js` files.
-This turns off most of the template compiler and disables the reporting of template diagnostics.
+`true` olduğunda, `.ngfactory.js` ve `.ngstyle.js` dosyalarını yaymaz.
+Bu, şablon derleyicisinin çoğunu kapatır ve şablon tanılama raporlamasını devre dışı bırakır.
 
-Can be used to instruct the template compiler to produce `.metadata.json` files for distribution with an `npm` package. This avoids the production of `.ngfactory.js` and `.ngstyle.js` files that cannot be distributed to `npm`.
+Şablon derleyicisine, bir `npm` paketi ile dağıtım için `.metadata.json` dosyaları üretme talimatı vermek için kullanılabilir. Bu, `npm`'e dağıtılamayan `.ngfactory.js` ve `.ngstyle.js` dosyalarının üretimini önler.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
 
 ### `strictMetadataEmit`
 
-When `true`, reports an error to the `.metadata.json` file if `"skipMetadataEmit"` is `false`.
-Default is `false`.
-Use only when `"skipMetadataEmit"` is `false` and `"skipTemplateCodegen"` is `true`.
+`true` olduğunda, `"skipMetadataEmit"` `false` ise `.metadata.json` dosyasına bir hata bildirir.
+Varsayılan değer `false`'tur.
+Yalnızca `"skipMetadataEmit"` `false` ve `"skipTemplateCodegen"` `true` olduğunda kullanın.
 
-This option is intended to verify the `.metadata.json` files emitted for bundling with an `npm` package.
-The validation is strict and can emit errors for metadata that would never produce an error when used by the template compiler.
-You can choose to suppress the error emitted by this option for an exported symbol by including `@dynamic` in the comment documenting the symbol.
+Bu seçenek, bir `npm` paketi ile paketleme için yayılan `.metadata.json` dosyalarını doğrulamayı amaçlar.
+Doğrulama katıdır ve şablon derleyicisi tarafından kullanıldığında asla hata üretmeyecek metadata için hatalar yayabilir.
+Bu seçenek tarafından yayılan hatayı, sembolü belgeleyen yoruma `@dynamic` ekleyerek dışa aktarılan bir sembol için bastırabilirsiniz.
 
-It is valid for `.metadata.json` files to contain errors.
-The template compiler reports these errors if the metadata is used to determine the contents of an annotation.
-The metadata collector cannot predict the symbols that are designed for use in an annotation. It preemptively includes error nodes in the metadata for the exported symbols.
-The template compiler can then use the error nodes to report an error if these symbols are used.
+`.metadata.json` dosyalarının hata içermesi geçerlidir.
+Metadata, bir açıklamanın içeriğini belirlemek için kullanıldığında şablon derleyicisi bu hataları bildirir.
+Metadata toplayıcı, bir açıklamada kullanılmak üzere tasarlanmış sembolleri tahmin edemez. Dışa aktarılan semboller için metadata'da önceden hata düğümlerini dahil eder.
+Şablon derleyicisi daha sonra bu semboller kullanıldığında bir hata bildirmek için hata düğümlerini kullanabilir.
 
-If the client of a library intends to use a symbol in an annotation, the template compiler does not normally report this. It gets reported after the client actually uses the symbol.
-This option allows detection of these errors during the build phase of the library and is used, for example, in producing Angular libraries themselves.
+Bir kütüphanenin istemcisi bir açıklamada bir sembol kullanmayı amaçlıyorsa, şablon derleyicisi bunu normalde bildirmez. İstemci sembolü gerçekten kullandıktan sonra bildirilir.
+Bu seçenek, kütüphanenin derleme aşamasında bu hataların algılanmasını sağlar ve örneğin Angular kütüphanelerinin kendilerinin üretilmesinde kullanılır.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
 
 ### `strictInjectionParameters`
 
-When `true`, reports an error for a supplied parameter whose injection type cannot be determined.
-When `false`, constructor parameters of classes marked with `@Injectable` whose type cannot be resolved produce a warning.
-The recommended value is `true`, but the default value is `false`.
+`true` olduğunda, enjeksiyon türü belirlenemeyen sağlanan bir parametre için hata bildirir.
+`false` olduğunda, türü çözümlenemeyen `@Injectable` ile işaretlenmiş sınıfların yapıcı parametreleri bir uyarı üretir.
+Önerilen değer `true`'dur, ancak varsayılan değer `false`'tur.
 
-When you use the Angular CLI command `ng new --strict`, it is set to `true` in the created project's configuration.
+Angular CLI komutu `ng new --strict` kullandığınızda, oluşturulan projenin yapılandırmasında `true` olarak ayarlanır.
 
 ### `strictTemplates`
 
-When `true`, enables [strict template type checking](tools/cli/template-typecheck#strict-mode).
+`true` olduğunda, [katı şablon tür denetimini](tools/cli/template-typecheck#strict-mode) etkinleştirir.
 
-The strictness flags that this option enables allow you to turn on and off specific types of strict template type checking.
-See [troubleshooting template errors](tools/cli/template-typecheck#troubleshooting-template-errors).
+Bu seçeneğin etkinleştirdiği katılık bayrakları, belirli katı şablon tür denetimi türlerini açıp kapatmanıza olanak tanır.
+[Şablon hatalarını giderme](tools/cli/template-typecheck#troubleshooting-template-errors) bölümüne bakın.
 
-When you use the Angular CLI command `ng new --strict`, it is set to `true` in the new project's configuration.
+Angular CLI komutu `ng new --strict` kullandığınızda, yeni projenin yapılandırmasında `true` olarak ayarlanır.
 
 ### `strictStandalone`
 
-When `true`, reports an error if a component, directive, or pipe is not standalone.
+`true` olduğunda, bir bileşen, direktif veya pipe standalone değilse hata bildirir.
 
 ### `trace`
 
-When `true`, prints extra information while compiling templates.
-Default is `false`.
+`true` olduğunda, şablonlar derlenirken ekstra bilgi yazdırır.
+Varsayılan değer `false`'tur.
 
 ## Command line options
 
-Most of the time, you interact with the Angular Compiler indirectly using [Angular CLI](reference/configs/angular-compiler-options). When debugging certain issues, you might find it useful to invoke the Angular Compiler directly.
-You can use the `ngc` command provided by the `@angular/compiler-cli` npm package to call the compiler from the command line.
+Çoğu zaman, Angular Derleyicisi ile dolaylı olarak [Angular CLI](reference/configs/angular-compiler-options) kullanarak etkileşimde bulunursunuz. Belirli sorunları hata ayıklarken, Angular Derleyicisini doğrudan çağırmayı faydalı bulabilirsiniz.
+`@angular/compiler-cli` npm paketi tarafından sağlanan `ngc` komutunu kullanarak derleyiciyi komut satırından çağırabilirsiniz.
 
-The `ngc` command is a wrapper around TypeScript's `tsc` compiler command. The Angular Compiler is primarily configured through `tsconfig.json` while Angular CLI is primarily configured through `angular.json`.
+`ngc` komutu, TypeScript'in `tsc` derleyici komutunun bir sarmalayıcısıdır. Angular Derleyicisi öncelikle `tsconfig.json` aracılığıyla yapılandırılırken, Angular CLI öncelikle `angular.json` aracılığıyla yapılandırılır.
 
-Besides the configuration file, you can also use [`tsc` command line options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to configure `ngc`.
+Yapılandırma dosyasının yanı sıra, `ngc`'yi yapılandırmak için [`tsc` komut satırı seçeneklerini](https://www.typescriptlang.org/docs/handbook/compiler-options.html) de kullanabilirsiniz.
 
 [GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'

@@ -1,90 +1,90 @@
 # Angular service worker overview
 
-IMPORTANT: The Angular Service Worker is a basic caching utility for simple offline support with a limited featureset. We will not be accepting any new features other than security fixes. For more advanced caching and offline capabilities, we recommend exploring native browser APIs directly.
+IMPORTANT: Angular Service Worker, sınırlı bir özellik kümesiyle basit çevrimdışı destek için temel bir önbellekleme aracıdır. Güvenlik düzeltmeleri dışında yeni özellik kabul etmeyeceğiz. Daha gelişmiş önbellekleme ve çevrimdışı yetenekler için doğrudan yerel tarayıcı API'lerini incelemenizi öneririz.
 
-Service workers augment the traditional web deployment model and empower applications to deliver a user experience with the reliability and performance on par with code that is written to run on your operating system and hardware.
-Adding a service worker to an Angular application is one of the steps for turning an application into a [Progressive Web App](https://web.dev/progressive-web-apps/) (also known as a PWA).
+Service worker'lar geleneksel web dağıtım modelini güçlendirir ve uygulamaların, işletim sisteminiz ve donanımınız üzerinde çalışmak için yazılmış kodla eşdeğer güvenilirlik ve performansla kullanıcı deneyimi sunmasını sağlar.
+Bir Angular uygulamasına service worker eklemek, bir uygulamayı [Progressive Web App](https://web.dev/progressive-web-apps/) (PWA olarak da bilinir) haline getirme adımlarından biridir.
 
-At its simplest, a service worker is a script that runs in the web browser and manages caching for an application.
+En basit haliyle, service worker web tarayıcısında çalışan ve bir uygulama için önbelleklemeyi yöneten bir betiktir.
 
-Service workers function as a network proxy.
-They intercept all outgoing HTTP requests made by the application and can choose how to respond to them.
-For example, they can query a local cache and deliver a cached response if one is available.
-Proxying isn't limited to requests made through programmatic APIs, such as `fetch`; it also includes resources referenced in HTML and even the initial request to `index.html`.
-Service worker-based caching is thus completely programmable and doesn't rely on server-specified caching headers.
+Service worker'lar bir ağ proxy'si olarak işlev görür.
+Uygulama tarafından yapılan tüm giden HTTP isteklerini yakalar ve bunlara nasıl yanıt verileceğini seçebilir.
+Örneğin, yerel bir önbelleği sorgulayabilir ve varsa önbelleğe alınmış bir yanıt sunabilir.
+Proxy işlemi, `fetch` gibi programatik API'ler aracılığıyla yapılan isteklerle sınırlı değildir; HTML'de referans verilen kaynakları ve hatta `index.html`'e yapılan ilk isteği de kapsar.
+Service worker tabanlı önbellekleme bu nedenle tamamen programlanabilirdir ve sunucu tarafından belirtilen önbellekleme başlıklarına bağlı değildir.
 
-Unlike the other scripts that make up an application, such as the Angular application bundle, the service worker is preserved after the user closes the tab.
-The next time that browser loads the application, the service worker loads first, and can intercept every request for resources to load the application.
-If the service worker is designed to do so, it can _completely satisfy the loading of the application, without the need for the network_.
+Bir uygulamayı oluşturan diğer betiklerin, örneğin Angular uygulama paketinin aksine, service worker kullanıcı sekmeyi kapattıktan sonra da korunur.
+Tarayıcı uygulamayı bir sonraki yükleyişinde, service worker önce yüklenir ve uygulamayı yüklemek için kaynaklara yönelik her isteği yakalayabilir.
+Service worker bunu yapacak şekilde tasarlanmışsa, _ağa ihtiyaç duymadan uygulamanın yüklenmesini tamamen karşılayabilir_.
 
-Even across a fast reliable network, round-trip delays can introduce significant latency when loading the application.
-Using a service worker to reduce dependency on the network can significantly improve the user experience.
+Hızlı ve güvenilir bir ağda bile, gidiş-dönüş gecikmeleri uygulamayı yüklerken önemli gecikme süreleri oluşturabilir.
+Ağa bağımlılığı azaltmak için bir service worker kullanmak, kullanıcı deneyimini önemli ölçüde iyileştirebilir.
 
 ## Service workers in Angular
 
-Angular applications, as single-page applications, are in a prime position to benefit from the advantages of service workers. Angular ships with a service worker implementation. Angular developers can take advantage of this service worker and benefit from the increased reliability and performance it provides, without needing to code against low-level APIs.
+Angular uygulamaları, tek sayfa uygulamaları olarak, service worker'ların avantajlarından yararlanmak için birinci sınıf bir konumdadır. Angular, bir service worker uygulamasıyla birlikte gelir. Angular geliştiricileri bu service worker'dan yararlanabilir ve düşük seviyeli API'lere karşı kod yazmaya gerek kalmadan sağladığı artırılmış güvenilirlik ve performanstan faydalanabilir.
 
-Angular's service worker is designed to optimize the end user experience of using an application over a slow or unreliable network connection, while also minimizing the risks of serving outdated content.
+Angular'ın service worker'ı, yavaş veya güvenilmez ağ bağlantısı üzerinden bir uygulamayı kullanan son kullanıcı deneyimini optimize etmek ve aynı zamanda eski içerik sunma risklerini en aza indirmek için tasarlanmıştır.
 
-To achieve this, the Angular service worker follows these guidelines:
+Bunu başarmak için Angular service worker şu ilkeleri takip eder:
 
-- Caching an application is like installing a native application.
-  The application is cached as one unit, and all files update together.
+- Bir uygulamayı önbelleğe almak, yerel bir uygulama yüklemek gibidir.
+  Uygulama tek bir birim olarak önbelleğe alınır ve tüm dosyalar birlikte güncellenir.
 
-- A running application continues to run with the same version of all files.
-  It does not suddenly start receiving cached files from a newer version, which are likely incompatible.
+- Çalışan bir uygulama, tüm dosyaların aynı sürümüyle çalışmaya devam eder.
+  Uyumsuz olması muhtemel daha yeni bir sürümden önbelleğe alınmış dosyaları aniden almaya başlamaz.
 
-- When users refresh the application, they see the latest fully cached version.
-  New tabs load the latest cached code.
+- Kullanıcılar uygulamayı yenilediğinde, en son tam olarak önbelleğe alınmış sürümü görür.
+  Yeni sekmeler en son önbelleğe alınmış kodu yükler.
 
-- Updates happen in the background, relatively quickly after changes are published.
-  The previous version of the application is served until an update is installed and ready.
+- Güncellemeler arka planda, değişiklikler yayınlandıktan sonra nispeten hızlı bir şekilde gerçekleşir.
+  Bir güncelleme yüklenip hazır olana kadar uygulamanın önceki sürümü sunulur.
 
-- The service worker conserves bandwidth when possible.
-  Resources are only downloaded if they've changed.
+- Service worker mümkün olduğunda bant genişliğini korur.
+  Kaynaklar yalnızca değiştiyse indirilir.
 
-To support these behaviors, the Angular service worker loads a _manifest_ file from the server.
-The file, called `ngsw.json` (not to be confused with the [web app manifest](https://developer.mozilla.org/docs/Web/Manifest)), describes the resources to cache and includes hashes of every file's contents.
-When an update to the application is deployed, the contents of the manifest change, informing the service worker that a new version of the application should be downloaded and cached.
-This manifest is generated from a CLI-generated configuration file called `ngsw-config.json`.
+Bu davranışları desteklemek için Angular service worker sunucudan bir _manifest_ dosyası yükler.
+`ngsw.json` adlı dosya ([web app manifest](https://developer.mozilla.org/docs/Web/Manifest) ile karıştırılmamalıdır), önbelleğe alınacak kaynakları açıklar ve her dosyanın içeriğinin hash'lerini içerir.
+Uygulamaya bir güncelleme dağıtıldığında, manifestin içeriği değişir ve service worker'a uygulamanın yeni bir sürümünün indirilip önbelleğe alınması gerektiğini bildirir.
+Bu manifest, `ngsw-config.json` adlı CLI tarafından oluşturulan bir yapılandırma dosyasından üretilir.
 
-Installing the Angular service worker is as straightforward as [running an Angular CLI command](ecosystem/service-workers/getting-started#adding-a-service-worker-to-your-project).
-In addition to registering the Angular service worker with the browser, this also makes a few services available for injection which interact with the service worker and can be used to control it.
-For example, an application can ask to be notified when a new update becomes available, or an application can ask the service worker to check the server for available updates.
+Angular service worker'ı yüklemek, [bir Angular CLI komutu çalıştırmak](ecosystem/service-workers/getting-started#adding-a-service-worker-to-your-project) kadar basittir.
+Tarayıcıya Angular service worker'ı kaydetmenin yanı sıra, bu işlem aynı zamanda service worker ile etkileşime giren ve onu kontrol etmek için kullanılabilecek birkaç servisi enjeksiyon için kullanılabilir hale getirir.
+Örneğin, bir uygulama yeni bir güncelleme mevcut olduğunda bildirilmeyi isteyebilir veya uygulama, service worker'dan sunucuda mevcut güncellemeleri kontrol etmesini isteyebilir.
 
 ## Before you start
 
-To make use of all the features of Angular service workers, use the latest versions of Angular and the [Angular CLI](tools/cli).
+Angular service worker'larının tüm özelliklerinden yararlanmak için Angular ve [Angular CLI](tools/cli)'nin en son sürümlerini kullanın.
 
-For service workers to be registered, the application must be accessed over HTTPS, not HTTP.
-Browsers ignore service workers on pages that are served over an insecure connection.
-The reason is that service workers are quite powerful, so extra care is needed to ensure the service worker script has not been tampered with.
+Service worker'ların kaydedilebilmesi için uygulamaya HTTP değil, HTTPS üzerinden erişilmesi gerekir.
+Tarayıcılar, güvenli olmayan bir bağlantı üzerinden sunulan sayfalardaki service worker'ları yok sayar.
+Bunun nedeni, service worker'ların oldukça güçlü olması ve service worker betiğinin değiştirilmediğinden emin olmak için ekstra özen gösterilmesinin gerekmesidir.
 
-There is one exception to this rule: to make local development more straightforward, browsers do _not_ require a secure connection when accessing an application on `localhost`.
+Bu kuralın bir istisnası vardır: yerel geliştirmeyi daha basit hale getirmek için tarayıcılar, `localhost` üzerinden bir uygulamaya erişirken güvenli bağlantı _gerektirmez_.
 
 ### Browser support
 
-To benefit from the Angular service worker, your application must run in a web browser that supports service workers in general.
-Currently, service workers are supported in the latest versions of Chrome, Firefox, Edge, Safari, Opera, UC Browser (Android version) and Samsung Internet.
-Browsers like IE and Opera Mini do not support service workers.
+Angular service worker'ından yararlanmak için uygulamanızın genel olarak service worker'ları destekleyen bir web tarayıcısında çalışması gerekir.
+Şu anda service worker'lar Chrome, Firefox, Edge, Safari, Opera, UC Browser (Android sürümü) ve Samsung Internet'in en son sürümlerinde desteklenmektedir.
+IE ve Opera Mini gibi tarayıcılar service worker'ları desteklememektedir.
 
-If the user is accessing your application with a browser that does not support service workers, the service worker is not registered and related behavior such as offline cache management and push notifications does not happen.
-More specifically:
+Kullanıcı, service worker'ları desteklemeyen bir tarayıcıyla uygulamanıza erişiyorsa, service worker kaydedilmez ve çevrimdışı önbellek yönetimi ve push bildirimleri gibi ilgili davranışlar gerçekleşmez.
+Daha spesifik olarak:
 
-- The browser does not download the service worker script and the `ngsw.json` manifest file
-- Active attempts to interact with the service worker, such as calling `SwUpdate.checkForUpdate()`, return rejected promises
-- The observable events of related services, such as `SwUpdate.available`, are not triggered
+- Tarayıcı, service worker betiğini ve `ngsw.json` manifest dosyasını indirmez
+- `SwUpdate.checkForUpdate()` çağırma gibi service worker ile etkileşim için yapılan aktif girişimler, reddedilen promise'ler döndürür
+- `SwUpdate.available` gibi ilgili servislerin observable olayları tetiklenmez
 
-It is highly recommended that you ensure that your application works even without service worker support in the browser.
-Although an unsupported browser ignores service worker caching, it still reports errors if the application attempts to interact with the service worker.
-For example, calling `SwUpdate.checkForUpdate()` returns rejected promises.
-To avoid such an error, check whether the Angular service worker is enabled using `SwUpdate.isEnabled`.
+Uygulamanızın tarayıcıda service worker desteği olmadan bile çalıştığından emin olmanız şiddetle tavsiye edilir.
+Desteklenmeyen bir tarayıcı service worker önbelleklemesini yok saysa da, uygulama service worker ile etkileşim kurmaya çalışırsa hata raporlar.
+Örneğin, `SwUpdate.checkForUpdate()` çağrısı reddedilen promise'ler döndürür.
+Böyle bir hatadan kaçınmak için `SwUpdate.isEnabled` kullanarak Angular service worker'ının etkin olup olmadığını kontrol edin.
 
-To learn more about other browsers that are service worker ready, see the [Can I Use](https://caniuse.com/#feat=serviceworkers) page and [MDN docs](https://developer.mozilla.org/docs/Web/API/Service_Worker_API).
+Service worker'a hazır diğer tarayıcılar hakkında daha fazla bilgi edinmek için [Can I Use](https://caniuse.com/#feat=serviceworkers) sayfasına ve [MDN belgelerine](https://developer.mozilla.org/docs/Web/API/Service_Worker_API) bakın.
 
 ## Related resources
 
-The rest of the articles in this section specifically address the Angular implementation of service workers.
+Bu bölümdeki diğer makaleler, service worker'ların Angular uygulamasını özellikle ele alır.
 
 <docs-pill-row>
   <docs-pill href="ecosystem/service-workers/config" title="Configuration file"/>
@@ -94,11 +94,11 @@ The rest of the articles in this section specifically address the Angular implem
   <docs-pill href="ecosystem/service-workers/app-shell" title="App shell pattern"/>
 </docs-pill-row>
 
-For more information about service workers in general, see [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers).
+Genel olarak service worker'lar hakkında daha fazla bilgi için [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers) sayfasına bakın.
 
-For more information about browser support, see the [browser support](https://developers.google.com/web/fundamentals/primers/service-workers/#browser_support) section of [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers), Jake Archibald's [Is Serviceworker ready?](https://jakearchibald.github.io/isserviceworkerready), and [Can I Use](https://caniuse.com/serviceworkers).
+Tarayıcı desteği hakkında daha fazla bilgi için [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers) sayfasının [browser support](https://developers.google.com/web/fundamentals/primers/service-workers/#browser_support) bölümüne, Jake Archibald'ın [Is Serviceworker ready?](https://jakearchibald.github.io/isserviceworkerready) sayfasına ve [Can I Use](https://caniuse.com/serviceworkers) sayfasına bakın.
 
-For additional recommendations and examples, see:
+Ek öneriler ve örnekler için bakınız:
 
 <docs-pill-row>
   <docs-pill href="https://web.dev/precaching-with-the-angular-service-worker" title="Precaching with Angular Service Worker"/>
@@ -107,4 +107,4 @@ For additional recommendations and examples, see:
 
 ## Next step
 
-To begin using Angular service workers, see [Getting Started with service workers](ecosystem/service-workers/getting-started).
+Angular service worker'larını kullanmaya başlamak için [Service worker'lara başlarken](ecosystem/service-workers/getting-started) bölümüne bakın.

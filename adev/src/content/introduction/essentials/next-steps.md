@@ -1,11 +1,11 @@
 <docs-decorative-header title="Next Steps" imgSrc="adev/src/assets/images/roadmap.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-Now that you have been introduced to the main concepts of Angular - you're ready to put what you learned into practice with our interactive tutorials and learn more with our in-depth guides.
+Angular'ın temel kavramlarıyla tanıştığınıza göre, öğrendiklerinizi interaktif eğitimlerimizle uygulamaya koymaya ve detaylı kılavuzlarımızla daha fazla bilgi edinmeye hazırsınız.
 
 ## Playground
 
-Try out Angular in an interactive code editor to further explore the concepts you've learned.
+Öğrendiğiniz kavramları daha fazla keşfetmek için interaktif bir kod editöründe Angular'ı deneyin.
 
 <docs-pill-row>
   <docs-pill title="Play with Angular!" href="playground" />
@@ -13,7 +13,7 @@ Try out Angular in an interactive code editor to further explore the concepts yo
 
 ## Tutorials
 
-Put these main concepts into practice with our in-browser tutorial or build your first app locally with the Angular CLI.
+Bu temel kavramları tarayıcı içi eğitimimizle uygulamaya koyun veya Angular CLI ile yerel olarak ilk uygulamanızı oluşturun.
 
 <docs-pill-row>
   <docs-pill title="Learn Angular's fundamentals" href="tutorials/learn-angular" />
@@ -22,7 +22,7 @@ Put these main concepts into practice with our in-browser tutorial or build your
 
 ## In-depth Guides
 
-Here are some in-depth guides you might be interested in reading:
+İşte ilginizi çekebilecek bazı detaylı kılavuzlar:
 
 <docs-pill-row>
   <docs-pill title="Components In-depth Guide" href="guide/components" />
@@ -30,4 +30,4 @@ Here are some in-depth guides you might be interested in reading:
   <docs-pill title="Forms In-depth Guide" href="/guide/forms" />
 </docs-pill-row>
 
-To see the rest of our in-depth guides, check out the main navigation.
+Diğer detaylı kılavuzlarımızı görmek için ana navigasyona göz atın.

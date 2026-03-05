@@ -1,14 +1,14 @@
 <docs-decorative-header title="Templates" imgSrc="adev/src/assets/images/templates.svg"> <!-- markdownlint-disable-line -->
-Use Angular's template syntax to create dynamic user interfaces.
+Dinamik kullanıcı arayüzleri oluşturmak için Angular'ın şablon sözdizimini kullanın.
 </docs-decorative-header>
 
-Component templates aren't just static HTML— they can use data from your component class and set up handlers for user interaction.
+Bileşen şablonları sadece statik HTML değildir -- bileşen sınıfınızdaki verileri kullanabilir ve kullanıcı etkileşimi için işleyiciler kurabilir.
 
 ## Showing dynamic text
 
-In Angular, a _binding_ creates a dynamic connection between a component's template and its data. This connection ensures that changes to the component's data automatically update the rendered template.
+Angular'da bir _bağlama (binding)_, bir bileşenin şablonu ile verileri arasında dinamik bir bağlantı oluşturur. Bu bağlantı, bileşenin verilerindeki değişikliklerin render edilen şablonu otomatik olarak güncellemesini sağlar.
 
-You can create a binding to show some dynamic text in a template by using double curly-braces:
+Bir şablonda dinamik metin göstermek için çift süslü parantez kullanarak bir bağlama oluşturabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -20,20 +20,19 @@ export class UserProfile {
 }
 ```
 
-When Angular renders the component, you see:
+Angular bileşeni render ettiğinde şunu görürsünüz:
 
 ```html
 <h1>Profile for pro_programmer_123</h1>
 ```
 
-Angular automatically keeps the binding up-to-date when the value of the signal changes. Building on
-the example above, if we update the value of the `userName` signal:
+Angular, sinyalin değeri değiştiğinde bağlamayı otomatik olarak güncel tutar. Yukarıdaki örneği temel alarak, `userName` sinyalinin değerini güncellersek:
 
 ```typescript
 this.userName.set('cool_coder_789');
 ```
 
-The rendered page updates to reflect the new value:
+Render edilen sayfa yeni değeri yansıtacak şekilde güncellenir:
 
 ```html
 <h1>Profile for cool_coder_789</h1>
@@ -41,7 +40,7 @@ The rendered page updates to reflect the new value:
 
 ## Setting dynamic properties and attributes
 
-Angular supports binding dynamic values into DOM properties with square brackets:
+Angular, köşeli parantezlerle DOM özelliklerine dinamik değerler bağlamayı destekler:
 
 ```angular-ts
 @Component({
@@ -54,18 +53,18 @@ export class UserProfile {
 }
 ```
 
-You can also bind to HTML _attributes_ by prefixing the attribute name with `attr.`:
+Ayrıca öznitelik adının önüne `attr.` ekleyerek HTML _özniteliklerine_ de bağlama yapabilirsiniz:
 
 ```angular-html
 <!-- Bind the `role` attribute on the `<ul>` element to value of `listRole`. -->
 <ul [attr.role]="listRole()"></ul>
 ```
 
-Angular automatically updates DOM properties and attributes when the bound value changes.
+Angular, bağlanan değer değiştiğinde DOM özelliklerini ve özniteliklerini otomatik olarak günceller.
 
 ## Handling user interaction
 
-Angular lets you add event listeners to an element in your template with parentheses:
+Angular, şablonunuzdaki bir elemana parantezlerle olay dinleyicileri eklemenizi sağlar:
 
 ```angular-ts
 @Component({
@@ -82,7 +81,7 @@ export class UserProfile {
 }
 ```
 
-If you need to pass the [event](https://developer.mozilla.org/docs/Web/API/Event) object to your listener, you can use Angular's built-in `$event` variable inside the function call:
+[Olay](https://developer.mozilla.org/docs/Web/API/Event) nesnesini dinleyicinize geçirmeniz gerekiyorsa, fonksiyon çağrısı içinde Angular'ın yerleşik `$event` değişkenini kullanabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -101,7 +100,7 @@ export class UserProfile {
 
 ## Control flow with `@if` and `@for`
 
-You can conditionally hide and show parts of a template with Angular's `@if` block:
+Angular'ın `@if` bloğu ile bir şablonun bazı kısımlarını koşullu olarak gizleyip gösterebilirsiniz:
 
 ```angular-html
 <h1>User profile</h1>
@@ -112,7 +111,7 @@ You can conditionally hide and show parts of a template with Angular's `@if` blo
 }
 ```
 
-The `@if` block also supports an optional `@else` block:
+`@if` bloğu ayrıca isteğe bağlı bir `@else` bloğunu da destekler:
 
 ```angular-html
 <h1>User profile</h1>
@@ -126,7 +125,7 @@ The `@if` block also supports an optional `@else` block:
 }
 ```
 
-You can repeat part of a template multiple times with Angular's `@for` block:
+Angular'ın `@for` bloğu ile bir şablonun bir kısmını birden fazla kez tekrarlayabilirsiniz:
 
 ```angular-html
 <h1>User profile</h1>
@@ -138,13 +137,13 @@ You can repeat part of a template multiple times with Angular's `@for` block:
 </ul>
 ```
 
-Angular's uses the `track` keyword, shown in the example above, to associate data with the DOM elements created by `@for`. See [_Why is track in @for blocks important?_](guide/templates/control-flow#why-is-track-in-for-blocks-important) for more info.
+Angular, yukarıdaki örnekte gösterilen `track` anahtar kelimesini, `@for` tarafından oluşturulan DOM elementleriyle verileri ilişkilendirmek için kullanır. Daha fazla bilgi için [_@for bloklarında track neden önemlidir?_](guide/templates/control-flow#why-is-track-in-for-blocks-important) bölümüne bakın.
 
-TIP: Want to know more about Angular templates? See the [In-depth Templates guide](guide/templates) for the full details.
+TIP: Angular şablonları hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Şablonlar kılavuzuna](guide/templates) bakın.
 
 ## Next Step
 
-Now that you have dynamic data and templates in the application, it's time to learn how to enhance templates by conditionally hiding or showing certain elements, looping over elements, and more.
+Uygulamada dinamik veri ve şablonlara sahip olduğunuza göre, belirli elementleri koşullu olarak gizleme veya gösterme, elementler üzerinde döngü yapma ve daha fazlasıyla şablonları nasıl geliştireceğinizi öğrenmenin zamanı geldi.
 
 <docs-pill-row>
   <docs-pill title="Modular design with dependency injection" href="essentials/dependency-injection" />

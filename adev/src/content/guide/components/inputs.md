@@ -1,11 +1,10 @@
 # Accepting data with input properties
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-TIP: If you're familiar with other web frameworks, input properties are similar to _props_.
+TIP: Diger web framework'lerine asina iseniz, girdi ozellikleri _props_ ile benzerdir.
 
-When you use a component, you commonly want to pass some data to it. A component specifies the data that it accepts by declaring
-**inputs**:
+Bir bilesen kullandiginizda, ona genellikle bazi veriler iletmek istersiniz. Bir bilesen, kabul ettigi verileri **girdiler** bildirerek belirtir:
 
 ```ts {highlight:[8]}
 import {Component, input} from '@angular/core';
@@ -19,13 +18,13 @@ export class CustomSlider {
 }
 ```
 
-This lets you bind to the property in a template:
+Bu, ozelligi bir sablonda baglayabilmenizi saglar:
 
 ```angular-html
 <custom-slider [value]="50" />
 ```
 
-If an input has a default value, TypeScript infers the type from the default value:
+Bir girdinin varsayilan degeri varsa, TypeScript turu varsayilan degerden cikarir:
 
 ```ts
 @Component({
@@ -37,9 +36,9 @@ export class CustomSlider {
 }
 ```
 
-You can explicitly declare a type for the input by specifying a generic parameter to the function.
+Fonksiyona bir generic parametre belirterek girdi icin acikca bir tur bildirebilirsiniz.
 
-If an input without a default value is not set, its value is `undefined`:
+Varsayilan degeri olmayan bir girdi ayarlanmazsa, degeri `undefined` olur:
 
 ```ts
 @Component({
@@ -51,17 +50,17 @@ export class CustomSlider {
 }
 ```
 
-**Angular records inputs statically at compile-time**. Inputs cannot be added or removed at run-time.
+**Angular girdileri derleme zamaninda statik olarak kaydeder**. Girdiler calisma zamaninda eklenemez veya kaldirilamaz.
 
-The `input` function has special meaning to the Angular compiler. **You can exclusively call `input` in component and directive property initializers.**
+`input` fonksiyonu Angular derleyicisi icin ozel bir anlam tasir. **`input` fonksiyonunu yalnizca bilesen ve direktif ozellik baslangic degerlerinde cagirabilirsiniz.**
 
-When extending a component class, **inputs are inherited by the child class.**
+Bir bilesen sinifini genisletirken, **girdiler alt sinif tarafindan miras alinir.**
 
-**Input names are case-sensitive.**
+**Girdi adlari buyuk-kucuk harf duyarlidir.**
 
 ## Reading inputs
 
-The `input` function returns an `InputSignal`. You can read the value by calling the signal:
+`input` fonksiyonu bir `InputSignal` dondurur. Sinyali cagirarak degeri okuyabilirsiniz:
 
 ```ts {highlight:[11]}
 import {Component, input, computed} from '@angular/core';
@@ -78,11 +77,11 @@ export class CustomSlider {
 }
 ```
 
-Signals created by the `input` function are read-only.
+`input` fonksiyonu tarafindan olusturulan sinyaller salt okunurdur.
 
 ## Required inputs
 
-You can declare that an input is `required` by calling `input.required` instead of `input`:
+`input` yerine `input.required` cagirarak bir girdinin `required` (zorunlu) oldugunu bildirebilirsiniz:
 
 ```ts {highlight:[6]}
 @Component({
@@ -94,17 +93,17 @@ export class CustomSlider {
 }
 ```
 
-Angular enforces that required inputs _must_ be set when the component is used in a template. If you try to use a component without specifying all of its required inputs, Angular reports an error at build-time.
+Angular, bilesen bir sablonda kullanildiginda zorunlu girdilerin _mutlaka_ ayarlanmis olmasini zorunlu kilar. Tum zorunlu girdilerini belirtmeden bir bilesen kullanmaya calisirsiniz, Angular derleme zamaninda bir hata bildirir.
 
-Required inputs do not automatically include `undefined` in the generic parameter of the returned `InputSignal`.
+Zorunlu girdiler, dondurilen `InputSignal`'in generic parametresine otomatik olarak `undefined` eklemez.
 
 ## Configuring inputs
 
-The `input` function accepts a config object as a second parameter that lets you change the way that input works.
+`input` fonksiyonu, girdinin calisma seklini degistirmenize olanak taniyan ikinci bir parametre olarak bir yapilandirma nesnesi kabul eder.
 
 ### Input transforms
 
-You can specify a `transform` function to change the value of an input when it's set by Angular.
+Angular tarafindan ayarlandiginda girdinin degerini degistirmek icin bir `transform` fonksiyonu belirtebilirsiniz.
 
 ```ts {highlight:[6]}
 @Component({
@@ -124,17 +123,17 @@ function trimString(value: string | undefined): string {
 <custom-slider [label]="systemVolume" />
 ```
 
-In the example above, whenever the value of `systemVolume` changes, Angular runs `trimString` and sets `label` to the result.
+Yukaridaki ornekte, `systemVolume` degeri her degistiginde Angular `trimString` fonksiyonunu calistirir ve `label`'i sonuca ayarlar.
 
-The most common use-case for input transforms is to accept a wider range of value types in templates, often including `null` and `undefined`.
+Girdi donusumlerinin en yaygin kullanim alani, sablonlarda genellikle `null` ve `undefined` dahil olmak uzere daha genis bir deger turleri araligi kabul etmektir.
 
-**Input transform function must be statically analyzable at build-time.** You cannot set transform functions conditionally or as the result of an expression evaluation.
+**Girdi donusum fonksiyonu derleme zamaninda statik olarak analiz edilebilir olmalidir.** Donusum fonksiyonlarini kosullu olarak veya bir ifade degerl endirmesinin sonucu olarak ayarlayamazsiniz.
 
-**Input transform functions should always be [pure functions](https://en.wikipedia.org/wiki/Pure_function).** Relying on state outside the transform function can lead to unpredictable behavior.
+**Girdi donusum fonksiyonlari her zaman [saf fonksiyonlar](https://en.wikipedia.org/wiki/Pure_function) olmalidir.** Donusum fonksiyonu disindaki duruma guvenme, onceden tahmin edilemeyen davranislara yol acabilir.
 
 #### Type checking
 
-When you specify an input transform, the type of the transform function's parameter determines the types of values that can be set to the input in a template.
+Bir girdi donusumu belirttiginizde, donusum fonksiyonunun parametre turu, sablonda girdiye ayarlanabilecek deger turlerini belirler.
 
 ```ts
 @Component({
@@ -149,11 +148,11 @@ function appendPx(value: number): string {
 }
 ```
 
-In the example above, the `widthPx` input accepts a `number` while the `InputSignal` property returns a `string`.
+Yukaridaki ornekte, `widthPx` girdisi bir `number` kabul ederken `InputSignal` ozelligi bir `string` dondurur.
 
 #### Built-in transformations
 
-Angular includes two built-in transform functions for the two most common scenarios: coercing values to boolean and numbers.
+Angular, en yaygin iki senaryo icin iki yerlesik donusum fonksiyonu icerir: degerleri boolean ve sayiya zorlama.
 
 ```ts
 import {Component, input, booleanAttribute, numberAttribute} from '@angular/core';
@@ -167,14 +166,13 @@ export class CustomSlider {
 }
 ```
 
-`booleanAttribute` imitates the behavior of standard HTML [boolean attributes](https://developer.mozilla.org/docs/Glossary/Boolean/HTML), where the
-_presence_ of the attribute indicates a "true" value. However, Angular's `booleanAttribute` treats the literal string `"false"` as the boolean `false`.
+`booleanAttribute`, standart HTML [boolean nitelikleri](https://developer.mozilla.org/docs/Glossary/Boolean/HTML)'nin davranisini taklit eder; niteligin _varligi_ "true" degerini gosterir. Ancak Angular'in `booleanAttribute`'u, `"false"` literal dizesini boolean `false` olarak degerlenderir.
 
-`numberAttribute` attempts to parse the given value to a number, producing `NaN` if parsing fails.
+`numberAttribute`, verilen degeri bir sayiya ayristirmayi dener, ayristirma basarisiz olursa `NaN` uretir.
 
 ### Input aliases
 
-You can specify the `alias` option to change the name of an input in templates.
+Sablonlarda bir girdinin adini degistirmek icin `alias` secenegini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -189,17 +187,17 @@ export class CustomSlider {
 <custom-slider [sliderValue]="50" />
 ```
 
-This alias does not affect usage of the property in TypeScript code.
+Bu takma ad, ozelligin TypeScript kodundaki kullanimini etkilemez.
 
-While you should generally avoid aliasing inputs for components, this feature can be useful for renaming properties while preserving an alias for the original name or for avoiding collisions with the name of native DOM element properties.
+Bilesen girdileri icin takma ad kullanmaktan genel olarak kacinmaniz gerekirken, bu ozellik ozellikleri yeniden adlandirirken orijinal ad icin bir takma ad korumak veya yerel DOM eleman ozellikleriyle ad cakismalarini onlemek icin yararli olabilir.
 
 ## Model inputs
 
-**Model inputs** are a special type of input that enable a component to propagate new values back to its parent component.
+**Model girdileri**, bir bilesnenin yeni degerleri ust bilesenine geri yaymasini saglayan ozel bir girdi turudur.
 
-When creating a component, you can define a model input similarly to how you create a standard input.
+Bir bilesen olusturulurken, standart bir girdi olusturur gibi bir model girdisi tanimlayabilirsiniz.
 
-Both types of input allow someone to bind a value into the property. However, **model inputs allow the component author to write values into the property**. If the property is bound with a two-way binding, the new value propagates to that binding.
+Her iki girdi turu de birinin ozellige bir deger baglamasina izin verir. Ancak, **model girdileri bilesen yazarinin ozellige deger yazmasina izin verir**. Ozellik iki yonlu baglama ile baglanmissa, yeni deger o baglamaya yayilir.
 
 ```ts
 @Component({
@@ -228,15 +226,15 @@ export class MediaControls {
 }
 ```
 
-In the above example, the `CustomSlider` can write values into its `value` model input, which then propagates those values back to the `volume` signal in `MediaControls`. This binding keeps the values of `value` and `volume` in sync. Notice that the binding passes the `volume` signal instance, not the _value_ of the signal.
+Yukaridaki ornekte, `CustomSlider` kendi `value` model girdisine deger yazabilir ve bu degerler `MediaControls`'daki `volume` sinyaline geri yayilir. Bu baglama, `value` ve `volume` degerlerini senkronize tutar. Baglama isleminin sinyal _ornegini_ ilettigine, sinyalin _degerini_ degil, dikkat edin.
 
-In other respects, model inputs work similarly to standard inputs. You can read the value by calling the signal function, including in [reactive contexts](guide/signals#reactive-contexts) like `computed` and `effect`.
+Diger acilardan, model girdileri standart girdilere benzer sekilde calisir. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contexts) dahil olmak uzere sinyal fonksiyonunu cagirarak degeri okuyabilirsiniz.
 
-See [Two-way binding](guide/templates/two-way-binding) for more details on two-way binding in templates.
+Sablonlarda iki yonlu baglama hakkinda daha fazla bilgi icin [Iki yonlu baglama](guide/templates/two-way-binding) belgesine bakin.
 
 ### Two-way binding with plain properties
 
-You can bind a plain JavaScript property to a model input.
+Duz bir JavaScript ozelligini bir model girdisine baglayabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -250,11 +248,11 @@ export class MediaControls {
 }
 ```
 
-In the example above, the `CustomSlider` can write values into its `value` model input, which then propagates those values back to the `volume` property in `MediaControls`. This binding keeps the values of `value` and `volume` in sync.
+Yukaridaki ornekte, `CustomSlider` kendi `value` model girdisine deger yazabilir ve bu degerler `MediaControls`'daki `volume` ozelligine geri yayilir. Bu baglama, `value` ve `volume` degerlerini senkronize tutar.
 
 ### Implicit `change` events
 
-When you declare a model input in a component or directive, Angular automatically creates a corresponding [output](guide/components/outputs) for that model. The output's name is the model input's name suffixed with "Change".
+Bir bilesen veya direktifte model girdisi bildirdiginizde, Angular otomatik olarak o model icin karsilik gelen bir [cikti](guide/components/outputs) olusturur. Ciktinin adi, model girdisinin adinin sonuna "Change" eklenmesiyle olusur.
 
 ```ts
 @Directive({
@@ -267,31 +265,31 @@ export class CustomCheckbox {
 }
 ```
 
-Angular emits this change event whenever you write a new value into the model input by calling its `set` or `update` methods.
+Angular, model girdisinin `set` veya `update` yontemlerini cagirarak yeni bir deger yazdiginizda bu degisiklik olayini yayar.
 
-See [Custom events with outputs](guide/components/outputs) for more details on outputs.
+Ciktilar hakkinda daha fazla ayrinti icin [Ciktilarla ozel olaylar](guide/components/outputs) belgesine bakin.
 
 ### Customizing model inputs
 
-You can mark a model input as required or provide an alias in the same way as a [standard input](guide/components/inputs).
+Bir model girdisini zorunlu olarak isaretleyebilir veya [standart bir girdi](guide/components/inputs) ile ayni sekilde bir takma ad saglayabilirsiniz.
 
-Model inputs do not support input transforms.
+Model girdileri girdi donusumlerini desteklemez.
 
 ### When to use model inputs
 
-Use model inputs when you want a component to support two-way binding. This is typically appropriate when a component exists to modify a value based on user interaction. Most commonly, custom form controls, such as a date picker or combobox, should use model inputs for their primary value.
+Bir bilesnenin iki yonlu baglamayi desteklemesini istediginizde model girdilerini kullanin. Bu, genellikle bir bilesnenin kullanici etkilesime dayali olarak bir degeri degistirmek icin var oldugu durumlarda uygundur. En yaygin olarak, tarih secici veya combobox gibi ozel form kontrolleri birincil degerleri icin model girdileri kullanmalidir.
 
 ## Choosing input names
 
-Avoid choosing input names that collide with properties on DOM elements like HTMLElement. Name collisions introduce confusion about whether the bound property belongs to the component or the DOM element.
+DOM elemanlarinin HTMLElement uzerindeki ozellikleriyle cakisan girdi adlari secmekten kacinin. Ad cakismalari, bagli ozelligin bilesene mi yoksa DOM elemanina mi ait oldugu konusunda kafa karisikligina neden olur.
 
-Avoid adding prefixes for component inputs like you would with component selectors. Since a given element can only host one component, any custom properties can be assumed to belong to the component.
+Bilesen girdileri icin, bilesen secicilerinde yaptiginiz gibi onek eklemekten kacinin. Belirli bir eleman yalnizca bir bilesen barindirabilecegi icin, herhangi bir ozel ozelligin bilesene ait oldugu varsayilabilir.
 
 ## Declaring inputs with the `@Input` decorator
 
-TIP: While the Angular team recommends using the signal-based `input` function for new projects, the original decorator-based `@Input` API remains fully supported.
+TIP: Angular ekibi yeni projeler icin sinyal tabanli `input` fonksiyonunu onerse de, orijinal dekorator tabanli `@Input` API'si tamamen desteklenmeye devam etmektedir.
 
-You can alternatively declare component inputs by adding the `@Input` decorator to a property:
+Alternatif olarak, bir ozellige `@Input` dekoratoru ekleyerek bilesen girdileri bildirebilirsiniz:
 
 ```ts {highlight:[5]}
 @Component({
@@ -302,7 +300,7 @@ export class CustomSlider {
 }
 ```
 
-Binding to an input is the same in both signal-based and decorator-based inputs:
+Bir girdiye baglama, hem sinyal tabanli hem de dekorator tabanli girdilerde aynidir:
 
 ```angular-html
 <custom-slider [value]="50" />
@@ -310,11 +308,11 @@ Binding to an input is the same in both signal-based and decorator-based inputs:
 
 ### Customizing decorator-based inputs
 
-The `@Input` decorator accepts a config object that lets you change the way that input works.
+`@Input` dekoratoru, girdinin calisma seklini degistirmenize olanak taniyan bir yapilandirma nesnesi kabul eder.
 
 #### Required inputs
 
-You can specify the `required` option to enforce that a given input must always have a value.
+Belirli bir girdinin her zaman bir degere sahip olmasini zorunlu kilmak icin `required` secenegini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -325,11 +323,11 @@ export class CustomSlider {
 }
 ```
 
-If you try to use a component without specifying all of its required inputs, Angular reports an error at build-time.
+Tum zorunlu girdilerini belirtmeden bir bilesen kullanmaya calisirsiniz, Angular derleme zamaninda bir hata bildirir.
 
 #### Input transforms
 
-You can specify a `transform` function to change the value of an input when it's set by Angular. This transform function works identically to transform functions for signal-based inputs described above.
+Angular tarafindan ayarlandiginda girdinin degerini degistirmek icin bir `transform` fonksiyonu belirtebilirsiniz. Bu donusum fonksiyonu, yukarida aciklanan sinyal tabanli girdilerin donusum fonksiyonlariyla ayni sekilde calisir.
 
 ```ts {highlight:[6]}
 @Component({
@@ -347,7 +345,7 @@ function trimString(value: string | undefined) {
 
 #### Input aliases
 
-You can specify the `alias` option to change the name of an input in templates.
+Sablonlarda bir girdinin adini degistirmek icin `alias` secenegini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -362,13 +360,13 @@ export class CustomSlider {
 <custom-slider [sliderValue]="50" />
 ```
 
-The `@Input` decorator also accepts the alias as its first parameter in place of the config object.
+`@Input` dekoratoru ayrica yapilandirma nesnesi yerine ilk parametresi olarak takma adi kabul eder.
 
-Input aliases work the same way as for signal-based inputs described above.
+Girdi takma adlari, yukarida aciklanan sinyal tabanli girdilerle ayni sekilde calisir.
 
 ### Inputs with getters and setters
 
-When using decorator-based inputs, a property implemented with a getter and setter can be an input:
+Dekorator tabanli girdiler kullanildiginda, getter ve setter ile uygulanan bir ozellik bir girdi olabilir:
 
 ```ts
 export class CustomSlider {
@@ -385,7 +383,7 @@ export class CustomSlider {
 }
 ```
 
-You can even create a _write-only_ input by only defining a public setter:
+Yalnizca bir public setter tanimlayarak _salt yazilir_ bir girdi bile olusturabilirsiniz:
 
 ```ts
 export class CustomSlider {
@@ -398,13 +396,13 @@ export class CustomSlider {
 }
 ```
 
-**Prefer using input transforms instead of getters and setters** if possible.
+**Mumkun oldugunda getter ve setter'lar yerine girdi donusumlerini kullanmayi tercih edin.**
 
-Avoid complex or costly getters and setters. Angular may invoke an input's setter multiple times, which may negatively impact application performance if the setter performs any costly behaviors, such as DOM manipulation.
+Karmasik veya maliyetli getter ve setter'lardan kacinin. Angular bir girdinin setter'ini birden fazla kez cagirabilir, bu da setter DOM manipulasyonu gibi maliyetli islemler gerceklestiriyorsa uygulama performansini olumsuz etkileyebilir.
 
 ## Specify inputs in the `@Component` decorator
 
-In addition to the `@Input` decorator, you can also specify a component's inputs with the `inputs` property in the `@Component` decorator. This can be useful when a component inherits a property from a base class:
+`@Input` dekoratorune ek olarak, bir bilesnenin girdilerini `@Component` dekoratorundeki `inputs` ozelligi ile de belirtebilirsiniz. Bu, bir bilesen bir temel siniftan ozellik miras aldiginda yararli olabilir:
 
 ```ts {highlight:[4]}
 // `CustomSlider` inherits the `disabled` property from `BaseSlider`.
@@ -415,7 +413,7 @@ In addition to the `@Input` decorator, you can also specify a component's inputs
 export class CustomSlider extends BaseSlider { }
 ```
 
-You can additionally specify an input alias in the `inputs` list by putting the alias after a colon in the string:
+Dizede iki noktadan sonra takma adi belirterek `inputs` listesinde ek olarak bir girdi takma adi belirtebilirsiniz:
 
 ```ts {highlight:[4]}
 // `CustomSlider` inherits the `disabled` property from `BaseSlider`.

@@ -8,7 +8,7 @@
 
 ## Overview
 
-The manubar is a horizontal navigation bar that provides persistent access to application menus. Menubars organize commands into logical categories like File, Edit, and View, helping users discover and execute application features through keyboard or mouse interaction.
+Menu cubugu, uygulama menulerine kalici erisim saglayan yatay bir navigasyon cubugudur. Menu cubuklari komutlari Dosya, Duzenle ve Goruntule gibi mantiksal kategorilere duzenleyerek kullanicilarin klavye veya fare etkilesimi araciligiyla uygulama ozelliklerini kesfetmesine ve calistirmasina yardimci olur.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -38,39 +38,39 @@ The manubar is a horizontal navigation bar that provides persistent access to ap
 
 ## Usage
 
-Menubars work well for organizing application commands into persistent, discoverable navigation.
+Menu cubuklari, uygulama komutlarini kalici ve kesifeedilebilir navigasyona duzenlemek icin iyi calisir.
 
-**Use menubars when:**
+**Menu cubugu kullanin:**
 
-- Building application command bars (such as File, Edit, View, Insert, Format)
-- Creating persistent navigation that stays visible across the interface
-- Organizing commands into logical top-level categories
-- Need horizontal menu navigation with keyboard support
-- Building desktop-style application interfaces
+- Uygulama komut cubuklari olustururken (Dosya, Duzenle, Goruntule, Ekle, Bicimlendir gibi)
+- Arayuz genelinde gorunen kalici navigasyon olustururken
+- Komutlari mantiksal ust duzey kategorilere duzenlerken
+- Klavye destekli yatay menu navigasyonuna ihtiyac duyulduğunda
+- Masaustu tarzi uygulama arayuzleri olustururken
 
-**Avoid menubars when:**
+**Menu cubugundan kacinin:**
 
-- Building dropdown menus for individual actions (use [Menu with trigger](guide/aria/menu) instead)
-- Creating context menus (use [Menu](guide/aria/menu) guide pattern)
-- Simple standalone action lists (use [Menu](guide/aria/menu) instead)
-- Mobile interfaces where horizontal space is limited
-- Navigation belongs in a sidebar or header navigation pattern
+- Bireysel eylemler icin acilir menuler olustururken (bunun yerine [tetikleyicili Menu](guide/aria/menu) kullanin)
+- Baglam menuleri olustururken ([Menu](guide/aria/menu) rehber kalibini kullanin)
+- Basit bagimsiz eylem listeleri icin (bunun yerine [Menu](guide/aria/menu) kullanin)
+- Yatay alanin sinirli oldugu mobil arayuzlerde
+- Navigasyon bir kenar cubugu veya baslik navigasyon kalibina ait oldugunda
 
 ## Features
 
-- **Horizontal navigation** - Left/Right arrow keys move between top-level categories
-- **Persistent visibility** - Always visible, not modal or dismissable
-- **Hover-to-open** - Submenus open on hover after first keyboard or click interaction
-- **Nested submenus** - Support multiple levels of menu depth
-- **Keyboard navigation** - Arrow keys, Enter/Space, Escape, and typeahead search
-- **Disabled states** - Disable entire menubar or individual items
-- **RTL support** - Automatic right-to-left language navigation
+- **Yatay navigasyon** - Sol/Sag ok tuslari ust duzey kategoriler arasinda hareket eder
+- **Kalici gorunurluk** - Her zaman gorunur, modal veya kapatilabilir degil
+- **Uzerine gelindiginde acma** - Ilk klavye veya tiklama etkilesiminden sonra alt menuler uzerine gelindiginde acilir
+- **Ic ice alt menuler** - Birden fazla menu derinlik seviyesini destekler
+- **Klavye navigasyonu** - Ok tuslari, Enter/Bosluk, Escape ve yazarak arama
+- **Devre disi durumlar** - Tum menu cubugunu veya bireysel ogeleri devre disi birakin
+- **RTL destegi** - Otomatik sagdan sola dil navigasyonu
 
 ## Examples
 
 ### Basic menubar
 
-A menubar provides persistent access to application commands organized into top-level categories. Users navigate between categories with Left/Right arrows and open menus with Enter or Down arrow.
+Bir menu cubugu, ust duzey kategorilere duzenlenmis uygulama komutlarina kalici erisim saglar. Kullanicilar kategoriler arasinda Sol/Sag ok tuslariyla gezinir ve menuleri Enter veya Asagi ok tusuyla acar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -98,11 +98,11 @@ A menubar provides persistent access to application commands organized into top-
   </docs-tab>
 </docs-tab-group>
 
-Press Right arrow to move between File, Edit, and View. Press Enter or Down arrow to open a menu and navigate submenu items with Up/Down arrows.
+Dosya, Duzenle ve Goruntule arasinda hareket etmek icin Sag ok tusuna basin. Bir menuyu acmak ve alt menu ogeleri arasinda Yukari/Asagi ok tuslariyla gezinmek icin Enter veya Asagi ok tusuna basin.
 
 ### Disabled menubar items
 
-Disable specific menu items or the entire menubar to prevent interaction. Control whether disabled items can receive keyboard focus with the `softDisabled` input.
+Etkilesimi engellemek icin belirli menu ogelerini veya tum menu cubugunu devre disi birakin. Devre disi ogelerin klavye navigasyonu sirasinda klavye odagi alip alamayacagini `softDisabled` girisi ile kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -130,11 +130,11 @@ Disable specific menu items or the entire menubar to prevent interaction. Contro
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` on the menubar, disabled items can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled items are skipped during keyboard navigation.
+Menu cubugunda `[softDisabled]="true"` oldugunda, devre disi ogeler odak alabilir ancak etkinlestirilemez. `[softDisabled]="false"` oldugunda, devre disi ogeler klavye navigasyonu sirasinda atlanir.
 
 ### RTL support
 
-Menubars automatically adapt to right-to-left (RTL) languages. Arrow key navigation reverses direction, and submenus position on the left side.
+Menu cubuklari sagdan sola (RTL) dillere otomatik olarak uyum saglar. Ok tusu navigasyonu yonunu tersine cevirir ve alt menuler sol tarafa konumlanir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -162,37 +162,37 @@ Menubars automatically adapt to right-to-left (RTL) languages. Arrow key navigat
   </docs-tab>
 </docs-tab-group>
 
-The `dir="rtl"` attribute enables RTL mode. Left arrow moves right, Right arrow moves left, maintaining natural navigation for RTL language users.
+`dir="rtl"` niteligi RTL modunu etkinlestirir. Sol ok saga, sag ok sola hareket eder ve RTL dil kullanicilari icin dogal navigasyonu korur.
 
 ## APIs
 
-The menubar pattern uses directives from Angular's Aria library. See the [Menu guide](guide/aria/menu) for complete API documentation.
+Menu cubugu kalibi, Angular'in Aria kutuphanesindeki yonergeleri kullanir. Eksiksiz API dokumantasyonu icin [Menu rehberine](guide/aria/menu) bakin.
 
 ### MenuBar
 
-The horizontal container for top-level menu items.
+Ust duzey menu ogeleri icin yatay kapsayici.
 
 #### Inputs
 
-| Property       | Type      | Default | Description                                                   |
-| -------------- | --------- | ------- | ------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Disables the entire menubar                                   |
-| `wrap`         | `boolean` | `true`  | Whether keyboard navigation wraps from last to first item     |
-| `softDisabled` | `boolean` | `true`  | When `true`, disabled items are focusable but not interactive |
+| Property       | Type      | Default | Description                                                                  |
+| -------------- | --------- | ------- | ---------------------------------------------------------------------------- |
+| `disabled`     | `boolean` | `false` | Tum menu cubugunu devre disi birakir                                         |
+| `wrap`         | `boolean` | `true`  | Klavye navigasyonunun son ogeden ilk ogeye sarilip sarilmadigi               |
+| `softDisabled` | `boolean` | `true`  | `true` oldugunda, devre disi ogeler odaklanabilir ancak etkilesimli degildir |
 
-See the [Menu API documentation](guide/aria/menu#apis) for complete details on all available inputs and signals.
+Mevcut tum girisler ve sinyaller hakkinda eksiksiz bilgi icin [Menu API dokumantasyonuna](guide/aria/menu#apis) bakin.
 
 ### MenuItem
 
-Individual items within the menubar. Same API as Menu - see [MenuItem](guide/aria/menu#menuitem).
+Menu cubugu icindeki bireysel ogeler. Menu ile ayni API - [MenuItem](guide/aria/menu#menuitem) sayfasina bakin.
 
-**Menubar-specific behavior:**
+**Menu cubuguna ozel davranis:**
 
-- Left/Right arrows navigate between menubar items (vs Up/Down in vertical menus)
-- First keyboard interaction or click enables hover-to-open for submenus
-- Enter or Down arrow opens the submenu and focuses the first item
-- `aria-haspopup="menu"` indicates items with submenus
+- Sol/Sag ok tuslari menu cubugu ogeleri arasinda gezinir (dikey menulerdeki Yukari/Asagi yerine)
+- Ilk klavye etkilesimi veya tiklama alt menuler icin uzerine gelindiginde acmayi etkinlestirir
+- Enter veya Asagi ok tusu alt menuyu acar ve ilk ogeye odaklanir
+- `aria-haspopup="menu"` alt menulere sahip ogeleri gosterir
 
 ### MenuTrigger
 
-Not typically used in menubars - MenuItem handles trigger behavior directly when it has an associated submenu. See [MenuTrigger](guide/aria/menu#menutrigger) for standalone menu trigger patterns.
+Menu cubuklarinda genellikle kullanilmaz - MenuItem, iliskili bir alt menusu oldugunda tetikleyici davranisini dogrudan yonetir. Bagimsiz menu tetikleyici kaliplari icin [MenuTrigger](guide/aria/menu#menutrigger) sayfasina bakin.

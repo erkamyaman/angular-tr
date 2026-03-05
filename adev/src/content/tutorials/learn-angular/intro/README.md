@@ -1,17 +1,17 @@
 # Welcome to the Angular tutorial
 
-This interactive tutorial will teach you the basic building blocks to start building great apps with Angular.
+Bu interaktif eğitim, Angular ile harika uygulamalar oluşturmaya başlamak için temel yapı taşlarını öğretecektir.
 
 ## How to use this tutorial
 
-You'll need to have basic familiarity with HTML, CSS and JavaScript to understand Angular.
+Angular'ı anlamak için HTML, CSS ve JavaScript hakkında temel bilgiye sahip olmanız gerekir.
 
-Each step represents a concept in Angular. You can do one, or all of them.
+Her adım Angular'daki bir kavramı temsil eder. Birini veya hepsini yapabilirsiniz.
 
-If you get stuck, click "Reveal answer" at the top.
+Takılırsanız, üstteki "Reveal answer" düğmesine tıklayın.
 
-Alright, let's [get started](/tutorials/learn-angular/1-components-in-angular).
+Haydi, [başlayalım](/tutorials/learn-angular/1-components-in-angular).
 
 ## Using AI for Development
 
-In case you're following this tutorial in your preferred AI powered IDE, [check out Angular prompt rules and best practices](/ai/develop-with-ai).
+Bu eğitimi tercih ettiğiniz yapay zeka destekli IDE'de takip ediyorsanız, [Angular prompt kuralları ve en iyi uygulamaları inceleyin](/ai/develop-with-ai).

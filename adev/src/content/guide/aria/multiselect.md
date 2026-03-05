@@ -3,7 +3,7 @@
 
 ## Overview
 
-A pattern that combines readonly combobox with multi-enabled listbox to create multiple-selection dropdowns with keyboard navigation and screen reader support.
+Klavye navigasyonu ve ekran okuyucu destegi ile coklu secimli acilir menuler olusturmak icin salt okunur combobox'i coklu etkin listbox ile birlestiren bir kalip.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -33,39 +33,39 @@ A pattern that combines readonly combobox with multi-enabled listbox to create m
 
 ## Usage
 
-The multiselect pattern works best when users need to choose multiple related items from a familiar set of options.
+Coklu secim kalibi, kullanicilarin bilinen bir secenek kumesinden birden fazla iliskili oge secmesi gerektiginde en iyi calisir.
 
-Consider using this pattern when:
+Su durumlarda bu kalibi kullanmayi dusunun:
 
-- **Users need multiple selections** - Tags, categories, filters, or labels where multiple choices apply
-- **The option list is fixed** (fewer than 20 items) - Users can scan options without search
-- **Filtering content** - Multiple criteria can be active simultaneously
-- **Assigning attributes** - Labels, permissions, or features where multiple values make sense
-- **Related choices** - Options that logically work together (such as selecting multiple team members)
+- **Kullanicilarin birden fazla secime ihtiyaci var** - Birden fazla secimin gecerli oldugu etiketler, kategoriler, filtreler veya etiketler
+- **Secenek listesi sabit** (20'den az oge) - Kullanicilar arama yapmadan secenekleri tarayabilir
+- **Icerik filtreleme** - Ayni anda birden fazla kriter aktif olabilir
+- **Ozellik atama** - Birden fazla degerin anlamli oldugu etiketler, izinler veya ozellikler
+- **Iliskili secimler** - Mantiksal olarak birlikte calisan secenekler (birden fazla takim uyesi secmek gibi)
 
-Avoid this pattern when:
+Su durumlarda bu kaliptan kacinin:
 
-- **Only single selection is needed** - Use the [Select pattern](guide/aria/select) for simpler single-choice dropdowns
-- **The list has more than 20 items with search needed** - Use the [Autocomplete pattern](guide/aria/autocomplete) with multiselect capability
-- **Most or all options will be selected** - A checklist pattern provides better visibility
-- **Choices are independent binary options** - Individual checkboxes communicate the choices more clearly
+- **Yalnizca tek secim gerekli** - Daha basit tek secimli acilir menuler icin [Select kalibini](guide/aria/select) kullanin
+- **Liste 20'den fazla oge ve arama gerekli** - Coklu secim yetenegine sahip [Autocomplete kalibini](guide/aria/autocomplete) kullanin
+- **Cogu veya tum secenekler secilecek** - Bir kontrol listesi kalibi daha iyi gorunurluk saglar
+- **Secimler bagimsiz ikili secenekler** - Bireysel onay kutulari secimleri daha acik iletir
 
 ## Features
 
-The multiselect pattern combines [Combobox](guide/aria/combobox) and [Listbox](guide/aria/listbox) directives to provide a fully accessible dropdown with:
+Coklu secim kalibi, tam erisilebilir bir acilir menu saglamak icin [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yonergelerini birlestirir:
 
-- **Keyboard Navigation** - Navigate options with arrow keys, toggle with Space, close with Escape
-- **Screen Reader Support** - Built-in ARIA attributes including aria-multiselectable
-- **Selection Count Display** - Shows compact "Item + 2 more" pattern for multiple selections
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
-- **Smart Positioning** - CDK Overlay handles viewport edges and scrolling
-- **Persistent Selection** - Selected options remain visible with checkmarks after selection
+- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Bosluk ile degistirin, Escape ile kapatin
+- **Ekran Okuyucu Destegi** - aria-multiselectable dahil yerlesik ARIA nitelikleri
+- **Secim Sayisi Gorunumu** - Birden fazla secim icin kompakt "Oge + 2 daha" kalibi gosterir
+- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
+- **Akilli Konumlandirma** - CDK Overlay gorunum alani kenarlarini ve kaydirmayi yonetir
+- **Kalici Secim** - Secili secenekler, secimden sonra onay isaretleriyle gorunur kalir
 
 ## Examples
 
 ### Basic multiselect
 
-Users need to select multiple items from a list of options. A readonly combobox paired with a multi-enabled listbox provides familiar multiselect functionality with full accessibility support.
+Kullanicilarin bir secenek listesinden birden fazla oge secmesi gerekir. Salt okunur combobox, coklu etkin listbox ile eslestirildiginde, tam erisilebilirlik destegi ile tanidik coklu secim islevi saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -93,11 +93,11 @@ Users need to select multiple items from a list of options. A readonly combobox 
   </docs-tab>
 </docs-tab-group>
 
-The `multi` attribute on `ngListbox` enables multiple selection. Press Space to toggle options, and the popup remains open for additional selections. The display shows the first selected item plus a count of remaining selections.
+`ngListbox` uzerindeki `multi` niteligi coklu secimi etkinlestirir. Secenekleri degistirmek icin Bosluk'a basin ve acilir pencere ek secimler icin acik kalir. Gosterim, ilk secili ogeyi ardindan kalan secimlerin sayisini gosterir.
 
 ### Multiselect with custom display
 
-Options often need visual indicators like icons or colors to help users identify choices. Custom templates within options allow rich formatting while the display value shows a compact summary.
+Seceneklerin genellikle kullanicilarin secimleri tanimasina yardimci olacak simgeler veya renkler gibi gorsel gostergelere ihtiyaci vardir. Secenekler icindeki ozel sablonlar, gorunum degeri kompakt bir ozet gosterirken zengin bicimlendirme saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -125,11 +125,11 @@ Options often need visual indicators like icons or colors to help users identify
   </docs-tab>
 </docs-tab-group>
 
-Each option displays an icon alongside its label. The display value updates to show the first selection's icon and text, followed by a count of additional selections. Selected options show a checkmark for clear visual feedback.
+Her secenek etiketinin yaninda bir simge gosterir. Gorunum degeri, secilen secenegin simgesini ve metnini, ardindan ek secimlerin sayisini gostermek uzere guncellenir. Secili secenekler net gorsel geri bildirim icin bir onay isareti gosterir.
 
 ### Controlled selection
 
-Forms sometimes need to limit the number of selections or validate user choices. Programmatic control over selection enables these constraints while maintaining accessibility.
+Formlar bazen secim sayisini sinirlamak veya kullanici secimlerini dogrulamak gerektirir. Secim uzerinde programatik kontrol, erisilebilirligi korurken bu kisitlamalari saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -157,45 +157,45 @@ Forms sometimes need to limit the number of selections or validate user choices.
   </docs-tab>
 </docs-tab-group>
 
-This example limits selections to three items. When the limit is reached, unselected options become disabled, preventing additional selections. A message informs users about the constraint.
+Bu ornek secimleri uc ogeyle sinirlar. Sinira ulasildiginda, secilmemis secenekler devre disi olur ve ek secimleri engeller. Bir mesaj kullanicilari kisitlama hakkinda bilgilendirir.
 
 ## APIs
 
-The multiselect pattern uses the following directives from Angular's Aria library. See the full API documentation in the linked guides.
+Coklu secim kalibi, Angular'in Aria kutuphanesindeki asagidaki yonergeleri kullanir. Baglantili rehberlerdeki tam API dokumantasyonuna bakin.
 
 ### Combobox Directives
 
-The multiselect pattern uses `ngCombobox` with the `readonly` attribute to prevent text input while preserving keyboard navigation.
+Coklu secim kalibi, klavye navigasyonunu korurken metin girisini engellemek icin `readonly` niteligi ile `ngCombobox` kullanir.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                               |
-| ---------- | --------- | ------- | ----------------------------------------- |
-| `readonly` | `boolean` | `false` | Set to `true` to create dropdown behavior |
-| `disabled` | `boolean` | `false` | Disables the entire multiselect           |
+| Property   | Type      | Default | Description                                                   |
+| ---------- | --------- | ------- | ------------------------------------------------------------- |
+| `readonly` | `boolean` | `false` | Acilir menu davranisi olusturmak icin `true` olarak ayarlayin |
+| `disabled` | `boolean` | `false` | Tum coklu secimi devre disi birakir                           |
 
-See the [Combobox API documentation](guide/aria/combobox#apis) for complete details on all available inputs and signals.
+Mevcut tum girisler ve sinyaller hakkinda eksiksiz bilgi icin [Combobox API dokumantasyonuna](guide/aria/combobox#apis) bakin.
 
 ### Listbox Directives
 
-The multiselect pattern uses `ngListbox` with the `multi` attribute for multiple selection and `ngOption` for each selectable item.
+Coklu secim kalibi, coklu secim icin `multi` niteligi ile `ngListbox` ve her secilebilir oge icin `ngOption` kullanir.
 
 #### Inputs
 
-| Property | Type      | Default | Description                                |
-| -------- | --------- | ------- | ------------------------------------------ |
-| `multi`  | `boolean` | `false` | Set to `true` to enable multiple selection |
+| Property | Type      | Default | Description                                              |
+| -------- | --------- | ------- | -------------------------------------------------------- |
+| `multi`  | `boolean` | `false` | Coklu secimi etkinlestirmek icin `true` olarak ayarlayin |
 
 #### Model
 
-| Property | Type    | Description                               |
-| -------- | ------- | ----------------------------------------- |
-| `values` | `any[]` | Two-way bindable array of selected values |
+| Property | Type    | Description                                     |
+| -------- | ------- | ----------------------------------------------- |
+| `values` | `any[]` | Secili degerlerin iki yonlu baglanabilir dizisi |
 
-When `multi` is true, users can select multiple options using Space to toggle selection. The popup remains open after selection, allowing additional choices.
+`multi` true oldugunda, kullanicilar secimi degistirmek icin Bosluk kullanarak birden fazla secenek secebilir. Acilir pencere secimden sonra acik kalir ve ek secimlere izin verir.
 
-See the [Listbox API documentation](guide/aria/listbox#apis) for complete details on listbox configuration, selection modes, and option properties.
+Listbox yapilandirmasi, secim modlari ve secenek ozellikleri hakkinda eksiksiz bilgi icin [Listbox API dokumantasyonuna](guide/aria/listbox#apis) bakin.
 
 ### Positioning
 
-The multiselect pattern integrates with [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) for smart positioning. Use `cdkConnectedOverlay` to handle viewport edges and scrolling automatically.
+Coklu secim kalibi, akilli konumlandirma icin [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Gorunum alani kenarlarini ve kaydirmayi otomatik olarak yonetmek icin `cdkConnectedOverlay` kullanin.

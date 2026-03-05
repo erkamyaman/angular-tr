@@ -1,16 +1,16 @@
 # Debugging and troubleshooting dependency injection
 
-Dependency injection (DI) issues typically stem from configuration mistakes, scope problems, or incorrect usage patterns. This guide helps you identify and resolve common DI problems that developers encounter.
+Bağımlılık enjeksiyonu (DI) sorunları genellikle yapılandırma hatalarından, kapsam sorunlarından veya yanlış kullanım desenlerinden kaynaklanır. Bu kılavuz, geliştiricilerin karşılaştığı yaygın DI sorunlarını tanımlamanıza ve çözmenize yardımcı olur.
 
 ## Common pitfalls and solutions
 
 ### Services not available where expected
 
-One of the most common DI issues occurs when you try to inject a service but Angular cannot find it in the current injector or any parent injector. This usually happens when the service is provided in the wrong scope or not provided at all.
+En yaygın DI sorunlarından biri, bir servisi enjekte etmeye çalıştığınızda Angular'ın bunu mevcut enjektörde veya herhangi bir üst enjektörde bulamamasıdır. Bu genellikle servisin yanlış kapsamda sağlanması veya hiç sağlanmaması durumunda gerçekleşir.
 
 #### Provider scope mismatch
 
-When you provide a service in a component's `providers` array, Angular creates an instance in that component's injector. This instance is only available to that component and its children. Parent components and sibling components cannot access it because they use different injectors.
+Bir servisi bir bileşenin `providers` dizisinde sağladığınızda, Angular o bileşenin enjektöründe bir örnek oluşturur. Bu örnek yalnızca o bileşen ve çocukları tarafından kullanılabilir. Üst bileşenler ve kardeş bileşenler, farklı enjektörler kullandıkları için ona erişemezler.
 
 ```angular-ts {header: 'child-view.ts'}
 import {Component} from '@angular/core';
@@ -37,9 +37,9 @@ export class ParentView {
 }
 ```
 
-Angular only searches up the hierarchy, never down. Parent components cannot access services provided in child components.
+Angular yalnızca hiyerarşide yukarı doğru arama yapar, asla aşağı doğru değil. Üst bileşenler, alt bileşenlerde sağlanan servislere erişemezler.
 
-**Solution:** Provide the service at a higher level (application or parent component).
+**Çözüm:** Servisi daha üst bir seviyede (uygulama veya üst bileşen) sağlayın.
 
 ```ts {prefer}
 import {Injectable} from '@angular/core';
@@ -50,11 +50,11 @@ export class DataStore {
 }
 ```
 
-TIP: Use `providedIn: 'root'` by default for services that don't need component-specific state. This makes services available everywhere and enables tree-shaking.
+TIP: Bileşene özgü duruma ihtiyaç duymayan servisler için varsayılan olarak `providedIn: 'root'` kullanın. Bu, servisleri her yerde kullanılabilir hale getirir ve tree-shaking'i etkinleştirir.
 
 #### Services and lazy-loaded routes
 
-When you provide a service in a lazy-loaded route's `providers` array, Angular creates a child injector for that route. This injector and its services only become available after the route loads. Components in the eagerly-loaded parts of your application cannot access these services because they use different injectors that exist before the lazy-loaded injector is created.
+Bir servisi tembel yüklenen bir rotanın `providers` dizisinde sağladığınızda, Angular o rota için bir alt enjektör oluşturur. Bu enjektör ve servisleri yalnızca rota yüklendikten sonra kullanılabilir hale gelir. Uygulamanızın istekli yüklenen bölümlerindeki bileşenler, tembel yüklenen enjektör oluşturulmadan önce var olan farklı enjektörler kullandıkları için bu servislere erişemezler.
 
 ```ts {header: 'feature.routes.ts'}
 import {Routes} from '@angular/router';
@@ -82,11 +82,11 @@ export class EagerView {
 }
 ```
 
-Lazy-loaded routes create child injectors that are only available after the route loads.
+Tembel yüklenen rotalar, yalnızca rota yüklendikten sonra kullanılabilen alt enjektörler oluşturur.
 
-NOTE: By default, route injectors and their services persist even after navigating away from the route. They are not destroyed until the application is closed. For automatic cleanup of unused route injectors, see [customizing route behavior](guide/routing/customizing-route-behavior#experimental-automatic-cleanup-of-unused-route-injectors).
+NOTE: Varsayılan olarak, rota enjektörleri ve servisleri rotadan ayrıldıktan sonra bile devam eder. Uygulama kapatılana kadar yok edilmezler. Kullanılmayan rota enjektörlerinin otomatik temizlenmesi için [rota davranışını özelleştirme](guide/routing/customizing-route-behavior#experimental-automatic-cleanup-of-unused-route-injectors) bölümüne bakın.
 
-**Solution:** Use `providedIn: 'root'` for services that need to be shared across lazy boundaries.
+**Çözüm:** Tembel sınırlar arasında paylaşılması gereken servisler için `providedIn: 'root'` kullanın.
 
 ```ts {prefer, header: 'Provide at root for shared services'}
 import {Injectable} from '@angular/core';
@@ -97,15 +97,15 @@ export class FeatureClient {
 }
 ```
 
-If the service should be lazy-loaded but still available to eager components, inject it only where needed and use optional injection to handle availability.
+Servisin tembel yüklenmesi gerekiyorsa ancak istekli bileşenler tarafından da kullanılabilir olması gerekiyorsa, yalnızca gerekli yerlerde enjekte edin ve kullanılabilirliği ele almak için isteğe bağlı enjeksiyon kullanın.
 
 ### Multiple instances instead of singletons
 
-You expect one shared instance (singleton) but get separate instances in different components.
+Tek bir paylaşılan örnek (singleton) bekliyorsunuz ancak farklı bileşenlerde ayrı örnekler alıyorsunuz.
 
 #### Providing in component instead of root
 
-When you add a service to a component's `providers` array, Angular creates a new instance of that service for each instance of the component. Each component gets its own separate service instance, which means changes in one component don't affect the service instance in other components. This is often unexpected when you want shared state across your application.
+Bir servisi bir bileşenin `providers` dizisine eklediğinizde, Angular o servisin her bileşen örneği için yeni bir örneğini oluşturur. Her bileşen kendi ayrı servis örneğini alır, bu da bir bileşendeki değişikliklerin diğer bileşenlerdeki servis örneğini etkilemeyeceği anlamına gelir. Bu, uygulamanız genelinde paylaşılan durum istediğinizde genellikle beklenmedik bir durumdur.
 
 ```angular-ts {avoid, header: 'Component-level provider creates multiple instances'}
 import {Component, inject} from '@angular/core';
@@ -130,9 +130,9 @@ export class UserSettings {
 }
 ```
 
-Each component gets its own `UserClient` instance. Changes in one component don't affect the other.
+Her bileşen kendi `UserClient` örneğini alır. Bir bileşendeki değişiklikler diğerini etkilemez.
 
-**Solution:** Use `providedIn: 'root'` for singletons.
+**Çözüm:** Tekil örnekler için `providedIn: 'root'` kullanın.
 
 ```ts {prefer, header: 'Root-level singleton'}
 import {Injectable} from '@angular/core';
@@ -145,7 +145,7 @@ export class UserClient {
 
 #### When multiple instances are intentional
 
-Sometimes you want separate instances per component for component-specific state.
+Bazen bileşene özgü durum için bileşen başına ayrı örnekler isteyebilirsiniz.
 
 ```angular-ts {header: 'Intentional: Component-scoped state'}
 import {Injectable, signal} from '@angular/core';
@@ -173,19 +173,19 @@ export class UserForm {
 }
 ```
 
-This pattern is useful for:
+Bu desen şunlar için kullanışlıdır:
 
-- Form state management (each form has isolated state)
-- Component-specific caching
-- Temporary data that shouldn't be shared
+- Form durum yönetimi (her formun izole durumu vardır)
+- Bileşene özgü önbellekleme
+- Paylaşılmaması gereken geçici veriler
 
 ### Incorrect inject() usage
 
-The `inject()` function only works in specific contexts during class construction and factory execution.
+`inject()` fonksiyonu yalnızca sınıf oluşturma ve fabrika yürütme sırasındaki belirli bağlamlarda çalışır.
 
 #### Using inject() in lifecycle hooks
 
-When you call the `inject()` function inside lifecycle hooks like `ngOnInit()`, `ngAfterViewInit()`, or `ngOnDestroy()`, Angular throws an error because these methods run outside the injection context. The injection context is only available during the synchronous execution of class construction, which happens before lifecycle hooks are called.
+`inject()` fonksiyonunu `ngOnInit()`, `ngAfterViewInit()` veya `ngOnDestroy()` gibi yaşam döngüsü kancaları içinde çağırdığınızda, Angular bir hata fırlatır çünkü bu yöntemler enjeksiyon bağlamı dışında çalışır. Enjeksiyon bağlamı yalnızca yaşam döngüsü kancaları çağrılmadan önce gerçekleşen sınıf oluşturmanın senkron yürütülmesi sırasında kullanılabilir.
 
 ```angular-ts {avoid, header: 'inject() in ngOnInit'}
 import {Component, inject} from '@angular/core';
@@ -205,7 +205,7 @@ export class UserProfile {
 }
 ```
 
-**Solution:** Capture dependencies and derive values in field initializers.
+**Çözüm:** Bağımlılıkları yakalayın ve değerleri alan başlatıcılarında türetin.
 
 ```angular-ts {prefer, header: 'Derive values in field initializers'}
 import {Component, inject} from '@angular/core';
@@ -223,7 +223,7 @@ export class UserProfile {
 
 #### Using the Injector for deferred injection
 
-When you need to retrieve services outside an injection context, use the captured `Injector` directly with `injector.get()`:
+Bir enjeksiyon bağlamı dışında servisleri almanız gerektiğinde, yakalanan `Injector`'ı doğrudan `injector.get()` ile kullanın:
 
 ```angular-ts
 import {Component, inject, Injector} from '@angular/core';
@@ -247,7 +247,7 @@ export class UserProfile {
 
 #### Using runInInjectionContext for callbacks
 
-Use `runInInjectionContext()` when you need to enable **other code** to call `inject()`. This is useful when accepting callbacks that might use dependency injection:
+**Diğer kodun** `inject()` çağırmasını etkinleştirmek gerektiğinde `runInInjectionContext()` kullanın. Bu, bağımlılık enjeksiyonu kullanabilecek geri çağırmaları kabul ederken yararlıdır:
 
 ```angular-ts
 import {Component, inject, Injector, input} from '@angular/core';
@@ -270,21 +270,21 @@ export class DataLoader {
 }
 ```
 
-The `runInInjectionContext()` method creates a temporary injection context, allowing code inside the callback to call `inject()`.
+`runInInjectionContext()` yöntemi geçici bir enjeksiyon bağlamı oluşturur ve geri çağırma içindeki kodun `inject()` çağırmasına olanak tanır.
 
-IMPORTANT: Always capture dependencies at the class level when possible. Use `injector.get()` for simple deferred retrieval, and `runInInjectionContext()` only when external code needs to call `inject()`.
+IMPORTANT: Mümkün olduğunda bağımlılıkları her zaman sınıf seviyesinde yakalayın. Basit gecikmeli alma için `injector.get()` kullanın ve yalnızca harici kodun `inject()` çağırması gerektiğinde `runInInjectionContext()` kullanın.
 
-TIP: Use `assertInInjectionContext()` to verify your code is running in a valid injection context. This is useful when creating reusable functions that call `inject()`. See [Asserting the context](guide/di/dependency-injection-context#asserts-the-context) for details.
+TIP: Kodunuzun geçerli bir enjeksiyon bağlamında çalışıp çalışmadığını doğrulamak için `assertInInjectionContext()` kullanın. Bu, `inject()` çağıran yeniden kullanılabilir fonksiyonlar oluştururken yararlıdır. Ayrıntılar için [Bağlamı doğrulama](guide/di/dependency-injection-context#asserts-the-context) bölümüne bakın.
 
 ### providers vs viewProviders confusion
 
-The difference between `providers` and `viewProviders` affects content projection scenarios.
+`providers` ve `viewProviders` arasındaki fark, içerik yansıtma senaryolarını etkiler.
 
 #### Understanding the difference
 
-**providers:** Available to the component's template AND any content projected into the component (ng-content).
+**providers:** Bileşenin şablonuna VE bileşene yansıtılan herhangi bir içeriğe (ng-content) kullanılabilir.
 
-**viewProviders:** Only available to the component's template, NOT to projected content.
+**viewProviders:** Yalnızca bileşenin şablonuna kullanılabilir, yansıtılan içeriğe DEĞİL.
 
 ```angular-ts {header: 'parent-view.ts'}
 import {Component, inject} from '@angular/core';
@@ -351,33 +351,33 @@ export class ChildView {
 export class App {}
 ```
 
-**When projected into `app-parent`:** The child component can inject `ThemeStore` because `providers` makes it available to projected content.
+**`app-parent`'a yansıtıldığında:** Alt bileşen `ThemeStore`'u enjekte edebilir çünkü `providers` yansıtılan içerik için kullanılabilir hale getirir.
 
-**When projected into `app-parent-view`:** The child component cannot inject `ThemeStore` because `viewProviders` restricts it to the parent's template only.
+**`app-parent-view`'a yansıtıldığında:** Alt bileşen `ThemeStore`'u enjekte edemez çünkü `viewProviders` bunu yalnızca üst elemanın şablonuyla sınırlar.
 
 #### Choosing between providers and viewProviders
 
-Use `providers` when:
+Şu durumlarda `providers` kullanın:
 
-- The service should be available to projected content
-- You want content children to access the service
-- You're providing general-purpose services
+- Servisin yansıtılan içerik için kullanılabilir olması gerektiğinde
+- İçerik çocuklarının servise erişmesini istediğinizde
+- Genel amaçlı servisler sağladığınızda
 
-Use `viewProviders` when:
+Şu durumlarda `viewProviders` kullanın:
 
-- The service should only be available to your component's template
-- You want to hide implementation details from projected content
-- You're providing internal services that shouldn't leak out
+- Servisin yalnızca bileşeninizin şablonuna kullanılabilir olması gerektiğinde
+- Uygulama detaylarını yansıtılan içerikten gizlemek istediğinizde
+- Dışarı sızmaması gereken dahili servisler sağladığınızda
 
-**Default recommendation:** Use `providers` unless you have a specific reason to restrict access with `viewProviders`.
+**Varsayılan öneri:** `viewProviders` ile erişimi kısıtlamak için belirli bir nedeniniz olmadıkça `providers` kullanın.
 
 ### InjectionToken issues
 
-When using `InjectionToken` for non-class dependencies, developers often encounter problems related to token identity, type safety, and provider configuration. These issues usually stem from how JavaScript handles object identity and how TypeScript infers types.
+Sınıf dışı bağımlılıklar için `InjectionToken` kullanılırken, geliştiriciler genellikle token kimliği, tür güvenliği ve sağlayıcı yapılandırmasıyla ilgili sorunlarla karşılaşır. Bu sorunlar genellikle JavaScript'in nesne kimliğini nasıl ele aldığından ve TypeScript'in türleri nasıl çıkardığından kaynaklanır.
 
 #### Token identity confusion
 
-When you create a new `InjectionToken` instance, JavaScript creates a unique object in memory. Even if you create another `InjectionToken` with the exact same description string, it's a completely different object. Angular uses the token object's identity (not its description) to match providers with injection points, so tokens with the same description but different object identities cannot access each other's values.
+Yeni bir `InjectionToken` örneği oluşturduğunuzda, JavaScript bellekte benzersiz bir nesne oluşturur. Aynı açıklama string'i ile başka bir `InjectionToken` oluştursanız bile, tamamen farklı bir nesnedir. Angular, sağlayıcıları enjeksiyon noktalarıyla eşleştirmek için token nesnesinin kimliğini (açıklamasını değil) kullanır, bu nedenle aynı açıklamaya ancak farklı nesne kimliklerine sahip token'lar birbirlerinin değerlerine erişemez.
 
 ```ts {header: 'config.token.ts'}
 import {InjectionToken} from '@angular/core';
@@ -417,9 +417,9 @@ export class FeatureView {
 }
 ```
 
-Even though both tokens have the description `'app config'`, they are different objects. Angular compares tokens by reference, not by description.
+Her iki token da `'app config'` açıklamasına sahip olsa da, farklı nesnelerdir. Angular token'ları açıklamaya göre değil referansa göre karşılaştırır.
 
-**Solution:** Import the same token instance.
+**Çözüm:** Aynı token örneğini içe aktarın.
 
 ```angular-ts {prefer, header: 'feature-view.ts'}
 import {inject} from '@angular/core';
@@ -434,11 +434,11 @@ export class FeatureView {
 }
 ```
 
-TIP: Always export tokens from a shared file and import them everywhere they're needed. Never create multiple `InjectionToken` instances with the same description.
+TIP: Token'ları her zaman paylaşılan bir dosyadan dışa aktarın ve ihtiyaç duyulan her yerde içe aktarın. Aynı açıklamaya sahip birden fazla `InjectionToken` örneği asla oluşturmayın.
 
 #### Trying to inject interfaces
 
-When you define a TypeScript interface, it only exists during compilation for type checking. TypeScript erases all interface definitions when it compiles to JavaScript, so at runtime there's no object for Angular to use as an injection token. If you try to inject an interface type, Angular has nothing to match against the provider configuration.
+Bir TypeScript arayüzü tanımladığınızda, yalnızca derleme sırasında tür denetimi için var olur. TypeScript, JavaScript'e derlerken tüm arayüz tanımlarını siler, bu nedenle çalışma zamanında Angular'ın enjeksiyon token'ı olarak kullanabileceği bir nesne yoktur. Bir arayüz türünü enjekte etmeye çalışırsanız, Angular'ın sağlayıcı yapılandırmasıyla eşleştireceği hiçbir şey yoktur.
 
 ```angular-ts {avoid, header: 'Can't inject interface'}
 interface UserConfig {
@@ -456,7 +456,7 @@ export class UserProfile {
 }
 ```
 
-**Solution:** Use `InjectionToken` for interface types.
+**Çözüm:** Arayüz türleri için `InjectionToken` kullanın.
 
 ```angular-ts {prefer, header: 'Use InjectionToken for interfaces'}
 import {InjectionToken, inject} from '@angular/core';
@@ -488,59 +488,59 @@ export class UserProfile {
 }
 ```
 
-The `InjectionToken` exists at runtime and can be used for injection, while the `UserConfig` interface provides type safety during development.
+`InjectionToken` çalışma zamanında var olur ve enjeksiyon için kullanılabilirken, `UserConfig` arayüzü geliştirme sırasında tür güvenliği sağlar.
 
 ### Circular dependencies
 
-Circular dependencies occur when services inject each other, creating a cycle that Angular cannot resolve. For detailed explanations and code examples, see [NG0200: Circular dependency](errors/NG0200).
+Döngüsel bağımlılıklar, servisler birbirini enjekte ettiğinde ve Angular'ın çözemediği bir döngü oluşturduğunda meydana gelir. Ayrıntılı açıklamalar ve kod örnekleri için [NG0200: Döngüsel bağımlılık](errors/NG0200) bölümüne bakın.
 
-**Resolution strategies** (in order of preference):
+**Çözüm stratejileri** (tercih sırasına göre):
 
-1. **Restructure** - Extract shared logic to a third service, breaking the cycle
-2. **Use events** - Replace direct dependencies with event-based communication (such as `Subject`)
-3. **Lazy injection** - Use `Injector.get()` to defer one dependency (last resort)
+1. **Yeniden yapılandırma** - Paylaşılan mantığı döngüyü kıran üçüncü bir servise çıkarın
+2. **Olay kullanma** - Doğrudan bağımlılıkları olay tabanlı iletişimle (örneğin `Subject`) değiştirin
+3. **Tembel enjeksiyon** - Bir bağımlılığı ertelemek için `Injector.get()` kullanın (son çare)
 
-NOTE: Do not use `forwardRef()` for service circular dependencies—it only solves circular imports in standalone component configurations.
+NOTE: Servis döngüsel bağımlılıkları için `forwardRef()` kullanmayın -- yalnızca standalone bileşen yapılandırmalarındaki döngüsel içe aktarmaları çözer.
 
 ## Debugging dependency resolution
 
 ### Understanding the resolution process
 
-Angular resolves dependencies by walking up the injector hierarchy. When a `NullInjectorError` occurs, understanding this search order helps you identify where to add the missing provider.
+Angular, enjektör hiyerarşisinde yukarı doğru yürüyerek bağımlılıkları çözer. Bir `NullInjectorError` oluştuğunda, bu arama sırasını anlamak eksik sağlayıcıyı nereye ekleyeceğinizi belirlemenize yardımcı olur.
 
-Angular searches in this order:
+Angular şu sırayla arama yapar:
 
-1. **Element injector** - The current component or directive
-2. **Parent element injectors** - Up the DOM tree through parent components
-3. **Environment injector** - The route or application injector
-4. **NullInjector** - Throws `NullInjectorError` if not found
+1. **Eleman enjektörü** - Mevcut bileşen veya direktif
+2. **Üst eleman enjektörleri** - DOM ağacında üst bileşenler yoluyla yukarı
+3. **Ortam enjektörü** - Rota veya uygulama enjektörü
+4. **NullInjector** - Bulunamazsa `NullInjectorError` fırlatır
 
-When you see a `NullInjectorError`, the service isn't provided at any level the component can access. Check that:
+Bir `NullInjectorError` gördüğünüzde, servis bileşenin erişebildiği hiçbir seviyede sağlanmamıştır. Şunları kontrol edin:
 
-- The service has `@Injectable({providedIn: 'root'})`, or
-- The service is in a `providers` array the component can reach
+- Servisin `@Injectable({providedIn: 'root'})` olduğunu veya
+- Servisin bileşenin ulaşabileceği bir `providers` dizisinde olduğunu
 
-You can modify this search behavior with resolution modifiers like `self`, `skipSelf`, `host`, and `optional`. For complete coverage of resolution rules and modifiers, see the [Hierarchical injectors guide](guide/di/hierarchical-dependency-injection).
+Bu arama davranışını `self`, `skipSelf`, `host` ve `optional` gibi çözümleme değiştiricileri ile değiştirebilirsiniz. Çözümleme kuralları ve değiştiricilerin tam kapsamı için [Hiyerarşik enjektörler kılavuzuna](guide/di/hierarchical-dependency-injection) bakın.
 
 ### Using Angular DevTools
 
-Angular DevTools includes an injector tree inspector that visualizes the entire injector hierarchy and shows which providers are available at each level. For installation and general usage, see the [Angular DevTools injector documentation](tools/devtools/injectors).
+Angular DevTools, tüm enjektör hiyerarşisini görselleştiren ve her seviyede hangi sağlayıcıların kullanılabilir olduğunu gösteren bir enjektör ağacı denetçisi içerir. Kurulum ve genel kullanım için [Angular DevTools enjektör belgelerine](tools/devtools/injectors) bakın.
 
-When debugging DI issues, use DevTools to answer these questions:
+DI sorunlarını hata ayıklarken, bu soruları yanıtlamak için DevTools'u kullanın:
 
-- **Is the service provided?** Select the component that fails to inject and check if the service appears in the Injector section.
-- **At what level?** Walk up the component tree to find where the service is actually provided (component, route, or application level).
-- **Multiple instances?** If a singleton service appears in multiple component injectors, it's likely provided in component `providers` arrays instead of using `providedIn: 'root'`.
+- **Servis sağlanıyor mu?** Enjeksiyon başarısız olan bileşeni seçin ve servisin Enjektör bölümünde görünüp görünmediğini kontrol edin.
+- **Hangi seviyede?** Servisin gerçekten nerede sağlandığını (bileşen, rota veya uygulama seviyesi) bulmak için bileşen ağacında yukarı doğru ilerleyin.
+- **Birden fazla örnek mi?** Bir tekil servis birden fazla bileşen enjektöründe görünüyorsa, muhtemelen `providedIn: 'root'` kullanmak yerine bileşen `providers` dizilerinde sağlanmıştır.
 
-If a service never appears in any injector, verify it has the `@Injectable()` decorator with `providedIn: 'root'` or is listed in a `providers` array.
+Bir servis hiçbir enjektörde görünmüyorsa, `providedIn: 'root'` ile `@Injectable()` dekoratörüne sahip olduğunu veya bir `providers` dizisinde listelendiğini doğrulayın.
 
 ### Logging and tracing injection
 
-When DevTools isn't enough, use logging to trace injection behavior.
+DevTools yeterli olmadığında, enjeksiyon davranışını izlemek için günlükleme kullanın.
 
 #### Logging service creation
 
-Add console logs to service constructors to see when services are created.
+Servislerin ne zaman oluşturulduğunu görmek için servis constructor'larına konsol günlükleri ekleyin.
 
 ```ts
 import {Injectable} from '@angular/core';
@@ -558,17 +558,17 @@ export class UserClient {
 }
 ```
 
-When the service is created, you'll see the log message and a stack trace showing where the injection occurred.
+Servis oluşturulduğunda, günlük mesajını ve enjeksiyonun nerede gerçekleştiğini gösteren bir yığın izlemesini göreceksiniz.
 
-**What to look for:**
+**Nelere bakmalı:**
 
-- How many times is the constructor called? (should be once for singletons)
-- Where in the code is it being injected? (check the stack trace)
-- Is it created at the expected time? (application startup vs lazy)
+- Constructor kaç kez çağrılıyor? (tekil örnekler için bir kez olmalı)
+- Kodda nerede enjekte ediliyor? (yığın izlemesini kontrol edin)
+- Beklenen zamanda mı oluşturuluyor? (uygulama başlangıcı vs tembel)
 
 #### Checking service availability
 
-Use optional injection with logging to determine if a service is available.
+Bir servisin kullanılabilir olup olmadığını belirlemek için günlükleme ile isteğe bağlı enjeksiyon kullanın.
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -592,11 +592,11 @@ export class DebugView {
 }
 ```
 
-This pattern helps you verify if a service is available without crashing the application.
+Bu desen, uygulamayı çökertmeden bir servisin kullanılabilir olup olmadığını doğrulamanıza yardımcı olur.
 
 #### Logging resolution modifiers
 
-Test different resolution strategies with logging.
+Günlükleme ile farklı çözümleme stratejilerini test edin.
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -625,65 +625,65 @@ export class DebugView {
 }
 ```
 
-This shows you which instances are available at different injector levels.
+Bu, farklı enjektör seviyelerinde hangi örneklerin kullanılabilir olduğunu gösterir.
 
 ### Debugging workflow
 
-When DI fails, follow this systematic approach:
+DI başarısız olduğunda, şu sistematik yaklaşımı izleyin:
 
-**Step 1: Read the error message**
+**Adım 1: Hata mesajını okuyun**
 
-- Identify the error code (NG0200, NG0203, etc.)
-- Read the dependency path
-- Note which token failed
+- Hata kodunu tanımlayın (NG0200, NG0203, vb.)
+- Bağımlılık yolunu okuyun
+- Hangi token'ın başarısız olduğunu not edin
 
-**Step 2: Check the basics**
+**Adım 2: Temelleri kontrol edin**
 
-- Does the service have `@Injectable()`?
-- Is `providedIn` set correctly?
-- Are imports correct?
-- Is the file included in compilation?
+- Servisin `@Injectable()` dekoratörü var mı?
+- `providedIn` doğru ayarlanmış mı?
+- İçe aktarmalar doğru mu?
+- Dosya derlemeye dahil mi?
 
-**Step 3: Verify injection context**
+**Adım 3: Enjeksiyon bağlamını doğrulayın**
 
-- Is `inject()` called in a valid context?
-- Check for async issues (await, setTimeout, promises)
-- Verify timing (not after destroy)
+- `inject()` geçerli bir bağlamda mı çağrılıyor?
+- Asenkron sorunları kontrol edin (await, setTimeout, promises)
+- Zamanlamayı doğrulayın (yok edilmeden sonra değil)
 
-**Step 4: Use debugging tools**
+**Adım 4: Hata ayıklama araçlarını kullanın**
 
-- Open Angular DevTools
-- Check injector hierarchy
-- Add console logs to constructors
-- Use optional injection to test availability
+- Angular DevTools'u açın
+- Enjektör hiyerarşisini kontrol edin
+- Constructor'lara konsol günlükleri ekleyin
+- Kullanılabilirliği test etmek için isteğe bağlı enjeksiyon kullanın
 
-**Step 5: Simplify and isolate**
+**Adım 5: Sadeleştirin ve izole edin**
 
-- Remove dependencies one by one
-- Test in a minimal component
-- Check each injector level separately
-- Create a reproduction case
+- Bağımlılıkları birer birer kaldırın
+- Minimal bir bileşende test edin
+- Her enjektör seviyesini ayrı ayrı kontrol edin
+- Bir yeniden üretim durumu oluşturun
 
 ## DI error reference
 
-This section provides detailed information about specific Angular DI error codes you may encounter. Use this as a reference when you see these errors in your console.
+Bu bölüm, karşılaşabileceğiniz belirli Angular DI hata kodları hakkında ayrıntılı bilgi sağlar. Konsolunuzda bu hataları gördüğünüzde bunu referans olarak kullanın.
 
 ### NullInjectorError: No provider for [Service]
 
-**Error code:** None (displayed as `NullInjectorError`)
+**Hata kodu:** Yok (`NullInjectorError` olarak görüntülenir)
 
-This error occurs when Angular cannot find a provider for a token in the injector hierarchy. The error message includes a dependency path showing where the injection was attempted.
+Bu hata, Angular enjektör hiyerarşisinde bir token için sağlayıcı bulamadığında oluşur. Hata mesajı, enjeksiyonun nerede denendiğini gösteren bir bağımlılık yolu içerir.
 
 ```
 NullInjectorError: No provider for UserClient!
   Dependency path: App -> AuthClient -> UserClient
 ```
 
-The dependency path shows that `App` injected `AuthClient`, which tried to inject `UserClient`, but no provider was found.
+Bağımlılık yolu, `App`'ın `AuthClient`'ı enjekte ettiğini, onun da `UserClient`'ı enjekte etmeye çalıştığını ancak hiçbir sağlayıcı bulunamadığını gösterir.
 
 #### Missing @Injectable decorator
 
-The most common cause is forgetting the `@Injectable()` decorator on a service class.
+En yaygın neden, bir servis sınıfında `@Injectable()` dekoratörünü unutmaktır.
 
 ```ts {avoid, header: 'Missing decorator'}
 export class UserClient {
@@ -693,7 +693,7 @@ export class UserClient {
 }
 ```
 
-Angular requires the `@Injectable()` decorator to generate the metadata needed for dependency injection.
+Angular, bağımlılık enjeksiyonu için gereken meta verileri oluşturmak üzere `@Injectable()` dekoratörünü gerektirir.
 
 ```ts {prefer, header: 'Include @Injectable'}
 import {Injectable} from '@angular/core';
@@ -708,11 +708,11 @@ export class UserClient {
 }
 ```
 
-NOTE: Classes with zero-argument constructors can work without `@Injectable()`, but this is not recommended. Always include the decorator for consistency and to avoid issues when adding dependencies later.
+NOTE: Sıfır argümanlı constructor'lara sahip sınıflar `@Injectable()` olmadan çalışabilir, ancak bu önerilmez. Tutarlılık sağlamak ve daha sonra bağımlılık eklerken sorunları önlemek için her zaman dekoratörü dahil edin.
 
 #### Missing providedIn configuration
 
-A service may have `@Injectable()` but not specify where it should be provided.
+Bir servisin `@Injectable()` dekoratörü olabilir ancak nerede sağlanacağını belirtmeyebilir.
 
 ```ts {avoid, header: 'No providedIn specified'}
 import {Injectable} from '@angular/core';
@@ -725,7 +725,7 @@ export class UserClient {
 }
 ```
 
-Specify `providedIn: 'root'` to make the service available throughout your application.
+Servisi uygulamanız genelinde kullanılabilir hale getirmek için `providedIn: 'root'` belirtin.
 
 ```ts {prefer, header: 'Specify providedIn'}
 import {Injectable} from '@angular/core';
@@ -740,11 +740,11 @@ export class UserClient {
 }
 ```
 
-The `providedIn: 'root'` configuration makes the service available application-wide and enables tree-shaking (the service is removed from the bundle if never injected).
+`providedIn: 'root'` yapılandırması, servisi uygulama genelinde kullanılabilir hale getirir ve tree-shaking'i etkinleştirir (servis hiç enjekte edilmezse paketten kaldırılır).
 
 #### Standalone component missing imports
 
-In Angular v20+ with standalone components, you must explicitly import or provide dependencies in each component.
+Standalone bileşenlerle Angular v20+'da, her bileşende bağımlılıkları açıkça içe aktarmanız veya sağlamanız gerekir.
 
 ```angular-ts {avoid, header: 'Missing service import'}
 import {Component, inject} from '@angular/core';
@@ -760,7 +760,7 @@ export class UserProfile {
 }
 ```
 
-Ensure the service uses `providedIn: 'root'` or add it to the component's `providers` array.
+Servisin `providedIn: 'root'` kullandığından emin olun veya bileşenin `providers` dizisine ekleyin.
 
 ```angular-ts {prefer, header: 'Service uses providedIn: root'}
 import {Component, inject} from '@angular/core';
@@ -778,25 +778,25 @@ export class UserProfile {
 
 #### Debugging with the dependency path
 
-The dependency path in the error message shows the chain of injections that led to the failure.
+Hata mesajındaki bağımlılık yolu, hataya yol açan enjeksiyon zincirini gösterir.
 
 ```
 NullInjectorError: No provider for LoggerStore!
   Dependency path: App -> DataStore -> ApiClient -> LoggerStore
 ```
 
-This path tells you:
+Bu yol size şunu söyler:
 
-1. `App` injected `DataStore`
-2. `DataStore` injected `ApiClient`
-3. `ApiClient` tried to inject `LoggerStore`
-4. No provider for `LoggerStore` was found
+1. `App`, `DataStore`'u enjekte etti
+2. `DataStore`, `ApiClient`'ı enjekte etti
+3. `ApiClient`, `LoggerStore`'u enjekte etmeye çalıştı
+4. `LoggerStore` için sağlayıcı bulunamadı
 
-Start your investigation at the end of the chain (`LoggerStore`) and verify it has proper configuration.
+Araştırmanıza zincirin sonundan (`LoggerStore`) başlayın ve uygun yapılandırmaya sahip olduğunu doğrulayın.
 
 #### Checking provider availability with optional injection
 
-Use optional injection to check if a provider exists without throwing an error.
+Hata fırlatmadan bir sağlayıcının var olup olmadığını kontrol etmek için isteğe bağlı enjeksiyon kullanın.
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -812,13 +812,13 @@ export class DebugView {
 }
 ```
 
-Optional injection returns `null` if no provider is found, allowing you to handle the absence gracefully.
+İsteğe bağlı enjeksiyon, sağlayıcı bulunamazsa `null` döndürür ve yokluğu zarifçe ele almanıza olanak tanır.
 
 ### NG0203: inject() must be called from an injection context
 
-**Error code:** NG0203
+**Hata kodu:** NG0203
 
-This error occurs when you call `inject()` outside of a valid injection context. Angular requires `inject()` to be called synchronously during class construction or factory execution.
+Bu hata, `inject()` fonksiyonunu geçerli bir enjeksiyon bağlamı dışında çağırdığınızda oluşur. Angular, `inject()` fonksiyonunun sınıf oluşturma veya fabrika yürütme sırasında senkron olarak çağrılmasını gerektirir.
 
 ```
 NG0203: inject() must be called from an injection context such as a
@@ -828,9 +828,9 @@ used with `runInInjectionContext`.
 
 #### Valid injection contexts
 
-Angular allows `inject()` in these locations:
+Angular şu konumlarda `inject()` kullanımına izin verir:
 
-1. **Class field initializers**
+1. **Sınıf alan başlatıcıları**
 
    ```angular-ts
    import {Component, inject} from '@angular/core';
@@ -846,7 +846,7 @@ Angular allows `inject()` in these locations:
    }
    ```
 
-2. **Class constructor**
+2. **Sınıf constructor'ı**
 
    ```angular-ts
    import {Component, inject} from '@angular/core';
@@ -867,7 +867,7 @@ Angular allows `inject()` in these locations:
    }
    ```
 
-3. **Provider factory functions**
+3. **Sağlayıcı fabrika fonksiyonları**
 
    ```ts
    import {inject, InjectionToken} from '@angular/core';
@@ -882,7 +882,7 @@ Angular allows `inject()` in these locations:
    });
    ```
 
-4. **Inside runInInjectionContext()**
+4. **runInInjectionContext() içinde**
 
    ```angular-ts
    import {Component, inject, Injector} from '@angular/core';
@@ -904,33 +904,33 @@ Angular allows `inject()` in these locations:
    }
    ```
 
-Other injection contexts that `inject()` also works in include:
+`inject()` fonksiyonunun çalıştığı diğer enjeksiyon bağlamları şunlardır:
 
 - [provideAppInitializer](api/core/provideAppInitializer)
 - [provideEnvironmentInitializer](api/core/provideEnvironmentInitializer)
-- Functional [route guards](guide/routing/route-guards)
-- Functional [data resolvers](guide/routing/data-resolvers)
+- Fonksiyonel [rota korumaları](guide/routing/route-guards)
+- Fonksiyonel [veri çözücüleri](guide/routing/data-resolvers)
 
 #### When this error occurs
 
-This error occurs when:
+Bu hata şu durumlarda oluşur:
 
-- Calling `inject()` in lifecycle hooks (`ngOnInit`, `ngAfterViewInit`, etc.)
-- Calling `inject()` after `await` in async functions
-- Calling `inject()` in callbacks (`setTimeout`, `Promise.then()`, etc.)
-- Calling `inject()` outside of class construction phase
+- Yaşam döngüsü kancalarında (`ngOnInit`, `ngAfterViewInit`, vb.) `inject()` çağırma
+- Asenkron fonksiyonlarda `await` sonrasında `inject()` çağırma
+- Geri çağırmalarda (`setTimeout`, `Promise.then()`, vb.) `inject()` çağırma
+- Sınıf oluşturma aşaması dışında `inject()` çağırma
 
-See the "Incorrect inject() usage" section for detailed examples and solutions.
+Ayrıntılı örnekler ve çözümler için "Yanlış inject() kullanımı" bölümüne bakın.
 
 #### Solutions and workarounds
 
-**Solution 1:** Capture dependencies in field initializers (most common)
+**Çözüm 1:** Bağımlılıkları alan başlatıcılarında yakalayın (en yaygın)
 
 ```ts
 private userService = inject(UserClient) // Capture at class level
 ```
 
-**Solution 2:** Use `runInInjectionContext()` for callbacks
+**Çözüm 2:** Geri çağırmalar için `runInInjectionContext()` kullanın
 
 ```ts
 private injector = inject(Injector)
@@ -942,7 +942,7 @@ someCallback() {
 }
 ```
 
-**Solution 3:** Pass dependencies as parameters instead of injecting them
+**Çözüm 3:** Enjekte etmek yerine bağımlılıkları parametre olarak iletin
 
 ```ts
 // Instead of injecting inside a callback
@@ -960,59 +960,59 @@ setTimeout(() => {
 
 ### NG0200: Circular dependency detected
 
-**Error code:** NG0200
+**Hata kodu:** NG0200
 
-This error occurs when two or more services depend on each other, creating a circular dependency that Angular cannot resolve.
+Bu hata, iki veya daha fazla servis birbirine bağımlı olduğunda ve Angular'ın çözemediği döngüsel bir bağımlılık oluşturduğunda meydana gelir.
 
 ```
 NG0200: Circular dependency in DI detected for AuthClient
   Dependency path: AuthClient -> UserClient -> AuthClient
 ```
 
-The dependency path shows the cycle: `AuthClient` depends on `UserClient`, which depends back on `AuthClient`.
+Bağımlılık yolu döngüyü gösterir: `AuthClient`, `UserClient`'a bağımlıdır ve o da `AuthClient`'a geri bağımlıdır.
 
 #### Understanding the error
 
-Angular creates service instances by calling their constructors and injecting dependencies. When services depend on each other circularly, Angular cannot determine which to create first.
+Angular, constructor'larını çağırarak ve bağımlılıkları enjekte ederek servis örnekleri oluşturur. Servisler döngüsel olarak birbirine bağımlı olduğunda, Angular hangisini önce oluşturacağını belirleyemez.
 
 #### Common causes
 
-- Direct circular dependency (Service A → Service B → Service A)
-- Indirect circular dependency (Service A → Service B → Service C → Service A)
-- Import cycles in module files that also have service dependencies
+- Doğrudan döngüsel bağımlılık (Servis A -> Servis B -> Servis A)
+- Dolaylı döngüsel bağımlılık (Servis A -> Servis B -> Servis C -> Servis A)
+- Servis bağımlılıkları olan modül dosyalarındaki içe aktarma döngüleri
 
 #### Resolution strategies
 
-See the "Circular dependencies" section for detailed examples and solutions:
+Ayrıntılı örnekler ve çözümler için "Döngüsel bağımlılıklar" bölümüne bakın:
 
-1. **Restructure** - Extract shared logic to a third service (recommended)
-2. **Use events** - Replace direct dependencies with event-based communication
-3. **Lazy injection** - Use `Injector.get()` to defer one dependency (last resort)
+1. **Yeniden yapılandırma** - Paylaşılan mantığı üçüncü bir servise çıkarın (önerilen)
+2. **Olay kullanma** - Doğrudan bağımlılıkları olay tabanlı iletişimle değiştirin
+3. **Tembel enjeksiyon** - Bir bağımlılığı ertelemek için `Injector.get()` kullanın (son çare)
 
-Do NOT use `forwardRef()` for service circular dependencies. It only solves circular imports in component configurations.
+Servis döngüsel bağımlılıkları için `forwardRef()` KULLANMAYIN. Yalnızca bileşen yapılandırmalarındaki döngüsel içe aktarmaları çözer.
 
 ### Other DI error codes
 
-For detailed explanations and solutions for these errors, see the [Angular error reference](errors):
+Bu hatalar için ayrıntılı açıklamalar ve çözümler için [Angular hata referansına](errors) bakın:
 
-| Error Code              | Description                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| [NG0204](errors/NG0204) | Can't resolve all parameters - missing `@Injectable()` decorator                           |
-| [NG0205](errors/NG0205) | Injector already destroyed - accessing services after component destruction                |
-| [NG0207](errors/NG0207) | EnvironmentProviders in wrong context - using `provideHttpClient()` in component providers |
+| Error Code              | Description                                                                                     |
+| ----------------------- | ----------------------------------------------------------------------------------------------- |
+| [NG0204](errors/NG0204) | Tüm parametreler çözümlenemiyor - eksik `@Injectable()` dekoratörü                              |
+| [NG0205](errors/NG0205) | Enjektör zaten yok edildi - bileşen yok edildikten sonra servislere erişim                      |
+| [NG0207](errors/NG0207) | Yanlış bağlamda EnvironmentProviders - bileşen sağlayıcılarında `provideHttpClient()` kullanımı |
 
 ## Next steps
 
-When you encounter DI errors, remember to:
+DI hatalarıyla karşılaştığınızda şunları unutmayın:
 
-1. Read the error message and dependency path carefully
-2. Verify basic configuration (decorators, `providedIn`, imports)
-3. Check injection context and timing
-4. Use DevTools and logging to investigate
-5. Simplify and isolate the problem
+1. Hata mesajını ve bağımlılık yolunu dikkatlice okuyun
+2. Temel yapılandırmayı doğrulayın (dekoratörler, `providedIn`, içe aktarmalar)
+3. Enjeksiyon bağlamını ve zamanlamayı kontrol edin
+4. Araştırmak için DevTools ve günlükleme kullanın
+5. Sorunu sadeleştirin ve izole edin
 
-For a deeper understanding of specific topics on dependency injection, check out:
+Bağımlılık enjeksiyonuna ilişkin belirli konuların daha derin bir anlayışı için şunlara bakın:
 
-- [Understanding dependency injection](guide/di) - Core DI concepts and patterns
-- [Hierarchical dependency injection](guide/di/hierarchical-dependency-injection) - How the injector hierarchy works
-- [Testing with dependency injection](guide/testing) - Using TestBed and mocking dependencies
+- [Bağımlılık enjeksiyonunu anlama](guide/di) - Temel DI kavramları ve desenleri
+- [Hiyerarşik bağımlılık enjeksiyonu](guide/di/hierarchical-dependency-injection) - Enjektör hiyerarşisi nasıl çalışır
+- [Bağımlılık enjeksiyonu ile test etme](guide/testing) - TestBed kullanma ve bağımlılıkları taklit etme

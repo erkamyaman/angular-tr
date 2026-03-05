@@ -1,67 +1,67 @@
 # Service Worker configuration file
 
-This topic describes the properties of the service worker configuration file.
+Bu konu, service worker yapılandırma dosyasının özelliklerini açıklar.
 
 ## Modifying the configuration
 
-The `ngsw-config.json` JSON configuration file specifies which files and data URLs the Angular service worker should cache and how it should update the cached files and data.
-The [Angular CLI](tools/cli) processes this configuration file during `ng build`.
+`ngsw-config.json` JSON yapılandırma dosyası, Angular service worker'ının hangi dosyaları ve veri URL'lerini önbelleğe alması gerektiğini ve önbelleğe alınan dosyaları ve verileri nasıl güncellemesi gerektiğini belirtir.
+[Angular CLI](tools/cli) bu yapılandırma dosyasını `ng build` sırasında işler.
 
-All file paths must begin with `/`, which corresponds to the deployment directory — usually `dist/<project-name>` in CLI projects.
+Tüm dosya yolları `/` ile başlamalıdır; bu, dağıtım dizinine karşılık gelir — CLI projelerinde genellikle `dist/<project-name>`.
 
-Unless otherwise commented, patterns use a **limited\*** glob format that internally will be converted into regex:
+Aksi belirtilmedikçe, kalıplar dahili olarak regex'e dönüştürülecek **sınırlı\*** bir glob biçimi kullanır:
 
-| Glob formats | Details                                                                                                |
-| :----------- | :----------------------------------------------------------------------------------------------------- |
-| `**`         | Matches 0 or more path segments                                                                        |
-| `*`          | Matches 0 or more characters excluding `/`                                                             |
-| `?`          | Matches exactly one character excluding `/`                                                            |
-| `!` prefix   | Marks the pattern as being negative, meaning that only files that don't match the pattern are included |
+| Glob biçimleri | Ayrıntılar                                                                              |
+| :------------- | :-------------------------------------------------------------------------------------- |
+| `**`           | 0 veya daha fazla yol segmentiyle eşleşir                                               |
+| `*`            | `/` hariç 0 veya daha fazla karakterle eşleşir                                          |
+| `?`            | `/` hariç tam olarak bir karakterle eşleşir                                             |
+| `!` öneki      | Kalıbı negatif olarak işaretler, yani yalnızca kalıpla eşleşmeyen dosyalar dahil edilir |
 
 <docs-callout important title="Special characters need to be escaped">
-Pay attention that some characters with a special meaning in a regular expression are not escaped and also the pattern is not wrapped in `^`/`$` in the internal glob to regex conversion.
+Düzenli ifadede özel anlamı olan bazı karakterlerin kaçış karakteriyle yazılmadığına ve ayrıca dahili glob'dan regex'e dönüşümde kalıbın `^`/`$` ile sarılmadığına dikkat edin.
 
-`$` is a special character in regex that matches the end of the string and will not be automatically escaped when converting the glob pattern to a regular expression.
+`$`, regex'te dizenin sonuyla eşleşen özel bir karakterdir ve glob kalıbını düzenli ifadeye dönüştürürken otomatik olarak kaçış karakteriyle yazılmaz.
 
-If you want to literally match the `$` character, you have to escape it yourself (with `\\$`). For example, the glob pattern `/foo/bar/$value` results in an unmatchable expression, because it is impossible to have a string that has any characters after it has ended.
+`$` karakteriyle tam olarak eşleştirmek istiyorsanız, kendiniz kaçış karakteriyle yazmalısınız (`\\$` ile). Örneğin, `/foo/bar/$value` glob kalıbı eşleştirilemeyen bir ifadeyle sonuçlanır, çünkü bir dizenin sona erdikten sonra herhangi bir karaktere sahip olması imkansızdır.
 
-The pattern will not be automatically wrapped in `^` and `$` when converting it to a regular expression. Therefore, the patterns will partially match the request URLs.
+Kalıp, düzenli ifadeye dönüştürülürken otomatik olarak `^` ve `$` ile sarılmaz. Bu nedenle, kalıplar istek URL'leriyle kısmen eşleşir.
 
-If you want your patterns to match the beginning and/or end of URLs, you can add `^`/`$` yourself. For example, the glob pattern `/foo/bar/*.js` will match both `.js` and `.json` files. If you want to only match `.js` files, use `/foo/bar/*.js$`.
+Kalıplarınızın URL'lerin başlangıcı ve/veya sonuyla eşleşmesini istiyorsanız, kendiniz `^`/`$` ekleyebilirsiniz. Örneğin, `/foo/bar/*.js` glob kalıbı hem `.js` hem de `.json` dosyalarıyla eşleşir. Yalnızca `.js` dosyalarıyla eşleştirmek istiyorsanız, `/foo/bar/*.js$` kullanın.
 </docs-callout>
 
-Example patterns:
+Örnek kalıplar:
 
-| Patterns     | Details                               |
-| :----------- | :------------------------------------ |
-| `/**/*.html` | Specifies all HTML files              |
-| `/*.html`    | Specifies only HTML files in the root |
-| `!/**/*.map` | Exclude all sourcemaps                |
+| Kalıplar     | Ayrıntılar                                 |
+| :----------- | :----------------------------------------- |
+| `/**/*.html` | Tüm HTML dosyalarını belirtir              |
+| `/*.html`    | Yalnızca kökteki HTML dosyalarını belirtir |
+| `!/**/*.map` | Tüm sourcemap'leri hariç tutar             |
 
 ## Service worker configuration properties
 
-The following sections describe each property of the configuration file.
+Aşağıdaki bölümler yapılandırma dosyasının her bir özelliğini açıklar.
 
 ### `appData`
 
-This section enables you to pass any data you want that describes this particular version of the application.
-The `SwUpdate` service includes that data in the update notifications.
-Many applications use this section to provide additional information for the display of UI popups, notifying users of the available update.
+Bu bölüm, uygulamanın bu belirli sürümünü tanımlayan istediğiniz herhangi bir veriyi geçirmenizi sağlar.
+`SwUpdate` servisi bu veriyi güncelleme bildirimlerine dahil eder.
+Birçok uygulama bu bölümü, kullanıcıları mevcut güncelleme hakkında bilgilendiren UI açılır pencerelerinin görüntülenmesi için ek bilgi sağlamak amacıyla kullanır.
 
 ### `index`
 
-Specifies the file that serves as the index page to satisfy navigation requests.
-Usually this is `/index.html`.
+Navigasyon isteklerini karşılamak için dizin sayfası olarak hizmet veren dosyayı belirtir.
+Genellikle bu `/index.html`'dir.
 
 ### `assetGroups`
 
-_Assets_ are resources that are part of the application version that update along with the application.
-They can include resources loaded from the page's origin as well as third-party resources loaded from CDNs and other external URLs.
-As not all such external URLs might be known at build time, URL patterns can be matched.
+_Varlıklar_, uygulamayla birlikte güncellenen uygulama sürümünün parçası olan kaynaklardır.
+Sayfanın kaynağından yüklenen kaynakları ve CDN'lerden ve diğer harici URL'lerden yüklenen üçüncü taraf kaynaklarını içerebilir.
+Derleme zamanında tüm bu tür harici URL'ler bilinmeyebileceğinden, URL kalıpları eşleştirilebilir.
 
-HELPFUL: For the service worker to handle resources that are loaded from different origins, make sure that [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS) is correctly configured on each origin's server.
+HELPFUL: Service worker'ın farklı kaynaklardan yüklenen kaynakları işlemesi için, her kaynağın sunucusunda [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS)'un doğru şekilde yapılandırıldığından emin olun.
 
-This field contains an array of asset groups, each of which defines a set of asset resources and the policy by which they are cached.
+Bu alan, her biri bir varlık kaynağı setini ve önbelleğe alınma politikasını tanımlayan bir varlık grupları dizisi içerir.
 
 ```ts
 {
@@ -76,16 +76,16 @@ This field contains an array of asset groups, each of which defines a set of ass
 }
 ```
 
-HELPFUL: When the ServiceWorker handles a request, it checks asset groups in the order in which they appear in `ngsw-config.json`.
-The first asset group that matches the requested resource handles the request.
+HELPFUL: ServiceWorker bir isteği işlediğinde, varlık gruplarını `ngsw-config.json`'da göründükleri sırayla kontrol eder.
+İstenen kaynakla eşleşen ilk varlık grubu isteği işler.
 
-It is recommended that you put the more specific asset groups higher in the list.
-For example, an asset group that matches `/foo.js` should appear before one that matches `*.js`.
+Daha spesifik varlık gruplarını listenin üstüne koymanız önerilir.
+Örneğin, `/foo.js` ile eşleşen bir varlık grubu, `*.js` ile eşleşen birinden önce görünmelidir.
 
-Each asset group specifies both a group of resources and a policy that governs them.
-This policy determines when the resources are fetched and what happens when changes are detected.
+Her varlık grubu hem bir kaynak grubunu hem de onları yöneten bir politikayı belirtir.
+Bu politika, kaynakların ne zaman alınacağını ve değişiklikler tespit edildiğinde ne olacağını belirler.
 
-Asset groups follow the Typescript interface shown here:
+Varlık grupları burada gösterilen Typescript arayüzünü takip eder:
 
 ```ts
 interface AssetGroup {
@@ -102,63 +102,63 @@ interface AssetGroup {
 }
 ```
 
-Each `AssetGroup` is defined by the following asset group properties.
+Her `AssetGroup` aşağıdaki varlık grubu özellikleriyle tanımlanır.
 
 #### `name`
 
-A `name` is mandatory.
-It identifies this particular group of assets between versions of the configuration.
+Bir `name` zorunludur.
+Yapılandırmanın sürümleri arasında bu belirli varlık grubunu tanımlar.
 
 #### `installMode`
 
-The `installMode` determines how these resources are initially cached.
-The `installMode` can be either of two values:
+`installMode`, bu kaynakların başlangıçta nasıl önbelleğe alınacağını belirler.
+`installMode` iki değerden biri olabilir:
 
-| Values     | Details                                                                                                                                                                                                                                                                                                                                                                                       |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prefetch` | Tells the Angular service worker to fetch every single listed resource while it's caching the current version of the application. This is bandwidth-intensive but ensures resources are available whenever they're requested, even if the browser is currently offline.                                                                                                                       |
-| `lazy`     | Does not cache any of the resources up front. Instead, the Angular service worker only caches resources for which it receives requests. This is an on-demand caching mode. Resources that are never requested are not cached. This is useful for things like images at different resolutions, so the service worker only caches the correct assets for the particular screen and orientation. |
+| Değerler   | Ayrıntılar                                                                                                                                                                                                                                                                                                                                                                                          |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prefetch` | Angular service worker'a, uygulamanın geçerli sürümünü önbelleğe alırken listelenen her bir kaynağı indirmesini söyler. Bu bant genişliği yoğundur ancak tarayıcı şu anda çevrimdışı olsa bile kaynakların istendiğinde kullanılabilir olmasını sağlar.                                                                                                                                             |
+| `lazy`     | Kaynakların hiçbirini önceden önbelleğe almaz. Bunun yerine, Angular service worker yalnızca istek aldığı kaynakları önbelleğe alır. Bu isteğe bağlı bir önbellekleme modudur. Hiç istenmeyen kaynaklar önbelleğe alınmaz. Bu, farklı çözünürlüklerdeki resimler gibi şeyler için kullanışlıdır, böylece service worker yalnızca belirli ekran ve yönlendirme için doğru varlıkları önbelleğe alır. |
 
-Defaults to `prefetch`.
+Varsayılan değer `prefetch`'tir.
 
 #### `updateMode`
 
-For resources already in the cache, the `updateMode` determines the caching behavior when a new version of the application is discovered.
-Any resources in the group that have changed since the previous version are updated in accordance with `updateMode`.
+Zaten önbellekte bulunan kaynaklar için, `updateMode`, uygulamanın yeni bir sürümü keşfedildiğinde önbellekleme davranışını belirler.
+Önceki sürümden bu yana değişmiş olan gruptaki herhangi bir kaynak, `updateMode`'a uygun olarak güncellenir.
 
-| Values     | Details                                                                                                                                                                                                                                  |
-| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prefetch` | Tells the service worker to download and cache the changed resources immediately.                                                                                                                                                        |
-| `lazy`     | Tells the service worker to not cache those resources. Instead, it treats them as unrequested and waits until they're requested again before updating them. An `updateMode` of `lazy` is only valid if the `installMode` is also `lazy`. |
+| Değerler   | Ayrıntılar                                                                                                                                                                                                                                            |
+| :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prefetch` | Service worker'a değişen kaynakları hemen indirip önbelleğe almasını söyler.                                                                                                                                                                          |
+| `lazy`     | Service worker'a bu kaynakları önbelleğe almamasını söyler. Bunun yerine, onları istenmemiş olarak ele alır ve güncellenmeden önce tekrar istenene kadar bekler. `lazy` olan bir `updateMode`, yalnızca `installMode` da `lazy` olduğunda geçerlidir. |
 
-Defaults to the value `installMode` is set to.
+Varsayılan değer, `installMode`'un ayarlandığı değerdir.
 
 #### `resources`
 
-This section describes the resources to cache, broken up into the following groups:
+Bu bölüm, önbelleğe alınacak kaynakları aşağıdaki gruplara ayrılmış olarak açıklar:
 
-| Resource groups | Details                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `files`         | Lists patterns that match files in the distribution directory. These can be single files or glob-like patterns that match a number of files.                                                                                                                                                                                                                                                                  |
-| `urls`          | Includes both URLs and URL patterns that are matched at runtime. These resources are not fetched directly and do not have content hashes, but they are cached according to their HTTP headers. This is most useful for CDNs such as the Google Fonts service. <br /> _(Negative glob patterns are not supported and `?` will be matched literally; that is, it will not match any character other than `?`.)_ |
+| Kaynak grupları | Ayrıntılar                                                                                                                                                                                                                                                                                                                                                                              |
+| :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `files`         | Dağıtım dizinindeki dosyalarla eşleşen kalıpları listeler. Bunlar tek dosyalar veya birden çok dosyayla eşleşen glob benzeri kalıplar olabilir.                                                                                                                                                                                                                                         |
+| `urls`          | Çalışma zamanında eşleştirilen hem URL'leri hem de URL kalıplarını içerir. Bu kaynaklar doğrudan alınmaz ve içerik hash'lerine sahip değildir, ancak HTTP başlıklarına göre önbelleğe alınır. Bu en çok Google Fonts servisi gibi CDN'ler için kullanışlıdır. <br /> _(Negatif glob kalıpları desteklenmez ve `?` tam anlamıyla eşleştirilir; yani yalnızca `?` karakteriyle eşleşir.)_ |
 
 #### `cacheQueryOptions`
 
-These options are used to modify the matching behavior of requests.
-They are passed to the browsers `Cache#match` function.
-See [MDN](https://developer.mozilla.org/docs/Web/API/Cache/match) for details.
-Currently, only the following options are supported:
+Bu seçenekler, isteklerin eşleştirme davranışını değiştirmek için kullanılır.
+Tarayıcıların `Cache#match` fonksiyonuna geçirilir.
+Ayrıntılar için [MDN](https://developer.mozilla.org/docs/Web/API/Cache/match) belgelerine bakın.
+Şu anda yalnızca aşağıdaki seçenekler desteklenmektedir:
 
-| Options        | Details                                       |
-| :------------- | :-------------------------------------------- |
-| `ignoreSearch` | Ignore query parameters. Defaults to `false`. |
+| Seçenekler     | Ayrıntılar                                                     |
+| :------------- | :------------------------------------------------------------- |
+| `ignoreSearch` | Sorgu parametrelerini yok sayar. Varsayılan değer `false`'tur. |
 
 ### `dataGroups`
 
-Unlike asset resources, data requests are not versioned along with the application.
-They're cached according to manually-configured policies that are more useful for situations such as API requests and other data dependencies.
+Varlık kaynaklarının aksine, veri istekleri uygulama ile birlikte sürümlenmez.
+API istekleri ve diğer veri bağımlılıkları gibi durumlar için daha kullanışlı olan manuel olarak yapılandırılmış politikalara göre önbelleğe alınır.
 
-This field contains an array of data groups, each of which defines a set of data resources and the policy by which they are cached.
+Bu alan, her biri bir veri kaynağı setini ve önbelleğe alınma politikasını tanımlayan bir veri grupları dizisi içerir.
 
 ```json
 {
@@ -173,13 +173,13 @@ This field contains an array of data groups, each of which defines a set of data
 }
 ```
 
-HELPFUL: When the ServiceWorker handles a request, it checks data groups in the order in which they appear in `ngsw-config.json`.
-The first data group that matches the requested resource handles the request.
+HELPFUL: ServiceWorker bir isteği işlediğinde, veri gruplarını `ngsw-config.json`'da göründükleri sırayla kontrol eder.
+İstenen kaynakla eşleşen ilk veri grubu isteği işler.
 
-It is recommended that you put the more specific data groups higher in the list.
-For example, a data group that matches `/api/foo.json` should appear before one that matches `/api/*.json`.
+Daha spesifik veri gruplarını listenin üstüne koymanız önerilir.
+Örneğin, `/api/foo.json` ile eşleşen bir veri grubu, `/api/*.json` ile eşleşen birinden önce görünmelidir.
 
-Data groups follow this Typescript interface:
+Veri grupları bu Typescript arayüzünü takip eder:
 
 ```ts
 export interface DataGroup {
@@ -199,159 +199,159 @@ export interface DataGroup {
 }
 ```
 
-Each `DataGroup` is defined by the following data group properties.
+Her `DataGroup` aşağıdaki veri grubu özellikleriyle tanımlanır.
 
 #### `name`
 
-Similar to `assetGroups`, every data group has a `name` which uniquely identifies it.
+`assetGroups`'a benzer şekilde, her veri grubunun onu benzersiz şekilde tanımlayan bir `name`'i vardır.
 
 #### `urls`
 
-A list of URL patterns.
-URLs that match these patterns are cached according to this data group's policy.
-Only non-mutating requests (GET and HEAD) are cached.
+URL kalıplarının bir listesi.
+Bu kalıplarla eşleşen URL'ler, bu veri grubunun politikasına göre önbelleğe alınır.
+Yalnızca değiştirici olmayan istekler (GET ve HEAD) önbelleğe alınır.
 
-- Negative glob patterns are not supported
-- `?` is matched literally; that is, it matches _only_ the character `?`
+- Negatif glob kalıpları desteklenmez
+- `?` tam anlamıyla eşleştirilir; yani _yalnızca_ `?` karakteriyle eşleşir
 
 #### `version`
 
-Occasionally APIs change formats in a way that is not backward-compatible.
-A new version of the application might not be compatible with the old API format and thus might not be compatible with existing cached resources from that API.
+Zaman zaman API'ler geriye dönük uyumlu olmayan bir şekilde biçim değiştirir.
+Uygulamanın yeni bir sürümü eski API biçimiyle uyumlu olmayabilir ve dolayısıyla o API'den mevcut önbelleğe alınmış kaynaklarla uyumlu olmayabilir.
 
-`version` provides a mechanism to indicate that the resources being cached have been updated in a backwards-incompatible way, and that the old cache entries —those from previous versions— should be discarded.
+`version`, önbelleğe alınan kaynakların geriye dönük uyumsuz bir şekilde güncellendiğini ve eski önbellek girişlerinin — önceki sürümlerdeki girişlerin — atılması gerektiğini belirtmek için bir mekanizma sağlar.
 
-`version` is an integer field and defaults to `1`.
+`version` bir tam sayı alanıdır ve varsayılan değeri `1`'dir.
 
 #### `cacheConfig`
 
-The following properties define the policy by which matching requests are cached.
+Aşağıdaki özellikler, eşleşen isteklerin önbelleğe alınma politikasını tanımlar.
 
 ##### `maxSize`
 
-The maximum number of entries, or responses, in the cache.
+Önbellekteki maksimum giriş veya yanıt sayısı.
 
-CRITICAL: Open-ended caches can grow in unbounded ways and eventually exceed storage quotas, resulting in eviction.
+CRITICAL: Açık uçlu önbellekler sınırsız şekilde büyüyebilir ve sonunda depolama kotalarını aşarak tahliyeye neden olabilir.
 
 ##### `maxAge`
 
-The `maxAge` parameter indicates how long responses are allowed to remain in the cache before being considered invalid and evicted. `maxAge` is a duration string, using the following unit suffixes:
+`maxAge` parametresi, yanıtların geçersiz sayılıp tahliye edilmeden önce ne kadar süre önbellekte kalmasına izin verildiğini belirtir. `maxAge`, aşağıdaki birim soneklerini kullanan bir süre dizesidir:
 
-| Suffixes | Details      |
-| :------- | :----------- |
-| `d`      | Days         |
-| `h`      | Hours        |
-| `m`      | Minutes      |
-| `s`      | Seconds      |
-| `u`      | Milliseconds |
+| Sonekler | Ayrıntılar |
+| :------- | :--------- |
+| `d`      | Gün        |
+| `h`      | Saat       |
+| `m`      | Dakika     |
+| `s`      | Saniye     |
+| `u`      | Milisaniye |
 
-For example, the string `3d12h` caches content for up to three and a half days.
+Örneğin, `3d12h` dizesi içeriği üç buçuk güne kadar önbelleğe alır.
 
 ##### `timeout`
 
-This duration string specifies the network timeout.
-The network timeout is how long the Angular service worker waits for the network to respond before using a cached response, if configured to do so.
-`timeout` is a duration string, using the following unit suffixes:
+Bu süre dizesi ağ zaman aşımını belirtir.
+Ağ zaman aşımı, Angular service worker'ın yapılandırılmışsa önbelleğe alınmış bir yanıt kullanmadan önce ağın yanıt vermesini ne kadar süre beklediğidir.
+`timeout`, aşağıdaki birim soneklerini kullanan bir süre dizesidir:
 
-| Suffixes | Details      |
-| :------- | :----------- |
-| `d`      | Days         |
-| `h`      | Hours        |
-| `m`      | Minutes      |
-| `s`      | Seconds      |
-| `u`      | Milliseconds |
+| Sonekler | Ayrıntılar |
+| :------- | :--------- |
+| `d`      | Gün        |
+| `h`      | Saat       |
+| `m`      | Dakika     |
+| `s`      | Saniye     |
+| `u`      | Milisaniye |
 
-For example, the string `5s30u` translates to five seconds and 30 milliseconds of network timeout.
+Örneğin, `5s30u` dizesi beş saniye ve 30 milisaniye ağ zaman aşımına karşılık gelir.
 
 ##### `refreshAhead`
 
-This duration string specifies the time ahead of the expiration of a cached resource when the Angular service worker should proactively attempt to refresh the resource from the network.
-The `refreshAhead` duration is an optional configuration that determines how much time before the expiration of a cached response the service worker should initiate a request to refresh the resource from the network.
+Bu süre dizesi, önbelleğe alınmış bir kaynağın süresinin dolmasından ne kadar önce Angular service worker'ın kaynağı ağdan proaktif olarak yenilemeye çalışması gerektiğini belirtir.
+`refreshAhead` süresi, önbelleğe alınmış bir yanıtın süresinin dolmasından ne kadar önce service worker'ın kaynağı ağdan yenilemek için bir istek başlatması gerektiğini belirleyen isteğe bağlı bir yapılandırmadır.
 
-| Suffixes | Details      |
-| :------- | :----------- |
-| `d`      | Days         |
-| `h`      | Hours        |
-| `m`      | Minutes      |
-| `s`      | Seconds      |
-| `u`      | Milliseconds |
+| Sonekler | Ayrıntılar |
+| :------- | :--------- |
+| `d`      | Gün        |
+| `h`      | Saat       |
+| `m`      | Dakika     |
+| `s`      | Saniye     |
+| `u`      | Milisaniye |
 
-For example, the string `1h30m` translates to one hour and 30 minutes ahead of the expiration time.
+Örneğin, `1h30m` dizesi süre dolma zamanından bir saat ve 30 dakika öncesine karşılık gelir.
 
 ##### `strategy`
 
-The Angular service worker can use either of two caching strategies for data resources.
+Angular service worker, veri kaynakları için iki önbellekleme stratejisinden birini kullanabilir.
 
-| Caching strategies | Details                                                                                                                                                                                                                                                                                                                                                   |
-| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `performance`      | The default, optimizes for responses that are as fast as possible. If a resource exists in the cache, the cached version is used, and no network request is made. This allows for some staleness, depending on the `maxAge`, in exchange for better performance. This is suitable for resources that don't change often; for example, user avatar images. |
-| `freshness`        | Optimizes for currency of data, preferentially fetching requested data from the network. Only if the network times out, according to `timeout`, does the request fall back to the cache. This is useful for resources that change frequently; for example, account balances.                                                                              |
+| Önbellekleme stratejileri | Ayrıntılar                                                                                                                                                                                                                                                                                                                                    |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `performance`             | Varsayılan, mümkün olduğunca hızlı yanıtlar için optimize eder. Bir kaynak önbellekte mevcutsa, önbelleğe alınmış sürüm kullanılır ve ağ isteği yapılmaz. Bu, `maxAge`'e bağlı olarak biraz eski veriye izin verir, bunun karşılığında daha iyi performans sunar. Bu, kullanıcı avatar resimleri gibi sık değişmeyen kaynaklar için uygundur. |
+| `freshness`               | Verilerin güncelliği için optimize eder, istenen verileri tercihen ağdan alır. Yalnızca ağ, `timeout`'a göre zaman aşımına uğrarsa, istek önbelleğe geri döner. Bu, hesap bakiyeleri gibi sık değişen kaynaklar için kullanışlıdır.                                                                                                           |
 
-HELPFUL: You can also emulate a third strategy, [staleWhileRevalidate](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#stale-while-revalidate), which returns cached data if it is available, but also fetches fresh data from the network in the background for next time.
-To use this strategy set `strategy` to `freshness` and `timeout` to `0u` in `cacheConfig`.
+HELPFUL: Önbelleğe alınmış veri mevcutsa döndüren ancak aynı zamanda bir sonraki sefer için arka planda ağdan taze veri alan üçüncü bir strateji olan [staleWhileRevalidate](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#stale-while-revalidate)'i de emüle edebilirsiniz.
+Bu stratejiyi kullanmak için `cacheConfig`'de `strategy`'yi `freshness` ve `timeout`'u `0u` olarak ayarlayın.
 
-This essentially does the following:
+Bu esasen şunları yapar:
 
-1. Try to fetch from the network first.
-2. If the network request does not complete immediately, that is after a timeout of 0&nbsp;ms, ignore the cache age and fall back to the cached value.
-3. Once the network request completes, update the cache for future requests.
-4. If the resource does not exist in the cache, wait for the network request anyway.
+1. Önce ağdan almayı dener.
+2. Ağ isteği hemen tamamlanmazsa, yani 0&nbsp;ms'lik bir zaman aşımından sonra, önbellek yaşını yok sayar ve önbelleğe alınmış değere geri döner.
+3. Ağ isteği tamamlandığında, gelecek istekler için önbelleği günceller.
+4. Kaynak önbellekte mevcut değilse, yine de ağ isteğini bekler.
 
 ##### `cacheOpaqueResponses`
 
-Whether the Angular service worker should cache opaque responses or not.
+Angular service worker'ın opak yanıtları önbelleğe alıp almayacağı.
 
-If not specified, the default value depends on the data group's configured strategy:
+Belirtilmezse, varsayılan değer veri grubunun yapılandırılmış stratejisine bağlıdır:
 
-| Strategies                             | Details                                                                                                                                                                                                                                                                                                                     |
-| :------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Groups with the `freshness` strategy   | The default value is `true` and the service worker caches opaque responses. These groups will request the data every time and only fall back to the cached response when offline or on a slow network. Therefore, it doesn't matter if the service worker caches an error response.                                         |
-| Groups with the `performance` strategy | The default value is `false` and the service worker doesn't cache opaque responses. These groups would continue to return a cached response until `maxAge` expires, even if the error was due to a temporary network or server issue. Therefore, it would be problematic for the service worker to cache an error response. |
+| Stratejiler                              | Ayrıntılar                                                                                                                                                                                                                                                                                                                         |
+| :--------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `freshness` stratejisine sahip gruplar   | Varsayılan değer `true`'dur ve service worker opak yanıtları önbelleğe alır. Bu gruplar her seferinde veriyi isteyecek ve yalnızca çevrimdışıyken veya yavaş bir ağdayken önbelleğe alınmış yanıta geri dönecektir. Bu nedenle, service worker'ın bir hata yanıtını önbelleğe alması önemli değildir.                              |
+| `performance` stratejisine sahip gruplar | Varsayılan değer `false`'tur ve service worker opak yanıtları önbelleğe almaz. Bu gruplar, hata geçici bir ağ veya sunucu sorunundan kaynaklanmış olsa bile, `maxAge` süresi dolana kadar önbelleğe alınmış bir yanıt döndürmeye devam edecektir. Bu nedenle, service worker'ın bir hata yanıtını önbelleğe alması sorunlu olurdu. |
 
 <docs-callout title="Comment on opaque responses">
 
-In case you are not familiar, an [opaque response](https://fetch.spec.whatwg.org#concept-filtered-response-opaque) is a special type of response returned when requesting a resource that is on a different origin which doesn't return CORS headers.
-One of the characteristics of an opaque response is that the service worker is not allowed to read its status, meaning it can't check if the request was successful or not.
-See [Introduction to `fetch()`](https://developers.google.com/web/updates/2015/03/introduction-to-fetch#response_types) for more details.
+Aşina değilseniz, [opak yanıt](https://fetch.spec.whatwg.org#concept-filtered-response-opaque), CORS başlıkları döndürmeyen farklı bir kaynaktaki bir kaynağı talep ederken döndürülen özel bir yanıt türüdür.
+Opak yanıtın özelliklerinden biri, service worker'ın durumunu okumasına izin verilmemesidir, yani isteğin başarılı olup olmadığını kontrol edemez.
+Daha fazla ayrıntı için [`fetch()`'e Giriş](https://developers.google.com/web/updates/2015/03/introduction-to-fetch#response_types) sayfasına bakın.
 
-If you are not able to implement CORS — for example, if you don't control the origin — prefer using the `freshness` strategy for resources that result in opaque responses.
+CORS uygulayamıyorsanız — örneğin kaynağı kontrol etmiyorsanız — opak yanıtlarla sonuçlanan kaynaklar için `freshness` stratejisini kullanmayı tercih edin.
 
 </docs-callout>
 
 #### `cacheQueryOptions`
 
-See [assetGroups](#assetgroups) for details.
+Ayrıntılar için [assetGroups](#assetgroups) bölümüne bakın.
 
 ### `navigationUrls`
 
-This optional section enables you to specify a custom list of URLs that will be redirected to the index file.
+Bu isteğe bağlı bölüm, dizin dosyasına yönlendirilecek özel bir URL listesi belirtmenizi sağlar.
 
 #### Handling navigation requests
 
-The ServiceWorker redirects navigation requests that don't match any `asset` or `data` group to the specified [index file](#index).
-A request is considered to be a navigation request if:
+ServiceWorker, herhangi bir `asset` veya `data` grubuyla eşleşmeyen navigasyon isteklerini belirtilen [dizin dosyasına](#index) yönlendirir.
+Bir istek, aşağıdaki durumlarda navigasyon isteği olarak kabul edilir:
 
-- Its [method](https://developer.mozilla.org/docs/Web/API/Request/method) is `GET`
-- Its [mode](https://developer.mozilla.org/docs/Web/API/Request/mode) is `navigation`
-- It accepts a `text/html` response as determined by the value of the `Accept` header
-- Its URL matches the following criteria:
-  - The URL must not contain a file extension (that is, a `.`) in the last path segment
-  - The URL must not contain `__`
+- [Metodu](https://developer.mozilla.org/docs/Web/API/Request/method) `GET`'tir
+- [Modu](https://developer.mozilla.org/docs/Web/API/Request/mode) `navigation`'dır
+- `Accept` başlığının değerine göre belirlenen şekilde bir `text/html` yanıtını kabul eder
+- URL'si aşağıdaki kriterlere uygundur:
+  - URL, son yol segmentinde bir dosya uzantısı (yani `.`) içermemelidir
+  - URL, `__` içermemelidir
 
-HELPFUL: To configure whether navigation requests are sent through to the network or not, see the [navigationRequestStrategy](#navigationrequeststrategy) section and [applicationMaxAge](#applicationmaxage) sections.
+HELPFUL: Navigasyon isteklerinin ağa gönderilip gönderilmeyeceğini yapılandırmak için [navigationRequestStrategy](#navigationrequeststrategy) bölümüne ve [applicationMaxAge](#applicationmaxage) bölümlerine bakın.
 
 #### Matching navigation request URLs
 
-While these default criteria are fine in most cases, it is sometimes desirable to configure different rules.
-For example, you might want to ignore specific routes, such as those that are not part of the Angular app, and pass them through to the server.
+Bu varsayılan kriterler çoğu durumda yeterli olsa da, bazen farklı kurallar yapılandırmak istenebilir.
+Örneğin, Angular uygulamasının parçası olmayan belirli rotaları yok saymak ve bunları sunucuya iletmek isteyebilirsiniz.
 
-This field contains an array of URLs and [glob-like](#modifying-the-configuration) URL patterns that are matched at runtime.
-It can contain both negative patterns (that is, patterns starting with `!`) and non-negative patterns and URLs.
+Bu alan, çalışma zamanında eşleştirilen URL'ler ve [glob benzeri](#modifying-the-configuration) URL kalıplarının bir dizisini içerir.
+Hem negatif kalıpları (yani `!` ile başlayan kalıplar) hem de negatif olmayan kalıpları ve URL'leri içerebilir.
 
-Only requests whose URLs match _any_ of the non-negative URLs/patterns and _none_ of the negative ones are considered navigation requests.
-The URL query is ignored when matching.
+Yalnızca URL'leri negatif olmayan URL'lerden/kalıplardan _herhangi biriyle_ eşleşen ve negatif olanların _hiçbiriyle_ eşleşmeyen istekler navigasyon istekleri olarak kabul edilir.
+Eşleştirme sırasında URL sorgusu yok sayılır.
 
-If the field is omitted, it defaults to:
+Alan atlanırsa, varsayılan olarak şu değeri alır:
 
 ```ts
 [
@@ -364,7 +364,7 @@ If the field is omitted, it defaults to:
 
 ### `navigationRequestStrategy`
 
-This optional property enables you to configure how the service worker handles navigation requests:
+Bu isteğe bağlı özellik, service worker'ın navigasyon isteklerini nasıl işlediğini yapılandırmanızı sağlar:
 
 ```json
 {
@@ -372,13 +372,13 @@ This optional property enables you to configure how the service worker handles n
 }
 ```
 
-| Possible values | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `'performance'` | The default setting. Serves the specified [index file](#index), which is typically cached.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `'freshness'`   | Passes the requests through to the network and falls back to the `performance` behavior when offline. This value is useful when the server redirects the navigation requests elsewhere using a `3xx` HTTP redirect status code. Reasons for using this value include: <ul> <li> Redirecting to an authentication website when authentication is not handled by the application </li> <li> Redirecting specific URLs to avoid breaking existing links/bookmarks after a website redesign </li> <li> Redirecting to a different website, such as a server-status page, while a page is temporarily down </li> </ul> |
+| Olası değerler  | Ayrıntılar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `'performance'` | Varsayılan ayar. Belirtilen [dizin dosyasını](#index) sunar ve bu genellikle önbelleğe alınmıştır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `'freshness'`   | İstekleri ağa iletir ve çevrimdışı olduğunda `performance` davranışına geri döner. Bu değer, sunucu navigasyon isteklerini `3xx` HTTP yönlendirme durum koduyla başka bir yere yönlendirdiğinde kullanışlıdır. Bu değerin kullanılma nedenleri şunlardır: <ul> <li> Kimlik doğrulama uygulama tarafından işlenmediğinde bir kimlik doğrulama web sitesine yönlendirme </li> <li> Bir web sitesi yeniden tasarımından sonra mevcut bağlantıları/yer imlerini bozmamak için belirli URL'leri yönlendirme </li> <li> Bir sayfa geçici olarak kapalıyken farklı bir web sitesine, örneğin sunucu durum sayfasına yönlendirme </li> </ul> |
 
-IMPORTANT: The `freshness` strategy usually results in more requests sent to the server, which can increase response latency. It is recommended that you use the default performance strategy whenever possible.
+IMPORTANT: `freshness` stratejisi genellikle sunucuya daha fazla istek gönderilmesine neden olur ve bu da yanıt gecikmesini artırabilir. Mümkün olduğunda varsayılan performans stratejisini kullanmanız önerilir.
 
 ### `applicationMaxAge`
 
-This optional property enables you to configure how long the service worker will cache any requests. Within the `maxAge`, files will be served from cache. Beyond it, all requests will only be served from the network, including asset and data requests.
+Bu isteğe bağlı özellik, service worker'ın tüm istekleri ne kadar süre önbelleğe alacağını yapılandırmanızı sağlar. `maxAge` süresi içinde dosyalar önbellekten sunulur. Bu sürenin ötesinde, varlık ve veri istekleri dahil tüm istekler yalnızca ağdan sunulur.

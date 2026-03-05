@@ -1,114 +1,105 @@
 <docs-decorative-header title="What is Angular?" imgSrc="adev/src/assets/images/globe.svg" gradientBackground="true">
-  Angular is a web framework that empowers<br/>
-  developers to build fast, reliable applications that users love.
+  Angular, geliştiricilerin hızlı, güvenilir ve<br/>
+  kullanıcıların seveceği uygulamalar oluşturmasını sağlayan bir web çerçevesidir.
 </docs-decorative-header>
 
 <div style="margin: 2em">
-  Maintained by a dedicated team at Google, Angular provides a broad suite of tools, APIs, and
-  libraries to simplify and streamline your development workflow. Angular gives you
-  a solid platform on which to build fast, reliable applications that scale with both the size of
-  your team and the size of your codebase. Angular.dev is the official home for Angular documentation.
+  Google'daki özel bir ekip tarafından sürdürülen Angular, geliştirme iş akışınızı basitleştirmek ve kolaylaştırmak için geniş bir araç, API ve kütüphane paketi sunar. Angular, hem ekibinizin büyüklüğüne hem de kod tabanınızın büyüklüğüne göre ölçeklenen hızlı ve güvenilir uygulamalar oluşturmak için sağlam bir platform sağlar. Angular.dev, Angular dokümantasyonunun resmi adresidir.
 </div>
 
 <docs-nav-card title="Want to see some code?" iconImgSrc="adev/src/assets/icons/star.svg">
   <docs-nav-link title="Essentials" iconName="docs" href="essentials" iconImgSrc="adev/src/assets/icons/docs.svg">
-    An overview of what it's like to use Angular
+    Angular kullanmanın nasıl bir deneyim olduğuna dair genel bir bakış
   </docs-nav-link>
   <docs-nav-link title="Tutorials" iconName="code"  href="tutorials" iconImgSrc="adev/src/assets/icons/tutorials.svg">
-    Step-by-step instructions in your browser
+    Tarayıcınızda adım adım talimatlar
   </docs-nav-link>
 </docs-nav-card>
 
 <docs-card-container headerTitle="Features that power your development" headerImgSrc="adev/src/assets/images/learn-angular-browser-bw.svg">
   <docs-card title="Components" href="essentials/components" link="Get started with Components" iconImgSrc="adev/src/assets/icons/components.svg">
-    Angular components make it easy to split your code into well-encapsulated parts.
+    Angular bileşenleri, kodunuzu iyi kapsüllenmiş parçalara ayırmayı kolaylaştırır.
   </docs-card>
   <docs-card title="Angular Signals" href="essentials/signals" link="Explore Angular Signals" titleIconName="sensors" iconImgSrc="adev/src/assets/icons/signals.svg">
-    Our fine-grained reactivity model, combined with compile-time optimizations, simplifies development and helps build faster apps by default.
+    İnce taneli reaktivite modelimiz, derleme zamanı optimizasyonlarıyla birleşerek geliştirmeyi basitleştirir ve varsayılan olarak daha hızlı uygulamalar oluşturmanıza yardımcı olur.
   </docs-card>
   <docs-card title="Server-side rendering" href="guide/ssr" link="Read about SSR" iconImgSrc="adev/src/assets/icons/ssr.svg">
-    Angular supports both server-side rendering (SSR) and static site generation (SSG) along with full DOM hydration.
+    Angular, tam DOM hidrasyon desteğiyle birlikte hem sunucu taraflı oluşturmayı (SSR) hem de statik site oluşturmayı (SSG) destekler.
   </docs-card>
   <docs-card title="Dependency injection" href="essentials/dependency-injection" link="Explore Dependency Injection" iconImgSrc="adev/src/assets/icons/di.svg">
-    Easily share code across components throughout your entire application.
+    Uygulamanız genelinde bileşenler arasında kolayca kod paylaşın.
   </docs-card>
   <docs-card title="Angular Routing" href="guide/routing" link="Explore Angular Routing" iconImgSrc="adev/src/assets/icons/routing.svg">
-    Provides a feature-rich navigation toolkit, including support for route guards, data resolution, lazy-loading, and much more.
+    Rota korumaları, veri çözümleme, tembel yükleme ve çok daha fazlası dahil olmak üzere zengin özellikli bir navigasyon araç seti sunar.
   </docs-card>
   <docs-card title="Forms in Angular" href="guide/forms" link="Explore Forms" iconImgSrc="adev/src/assets/icons/forms.svg">
-    Provides a standardized system for form participation and validation.
+    Form katılımı ve doğrulama için standartlaştırılmış bir sistem sağlar.
   </docs-card>
 </docs-card-container>
 
 <docs-card-container headerTitle="Develop applications faster than ever" headerImgSrc="adev/src/assets/images/browser-bolt.svg">
   <docs-card title="CLI" href="tools/cli" link="Angular CLI" iconImgSrc="adev/src/assets/icons/cli.svg">
-    Angular CLI gets your project running in under a minute with the commands you need to grow into a deployed production application.
+    Angular CLI, projenizi bir dakikadan kısa sürede çalıştırır ve dağıtıma hazır bir üretim uygulamasına dönüştürmek için ihtiyaç duyduğunuz komutları sunar.
   </docs-card>
   <docs-card title="DevTools" href="tools/devtools" link="Angular DevTools" iconImgSrc="adev/src/assets/icons/dev-tools.svg">
-    Angular DevTools sits alongside your browser's developer tools. It helps debug and analyze your app, including a component tree inspector, dependency injection tree view, and custom performance profiling flame chart.
+    Angular DevTools, tarayıcınızın geliştirici araçlarının yanında yer alır. Bileşen ağacı denetleyicisi, bağımlılık enjeksiyonu ağaç görünümü ve özel performans profilleme alev grafiği dahil olmak üzere uygulamanızı hata ayıklama ve analiz etmenize yardımcı olur.
   </docs-card>
   <docs-card title="ng update" href="update" link="ng update" iconImgSrc="adev/src/assets/icons/ng-update.svg">
-    Angular CLI's `ng update` runs automated code transformations that automatically handle routine breaking changes, dramatically simplifying major version updates. Keeping up with the latest version keeps your app as fast and secure as possible.
+    Angular CLI'ın `ng update` komutu, rutin kırılma değişikliklerini otomatik olarak yöneten otomatik kod dönüşümleri çalıştırarak büyük sürüm güncellemelerini önemli ölçüde basitleştirir. En son sürümle güncel kalmak, uygulamanızı mümkün olduğunca hızlı ve güvenli tutar.
   </docs-card>
   <docs-card title="Language Service" href="tools/language-service" link="Language Service" iconImgSrc="adev/src/assets/icons/language-service.svg">
-    Angular's IDE language services powers code completion, navigation, refactoring, and real-time diagnostics in your favorite editor.
+    Angular'ın IDE dil servisleri, favori editörünüzde kod tamamlama, navigasyon, yeniden düzenleme ve gerçek zamanlı tanılama desteği sağlar.
   </docs-card>
 </docs-card-container>
 
 <docs-card-container headerTitle="Ship with confidence" headerImgSrc="adev/src/assets/images/rocket.svg">
   <docs-card title="Verified commit-by-commit against Google's colossal monorepo" href="https://cacm.acm.org/research/why-google-stores-billions-of-lines-of-code-in-a-single-repository/" link="Learn about Google's monorepo" titleIconName="sensors">
-    <p>Every Angular commit is checked against hundreds of thousands of tests in Google's internal code repository, representing countless real-world scenarios.</p>
-    <p>Angular is committed to stability for some of Google’s largest products, including Google Cloud. This commitment ensures changes are well-tested, backwards compatible, and include migration tools whenever possible.</p>
+    <p>Her Angular commit'i, sayısız gerçek dünya senaryosunu temsil eden Google'ın dahili kod deposundaki yüz binlerce teste karşı kontrol edilir.</p>
+    <p>Angular, Google Cloud dahil olmak üzere Google'ın en büyük ürünlerinden bazıları için kararlılığa kendini adamıştır. Bu taahhüt, değişikliklerin iyi test edilmiş, geriye dönük uyumlu olmasını ve mümkün olan her durumda geçiş araçları içermesini sağlar.</p>
   </docs-card>
   <docs-card title="Clear support policies and predictable release schedule" href="reference/releases" link="Versioning & releasing" titleIconName="sensors">
-    Angular's predictable, time-based release schedule gives your organization confidence in the stability and backwards compatibility of the framework. Long Term Support (LTS) windows make sure you get critical security fixes when you need them. First-party update tools, guides and automated migration schematics help keep your apps up-to-date with the latest advancements to the framework and the web platform.
+    Angular'ın öngörülebilir, zamana dayalı yayın takvimi, kuruluşunuza çerçevenin kararlılığı ve geriye dönük uyumluluğu konusunda güven verir. Uzun Vadeli Destek (LTS) dönemleri, ihtiyaç duyduğunuzda kritik güvenlik düzeltmeleri almanızı sağlar. Birinci taraf güncelleme araçları, kılavuzlar ve otomatik geçiş şemaları, uygulamalarınızı çerçevedeki ve web platformundaki en son gelişmelerle güncel tutmanıza yardımcı olur.
   </docs-card>
 </docs-card-container>
 
 <docs-card-container headerTitle="Works at any scale" headerImgSrc="adev/src/assets/images/servers.svg">
   <docs-card title="Reach users everywhere with internationalization support" href="guide/i18n" link="Internationalization" titleIconName="sensors">
-    Angular's internationalization features handle message translations and formatting, including
-    support for unicode standard ICU syntax.
+    Angular'ın uluslararasılaştırma özellikleri, unicode standart ICU sözdizimi desteği dahil olmak üzere mesaj çevirilerini ve biçimlendirmesini yönetir.
   </docs-card>
   <docs-card title="Protect your users with security by default" href="best-practices/security" link="Security" titleIconName="sensors">
-    In collaboration with Google's world-class security engineers, Angular aims to make development
-    safe by default. Built-in security features, including HTML sanitization and
-    trusted type support, help protect your users from common vulnerabilities like
-    cross-site scripting and cross-site request forgery.
+    Google'ın dünya standartlarındaki güvenlik mühendisleriyle iş birliği içinde, Angular varsayılan olarak geliştirmeyi güvenli hale getirmeyi amaçlar. HTML temizleme ve güvenilir tür desteği dahil olmak üzere yerleşik güvenlik özellikleri, kullanıcılarınızı siteler arası betik çalıştırma ve siteler arası istek sahteciliği gibi yaygın güvenlik açıklarından korumaya yardımcı olur.
   </docs-card>
   <docs-card title="Keep large teams productive with Vite and esbuild" href="tools/cli/build-system-migration" link="ESBuild and Vite" titleIconName="sensors">
-    Angular CLI includes a fast, modern build pipeline using Vite and ESBuild. Developers report
-    building projects with hundreds of thousands of lines of code in less than a minute.
+    Angular CLI, Vite ve ESBuild kullanan hızlı, modern bir derleme hattı içerir. Geliştiriciler, yüz binlerce satır kod içeren projeleri bir dakikadan kısa sürede derlediğini bildirmektedir.
   </docs-card>
   <docs-card title="Proven in some of Google's largest web apps" titleIconName="sensors">
-    Large Google products build on top of Angular's architecture and help develop new features that
-    further improve Angular's scalability, from [Google Fonts](https://fonts.google.com/) to [Google Cloud](https://console.cloud.google.com).
+    Büyük Google ürünleri, Angular'ın mimarisi üzerine inşa edilir ve Angular'ın ölçeklenebilirliğini daha da geliştiren yeni özelliklerin geliştirilmesine yardımcı olur; [Google Fonts](https://fonts.google.com/)'tan [Google Cloud](https://console.cloud.google.com)'a kadar.
   </docs-card>
 </docs-card-container>
 
 <docs-card-container headerTitle="Open-source first" headerImgSrc="adev/src/assets/images/open-source.svg">
   <docs-card title="Made in the open on GitHub" href="https://github.com/angular/angular" link="Star our GitHub" titleIconName="sensors">
-    Curious what we’re working on? Every PR and commit is available on our GitHub. Run into an issue or bug? We triage GitHub issues regularly to ensure we’re responsive and engaged with our community, and solving the real world problems you’re facing.
+    Ne üzerinde çalıştığımızı merak mı ediyorsunuz? Her PR ve commit GitHub'ımızda mevcuttur. Bir sorun veya hata mı buldunuz? Topluluğumuzla duyarlı ve ilgili olmayı sağlamak ve karşılaştığınız gerçek dünya sorunlarını çözmek için GitHub sorunlarını düzenli olarak değerlendiriyoruz.
   </docs-card>
   <docs-card title="Built with transparency" href="roadmap" link="Read our public roadmap" titleIconName="sensors">
-    Our team publishes a public roadmap of our current and future work and values your feedback. We publish Request for Comments (RFCs) to collect feedback on larger feature changes and ensure the community voice is heard while shaping the future direction of Angular.
+    Ekibimiz, mevcut ve gelecekteki çalışmalarımızın kamuya açık bir yol haritası yayınlar ve geri bildirimlerinize değer verir. Angular'ın gelecekteki yönünü şekillendirirken topluluk sesinin duyulmasını sağlamak için daha büyük özellik değişiklikleri hakkında geri bildirim toplamak amacıyla Yorum Talepleri (RFC) yayınlarız.
   </docs-card>
 </docs-card-container>
 
 <docs-card-container headerTitle="A thriving community" headerImgSrc="adev/src/assets/images/community.svg">
   <docs-card title="Courses, blogs and resources" href="https://devlibrary.withgoogle.com/products/angular?sort=added" link="Check out DevLibrary" titleIconName="sensors">
-    Our community is composed of talented developers, writers, instructors, podcasters, and more. The Google for Developers library is just a sample of the high quality resources available for new and experienced developers to continue developing.
+    Topluluğumuz yetenekli geliştiriciler, yazarlar, eğitmenler, podcast yayıncıları ve daha fazlasından oluşmaktadır. Google for Developers kütüphanesi, yeni ve deneyimli geliştiricilerin gelişmeye devam etmesi için mevcut olan yüksek kaliteli kaynakların sadece bir örneğidir.
   </docs-card>
   <docs-card title="Open Source" href="https://github.com/angular/angular/blob/main/CONTRIBUTING.md" link="Contribute to Angular" titleIconName="sensors">
-    We are thankful for the open source contributors who make Angular a better framework for everyone. From fixing a typo in the docs, to adding major features, we encourage anyone interested to get started on our GitHub.
+    Angular'ı herkes için daha iyi bir çerçeve yapan açık kaynak katkıcılarına minnettarız. Dokümanlardaki bir yazım hatasını düzeltmekten büyük özellikler eklemeye kadar, ilgilenen herkesi GitHub'ımızdan başlamaya teşvik ediyoruz.
   </docs-card>
   <docs-card title="Community partnerships" href="https://developers.google.com/community/experts/directory?specialization=angular" link="Meet the Angular GDEs" titleIconName="sensors">
-    Our team partners with individuals, educators, and enterprises to ensure we consistently are supporting developers. Angular Google Developer Experts (GDEs) represent community leaders around the world educating, organizing, and developing with Angular. Enterprise partnerships help ensure that Angular scales well for technology industry leaders.
+    Ekibimiz, geliştiricileri tutarlı bir şekilde desteklediğimizden emin olmak için bireyler, eğitimciler ve kurumlarla ortaklık kurar. Angular Google Developer Experts (GDE'ler), dünya genelinde Angular ile eğitim veren, organizasyonlar düzenleyen ve geliştirme yapan topluluk liderlerini temsil eder. Kurumsal ortaklıklar, Angular'ın teknoloji endüstrisi liderleri için iyi ölçeklenmesini sağlamaya yardımcı olur.
   </docs-card>
   <docs-card title="Partnering with other Google technologies" titleIconName="sensors">
-    <p>Angular partners closely with other Google technologies and teams to improve the web.</p>
-    <p>Our ongoing partnership with Chrome’s Aurora actively explores improvements to user experience across the web, developing built-in performance optimizations like <code>NgOptimizedImage</code> and improvements to Angular’s Core Web Vitals.</p>
-    <p>We are also working with <a href="https://firebase.google.com/">Firebase</a>, <a href="https://www.tensorflow.org/">Tensorflow</a>, <a href="https://flutter.dev/">Flutter</a>, <a href="https://m3.material.io/">Material Design</a>, and <a href="https://cloud.google.com/">Google Cloud</a> to ensure we provide meaningful integrations across the developer workflow.</p>
+    <p>Angular, web'i geliştirmek için diğer Google teknolojileri ve ekipleriyle yakın iş birliği yapar.</p>
+    <p>Chrome'un Aurora ekibiyle süregelen ortaklığımız, `NgOptimizedImage` gibi yerleşik performans optimizasyonları ve Angular'ın Core Web Vitals'ındaki iyileştirmeler geliştirerek web genelinde kullanıcı deneyimindeki gelişmeleri aktif olarak araştırır.</p>
+    <p>Ayrıca geliştirici iş akışı genelinde anlamlı entegrasyonlar sağlamak için <a href="https://firebase.google.com/">Firebase</a>, <a href="https://www.tensorflow.org/">Tensorflow</a>, <a href="https://flutter.dev/">Flutter</a>, <a href="https://m3.material.io/">Material Design</a> ve <a href="https://cloud.google.com/">Google Cloud</a> ile çalışmaktayız.</p>
   </docs-card>
 </docs-card-container>
 

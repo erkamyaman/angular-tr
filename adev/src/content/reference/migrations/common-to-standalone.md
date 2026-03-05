@@ -1,8 +1,8 @@
 # Convert CommonModule usage to standalone imports
 
-This migration helps projects remove imports of the `CommonModule` inside components by adding the minimal set of directive and pipe imports each template requires (for example, `NgIf`, `NgFor`, `AsyncPipe`, etc.).
+Bu geçiş, bileşenlerin içindeki `CommonModule` içe aktarmalarını kaldırarak her şablonun gerektirdiği minimum direktif ve pipe içe aktarma setini (örneğin `NgIf`, `NgFor`, `AsyncPipe` vb.) ekleyerek projelere yardımcı olur.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```shell
 ng generate @angular/core:common-to-standalone
@@ -10,9 +10,9 @@ ng generate @angular/core:common-to-standalone
 
 ## Options
 
-| Option | Details                                                                                                                       |
-| :----- | :---------------------------------------------------------------------------------------------------------------------------- |
-| `path` | The path (relative to project root) to migrate. Defaults to `./`. Use this to incrementally migrate a subset of your project. |
+| Seçenek | Ayrıntılar                                                                                                                                  |
+| :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `path`  | Geçirilecek yol (proje köküne göreceli). Varsayılan değer `./`'dir. Projenizin bir alt kümesini aşamalı olarak geçirmek için bunu kullanın. |
 
 ## Example
 
@@ -37,7 +37,7 @@ export class Example {
 }
 ```
 
-After running the migration (component imports added, CommonModule removed):
+Geçiş çalıştırıldıktan sonra (bileşen içe aktarmaları eklendi, CommonModule kaldırıldı):
 
 ```angular-ts
 import {Component} from '@angular/core';

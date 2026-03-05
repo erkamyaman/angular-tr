@@ -1,12 +1,12 @@
 # Want to dive deeper into signals?
 
-You can also learn more about signals with the following resources:
+Aşağıdaki kaynaklarla sinyaller hakkında daha fazla bilgi edinebilirsiniz:
 
 <docs-card-container>
   <docs-card title="Angular Signals Guide" href="guide/signals">
-  The official guide for Angular Signals.
+  Angular Sinyalleri için resmi rehber.
   </docs-card>
   <docs-card title="Angular's Roadmap" href="roadmap">
-  Read about Angular's open source roadmap including current, future and accomplished projects.
+  Mevcut, gelecek ve tamamlanmış projeler dahil olmak üzere Angular'ın açık kaynak yol haritasını okuyun.
   </docs-card>
 </docs-card-container>

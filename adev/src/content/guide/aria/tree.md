@@ -8,7 +8,7 @@
 
 ## Overview
 
-A tree displays hierarchical data where items can expand to reveal children or collapse to hide them. Users navigate with arrow keys, expand and collapse nodes, and optionally select items for navigation or data selection scenarios.
+Ağaç, öğelerin alt öğelerini ortaya çıkarmak için genişletilebileceği veya gizlemek için daraltılabileceği hiyerarşik verileri görüntüler. Kullanıcılar ok tuşlarıyla gezinir, düğümleri genişletip daraltır ve isteğe bağlı olarak navigasyon veya veri seçim senaryoları için öğeleri seçer.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tree/src/single-select/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/tree/src/single-select/basic/app/app.ts"/>
@@ -18,40 +18,40 @@ A tree displays hierarchical data where items can expand to reveal children or c
 
 ## Usage
 
-Trees work well for displaying hierarchical data where users need to navigate through nested structures.
+Ağaçlar, kullanıcıların iç içe yapılar arasında gezinmesi gereken hiyerarşik verileri görüntülemek için iyi çalışır.
 
-**Use trees when:**
+**Ağaçları şu durumlarda kullanın:**
 
-- Building file system navigation
-- Showing folder and document hierarchies
-- Creating nested menu structures
-- Displaying organization charts
-- Browsing hierarchical data
-- Implementing site navigation with nested sections
+- Dosya sistemi navigasyonu oluşturma
+- Klasör ve belge hiyerarşilerini gösterme
+- İç içe menü yapıları oluşturma
+- Organizasyon şemalarını görüntüleme
+- Hiyerarşik verilere göz atma
+- İç içe bölümlerle site navigasyonu uygulama
 
-**Avoid trees when:**
+**Ağaçlardan şu durumlarda kaçının:**
 
-- Displaying flat lists (use [Listbox](guide/aria/listbox) instead)
-- Showing data tables (use [Grid](guide/aria/grid) instead)
-- Creating simple dropdowns (use [Select](guide/aria/select) instead)
-- Building breadcrumb navigation (use breadcrumb patterns)
+- Düz listeler görüntüleme (bunun yerine [Listbox](guide/aria/listbox) kullanın)
+- Veri tabloları gösterme (bunun yerine [Grid](guide/aria/grid) kullanın)
+- Basit açılır menüler oluşturma (bunun yerine [Select](guide/aria/select) kullanın)
+- Breadcrumb navigasyonu oluşturma (breadcrumb kalıplarını kullanın)
 
 ## Features
 
-- **Hierarchical navigation** - Nested tree structure with expand and collapse functionality
-- **Selection modes** - Single or multi-selection with explicit or follow-focus behavior
-- **Selection follows focus** - Optional automatic selection when focus changes
-- **Keyboard navigation** - Arrow keys, Home, End, and type-ahead search
-- **Expand/collapse** - Right/Left arrows or Enter to toggle parent nodes
-- **Disabled items** - Disable specific nodes with focus management
-- **Focus modes** - Roving tabindex or activedescendant focus strategies
-- **RTL support** - Right-to-left language navigation
+- **Hiyerarşik navigasyon** - Genişletme ve daraltma işlevselliğine sahip iç içe ağaç yapısı
+- **Seçim modları** - Açık veya odağı takip eden davranışla tekli veya çoklu seçim
+- **Seçim odağı takip eder** - Odak değiştiğinde isteğe bağlı otomatik seçim
+- **Klavye navigasyonu** - Ok tuşları, Home, End ve yazarak arama
+- **Genişlet/daralt** - Üst düğümleri değiştirmek için Sağ/Sol oklar veya Enter
+- **Devre dışı öğeler** - Odak yönetimi ile belirli düğümleri devre dışı bırakma
+- **Odak modları** - Dolaşan tabindex veya activedescendant odak stratejileri
+- **RTL desteği** - Sağdan sola dil navigasyonu
 
 ## Examples
 
 ### Navigation tree
 
-Use a tree for navigation where clicking items triggers actions rather than selecting them.
+Öğelere tıklamanın seçmek yerine eylem tetiklediği navigasyon için bir ağaç kullanın.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -63,11 +63,11 @@ Use a tree for navigation where clicking items triggers actions rather than sele
   </docs-tab>
 </docs-tab-group>
 
-Set `[nav]="true"` to enable navigation mode. This uses `aria-current` to indicate the current page instead of selection.
+Navigasyon modunu etkinleştirmek için `[nav]="true"` ayarlayın. Bu, seçim yerine mevcut sayfayı belirtmek için `aria-current` kullanır.
 
 ### Single selection
 
-Enable single selection for scenarios where users choose one item from the tree.
+Kullanıcıların ağaçtan bir öğe seçtiği senaryolar için tekli seçimi etkinleştirin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -86,11 +86,11 @@ Enable single selection for scenarios where users choose one item from the tree.
   </docs-tab>
 </docs-tab-group>
 
-Leave `[multi]="false"` (the default) for single selection. Users press Space to select the focused item.
+Tekli seçim için `[multi]="false"` (varsayılan) olarak bırakın. Kullanıcılar odaklanılan öğeyi seçmek için Boşluk tuşuna basar.
 
 ### Multi-selection
 
-Allow users to select multiple items from the tree.
+Kullanıcıların ağaçtan birden fazla öğe seçmesine izin verin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -109,11 +109,11 @@ Allow users to select multiple items from the tree.
   </docs-tab>
 </docs-tab-group>
 
-Set `[multi]="true"` on the tree. Users select items individually with Space or select ranges with Shift+Arrow keys.
+Ağaçta `[multi]="true"` ayarlayın. Kullanıcılar Boşluk ile tek tek öğeleri seçer veya Shift+Ok tuşlarıyla aralıkları seçer.
 
 ### Selection follows focus
 
-When selection follows focus, the focused item is automatically selected. This simplifies interaction for navigation scenarios.
+Seçim odağı takip ettiğinde, odaklanılan öğe otomatik olarak seçilir. Bu, navigasyon senaryoları için etkileşimi basitleştirir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -132,11 +132,11 @@ When selection follows focus, the focused item is automatically selected. This s
   </docs-tab>
 </docs-tab-group>
 
-Set `[selectionMode]="'follow'"` on the tree. Selection automatically updates as users navigate with arrow keys.
+Ağaçta `[selectionMode]="'follow'"` ayarlayın. Kullanıcılar ok tuşlarıyla gezindikçe seçim otomatik olarak güncellenir.
 
 ### Disabled tree items
 
-Disable specific tree nodes to prevent interaction. Control whether disabled items can receive focus.
+Etkileşimi engellemek için belirli ağaç düğümlerini devre dışı bırakın. Devre dışı öğelerin odak alıp alamayacağını kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -155,69 +155,69 @@ Disable specific tree nodes to prevent interaction. Control whether disabled ite
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` on the tree, disabled items can receive focus but cannot be activated or selected. When `[softDisabled]="false"`, disabled items are skipped during keyboard navigation.
+Ağaçta `[softDisabled]="true"` olduğunda, devre dışı öğeler odak alabilir ancak etkinleştirilemez veya seçilemez. `[softDisabled]="false"` olduğunda, devre dışı öğeler klavye navigasyonu sırasında atlanır.
 
 ## APIs
 
 ### Tree
 
-The container directive that manages hierarchical navigation and selection.
+Hiyerarşik navigasyonu ve seçimi yöneten konteyner direktifi.
 
 #### Inputs
 
-| Property        | Type                             | Default      | Description                                                   |
-| --------------- | -------------------------------- | ------------ | ------------------------------------------------------------- |
-| `disabled`      | `boolean`                        | `false`      | Disables the entire tree                                      |
-| `softDisabled`  | `boolean`                        | `true`       | When `true`, disabled items are focusable but not interactive |
-| `multi`         | `boolean`                        | `false`      | Whether multiple items can be selected                        |
-| `selectionMode` | `'explicit' \| 'follow'`         | `'explicit'` | Whether selection requires explicit action or follows focus   |
-| `nav`           | `boolean`                        | `false`      | Whether the tree is in navigation mode (uses `aria-current`)  |
-| `wrap`          | `boolean`                        | `true`       | Whether keyboard navigation wraps from last to first item     |
-| `focusMode`     | `'roving' \| 'activedescendant'` | `'roving'`   | Focus strategy used by the tree                               |
-| `values`        | `any[]`                          | `[]`         | Selected item values (supports two-way binding)               |
+| Property        | Type                             | Default      | Description                                                                 |
+| --------------- | -------------------------------- | ------------ | --------------------------------------------------------------------------- |
+| `disabled`      | `boolean`                        | `false`      | Tüm ağacı devre dışı bırakır                                                |
+| `softDisabled`  | `boolean`                        | `true`       | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimsizdir     |
+| `multi`         | `boolean`                        | `false`      | Birden fazla öğenin seçilip seçilemeyeceği                                  |
+| `selectionMode` | `'explicit' \| 'follow'`         | `'explicit'` | Seçimin açık eylem gerektirip gerektirmediği veya odağı takip edip etmediği |
+| `nav`           | `boolean`                        | `false`      | Ağacın navigasyon modunda olup olmadığı (`aria-current` kullanır)           |
+| `wrap`          | `boolean`                        | `true`       | Klavye navigasyonunun son öğeden ilk öğeye sarılıp sarılmayacağı            |
+| `focusMode`     | `'roving' \| 'activedescendant'` | `'roving'`   | Ağaç tarafından kullanılan odak stratejisi                                  |
+| `values`        | `any[]`                          | `[]`         | Seçili öğe değerleri (çift yönlü bağlamayı destekler)                       |
 
 #### Methods
 
-| Method           | Parameters | Description                                   |
-| ---------------- | ---------- | --------------------------------------------- |
-| `expandAll`      | none       | Expands all tree nodes                        |
-| `collapseAll`    | none       | Collapses all tree nodes                      |
-| `selectAll`      | none       | Selects all items (only in multi-select mode) |
-| `clearSelection` | none       | Clears all selection                          |
+| Method           | Parameters | Description                                      |
+| ---------------- | ---------- | ------------------------------------------------ |
+| `expandAll`      | none       | Tüm ağaç düğümlerini genişletir                  |
+| `collapseAll`    | none       | Tüm ağaç düğümlerini daraltır                    |
+| `selectAll`      | none       | Tüm öğeleri seçer (yalnızca çoklu seçim modunda) |
+| `clearSelection` | none       | Tüm seçimi temizler                              |
 
 ### TreeItem
 
-An individual node in the tree that can contain child nodes.
+Ağaçta alt düğümler içerebilen bireysel bir düğüm.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                                             |
-| ---------- | --------- | ------- | ------------------------------------------------------- |
-| `value`    | `any`     | —       | **Required.** Unique value for this tree item           |
-| `disabled` | `boolean` | `false` | Disables this item                                      |
-| `expanded` | `boolean` | `false` | Whether the node is expanded (supports two-way binding) |
+| Property   | Type      | Default | Description                                                            |
+| ---------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `value`    | `any`     | —       | **Zorunlu.** Bu ağaç öğesi için benzersiz değer                        |
+| `disabled` | `boolean` | `false` | Bu öğeyi devre dışı bırakır                                            |
+| `expanded` | `boolean` | `false` | Düğümün genişletilip genişletilmediği (çift yönlü bağlamayı destekler) |
 
 #### Signals
 
-| Property      | Type              | Description                          |
-| ------------- | ----------------- | ------------------------------------ |
-| `selected`    | `Signal<boolean>` | Whether the item is selected         |
-| `active`      | `Signal<boolean>` | Whether the item currently has focus |
-| `hasChildren` | `Signal<boolean>` | Whether the item has child nodes     |
+| Property      | Type              | Description                              |
+| ------------- | ----------------- | ---------------------------------------- |
+| `selected`    | `Signal<boolean>` | Öğenin seçili olup olmadığı              |
+| `active`      | `Signal<boolean>` | Öğenin şu anda odağa sahip olup olmadığı |
+| `hasChildren` | `Signal<boolean>` | Öğenin alt düğümleri olup olmadığı       |
 
 #### Methods
 
-| Method     | Parameters | Description                 |
-| ---------- | ---------- | --------------------------- |
-| `expand`   | none       | Expands this node           |
-| `collapse` | none       | Collapses this node         |
-| `toggle`   | none       | Toggles the expansion state |
+| Method     | Parameters | Description                    |
+| ---------- | ---------- | ------------------------------ |
+| `expand`   | none       | Bu düğümü genişletir           |
+| `collapse` | none       | Bu düğümü daraltır             |
+| `toggle`   | none       | Genişletme durumunu değiştirir |
 
 ### TreeGroup
 
-A container for child tree items.
+Alt ağaç öğeleri için bir konteyner.
 
-This directive has no inputs, outputs, or methods. It serves as a container to organize child `ngTreeItem` elements:
+Bu direktifin girdisi, çıktısı veya yöntemi yoktur. Alt `ngTreeItem` öğelerini düzenlemek için bir konteyner olarak hizmet eder:
 
 ```angular-html
 <li ngTreeItem value="parent">

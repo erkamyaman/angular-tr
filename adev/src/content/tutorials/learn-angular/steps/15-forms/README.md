@@ -1,12 +1,12 @@
 # Forms Overview
 
-Forms are a big part of many apps because they enable your app to accept user input. Let's learn about how forms are handled in Angular.
+Formlar birçok uygulamanın önemli bir parçasıdır çünkü uygulamanızın kullanıcı girdisi kabul etmesini sağlar. Angular'da formların nasıl işlendiğini öğrenelim.
 
-In Angular, there are two types of forms: template-driven and reactive. You'll learn about both over the next few activities.
+Angular'da iki tür form vardır: şablon odaklı ve reaktif. Önümüzdeki birkaç aktivitede her ikisini de öğreneceksiniz.
 
-NOTE: Learn more about [forms in Angular in the in-depth guide](/guide/forms).
+NOTE: [Angular'da formlar hakkında detaylı kılavuzdan](/guide/forms) daha fazla bilgi edinin.
 
-In this activity, you'll learn how to set up a form using a template-driven approach.
+Bu aktivitede, şablon odaklı yaklaşım kullanarak bir form oluşturmayı öğreneceksiniz.
 
 <hr>
 
@@ -14,7 +14,7 @@ In this activity, you'll learn how to set up a form using a template-driven appr
 
 <docs-step title="Create an input field">
 
-In `user.ts`, update the template by adding a text input with the `id` set to `framework`, type set to `text`.
+`user.ts` dosyasında, `id` değeri `framework` ve type değeri `text` olarak ayarlanmış bir metin giriş alanı ekleyerek şablonu güncelleyin.
 
 ```angular-html
 <label for="framework">
@@ -27,9 +27,9 @@ In `user.ts`, update the template by adding a text input with the `id` set to `f
 
 <docs-step title="Import `FormsModule`">
 
-For this form to use Angular features that enable data binding to forms, you'll need to import the `FormsModule`.
+Bu formun, formlara veri bağlama özelliklerini etkinleştiren Angular özelliklerini kullanabilmesi için `FormsModule`'ü içe aktarmanız gerekir.
 
-Import the `FormsModule` from `@angular/forms` and add it to the `imports` array of the `User`.
+`FormsModule`'ü `@angular/forms` paketinden içe aktarın ve `User` bileşeninin `imports` dizisine ekleyin.
 
 ```ts {highlight:[2,6]}
 import {Component} from '@angular/core';
@@ -46,9 +46,9 @@ export class User {}
 
 <docs-step title="Add binding to the value of the input">
 
-The `FormsModule` has a directive called `ngModel` that binds the value of the input to a property in your class.
+`FormsModule`, giriş alanının değerini sınıfınızdaki bir özelliğe bağlayan `ngModel` adında bir direktife sahiptir.
 
-Update the input to use the `ngModel` directive, specifically with the following syntax `[(ngModel)]="favoriteFramework"` to bind to the `favoriteFramework` property.
+Giriş alanını `ngModel` direktifini kullanacak şekilde güncelleyin, özellikle `favoriteFramework` özelliğine bağlamak için `[(ngModel)]="favoriteFramework"` sözdizimini kullanın.
 
 ```html {highlight:[3]}
 <label for="framework">
@@ -57,14 +57,14 @@ Update the input to use the `ngModel` directive, specifically with the following
 </label>
 ```
 
-After you've made changes, try entering a value in the input field. Notice how it updates on the screen (yes, very cool).
+Değişiklikleri yaptıktan sonra, giriş alanına bir değer girmeyi deneyin. Ekranda nasıl güncellendiğine dikkat edin (evet, çok havalı).
 
-NOTE: The syntax `[()]` is known as "banana in a box" but it represents two-way binding: property binding and event binding. Learn more in the [Angular docs about two-way data binding](guide/templates/two-way-binding).
+NOTE: `[()]` sözdizimi "banana in a box" (kutudaki muz) olarak bilinir ancak iki yönlü bağlamayı temsil eder: özellik bağlama ve olay bağlama. [Angular'ın iki yönlü veri bağlama belgelerinden](guide/templates/two-way-binding) daha fazla bilgi edinin.
 
 </docs-step>
 
 </docs-workflow>
 
-You've now taken an important first step towards building forms with Angular.
+Angular ile form oluşturma yolunda önemli bir ilk adım attınız.
 
-Nice work. Let's keep the momentum going!
+Harika iş. İvmeyi korumaya devam edelim!

@@ -1,10 +1,10 @@
 # Whitespace in templates
 
-By default, Angular templates do not preserve whitespace that the framework considers unnecessary. This commonly occurs in two situations: whitespace between elements, and collapsible whitespace inside of text.
+Varsayilan olarak, Angular sablonlari cerceevenin gereksiz kabul ettigi bosluklari korumaz. Bu genellikle iki durumda gerceklesir: elemanlar arasindaki bosluk ve metin icindeki daraltilabilir bosluk.
 
 ## Whitespace between elements
 
-Most developers prefer to format their templates with newlines and indentation to make the template readable:
+Cogu gelistirici sablonlarini okunabilir kilmak icin yeni satirlar ve girintilerle bicmlendirmeyi tercih eder:
 
 ```html
 <section>
@@ -16,7 +16,7 @@ Most developers prefer to format their templates with newlines and indentation t
 </section>
 ```
 
-This template contains whitespace between all of the elements. The following snippet shows the same HTML with each whitespace character replaced with the hash (`#`) character to highlight how much whitespace is present:
+Bu sablon tum elemanlar arasinda bosluk icerir. Asagidaki parca, ne kadar bosluk bulundugunu vurgulamak icin her bosluk karakterinin diyez (`#`) karakteriyle degistirildigi ayni HTML'i gostermektedir:
 
 <!-- prettier-ignore>
 ```html
@@ -24,11 +24,11 @@ This template contains whitespace between all of the elements. The following sni
 <section>###<h3>User profile</h3>###<label>#####User name#####<input>###</label>#</section>
 ```
 
-Preserving the whitespace as written in the template would result in many unnecessary [text nodes](https://developer.mozilla.org/en-US/docs/Web/API/Text) and increase page rendering overhead. By ignoring this whitespace between elements, Angular performs less work when rendering the template on the page, improving overall performance.
+Boslugu sablonda yazildigi gibi korumak, bircok gereksiz [metin dugumune](https://developer.mozilla.org/en-US/docs/Web/API/Text) yol acar ve sayfa isleme yukunu arttirir. Elemanlar arasindaki bu boslugu yok sayarak, Angular sablonu sayfada islerken daha az is yapar ve genel performansi iyilestirir.
 
 ## Collapsible whitespace inside text
 
-When your web browser renders HTML on a page, it collapses multiple consecutive whitespace characters to a single character:
+Web tarayiciniz HTML'i sayfada islerken, art arda gelen birden fazla bosluk karakterini tek bir karaktere daraltir:
 
 <!-- prettier-ignore -->
 ```html
@@ -36,20 +36,20 @@ When your web browser renders HTML on a page, it collapses multiple consecutive 
 <p>Hello         world</p>
 ```
 
-In this example, the browser displays only a single space between "Hello" and "world".
+Bu ornekte, tarayici "Hello" ile "world" arasinda yalnizca tek bir bosluk goruntler.
 
 ```angular-html
 <!-- What shows up in the browser -->
 <p>Hello world</p>
 ```
 
-See [How whitespace is handled by HTML, CSS, and in the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace) for more context on how this works.
+Bu nasil calisir hakkinda daha fazla baglam icin [Bosluk HTML, CSS ve DOM'da nasil islenir](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace) konusuna bakin.
 
-Angular avoids sending these unnecessary whitespace characters to the browser in the first place by collapsing them to a single character when it compiles the template.
+Angular, sablonu derlerken bu gereksiz bosluk karakterlerini tek bir karaktere daraltarak tarayiciya gondermekten kacinir.
 
 ## Preserving whitespace
 
-You can tell Angular to preserve whitespace in a template by specifying `preserveWhitespaces: true` in the `@Component` decorator for a template.
+Angular'a bir sablondaki boslugu korumasini, bilesen icin `@Component` dekoratorunde `preserveWhitespaces: true` belirterek soyleyebilirsiniz.
 
 ```angular-ts
 @Component({
@@ -61,6 +61,6 @@ You can tell Angular to preserve whitespace in a template by specifying `preserv
 })
 ```
 
-Avoid setting this option unless absolutely necessary. Preserving whitespace can cause Angular to produce significantly more nodes while rendering, slowing down your application.
+Kesinlikle gerekli olmadikca bu secenegi ayarlamaktan kacinin. Boslugu korumak, Angular'in isleme sirasinda onemli olcude daha fazla dugum uretmesine neden olarak uygulamanizi yavasllatabilir.
 
-You can additionally use a special HTML entity unique to Angular, `&ngsp;`. This entity produces a single space character that's preserved in the compiled output.
+Ek olarak, Angular'a ozgu ozel bir HTML varligi olan `&ngsp;` kullanabilirsiniz. Bu varlik, derlenmis ciktida korunan tek bir bosluk karakteri uretir.

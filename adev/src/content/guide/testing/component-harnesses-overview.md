@@ -1,12 +1,12 @@
 # Component harnesses overview
 
-A <strong>component harness</strong> is a class that allows tests to interact with components the way an end user does via a supported API. You can create test harnesses for any component, ranging from small reusable widgets to full pages.
+Bir <strong>component harness</strong>, testlerin bileşenlerle son kullanıcının yaptığı gibi desteklenen bir API aracılığıyla etkileşim kurmasına olanak tanıyan bir sınıftır. Küçük yeniden kullanılabilir widget'lardan tam sayfalara kadar herhangi bir bileşen için test donanımları oluşturabilirsiniz.
 
-Harnesses offer several benefits:
+Donanımlar birçok avantaj sunar:
 
-- They make tests less brittle by insulating themselves against implementation details of a component, such as its DOM structure
-- They make tests become more readable and easier to maintain
-- They can be used across multiple testing environments
+- DOM yapısı gibi bir bileşenin uygulama ayrıntılarına karşı kendilerini izole ederek testleri daha az kırılgan hale getirirler
+- Testlerin daha okunabilir ve bakımının daha kolay olmasını sağlarlar
+- Birden fazla test ortamında kullanılabilirler
 
 ```ts
 // Example of test with a harness for a component called MyButtonComponent
@@ -16,16 +16,16 @@ it('should load button with exact text', async () => {
 });
 ```
 
-Component harnesses are especially useful for shared UI widgets. Developers often write tests that depend on private implementation details of widgets, such as DOM structure and CSS classes. Those dependencies make tests brittle and hard to maintain. Harnesses offer an alternative— a supported API that interacts with the widget the same way an end-user does. Widget implementation changes now become less likely to break user tests. For example, [Angular Material](https://material.angular.dev/components/categories) provides a test harness for each component in the library.
+Bileşen donanımları özellikle paylaşılan UI widget'ları için kullanışlıdır. Geliştiriciler genellikle DOM yapısı ve CSS sınıfları gibi widget'ların özel uygulama ayrıntılarına bağlı testler yazarlar. Bu bağımlılıklar testleri kırılgan ve bakımı zor hale getirir. Donanımlar bir alternatif sunar - widget ile son kullanıcının yaptığı şekilde etkileşim kuran desteklenen bir API. Widget uygulama değişikliklerinin artık kullanıcı testlerini bozma olasılığı daha düşüktür. Örneğin, [Angular Material](https://material.angular.dev/components/categories) kütüphanedeki her bileşen için bir test donanımı sağlar.
 
-Component harnesses support multiple testing environments. You can use the same harness implementation in both unit and end-to-end tests. Test authors only need to learn one API and component authors don't have to maintain separate unit and end-to-end test implementations.
+Bileşen donanımları birden fazla test ortamını destekler. Aynı donanım uygulamasını hem birim hem de uçtan uca testlerde kullanabilirsiniz. Test yazarlarının yalnızca bir API öğrenmesi yeterlidir ve bileşen yazarlarının ayrı birim ve uçtan uca test uygulamalarını sürdürmesi gerekmez.
 
-Many developers can be categorized by one of the following developer type categories: test authors, component harness authors, and harness environment authors. Use the table below to find the most relevant section in this guide based on these categories:
+Birçok geliştirici aşağıdaki geliştirici tipi kategorilerinden biriyle sınıflandırılabilir: test yazarları, bileşen donanımı yazarları ve donanım ortamı yazarları. Bu kategorilere göre bu kılavuzdaki en ilgili bölümü bulmak için aşağıdaki tabloyu kullanın:
 
-| Developer Type              | Description                                                                                                                                                                                                                                                                                            | Relevant Section                                                                                             |
-| :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
-| Test Authors                | Developers that use component harnesses written by someone else to test their application. For example, this could be an app developer who uses a third-party menu component and needs to interact with the menu in a unit test.                                                                       | [Using component harnesses in tests](guide/testing/using-component-harnesses)                                |
-| Component harness authors   | Developers who maintain some reusable Angular components and want to create a test harness for its users to use in their tests. For example, an author of a third party Angular component library or a developer who maintains a set of common components for a large Angular application.             | [Creating component harnesses for your components](guide/testing/creating-component-harnesses)               |
-| Harness environment authors | Developers who want to add support for using component harnesses in additional testing environments. For information on supported testing environments out-of-the-box, see the [test harness environments and loaders](guide/testing/using-component-harnesses#test-harness-environments-and-loaders). | [Adding support for additional testing environments](guide/testing/component-harnesses-testing-environments) |
+| Geliştirici Tipi           | Açıklama                                                                                                                                                                                                                                                                                                                 | İlgili Bölüm                                                                                    |
+| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| Test Yazarları             | Uygulamalarını test etmek için başkası tarafından yazılmış bileşen donanımlarını kullanan geliştiriciler. Örneğin, bu bir üçüncü taraf menü bileşeni kullanan ve birim testinde menü ile etkileşim kurması gereken bir uygulama geliştiricisi olabilir.                                                                  | [Testlerde bileşen donanımlarını kullanma](guide/testing/using-component-harnesses)             |
+| Bileşen donanımı yazarları | Bazı yeniden kullanılabilir Angular bileşenlerini sürdüren ve kullanıcılarının testlerinde kullanması için bir test donanımı oluşturmak isteyen geliştiriciler. Örneğin, bir üçüncü taraf Angular bileşen kütüphanesinin yazarı veya büyük bir Angular uygulaması için ortak bileşenler setini sürdüren bir geliştirici. | [Bileşenleriniz için bileşen donanımları oluşturma](guide/testing/creating-component-harnesses) |
+| Donanım ortamı yazarları   | Ek test ortamlarında bileşen donanımlarının kullanımı için destek eklemek isteyen geliştiriciler. Kullanıma hazır desteklenen test ortamları hakkında bilgi için [test donanımı ortamları ve yükleyicileri](guide/testing/using-component-harnesses#test-harness-environments-and-loaders) bakın.                        | [Ek test ortamları için destek ekleme](guide/testing/component-harnesses-testing-environments)  |
 
-For the full API reference, please see the [Angular CDK's component harness API reference page](/api#angular_cdk_testing).
+Tam API referansı için lütfen [Angular CDK'nın bileşen donanımı API referans sayfasına](/api#angular_cdk_testing) bakın.

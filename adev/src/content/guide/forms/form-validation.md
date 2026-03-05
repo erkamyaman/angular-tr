@@ -1,142 +1,141 @@
 # Validating form input
 
-You can improve overall data quality by validating user input for accuracy and completeness.
-This page shows how to validate user input from the UI and display useful validation messages, in both reactive and template-driven forms.
+Doğruluk ve bütünlük için kullanıcı girdisini doğrulayarak genel veri kalitesini artırabilirsiniz.
+Bu sayfa, hem reaktif hem de şablon odaklı formlarda kullanıcı arayüzünden kullanıcı girdisinin nasıl doğrulanacağını ve yararlı doğrulama mesajlarının nasıl görüntüleneceğini gösterir.
 
 ## Validating input in template-driven forms
 
-To add validation to a template-driven form, you add the same validation attributes as you would with [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/HTML5/Constraint_validation).
-Angular uses directives to match these attributes with validator functions in the framework.
+Şablon odaklı bir forma doğrulama eklemek için, [yerel HTML form doğrulamasıyla](https://developer.mozilla.org/docs/Web/Guide/HTML/HTML5/Constraint_validation) eklediğiniz aynı doğrulama niteliklerini eklersiniz.
+Angular, bu nitelikleri çerçevedeki doğrulayıcı fonksiyonlarla eşleştirmek için direktifler kullanır.
 
-Every time the value of a form control changes, Angular runs validation and generates either a list of validation errors that results in an `INVALID` status, or null, which results in a VALID status.
+Bir form kontrolünün değeri her değiştiğinde, Angular doğrulamayı çalıştırır ve ya `INVALID` durumuyla sonuçlanan bir doğrulama hataları listesi ya da VALID durumuyla sonuçlanan null döndürür.
 
-You can then inspect the control's state by exporting `ngModel` to a local template variable.
-The following example exports `NgModel` into a variable called `name`:
+Daha sonra `ngModel`'i yerel bir şablon değişkenine dışa aktararak kontrolün durumunu inceleyebilirsiniz.
+Aşağıdaki örnek, `NgModel`'i `name` adlı bir değişkene dışa aktarır:
 
 <docs-code header="actor-form-template.component.html (name)" path="adev/src/content/examples/form-validation/src/app/template/actor-form-template.component.html" region="name-with-error-msg"/>
 
-Notice the following features illustrated by the example.
+Örnekle gösterilen aşağıdaki özelliklere dikkat edin.
 
-- The `<input>` element carries the HTML validation attributes: `required` and `minlength`.
-  It also carries a custom validator directive, `forbiddenName`.
-  For more information, see the [Custom validators](#defining-custom-validators) section.
+- `<input>` öğesi HTML doğrulama niteliklerini taşır: `required` ve `minlength`.
+  Ayrıca özel bir doğrulayıcı direktif olan `forbiddenName`'i taşır.
+  Daha fazla bilgi için [Özel doğrulayıcılar](#defining-custom-validators) bölümüne bakın.
 
-- `#name="ngModel"` exports `NgModel` into a local variable called `name`.
-  `NgModel` mirrors many of the properties of its underlying `FormControl` instance, so you can use this in the template to check for control states such as `valid` and `dirty`.
-  For a full list of control properties, see the [AbstractControl](api/forms/AbstractControl) API reference.
-  - The outermost `@if` reveals a set of nested messages but only if the `name` is invalid and the control is either `dirty` or `touched`.
+- `#name="ngModel"`, `NgModel`'i `name` adlı yerel bir değişkene dışa aktarır.
+  `NgModel`, altta yatan `FormControl` örneğinin birçok özelliğini yansıtır, böylece bunu şablonda `valid` ve `dirty` gibi kontrol durumlarını kontrol etmek için kullanabilirsiniz.
+  Kontrol özelliklerinin tam listesi için [AbstractControl](api/forms/AbstractControl) API referansına bakın.
+  - En dıştaki `@if`, bir dizi iç içe mesaj ortaya koyar, ancak yalnızca `name` geçersiz ve kontrol `dirty` veya `touched` ise.
 
-  - Each nested `@if` can present a custom message for one of the possible validation errors.
-    There are messages for `required`, `minlength`, and `forbiddenName`.
+  - Her iç içe `@if`, olası doğrulama hatalarından biri için özel bir mesaj sunabilir.
+    `required`, `minlength` ve `forbiddenName` için mesajlar vardır.
 
-HELPFUL: To prevent the validator from displaying errors before the user has a chance to edit the form, you should check for either the `dirty` or `touched` states in a control.
+HELPFUL: Doğrulayıcının, kullanıcının formu düzenleme fırsatı bulamadan hataları görüntülemesini önlemek için, bir kontrolde `dirty` veya `touched` durumunu kontrol etmelisiniz.
 
-- When the user changes the value in the watched field, the control is marked as "dirty"
-- When the user blurs the form control element, the control is marked as "touched"
+- Kullanıcı izlenen alandaki değeri değiştirdiğinde, kontrol "dirty" olarak işaretlenir
+- Kullanıcı form kontrol öğesinden odağı kaldırdığında, kontrol "touched" olarak işaretlenir
 
 ## Validating input in reactive forms
 
-In a reactive form, the source of truth is the component class.
-Instead of adding validators through attributes in the template, you add validator functions directly to the form control model in the component class.
-Angular then calls these functions whenever the value of the control changes.
+Reaktif bir formda doğruluk kaynağı bileşen sınıfıdır.
+Şablondaki nitelikler aracılığıyla doğrulayıcılar eklemek yerine, doğrulayıcı fonksiyonları doğrudan bileşen sınıfındaki form kontrol modeline eklersiniz.
+Angular daha sonra kontrolün değeri her değiştiğinde bu fonksiyonları çağırır.
 
 ### Validator functions
 
-Validator functions can be either synchronous or asynchronous.
+Doğrulayıcı fonksiyonlar senkron veya asenkron olabilir.
 
-| Validator type   | Details                                                                                                                                                                                                                 |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sync validators  | Synchronous functions that take a control instance and immediately return either a set of validation errors or `null`. Pass these in as the second argument when you instantiate a `FormControl`.                       |
-| Async validators | Asynchronous functions that take a control instance and return a Promise or Observable that later emits a set of validation errors or `null`. Pass these in as the third argument when you instantiate a `FormControl`. |
+| Doğrulayıcı türü        | Ayrıntılar                                                                                                                                                                                                             |
+| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Senkron doğrulayıcılar  | Bir kontrol örneği alan ve hemen ya bir doğrulama hataları kümesi ya da `null` döndüren senkron fonksiyonlar. Bir `FormControl` örneklerken ikinci argüman olarak bunları geçirin.                                     |
+| Asenkron doğrulayıcılar | Bir kontrol örneği alan ve daha sonra bir doğrulama hataları kümesi veya `null` yayan bir Promise veya Observable döndüren asenkron fonksiyonlar. Bir `FormControl` örneklerken üçüncü argüman olarak bunları geçirin. |
 
-For performance reasons, Angular only runs async validators if all sync validators pass.
-Each must complete before errors are set.
+Performans nedenleriyle, Angular asenkron doğrulayıcıları yalnızca tüm senkron doğrulayıcılar geçtiğinde çalıştırır.
+Her biri hatalar ayarlanmadan önce tamamlanmalıdır.
 
 ### Built-in validator functions
 
-You can choose to [write your own validator functions](#defining-custom-validators), or you can use some of Angular's built-in validators.
+[Kendi doğrulayıcı fonksiyonlarınızı yazmayı](#defining-custom-validators) seçebilir veya Angular'ın bazı yerleşik doğrulayıcılarını kullanabilirsiniz.
 
-The same built-in validators that are available as attributes in template-driven forms, such as `required` and `minlength`, are all available to use as functions from the `Validators` class.
-For a full list of built-in validators, see the [Validators](api/forms/Validators) API reference.
+Şablon odaklı formlarda nitelik olarak kullanılabilen aynı yerleşik doğrulayıcılar, `required` ve `minlength` gibi, `Validators` sınıfından fonksiyon olarak kullanılabilir.
+Yerleşik doğrulayıcıların tam listesi için [Validators](api/forms/Validators) API referansına bakın.
 
-To update the actor form to be a reactive form, use some of the same
-built-in validators —this time, in function form, as in the following example.
+Aktör formunu reaktif form olarak güncellemek için, aynı yerleşik doğrulayıcılardan bazılarını kullanın -- bu sefer, aşağıdaki örnekte olduğu gibi fonksiyon biçiminde.
 
 <docs-code header="actor-form-reactive.component.ts (validator functions)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="form-group"/>
 
-In this example, the `name` control sets up two built-in validators —`Validators.required` and `Validators.minLength(4)`— and one custom validator, `forbiddenNameValidator`.
+Bu örnekte, `name` kontrolü iki yerleşik doğrulayıcı (`Validators.required` ve `Validators.minLength(4)`) ve bir özel doğrulayıcı (`forbiddenNameValidator`) ayarlar.
 
-All of these validators are synchronous, so they are passed as the second argument.
-Notice that you can support multiple validators by passing the functions in as an array.
+Bu doğrulayıcıların tümü senkrondur, bu nedenle ikinci argüman olarak geçirilir.
+Fonksiyonları bir dizi olarak geçirerek birden fazla doğrulayıcıyı destekleyebileceğinize dikkat edin.
 
-This example also adds a few getter methods.
-In a reactive form, you can always access any form control through the `get` method on its parent group, but sometimes it's useful to define getters as shorthand for the template.
+Bu örnek ayrıca birkaç getter yöntemi ekler.
+Reaktif bir formda, herhangi bir form kontrolüne her zaman üst grubundaki `get` yöntemiyle erişebilirsiniz, ancak bazen şablon için kısayol olarak getter'lar tanımlamak yararlıdır.
 
-If you look at the template for the `name` input again, it is fairly similar to the template-driven example.
+`name` girdisi için şablona tekrar bakarsanız, şablon odaklı örneğe oldukça benzerdir.
 
 <docs-code header="actor-form-reactive.component.html (name with error msg)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="name-with-error-msg"/>
 
-This form differs from the template-driven version in that it no longer exports any directives. Instead, it uses the `name` getter defined in the component class.
+Bu form, şablon odaklı sürümden farklıdır çünkü artık herhangi bir direktif dışa aktarmaz. Bunun yerine, bileşen sınıfında tanımlanan `name` getter'ını kullanır.
 
-Notice that the `required` attribute is still present in the template. Although it's not necessary for validation, it should be retained for accessibility purposes.
+`required` niteliğinin hala şablonda mevcut olduğuna dikkat edin. Doğrulama için gerekli olmasa da, erişilebilirlik amacıyla korunmalıdır.
 
 ## Defining custom validators
 
-The built-in validators don't always match the exact use case of your application, so you sometimes need to create a custom validator.
+Yerleşik doğrulayıcılar her zaman uygulamanızın tam kullanım durumuna uymaz, bu nedenle bazen özel bir doğrulayıcı oluşturmanız gerekir.
 
-Consider the `forbiddenNameValidator` function from the previous example.
-Here's what the definition of that function looks like.
+Önceki örnekteki `forbiddenNameValidator` fonksiyonunu düşünün.
+Bu fonksiyonun tanımı şöyle görünür.
 
 <docs-code header="forbidden-name.directive.ts (forbiddenNameValidator)" path="adev/src/content/examples/form-validation/src/app/shared/forbidden-name.directive.ts" region="custom-validator"/>
 
-The function is a factory that takes a regular expression to detect a _specific_ forbidden name and returns a validator function.
+Fonksiyon, _belirli_ bir yasaklı adı tespit etmek için bir düzenli ifade alan ve bir doğrulayıcı fonksiyon döndüren bir fabrikadır.
 
-In this sample, the forbidden name is "bob", so the validator rejects any actor name containing "bob".
-Elsewhere it could reject "alice" or any name that the configuring regular expression matches.
+Bu örnekte, yasaklı ad "bob"dur, bu nedenle doğrulayıcı "bob" içeren herhangi bir aktör adını reddeder.
+Başka bir yerde "alice"i veya yapılandıran düzenli ifadenin eşleştiği herhangi bir adı reddedebilir.
 
-The `forbiddenNameValidator` factory returns the configured validator function.
-That function takes an Angular control object and returns _either_ null if the control value is valid _or_ a validation error object.
-The validation error object typically has a property whose name is the validation key, `'forbiddenName'`, and whose value is an arbitrary dictionary of values that you could insert into an error message, `{name}`.
+`forbiddenNameValidator` fabrikası, yapılandırılmış doğrulayıcı fonksiyonu döndürür.
+Bu fonksiyon bir Angular kontrol nesnesi alır ve kontrol değeri geçerliyse _null_ veya bir doğrulama hatası nesnesi döndürür.
+Doğrulama hatası nesnesi genellikle adı doğrulama anahtarı olan `'forbiddenName'` ve değeri hata mesajına ekleyebileceğiniz rastgele bir değerler sözlüğü olan `{name}` bir özelliğe sahiptir.
 
-Custom async validators are similar to sync validators, but they must instead return a Promise or observable that later emits null or a validation error object.
-In the case of an observable, the observable must complete, at which point the form uses the last value emitted for validation.
+Özel asenkron doğrulayıcılar senkron doğrulayıcılara benzer, ancak bunun yerine daha sonra null veya bir doğrulama hatası nesnesi yayan bir Promise veya observable döndürmelidir.
+Bir observable durumunda, observable tamamlanmalıdır; bu noktada form doğrulama için yayılan son değeri kullanır.
 
 ### Adding custom validators to reactive forms
 
-In reactive forms, add a custom validator by passing the function directly to the `FormControl`.
+Reaktif formlarda, fonksiyonu doğrudan `FormControl`'a geçirerek özel bir doğrulayıcı ekleyin.
 
 <docs-code header="actor-form-reactive.component.ts (validator functions)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="custom-validator"/>
 
 ### Adding custom validators to template-driven forms
 
-In template-driven forms, add a directive to the template, where the directive wraps the validator function.
-For example, the corresponding `ForbiddenValidatorDirective` serves as a wrapper around the `forbiddenNameValidator`.
+Şablon odaklı formlarda, doğrulayıcı fonksiyonu saran direktifi şablona ekleyin.
+Örneğin, karşılık gelen `ForbiddenValidatorDirective`, `forbiddenNameValidator` etrafında bir sarmalayıcı görevi görür.
 
-Angular recognizes the directive's role in the validation process because the directive registers itself with the `NG_VALIDATORS` provider, as shown in the following example.
-`NG_VALIDATORS` is a predefined provider with an extensible collection of validators.
+Angular, aşağıdaki örnekte gösterildiği gibi direktifin kendisini `NG_VALIDATORS` sağlayıcısına kaydetmesi nedeniyle doğrulama sürecindeki rolünü tanır.
+`NG_VALIDATORS`, genişletilebilir bir doğrulayıcılar koleksiyonuna sahip önceden tanımlanmış bir sağlayıcıdır.
 
 <docs-code header="forbidden-name.directive.ts (providers)" path="adev/src/content/examples/form-validation/src/app/shared/forbidden-name.directive.ts" region="directive-providers"/>
 
-The directive class then implements the `Validator` interface, so that it can easily integrate with Angular forms.
-Here is the rest of the directive to help you get an idea of how it all comes together.
+Direktif sınıfı daha sonra `Validator` arayüzünü uygular, böylece Angular formlarıyla kolayca entegre olabilir.
+Hepsinin nasıl bir araya geldiğini anlamanıza yardımcı olmak için direktifin geri kalanı burada.
 
 <docs-code header="forbidden-name.directive.ts (directive)" path="adev/src/content/examples/form-validation/src/app/shared/forbidden-name.directive.ts" region="directive"/>
 
-Once the `ForbiddenValidatorDirective` is ready, you can add its selector, `appForbiddenName`, to any input element to activate it.
-For example:
+`ForbiddenValidatorDirective` hazır olduğunda, etkinleştirmek için seçicisini `appForbiddenName`'i herhangi bir girdi öğesine ekleyebilirsiniz.
+Örneğin:
 
 <docs-code header="actor-form-template.component.html (forbidden-name-input)" path="adev/src/content/examples/form-validation/src/app/template/actor-form-template.component.html" region="name-input"/>
 
-HELPFUL: Notice that the custom validation directive is instantiated with `useExisting` rather than `useClass`.
-The registered validator must be _this instance_ of the `ForbiddenValidatorDirective` —the instance in the form with its `forbiddenName` property bound to "bob".
+HELPFUL: Özel doğrulama direktifinin `useClass` yerine `useExisting` ile örneklendiğine dikkat edin.
+Kayıtlı doğrulayıcı, `forbiddenName` özelliği "bob"a bağlı formda yer alan `ForbiddenValidatorDirective`'in _bu örneği_ olmalıdır.
 
-If you were to replace `useExisting` with `useClass`, then you'd be registering a new class instance, one that doesn't have a `forbiddenName`.
+`useExisting` yerine `useClass` kullanırsanız, `forbiddenName` özelliğine sahip olmayan yeni bir sınıf örneği kaydedersiniz.
 
 ## Control status CSS classes
 
-Angular automatically mirrors many control properties onto the form control element as CSS classes.
-Use these classes to style form control elements according to the state of the form.
-The following classes are currently supported.
+Angular, kontrol özelliklerinin birçoğunu otomatik olarak form kontrol öğesine CSS sınıfları olarak yansıtır.
+Form kontrol öğelerini formun durumuna göre stilize etmek için bu sınıfları kullanın.
+Şu anda aşağıdaki sınıflar desteklenmektedir.
 
 - `.ng-valid`
 - `.ng-invalid`
@@ -145,30 +144,29 @@ The following classes are currently supported.
 - `.ng-dirty`
 - `.ng-untouched`
 - `.ng-touched`
-- `.ng-submitted` \(enclosing form element only\)
+- `.ng-submitted` \(yalnızca kapsayan form öğesi\)
 
-In the following example, the actor form uses the `.ng-valid` and `.ng-invalid` classes to
-set the color of each form control's border.
+Aşağıdaki örnekte, aktör formu her form kontrolünün kenar rengini ayarlamak için `.ng-valid` ve `.ng-invalid` sınıflarını kullanır.
 
 <docs-code header="forms.css (status classes)" path="adev/src/content/examples/form-validation/src/assets/forms.css"/>
 
 ## Cross-field validation
 
-A cross-field validator is a [custom validator](#defining-custom-validators 'Read about custom validators') that compares the values of different fields in a form and accepts or rejects them in combination.
-For example, you might have a form that offers mutually incompatible options, so that if the user can choose A or B, but not both.
-Some field values might also depend on others; a user might be allowed to choose B only if A is also chosen.
+Çapraz alan doğrulayıcı, bir formdaki farklı alanların değerlerini karşılaştıran ve bunları kombinasyon halinde kabul eden veya reddeden bir [özel doğrulayıcıdır](#defining-custom-validators 'Read about custom validators').
+Örneğin, birbirine uyumsuz seçenekler sunan bir formunuz olabilir, böylece kullanıcı A veya B'yi seçebilir, ancak ikisini birden seçemez.
+Bazı alan değerleri de diğerlerine bağlı olabilir; bir kullanıcının B'yi yalnızca A da seçiliyse seçmesine izin verilebilir.
 
-The following cross validation examples show how to do the following:
+Aşağıdaki çapraz doğrulama örnekleri şunları nasıl yapacağınızı gösterir:
 
-- Validate reactive or template-based form input based on the values of two sibling controls,
-- Show a descriptive error message after the user interacted with the form and the validation failed.
+- İki kardeş kontrolün değerlerine dayalı olarak reaktif veya şablon tabanlı form girdisini doğrulama,
+- Kullanıcı formla etkileşime girdikten ve doğrulama başarısız olduktan sonra açıklayıcı bir hata mesajı gösterme.
 
-The examples use cross-validation to ensure that actors do not reuse the same name in their role by filling out the Actor Form.
-The validators do this by checking that the actor names and roles do not match.
+Örnekler, aktörlerin Aktör Formunu doldurarak rollerinde aynı adı yeniden kullanmamalarını sağlamak için çapraz doğrulama kullanır.
+Doğrulayıcılar bunu aktör adları ve rollerin eşleşmediğini kontrol ederek yapar.
 
 ### Adding cross-validation to reactive forms
 
-The form has the following structure:
+Formun yapısı aşağıdaki gibidir:
 
 ```ts
 const actorForm = new FormGroup({
@@ -178,11 +176,11 @@ const actorForm = new FormGroup({
 });
 ```
 
-Notice that the `name` and `role` are sibling controls.
-To evaluate both controls in a single custom validator, you must perform the validation in a common ancestor control: the `FormGroup`.
-You query the `FormGroup` for its child controls so that you can compare their values.
+`name` ve `role`'ün kardeş kontroller olduğuna dikkat edin.
+Her iki kontrolü tek bir özel doğrulayıcıda değerlendirmek için, doğrulamayı ortak bir ata kontrolde gerçekleştirmelisiniz: `FormGroup`.
+Alt kontrollerini sorgulamak ve değerlerini karşılaştırmak için `FormGroup`'u sorgularsınız.
 
-To add a validator to the `FormGroup`, pass the new validator in as the second argument on creation.
+Doğrulayıcıyı `FormGroup`'a eklemek için, oluşturma sırasında yeni doğrulayıcıyı ikinci argüman olarak geçirin.
 
 ```ts
 const actorForm = new FormGroup(
@@ -195,59 +193,59 @@ const actorForm = new FormGroup(
 );
 ```
 
-The validator code is as follows.
+Doğrulayıcı kodu aşağıdaki gibidir.
 
 <docs-code header="unambiguous-role.directive.ts" path="adev/src/content/examples/form-validation/src/app/shared/unambiguous-role.directive.ts" region="cross-validation-validator"/>
 
-The `unambiguousRoleValidator` validator implements the `ValidatorFn` interface.
-It takes an Angular control object as an argument and returns either null if the form is valid, or `ValidationErrors` otherwise.
+`unambiguousRoleValidator` doğrulayıcısı, `ValidatorFn` arayüzünü uygular.
+Bir Angular kontrol nesnesini argüman olarak alır ve form geçerliyse null, aksi takdirde `ValidationErrors` döndürür.
 
-The validator retrieves the child controls by calling the `FormGroup`'s [get](api/forms/AbstractControl#get) method, then compares the values of the `name` and `role` controls.
+Doğrulayıcı, `FormGroup`'un [get](api/forms/AbstractControl#get) yöntemini çağırarak alt kontrolleri alır, ardından `name` ve `role` kontrollerinin değerlerini karşılaştırır.
 
-If the values do not match, the role is unambiguous, both are valid, and the validator returns null.
-If they do match, the actor's role is ambiguous and the validator must mark the form as invalid by returning an error object.
+Değerler eşleşmiyorsa, rol açıktır, her ikisi de geçerlidir ve doğrulayıcı null döndürür.
+Eşleşirlerse, aktörün rolü belirsizdir ve doğrulayıcı bir hata nesnesi döndürerek formu geçersiz olarak işaretlemelidir.
 
-To provide better user experience, the template shows an appropriate error message when the form is invalid.
+Daha iyi kullanıcı deneyimi sağlamak için, form geçersiz olduğunda şablon uygun bir hata mesajı gösterir.
 
 <docs-code header="actor-form-template.component.html" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="cross-validation-error-message"/>
 
-This `@if` displays the error if the `FormGroup` has the cross validation error returned by the `unambiguousRoleValidator` validator, but only if the user finished [interacting with the form](#control-status-css-classes).
+Bu `@if`, `FormGroup`'ta `unambiguousRoleValidator` doğrulayıcısı tarafından döndürülen çapraz doğrulama hatası varsa hatayı görüntüler, ancak yalnızca kullanıcı [formla etkileşimi tamamladıysa](#control-status-css-classes).
 
 ### Adding cross-validation to template-driven forms
 
-For a template-driven form, you must create a directive to wrap the validator function.
-You provide that directive as the validator using the [`NG_VALIDATORS` token](/api/forms/NG_VALIDATORS), as shown in the following example.
+Şablon odaklı bir form için, doğrulayıcı fonksiyonunu sarmak üzere bir direktif oluşturmanız gerekir.
+Aşağıdaki örnekte gösterildiği gibi, [`NG_VALIDATORS` token'ını](/api/forms/NG_VALIDATORS) kullanarak bu direktifi doğrulayıcı olarak sağlarsınız.
 
 <docs-code header="unambiguous-role.directive.ts" path="adev/src/content/examples/form-validation/src/app/shared/unambiguous-role.directive.ts" region="cross-validation-directive"/>
 
-You must add the new directive to the HTML template.
-Because the validator must be registered at the highest level in the form, the following template puts the directive on the `form` tag.
+Yeni direktifi HTML şablonuna eklemeniz gerekir.
+Doğrulayıcının formda en üst düzeyde kaydedilmesi gerektiğinden, aşağıdaki şablon direktifi `form` etiketine yerleştirir.
 
 <docs-code header="actor-form-template.component.html" path="adev/src/content/examples/form-validation/src/app/template/actor-form-template.component.html" region="cross-validation-register-validator"/>
 
-To provide better user experience, an appropriate error message appears when the form is invalid.
+Daha iyi kullanıcı deneyimi sağlamak için, form geçersiz olduğunda uygun bir hata mesajı görünür.
 
 <docs-code header="actor-form-template.component.html" path="adev/src/content/examples/form-validation/src/app/template/actor-form-template.component.html" region="cross-validation-error-message"/>
 
-This is the same in both template-driven and reactive forms.
+Bu, hem şablon odaklı hem de reaktif formlarda aynıdır.
 
 ## Creating asynchronous validators
 
-Asynchronous validators implement the `AsyncValidatorFn` and `AsyncValidator` interfaces.
-These are very similar to their synchronous counterparts, with the following differences.
+Asenkron doğrulayıcılar, `AsyncValidatorFn` ve `AsyncValidator` arayüzlerini uygular.
+Bunlar senkron karşılıklarına çok benzer, ancak aşağıdaki farklılıklara sahiptir.
 
-- The `validate()` functions must return a Promise or an observable,
-- The observable returned must be finite, meaning it must complete at some point.
-  To convert an infinite observable into a finite one, pipe the observable through a filtering operator such as `first`, `last`, `take`, or `takeUntil`.
+- `validate()` fonksiyonları bir Promise veya observable döndürmelidir,
+- Döndürülen observable sonlu olmalıdır, yani bir noktada tamamlanmalıdır.
+  Sonsuz bir observable'ı sonlu birine dönüştürmek için, observable'ı `first`, `last`, `take` veya `takeUntil` gibi bir filtreleme operatöründen geçirin.
 
-Asynchronous validation happens after the synchronous validation, and is performed only if the synchronous validation is successful.
-This check lets forms avoid potentially expensive async validation processes \(such as an HTTP request\) if the more basic validation methods have already found invalid input.
+Asenkron doğrulama, senkron doğrulamadan sonra gerçekleşir ve yalnızca senkron doğrulama başarılı olduğunda çalıştırılır.
+Bu kontrol, daha temel doğrulama yöntemleri zaten geçersiz girdi bulmuşsa formların potansiyel olarak pahalı asenkron doğrulama süreçlerini \(HTTP isteği gibi\) atlamasına olanak tanır.
 
-After asynchronous validation begins, the form control enters a `pending` state.
-Inspect the control's `pending` property and use it to give visual feedback about the ongoing validation operation.
+Asenkron doğrulama başladıktan sonra, form kontrolü `pending` durumuna girer.
+Kontrolün `pending` özelliğini inceleyin ve devam eden doğrulama işlemi hakkında görsel geri bildirim vermek için kullanın.
 
-A common UI pattern is to show a spinner while the async validation is being performed.
-The following example shows how to achieve this in a template-driven form.
+Yaygın bir kullanıcı arayüzü kalıbı, asenkron doğrulama yapılırken bir döndürücü göstermektir.
+Aşağıdaki örnek, bunu şablon odaklı bir formda nasıl gerçekleştireceğinizi gösterir.
 
 ```angular-html
 <input [(ngModel)]="name" #model="ngModel" appSomeAsyncValidator />
@@ -259,15 +257,15 @@ The following example shows how to achieve this in a template-driven form.
 
 ### Implementing a custom async validator
 
-In the following example, an async validator ensures that actors are cast for a role that is not already taken.
-New actors are constantly auditioning and old actors are retiring, so the list of available roles cannot be retrieved ahead of time.
-To validate the potential role entry, the validator must initiate an asynchronous operation to consult a central database of all currently cast actors.
+Aşağıdaki örnekte, bir asenkron doğrulayıcı aktörlerin henüz alınmamış bir role atanmasını sağlar.
+Yeni aktörler sürekli seçmelere katılıyor ve eski aktörler emekli oluyor, bu nedenle mevcut rollerin listesi önceden alınamaz.
+Olası rol girişini doğrulamak için, doğrulayıcı şu anda atanmış tüm aktörlerin merkezi bir veritabanına danışmak üzere asenkron bir işlem başlatmalıdır.
 
-The following code creates the validator class, `UniqueRoleValidator`, which implements the `AsyncValidator` interface.
+Aşağıdaki kod, `AsyncValidator` arayüzünü uygulayan `UniqueRoleValidator` doğrulayıcı sınıfını oluşturur.
 
 <docs-code header="role.directive.ts" path="adev/src/content/examples/form-validation/src/app/shared/role.directive.ts" region="async-validator"/>
 
-The `actorsService` property is initialized with an instance of the `ActorsService` token, which defines the following interface.
+`actorsService` özelliği, aşağıdaki arayüzü tanımlayan `ActorsService` token'ının bir örneğiyle başlatılır.
 
 ```ts
 interface ActorsService {
@@ -275,65 +273,65 @@ interface ActorsService {
 }
 ```
 
-In a real world application, the `ActorsService` would be responsible for making an HTTP request to the actor database to check if the role is available.
-From the validator's point of view, the actual implementation of the service is not important, so the example can just code against the `ActorsService` interface.
+Gerçek bir uygulamada, `ActorsService` rolün mevcut olup olmadığını kontrol etmek için aktör veritabanına bir HTTP isteği yapmaktan sorumlu olacaktır.
+Doğrulayıcının bakış açısından, hizmetin gerçek uygulaması önemli değildir, bu nedenle örnek yalnızca `ActorsService` arayüzüne karşı kod yazabilir.
 
-As the validation begins, the `UniqueRoleValidator` delegates to the `ActorsService` `isRoleTaken()` method with the current control value.
-At this point the control is marked as `pending` and remains in this state until the observable chain returned from the `validate()` method completes.
+Doğrulama başladığında, `UniqueRoleValidator` mevcut kontrol değeriyle `ActorsService` `isRoleTaken()` yöntemine delege eder.
+Bu noktada kontrol `pending` olarak işaretlenir ve `validate()` yönteminden döndürülen observable zinciri tamamlanana kadar bu durumda kalır.
 
-The `isRoleTaken()` method dispatches an HTTP request that checks if the role is available, and returns `Observable<boolean>` as the result.
-The `validate()` method pipes the response through the `map` operator and transforms it into a validation result.
+`isRoleTaken()` yöntemi, rolün mevcut olup olmadığını kontrol eden bir HTTP isteği gönderir ve sonuç olarak `Observable<boolean>` döndürür.
+`validate()` yöntemi, yanıtı `map` operatörü aracılığıyla doğrulama sonucuna dönüştürür.
 
-The method then, like any validator, returns `null` if the form is valid, and `ValidationErrors` if it is not.
-This validator handles any potential errors with the `catchError` operator.
-In this case, the validator treats the `isRoleTaken()` error as a successful validation, because failure to make a validation request does not necessarily mean that the role is invalid.
-You could handle the error differently and return the `ValidationError` object instead.
+Yöntem daha sonra, herhangi bir doğrulayıcı gibi, form geçerliyse `null` döndürür, geçerli değilse `ValidationErrors` döndürür.
+Bu doğrulayıcı, `catchError` operatörüyle olası hataları yönetir.
+Bu durumda, doğrulayıcı `isRoleTaken()` hatasını başarılı bir doğrulama olarak ele alır, çünkü bir doğrulama isteğinin başarısız olması rolün geçersiz olduğu anlamına gelmez.
+Hatayı farklı şekilde yönetebilir ve bunun yerine `ValidationError` nesnesini döndürebilirsiniz.
 
-After some time passes, the observable chain completes and the asynchronous validation is done.
-The `pending` flag is set to `false`, and the form validity is updated.
+Bir süre sonra, observable zinciri tamamlanır ve asenkron doğrulama biter.
+`pending` bayrağı `false` olarak ayarlanır ve formun geçerliliği güncellenir.
 
 ### Adding async validators to reactive forms
 
-To use an async validator in reactive forms, begin by injecting the validator into a property of the component class.
+Reaktif formlarda asenkron doğrulayıcı kullanmak için, doğrulayıcıyı bileşen sınıfının bir özelliğine enjekte ederek başlayın.
 
 <docs-code header="actor-form-reactive.component.2.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-inject"/>
 
-Then, pass the validator function directly to the `FormControl` to apply it.
+Ardından, doğrulayıcı fonksiyonu doğrudan `FormControl`'a geçirerek uygulayın.
 
-In the following example, the `validate` function of `UniqueRoleValidator` is applied to `roleControl` by passing it to the control's `asyncValidators` option and binding it to the instance of `UniqueRoleValidator` that was injected into `ActorFormReactiveComponent`.
-The value of `asyncValidators` can be either a single async validator function, or an array of functions.
-To learn more about `FormControl` options, see the [AbstractControlOptions](api/forms/AbstractControlOptions) API reference.
+Aşağıdaki örnekte, `UniqueRoleValidator`'ın `validate` fonksiyonu, kontrolün `asyncValidators` seçeneğine geçirilerek ve `ActorFormReactiveComponent`'e enjekte edilen `UniqueRoleValidator` örneğine bağlanarak `roleControl`'a uygulanır.
+`asyncValidators`'ın değeri tek bir asenkron doğrulayıcı fonksiyon veya bir fonksiyonlar dizisi olabilir.
+`FormControl` seçenekleri hakkında daha fazla bilgi edinmek için [AbstractControlOptions](api/forms/AbstractControlOptions) API referansına bakın.
 
 <docs-code header="actor-form-reactive.component.2.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-usage"/>
 
 ### Adding async validators to template-driven forms
 
-To use an async validator in template-driven forms, create a new directive and register the `NG_ASYNC_VALIDATORS` provider on it.
+Şablon odaklı formlarda asenkron doğrulayıcı kullanmak için, yeni bir direktif oluşturun ve üzerinde `NG_ASYNC_VALIDATORS` sağlayıcısını kaydedin.
 
-In the example below, the directive injects the `UniqueRoleValidator` class that contains the actual validation logic and invokes it in the `validate` function, triggered by Angular when validation should happen.
+Aşağıdaki örnekte, direktif gerçek doğrulama mantığını içeren `UniqueRoleValidator` sınıfını enjekte eder ve doğrulama yapılması gerektiğinde Angular tarafından tetiklenen `validate` fonksiyonunda çağırır.
 
 <docs-code header="role.directive.ts" path="adev/src/content/examples/form-validation/src/app/shared/role.directive.ts" region="async-validator-directive"/>
 
-Then, as with synchronous validators, add the directive's selector to an input to activate it.
+Ardından, senkron doğrulayıcılarda olduğu gibi, etkinleştirmek için direktifin seçicisini bir girdiye ekleyin.
 
 <docs-code header="actor-form-template.component.html (unique-unambiguous-role-input)" path="adev/src/content/examples/form-validation/src/app/template/actor-form-template.component.html" region="role-input"/>
 
 ### Optimizing performance of async validators
 
-By default, all validators run after every form value change.
-With synchronous validators, this does not normally have a noticeable impact on application performance.
-Async validators, however, commonly perform some kind of HTTP request to validate the control.
-Dispatching an HTTP request after every keystroke could put a strain on the backend API, and should be avoided if possible.
+Varsayılan olarak, tüm doğrulayıcılar her form değeri değişikliğinden sonra çalışır.
+Senkron doğrulayıcılarda, bu genellikle uygulama performansı üzerinde belirgin bir etkiye sahip değildir.
+Ancak asenkron doğrulayıcılar yaygın olarak kontrolü doğrulamak için bir tür HTTP isteği yapar.
+Her tuşa basıştan sonra bir HTTP isteği göndermek arka uç API'si üzerinde baskı oluşturabilir ve mümkünse bundan kaçınılmalıdır.
 
-You can delay updating the form validity by changing the `updateOn` property from `change` (default) to `submit` or `blur`.
+`updateOn` özelliğini `change` (varsayılan) yerine `submit` veya `blur` olarak değiştirerek form geçerliliği güncellemesini geciktirebilirsiniz.
 
-With template-driven forms, set the property in the template.
+Şablon odaklı formlarda, özelliği şablonda ayarlayın.
 
 ```angular-html
 <input [(ngModel)]="name" [ngModelOptions]="{updateOn: 'blur'}" />
 ```
 
-With reactive forms, set the property in the `FormControl` instance.
+Reaktif formlarda, özelliği `FormControl` örneğinde ayarlayın.
 
 ```ts
 new FormControl('', {updateOn: 'blur'});
@@ -341,6 +339,6 @@ new FormControl('', {updateOn: 'blur'});
 
 ## Interaction with native HTML form validation
 
-By default, Angular disables [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/Constraint_validation) by adding the `novalidate` attribute on the enclosing `<form>` and uses directives to match these attributes with validator functions in the framework.
-If you want to use native validation **in combination** with Angular-based validation, you can re-enable it with the `ngNativeValidate` directive.
-See the [API docs](api/forms/NgForm#native-dom-validation-ui) for details.
+Angular varsayılan olarak kapsayan `<form>`'a `novalidate` niteliği ekleyerek [yerel HTML form doğrulamasını](https://developer.mozilla.org/docs/Web/Guide/HTML/Constraint_validation) devre dışı bırakır ve bu nitelikleri çerçevedeki doğrulayıcı fonksiyonlarla eşleştirmek için direktifler kullanır.
+Angular tabanlı doğrulamayla **birlikte** yerel doğrulamayı kullanmak istiyorsanız, `ngNativeValidate` direktifiyle yeniden etkinleştirebilirsiniz.
+Ayrıntılar için [API belgelerine](api/forms/NgForm#native-dom-validation-ui) bakın.

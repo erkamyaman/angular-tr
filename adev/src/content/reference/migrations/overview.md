@@ -1,45 +1,45 @@
 # Migrations
 
-Learn about how you can migrate your existing angular project to the latest features incrementally.
+Mevcut Angular projenizi en son özelliklere nasıl aşamalı olarak geçirebileceğinizi öğrenin.
 
 <docs-card-container>
   <docs-card title="Standalone" link="Migrate now" href="reference/migrations/standalone">
-    Standalone components provide a simplified way to build Angular applications. Standalone components specify their dependencies directly instead of getting them through NgModules.
+    Standalone bileşenler, Angular uygulamaları oluşturmanın basitleştirilmiş bir yolunu sağlar. Standalone bileşenler, bağımlılıklarını NgModules aracılığıyla almak yerine doğrudan belirtir.
   </docs-card>
   <docs-card title="Control Flow Syntax" link="Migrate now" href="reference/migrations/control-flow">
-    Built-in Control Flow Syntax allows you to use more ergonomic syntax which is close to JavaScript and has better type checking. It replaces the need to import `CommonModule` to use functionality like `*ngFor`, `*ngIf` and `*ngSwitch`.
+    Yerleşik Kontrol Akışı Sözdizimi, JavaScript'e yakın daha ergonomik sözdizimi ve daha iyi tür denetimi kullanmanıza olanak tanır. `*ngFor`, `*ngIf` ve `*ngSwitch` gibi işlevselliği kullanmak için `CommonModule` içe aktarma ihtiyacını ortadan kaldırır.
   </docs-card>
   <docs-card title="inject() Function" link="Migrate now" href="reference/migrations/inject-function">
-    Angular's [`inject`](/api/core/inject) function offers more accurate types and better compatibility with standard decorators, compared to constructor-based injection.
+    Angular'ın [`inject`](/api/core/inject) fonksiyonu, yapıcı tabanlı enjeksiyona kıyasla daha doğru türler ve standart dekoratörlerle daha iyi uyumluluk sunar.
   </docs-card>
   <docs-card title="Lazy-loaded routes" link="Migrate now" href="reference/migrations/route-lazy-loading">
-    Convert eagerly loaded component routes to lazy loaded ones. This allows the build process to split production bundles into smaller chunks, to load less JavaScript at initial page load.
+    Hevesli yüklenen bileşen rotalarını tembel yüklenen rotalara dönüştürün. Bu, derleme sürecinin üretim paketlerini daha küçük parçalara bölmesine olanak tanıyarak, ilk sayfa yüklemesinde daha az JavaScript yüklenmesini sağlar.
   </docs-card>
   <docs-card title="New `input()` API" link="Migrate now" href="reference/migrations/signal-inputs">
-    Convert existing `@Input` fields to the new signal input API that is now production ready.
+    Mevcut `@Input` alanlarını artık üretime hazır olan yeni sinyal girdi API'sine dönüştürün.
   </docs-card>
   <docs-card title="New `output()` function" link="Migrate now" href="reference/migrations/outputs">
-    Convert existing `@Output` custom events to the new output function that is now production ready.
+    Mevcut `@Output` özel olaylarını artık üretime hazır olan yeni output fonksiyonuna dönüştürün.
   </docs-card>
   <docs-card title="Queries as signal" link="Migrate now" href="reference/migrations/signal-queries">
-    Convert existing decorator query fields to the improved signal queries API. The API is now production ready.
+    Mevcut dekoratör sorgu alanlarını geliştirilmiş sinyal sorguları API'sine dönüştürün. API artık üretime hazırdır.
   </docs-card>
   <docs-card title="Cleanup unused imports" link="Try it now" href="reference/migrations/cleanup-unused-imports">
-    Clean up unused imports in your project.
+    Projenizdeki kullanılmayan içe aktarmaları temizleyin.
   </docs-card>
   <docs-card title="Self-closing tags" link="Migrate now" href="reference/migrations/self-closing-tags">
-    Convert component templates to use self-closing tags where possible.
+    Bileşen şablonlarını mümkün olduğunda kendinden kapanan etiketler kullanacak şekilde dönüştürün.
   </docs-card>
   <docs-card title="NgClass to Class Bindings" link="Migrate now" href="reference/migrations/ngclass-to-class">
-      Convert component templates to prefer class bindings over the `NgClass` directives when possible.
+      Bileşen şablonlarını mümkün olduğunda `NgClass` direktifleri yerine sınıf bağlamalarını tercih edecek şekilde dönüştürün.
   </docs-card>
   <docs-card title="NgStyle to Style Bindings" link="Migrate now" href="reference/migrations/ngstyle-to-style">
-      Convert component templates to prefer style bindings over the `NgStyle` directives when possible.
+      Bileşen şablonlarını mümkün olduğunda `NgStyle` direktifleri yerine stil bağlamalarını tercih edecek şekilde dönüştürün.
   </docs-card>
   <docs-card title="RouterTestingModule migration" link="Migrate now" href="reference/migrations/router-testing-module-migration">
-    Convert `RouterTestingModule` usages to `RouterModule` in TestBed configurations and add `provideLocationMocks()` when appropriate.
+    TestBed yapılandırmalarında `RouterTestingModule` kullanımlarını `RouterModule`'e dönüştürün ve uygun olduğunda `provideLocationMocks()` ekleyin.
   </docs-card>
   <docs-card title="CommonModule to standalone imports" link="Migrate now" href="reference/migrations/common-to-standalone">
-    Replace imports of the `CommonModule` with imports of the individual directives and pipes used in the templates when possible.
+    Mümkün olduğunda `CommonModule` içe aktarmalarını şablonlarda kullanılan bireysel direktif ve pipe'ların içe aktarmalarıyla değiştirin.
   </docs-card>
 </docs-card-container>

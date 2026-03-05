@@ -1,15 +1,15 @@
 # Managing async data with signals using the Resources API
 
-Now that you've learned [how to derive state with linked signals](/tutorials/signals/3-deriving-state-with-linked-signals), let's explore how to handle asynchronous data with the Resource API. The Resource API provides a powerful way to manage async operations using signals, with built-in loading states, error handling, and request management.
+Artık [bağlantılı sinyallerle durum türetmeyi](/tutorials/signals/3-deriving-state-with-linked-signals) öğrendiğinize göre, Resource API ile asenkron verileri nasıl yöneteceğinizi keşfedelim. Resource API, yerleşik yükleme durumları, hata yönetimi ve istek yönetimi ile sinyalleri kullanarak asenkron işlemleri yönetmenin güçlü bir yolunu sağlar.
 
-In this activity, you'll learn how to use the `resource()` function to load data asynchronously and how to handle different states of async operations by building a user profile loader that demonstrates the Resource API in action.
+Bu aktivitede, verileri asenkron olarak yüklemek için `resource()` fonksiyonunu ve Resource API'yi çalışırken gösteren bir kullanıcı profili yükleyicisi oluşturarak asenkron işlemlerin farklı durumlarını nasıl yöneteceğinizi öğreneceksiniz.
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import resource function and API">
-Add `resource` to your existing imports and import the fake API function.
+Mevcut içe aktarmalarınıza `resource` ekleyin ve sahte API fonksiyonunu içe aktarın.
 
 ```ts
 // Add resource to existing imports
@@ -21,7 +21,7 @@ import {getUserData} from './user-api';
 </docs-step>
 
 <docs-step title="Create a resource for user data">
-Add a property in the component class that creates a resource to load user data based on a user ID signal.
+Bileşen sınıfında, bir kullanıcı kimliği sinyaline dayalı olarak kullanıcı verilerini yükleyen bir resource oluşturan bir özellik ekleyin.
 
 ```ts
 userId = signal(1);
@@ -35,7 +35,7 @@ userResource = resource({
 </docs-step>
 
 <docs-step title="Add methods to interact with the resource">
-Add methods to change the user ID and reload the resource.
+Kullanıcı kimliğini değiştirmek ve resource'u yeniden yüklemek için metotlar ekleyin.
 
 ```ts
 loadUser(id: number) {
@@ -47,24 +47,24 @@ reloadUser() {
 }
 ```
 
-Changing the params signal automatically triggers a reload, or you can manually reload with `reload()`.
+Params sinyalini değiştirmek otomatik olarak yeniden yüklemeyi tetikler veya `reload()` ile manuel olarak yeniden yükleyebilirsiniz.
 </docs-step>
 
 <docs-step title="Create computed signals for resource states">
-Add computed signals to access different states of the resource.
+Resource'un farklı durumlarına erişmek için computed sinyaller ekleyin.
 
 ```ts
 isLoading = computed(() => this.userResource.status() === 'loading');
 hasError = computed(() => this.userResource.status() === 'error');
 ```
 
-Resources provide a `status()` signal that can be 'loading', 'success', or 'error', a `value()` signal for the loaded data, and a `hasValue()` method that safely checks if data is available.
+Resource'lar; 'loading', 'success' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar.
 </docs-step>
 
 <docs-step title="Wire up the buttons and display resource states">
-The template structure is already provided. Now connect everything:
+Şablon yapısı zaten sağlanmış. Şimdi her şeyi bağlayın:
 
-Part 1. **Add click handlers to the buttons:**
+Bölüm 1. **Düğmelere tıklama işleyicileri ekleyin:**
 
 ```html
 <button (click)="loadUser(1)">Load User 1</button>
@@ -73,7 +73,7 @@ Part 1. **Add click handlers to the buttons:**
 <button (click)="reloadUser()">Reload</button>
 ```
 
-Part 2. **Replace the placeholder with resource state handling:**
+Bölüm 2. **Yer tutucuyu resource durum yönetimi ile değiştirin:**
 
 ```angular-html
 @if (isLoading()) {
@@ -88,23 +88,23 @@ Part 2. **Replace the placeholder with resource state handling:**
 }
 ```
 
-The resource provides different methods to check its state:
+Resource, durumunu kontrol etmek için farklı metotlar sağlar:
 
-- `isLoading()` - true when fetching data
-- `hasError()` - true when an error occurred
-- `userResource.hasValue()` - true when data is available
-- `userResource.value()` - access the loaded data
-- `userResource.error()` - access error information
+- `isLoading()` - veri getirilirken true
+- `hasError()` - bir hata oluştuğunda true
+- `userResource.hasValue()` - veri mevcut olduğunda true
+- `userResource.value()` - yüklenen verilere erişim
+- `userResource.error()` - hata bilgisine erişim
 
 </docs-step>
 
 </docs-workflow>
 
-Excellent! You've now learned how to use the Resource API with signals. Key concepts to remember:
+Mükemmel! Artık sinyallerle Resource API'yi nasıl kullanacağınızı öğrendiniz. Hatırlanması gereken temel kavramlar:
 
-- **Resources are reactive**: They automatically reload when params change
-- **Built-in state management**: Resources provide `status()`, `value()`, and `error()` signals
-- **Automatic cleanup**: Resources handle request cancellation and cleanup automatically
-- **Manual control**: You can manually reload or abort requests when needed
+- **Resource'lar reaktiftir**: Parametreler değiştiğinde otomatik olarak yeniden yüklenir
+- **Yerleşik durum yönetimi**: Resource'lar `status()`, `value()` ve `error()` sinyalleri sağlar
+- **Otomatik temizleme**: Resource'lar istek iptalini ve temizliği otomatik olarak yönetir
+- **Manuel kontrol**: Gerektiğinde istekleri manuel olarak yeniden yükleyebilir veya iptal edebilirsiniz
 
-In the next lesson, you'll learn [how to pass data to components with input signals](/tutorials/signals/5-component-communication-with-signals)!
+Bir sonraki derste, [input sinyalleri ile bileşenlere veri aktarmayı](/tutorials/signals/5-component-communication-with-signals) öğreneceksiniz!

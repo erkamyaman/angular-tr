@@ -1,10 +1,10 @@
 # Create template fragments with ng-template
 
-Inspired by the [native `<template>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template), the `<ng-template>` element lets you declare a **template fragment** – a section of content that you can dynamically or programmatically render.
+Yerel [`<template>` elemanindann](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template) esinlenen `<ng-template>` elemani, dinamik olarak veya programatik olarak isleyebileceginiz bir **sablon parcasi** -- bir icerik bolumu -- bildirmenize olanak tanir.
 
 ## Creating a template fragment
 
-You can create a template fragment inside of any component template with the `<ng-template>` element:
+Herhangi bir bilesen sablonu icinde `<ng-template>` elemani ile bir sablon parcasi olusturabilirsiniz:
 
 ```angular-html
 <p>This is a normal element</p>
@@ -14,11 +14,11 @@ You can create a template fragment inside of any component template with the `<n
 </ng-template>
 ```
 
-When the above is rendered, the content of the `<ng-template>` element is not rendered on the page. Instead, you can get a reference to the template fragment and write code to dynamically render it.
+Yukaridaki islendiginde, `<ng-template>` elemaninin icerigi sayfada islenmez. Bunun yerine, sablon parcasina bir referans alabilir ve onu dinamik olarak islemek icin kod yazabilirsiniz.
 
 ### Binding context for fragments
 
-Template fragments may contain bindings with dynamic expressions:
+Sablon parcalari dinamik ifadeler iceren baglamalar icerebilir:
 
 ```angular-ts
 @Component({
@@ -30,21 +30,21 @@ export class ItemCounter {
 }
 ```
 
-Expressions or statements in a template fragment are evaluated against the component in which the fragment is declared, regardless of where the fragment is rendered.
+Bir sablon parcasindaki ifadeler veya ifade bloklari, parcanin nerede islendiginden bagimsiz olarak, parcanin bildiirldigi bilesene gore degerlendirilir.
 
 ## Getting a reference to a template fragment
 
-You can get a reference to a template fragment in one of three ways:
+Bir sablon parcasina referans almanin uc yolu vardir:
 
-- By declaring a [template reference variable](/guide/templates/variables#template-reference-variables) on the `<ng-template>` element
-- By querying for the fragment with [a component or directive query](/guide/components/queries)
-- By injecting the fragment in a directive that's applied directly to an `<ng-template>` element.
+- `<ng-template>` elemani uzerinde bir [sablon referans degiskeni](/guide/templates/variables#template-reference-variables) bildirerek
+- Parcayi [bir bilesen veya direktif sorgusu](/guide/components/queries) ile sorgulayarak
+- Dogrudan bir `<ng-template>` elemanina uygulanan bir direktifte parcayi enjekte ederek.
 
-In all three cases, the fragment is represented by a [TemplateRef](/api/core/TemplateRef) object.
+Her uc durumda da parca bir [TemplateRef](/api/core/TemplateRef) nesnesi ile temsil edilir.
 
 ### Referencing a template fragment with a template reference variable
 
-You can add a template reference variable to an `<ng-template>` element to reference that template fragment in other parts of the same template file:
+Ayni sablon dosyasinin diger bolumlerinde o sablon parcasina referans vermek icin bir `<ng-template>` elemanina sablon referans degiskeni ekleyebilirsiniz:
 
 ```angular-html
 <p>This is a normal element</p>
@@ -54,13 +54,13 @@ You can add a template reference variable to an `<ng-template>` element to refer
 </ng-template>
 ```
 
-You can then reference this fragment anywhere else in the template via the `myFragment` variable.
+Daha sonra bu parcaya sablonun herhangi bir yerinde `myFragment` degiskeni araciligiyla referans verebilirsiniz.
 
 ### Referencing a template fragment with queries
 
-You can get a reference to a template fragment using any [component or directive query API](/guide/components/queries).
+Herhangi bir [bilesen veya direktif sorgu API'si](/guide/components/queries) kullanarak bir sablon parcasina referans alabilirsiniz.
 
-You can query the `TemplateRef` object directly using a `viewChild` query.
+`TemplateRef` nesnesini dogrudan bir `viewChild` sorgusu kullanarak sorgulayabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -78,9 +78,9 @@ export class ComponentWithFragment {
 }
 ```
 
-You can then reference this fragment in your component code or the component's template like any other class member.
+Daha sonra bu parcaya bilesen kodunuzda veya bilesenin sablonunda diger sinif uyeleri gibi referans verebilirsiniz.
 
-If a template contains multiple fragments, you can assign a name to each fragment by adding a template reference variable to each `<ng-template>` element and querying for the fragments based on that name:
+Bir sablon birden fazla parca iceriyorsa, her `<ng-template>` elemanina bir sablon referans degiskeni ekleyerek her parcaya bir ad atayabilir ve bu ada gore parcalari sorgulayabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -103,11 +103,11 @@ export class ComponentWithFragment {
 }
 ```
 
-Again, you can then reference these fragments in your component code or the component's template like any other class members.
+Yine, bu parcalara bilesen kodunuzda veya bilesenin sablonunda diger sinif uyeleri gibi referans verebilirsiniz.
 
 ### Injecting a template fragment
 
-A directive can inject a `TemplateRef` if that directive is applied directly to an `<ng-template>` element:
+Bir direktif, dogrudan bir `<ng-template>` elemanina uygulanmissa `TemplateRef` enjekte edebilir:
 
 ```angular-ts
 @Directive({
@@ -124,23 +124,23 @@ export class MyDirective {
 </ng-template>
 ```
 
-You can then reference this fragment in your directive code like any other class member.
+Daha sonra bu parcaya direktif kodunuzda diger sinif uyeleri gibi referans verebilirsiniz.
 
 ## Rendering a template fragment
 
-Once you have a reference to a template fragment's `TemplateRef` object, you can render a fragment in one of two ways: in your template with the `NgTemplateOutlet` directive or in your TypeScript code with `ViewContainerRef`.
+Bir sablon parcasinin `TemplateRef` nesnesine referansiniz olduugunda, bir parcayi iki yoldan biriyle isleyebilirsiniz: sablonunuzda `NgTemplateOutlet` direktifi ile veya TypeScript kodunuzda `ViewContainerRef` ile.
 
 ### Using `NgTemplateOutlet`
 
-The `NgTemplateOutlet` directive from `@angular/common` accepts a `TemplateRef` and renders the fragment as a **sibling** to the element with the outlet. You should generally use `NgTemplateOutlet` on an [`<ng-container>` element](/guide/templates/ng-container).
+`@angular/common`'dan gelen `NgTemplateOutlet` direktifi bir `TemplateRef` kabul eder ve parcayi outlet'e sahip elemanin **kardesi** olarak isler. `NgTemplateOutlet`'i genellikle bir [`<ng-container>` elemani](/guide/templates/ng-container) uzerinde kullanmalisiniz.
 
-First, import `NgTemplateOutlet`:
+Oncelikle `NgTemplateOutlet`'i iceri aktarin:
 
 ```typescript
 import {NgTemplateOutlet} from '@angular/common';
 ```
 
-The following example declares a template fragment and renders that fragment to a `<ng-container>` element with `NgTemplateOutlet`:
+Asagidaki ornek, bir sablon parcasi bildirir ve bu parcayi `NgTemplateOutlet` ile bir `<ng-container>` elemanina isler:
 
 ```angular-html
 <p>This is a normal element</p>
@@ -152,7 +152,7 @@ The following example declares a template fragment and renders that fragment to 
 <ng-container *ngTemplateOutlet="myFragment"></ng-container>
 ```
 
-This example produces the following rendered DOM:
+Bu ornek su islenmis DOM'u uretir:
 
 ```angular-html
 <p>This is a normal element</p>
@@ -161,11 +161,11 @@ This example produces the following rendered DOM:
 
 ### Using `ViewContainerRef`
 
-A **view container** is a node in Angular's component tree that can contain content. Any component or directive can inject `ViewContainerRef` to get a reference to a view container corresponding to that component or directive's location in the DOM.
+**Gorunum kapsayicisi (view container)**, Angular'in bilesen agacindaki icerik barindirabilecek bir dugumudur. Herhangi bir bilesen veya direktif, o bilesen veya direktifin DOM'daki konumuna karsilik gelen bir gorunum kapsayicisina referans almak icin `ViewContainerRef` enjekte edebilir.
 
-You can use the `createEmbeddedView` method on `ViewContainerRef` to dynamically render a template fragment. When you render a fragment with a `ViewContainerRef`, Angular appends it into the DOM as the next sibling of the component or directive that injected the `ViewContainerRef`.
+Bir sablon parcasini dinamik olarak islemek icin `ViewContainerRef` uzerindeki `createEmbeddedView` yontemini kullanabilirsiniz. Bir parcayi `ViewContainerRef` ile islerken, Angular onu `ViewContainerRef`'i enjekte eden bilesen veya direktifin sonraki kardesi olarak DOM'a ekler.
 
-The following example shows a component that accepts a reference to a template fragment as an input and renders that fragment into the DOM on a button click.
+Asagidaki ornek, bir sablon parcasina referansi giris olarak kabul eden ve bir buton tiklamasinda parcayi DOM'a isleyen bir bileseni gostermektedir.
 
 ```angular-ts
 @Component({
@@ -198,7 +198,7 @@ export class MyOutlet {
 }
 ```
 
-In the example above, clicking the "Show" button results in the following output:
+Yukaridaki ornekte, "Show" butonuna tiklamak su ciktiyi uretir:
 
 ```angular-html
 <component-with-fragment>
@@ -212,9 +212,9 @@ In the example above, clicking the "Show" button results in the following output
 
 ## Passing parameters when rendering a template fragment
 
-When declaring a template fragment with `<ng-template>`, you can additionally declare parameters accepted by the fragment. When you render a fragment, you can optionally pass a `context` object corresponding to these parameters. You can use data from this context object in binding expressions and statements, in addition to referencing data from the component in which the fragment is declared.
+`<ng-template>` ile bir sablon parcasi bildirirken, ek olarak parca tarafindan kabul edilen parametreler de bildirebilirsiniz. Bir parcayi islerken, istege bagli olarak bu parametrelere karsilik gelen bir `context` nesnesi gecebilirsiniz. Bu baglam nesnesindeki verileri, parcanin bildirildigi bilesendeki verilere referans vermenin yani sira, baglama ifadelerinde ve ifade bloklarinda kullanabilirsiniz.
 
-Each parameter is written as an attribute prefixed with `let-` with a value matching a property name in the context object:
+Her parametre, baglam nesnesindeki bir ozellik adiyla eslesen bir degerle `let-` oneki ile yazilir:
 
 ```angular-html
 <ng-template let-pizzaTopping="topping">
@@ -224,7 +224,7 @@ Each parameter is written as an attribute prefixed with `let-` with a value matc
 
 ### Using `NgTemplateOutlet` {#using-ngtemplateoutlet-with-parameters}
 
-You can bind a context object to the `ngTemplateOutletContext` input:
+Bir baglam nesnesini `ngTemplateOutletContext` girisine baglayabilirsiniz:
 
 ```angular-html
 <ng-template #myFragment let-pizzaTopping="topping">
@@ -236,7 +236,7 @@ You can bind a context object to the `ngTemplateOutletContext` input:
 
 ### Using `ViewContainerRef` {#using-viewcontainerref-with-parameters}
 
-You can pass a context object as the second argument to `createEmbeddedView`:
+Bir baglam nesnesini `createEmbeddedView`'a ikinci arguman olarak gecebilirsiniz:
 
 ```ts
 this.viewContainer.createEmbeddedView(this.myFragment, {topping: 'onion'});
@@ -244,11 +244,11 @@ this.viewContainer.createEmbeddedView(this.myFragment, {topping: 'onion'});
 
 ## Providing injectors to template fragments
 
-When you render a template fragment, its injector context comes from the **template declaration's location**, not from where it is rendered. You can override this behavior by providing a custom injector.
+Bir sablon parcasini islediginizde, enjektyor baglami **sablonun bildirim konumundan** gelir, islendiigi yerden degil. Ozel bir enjekttor saglayarak bu davranisi geersiz kilabilirsiniz.
 
 ### Using `NgTemplateOutlet` {#using-ngtemplateoutlet-with-injectors}
 
-You can pass a custom `Injector` to the `ngTemplateOutletInjector` input:
+`ngTemplateOutletInjector` girisine ozel bir `Injector` gecebilirsiniz:
 
 ```angular-ts
 export const THEME_DATA = new InjectionToken<string>('THEME_DATA', {
@@ -282,7 +282,7 @@ export class Root {
 
 #### Inheriting the outlet's injector
 
-You can set `ngTemplateOutletInjector` to the string `'outlet'` to make the embedded view inherit its injector from the outlet's location in the DOM instead of from where the template was declared.
+Gomulu gorunumun enjektorunu sablonun bildirildiig yerden degil, outlet'in DOM'daki konumundan devralmasini saglamak icin `ngTemplateOutletInjector`'u `'outlet'` dizgesine ayarlayabilirsiniz.
 
 ```angular-html
 <ng-template #node let-items>
@@ -298,13 +298,13 @@ You can set `ngTemplateOutletInjector` to the string `'outlet'` to make the embe
 <ng-container *ngTemplateOutlet="node; context: {$implicit: topLevelItems}" />
 ```
 
-Each recursive rendering of the `node` template inherits the injector from the surrounding `<item-component>`, allowing each nested level to access providers scoped to its parent component.
+`node` sablonunun her tekrarlayan islemesi, cevreleyen `<item-component>`'ten enjektoru devralir ve her ic ice duzey ust bilesenine kapsamli saglayicilara erismesine olanak tanir.
 
-NOTE: This is useful for building recursive structures or any situation where the rendered template needs access to providers from the component tree at the outlet site.
+NOTE: Bu, ozyinelemeli yapilar veya islenen sablonun outlet sitesindeki bilesen agacindan saglayicilara erismesi gereken herhangi bir durum icin faydalidir.
 
 ### Using `ViewContainerRef` {#using-viewcontainerref-with-injectors}
 
-You can pass a custom injector as part of the options object in `createEmbeddedView`:
+`createEmbeddedView`'daki secenekler nesnesinin bir parcasi olarak ozel bir enjekttor gecebilirsiniz:
 
 ```ts
 this.viewContainer.createEmbeddedView(this.myFragment, context, {
@@ -314,12 +314,12 @@ this.viewContainer.createEmbeddedView(this.myFragment, context, {
 
 ## Structural directives
 
-A **structural directive** is any directive that:
+Bir **yapisal direktif**, su ozelliklere sahip herhangi bir direktiftir:
 
-- Injects `TemplateRef`
-- Injects `ViewContainerRef` and programmatically renders the injected `TemplateRef`
+- `TemplateRef` enjekte eder
+- `ViewContainerRef` enjekte eder ve enjekte edilen `TemplateRef`'i programatik olarak isler
 
-Angular supports a special convenience syntax for structural directives. If you apply the directive to an element and prefix the directive's selector with an asterisk (`*`) character, Angular interprets the entire element and all of its content as a template fragment:
+Angular, yapisal direktifler icin ozel bir kisa yol sozdizimini destekler. Direktifi bir elemana uygularsaniz ve direktifin secicisine yildiz (`*`) karakteri ile onek eklerseniz, Angular tum elemani ve tum icerigini bir sablon parcasi olarak yorumlar:
 
 ```angular-html
 <section *myDirective>
@@ -327,7 +327,7 @@ Angular supports a special convenience syntax for structural directives. If you 
 </section>
 ```
 
-This is equivalent to:
+Bu, su ifadeye esdegerdir:
 
 ```angular-html
 <ng-template myDirective>
@@ -337,13 +337,13 @@ This is equivalent to:
 </ng-template>
 ```
 
-Developers typically use structural directives to conditionally render fragments or render fragments multiple times.
+Gelistiriciler genellikle parcalari kosullu olarak islemek veya parcalari birden fazla kez islemek icin yapisal direktifler kullanir.
 
-For more details, see [Structural Directives](/guide/directives/structural-directives).
+Daha fazla bilgi icin [Yapisal Direktifler](/guide/directives/structural-directives) konusuna bakin.
 
 ## Additional resources
 
-For examples of how `ng-template` is used in other libraries, check out:
+`ng-template`'in diger kutuphanelerde nasil kullanildigina dair ornekler icin su kaynaklara goz atin:
 
-- [Tabs from Angular Material](https://material.angular.dev/components/tabs/overview) - nothing gets rendered into the DOM until the tab is activated
-- [Table from Angular Material](https://material.angular.dev/components/table/overview) - allows developers to define different ways to render data
+- [Angular Material'den Sekmeler](https://material.angular.dev/components/tabs/overview) - sekme etkinlestirilene kadar DOM'a hicbir sey islenmez
+- [Angular Material'den Tablo](https://material.angular.dev/components/table/overview) - gelistiricilerin verileri farkli sekillerde islemesine olanak tanir

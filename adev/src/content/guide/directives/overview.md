@@ -1,42 +1,42 @@
 <docs-decorative-header title="Built-in directives" imgSrc="adev/src/assets/images/directives.svg"> <!-- markdownlint-disable-line -->
-Directives are classes that add additional behavior to elements in your Angular applications.
+Direktifler, Angular uygulamalarınızdaki elemanlara ek davranış ekleyen sınıflardır.
 </docs-decorative-header>
 
-Use Angular's built-in directives to manage forms, lists, styles, and what users see.
+Formları, listeleri, stilleri ve kullanıcıların gördüklerini yönetmek için Angular'ın yerleşik direktiflerini kullanın.
 
-The different types of Angular directives are as follows:
+Angular direktiflerinin farklı türleri şunlardır:
 
-| Directive Types                                                  | Details                                                                           |
-| :--------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| [Components](guide/components)                                   | Used with a template. This type of directive is the most common directive type.   |
-| [Attribute directives](#built-in-attribute-directives)           | Change the appearance or behavior of an element, component, or another directive. |
-| [Structural directives](/guide/directives/structural-directives) | Change the DOM layout by adding and removing DOM elements.                        |
+| Directive Types                                                  | Details                                                                                   |
+| :--------------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| [Components](guide/components)                                   | Bir şablonla kullanılır. Bu direktif türü en yaygın direktif türüdür.                     |
+| [Attribute directives](#built-in-attribute-directives)           | Bir elemanın, bileşenin veya başka bir direktifin görünümünü veya davranışını değiştirir. |
+| [Structural directives](/guide/directives/structural-directives) | DOM elemanları ekleyerek ve kaldırarak DOM düzenini değiştirir.                           |
 
-This guide covers built-in [attribute directives](#built-in-attribute-directives).
+Bu kılavuz yerleşik [nitelik direktiflerini](#built-in-attribute-directives) kapsar.
 
 ## Built-in attribute directives
 
-Attribute directives listen to and modify the behavior of other HTML elements, attributes, properties, and components.
+Nitelik direktifleri, diğer HTML elemanlarının, niteliklerin, özelliklerin ve bileşenlerin davranışını dinler ve değiştirir.
 
-The most common attribute directives are as follows:
+En yaygın nitelik direktifleri şunlardır:
 
-| Common directives                                      | Details                                            |
-| :----------------------------------------------------- | :------------------------------------------------- |
-| [`NgClass`](#adding-and-removing-classes-with-ngclass) | Adds and removes a set of CSS classes.             |
-| [`NgStyle`](#setting-inline-styles-with-ngstyle)       | Adds and removes a set of HTML styles.             |
-| [`NgModel`](guide/forms/template-driven-forms)         | Adds two-way data binding to an HTML form element. |
+| Common directives                                      | Details                                                |
+| :----------------------------------------------------- | :----------------------------------------------------- |
+| [`NgClass`](#adding-and-removing-classes-with-ngclass) | Bir dizi CSS sınıfı ekler ve kaldırır.                 |
+| [`NgStyle`](#setting-inline-styles-with-ngstyle)       | Bir dizi HTML stili ekler ve kaldırır.                 |
+| [`NgModel`](guide/forms/template-driven-forms)         | Bir HTML form elemanına çift yönlü veri bağlama ekler. |
 
-HELPFUL: Built-in directives use only public APIs. They do not have special access to any private APIs that other directives can't access.
+HELPFUL: Yerleşik direktifler yalnızca genel API'leri kullanır. Diğer direktiflerin erişemediği hiçbir özel API'ye özel erişimleri yoktur.
 
 ## Adding and removing classes with `NgClass`
 
-Add or remove multiple CSS classes simultaneously with `ngClass`.
+`ngClass` ile aynı anda birden fazla CSS sınıfı ekleyin veya kaldırın.
 
-HELPFUL: To add or remove a _single_ class, use [class binding](/guide/templates/binding#css-class-and-style-property-bindings) rather than `NgClass`.
+HELPFUL: _Tek_ bir sınıf eklemek veya kaldırmak için `NgClass` yerine [sınıf bağlama](/guide/templates/binding#css-class-and-style-property-bindings) kullanın.
 
 ### Import `NgClass` in the component
 
-To use `NgClass`, add it to the component's `imports` list.
+`NgClass` kullanmak için bileşenin `imports` listesine ekleyin.
 
 ```angular-ts
 import {NgClass} from '@angular/common';
@@ -50,38 +50,38 @@ export class AppComponent {}
 
 ### Using `NgClass` with an expression
 
-On the element you'd like to style, add `[ngClass]` and set it equal to an expression.
-In this case, `isSpecial` is a boolean set to `true` in `app.component.ts`.
-Because `isSpecial` is true, `ngClass` applies the class of `special` to the `<div>`.
+Stil vermek istediğiniz elemana `[ngClass]` ekleyin ve bir ifadeye eşitleyin.
+Bu durumda, `isSpecial` `app.component.ts` içinde `true` olarak ayarlanmış bir boolean'dır.
+`isSpecial` true olduğundan, `ngClass` `<div>`'e `special` sınıfını uygular.
 
 <docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="special-div"/>
 
 ### Using `NgClass` with a method
 
-1. To use `NgClass` with a method, add the method to the component class.
-   In the following example, `setCurrentClasses()` sets the property `currentClasses` with an object that adds or removes three classes based on the `true` or `false` state of three other component properties.
+1. `NgClass`'i bir yöntemle kullanmak için, yöntemi bileşen sınıfına ekleyin.
+   Aşağıdaki örnekte, `setCurrentClasses()`, `currentClasses` özelliğini diğer üç bileşen özelliğinin `true` veya `false` durumuna göre üç sınıfı ekleyen veya kaldıran bir nesne ile ayarlar.
 
-   Each key of the object is a CSS class name.
-   If a key is `true`, `ngClass` adds the class.
-   If a key is `false`, `ngClass` removes the class.
+   Nesnenin her anahtarı bir CSS sınıf adıdır.
+   Bir anahtar `true` ise, `ngClass` sınıfı ekler.
+   Bir anahtar `false` ise, `ngClass` sınıfı kaldırır.
 
    <docs-code header="app.component.ts" path="adev/src/content/examples/built-in-directives/src/app/app.component.ts" region="setClasses"/>
 
-1. In the template, add the `ngClass` property binding to `currentClasses` to set the element's classes:
+1. Şablonda, elemanın sınıflarını ayarlamak için `ngClass` özellik bağlamasını `currentClasses`'a ekleyin:
 
    <docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="NgClass-1"/>
 
-For this use case, Angular applies the classes on initialization and in case of changes caused by reassigning the `currentClasses` object.
-The full example calls `setCurrentClasses()` initially with `ngOnInit()` when the user clicks on the `Refresh currentClasses` button.
-These steps are not necessary to implement `ngClass`.
+Bu kullanım durumu için Angular, sınıfları başlatmada ve `currentClasses` nesnesinin yeniden atanmasının neden olduğu değişiklikler durumunda uygular.
+Tam örnek, ilk olarak `ngOnInit()` ile ve kullanıcı `Refresh currentClasses` düğmesine tıkladığında `setCurrentClasses()`'ı çağırır.
+Bu adımlar `ngClass`'i uygulamak için gerekli değildir.
 
 ## Setting inline styles with `NgStyle`
 
-HELPFUL: To add or remove a _single_ style, use [style bindings](guide/templates/binding#css-class-and-style-property-bindings) rather than `NgStyle`.
+HELPFUL: _Tek_ bir stili eklemek veya kaldırmak için `NgStyle` yerine [stil bağlamalarını](guide/templates/binding#css-class-and-style-property-bindings) kullanın.
 
 ### Import `NgStyle` in the component
 
-To use `NgStyle`, add it to the component's `imports` list.
+`NgStyle` kullanmak için bileşenin `imports` listesine ekleyin.
 
 ```angular-ts
 import {NgStyle} from '@angular/common';
@@ -93,39 +93,39 @@ import {NgStyle} from '@angular/common';
 export class AppComponent {}
 ```
 
-Use `NgStyle` to set multiple inline styles simultaneously, based on the state of the component.
+Bileşenin durumuna göre aynı anda birden fazla satır içi stili ayarlamak için `NgStyle` kullanın.
 
-1. To use `NgStyle`, add a method to the component class.
+1. `NgStyle` kullanmak için bileşen sınıfına bir yöntem ekleyin.
 
-   In the following example, `setCurrentStyles()` sets the property `currentStyles` with an object that defines three styles, based on the state of three other component properties.
+   Aşağıdaki örnekte, `setCurrentStyles()`, diğer üç bileşen özelliğinin durumuna göre üç stili tanımlayan bir nesne ile `currentStyles` özelliğini ayarlar.
 
    <docs-code header="app.component.ts" path="adev/src/content/examples/built-in-directives/src/app/app.component.ts" region="setStyles"/>
 
-1. To set the element's styles, add an `ngStyle` property binding to `currentStyles`.
+1. Elemanın stillerini ayarlamak için `currentStyles`'a bir `ngStyle` özellik bağlaması ekleyin.
 
    <docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="NgStyle-2"/>
 
-For this use case, Angular applies the styles upon initialization and in case of changes.
-To do this, the full example calls `setCurrentStyles()` initially with `ngOnInit()` and when the dependent properties change through a button click.
-However, these steps are not necessary to implement `ngStyle` on its own.
+Bu kullanım durumu için Angular, stilleri başlatmada ve değişiklikler durumunda uygular.
+Bunu yapmak için tam örnek, ilk olarak `ngOnInit()` ile ve bağımlı özellikler bir düğme tıklamasıyla değiştiğinde `setCurrentStyles()`'ı çağırır.
+Ancak bu adımlar `ngStyle`'ı kendi başına uygulamak için gerekli değildir.
 
 ## Hosting a directive without a DOM element
 
-The Angular `<ng-container>` is a grouping element that doesn't interfere with styles or layout because Angular doesn't put it in the DOM.
+Angular `<ng-container>`, Angular'ın DOM'a yerleştirmediği için stilleri veya düzeni etkilemeyen bir gruplama elemanıdır.
 
-Use `<ng-container>` when there's no single element to host the directive.
+Direktifi barındıracak tek bir eleman olmadığında `<ng-container>` kullanın.
 
-Here's a conditional paragraph using `<ng-container>`.
+İşte `<ng-container>` kullanan koşullu bir paragraf.
 
 <docs-code header="app.component.html (ngif-ngcontainer)" path="adev/src/content/examples/structural-directives/src/app/app.component.html" region="ngif-ngcontainer"/>
 
 <img alt="ngcontainer paragraph with proper style" src="assets/images/guide/structural-directives/good-paragraph.png">
 
-1. Import the `ngModel` directive from `FormsModule`.
+1. `FormsModule`'dan `ngModel` direktifini içe aktarın.
 
-1. Add `FormsModule` to the imports section of the relevant Angular module.
+1. `FormsModule`'ü ilgili Angular modülünün imports bölümüne ekleyin.
 
-1. To conditionally exclude an `<option>`, wrap the `<option>` in an `<ng-container>`.
+1. Bir `<option>`'ı koşullu olarak hariç tutmak için `<option>`'ı bir `<ng-container>` içine sarın.
 
    <docs-code header="app.component.html (select-ngcontainer)" path="adev/src/content/examples/structural-directives/src/app/app.component.html" region="select-ngcontainer"/>
 

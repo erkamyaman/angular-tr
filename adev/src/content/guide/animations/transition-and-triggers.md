@@ -1,299 +1,299 @@
 # Animation transitions and triggers
 
-IMPORTANT: The `@angular/animations` package is now deprecated. The Angular team recommends using native CSS with `animate.enter` and `animate.leave` for animations for all new code. Learn more at the new enter and leave [animation guide](guide/animations). Also see [Migrating away from Angular's Animations package](guide/animations/migration) to learn how you can start migrating to pure CSS animations in your apps.
+IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
 
-This guide goes into depth on special transition states such as the `*` wildcard and `void`. It shows how these special states are used for elements entering and leaving a view.
-This section also explores multiple animation triggers, animation callbacks, and sequence-based animation using keyframes.
+Bu rehber, `*` joker karakteri ve `void` gibi ozel gecis durumlarina derinlemesine girer. Bu ozel durumlarin bir gorünume giren ve gorünumden ayrilan elemanlar icin nasil kullanildigini gosterir.
+Bu bolum ayrica birden fazla animasyon tetikleyicisini, animasyon geri cagirmalarini ve anahtar kareler kullanan sira tabanli animasyonu inceler.
 
 ## Predefined states and wildcard matching
 
-In Angular, transition states can be defined explicitly through the [`state()`](api/animations/state) function, or using the predefined `*` wildcard and `void` states.
+Angular'da, gecis durumlari [`state()`](api/animations/state) fonksiyonu araciligiyla acikca tanimlanabilir veya onceden tanimlanmis `*` joker karakteri ve `void` durumlari kullanilarak tanimlanabilir.
 
 ### Wildcard state
 
-An asterisk `*` or _wildcard_ matches any animation state.
-This is useful for defining transitions that apply regardless of the HTML element's start or end state.
+Bir yildiz isareti `*` veya _joker karakter_ herhangi bir animasyon durumuyla eslesir.
+Bu, HTML elemaninin baslangic veya bitis durumundan bagimsiz olarak gecerli olan gecisleri tanimlamak icin kullanislidir.
 
-For example, a transition of `open => *` applies when the element's state changes from open to anything else.
+Ornegin, `open => *` gecisi, elemanin durumu acik'tan baska herhangi bir seye degistiginde gecerlidir.
 
 <img alt="wildcard state expressions" src="assets/images/guide/animations/wildcard-state-500.png">
 
-The following is another code sample using the wildcard state together with the previous example using the `open` and `closed` states.
-Instead of defining each state-to-state transition pair, any transition to `closed` takes 1 second, and any transition to `open` takes 0.5 seconds.
+Asagida, `open` ve `closed` durumlarini kullanan onceki ornekle birlikte joker karakter durumunu kullanan baska bir kod ornegi bulunmaktadir.
+Her durum-durum gecis ciftini tanimlamak yerine, `closed`'a herhangi bir gecis 1 saniye surer ve `open`'a herhangi bir gecis 0.5 saniye surer.
 
-This allows the addition of new states without having to include separate transitions for each one.
+Bu, her biri icin ayri gecisler eklemek zorunda kalmadan yeni durumlarin eklenmesine olanak tanir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="trigger-wildcard1"/>
 
-Use a double arrow syntax to specify state-to-state transitions in both directions.
+Her iki yonde durumdan duruma gecisleri belirtmek icin cift ok sozdizimini kullanin.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="trigger-wildcard2"/>
 
 ### Use wildcard state with multiple transition states
 
-In the two-state button example, the wildcard isn't that useful because there are only two possible states, `open` and `closed`.
-In general, use wildcard states when an element has multiple potential states that it can change to.
-If the button can change from `open` to either `closed` or something like `inProgress`, using a wildcard state could reduce the amount of coding needed.
+Iki durumlu buton orneginde, yalnizca iki olasi durum, `open` ve `closed` oldugu icin joker karakter cok yararli degildir.
+Genel olarak, bir elemanin degisebilecegi birden fazla potansiyel durumu oldugunda joker karakter durumlarini kullanin.
+Buton `open`'dan `closed`'a veya `inProgress` gibi bir seye degisebilirse, joker karakter durumu kullanmak gereken kodlama miktarini azaltabilir.
 
 <img alt="wildcard state with 3 states" src="assets/images/guide/animations/wildcard-3-states.png">
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="trigger-transition"/>
 
-The `* => *` transition applies when any change between two states takes place.
+`* => *` gecisi, iki durum arasinda herhangi bir degisiklik oldugunda gecerlidir.
 
-Transitions are matched in the order in which they are defined.
-Thus, you can apply other transitions on top of the `* => *` transition.
-For example, define style changes or animations that would apply just to `open => closed`, then use `* => *` as a fallback for state pairings that aren't otherwise called out.
+Gecisler tanimlandiklari siraya gore eslestirilir.
+Bu nedenle, `* => *` gecisi uzerine baska gecisler uygulayabilirsiniz.
+Ornegin, yalnizca `open => closed` icin gecerli olacak stil degisiklikleri veya animasyonlar tanimlayin, ardindan baska sekilde belirtilmemis durum esilesmeleri icin `* => *`'i bir geri donus olarak kullanin.
 
-To do this, list the more specific transitions _before_ `* => *`.
+Bunu yapmak icin, daha spesifik gecisleri `* => *`'dan _once_ listeleyin.
 
 ### Use wildcards with styles
 
-Use the wildcard `*` with a style to tell the animation to use whatever the current style value is, and animate with that.
-Wildcard is a fallback value that's used if the state being animated isn't declared within the trigger.
+Animasyona mevcut stil degerinin ne olursa olsun onu kullanmasini ve bununla animasyon yapmasini soylemek icin `*` joker karakterini bir stille kullanin.
+Joker karakter, animasyonu yapilan durum tetikleyici icinde bildirılmemisse kullanilan bir geri donus degeridir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="transition4"/>
 
 ### Void state
 
-Use the `void` state to configure transitions for an element that is entering or leaving a page.
-See [Animating entering and leaving a view](guide/legacy-animations/transition-and-triggers#aliases-enter-and-leave).
+Sayfaya giren veya sayfadan ayrilan bir eleman icin gecisleri yapilandirmak icin `void` durumunu kullanin.
+[Gorünume girme ve gorünumden ayrilma animasyonlari](guide/legacy-animations/transition-and-triggers#aliases-enter-and-leave) konusuna bakin.
 
 ### Combine wildcard and void states
 
-Combine wildcard and void states in a transition to trigger animations that enter and leave the page:
+Sayfaya giren ve sayfadan ayrilan animasyonlari tetiklemek icin bir geciste joker karakter ve void durumlarini birlestirin:
 
-- A transition of `* => void` applies when the element leaves a view, regardless of what state it was in before it left
-- A transition of `void => *` applies when the element enters a view, regardless of what state it assumes when entering
-- The wildcard state `*` matches to _any_ state, including `void`
+- `* => void` gecisi, elemanin ayrilmadan onceki durumundan bagimsiz olarak gorünumden ayrildiginda gecerlidir
+- `void => *` gecisi, elemanin giriste aldigi durumdan bagimsiz olarak gorünume girdiginde gecerlidir
+- `*` joker karakter durumu, `void` dahil _herhangi bir_ durumla eslesir
 
 ## Animate entering and leaving a view
 
-This section shows how to animate elements entering or leaving a page.
+Bu bolum, sayfaya giren veya sayfadan ayrilan elemanlarin nasil animasyonlanacagini gosterir.
 
-Add a new behavior:
+Yeni bir davranis ekleyin:
 
-- When you add a hero to the list of heroes, it appears to fly onto the page from the left
-- When you remove a hero from the list, it appears to fly out to the right
+- Kahramanlar listesine bir kahraman eklediginizde, soldan sayfaya ucuyormus gibi gorunur
+- Listeden bir kahramani kaldiridginizda, saga dogru ucuyormus gibi gorunur
 
 <docs-code header="hero-list-enter-leave.ts" path="adev/src/content/examples/animations/src/app/hero-list-enter-leave.ts" region="animationdef"/>
 
-In the preceding code, you applied the `void` state when the HTML element isn't attached to a view.
+Onceki kodda, HTML elemani bir gorünume baglanmadiginda `void` durumunu uyguladiniz.
 
 ## Aliases :enter and :leave
 
-`:enter` and `:leave` are aliases for the `void => *` and `* => void` transitions.
-These aliases are used by several animation functions.
+`:enter` ve `:leave`, `void => *` ve `* => void` gecisleri icin takma adlardir.
+Bu takma adlar bircok animasyon fonksiyonu tarafindan kullanilir.
 
 ```ts {hideCopy}
 
-transition ( ':enter', [ … ] ); // alias for void => _
-transition ( ':leave', [ … ] ); // alias for _ => void
+transition ( ':enter', [ … ] ); // void => _ icin takma ad
+transition ( ':leave', [ … ] ); // _ => void icin takma ad
 
 ```
 
-It's harder to target an element that is entering a view because it isn't in the DOM yet.
-Use the aliases `:enter` and `:leave` to target HTML elements that are inserted or removed from a view.
+Gorünume giren bir elemani hedeflemek daha zordur cunku henuz DOM'da degildir.
+DOM'a eklenen veya DOM'dan kaldirilan HTML elemanlarini hedeflemek icin `:enter` ve `:leave` takma adlarini kullanin.
 
 ### Use `*ngIf` and `*ngFor` with :enter and :leave
 
-The `:enter` transition runs when any `*ngIf` or `*ngFor` views are placed on the page, and `:leave` runs when those views are removed from the page.
+`:enter` gecisi, herhangi bir `*ngIf` veya `*ngFor` gorünumu sayfaya yerlestirildiginde calisir ve `:leave` bu gorünumler sayfadan kaldirildiginda calisir.
 
-IMPORTANT: Entering/leaving behaviors can sometime be confusing.
-As a rule of thumb consider that any element being added to the DOM by Angular passes via the `:enter` transition. Only elements being directly removed from the DOM by Angular pass via the `:leave` transition. For example, an element's view is removed from the DOM because its parent is being removed from the DOM.
+IMPORTANT: Giris/cikis davranislari bazen kafa karistirici olabilir.
+Genel kural olarak, Angular tarafindan DOM'a eklenen herhangi bir elemanin `:enter` gecisinden gectigini dusunun. Yalnizca Angular tarafindan dogrudan DOM'dan kaldirilan elemanlar `:leave` gecisinden gecer. Ornegin, bir elemanin gorünumu, ust elemani DOM'dan kaldirildigi icin DOM'dan kaldirilir.
 
-This example has a special trigger for the enter and leave animation called `myInsertRemoveTrigger`.
-The HTML template contains the following code.
+Bu ornek, giris ve cikis animasyonu icin `myInsertRemoveTrigger` adinda ozel bir tetikleyiciye sahiptir.
+HTML sablonu asagidaki kodu icerir.
 
 <docs-code header="insert-remove.html" path="adev/src/content/examples/animations/src/app/insert-remove.html" region="insert-remove"/>
 
-In the component file, the `:enter` transition sets an initial opacity of 0. It then animates it to change that opacity to 1 as the element is inserted into the view.
+Bilesen dosyasinda, `:enter` gecisi 0 baslangic opakligini ayarlar. Ardindan, eleman gorünume eklendikce bu opakligi 1'e degistirmek icin animasyonlar.
 
 <docs-code header="insert-remove.ts" path="adev/src/content/examples/animations/src/app/insert-remove.ts" region="enter-leave-trigger"/>
 
-Note that this example doesn't need to use [`state()`](api/animations/state).
+Bu ornegin [`state()`](api/animations/state) kullanmasina gerek olmadigini unutmayin.
 
 ## Transition :increment and :decrement
 
-The `transition()` function takes other selector values, `:increment` and `:decrement`.
-Use these to kick off a transition when a numeric value has increased or decreased in value.
+`transition()` fonksiyonu diger seçici degerleri, `:increment` ve `:decrement` kabul eder.
+Sayisal bir deger arttiginda veya azaldiginda bir gecisi baslatmak icin bunlari kullanin.
 
-HELPFUL: The following example uses `query()` and `stagger()` methods.
-For more information on these methods, see the [complex sequences](guide/legacy-animations/complex-sequences) page.
+HELPFUL: Asagidaki ornek `query()` ve `stagger()` yontemlerini kullanir.
+Bu yontemler hakkinda daha fazla bilgi icin [karmasik siralar](guide/legacy-animations/complex-sequences) sayfasina bakin.
 
 <docs-code header="hero-list-page.ts" path="adev/src/content/examples/animations/src/app/hero-list-page.ts" region="increment"/>
 
 ## Boolean values in transitions
 
-If a trigger contains a Boolean value as a binding value, then this value can be matched using a `transition()` expression that compares `true` and `false`, or `1` and `0`.
+Bir tetikleyici baglama degeri olarak bir Boolean degeri iceriyorsa, bu deger `true` ve `false` veya `1` ve `0` karsilastiran bir `transition()` ifadesi kullanilarak eslestirilebilir.
 
 <docs-code header="open-close.html" path="adev/src/content/examples/animations/src/app/open-close.2.html" region="trigger-boolean"/>
 
-In the code snippet above, the HTML template binds a `<div>` element to a trigger named `openClose` with a status expression of `isOpen`, and with possible values of `true` and `false`.
-This pattern is an alternative to the practice of creating two named states like `open` and `close`.
+Yukaridaki kod parcasinda, HTML sablonu bir `<div>` elemanini `isOpen` durum ifadesi ve `true` ve `false` olasi degerleri ile `openClose` adinda bir tetikleyiciye baglar.
+Bu desen, `open` ve `close` gibi iki adlandirilmis durum olusturma pratiğine bir alternatiftir.
 
-Inside the `@Component` metadata under the `animations:` property, when the state evaluates to `true`, the associated HTML element's height is a wildcard style or default.
-In this case, the animation uses whatever height the element already had before the animation started.
-When the element is `closed`, the element gets animated to a height of 0, which makes it invisible.
+`@Component` metaverisi icindeki `animations:` ozelliginin altinda, durum `true` olarak degerlendirildiginde, iliskili HTML elemaninin yuksekligi bir joker karakter stili veya varsayilandir.
+Bu durumda, animasyon elemanin animasyon baslamadan once sahip oldugu yuksekligi kullanir.
+Eleman `closed` oldugunda, eleman 0 yukseklige animasyonlanir, bu da onu gorunmez yapar.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.2.ts" region="trigger-boolean"/>
 
 ## Multiple animation triggers
 
-You can define more than one animation trigger for a component.
-Attach animation triggers to different elements, and the parent-child relationships among the elements affect how and when the animations run.
+Bir bilesen icin birden fazla animasyon tetikleyicisi tanimlanabilir.
+Animasyon tetikleyicilerini farkli elemanlara ekleyin ve elemanlar arasindaki ust-alt iliskiler animasyonlarin nasil ve ne zaman calisacagini etkiler.
 
 ### Parent-child animations
 
-Each time an animation is triggered in Angular, the parent animation always gets priority and child animations are blocked.
-For a child animation to run, the parent animation must query each of the elements containing child animations. It then lets the animations run using the [`animateChild()`](api/animations/animateChild) function.
+Angular'da bir animasyon her tetiklendiginde, ust animasyon her zaman oncelik alir ve alt animasyonlar engellenir.
+Bir alt animasyonun calismasi icin, ust animasyonun alt animasyonlar iceren her elemani sorgulamasi gerekir. Ardindan [`animateChild()`](api/animations/animateChild) fonksiyonunu kullanarak animasyonlarin calismesina izin verir.
 
 #### Disable an animation on an HTML element
 
-A special animation control binding called `@.disabled` can be placed on an HTML element to turn off animations on that element, as well as any nested elements.
-When true, the `@.disabled` binding prevents all animations from rendering.
+Bir HTML elemaninda ve ic ice gecmis tum elemanlarda animasyonlari kapatmak icin `@.disabled` adinda ozel bir animasyon kontrol baglamasi yerlestirilir.
+Dogru oldugunda, `@.disabled` baglamasi tum animasyonlarin islenmesini engeller.
 
-The following code sample shows how to use this feature.
+Asagidaki kod ornegi bu ozelligin nasil kullanilacagini gosterir.
 
 <docs-code-multifile>
     <docs-code header="open-close.html" path="adev/src/content/examples/animations/src/app/open-close.4.html" region="toggle-animation"/>
     <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.4.ts" region="toggle-animation" language="typescript"/>
 </docs-code-multifile>
 
-When the `@.disabled` binding is true, the `@childAnimation` trigger doesn't kick off.
+`@.disabled` baglamasi dogru oldugunda, `@childAnimation` tetikleyicisi baslamaz.
 
-When an element within an HTML template has animations turned off using the `@.disabled` host binding, animations are turned off on all inner elements as well.
-You can't selectively turn off multiple animations on a single element.<!-- vale off -->
+HTML sablonundaki bir eleman `@.disabled` ana baglama kullanarak animasyonlari kapattiginda, animasyonlar tum ic elemanlarda da kapatilir.
+Tek bir eleman uzerinde birden fazla animasyonu secici olarak kapatamazsiniz.<!-- vale off -->
 
-A selective child animations can still be run on a disabled parent in one of the following ways:
+Secici alt animasyonlar, devre disi birakilmis bir ust elemanda asagidaki yollardan biriyle calistirilanabilir:
 
-- A parent animation can use the [`query()`](api/animations/query) function to collect inner elements located in disabled areas of the HTML template.
-Those elements can still animate.
+- Bir ust animasyon, HTML sablonunun devre disi birakilmis bolgelerinde bulunan ic elemanlari toplamak icin [`query()`](api/animations/query) fonksiyonunu kullanabilir.
+Bu elemanlar hala animasyonlanabilir.
 <!-- vale on -->
 
-- A child animation can be queried by a parent and then later animated with the `animateChild()` function
+- Bir alt animasyon bir ust tarafindan sorgulanabilir ve daha sonra `animateChild()` fonksiyonuyla animasyonlanabilir
 
 #### Disable all animations
 
-To turn off all animations for an Angular application, place the `@.disabled` host binding on the topmost Angular component.
+Bir Angular uygulamasi icin tum animasyonlari kapatmak icin, en ust Angular bilesenine `@.disabled` ana baglamasini yerlestirin.
 
 <docs-code header="app.ts" path="adev/src/content/examples/animations/src/app/app.ts" region="toggle-app-animations"/>
 
-HELPFUL: Disabling animations application-wide is useful during end-to-end \(E2E\) testing.
+HELPFUL: Animasyonlari uygulama capinda devre disi birakmak, uctan uca \(E2E\) testleri sirasinda faydalidir.
 
 ## Animation callbacks
 
-The animation `trigger()` function emits _callbacks_ when it starts and when it finishes.
-The following example features a component that contains an `openClose` trigger.
+Animasyon `trigger()` fonksiyonu basladiginda ve bittiginde _geri cagirmalar_ yapar.
+Asagidaki ornek, `openClose` tetikleyicisi iceren bir bileseni gostermektedir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="events1"/>
 
-In the HTML template, the animation event is passed back via `$event`, as `@triggerName.start` and `@triggerName.done`, where `triggerName` is the name of the trigger being used.
-In this example, the trigger `openClose` appears as follows.
+HTML sablonunda, animasyon olayi `@triggerName.start` ve `@triggerName.done` olarak `$event` araciligiyla geri dondurulur; burada `triggerName` kullanilan tetikleyicinin adidir.
+Bu ornekte, `openClose` tetikleyicisi su sekilde gorunur.
 
 <docs-code header="open-close.html" path="adev/src/content/examples/animations/src/app/open-close.3.html" region="callbacks"/>
 
-A potential use for animation callbacks could be to cover for a slow API call, such as a database lookup.
-For example, an **InProgress** button can be set up to have its own looping animation while the backend system operation finishes.
+Animasyon geri cagirmalari icin potansiyel bir kullanim, bir veritabani sorgusu gibi yavas bir API cagrisi icin katman olusturmak olabilir.
+Ornegin, arka plan sistemi islemi bitene kadar kendi dongu animasyonuna sahip bir **InProgress** butonu olusturulabilir.
 
-Another animation can be called when the current animation finishes.
-For example, the button goes from the `inProgress` state to the `closed` state when the API call is completed.
+Mevcut animasyon bittiginde baska bir animasyon cagrilabilir.
+Ornegin, API cagrisi tamamlandiginda buton `inProgress` durumundan `closed` durumuna gecer.
 
-An animation can influence an end user to _perceive_ the operation as faster, even when it is not.
+Bir animasyon, aslinda olmasa bile bir son kullanicinin islemin daha _hizli_ oldugunu algilamasini saglayabilir.
 
-Callbacks can serve as a debugging tool, for example in conjunction with `console.warn()` to view the application's progress in a browser's Developer JavaScript Console.
-The following code snippet creates console log output for the original example, a button with the two states of `open` and `closed`.
+Geri cagirmalar, bir hata ayiklama araci olarak da kullanilabilir; ornegin tarayicinin Gelistirici JavaScript Konsolunda uygulamanin ilerlemesini goruntulemek icin `console.warn()` ile birlikte.
+Asagidaki kod parcasi, `open` ve `closed` iki durumlu bir buton olan orijinal ornek icin konsol log ciktisi olusturur.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="events"/>
 
 ## Keyframes
 
-To create an animation with multiple steps run in sequence, use _keyframes_.
+Birden fazla adimla sirali olarak calisan bir animasyon olusturmak icin _anahtar kareler_ kullanin.
 
-Angular's `keyframe()` function allows several style changes within a single timing segment.
-For example, the button, instead of fading, could change color several times over a single 2-second time span.
+Angular'in `keyframe()` fonksiyonu, tek bir zamanlama bolumu icinde bircok stil degisikligine izin verir.
+Ornegin, buton solmak yerine tek bir 2 saniyelik zaman diliminde birkac kez renk degistirebilir.
 
 <img alt="keyframes" src="assets/images/guide/animations/keyframes-500.png">
 
-The code for this color change might look like this.
+Bu renk degisikligi icin kod su sekilde gorunebilir.
 
 <docs-code header="status-slider.ts" path="adev/src/content/examples/animations/src/app/status-slider.ts" region="keyframes"/>
 
 ### Offset
 
-Keyframes include an `offset` that defines the point in the animation where each style change occurs.
-Offsets are relative measures from zero to one, marking the beginning and end of the animation. They should be applied to each of the keyframe steps if used at least once.
+Anahtar kareler, animasyonda her stil degisikliginin gerceklestigi noktayi tanimlayan bir `offset` icerir.
+Offsetler, animasyonun baslangicini ve sonunu isaretleyen sifirdan bire kadar goreceli olcumlerdir. En az bir kez kullanilirsa anahtar kare adimlarinin her birine uygulanmalidir.
 
-Defining offsets for keyframes is optional.
-If you omit them, evenly spaced offsets are automatically assigned.
-For example, three keyframes without predefined offsets receive offsets of 0, 0.5, and 1.
-Specifying an offset of 0.8 for the middle transition in the preceding example might look like this.
+Anahtar kareler icin offset tanimlamak istege baglidir.
+Bunlari atlarsaniz, esit aralikli offsetler otomatik olarak atanir.
+Ornegin, onceden tanimlanmis offsetleri olmayan uc anahtar kare 0, 0.5 ve 1 offsetlerini alir.
+Onceki ornekteki orta gecis icin 0.8 offseti belirtmek su sekilde gorunebilir.
 
 <img alt="keyframes with offset" src="assets/images/guide/animations/keyframes-offset-500.png">
 
-The code with offsets specified would be as follows.
+Offsetleri belirtilmis kod su sekilde olur.
 
 <docs-code header="status-slider.ts" path="adev/src/content/examples/animations/src/app/status-slider.ts" region="keyframesWithOffsets"/>
 
-You can combine keyframes with `duration`, `delay`, and `easing` within a single animation.
+Tek bir animasyon icinde anahtar kareleri `duration`, `delay` ve `easing` ile birlestirebilirsiniz.
 
 ### Keyframes with a pulsation
 
-Use keyframes to create a pulse effect in your animations by defining styles at specific offset throughout the animation.
+Animasyon boyunca belirli offsetlerde stiller tanimlayarak animasyonlarinizda bir nabiz efekti olusturmak icin anahtar kareleri kullanin.
 
-Here's an example of using keyframes to create a pulse effect:
+Nabiz efekti olusturmak icin anahtar kareleri kullanmanin bir ornegi:
 
-- The original `open` and `closed` states, with the original changes in height, color, and opacity, occurring over a timeframe of 1 second
-- A keyframes sequence inserted in the middle that causes the button to appear to pulsate irregularly over the course of that same 1 second timeframe
+- Orijinal `open` ve `closed` durumlari, 1 saniyelik bir zaman diliminde gerceklesen orijinal yukseklik, renk ve opaklik degisiklikleri
+- Butonun ayni 1 saniyelik zaman diliminde duzensiz olarak nabiz atiyormus gibi gorunmesine neden olan ortaya eklenmis bir anahtar kare dizisi
 
 <img alt="keyframes with irregular pulsation" src="assets/images/guide/animations/keyframes-pulsation.png">
 
-The code snippet for this animation might look like this.
+Bu animasyon icin kod parcasi su sekilde gorunebilir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.1.ts" region="trigger"/>
 
 ### Animatable properties and units
 
-Angular animations support builds on top of web animations, so you can animate any property that the browser considers animatable.
-This includes positions, sizes, transforms, colors, borders, and more.
-The W3C maintains a list of animatable properties on its [CSS Transitions](https://www.w3.org/TR/css-transitions-1) page.
+Angular animasyon destegi web animasyonlari uzerine kurulmustur, bu nedenle tarayicinin animasyonlanabilir olarak kabul ettigi herhangi bir ozelligi animasyonlayabilirsiniz.
+Bu; konumlar, boyutlar, donusumler, renkler, kenarliklar ve daha fazlasini icerir.
+W3C, [CSS Transitions](https://www.w3.org/TR/css-transitions-1) sayfasinda animasyonlanabilir ozelliklerin bir listesini tutar.
 
-For properties with a numeric value, define a unit by providing the value as a string, in quotes, with the appropriate suffix:
+Sayisal degeri olan ozellikler icin, degeri uygun sonek ile bir dize olarak tirnak icinde saglayin:
 
-- 50 pixels:
+- 50 piksel:
   `'50px'`
 
-- Relative font size:
+- Goreceli font boyutu:
   `'3em'`
 
-- Percentage:
+- Yuzde:
   `'100%'`
 
-You can also provide the value as a number. In such cases Angular assumes a default unit of pixels, or `px`.
-Expressing 50 pixels as `50` is the same as saying `'50px'`.
+Degeri bir sayi olarak da saglayabilirsiniz. Bu gibi durumlarda Angular varsayilan birim olarak piksel veya `px` kabul eder.
+50 pikseli `50` olarak ifade etmek `'50px'` demekle aynidir.
 
-HELPFUL: The string `"50"` would instead not be considered valid\).
+HELPFUL: `"50"` dizesi ise gecerli olarak kabul edilmez\).
 
 ### Automatic property calculation with wildcards
 
-Sometimes, the value of a dimensional style property isn't known until runtime.
-For example, elements often have widths and heights that depend on their content or the screen size.
-These properties are often challenging to animate using CSS.
+Bazen bir boyutsal stil ozelliginin degeri calisma zamanina kadar bilinmez.
+Ornegin, elemanlarin genislikleri ve yukseklikleri genellikle iceriklerine veya ekran boyutuna baglidir.
+Bu ozellikler genellikle CSS kullanarak animasyonlanmasi zordur.
 
-In these cases, you can use a special wildcard `*` property value under `style()`. The value of that particular style property is computed at runtime and then plugged into the animation.
+Bu durumlarda, `style()` altinda ozel bir `*` joker ozellik degeri kullanabilirsiniz. Bu belirli stil ozelliginin degeri calisma zamaninda hesaplanir ve ardindan animasyona eklenir.
 
-The following example has a trigger called `shrinkOut`, used when an HTML element leaves the page.
-The animation takes whatever height the element has before it leaves, and animates from that height to zero.
+Asagidaki ornek, bir HTML elemani sayfadan ayrildiginda kullanilan `shrinkOut` adinda bir tetikleyiciye sahiptir.
+Animasyon, elemanin ayrilmadan once sahip oldugu yuksekligi alir ve o yukseklikten sifira animasyonlar.
 
 <docs-code header="hero-list-auto.ts" path="adev/src/content/examples/animations/src/app/hero-list-auto.ts" region="auto-calc"/>
 
 ### Keyframes summary
 
-The `keyframes()` function in Angular allows you to specify multiple interim styles within a single transition. An optional `offset` can be used to define the point in the animation where each style change should occur.
+Angular'daki `keyframes()` fonksiyonu, tek bir gecis icinde birden fazla ara stil belirtmenize olanak tanir. Her stil degisikliginin animasyonda nerede gerceklesmesi gerektigini tanimlamak icin istege bagli bir `offset` kullanilabilir.
 
 ## More on Angular animations
 
-You might also be interested in the following:
+Asagidakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
   <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>

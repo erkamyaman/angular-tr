@@ -8,7 +8,7 @@
 
 ## Overview
 
-A directive that coordinates a text input with a popup, providing the primitive directive for autocomplete, select, and multiselect patterns.
+Bir metin girisi ile bir acilir pencereyi koordine eden, otomatik tamamlama, select ve multiselect kaliplari icin temel yonerge saglayan yonerge.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -38,37 +38,37 @@ A directive that coordinates a text input with a popup, providing the primitive 
 
 ## Usage
 
-Combobox is the primitive directive that coordinates a text input with a popup. It provides the foundation for autocomplete, select, and multiselect patterns. Consider using combobox directly when:
+Combobox, bir metin girisi ile bir acilir pencereyi koordine eden temel yonergedir. Otomatik tamamlama, select ve multiselect kaliplari icin temel olusturur. Su durumlarda combobox'i dogrudan kullanmayi dusunun:
 
-- **Building custom autocomplete patterns** - Creating specialized filtering or suggestion behavior
-- **Creating custom selection components** - Developing dropdowns with unique requirements
-- **Coordinating input with popup** - Pairing text input with listbox, tree, or dialog content
-- **Implementing specific filter modes** - Using manual, auto-select, or highlight behaviors
+- **Ozel otomatik tamamlama kaliplari olusturma** - Ozellestirilmis filtreleme veya oneri davranisi olusturma
+- **Ozel secim bilesenleri olusturma** - Benzersiz gereksinimleri olan acilir menuler gelistirme
+- **Girisi acilir pencereyle koordine etme** - Metin girisini listbox, tree veya dialog icerigiyle eslestirme
+- **Belirli filtre modlari uygulama** - Manuel, otomatik secim veya vurgulama davranislari kullanma
 
-Use documented patterns instead when:
+Bunun yerine belgelendirilmis kaliplari kullanin:
 
-- Standard autocomplete with filtering is needed - See the [Autocomplete pattern](guide/aria/autocomplete) for ready-to-use examples
-- Single-selection dropdowns are needed - See the [Select pattern](guide/aria/select) for complete dropdown implementation
-- Multiple-selection dropdowns are needed - See the [Multiselect pattern](guide/aria/multiselect) for multi-select with compact display
+- Filtrelemeli standart otomatik tamamlama gerektiginde - Kullanima hazir ornekler icin [Autocomplete kalibina](guide/aria/autocomplete) bakin
+- Tek secimli acilir menuler gerektiginde - Eksiksiz acilir menu uygulamasi icin [Select kalibina](guide/aria/select) bakin
+- Coklu secimli acilir menuler gerektiginde - Kompakt goruntuyle coklu secim icin [Multiselect kalibina](guide/aria/multiselect) bakin
 
-NOTE: The [Autocomplete](guide/aria/autocomplete), [Select](guide/aria/select), and [Multiselect](guide/aria/multiselect) guides show documented patterns that combine this directive with [Listbox](guide/aria/listbox) for specific use cases.
+NOTE: [Autocomplete](guide/aria/autocomplete), [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) rehberleri, bu yonergeyi belirli kullanim durumlari icin [Listbox](guide/aria/listbox) ile birlestiren belgelendirilmis kaliplari gosterir.
 
 ## Features
 
-Angular's combobox provides a fully accessible input-popup coordination system with:
+Angular'in combobox'i, tam erisilebilir bir giris-acilir pencere koordinasyon sistemi saglar:
 
-- **Text Input with Popup** - Coordinates input field with popup content
-- **Three Filter Modes** - Manual, auto-select, or highlight behaviors
-- **Keyboard Navigation** - Arrow keys, Enter, Escape handling
-- **Screen Reader Support** - Built-in ARIA attributes including role="combobox" and aria-expanded
-- **Popup Management** - Automatic show/hide based on user interaction
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
+- **Acilir Pencereli Metin Girisi** - Giris alanini acilir pencere icerigiyle koordine eder
+- **Uc Filtre Modu** - Manuel, otomatik secim veya vurgulama davranislari
+- **Klavye Navigasyonu** - Ok tuslari, Enter, Escape islemesi
+- **Ekran Okuyucu Destegi** - role="combobox" ve aria-expanded dahil yerlesik ARIA nitelikleri
+- **Acilir Pencere Yonetimi** - Kullanici etkilesimine dayali otomatik goster/gizle
+- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
 
 ## Examples
 
 ### Autocomplete
 
-An accessible input field that filters and suggests options as users type, helping them find and select values from a list.
+Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulmalarına ve secmelerine yardimci olan erisilebilir bir giris alani.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -96,11 +96,11 @@ An accessible input field that filters and suggests options as users type, helpi
   </docs-tab>
 </docs-tab-group>
 
-The `filterMode="manual"` setting gives complete control over filtering and selection. The input updates a signal that filters the options list. Users navigate with arrow keys and select with Enter or click. This mode provides the most flexibility for custom filtering logic. See the [Autocomplete guide](guide/aria/autocomplete) for complete filtering patterns and examples.
+`filterMode="manual"` ayari filtreleme ve secim uzerinde tam kontrol saglar. Giris, secenekler listesini filtreleyen bir sinyali gunceller. Kullanicilar ok tuslariyla gezinir ve Enter veya tiklama ile secer. Bu mod, ozel filtreleme mantigi icin en fazla esnekligi saglar. Eksiksiz filtreleme kaliplari ve ornekleri icin [Autocomplete rehberine](guide/aria/autocomplete) bakin.
 
 ### Readonly mode
 
-A pattern that combines a readonly combobox with listbox to create single-selection dropdowns with keyboard navigation and screen reader support.
+Tek secimli acilir menuler olusturmak icin klavye navigasyonu ve ekran okuyucu destegi ile salt okunur combobox'i listbox ile birlestiren bir kalip.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -128,13 +128,13 @@ A pattern that combines a readonly combobox with listbox to create single-select
   </docs-tab>
 </docs-tab-group>
 
-The `readonly` attribute prevents typing in the input field. The popup opens on click or arrow keys. Users navigate options with keyboard and select with Enter or click.
+`readonly` niteligi giris alanina yazmayi engeller. Acilir pencere tiklama veya ok tuslariyla acilir. Kullanicilar klavye ile secenekler arasinda gezinir ve Enter veya tiklama ile secer.
 
-This configuration provides the foundation for the [Select](guide/aria/select) and [Multiselect](guide/aria/multiselect) patterns. See those guides for complete dropdown implementations with triggers and overlay positioning.
+Bu yapilandirma, [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) kaliplari icin temeli saglar. Tetikleyiciler ve katman konumlandirmasiyla eksiksiz acilir menu uygulamalari icin bu rehberlere bakin.
 
 ### Dialog popup
 
-Popups sometimes need modal behavior with a backdrop and focus trap. The combobox dialog directive provides this pattern for specialized use cases.
+Acilir pencereler bazen arka plan ve odak yakalama ile modal davranisa ihtiyac duyar. Combobox dialog yonergesi, ozellestirilmis kullanim durumlari icin bu kalibi saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -162,64 +162,64 @@ Popups sometimes need modal behavior with a backdrop and focus trap. The combobo
   </docs-tab>
 </docs-tab-group>
 
-The `ngComboboxDialog` directive creates a modal popup using the native dialog element. This provides backdrop behavior and focus trapping. Use dialog popups when the selection interface requires modal interaction or when the popup content is complex enough to warrant full-screen focus.
+`ngComboboxDialog` yonergesi, yerel dialog elemanini kullanarak modal bir acilir pencere olusturur. Bu, arka plan davranisi ve odak yakalama saglar. Secim arayuzu modal etkilesim gerektirdiginde veya acilir pencere icerigi tam ekran odak gerektiecek kadar karmasik oldugunda dialog acilir pencerelerini kullanin.
 
 ## APIs
 
 ### Combobox Directive
 
-The `ngCombobox` directive coordinates a text input with a popup.
+`ngCombobox` yonergesi bir metin girisini bir acilir pencereyle koordine eder.
 
 #### Inputs
 
-| Property         | Type                                           | Default    | Description                                      |
-| ---------------- | ---------------------------------------------- | ---------- | ------------------------------------------------ |
-| `filterMode`     | `'manual'` \| `'auto-select'` \| `'highlight'` | `'manual'` | Controls selection behavior                      |
-| `disabled`       | `boolean`                                      | `false`    | Disables the combobox                            |
-| `readonly`       | `boolean`                                      | `false`    | Makes combobox readonly (for Select/Multiselect) |
-| `firstMatch`     | `V`                                            | -          | Value of first matching item for auto-select     |
-| `alwaysExpanded` | `boolean`                                      | `false`    | Keeps popup always open                          |
+| Property         | Type                                           | Default    | Description                                            |
+| ---------------- | ---------------------------------------------- | ---------- | ------------------------------------------------------ |
+| `filterMode`     | `'manual'` \| `'auto-select'` \| `'highlight'` | `'manual'` | Secim davranisini kontrol eder                         |
+| `disabled`       | `boolean`                                      | `false`    | Combobox'i devre disi birakir                          |
+| `readonly`       | `boolean`                                      | `false`    | Combobox'i salt okunur yapar (Select/Multiselect icin) |
+| `firstMatch`     | `V`                                            | -          | Otomatik secim icin ilk eslesen ogenin degeri          |
+| `alwaysExpanded` | `boolean`                                      | `false`    | Acilir pencereyi her zaman acik tutar                  |
 
-**Filter Modes:**
+**Filtre Modlari:**
 
-- **`'manual'`** - User controls filtering and selection explicitly. The popup shows options based on your filtering logic. Users select with Enter or click. This mode provides the most flexibility.
-- **`'auto-select'`** - Input value automatically updates to the first matching option as users type. Requires the `firstMatch` input for coordination. See the [Autocomplete guide](guide/aria/autocomplete#auto-select-mode) for examples.
-- **`'highlight'`** - Highlights matching text without changing the input value. Users navigate with arrow keys and select with Enter.
+- **`'manual'`** - Kullanici filtreleme ve secimi acikca kontrol eder. Acilir pencere, filtreleme mantiginiza gore secenekleri gosterir. Kullanicilar Enter veya tiklama ile secer. Bu mod en fazla esnekligi saglar.
+- **`'auto-select'`** - Giris degeri, kullanicilar yazarken otomatik olarak ilk eslesen secenege guncellenir. Koordinasyon icin `firstMatch` girisi gerektirir. Ornekler icin [Autocomplete rehberine](guide/aria/autocomplete#auto-select-mode) bakin.
+- **`'highlight'`** - Giris degerini degistirmeden eslesen metni vurgular. Kullanicilar ok tuslariyla gezinir ve Enter ile secer.
 
 #### Signals
 
-| Property   | Type              | Description                     |
-| ---------- | ----------------- | ------------------------------- |
-| `expanded` | `Signal<boolean>` | Whether popup is currently open |
+| Property   | Type              | Description                                  |
+| ---------- | ----------------- | -------------------------------------------- |
+| `expanded` | `Signal<boolean>` | Acilir pencerenin su anda acik olup olmadigi |
 
 #### Methods
 
-| Method     | Parameters | Description            |
-| ---------- | ---------- | ---------------------- |
-| `open`     | none       | Opens the combobox     |
-| `close`    | none       | Closes the combobox    |
-| `expand`   | none       | Expands the combobox   |
-| `collapse` | none       | Collapses the combobox |
+| Method     | Parameters | Description           |
+| ---------- | ---------- | --------------------- |
+| `open`     | none       | Combobox'i acar       |
+| `close`    | none       | Combobox'i kapatir    |
+| `expand`   | none       | Combobox'i genisletir |
+| `collapse` | none       | Combobox'i daraltir   |
 
 ### ComboboxInput Directive
 
-The `ngComboboxInput` directive connects an input element to the combobox.
+`ngComboboxInput` yonergesi bir giris elemanini combobox'a baglar.
 
 #### Model
 
-| Property | Type     | Description                              |
-| -------- | -------- | ---------------------------------------- |
-| `value`  | `string` | Two-way bindable value using `[(value)]` |
+| Property | Type     | Description                                           |
+| -------- | -------- | ----------------------------------------------------- |
+| `value`  | `string` | `[(value)]` kullanilarak iki yonlu baglanabilir deger |
 
-The input element receives keyboard handling and ARIA attributes automatically.
+Giris elemani klavye islemesi ve ARIA niteliklerini otomatik olarak alir.
 
 ### ComboboxPopup Directive
 
-The `ngComboboxPopup` directive (host directive) manages popup visibility and coordination. Typically used with `ngComboboxPopupContainer` in an `ng-template` or with CDK Overlay.
+`ngComboboxPopup` yonergesi (ana yonerge) acilir pencere gorunurluğunu ve koordinasyonunu yonetir. Tipik olarak bir `ng-template` icinde `ngComboboxPopupContainer` ile veya CDK Overlay ile kullanilir.
 
 ### ComboboxPopupContainer Directive
 
-The `ngComboboxPopupContainer` directive marks an `ng-template` as the popup content.
+`ngComboboxPopupContainer` yonergesi bir `ng-template`'i acilir pencere icerigi olarak isaretler.
 
 ```html
 <ng-template ngComboboxPopupContainer>
@@ -227,11 +227,11 @@ The `ngComboboxPopupContainer` directive marks an `ng-template` as the popup con
 </ng-template>
 ```
 
-Used with Popover API or CDK Overlay for positioning.
+Konumlandirma icin Popover API veya CDK Overlay ile kullanilir.
 
 ### ComboboxDialog Directive
 
-The `ngComboboxDialog` directive creates a modal combobox popup.
+`ngComboboxDialog` yonergesi modal bir combobox acilir penceresi olusturur.
 
 ```html
 <dialog ngComboboxDialog>
@@ -239,17 +239,17 @@ The `ngComboboxDialog` directive creates a modal combobox popup.
 </dialog>
 ```
 
-Use for modal popup behavior with backdrop and focus trap.
+Arka plan ve odak yakalama ile modal acilir pencere davranisi icin kullanin.
 
 ### Related patterns and directives
 
-Combobox is the primitive directive for these documented patterns:
+Combobox, bu belgelendirilmis kalipler icin temel yonergedir:
 
-- **[Autocomplete](guide/aria/autocomplete)** - Filtering and suggestions pattern (uses Combobox with filter modes)
-- **[Select](guide/aria/select)** - Single selection dropdown pattern (uses Combobox with `readonly`)
-- **[Multiselect](guide/aria/multiselect)** - Multiple selection pattern (uses Combobox with `readonly` + multi-enabled Listbox)
+- **[Autocomplete](guide/aria/autocomplete)** - Filtreleme ve oneriler kalibi (Combobox'i filtre modlariyla kullanir)
+- **[Select](guide/aria/select)** - Tek secim acilir menu kalibi (Combobox'i `readonly` ile kullanir)
+- **[Multiselect](guide/aria/multiselect)** - Coklu secim kalibi (Combobox'i `readonly` + coklu etkin Listbox ile kullanir)
 
-Combobox typically combines with:
+Combobox tipik olarak sunlarla birlestirilir:
 
-- **[Listbox](guide/aria/listbox)** - Most common popup content
-- **[Tree](guide/aria/tree)** - Hierarchical popup content (see Tree guide for examples)
+- **[Listbox](guide/aria/listbox)** - En yaygin acilir pencere icerigi
+- **[Tree](guide/aria/tree)** - Hiyerarsik acilir pencere icerigi (ornekler icin Tree rehberine bakin)

@@ -1,15 +1,15 @@
 # Route Loading Strategies
 
-Understanding how and when routes and components load in Angular routing is crucial for building responsive web applications. Angular offers two primary strategies to control loading behavior:
+Angular yönlendirmesinde rotaların ve bileşenlerin nasıl ve ne zaman yüklendiğini anlamak, duyarlı web uygulamaları oluşturmak için çok önemlidir. Angular, yükleme davranışını kontrol etmek için iki temel strateji sunar:
 
-1. **Eagerly loaded**: Routes and components that are loaded immediately
-2. **Lazily loaded**: Routes and components loaded only when needed
+1. **Hevesli yükleme**: Hemen yüklenen rotalar ve bileşenler
+2. **Tembel yükleme**: Yalnızca ihtiyaç duyulduğunda yüklenen rotalar ve bileşenler
 
-Each approach offers distinct advantages for different scenarios.
+Her yaklaşım, farklı senaryolar için belirgin avantajlar sunar.
 
 ## Eagerly loaded components
 
-When you define a route with the [`component`](api/router/Route#component) property, the referenced component is eagerly loaded as part of the same JavaScript bundle as the route configuration.
+[`component`](api/router/Route#component) özelliği ile bir rota tanımladığınızda, referans verilen bileşen rota yapılandırmasıyla aynı JavaScript paketinin bir parçası olarak hevesli şekilde yüklenir.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -30,13 +30,13 @@ export const routes: Routes = [
 ];
 ```
 
-Eagerly loading route components like this means that the browser has to download and parse all of the JavaScript for these components as part of your initial page load, but the components are available to Angular immediately.
+Rota bileşenlerini bu şekilde hevesli yüklemek, tarayıcının ilk sayfa yüklemenizin bir parçası olarak bu bileşenler için tüm JavaScript'i indirmesi ve ayrıştırması gerektiği anlamına gelir, ancak bileşenler Angular tarafından anında kullanılabilir.
 
-While including more JavaScript in your initial page load leads to slower initial load times, this can lead to more seamless transitions as the user navigates through an application.
+İlk sayfa yüklemenize daha fazla JavaScript dahil etmek daha yavaş ilk yükleme sürelerine yol açsa da, kullanıcı uygulama içinde gezinirken daha sorunsuz geçişlere yol açabilir.
 
 ## Lazily loaded components and routes
 
-You can use the [`loadComponent`](api/router/Route#loadComponent) property to lazily load the JavaScript for a component at the point at which that route would become active. The [`loadChildren`](api/router/Route#loadChildren) property lazily loads child routes during route matching.
+Bir rota aktif hale geldiğinde bileşen için JavaScript'i tembel yüklemek için [`loadComponent`](api/router/Route#loadComponent) özelliğini kullanabilirsiniz. [`loadChildren`](api/router/Route#loadChildren) özelliği ise rota eşleştirme sırasında alt rotaları tembel yükler.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -54,15 +54,15 @@ export const routes: Routes = [
 ];
 ```
 
-The [`loadComponent`](/api/router/Route#loadComponent) and [`loadChildren`](/api/router/Route#loadChildren) properties accept a loader function that returns a Promise that resolves to an Angular component or a set of routes respectively. In most cases, this function uses the standard [JavaScript dynamic import API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import). You can, however, use any arbitrary async loader function.
+[`loadComponent`](/api/router/Route#loadComponent) ve [`loadChildren`](/api/router/Route#loadChildren) özellikleri, sırasıyla bir Angular bileşeni veya bir rota kümesine çözümlenen bir Promise döndüren bir yükleyici fonksiyon kabul eder. Çoğu durumda bu fonksiyon standart [JavaScript dinamik import API'sini](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) kullanır. Ancak herhangi bir rastgele asenkron yükleyici fonksiyon da kullanabilirsiniz.
 
-If the lazily loaded file uses a `default` export, you can return the `import()` promise directly without an additional `.then` call to select the exported class.
+Tembel yüklenen dosya `default` dışa aktarma kullanıyorsa, dışa aktarılan sınıfı seçmek için ek bir `.then` çağrısı olmadan `import()` promise'ini doğrudan döndürebilirsiniz.
 
-Lazily loading routes can significantly improve the load speed of your Angular application by removing large portions of JavaScript from the initial bundle. These portions of your code compile into separate JavaScript "chunks" that the router requests only when the user visits the corresponding route.
+Rotaları tembel yüklemek, ilk paketten büyük JavaScript bölümlerini çıkararak Angular uygulamanızın yükleme hızını önemli ölçüde iyileştirebilir. Kodunuzun bu bölümleri, yönlendiricinin yalnızca kullanıcı ilgili rotayı ziyaret ettiğinde istediği ayrı JavaScript "parçalarına" derlenir.
 
 ## Injection context lazy loading
 
-The Router executes [`loadComponent`](/api/router/Route#loadComponent) and [`loadChildren`](/api/router/Route#loadChildren) within the **injection context of the current route**, allowing you to call [`inject`](/api/core/inject)inside these loader functions to access providers declared on that route, inherited from parent routes through hierarchical dependency injection, or available globally. This enables context-aware lazy loading.
+Yönlendirici, [`loadComponent`](/api/router/Route#loadComponent) ve [`loadChildren`](/api/router/Route#loadChildren) fonksiyonlarını **geçerli rotanın enjeksiyon bağlamında** çalıştırır ve bu yükleyici fonksiyonlar içinde [`inject`](/api/core/inject) çağrısı yaparak o rotada bildirilen, hiyerarşik bağımlılık enjeksiyonu aracılığıyla üst rotalardan devralınan veya global olarak kullanılabilen sağlayıcılara erişmenize olanak tanır. Bu, bağlama duyarlı tembel yükleme sağlar.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -85,12 +85,12 @@ export const routes: Routes = [
 
 ## Should I use an eager or a lazy route?
 
-There are many factors to consider when deciding on whether a route should be eager or lazy.
+Bir rotanın hevesli mi yoksa tembel mi olması gerektiğine karar verirken dikkate alınması gereken birçok faktör vardır.
 
-In general, eager loading is recommended for primary landing page(s) while other pages would be lazy-loaded.
+Genel olarak, birincil açılış sayfası/sayfaları için hevesli yükleme, diğer sayfalar için ise tembel yükleme önerilir.
 
-NOTE: While lazy routes have the upfront performance benefit of reducing the amount of initial data requested by the user, it adds future data requests that could be undesirable. This is particularly true when dealing with nested lazy loading at multiple levels, which can significantly impact performance.
+NOTE: Tembel rotalar, kullanıcının talep ettiği başlangıç veri miktarını azaltmanın ön performans avantajına sahip olsa da, istenmeyen olabilecek gelecek veri istekleri ekler. Bu, özellikle birden fazla düzeyde iç içe tembel yükleme ile uğraşırken doğrudur ve performansı önemli ölçüde etkileyebilir.
 
 ## Next steps
 
-Learn how to [display the contents of your routes with Outlets](/guide/routing/show-routes-with-outlets).
+[Outlet'ler ile rotalarınızın içeriğini nasıl görüntüleyeceğinizi](/guide/routing/show-routes-with-outlets) öğrenin.

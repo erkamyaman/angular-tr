@@ -1,26 +1,26 @@
 # Add the localize package
 
-To take advantage of the localization features of Angular, use the [Angular CLI][CliMain] to add the `@angular/localize` package to your project.
+Angular'ın yerelleştirme özelliklerinden yararlanmak için [Angular CLI][CliMain] kullanarak `@angular/localize` paketini projenize ekleyin.
 
-To add the `@angular/localize` package, use the following command to update the `package.json` and TypeScript configuration files in your project.
+`@angular/localize` paketini eklemek için, projenizdeki `package.json` ve TypeScript yapılandırma dosyalarını güncellemek amacıyla aşağıdaki komutu kullanın.
 
 <docs-code language="shell" path="adev/src/content/examples/i18n/doc-files/commands.sh" region="add-localize"/>
 
-It adds `types: ["@angular/localize"]` in the TypeScript configuration files.
-It also adds line `/// <reference types="@angular/localize" />` at the top of the `main.ts` file which is the reference to the type definition.
+TypeScript yapılandırma dosyalarına `types: ["@angular/localize"]` ekler.
+Ayrıca, tür tanımına referans olan `/// <reference types="@angular/localize" />` satırını `main.ts` dosyasının en üstüne ekler.
 
-HELPFUL: For more information about `package.json` and `tsconfig.json` files, see [Workspace npm dependencies][GuideNpmPackages] and [TypeScript Configuration][GuideTsConfig]. To learn about Triple-slash Directives visit [Typescript Handbook](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-types-).
+HELPFUL: `package.json` ve `tsconfig.json` dosyaları hakkında daha fazla bilgi için [Çalışma alanı npm bağımlılıkları][GuideNpmPackages] ve [TypeScript Yapılandırması][GuideTsConfig] bölümlerine bakın. Üçlü eğik çizgi direktifleri hakkında bilgi edinmek için [Typescript Handbook](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-types-) adresini ziyaret edin.
 
-If `@angular/localize` is not installed and you try to build a localized version of your project (for example, while using the `i18n` attributes in templates), the [Angular CLI][CliMain] will generate an error, which would contain the steps that you can take to enable i18n for your project.
+`@angular/localize` yüklü değilse ve projenizin yerelleştirilmiş bir sürümünü derlemeye çalışırsanız (örneğin, şablonlarda `i18n` niteliklerini kullanırken), [Angular CLI][CliMain] projeniz için i18n'i etkinleştirmek üzere atacağınız adımları içeren bir hata oluşturur.
 
 ## Options
 
-| OPTION             | DESCRIPTION                                                                                                                                                                                   | VALUE TYPE | DEFAULT VALUE |
-| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
-| `--project`        | The name of the project.                                                                                                                                                                      | `string`   |
-| `--use-at-runtime` | If set, then `$localize` can be used at runtime. Also `@angular/localize` gets included in the `dependencies` section of `package.json`, rather than `devDependencies`, which is the default. | `boolean`  | `false`       |
+| OPTION             | DESCRIPTION                                                                                                                                                                             | VALUE TYPE | DEFAULT VALUE |
+| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
+| `--project`        | Projenin adı.                                                                                                                                                                           | `string`   |
+| `--use-at-runtime` | Ayarlanırsa, `$localize` çalışma zamanında kullanılabilir. Ayrıca `@angular/localize`, varsayılan olan `devDependencies` yerine `package.json`'ın `dependencies` bölümüne dahil edilir. | `boolean`  | `false`       |
 
-For more available options, see `ng add` in [Angular CLI][CliMain].
+Daha fazla mevcut seçenek için [Angular CLI][CliMain]'daki `ng add` bölümüne bakın.
 
 ## What's next
 

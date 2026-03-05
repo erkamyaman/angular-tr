@@ -1,27 +1,27 @@
 # Usage of Angular libraries published to npm
 
-When you build your Angular application, take advantage of sophisticated first-party libraries, as well as a rich ecosystem of third-party libraries.
-[Angular Material][AngularMaterialMain] is an example of a sophisticated first-party library.
+Angular uygulamanızı oluştururken, gelişmiş birinci taraf kütüphanelerinin yanı sıra zengin bir üçüncü taraf kütüphane ekosisteminden yararlanın.
+[Angular Material][AngularMaterialMain], gelişmiş bir birinci taraf kütüphanesi örneğidir.
 
 ## Install libraries
 
-Libraries are published as [npm packages][GuideNpmPackages], usually together with schematics that integrate them with the Angular CLI.
-To integrate reusable library code into an application, you need to install the package and import the provided functionality in the location you use it.
-For most published Angular libraries, use the `ng add <lib_name>` Angular CLI command.
+Kütüphaneler, genellikle Angular CLI ile entegre eden şematiklerle birlikte [npm paketleri][GuideNpmPackages] olarak yayınlanır.
+Yeniden kullanılabilir kütüphane kodunu bir uygulamaya entegre etmek için paketi yüklemeniz ve sağlanan işlevselliği kullandığınız konumda içe aktarmanız gerekir.
+Yayınlanmış çoğu Angular kütüphanesi için `ng add <lib_name>` Angular CLI komutunu kullanın.
 
-The `ng add` Angular CLI command uses a package manager to install the library package and invokes schematics that are included in the package to other scaffolding within the project code.
-Examples of package managers include [npm][NpmjsMain] or [yarn][YarnpkgMain].
-Additional scaffolding within the project code includes import statements, fonts, and themes.
+`ng add` Angular CLI komutu, kütüphane paketini yüklemek için bir paket yöneticisi kullanır ve proje kodunda diğer iskele işlemlerini gerçekleştiren pakette bulunan şematikleri çağırır.
+Paket yöneticisi örnekleri arasında [npm][NpmjsMain] veya [yarn][YarnpkgMain] bulunur.
+Proje kodundaki ek iskele işlemleri, içe aktarma ifadelerini, yazı tiplerini ve temaları içerir.
 
-A published library typically provides a `README` file or other documentation on how to add that library to your application.
-For an example, see the [Angular Material][AngularMaterialMain] documentation.
+Yayınlanmış bir kütüphane genellikle o kütüphanenin uygulamanıza nasıl ekleneceğine dair bir `README` dosyası veya başka belgeler sağlar.
+Bir örnek için [Angular Material][AngularMaterialMain] belgelerine bakın.
 
 ### Library typings
 
-Typically, library packages include typings in `.d.ts` files; see examples in `node_modules/@angular/material`.
-If the package of your library does not include typings and your IDE complains, you might need to install the `@types/<lib_name>` package with the library.
+Genellikle kütüphane paketleri, `.d.ts` dosyalarında tip tanımlamaları içerir; `node_modules/@angular/material` içindeki örneklere bakın.
+Kütüphanenizin paketi tip tanımlamaları içermiyorsa ve IDE'niz hata veriyorsa, kütüphaneyle birlikte `@types/<lib_name>` paketini yüklemeniz gerekebilir.
 
-For example, suppose you have a library named `d3`:
+Örneğin, `d3` adında bir kütüphaneniz olduğunu varsayalım:
 
 ```shell
 
@@ -30,16 +30,16 @@ npm install @types/d3 --save-dev
 
 ```
 
-Types defined in a `@types/` package for a library installed into the workspace are automatically added to the TypeScript configuration for the project that uses that library.
-TypeScript looks for types in the `node_modules/@types` directory by default, so you do not have to add each type package individually.
+Çalışma alanına yüklenen bir kütüphane için `@types/` paketinde tanımlanan tipler, o kütüphaneyi kullanan projenin TypeScript yapılandırmasına otomatik olarak eklenir.
+TypeScript varsayılan olarak `node_modules/@types` dizininde tipleri arar, bu nedenle her tip paketini ayrı ayrı eklemeniz gerekmez.
 
-If a library does not have typings available at `@types/`, you may use it by manually adding typings for it.
-To do this:
+Bir kütüphanenin `@types/`'da tip tanımlamaları yoksa, bunun için tip tanımlamalarını manuel olarak ekleyerek kullanabilirsiniz.
+Bunu yapmak için:
 
-1. Create a `typings.d.ts` file in your `src/` directory.
-   This file is automatically included as global type definition.
+1. `src/` dizininizde bir `typings.d.ts` dosyası oluşturun.
+   Bu dosya otomatik olarak global tip tanımlaması olarak dahil edilir.
 
-1. Add the following code in `src/typings.d.ts`:
+1. `src/typings.d.ts`'e aşağıdaki kodu ekleyin:
 
    ```ts
    declare module 'host' {
@@ -52,7 +52,7 @@ To do this:
    }
    ```
 
-1. In the component or file that uses the library, add the following code:
+1. Kütüphaneyi kullanan bileşen veya dosyada aşağıdaki kodu ekleyin:
 
    ```ts
    import * as host from 'host';
@@ -60,28 +60,28 @@ To do this:
    console.log(parsedUrl.hostname);
    ```
 
-Define more typings as needed.
+Gerektiğinde daha fazla tip tanımlaması ekleyin.
 
 ## Updating libraries
 
-A library is able to be updated by the publisher, and also has individual dependencies which need to be kept current.
-To check for updates to your installed libraries, use the [`ng update`][CliUpdate] Angular CLI command.
+Bir kütüphane yayıncısı tarafından güncellenebilir ve ayrıca güncel tutulması gereken kendi bağımlılıkları vardır.
+Yüklü kütüphanelerinize yönelik güncellemeleri kontrol etmek için [`ng update`][CliUpdate] Angular CLI komutunu kullanın.
 
-Use `ng update <lib_name>` Angular CLI command to update individual library versions.
-The Angular CLI checks the latest published release of the library, and if the latest version is newer than your installed version, downloads it and updates your `package.json` to match the latest version.
+Bireysel kütüphane sürümlerini güncellemek için `ng update <lib_name>` Angular CLI komutunu kullanın.
+Angular CLI kütüphanenin en son yayınlanan sürümünü kontrol eder ve en son sürüm yüklü sürümünüzden daha yeniyse indirir ve `package.json`'unuzu en son sürümle eşleşecek şekilde günceller.
 
-When you update Angular to a new version, you need to make sure that any libraries you are using are current.
-If libraries have interdependencies, you might have to update them in a particular order.
-See the [Angular Update Guide][AngularUpdateMain] for help.
+Angular'ı yeni bir sürüme güncellediğinizde, kullandığınız tüm kütüphanelerin güncel olduğundan emin olmanız gerekir.
+Kütüphanelerin karşılıklı bağımlılıkları varsa, bunları belirli bir sırayla güncellemeniz gerekebilir.
+Yardım için [Angular Update Guide][AngularUpdateMain]'a bakın.
 
 ## Adding a library to the runtime global scope
 
-If a legacy JavaScript library is not imported into an application, you may add it to the runtime global scope and load it as if it was added in a script tag.
-Configure the Angular CLI to do this at build time using the `scripts` and `styles` options of the build target in the [`angular.json`][GuideWorkspaceConfig] workspace build configuration file.
+Eski bir JavaScript kütüphanesi bir uygulamaya aktarılmıyorsa, çalışma zamanı global kapsamına ekleyebilir ve bir script etiketi ile eklenmiş gibi yükleyebilirsiniz.
+Angular CLI'yi, [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki derleme hedefinin `scripts` ve `styles` seçeneklerini kullanarak derleme zamanında bunu yapacak şekilde yapılandırın.
 
-For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroduction] library
+Örneğin, [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroduction] kütüphanesini kullanmak için
 
-1. Install the library and the associated dependencies using the npm package manager:
+1. npm paket yöneticisini kullanarak kütüphaneyi ve ilişkili bağımlılıkları yükleyin:
 
    ```shell
      npm install jquery --save
@@ -89,7 +89,7 @@ For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroducti
      npm install bootstrap --save
    ```
 
-1. In the `angular.json` configuration file, add the associated script files to the `scripts` array:
+1. `angular.json` yapılandırma dosyasında, ilişkili script dosyalarını `scripts` dizisine ekleyin:
 
    ```json
      "scripts": [
@@ -99,7 +99,7 @@ For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroducti
        ],
    ```
 
-1. Add the `bootstrap.css` CSS file to the `styles` array:
+1. `bootstrap.css` CSS dosyasını `styles` dizisine ekleyin:
 
    ```json
      "styles": [
@@ -108,41 +108,41 @@ For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroducti
      ],
    ```
 
-1. Run or restart the `ng serve` Angular CLI command to see Bootstrap 4 work in your application.
+1. Bootstrap 4'ün uygulamanızda çalıştığını görmek için `ng serve` Angular CLI komutunu çalıştırın veya yeniden başlatın.
 
 ### Using runtime-global libraries inside your app
 
-After you import a library using the "scripts" array, do **not** import it using an import statement in your TypeScript code.
-The following code snippet is an example import statement.
+"scripts" dizisini kullanarak bir kütüphaneyi içe aktardıktan sonra, TypeScript kodunuzda bir import ifadesi kullanarak **içe aktarmayın**.
+Aşağıdaki kod parçacığı örnek bir import ifadesidir.
 
 ```ts
 import * as $ from 'jquery';
 ```
 
-If you import it using import statements, you have two different copies of the library: one imported as a global library, and one imported as a module.
-This is especially bad for libraries with plugins, like JQuery, because each copy includes different plugins.
+Import ifadeleri kullanarak içe aktarırsanız, kütüphanenin iki farklı kopyasına sahip olursunuz: biri global kütüphane olarak içe aktarılan, diğeri modül olarak içe aktarılan.
+Bu, özellikle JQuery gibi eklentileri olan kütüphaneler için kötüdür çünkü her kopya farklı eklentiler içerir.
 
-Instead, run the `npm install @types/jquery` Angular CLI command to download typings for your library and then follow the library installation steps.
-This gives you access to the global variables exposed by that library.
+Bunun yerine, kütüphaneniz için tip tanımlamalarını indirmek üzere `npm install @types/jquery` Angular CLI komutunu çalıştırın ve ardından kütüphane kurulum adımlarını izleyin.
+Bu, o kütüphane tarafından sunulan global değişkenlere erişmenizi sağlar.
 
 ### Defining typings for runtime-global libraries
 
-If the global library you need to use does not have global typings, you can declare them manually as `any` in `src/typings.d.ts`.
+Kullanmanız gereken global kütüphanenin global tip tanımlamaları yoksa, bunları `src/typings.d.ts`'de manuel olarak `any` olarak bildirebilirsiniz.
 
-For example:
+Örneğin:
 
 ```ts
 declare var libraryName: any;
 ```
 
-Some scripts extend other libraries; for instance with JQuery plugins:
+Bazı scriptler diğer kütüphaneleri genişletir; örneğin JQuery eklentileriyle:
 
 ```ts
 $('.test').myPlugin();
 ```
 
-In this case, the installed `@types/jquery` does not include `myPlugin`, so you need to add an interface in `src/typings.d.ts`.
-For example:
+Bu durumda, yüklü `@types/jquery` paketi `myPlugin`'i içermez, bu nedenle `src/typings.d.ts`'e bir arayüz eklemeniz gerekir.
+Örneğin:
 
 ```ts
 interface JQuery {
@@ -150,7 +150,7 @@ interface JQuery {
 }
 ```
 
-If you do not add the interface for the script-defined extension, your IDE shows an error:
+Script ile tanımlanan uzantı için arayüz eklemezseniz, IDE'niz bir hata gösterir:
 
 ```text
 

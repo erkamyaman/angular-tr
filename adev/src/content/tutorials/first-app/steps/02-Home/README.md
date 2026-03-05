@@ -1,27 +1,27 @@
 # Create Home component
 
-This tutorial lesson demonstrates how to create a new [component](guide/components) for your Angular app.
+Bu eğitim dersi, Angular uygulamanız için nasıl yeni bir [bileşen](guide/components) oluşturacağınızı gösterir.
 
 <docs-video src="https://www.youtube.com/embed/R0nRX8jD2D0?si=OMVaw71EIa44yIOJ"/>
 
 ## What you'll learn
 
-Your app has a new component: `Home`.
+Uygulamanızda yeni bir bileşen var: `Home`.
 
 ## Conceptual preview of Angular components
 
-Angular apps are built around components, which are Angular's building blocks.
-Components contain the code, HTML layout, and CSS style information that provide the function and appearance of an element in the app.
-In Angular, components can contain other components. An app's functions and appearance can be divided and partitioned into components.
+Angular uygulamaları, Angular'ın yapı taşları olan bileşenler etrafında oluşturulur.
+Bileşenler, uygulamadaki bir öğenin işlevini ve görünümünü sağlayan kodu, HTML düzenini ve CSS stil bilgilerini içerir.
+Angular'da bileşenler başka bileşenler içerebilir. Bir uygulamanın işlevleri ve görünümü bileşenlere bölünebilir ve parçalanabilir.
 
-In Angular, components have metadata that define its properties.
-When you create your `Home`, you use these properties:
+Angular'da bileşenler, özelliklerini tanımlayan meta verilere sahiptir.
+`Home` bileşeninizi oluştururken şu özellikleri kullanırsınız:
 
-- `selector`: to describe how Angular refers to the component in templates.
-- `standalone`: to describe whether the component requires a `NgModule`.
-- `imports`: to describe the component's dependencies.
-- `template`: to describe the component's HTML markup and layout.
-- `styleUrls`: to list the URLs of the CSS files that the component uses in an array.
+- `selector`: Angular'ın şablonlarda bileşene nasıl başvurduğunu tanımlar.
+- `standalone`: bileşenin bir `NgModule` gerektirip gerektirmediğini tanımlar.
+- `imports`: bileşenin bağımlılıklarını tanımlar.
+- `template`: bileşenin HTML işaretlemesini ve düzenini tanımlar.
+- `styleUrls`: bileşenin kullandığı CSS dosyalarının URL'lerini bir dizi içinde listeler.
 
 <docs-pill-row>
   <docs-pill href="api/core/Component" title="Learn more about Components"/>
@@ -30,57 +30,57 @@ When you create your `Home`, you use these properties:
 <docs-workflow>
 
 <docs-step title="Create the `Home`">
-In this step, you create a new component for your app.
+Bu adımda, uygulamanız için yeni bir bileşen oluşturursunuz.
 
-In the **Terminal** pane of your IDE:
+IDE'nizin **Terminal** bölmesinde:
 
-1. In your project directory, navigate to the `first-app` directory.
-1. Run this command to create a new `Home`
+1. Proje dizininizde, `first-app` dizinine gidin.
+1. Yeni bir `Home` bileşeni oluşturmak için bu komutu çalıştırın
 
    ```shell
    ng generate component home
    ```
 
-1. Run this command to build and serve your app.
+1. Uygulamanızı derlemek ve sunmak için bu komutu çalıştırın.
 
-   NOTE: This step is only for your local environment!
+   NOTE: Bu adım yalnızca yerel ortamınız içindir!
 
    ```shell
    ng serve
    ```
 
-1. Open a browser and navigate to `http://localhost:4200` to find the application.
+1. Bir tarayıcı açın ve uygulamayı bulmak için `http://localhost:4200` adresine gidin.
 
-1. Confirm that the app builds without error.
+1. Uygulamanın hatasız derlendiğini doğrulayın.
 
-   HELPFUL: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet.
+   HELPFUL: Yeni bir bileşen eklemiş olsanız bile, henüz uygulamanın şablonlarından hiçbirine dahil etmediğiniz için önceki dersteki gibi görünmesi gerekir.
 
-1. Leave `ng serve` running as you complete the next steps.
+1. Sonraki adımları tamamlarken `ng serve` komutunu çalışır durumda bırakın.
    </docs-step>
 
 <docs-step title="Add the new component to your app's layout">
-In this step, you add the new component, `Home` to your app's root component, `App`, so that it displays in your app's layout.
+Bu adımda, yeni bileşen `Home`'u, uygulamanızın kök bileşeni `App`'e eklersiniz, böylece uygulamanızın düzeninde görüntülenir.
 
-In the **Edit** pane of your IDE:
+IDE'nizin **Edit** bölmesinde:
 
-1.  Open `app.ts` in the editor.
-1.  In `app.ts`, import `Home` by adding this line to the file level imports.
+1.  Editörde `app.ts` dosyasını açın.
+1.  `app.ts` dosyasında, bu satırı dosya düzeyindeki import'lara ekleyerek `Home`'u içe aktarın.
 
       <docs-code header="Import Home in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[2]"/>
 
-1.  In `app.ts`, in `@Component`, update the `imports` array property and add `Home`.
+1.  `app.ts` dosyasında, `@Component` içindeki `imports` dizi özelliğini güncelleyin ve `Home`'u ekleyin.
 
       <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[6]"/>
 
-1.  In `app.ts`, in `@Component`, update the `template` property to include the following HTML code.
+1.  `app.ts` dosyasında, `@Component` içindeki `template` özelliğini aşağıdaki HTML kodunu içerecek şekilde güncelleyin.
 
       <docs-code language="angular-ts" header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[7,16]"/>
 
-1.  Save your changes to `app.ts`.
-1.  If `ng serve` is running, the app should update.
-    If `ng serve` is not running, start it again.
-    _Hello world_ in your app should change to _home works!_ from the `Home`.
-1.  Check the running app in the browser and confirm that the app has been updated.
+1.  Değişikliklerinizi `app.ts` dosyasına kaydedin.
+1.  `ng serve` çalışıyorsa, uygulama güncellenmelidir.
+    `ng serve` çalışmıyorsa, tekrar başlatın.
+    Uygulamanızdaki _Hello world_ metni, `Home` bileşeninden gelen _home works!_ metniyle değişmelidir.
+1.  Tarayıcıda çalışan uygulamayı kontrol edin ve uygulamanın güncellendiğini doğrulayın.
 
   <img alt="browser frame of page displaying the text 'home works!'" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-2.png">
 
@@ -88,15 +88,15 @@ In the **Edit** pane of your IDE:
 
 <docs-step title="Add features to `Home`">
 
-In this step you add features to `Home`.
+Bu adımda `Home`'a özellikler eklersiniz.
 
-In the previous step, you added the default `Home` to your app's template so its default HTML appeared in the app.
-In this step, you add a search filter and button that is used in a later lesson.
-For now, that's all that `Home` has.
-Note that, this step just adds the search elements to the layout without any functionality, yet.
+Önceki adımda, varsayılan `Home` bileşenini uygulamanızın şablonuna eklediniz, böylece varsayılan HTML'si uygulamada göründü.
+Bu adımda, ilerideki bir derste kullanılacak olan bir arama filtresi ve düğmesi eklersiniz.
+Şimdilik, `Home` sadece bunlara sahip.
+Bu adımın yalnızca arama öğelerini düzene eklediğini, henüz herhangi bir işlevsellik sağlamadığını unutmayın.
 
-If you started from a fresh Angular project instead of downloading the starter
-(ng new): add these globals to `src/styles.css` so the search button and input border are visible:
+Başlangıç uygulamasını indirmek yerine yeni bir Angular projesinden başladıysanız
+(ng new): arama düğmesi ve giriş kenarlığının görünür olması için bu genel stilleri `src/styles.css` dosyasına ekleyin:
 
 ```
 :root {
@@ -115,29 +115,29 @@ button.primary {
 }
 ```
 
-In the **Edit** pane of your IDE:
+IDE'nizin **Edit** bölmesinde:
 
-1.  In the `first-app` directory, open `home.ts` in the editor.
-1.  In `home.ts`, in `@Component`, update the `template` property with this code.
+1.  `first-app` dizininde, editörde `home.ts` dosyasını açın.
+1.  `home.ts` dosyasında, `@Component` içindeki `template` özelliğini bu kodla güncelleyin.
 
       <docs-code language="angular-ts" header="Replace in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.ts" visibleLines="[5,12]"/>
 
-1.  Next, open `home.css` in the editor and update the content with these styles.
+1.  Ardından, editörde `home.css` dosyasını açın ve içeriği bu stillerle güncelleyin.
 
-    NOTE: In the browser, these can go in `src/app/home/home.ts` in the `styles` array.
+    NOTE: Tarayıcıda, bunlar `src/app/home/home.ts` dosyasındaki `styles` dizisine eklenebilir.
 
        <docs-code header="Replace in src/app/home/home.css" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.css"/>
 
-1.  Confirm that the app builds without error. You should find the filter query box and button in your app and they should be styled. Correct any errors before you continue to the next step.
+1.  Uygulamanın hatasız derlendiğini doğrulayın. Uygulamanızda filtre sorgu kutusunu ve düğmeyi bulmalı ve bunların stillendirilmiş olması gerekir. Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
    <img alt="browser frame of homes-app displaying logo, filter text input box and search button" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-3.png">
 </docs-step>
 
 </docs-workflow>
 
-SUMMARY: In this lesson, you created a new component for your app and gave it a filter edit control and button.
+SUMMARY: Bu derste, uygulamanız için yeni bir bileşen oluşturdunuz ve ona bir filtre düzenleme kontrolü ve düğme eklediniz.
 
-For more information about the topics covered in this lesson, visit:
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="cli/generate/component" title="`ng generate component`"/>

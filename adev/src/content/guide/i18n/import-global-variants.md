@@ -1,24 +1,24 @@
 # Import global variants of the locale data
 
-The [Angular CLI][CliMain] automatically includes locale data if you run the [`ng build`][CliBuild] command with the `--localize` option.
+[Angular CLI][CliMain], [`ng build`][CliBuild] komutunu `--localize` seçeneğiyle çalıştırdığınızda yerel ayar verilerini otomatik olarak dahil eder.
 
 ```shell
 ng build --localize
 ```
 
-HELPFUL: The initial installation of Angular already contains locale data for English in the United States \(`en-US`\).
-The [Angular CLI][CliMain] automatically includes the locale data and sets the `LOCALE_ID` value when you use the `--localize` option with [`ng build`][CliBuild] command.
+HELPFUL: Angular'ın ilk kurulumu zaten Amerika Birleşik Devletleri için İngilizce \(`en-US`\) yerel ayar verilerini içerir.
+[Angular CLI][CliMain], [`ng build`][CliBuild] komutunu `--localize` seçeneğiyle kullandığınızda yerel ayar verilerini otomatik olarak dahil eder ve `LOCALE_ID` değerini ayarlar.
 
-The `@angular/common` package on npm contains the locale data files.
-Global variants of the locale data are available in `@angular/common/locales/global`.
+npm'deki `@angular/common` paketi yerel ayar veri dosyalarını içerir.
+Yerel ayar verilerinin global varyantları `@angular/common/locales/global` içinde mevcuttur.
 
 ## `import` example for French
 
-For example, you could import the global variants for French \(`fr`\) in `main.ts` where you bootstrap the application.
+Örneğin, uygulamayı başlattığınız `main.ts` dosyasında Fransızca \(`fr`\) için global varyantları içe aktarabilirsiniz.
 
 <docs-code header="src/main.ts (import locale)" path="adev/src/content/examples/i18n/src/main.ts" region="global-locale"/>
 
-HELPFUL: In an `NgModules` application, you would import it in your `app.module`.
+HELPFUL: Bir `NgModules` uygulamasında, bunu `app.module` dosyanızda içe aktarırsınız.
 
 [CliMain]: cli 'CLI Overview and Command Reference | Angular'
 [CliBuild]: cli/build 'ng build | CLI | Angular'

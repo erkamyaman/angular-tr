@@ -1,97 +1,97 @@
 # Schematics for libraries
 
-When you create an Angular library, you can provide and package it with schematics that integrate it with the Angular CLI.
-With your schematics, your users can use `ng add` to install an initial version of your library,
-`ng generate` to create artifacts defined in your library, and `ng update` to adjust their project for a new version of your library that introduces breaking changes.
+Bir Angular kütüphanesi oluşturduğunuzda, Angular CLI ile entegre eden şematiklerle birlikte sağlayabilir ve paketleyebilirsiniz.
+Şematiklerinizle, kullanıcılarınız kütüphanenizin başlangıç sürümünü yüklemek için `ng add`'ı,
+kütüphanenizde tanımlanan yapıtları oluşturmak için `ng generate`'i ve bozucu değişiklikler içeren yeni bir sürüm için projelerini uyarlamak üzere `ng update`'i kullanabilir.
 
-All three types of schematics can be part of a collection that you package with your library.
+Her üç şematik türü de kütüphanenizle paketleyebileceğiniz bir koleksiyonun parçası olabilir.
 
 ## Creating a schematics collection
 
-To start a collection, you need to create the schematic files.
-The following steps show you how to add initial support without modifying any project files.
+Bir koleksiyon başlatmak için şematik dosyalarını oluşturmanız gerekir.
+Aşağıdaki adımlar, herhangi bir proje dosyasını değiştirmeden başlangıç desteğini nasıl ekleyeceğinizi gösterir.
 
-1. In your library's root folder, create a `schematics` folder.
-1. In the `schematics/` folder, create an `ng-add` folder for your first schematic.
-1. At the root level of the `schematics` folder, create a `collection.json` file.
-1. Edit the `collection.json` file to define the initial schema for your collection.
+1. Kütüphanenizin kök klasöründe bir `schematics` klasörü oluşturun.
+1. `schematics/` klasöründe, ilk şematiğiniz için bir `ng-add` klasörü oluşturun.
+1. `schematics` klasörünün kök düzeyinde bir `collection.json` dosyası oluşturun.
+1. `collection.json` dosyasını düzenleyerek koleksiyonunuzun başlangıç şemasını tanımlayın.
 
    <docs-code header="projects/my-lib/schematics/collection.json (Schematics Collection)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/collection.1.json"/>
-   - The `$schema` path is relative to the Angular Devkit collection schema.
-   - The `schematics` object describes the named schematics that are part of this collection.
-   - The first entry is for a schematic named `ng-add`.
-     It contains the description, and points to the factory function that is called when your schematic is executed.
+   - `$schema` yolu, Angular Devkit koleksiyon şemasına görelidir.
+   - `schematics` nesnesi, bu koleksiyonun parçası olan adlandırılmış şematikleri tanımlar.
+   - İlk giriş, `ng-add` adlı bir şematik içindir.
+     Açıklamayı içerir ve şematiğiniz çalıştırıldığında çağrılan fabrika fonksiyonuna işaret eder.
 
-1. In your library project's `package.json` file, add a "schematics" entry with the path to your schema file.
-   The Angular CLI uses this entry to find named schematics in your collection when it runs commands.
+1. Kütüphane projenizin `package.json` dosyasında, şema dosyanızın yolunu içeren bir "schematics" girişi ekleyin.
+   Angular CLI, komutları çalıştırırken koleksiyonunuzdaki adlandırılmış şematikleri bulmak için bu girişi kullanır.
 
 <docs-code header="projects/my-lib/package.json (Schematics Collection Reference)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json" region="collection"/>
 
-The initial schema that you have created tells the CLI where to find the schematic that supports the `ng add` command.
-Now you are ready to create that schematic.
+Oluşturduğunuz başlangıç şeması, CLI'a `ng add` komutunu destekleyen şematiğin nerede bulunacağını söyler.
+Artık o şematiği oluşturmaya hazırsınız.
 
 ## Providing installation support
 
-A schematic for the `ng add` command can enhance the initial installation process for your users.
-The following steps define this type of schematic.
+`ng add` komutu için bir şematik, kullanıcılarınız için başlangıç kurulum sürecini iyileştirebilir.
+Aşağıdaki adımlar bu tür bir şematiği tanımlar.
 
-1. Go to the `<lib-root>/schematics/ng-add` folder.
-1. Create the main file, `index.ts`.
-1. Open `index.ts` and add the source code for your schematic factory function.
+1. `<lib-root>/schematics/ng-add` klasörüne gidin.
+1. Ana dosya olan `index.ts`'yi oluşturun.
+1. `index.ts`'yi açın ve şematik fabrika fonksiyonunuz için kaynak kodunu ekleyin.
 
 <docs-code header="projects/my-lib/schematics/ng-add/index.ts (ng-add Rule Factory)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/ng-add/index.ts"/>
 
-The Angular CLI will install the latest version of the library automatically, and this example is taking it a step further by adding the `MyLibModule` to the root of the application. The `addRootImport` function accepts a callback that needs to return a code block. You can write any code inside of the string tagged with the `code` function and any external symbol have to be wrapped with the `external` function to ensure that the appropriate import statements are generated.
+Angular CLI, kütüphanenin en son sürümünü otomatik olarak yükler ve bu örnek, uygulamanın köküne `MyLibModule`'u ekleyerek bir adım daha ileri gider. `addRootImport` fonksiyonu, bir kod bloğu döndürmesi gereken bir geri çağrım kabul eder. `code` fonksiyonuyla etiketlenen dizenin içine herhangi bir kod yazabilirsiniz ve herhangi bir harici sembol, uygun import deyimlerinin oluşturulmasını sağlamak için `external` fonksiyonuyla sarılmalıdır.
 
 ### Define dependency type
 
-Use the `save` option of `ng-add` to configure if the library should be added to the `dependencies`, the `devDependencies`, or not saved at all in the project's `package.json` configuration file.
+Kütüphanenin projenin `package.json` yapılandırma dosyasındaki `dependencies`'e mi, `devDependencies`'e mi yoksa hiç kaydedilmemesi mi gerektiğini yapılandırmak için `ng-add`'in `save` seçeneğini kullanın.
 
 <docs-code header="projects/my-lib/package.json (ng-add Reference)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json" region="ng-add"/>
 
-Possible values are:
+Olası değerler:
 
-| Values              | Details                                 |
-| :------------------ | :-------------------------------------- |
-| `false`             | Don't add the package to `package.json` |
-| `true`              | Add the package to the dependencies     |
-| `"dependencies"`    | Add the package to the dependencies     |
-| `"devDependencies"` | Add the package to the devDependencies  |
+| Değerler            | Ayrıntılar                     |
+| :------------------ | :----------------------------- |
+| `false`             | Paketi `package.json`'a ekleme |
+| `true`              | Paketi dependencies'e ekle     |
+| `"dependencies"`    | Paketi dependencies'e ekle     |
+| `"devDependencies"` | Paketi devDependencies'e ekle  |
 
 ## Building your schematics
 
-To bundle your schematics together with your library, you must configure the library to build the schematics separately, then add them to the bundle.
-You must build your schematics _after_ you build your library, so they are placed in the correct directory.
+Şematiklerinizi kütüphanenizle birlikte paketlemek için kütüphaneyi şematikleri ayrı olarak derleyecek şekilde yapılandırmanız ve ardından bunları pakete eklemeniz gerekir.
+Şematiklerinizi kütüphanenizi derledikten _sonra_ derlemeniz gerekir, böylece doğru dizine yerleştirilirler.
 
-- Your library needs a custom Typescript configuration file with instructions on how to compile your schematics into your distributed library
-- To add the schematics to the library bundle, add scripts to the library's `package.json` file
+- Kütüphanenizin, şematiklerinizi dağıtılan kütüphanenize nasıl derleyeceğine ilişkin talimatlar içeren özel bir TypeScript yapılandırma dosyasına ihtiyacı vardır
+- Şematikleri kütüphane paketine eklemek için kütüphanenin `package.json` dosyasına betikler ekleyin
 
-Assume you have a library project `my-lib` in your Angular workspace.
-To tell the library how to build the schematics, add a `tsconfig.schematics.json` file next to the generated `tsconfig.lib.json` file that configures the library build.
+Angular çalışma alanınızda `my-lib` adlı bir kütüphane projeniz olduğunu varsayalım.
+Kütüphaneye şematikleri nasıl derleyeceğini söylemek için, kütüphane derlemesini yapılandıran oluşturulan `tsconfig.lib.json` dosyasının yanına bir `tsconfig.schematics.json` dosyası ekleyin.
 
-1. Edit the `tsconfig.schematics.json` file to add the following content.
+1. `tsconfig.schematics.json` dosyasını düzenleyerek aşağıdaki içeriği ekleyin.
 
    <docs-code header="projects/my-lib/tsconfig.schematics.json (TypeScript Config)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/tsconfig.schematics.json"/>
 
-   | Options   | Details                                                                                                          |
-   | :-------- | :--------------------------------------------------------------------------------------------------------------- |
-   | `rootDir` | Specifies that your `schematics` folder contains the input files to be compiled.                                 |
-   | `outDir`  | Maps to the library's output folder. By default, this is the `dist/my-lib` folder at the root of your workspace. |
+   | Seçenekler | Ayrıntılar                                                                                                         |
+   | :--------- | :----------------------------------------------------------------------------------------------------------------- |
+   | `rootDir`  | `schematics` klasörünüzün derlenecek girdi dosyalarını içerdiğini belirtir.                                        |
+   | `outDir`   | Kütüphanenin çıktı klasörüne eşlenir. Varsayılan olarak bu, çalışma alanınızın kökündeki `dist/my-lib` klasörüdür. |
 
-1. To make sure your schematics source files get compiled into the library bundle, add the following scripts to the `package.json` file in your library project's root folder \(`projects/my-lib`\).
+1. Şematik kaynak dosyalarınızın kütüphane paketine derlendiğinden emin olmak için, kütüphane projenizin kök klasöründeki (`projects/my-lib`) `package.json` dosyasına aşağıdaki betikleri ekleyin.
 
    <docs-code header="projects/my-lib/package.json (Build Scripts)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json"/>
-   - The `build` script compiles your schematic using the custom `tsconfig.schematics.json` file
-   - The `postbuild` script copies the schematic files after the `build` script completes
-   - Both the `build` and the `postbuild` scripts require the `copyfiles` and `typescript` dependencies.
-     To install the dependencies, navigate to the path defined in `devDependencies` and run `npm install` before you run the scripts.
+   - `build` betiği, özel `tsconfig.schematics.json` dosyasını kullanarak şematiğinizi derler
+   - `postbuild` betiği, `build` betiği tamamlandıktan sonra şematik dosyalarını kopyalar
+   - Hem `build` hem de `postbuild` betikleri `copyfiles` ve `typescript` bağımlılıklarını gerektirir.
+     Bağımlılıkları yüklemek için `devDependencies` içinde tanımlanan yola gidin ve betikleri çalıştırmadan önce `npm install` komutunu çalıştırın.
 
 ## Providing generation support
 
-You can add a named schematic to your collection that lets your users use the `ng generate` command to create an artifact that is defined in your library.
+Kullanıcılarınızın kütüphanenizde tanımlanan bir yapıtı oluşturmak için `ng generate` komutunu kullanmalarına olanak tanıyan, koleksiyonunuza adlandırılmış bir şematik ekleyebilirsiniz.
 
-We'll assume that your library defines a service, `my-service`, that requires some setup.
-You want your users to be able to generate it using the following CLI command.
+Kütüphanenizin bazı kurulum gerektiren `my-service` adlı bir servis tanımladığını varsayalım.
+Kullanıcılarınızın aşağıdaki CLI komutunu kullanarak bunu oluşturabilmesini istiyorsunuz.
 
 ```shell
 
@@ -99,48 +99,48 @@ ng generate my-lib:my-service
 
 ```
 
-To begin, create a new subfolder, `my-service`, in the `schematics` folder.
+Başlamak için `schematics` klasöründe `my-service` adlı yeni bir alt klasör oluşturun.
 
 ### Configure the new schematic
 
-When you add a schematic to the collection, you have to point to it in the collection's schema, and provide configuration files to define options that a user can pass to the command.
+Koleksiyona bir şematik eklediğinizde, koleksiyonun şemasında ona işaret etmeniz ve bir kullanıcının komuta geçirebileceği seçenekleri tanımlayan yapılandırma dosyaları sağlamanız gerekir.
 
-1. Edit the `schematics/collection.json` file to point to the new schematic subfolder, and include a pointer to a schema file that specifies inputs for the new schematic.
+1. `schematics/collection.json` dosyasını düzenleyerek yeni şematik alt klasörüne işaret edin ve yeni şematik için girdileri belirten bir şema dosyasına bir işaretçi ekleyin.
 
    <docs-code header="projects/my-lib/schematics/collection.json (Schematics Collection)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/collection.json"/>
 
-1. Go to the `<lib-root>/schematics/my-service` folder.
-1. Create a `schema.json` file and define the available options for the schematic.
+1. `<lib-root>/schematics/my-service` klasörüne gidin.
+1. Bir `schema.json` dosyası oluşturun ve şematik için mevcut seçenekleri tanımlayın.
 
    <docs-code header="projects/my-lib/schematics/my-service/schema.json (Schematic JSON Schema)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/schema.json"/>
-   - _id_: A unique ID for the schema in the collection.
-   - _title_: A human-readable description of the schema.
-   - _type_: A descriptor for the type provided by the properties.
-   - _properties_: An object that defines the available options for the schematic.
+   - _id_: Koleksiyondaki şema için benzersiz bir kimlik.
+   - _title_: Şemanın insan tarafından okunabilir bir açıklaması.
+   - _type_: Özellikler tarafından sağlanan türün açıklayıcısı.
+   - _properties_: Şematik için mevcut seçenekleri tanımlayan bir nesne.
 
-   Each option associates key with a type, description, and optional alias.
-   The type defines the shape of the value you expect, and the description is displayed when the user requests usage help for your schematic.
+   Her seçenek bir anahtarı bir tür, açıklama ve isteğe bağlı takma adla ilişkilendirir.
+   Tür, beklediğiniz değerin biçimini tanımlar ve açıklama, kullanıcı şematiğiniz için kullanım yardımı istediğinde görüntülenir.
 
-   See the workspace schema for additional customizations for schematic options.
+   Şematik seçenekleri için ek özelleştirmeler hakkında çalışma alanı şemasına bakın.
 
-1. Create a `schema.ts` file and define an interface that stores the values of the options defined in the `schema.json` file.
+1. Bir `schema.ts` dosyası oluşturun ve `schema.json` dosyasında tanımlanan seçeneklerin değerlerini depolayan bir arayüz tanımlayın.
 
    <docs-code header="projects/my-lib/schematics/my-service/schema.ts (Schematic Interface)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/schema.ts"/>
 
-   | Options | Details                                                                                                                                     |
-   | :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
-   | name    | The name you want to provide for the created service.                                                                                       |
-   | path    | Overrides the path provided to the schematic. The default path value is based on the current working directory.                             |
-   | project | Provides a specific project to run the schematic on. In the schematic, you can provide a default if the option is not provided by the user. |
+   | Seçenekler | Ayrıntılar                                                                                                                                |
+   | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+   | name       | Oluşturulan servis için sağlamak istediğiniz ad.                                                                                          |
+   | path       | Şematiğe sağlanan yolu geçersiz kılar. Varsayılan yol değeri geçerli çalışma dizinine dayanır.                                            |
+   | project    | Şematiğin çalıştırılacağı belirli bir proje sağlar. Şematikte, seçenek kullanıcı tarafından sağlanmazsa bir varsayılan sağlayabilirsiniz. |
 
 ### Add template files
 
-To add artifacts to a project, your schematic needs its own template files.
-Schematic templates support special syntax to execute code and variable substitution.
+Bir projeye yapıtlar eklemek için şematiğinizin kendi şablon dosyalarına ihtiyacı vardır.
+Şematik şablonları, kod çalıştırma ve değişken değiştirme için özel sözdizimini destekler.
 
-1. Create a `files/` folder inside the `schematics/my-service/` folder.
-1. Create a file named `__name@dasherize__.service.ts.template` that defines a template to use for generating files.
-   This template will generate a service that already has Angular's `HttpClient` injected into an `http` property.
+1. `schematics/my-service/` klasörü içinde bir `files/` klasörü oluşturun.
+1. Dosya oluşturmak için kullanılacak bir şablonu tanımlayan `__name@dasherize__.service.ts.template` adlı bir dosya oluşturun.
+   Bu şablon, Angular'ın `HttpClient`'ını zaten bir `http` özelliğine enjekte edilmiş olarak içeren bir servis oluşturacaktır.
 
    ```ts {header:projects/my-lib/schematics/my-service/files/__name@dasherize__.service.ts.template (Schematic Template)}
 
@@ -156,110 +156,110 @@ Schematic templates support special syntax to execute code and variable substitu
 
    ```
 
-   - The `classify` and `dasherize` methods are utility functions that your schematic uses to transform your source template and filename.
-   - The `name` is provided as a property from your factory function.
-     It is the same `name` you defined in the schema.
+   - `classify` ve `dasherize` metotları, şematiğinizin kaynak şablonunu ve dosya adını dönüştürmek için kullandığı yardımcı fonksiyonlardır.
+   - `name`, fabrika fonksiyonunuzdan bir özellik olarak sağlanır.
+     Şemada tanımladığınız `name` ile aynıdır.
 
 ### Add the factory function
 
-Now that you have the infrastructure in place, you can define the main function that performs the modifications you need in the user's project.
+Artık altyapı yerinde olduğuna göre, kullanıcının projesinde ihtiyaç duyduğunuz değişiklikleri gerçekleştiren ana fonksiyonu tanımlayabilirsiniz.
 
-The Schematics framework provides a file templating system, which supports both path and content templates.
-The system operates on placeholders defined inside files or paths that loaded in the input `Tree`.
-It fills these in using values passed into the `Rule`.
+Schematics çerçevesi, hem yol hem de içerik şablonlarını destekleyen bir dosya şablonlama sistemi sağlar.
+Sistem, girdi `Tree`'sine yüklenen dosyalar veya yollar içinde tanımlanan yer tutucular üzerinde çalışır.
+Bunları `Rule`'a geçirilen değerlerle doldurur.
 
-For details of these data structures and syntax, see the [Schematics README](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/README.md).
+Bu veri yapıları ve sözdiziminin ayrıntıları için [Schematics README](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/README.md) belgesine bakın.
 
-1. Create the main file `index.ts` and add the source code for your schematic factory function.
-1. First, import the schematics definitions you will need.
-   The Schematics framework offers many utility functions to create and use rules when running a schematic.
+1. Ana dosya `index.ts`'yi oluşturun ve şematik fabrika fonksiyonunuz için kaynak kodunu ekleyin.
+1. İlk olarak, ihtiyacınız olacak şematik tanımlarını içe aktarın.
+   Schematics çerçevesi, bir şematiği çalıştırırken kurallar oluşturmak ve kullanmak için birçok yardımcı fonksiyon sunar.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Imports)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="schematics-imports"/>
 
-1. Import the defined schema interface that provides the type information for your schematic's options.
+1. Şematiğinizin seçenekleri için tür bilgisi sağlayan tanımlı şema arayüzünü içe aktarın.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Schema Import)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="schema-imports"/>
 
-1. To build up the generation schematic, start with an empty rule factory.
+1. Oluşturma şematiğini oluşturmak için boş bir kural fabrikasıyla başlayın.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Initial Rule)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.1.ts" region="factory"/>
 
-This rule factory returns the tree without modification.
-The options are the option values passed through from the `ng generate` command.
+Bu kural fabrikası, ağacı değiştirmeden döndürür.
+Seçenekler, `ng generate` komutundan geçirilen seçenek değerleridir.
 
 ## Define a generation rule
 
-You now have the framework in place for creating the code that actually modifies the user's application to set it up for the service defined in your library.
+Artık kullanıcının uygulamasını, kütüphanenizde tanımlanan servis için kurmak üzere gerçekten değiştiren kodu oluşturmak için çerçeveye sahipsiniz.
 
-The Angular workspace where the user installed your library contains multiple projects \(applications and libraries\).
-The user can specify the project on the command line, or let it default.
-In either case, your code needs to identify the specific project to which this schematic is being applied, so that you can retrieve information from the project configuration.
+Kullanıcının kütüphanenizi yüklediği Angular çalışma alanı birden fazla proje \(uygulama ve kütüphane\) içerir.
+Kullanıcı projeyi komut satırında belirtebilir veya varsayılana bırakabilir.
+Her iki durumda da, bu şematiğin uygulandığı belirli projeyi tanımlamanız gerekir, böylece proje yapılandırmasından bilgi alabilirsiniz.
 
-Do this using the `Tree` object that is passed in to the factory function.
-The `Tree` methods give you access to the complete file tree in your workspace, letting you read and write files during the execution of the schematic.
+Bunu, fabrika fonksiyonuna geçirilen `Tree` nesnesini kullanarak yapın.
+`Tree` metotları, çalışma alanınızdaki eksiksiz dosya ağacına erişmenizi sağlar ve şematiğin yürütülmesi sırasında dosyaları okumanıza ve yazmanıza olanak tanır.
 
 ### Get the project configuration
 
-1. To determine the destination project, use the `workspaces.readWorkspace` method to read the contents of the workspace configuration file, `angular.json`.
-   To use `workspaces.readWorkspace` you need to create a `workspaces.WorkspaceHost` from the `Tree`.
-   Add the following code to your factory function.
+1. Hedef projeyi belirlemek için, çalışma alanı yapılandırma dosyası `angular.json`'ın içeriğini okumak üzere `workspaces.readWorkspace` metodunu kullanın.
+   `workspaces.readWorkspace` kullanmak için `Tree`'den bir `workspaces.WorkspaceHost` oluşturmanız gerekir.
+   Fabrika fonksiyonunuza aşağıdaki kodu ekleyin.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Schema Import)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="workspace"/>
 
-   Be sure to check that the context exists and throw the appropriate error.
+   Bağlamın var olduğunu kontrol ettiğinizden ve uygun hatayı fırlattığınızdan emin olun.
 
-1. Now that you have the project name, use it to retrieve the project-specific configuration information.
+1. Artık proje adına sahip olduğunuza göre, projeye özgü yapılandırma bilgilerini almak için kullanın.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Project)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="project-info"/>
 
-   The `workspace.projects` object contains all the project-specific configuration information.
+   `workspace.projects` nesnesi, projeye özgü tüm yapılandırma bilgilerini içerir.
 
-1. The `options.path` determines where the schematic template files are moved to once the schematic is applied.
+1. `options.path`, şematik uygulandığında şematik şablon dosyalarının taşınacağı yeri belirler.
 
-   The `path` option in the schematic's schema is substituted by default with the current working directory.
-   If the `path` is not defined, use the `sourceRoot` from the project configuration along with the `projectType`.
+   Şematiğin şemasındaki `path` seçeneği varsayılan olarak geçerli çalışma diziniyle değiştirilir.
+   `path` tanımlanmamışsa, proje yapılandırmasından `sourceRoot`'u `projectType` ile birlikte kullanın.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Project Info)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="path"/>
 
 ### Define the rule
 
-A `Rule` can use external template files, transform them, and return another `Rule` object with the transformed template.
-Use the templating to generate any custom files required for your schematic.
+Bir `Rule`, harici şablon dosyalarını kullanabilir, dönüştürebilir ve dönüştürülmüş şablonla başka bir `Rule` nesnesi döndürebilir.
+Şematiğiniz için gereken özel dosyaları oluşturmak üzere şablonlamayı kullanın.
 
-1. Add the following code to your factory function.
+1. Fabrika fonksiyonunuza aşağıdaki kodu ekleyin.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Template transform)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="template"/>
 
-   | Methods            | Details                                                                                                                                                                                                                                          |
-   | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `apply()`          | Applies multiple rules to a source and returns the transformed source. It takes 2 arguments, a source and an array of rules.                                                                                                                     |
-   | `url()`            | Reads source files from your filesystem, relative to the schematic.                                                                                                                                                                              |
-   | `applyTemplates()` | Receives an argument of methods and properties you want make available to the schematic template and the schematic filenames. It returns a `Rule`. This is where you define the `classify()` and `dasherize()` methods, and the `name` property. |
-   | `classify()`       | Takes a value and returns the value in title case. For example, if the provided name is `my service`, it is returned as `MyService`.                                                                                                             |
-   | `dasherize()`      | Takes a value and returns the value in dashed and lowercase. For example, if the provided name is MyService, it is returned as `my-service`.                                                                                                     |
-   | `move()`           | Moves the provided source files to their destination when the schematic is applied.                                                                                                                                                              |
+   | Metotlar           | Ayrıntılar                                                                                                                                                                                                               |
+   | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `apply()`          | Bir kaynağa birden fazla kural uygular ve dönüştürülmüş kaynağı döndürür. 2 argüman alır, bir kaynak ve kurallar dizisi.                                                                                                 |
+   | `url()`            | Dosya sisteminizden, şematiğe göre kaynak dosyaları okur.                                                                                                                                                                |
+   | `applyTemplates()` | Şematik şablonuna ve şematik dosya adlarına sunmak istediğiniz metotların ve özelliklerin bir argümanını alır. Bir `Rule` döndürür. Burada `classify()` ve `dasherize()` metotlarını ve `name` özelliğini tanımlarsınız. |
+   | `classify()`       | Bir değer alır ve değeri başlık harfleriyle döndürür. Örneğin, sağlanan ad `my service` ise, `MyService` olarak döndürülür.                                                                                              |
+   | `dasherize()`      | Bir değer alır ve değeri tireli ve küçük harflerle döndürür. Örneğin, sağlanan ad MyService ise, `my-service` olarak döndürülür.                                                                                         |
+   | `move()`           | Şematik uygulandığında sağlanan kaynak dosyaları hedeflerine taşır.                                                                                                                                                      |
 
-1. Finally, the rule factory must return a rule.
+1. Son olarak, kural fabrikası bir kural döndürmelidir.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Chain Rule)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="chain"/>
 
-   The `chain()` method lets you combine multiple rules into a single rule, so that you can perform multiple operations in a single schematic.
-   Here you are only merging the template rules with any code executed by the schematic.
+   `chain()` metodu, birden fazla kuralı tek bir kurala birleştirmenize olanak tanır, böylece tek bir şematikte birden fazla işlem gerçekleştirebilirsiniz.
+   Burada yalnızca şablon kurallarını şematik tarafından yürütülen herhangi bir kodla birleştiriyorsunuz.
 
-See a complete example of the following schematic rule function.
+Aşağıdaki şematik kural fonksiyonunun eksiksiz bir örneğine bakın.
 
 <docs-code header="projects/my-lib/schematics/my-service/index.ts" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts"/>
 
-For more information about rules and utility methods, see [Provided Rules](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/schematics#provided-rules).
+Kurallar ve yardımcı metotlar hakkında daha fazla bilgi için [Sağlanan Kurallar](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/schematics#provided-rules) belgesine bakın.
 
 ## Running your library schematic
 
-After you build your library and schematics, you can install the schematics collection to run against your project.
-The following steps show you how to generate a service using the schematic you created earlier.
+Kütüphanenizi ve şematiklerinizi derledikten sonra, projenize karşı çalıştırmak için şematik koleksiyonunu yükleyebilirsiniz.
+Aşağıdaki adımlar, daha önce oluşturduğunuz şematiği kullanarak bir servis oluşturmayı gösterir.
 
 ### Build your library and schematics
 
-From the root of your workspace, run the `ng build` command for your library.
+Çalışma alanınızın kökünden, kütüphaneniz için `ng build` komutunu çalıştırın.
 
 ```shell
 
@@ -267,7 +267,7 @@ ng build my-lib
 
 ```
 
-Then, you change into your library directory to build the schematic
+Ardından, şematiği derlemek için kütüphane dizininize geçin
 
 ```shell
 
@@ -278,9 +278,9 @@ npm run build
 
 ### Link the library
 
-Your library and schematics are packaged and placed in the `dist/my-lib` folder at the root of your workspace.
-For running the schematic, you need to link the library into your `node_modules` folder.
-From the root of your workspace, run the `npm link` command with the path to your distributable library.
+Kütüphaneniz ve şematikleriniz paketlenmiş ve çalışma alanınızın kökündeki `dist/my-lib` klasörüne yerleştirilmiştir.
+Şematiği çalıştırmak için kütüphaneyi `node_modules` klasörünüze bağlamanız gerekir.
+Çalışma alanınızın kökünden, dağıtılabilir kütüphanenizin yolunu belirterek `npm link` komutunu çalıştırın.
 
 ```shell
 
@@ -290,7 +290,7 @@ npm link dist/my-lib
 
 ### Run the schematic
 
-Now that your library is installed, run the schematic using the `ng generate` command.
+Artık kütüphaneniz yüklü olduğuna göre, `ng generate` komutunu kullanarak şematiği çalıştırın.
 
 ```shell
 
@@ -298,7 +298,7 @@ ng generate my-lib:my-service --name my-data
 
 ```
 
-In the console, you see that the schematic was run and the `my-data.service.ts` file was created in your application folder.
+Konsolda, şematiğin çalıştırıldığını ve `my-data.service.ts` dosyasının uygulama klasörünüzde oluşturulduğunu göreceksiniz.
 
 ```shell {hideCopy}
 

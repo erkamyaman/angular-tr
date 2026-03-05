@@ -1,25 +1,25 @@
 # Resolving zone pollution
 
-**Zone.js** is a signaling mechanism that Angular uses to detect when an application state might have changed. It captures asynchronous operations like `setTimeout`, network requests, and event listeners. Angular schedules change detection based on signals from Zone.js.
+**Zone.js**, Angular'in uygulama durumunun degismis olabilecegini algilamak icin kullandigi bir sinyal mekanizmasidir. `setTimeout`, ag istekleri ve olay dinleyicileri gibi asenkron islemleri yakalar. Angular, Zone.js'den gelen sinyallere dayali olarak degisiklik algilamasini planlar.
 
-In some cases scheduled [tasks](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks) or [microtasks](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#microtasks) don’t make any changes in the data model, which makes running change detection unnecessary. Common examples are:
+Bazi durumlarda planlanan [gorevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks) veya [mikro gorevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#microtasks) veri modelinde herhangi bir degisiklik yapmaz, bu da degisiklik algilamasi calistirmayi gereksiz kilar. Yaygin ornekler sunlardir:
 
-- `requestAnimationFrame`, `setTimeout` or `setInterval`
-- Task or microtask scheduling by third-party libraries
+- `requestAnimationFrame`, `setTimeout` veya `setInterval`
+- Ucuncu taraf kutuphaneleri tarafindan gorev veya mikro gorev planlamasi
 
-This section covers how to identify such conditions, and how to run code outside the Angular zone to avoid unnecessary change detection calls.
+Bu bolum, bu tur kosullarin nasil belirlenegini ve gereksiz degisiklik algilama cagrilarindan kacinmak icin kodun Angular zone'unun disinda nasil calistirilacagini kapsamaktadir.
 
 ## Identifying unnecessary change detection calls
 
-You can detect unnecessary change detection calls using Angular DevTools. Often they appear as consecutive bars in the profiler’s timeline with source `setTimeout`, `setInterval`, `requestAnimationFrame`, or an event handler. When you have limited calls within your application of these APIs, the change detection invocation is usually caused by a third-party library.
+Gereksiz degisiklik algilama cagrilarini Angular DevTools ile tespit edebilirsiniz. Genellikle profil cikaricinin zaman cizelgesinde `setTimeout`, `setInterval`, `requestAnimationFrame` veya bir olay isleyicisi kaynakli ardisik cubuklar olarak gorunurler. Bu API'lerin uygulamaniz icinde sinirli cagrilari oldugunda, degisiklik algilama cagrisi genellikle bir ucuncu taraf kutuphanesi tarafindan neden olur.
 
 <img alt="Angular DevTools profiler preview showing Zone pollution" src="assets/images/best-practices/runtime-performance/zone-pollution.png">
 
-In the image above, there is a series of change detection calls triggered by event handlers associated with an element. That’s a common challenge when using third-party, non-native Angular components, which do not alter the default behavior of `NgZone`.
+Yukaridaki goruntude, bir elemanla iliskili olay isleyicileri tarafindan tetiklenen bir dizi degisiklik algilama cagrisi vardir. Bu, `NgZone`'un varsayilan davranisini degistirmeyen ucuncu taraf, yerel olmayan Angular bilesenleri kullanirken yaygin bir zorluktur.
 
 ## Run tasks outside `NgZone`
 
-In such cases, you can instruct Angular to avoid calling change detection for tasks scheduled by a given piece of code using [NgZone](/api/core/NgZone).
+Bu tur durumlarda, [NgZone](/api/core/NgZone) kullanarak Angular'a belirli bir kod parcasi tarafindan planlanan gorevler icin degisiklik algilamasi cagirmamasinni talimat verebilirsiniz.
 
 ```ts {header:"Run outside of the Zone" , linenums}
 import { Component, NgZone, OnInit, inject } from '@angular/core';
@@ -34,9 +34,9 @@ class AppComponent implements OnInit {
 }
 ```
 
-The preceding snippet instructs Angular to call `setInterval` outside the Angular Zone and skip running change detection after `pollForUpdates` runs.
+Onceki kod parcasi, Angular'a `setInterval`'i Angular Zone'unun disinda cagirmasini ve `pollForUpdates` calistiktan sonra degisiklik algilamasi calistirmayi atlamasini talimat verir.
 
-Third-party libraries commonly trigger unnecessary change detection cycles when their APIs are invoked within the Angular zone. This phenomenon particularly affects libraries that set up event listeners or initiate other tasks (such as timers, XHR requests, etc.). Avoid these extra cycles by calling library APIs outside the Angular zone:
+Ucuncu taraf kutuphaneleri, API'leri Angular zone'u icinde cagrildiginda genellikle gereksiz degisiklik algilama dongulerine neden olur. Bu olgu ozellikle olay dinleyicileri ayarlayan veya diger gorevler (zamanlayicilar, XHR istekleri vb.) baslatan kutuphaneleri etkiler. Kutuphane API'lerini Angular zone'unun disinda cagirarak bu ekstra dongulerrden kacinin:
 
 ```ts {header:"Move the plot initialization outside of the Zone" , linenums}
 import { Component, NgZone, OnInit, inject } from '@angular/core';
@@ -54,11 +54,11 @@ class AppComponent implements OnInit {
 }
 ```
 
-Running `Plotly.newPlot('chart', data);` within `runOutsideAngular` instructs the framework that it shouldn’t run change detection after the execution of tasks scheduled by the initialization logic.
+`Plotly.newPlot('chart', data);`'yi `runOutsideAngular` icinde calistirmak, framework'a baslatma mantigi tarafindan planlanan gorevlerin calistirlimasindan sonra degisiklik algilamasi calistirmamasi gerektigini bildirir.
 
-For example, if `Plotly.newPlot('chart', data)` adds event listeners to a DOM element, Angular does not run change detection after the execution of their handlers.
+Ornegin, `Plotly.newPlot('chart', data)` bir DOM elemanina olay dinleyicileri eklerse, Angular onlarin isleyicilerinin calistirlimasindan sonra degisiklik algilamasi calistirmaz.
 
-But sometimes, you may need to listen to events dispatched by third-party APIs. In such cases, it's important to remember that those event listeners will also execute outside of the Angular zone if the initialization logic was done there:
+Ancak bazen ucuncu taraf API'leri tarafindan gonderilen olaylari dinlemeniz gerekebilir. Bu tur durumlarda, baslatma mantigi orada yapildiysa bu olay dinleyicilerinin de Angular zone'unun disinda calisacagini hatirlamak onemlidir:
 
 ```ts {header:"Check whether the handler is called outside of the Zone" , linenums}
 import { Component, NgZone, OnInit, output, inject } from '@angular/core';
@@ -90,7 +90,7 @@ class AppComponent implements OnInit {
 }
 ```
 
-If you need to dispatch events to parent components and execute specific view update logic, you should consider re-entering the Angular zone to instruct the framework to run change detection or run change detection manually:
+Ust bilesenlere olay gondermaniz ve belirli gorunum guncelleme mantigi calistirmaniz gerekiyorsa, framework'a degisiklik algilamasi calistirmasini talimat vermek icin Angular zone'una yeniden girmeyi veya degisiklik algilamasini manuel olarak calistirmayi dusunmelisiniz:
 
 ```ts {header:"Re-enter the Angular zone when dispatching event" , linenums}
 import { Component, NgZone, OnInit, output, inject } from '@angular/core';
@@ -120,4 +120,4 @@ class AppComponent implements OnInit {
 }
 ```
 
-The scenario of dispatching events outside of the Angular zone may also arise. It's important to remember that triggering change detection (for example, manually) may result in the creation/update of views outside of the Angular zone.
+Angular zone'unun disinda olay gonderme senaryosu da ortaya cikabilir. Degisiklik algilamasini tetiklemenin (ornegin, manuel olarak) Angular zone'unun disinda gorunumlerin olusturulmasina/guncellenmesine yol acabileceginii hatirlamak onemlidir.

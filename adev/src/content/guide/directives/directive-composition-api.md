@@ -1,18 +1,14 @@
 # Directive composition API
 
-Angular directives offer a great way to encapsulate reusable behaviors— directives can apply
-attributes, CSS classes, and event listeners to an element.
+Angular direktifleri, yeniden kullanılabilir davranışları kapsüllemek için harika bir yol sunar -- direktifler bir elemana nitelikler, CSS sınıfları ve olay dinleyicileri uygulayabilir.
 
-The _directive composition API_ lets you apply directives to a component's host element from
-_within_ the component TypeScript class.
+_Direktif bileşim API'si_, bileşen TypeScript sınıfı _içinden_ bir bileşenin ana elemanına direktifler uygulamanıza olanak tanır.
 
 ## Adding directives to a component
 
-You apply directives to a component by adding a `hostDirectives` property to a component's
-decorator. We call such directives _host directives_.
+Bir bileşenin dekoratörüne `hostDirectives` özelliği ekleyerek bileşenlere direktifler uygularsınız. Bu tür direktiflere _ana direktifler_ diyoruz.
 
-In this example, we apply the directive `MenuBehavior` to the host element of `AdminMenu`. This
-works similarly to applying the `MenuBehavior` to the `<admin-menu>` element in a template.
+Bu örnekte, `MenuBehavior` direktifini `AdminMenu`'nun ana elemanına uyguluyoruz. Bu, bir şablonda `<admin-menu>` elemanına `MenuBehavior`'ı uygulamaya benzer şekilde çalışır.
 
 ```typescript
 @Component({
@@ -23,23 +19,17 @@ works similarly to applying the `MenuBehavior` to the `<admin-menu>` element in 
 export class AdminMenu {}
 ```
 
-When the framework renders a component, Angular also creates an instance of each host directive. The
-directives' host bindings apply to the component's host element. By default, host directive inputs
-and outputs are not exposed as part of the component's public API. See
-[Including inputs and outputs](#including-inputs-and-outputs) below for more information.
+Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#including-inputs-and-outputs) bölümüne bakın.
 
-**Angular applies host directives statically at compile time.** You cannot dynamically add
-directives at runtime.
+**Angular, ana direktifleri derleme zamanında statik olarak uygular.** Çalışma zamanında dinamik olarak direktif ekleyemezsiniz.
 
-**Directives used in `hostDirectives` may not specify `standalone: false`.**
+**`hostDirectives`'de kullanılan direktifler `standalone: false` belirtemez.**
 
-**Angular ignores the `selector` of directives applied in the `hostDirectives` property.**
+**Angular, `hostDirectives` özelliğinde uygulanan direktiflerin `selector`'ını yok sayar.**
 
 ## Including inputs and outputs
 
-When you apply `hostDirectives` to your component, the inputs and outputs from the host directives
-are not included in your component's API by default. You can explicitly include inputs and outputs
-in your component's API by expanding the entry in `hostDirectives`:
+Bileşeninize `hostDirectives` uyguladığınızda, ana direktiflerden gelen girdiler ve çıktılar varsayılan olarak bileşeninizin API'sine dahil edilmez. `hostDirectives` içindeki girişi genişleterek girdileri ve çıktıları bileşeninizin API'sine açıkça dahil edebilirsiniz:
 
 ```typescript
 @Component({
@@ -56,15 +46,13 @@ in your component's API by expanding the entry in `hostDirectives`:
 export class AdminMenu {}
 ```
 
-By explicitly specifying the inputs and outputs, consumers of the component with `hostDirective` can
-bind them in a template:
+Girdileri ve çıktıları açıkça belirterek, `hostDirective` ile bileşenin tüketicileri bunları bir şablonda bağlayabilir:
 
 ```angular-html
 <admin-menu menuId="top-menu" (menuClosed)="logMenuClosed()"></admin-menu>
 ```
 
-Furthermore, you can alias inputs and outputs from `hostDirective` to customize the API of your
-component:
+Ayrıca, bileşeninizin API'sini özelleştirmek için `hostDirective`'den girdileri ve çıktıları takma adlarla kullanabilirsiniz:
 
 ```typescript
 @Component({
@@ -87,16 +75,11 @@ export class AdminMenu {}
 
 ## Adding directives to another directive
 
-You can also add `hostDirectives` to other directives, in addition to components. This enables the
-transitive aggregation of multiple behaviors.
+Bileşenlere ek olarak diğer direktiflere de `hostDirectives` ekleyebilirsiniz. Bu, birden fazla davranışın geçişli olarak birleştirilmesini sağlar.
 
-In the following example, we define two directives, `Menu` and `Tooltip`. We then compose the behavior
-of these two directives in `MenuWithTooltip`. Finally, we apply `MenuWithTooltip`
-to `SpecializedMenuWithTooltip`.
+Aşağıdaki örnekte, `Menu` ve `Tooltip` olmak üzere iki direktif tanımlıyoruz. Ardından bu iki direktifin davranışını `MenuWithTooltip`'te birleştiriyoruz. Son olarak, `MenuWithTooltip`'i `SpecializedMenuWithTooltip`'e uyguluyoruz.
 
-When `SpecializedMenuWithTooltip` is used in a template, it creates instances of all of `Menu`
-, `Tooltip`, and `MenuWithTooltip`. Each of these directives' host bindings apply to the host
-element of `SpecializedMenuWithTooltip`.
+`SpecializedMenuWithTooltip` bir şablonda kullanıldığında, `Menu`, `Tooltip` ve `MenuWithTooltip`'in tümünün örneklerini oluşturur. Bu direktiflerin her birinin ana bağlamaları, `SpecializedMenuWithTooltip`'in ana elemanına uygulanır.
 
 ```typescript
 @Directive({...})
@@ -122,10 +105,9 @@ export class SpecializedMenuWithTooltip { }
 
 ### Directive execution order
 
-Host directives go through the same lifecycle as components and directives used directly in a
-template. However, host directives always execute their constructor, lifecycle hooks, and bindings _before_ the component or directive on which they are applied.
+Ana direktifler, doğrudan bir şablonda kullanılan bileşenler ve direktiflerle aynı yaşam döngüsünden geçer. Ancak, ana direktifler her zaman constructor'larını, yaşam döngüsü kancalarını ve bağlamalarını uygulandıkları bileşen veya direktiften _önce_ yürütür.
 
-The following example shows minimal use of a host directive:
+Aşağıdaki örnek, bir ana direktifin minimal kullanımını gösterir:
 
 ```typescript
 @Component({
@@ -136,20 +118,18 @@ The following example shows minimal use of a host directive:
 export class AdminMenu {}
 ```
 
-The order of execution here is:
+Buradaki yürütme sırası:
 
-1. `MenuBehavior` instantiated
-2. `AdminMenu` instantiated
-3. `MenuBehavior` receives inputs (`ngOnInit`)
-4. `AdminMenu` receives inputs (`ngOnInit`)
-5. `MenuBehavior` applies host bindings
-6. `AdminMenu` applies host bindings
+1. `MenuBehavior` örneklendi
+2. `AdminMenu` örneklendi
+3. `MenuBehavior` girdileri alır (`ngOnInit`)
+4. `AdminMenu` girdileri alır (`ngOnInit`)
+5. `MenuBehavior` ana bağlamalarını uygular
+6. `AdminMenu` ana bağlamalarını uygular
 
-This order of operations means that components with `hostDirectives` can override any host bindings
-specified by a host directive.
+Bu işlem sırası, `hostDirectives` ile bileşenlerin bir ana direktif tarafından belirtilen herhangi bir ana bağlamayı geçersiz kılabileceği anlamına gelir.
 
-This order of operations extends to nested chains of host directives, as shown in the following
-example.
+Bu işlem sırası, aşağıdaki örnekte gösterildiği gibi iç içe ana direktif zincirlerine de uzanır.
 
 ```typescript
 @Directive({...})
@@ -166,26 +146,22 @@ export class CustomTooltip { }
 export class EvenMoreCustomTooltip { }
 ```
 
-In the example above, the order of execution is:
+Yukarıdaki örnekte yürütme sırası:
 
-1. `Tooltip` instantiated
-2. `CustomTooltip` instantiated
-3. `EvenMoreCustomTooltip` instantiated
-4. `Tooltip` receives inputs (`ngOnInit`)
-5. `CustomTooltip` receives inputs (`ngOnInit`)
-6. `EvenMoreCustomTooltip` receives inputs (`ngOnInit`)
-7. `Tooltip` applies host bindings
-8. `CustomTooltip` applies host bindings
-9. `EvenMoreCustomTooltip` applies host bindings
+1. `Tooltip` örneklendi
+2. `CustomTooltip` örneklendi
+3. `EvenMoreCustomTooltip` örneklendi
+4. `Tooltip` girdileri alır (`ngOnInit`)
+5. `CustomTooltip` girdileri alır (`ngOnInit`)
+6. `EvenMoreCustomTooltip` girdileri alır (`ngOnInit`)
+7. `Tooltip` ana bağlamalarını uygular
+8. `CustomTooltip` ana bağlamalarını uygular
+9. `EvenMoreCustomTooltip` ana bağlamalarını uygular
 
 ### Dependency injection
 
-A component or directive that specifies `hostDirectives` can inject the instances of those host
-directives and vice versa.
+`hostDirectives` belirten bir bileşen veya direktif, bu ana direktiflerin örneklerini enjekte edebilir ve tersi de geçerlidir.
 
-When applying host directives to a component, both the component and host directives can define
-providers.
+Bir bileşene ana direktifler uygulanırken, hem bileşen hem de ana direktifler sağlayıcılar tanımlayabilir.
 
-If a component or directive with `hostDirectives` and those host directives both provide the same
-injection token, the providers defined by class with `hostDirectives` take precedence over providers
-defined by the host directives.
+`hostDirectives` ile bir bileşen veya direktif ve bu ana direktifler aynı enjeksiyon token'ını sağlıyorsa, `hostDirectives` ile sınıf tarafından tanımlanan sağlayıcılar, ana direktifler tarafından tanımlanan sağlayıcılara göre öncelik kazanır.

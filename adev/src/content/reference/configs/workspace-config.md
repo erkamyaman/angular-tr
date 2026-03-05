@@ -1,87 +1,87 @@
 # Angular workspace configuration
 
-The `angular.json` file at the root level of an Angular workspace provides workspace-wide and project-specific configuration defaults. These are used for build and development tools provided by the Angular CLI.
-Path values given in the configuration are relative to the root workspace directory.
+Bir Angular çalışma alanının kök düzeyindeki `angular.json` dosyası, çalışma alanı genelinde ve projeye özgü yapılandırma varsayılanları sağlar. Bunlar Angular CLI tarafından sağlanan derleme ve geliştirme araçları için kullanılır.
+Yapılandırmada verilen yol değerleri, kök çalışma alanı dizinine görelidir.
 
 ## General JSON structure
 
-At the top-level of `angular.json`, a few properties configure the workspace and a `projects` section contains the remaining per-project configuration options.
-You can override Angular CLI defaults set at the workspace level through defaults set at the project level.
-You can also override defaults set at the project level using the command line.
+`angular.json` dosyasının en üst düzeyinde, birkaç özellik çalışma alanını yapılandırır ve bir `projects` bölümü kalan proje bazlı yapılandırma seçeneklerini içerir.
+Çalışma alanı düzeyinde ayarlanan Angular CLI varsayılanlarını proje düzeyinde ayarlanan varsayılanlarla geçersiz kılabilirsiniz.
+Proje düzeyinde ayarlanan varsayılanları da komut satırını kullanarak geçersiz kılabilirsiniz.
 
-The following properties, at the top-level of the file, configure the workspace.
+Aşağıdaki özellikler, dosyanın en üst düzeyinde çalışma alanını yapılandırır.
 
-| Properties       | Details                                                                                                                                                                                        |
-| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `version`        | The configuration-file version.                                                                                                                                                                |
-| `newProjectRoot` | Path where new projects are created through tools like `ng generate application` or `ng generate library`. Path can be absolute or relative to the workspace directory. Defaults to `projects` |
-| `cli`            | A set of options that customize the [Angular CLI](tools/cli). See [Angular CLI configuration options](#angular-cli-configuration-options) below.                                               |
-| `schematics`     | A set of [schematics](tools/cli/schematics) that customize the `ng generate` sub-command option defaults for this workspace. See [schematics](#schematics) below.                              |
-| `projects`       | Contains a subsection for each application or library in the workspace, with project-specific configuration options.                                                                           |
+| Özellikler       | Ayrıntılar                                                                                                                                                                                       |
+| :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `version`        | Yapılandırma dosyası sürümü.                                                                                                                                                                     |
+| `newProjectRoot` | `ng generate application` veya `ng generate library` gibi araçlarla yeni projelerin oluşturulduğu yol. Yol mutlak veya çalışma alanı dizinine göreceli olabilir. Varsayılan değer `projects`'tir |
+| `cli`            | [Angular CLI](tools/cli)'yi özelleştiren bir dizi seçenek. Aşağıdaki [Angular CLI yapılandırma seçenekleri](#angular-cli-configuration-options) bölümüne bakın.                                  |
+| `schematics`     | Bu çalışma alanı için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi [şematik](tools/cli/schematics). Aşağıdaki [şematikler](#schematics) bölümüne bakın.                |
+| `projects`       | Çalışma alanındaki her uygulama veya kütüphane için projeye özgü yapılandırma seçenekleri içeren bir alt bölüm içerir.                                                                           |
 
-The initial application that you create with `ng new app-name` is listed under "projects":
+`ng new app-name` ile oluşturduğunuz ilk uygulama "projects" altında listelenir:
 
-When you create a library project with `ng generate library`, the library project is also added to the `projects` section.
+`ng generate library` ile bir kütüphane projesi oluşturduğunuzda, kütüphane projesi de `projects` bölümüne eklenir.
 
-HELPFUL: The `projects` section of the configuration file does not correspond exactly to the workspace file structure.
+HELPFUL: Yapılandırma dosyasının `projects` bölümü, çalışma alanı dosya yapısıyla tam olarak uyuşmaz.
 
 <!-- markdownlint-disable-next-line MD032 -->
 
-- The initial application created by `ng new` is at the top level of the workspace file structure.
-- Other applications and libraries are under the `projects` directory by default.
+- `ng new` tarafından oluşturulan ilk uygulama, çalışma alanı dosya yapısının en üst düzeyindedir.
+- Diğer uygulamalar ve kütüphaneler varsayılan olarak `projects` dizini altındadır.
 
-For more information, see [Workspace and project file structure](reference/configs/file-structure).
+Daha fazla bilgi için [Çalışma alanı ve proje dosya yapısı](reference/configs/file-structure) bölümüne bakın.
 
 ## Angular CLI configuration options
 
-The following properties are a set of options that customize the Angular CLI.
+Aşağıdaki özellikler, Angular CLI'yi özelleştiren bir dizi seçenektir.
 
-| Property               | Details                                                                                                                                                                    | Value type                                  | Default value |
-| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------ | :------------ |
-| `analytics`            | Share anonymous usage data with the Angular Team. A boolean value indicates whether or not to share data, while a UUID string shares data using a pseudonymous identifier. | `boolean` \| `string`                       | `false`       |
-| `cache`                | Control [persistent disk cache](cli/cache) used by [Angular CLI Builders](tools/cli/cli-builder).                                                                          | [Cache options](#cache-options)             | `{}`          |
-| `schematicCollections` | List schematics collections to use in `ng generate`.                                                                                                                       | `string[]`                                  | `[]`          |
-| `packageManager`       | The preferred package manager tool to use.                                                                                                                                 | `npm` \| `cnpm` \| `pnpm` \| `yarn`\| `bun` | `npm`         |
-| `warnings`             | Control Angular CLI specific console warnings.                                                                                                                             | [Warnings options](#warnings-options)       | `{}`          |
+| Özellik                | Ayrıntılar                                                                                                                                                                                     | Değer türü                                  | Varsayılan değer |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------ | :--------------- |
+| `analytics`            | Angular Ekibi ile anonim kullanım verilerini paylaşır. Bir boolean değeri veri paylaşılıp paylaşılmayacağını belirtirken, bir UUID dizesi takma adlı bir tanımlayıcı kullanarak veri paylaşır. | `boolean` \| `string`                       | `false`          |
+| `cache`                | [Angular CLI Oluşturucuları](tools/cli/cli-builder) tarafından kullanılan [kalıcı disk önbelleğini](cli/cache) kontrol eder.                                                                   | [Önbellek seçenekleri](#cache-options)      | `{}`             |
+| `schematicCollections` | `ng generate`'da kullanılacak şematik koleksiyonlarını listeler.                                                                                                                               | `string[]`                                  | `[]`             |
+| `packageManager`       | Tercih edilen paket yöneticisi aracı.                                                                                                                                                          | `npm` \| `cnpm` \| `pnpm` \| `yarn`\| `bun` | `npm`            |
+| `warnings`             | Angular CLI'ye özgü konsol uyarılarını kontrol eder.                                                                                                                                           | [Uyarı seçenekleri](#warnings-options)      | `{}`             |
 
 ### Cache options
 
-| Property      | Details                                                                                                                                                                                                                                       | Value type               | Default value    |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :--------------- |
-| `enabled`     | Configure whether disk caching is enabled for builds.                                                                                                                                                                                         | `boolean`                | `true`           |
-| `environment` | Configure in which environment disk cache is enabled.<br><br>_ `ci` enables caching only in continuous integration (CI) environments.<br>_ `local` enables caching only _outside_ of CI environments.<br>\* `all` enables caching everywhere. | `local` \| `ci` \| `all` | `local`          |
-| `path`        | The directory used to stored cache results.                                                                                                                                                                                                   | `string`                 | `.angular/cache` |
+| Özellik       | Ayrıntılar                                                                                                                                                                                                                                                                    | Değer türü               | Varsayılan değer |
+| :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :--------------- |
+| `enabled`     | Derlemeler için disk önbelleğinin etkin olup olmadığını yapılandırır.                                                                                                                                                                                                         | `boolean`                | `true`           |
+| `environment` | Disk önbelleğinin hangi ortamda etkinleştirileceğini yapılandırır.<br><br>_ `ci` önbelleği yalnızca sürekli entegrasyon (CI) ortamlarında etkinleştirir.<br>_ `local` önbelleği yalnızca CI ortamları _dışında_ etkinleştirir.<br>\* `all` önbelleği her yerde etkinleştirir. | `local` \| `ci` \| `all` | `local`          |
+| `path`        | Önbellek sonuçlarının saklanması için kullanılan dizin.                                                                                                                                                                                                                       | `string`                 | `.angular/cache` |
 
 ### Warnings options
 
-| Property          | Details                                                                         | Value type | Default value |
-| :---------------- | :------------------------------------------------------------------------------ | :--------- | :------------ |
-| `versionMismatch` | Show a warning when the global Angular CLI version is newer than the local one. | `boolean`  | `true`        |
+| Özellik           | Ayrıntılar                                                                  | Değer türü | Varsayılan değer |
+| :---------------- | :-------------------------------------------------------------------------- | :--------- | :--------------- |
+| `versionMismatch` | Global Angular CLI sürümü yerel sürümden yeni olduğunda bir uyarı gösterir. | `boolean`  | `true`           |
 
 ## Project configuration options
 
-The following top-level configuration properties are available for each project, under `projects['project-name']`.
+Aşağıdaki üst düzey yapılandırma özellikleri, `projects['project-name']` altında her proje için kullanılabilir.
 
-| Property      | Details                                                                                                                                                                              | Value type                                                      | Default value   |
-| :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------- | :-------------- |
-| `root`        | The root directory for this project's files, relative to the workspace directory. Empty for the initial application, which resides at the top level of the workspace.                | `string`                                                        | None (required) |
-| `projectType` | One of "application" or "library" An application can run independently in a browser, while a library cannot.                                                                         | `application` \| `library`                                      | None (required) |
-| `sourceRoot`  | The root directory for this project's source files.                                                                                                                                  | `string`                                                        | `''`            |
-| `prefix`      | A string that Angular prepends to selectors when generating new components, directives, and pipes using `ng generate`. Can be customized to identify an application or feature area. | `string`                                                        | `'app'`         |
-| `schematics`  | A set of schematics that customize the `ng generate` sub-command option defaults for this project. See the [Generation schematics](#schematics) section.                             | See [schematics](#schematics)                                   | `{}`            |
-| `architect`   | Configuration defaults for Architect builder targets for this project.                                                                                                               | See [Configuring builder targets](#configuring-builder-targets) | `{}`            |
+| Özellik       | Ayrıntılar                                                                                                                                                                                              | Değer türü                                                                         | Varsayılan değer |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------- | :--------------- |
+| `root`        | Bu projenin dosyaları için kök dizin, çalışma alanı dizinine göreceli. Çalışma alanının en üst düzeyinde bulunan ilk uygulama için boştur.                                                              | `string`                                                                           | Yok (gerekli)    |
+| `projectType` | "application" veya "library" değerlerinden biri. Bir uygulama tarayıcıda bağımsız olarak çalışabilir, ancak bir kütüphane çalışamaz.                                                                    | `application` \| `library`                                                         | Yok (gerekli)    |
+| `sourceRoot`  | Bu projenin kaynak dosyaları için kök dizin.                                                                                                                                                            | `string`                                                                           | `''`             |
+| `prefix`      | `ng generate` kullanarak yeni bileşenler, direktifler ve pipe'lar oluştururken Angular'ın seçicilerin başına eklediği bir dize. Bir uygulamayı veya özellik alanını tanımlamak için özelleştirilebilir. | `string`                                                                           | `'app'`          |
+| `schematics`  | Bu proje için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi şematik. [Oluşturma şematikleri](#schematics) bölümüne bakın.                                                      | [Şematikler](#schematics) bölümüne bakın                                           | `{}`             |
+| `architect`   | Bu proje için Architect oluşturucu hedefleri yapılandırma varsayılanları.                                                                                                                               | [Oluşturucu hedeflerini yapılandırma](#configuring-builder-targets) bölümüne bakın | `{}`             |
 
 ## Schematics
 
-[Angular schematics](tools/cli/schematics) are instructions for modifying a project by adding new files or modifying existing files.
-These can be configured by mapping the schematic name to a set of default options.
+[Angular şematikleri](tools/cli/schematics), yeni dosyalar ekleyerek veya mevcut dosyaları değiştirerek bir projeyi değiştirme talimatlarıdır.
+Bunlar, şematik adını bir dizi varsayılan seçenekle eşleyerek yapılandırılabilir.
 
-The "name" of a schematic is in the format: `<schematic-package>:<schematic-name>`.
-Schematics for the default Angular CLI `ng generate` sub-commands are collected in the package [`@schematics/angular`](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/schema.json).
-For example, the schematic for generating a component with `ng generate component` is `@schematics/angular:component`.
+Bir şematiğin "adı" şu biçimdedir: `<schematic-package>:<schematic-name>`.
+Varsayılan Angular CLI `ng generate` alt komutları için şematikler [`@schematics/angular`](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/schema.json) paketinde toplanmıştır.
+Örneğin, `ng generate component` ile bir bileşen oluşturma şematiği `@schematics/angular:component`'tir.
 
-The fields given in the schematic's schema correspond to the allowed command-line argument values and defaults for the Angular CLI sub-command options.
-You can update your workspace schema file to set a different default for a sub-command option. For example, to disable `standalone` in `ng generate component` by default:
+Şematiğin şemasında verilen alanlar, Angular CLI alt komut seçenekleri için izin verilen komut satırı argüman değerlerine ve varsayılanlarına karşılık gelir.
+Bir alt komut seçeneği için farklı bir varsayılan ayarlamak üzere çalışma alanı şema dosyanızı güncelleyebilirsiniz. Örneğin, `ng generate component`'te varsayılan olarak `standalone`'u devre dışı bırakmak için:
 
 ```json
 {
@@ -99,49 +99,49 @@ You can update your workspace schema file to set a different default for a sub-c
 
 ## Configuring CLI builders
 
-Architect is the tool that the Angular CLI uses to perform complex tasks, such as compilation and test running.
-Architect is a shell that runs a specified builder to perform a given task, according to a target configuration.
-You can define and configure new builders and targets to extend the Angular CLI.
-See [Angular CLI Builders](tools/cli/cli-builder).
+Architect, Angular CLI'nin derleme ve test çalıştırma gibi karmaşık görevleri gerçekleştirmek için kullandığı araçtır.
+Architect, bir hedef yapılandırmasına göre belirli bir görevi gerçekleştirmek için belirlenmiş bir oluşturucuyu çalıştıran bir kabuktur.
+Angular CLI'yi genişletmek için yeni oluşturucular ve hedefler tanımlayabilir ve yapılandırabilirsiniz.
+[Angular CLI Oluşturucuları](tools/cli/cli-builder) bölümüne bakın.
 
 ### Default Architect builders and targets
 
-Angular defines default builders for use with specific commands, or with the general `ng run` command.
-The JSON schemas that define the options and defaults for each of these builders are collected in the [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/build_angular/builders.json) package.
-The schemas configure options for the following builders.
+Angular, belirli komutlarla veya genel `ng run` komutuyla kullanılmak üzere varsayılan oluşturucular tanımlar.
+Bu oluşturucuların her biri için seçenekleri ve varsayılanları tanımlayan JSON şemaları [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/build_angular/builders.json) paketinde toplanmıştır.
+Şemalar aşağıdaki oluşturucular için seçenekleri yapılandırır.
 
 ### Configuring builder targets
 
-The `architect` section of `angular.json` contains a set of Architect targets.
-Many of the targets correspond to the Angular CLI commands that run them.
-Other targets can be executed using the `ng run` command, and you can define your own targets.
+`angular.json` dosyasının `architect` bölümü bir dizi Architect hedefi içerir.
+Hedeflerin çoğu, onları çalıştıran Angular CLI komutlarına karşılık gelir.
+Diğer hedefler `ng run` komutu kullanılarak yürütülebilir ve kendi hedeflerinizi tanımlayabilirsiniz.
 
-Each target object specifies the `builder` for that target, which is the npm package for the tool that Architect runs.
-Each target also has an `options` section that configures default options for the target, and a `configurations` section that names and specifies alternative configurations for the target.
-See the example in [Build target](#build-target) below.
+Her hedef nesnesi, o hedef için `builder`'ı belirtir; bu, Architect'in çalıştırdığı araç için npm paketidir.
+Her hedefin ayrıca hedef için varsayılan seçenekleri yapılandıran bir `options` bölümü ve hedef için alternatif yapılandırmaları adlandıran ve belirten bir `configurations` bölümü vardır.
+Aşağıdaki [Derleme hedefi](#build-target) bölümündeki örneğe bakın.
 
-| Property       | Details                                                                                                                                                                                              |
-| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build`        | Configures defaults for options of the `ng build` command. See the [Build target](#build-target) section for more information.                                                                       |
-| `serve`        | Overrides build defaults and supplies extra serve defaults for the `ng serve` command. Besides the options available for the `ng build` command, it adds options related to serving the application. |
-| `e2e`          | Overrides build defaults for building end-to-end testing applications using the `ng e2e` command.                                                                                                    |
-| `test`         | Overrides build defaults for test builds and supplies extra test-running defaults for the `ng test` command.                                                                                         |
-| `lint`         | Configures defaults for options of the `ng lint` command, which performs static code analysis on project source files.                                                                               |
-| `extract-i18n` | Configures defaults for options of the `ng extract-i18n` command, which extracts localized message strings from source code and outputs translation files for internationalization.                  |
+| Özellik        | Ayrıntılar                                                                                                                                                                                                |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `build`        | `ng build` komutunun seçenekleri için varsayılanları yapılandırır. Daha fazla bilgi için [Derleme hedefi](#build-target) bölümüne bakın.                                                                  |
+| `serve`        | Derleme varsayılanlarını geçersiz kılar ve `ng serve` komutu için ek sunma varsayılanları sağlar. `ng build` komutu için mevcut seçeneklerin yanı sıra, uygulamanın sunulmasıyla ilgili seçenekler ekler. |
+| `e2e`          | `ng e2e` komutu kullanılarak uçtan uca test uygulamaları derlemek için derleme varsayılanlarını geçersiz kılar.                                                                                           |
+| `test`         | Test derlemeleri için derleme varsayılanlarını geçersiz kılar ve `ng test` komutu için ek test çalıştırma varsayılanları sağlar.                                                                          |
+| `lint`         | Proje kaynak dosyaları üzerinde statik kod analizi gerçekleştiren `ng lint` komutunun seçenekleri için varsayılanları yapılandırır.                                                                       |
+| `extract-i18n` | Kaynak kodundan yerelleştirilmiş mesaj dizelerini çıkaran ve uluslararasılaştırma için çeviri dosyaları üreten `ng extract-i18n` komutunun seçenekleri için varsayılanları yapılandırır.                  |
 
-HELPFUL: All options in the configuration file must use `camelCase`, rather than `dash-case` as used on the command line.
+HELPFUL: Yapılandırma dosyasındaki tüm seçenekler, komut satırında kullanılan `dash-case` yerine `camelCase` kullanmalıdır.
 
 ## Build target
 
-Each target under `architect` has the following properties:
+`architect` altındaki her hedef aşağıdaki özelliklere sahiptir:
 
-| Property         | Details                                                                                                                                                                                                                                                       |
-| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `builder`        | The CLI builder used to create this target in the form of `<package-name>:<builder-name>`.                                                                                                                                                                    |
-| `options`        | Build target default options.                                                                                                                                                                                                                                 |
-| `configurations` | Alternative configurations for executing the target. Each configuration sets the default options for that intended environment, overriding the associated value under `options`. See [Alternate build configurations](#alternate-build-configurations) below. |
+| Özellik          | Ayrıntılar                                                                                                                                                                                                                                                                      |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `builder`        | Bu hedefi oluşturmak için kullanılan CLI oluşturucusu, `<package-name>:<builder-name>` biçimindedir.                                                                                                                                                                            |
+| `options`        | Derleme hedefi varsayılan seçenekleri.                                                                                                                                                                                                                                          |
+| `configurations` | Hedefi yürütmek için alternatif yapılandırmalar. Her yapılandırma, hedeflenen ortam için varsayılan seçenekleri ayarlar ve `options` altındaki ilişkili değeri geçersiz kılar. Aşağıdaki [Alternatif derleme yapılandırmaları](#alternate-build-configurations) bölümüne bakın. |
 
-For example, to configure a build with optimizations disabled:
+Örneğin, optimizasyonları devre dışı bırakılmış bir derleme yapılandırmak için:
 
 ```json
 {
@@ -162,18 +162,18 @@ For example, to configure a build with optimizations disabled:
 
 ### Alternate build configurations
 
-Angular CLI comes with two build configurations: `production` and `development`.
-By default, the `ng build` command uses the `production` configuration, which applies several build optimizations, including:
+Angular CLI iki derleme yapılandırmasıyla birlikte gelir: `production` ve `development`.
+Varsayılan olarak, `ng build` komutu aşağıdaki gibi çeşitli derleme optimizasyonları uygulayan `production` yapılandırmasını kullanır:
 
-- Bundling files
-- Minimizing excess whitespace
-- Removing comments and dead code
-- Minifying code to use short, mangled names
+- Dosyaları paketleme
+- Fazla boşlukları en aza indirme
+- Yorumları ve ölü kodu kaldırma
+- Kısa, karışık adlar kullanmak için kodu küçültme
 
-You can define and name extra alternate configurations (such as `staging`, for instance) appropriate to your development process.
-You can select an alternate configuration by passing its name to the `--configuration` command line flag.
+Geliştirme sürecinize uygun ek alternatif yapılandırmalar (örneğin `staging` gibi) tanımlayabilir ve adlandırabilirsiniz.
+`--configuration` komut satırı bayrağına adını ileterek alternatif bir yapılandırma seçebilirsiniz.
 
-For example, to configure a build where optimization is enabled only for production builds (`ng build --configuration production`):
+Örneğin, optimizasyonun yalnızca üretim derlemeleri için etkinleştirildiği bir derleme yapılandırmak için (`ng build --configuration production`):
 
 ```json
 {
@@ -197,62 +197,62 @@ For example, to configure a build where optimization is enabled only for product
 }
 ```
 
-You can also pass in more than one configuration name as a comma-separated list.
-For example, to apply both `staging` and `french` build configurations, use the command `ng build --configuration staging,french`.
-In this case, the command parses the named configurations from left to right.
-If multiple configurations change the same setting, the last-set value is the final one.
-In this example, if both `staging` and `french` configurations set the output path, the value in `french` would get used.
+Virgülle ayrılmış bir liste olarak birden fazla yapılandırma adı da iletebilirsiniz.
+Örneğin, hem `staging` hem de `french` derleme yapılandırmalarını uygulamak için `ng build --configuration staging,french` komutunu kullanın.
+Bu durumda, komut adlandırılmış yapılandırmaları soldan sağa ayrıştırır.
+Birden fazla yapılandırma aynı ayarı değiştirirse, son ayarlanan değer nihai değer olur.
+Bu örnekte, hem `staging` hem de `french` yapılandırmaları çıktı yolunu ayarlarsa, `french`'teki değer kullanılır.
 
 ### Extra build and test options
 
-The configurable options for a default or targeted build generally correspond to the options available for the [`ng build`](cli/build), and [`ng test`](cli/test) commands.
-For details of those options and their possible values, see the [Angular CLI Reference](cli).
+Varsayılan veya hedefli bir derleme için yapılandırılabilir seçenekler genellikle [`ng build`](cli/build) ve [`ng test`](cli/test) komutları için mevcut seçeneklere karşılık gelir.
+Bu seçeneklerin ve olası değerlerinin ayrıntıları için [Angular CLI Referanslarına](cli) bakın.
 
-| Options properties         | Details                                                                                                                                                                                                                                                                  |
-| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assets`                   | An object containing paths to static assets to serve with the application. The default paths point to the project's `public` directory. See more in the [Assets configuration](#assets-configuration) section.                                                           |
-| `styles`                   | An array of CSS files to add to the global context of the project. Angular CLI supports CSS imports and all major CSS preprocessors. See more in the [Styles and scripts configuration](#styles-and-scripts-configuration) section.                                      |
-| `stylePreprocessorOptions` | An object containing option-value pairs to pass to style preprocessors. See more in the [Styles and scripts configuration](#styles-and-scripts-configuration) section.                                                                                                   |
-| `scripts`                  | An object containing JavaScript files to add to the application. The scripts are loaded exactly as if you had added them in a `<script>` tag inside `index.html`. See more in the [Styles and scripts configuration](#styles-and-scripts-configuration) section.         |
-| `budgets`                  | Default size-budget type and thresholds for all or parts of your application. You can configure the builder to report a warning or an error when the output reaches or exceeds a threshold size. See [Configure size budgets](tools/cli/build#configuring-size-budgets). |
-| `fileReplacements`         | An object containing files and their compile-time replacements. See more in [Configure target-specific file replacements](tools/cli/environments#configure-environment-specific-defaults).                                                                               |
-| `index`                    | A base HTML document which loads the application. See more in [Index configuration](#index-configuration).                                                                                                                                                               |
-| `security`                 | An object containing the key `autoCsp` that can be set to `true` or `false`                                                                                                                                                                                              |
+| Seçenek özellikleri        | Ayrıntılar                                                                                                                                                                                                                                                                                     |
+| :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assets`                   | Uygulama ile birlikte sunulacak statik varlıklara giden yolları içeren bir nesne. Varsayılan yollar projenin `public` dizinine işaret eder. Daha fazla bilgi için [Varlık yapılandırması](#assets-configuration) bölümüne bakın.                                                               |
+| `styles`                   | Projenin genel bağlamına eklenecek CSS dosyalarından oluşan bir dizi. Angular CLI, CSS içe aktarmalarını ve tüm önemli CSS ön işlemcilerini destekler. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                           |
+| `stylePreprocessorOptions` | Stil ön işlemcilerine iletilecek seçenek-değer çiftlerini içeren bir nesne. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                                                                                                      |
+| `scripts`                  | Uygulamaya eklenecek JavaScript dosyalarını içeren bir nesne. Betikler, tam olarak `index.html` içinde `<script>` etiketi eklemiş gibi yüklenir. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                                 |
+| `budgets`                  | Uygulamanızın tamamı veya bölümleri için varsayılan boyut bütçesi türü ve eşikleri. Çıktı bir eşik boyutuna ulaştığında veya aştığında oluşturucuyu uyarı veya hata bildirmeye yapılandırabilirsiniz. [Boyut bütçeleri yapılandırma](tools/cli/build#configuring-size-budgets) bölümüne bakın. |
+| `fileReplacements`         | Dosyaları ve derleme zamanı değiştirmelerini içeren bir nesne. Daha fazla bilgi için [Hedefe özgü dosya değiştirmelerini yapılandırma](tools/cli/environments#configure-environment-specific-defaults) bölümüne bakın.                                                                         |
+| `index`                    | Uygulamayı yükleyen temel HTML belgesi. Daha fazla bilgi için [Dizin yapılandırması](#index-configuration) bölümüne bakın.                                                                                                                                                                     |
+| `security`                 | `true` veya `false` olarak ayarlanabilen `autoCsp` anahtarını içeren bir nesne                                                                                                                                                                                                                 |
 
 ### Extra serve options
 
-The dev-server comes with its own set of options that generaly correspond to the options available for the [`ng serve`](cli/serve) command.
+Geliştirme sunucusu, genellikle [`ng serve`](cli/serve) komutu için mevcut seçeneklere karşılık gelen kendi seçenek setine sahiptir.
 
-| Options properties | Details                                                                                                                                                                                                                   |
-| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `allowedHosts`     | An array of host that the development server will respond to. This option sets the Vite option of the same name. For further details [see the vite docs](https://vite.dev/config/server-options.html#server-allowedhosts) |
+| Seçenek özellikleri | Ayrıntılar                                                                                                                                                                                                                 |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allowedHosts`      | Geliştirme sunucusunun yanıt vereceği sunucu dizisi. Bu seçenek, aynı adlı Vite seçeneğini ayarlar. Daha fazla ayrıntı için [vite dokümantasyonuna bakın](https://vite.dev/config/server-options.html#server-allowedhosts) |
 
 ## Complex configuration values
 
-The `assets`, `index`, `outputPath`, `styles`, and `scripts` options can have either simple path string values, or object values with specific fields.
-The `sourceMap` and `optimization` options can be set to a simple boolean value. They can also be given a complex value using the configuration file.
+`assets`, `index`, `outputPath`, `styles` ve `scripts` seçenekleri basit yol dizesi değerlerine veya belirli alanlara sahip nesne değerlerine sahip olabilir.
+`sourceMap` ve `optimization` seçenekleri basit bir boolean değerine ayarlanabilir. Yapılandırma dosyası kullanılarak karmaşık bir değer de verilebilir.
 
-The following sections provide more details of how these complex values are used in each case.
+Aşağıdaki bölümler, bu karmaşık değerlerin her durumda nasıl kullanıldığı hakkında daha fazla ayrıntı sağlar.
 
 ### Assets configuration
 
-Each `build` target configuration can include an `assets` array that lists files or folders you want to copy as-is when building your project.
-By default, the contents of the `public/` directory are copied over.
+Her `build` hedef yapılandırması, projenizi derlerken olduğu gibi kopyalamak istediğiniz dosya veya klasörleri listeleyen bir `assets` dizisi içerebilir.
+Varsayılan olarak, `public/` dizininin içerikleri kopyalanır.
 
-To exclude an asset, you can remove it from the assets configuration.
+Bir varlığı hariç tutmak için, onu varlık yapılandırmasından kaldırabilirsiniz.
 
-You can further configure assets to be copied by specifying assets as objects, rather than as simple paths relative to the workspace root.
-An asset specification object can have the following fields.
+Varlıkları, çalışma alanı köküne göre basit yollar yerine nesneler olarak belirterek kopyalanacak şekilde daha ayrıntılı yapılandırabilirsiniz.
+Bir varlık belirtim nesnesi aşağıdaki alanlara sahip olabilir.
 
-| Fields           | Details                                                                                                                                   |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `glob`           | A [node-glob](https://github.com/isaacs/node-glob/blob/master/README.md) using `input` as base directory.                                 |
-| `input`          | A path relative to the workspace root.                                                                                                    |
-| `output`         | A path relative to `outDir`. Because of the security implications, the Angular CLI never writes files outside of the project output path. |
-| `ignore`         | A list of globs to exclude.                                                                                                               |
-| `followSymlinks` | Allow glob patterns to follow symlink directories. This allows subdirectories of the symlink to be searched. Defaults to `false`.         |
+| Alanlar          | Ayrıntılar                                                                                                                                                            |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `glob`           | Temel dizin olarak `input` kullanan bir [node-glob](https://github.com/isaacs/node-glob/blob/master/README.md).                                                       |
+| `input`          | Çalışma alanı köküne göre bir yol.                                                                                                                                    |
+| `output`         | `outDir`'a göre bir yol. Güvenlik etkileri nedeniyle, Angular CLI hiçbir zaman proje çıktı yolunun dışına dosya yazmaz.                                               |
+| `ignore`         | Hariç tutulacak glob'ların bir listesi.                                                                                                                               |
+| `followSymlinks` | Glob kalıplarının sembolik bağlantı dizinlerini takip etmesine izin verir. Bu, sembolik bağlantının alt dizinlerinin aranmasını sağlar. Varsayılan değer `false`'tur. |
 
-For example, the default asset paths can be represented in more detail using the following objects.
+Örneğin, varsayılan varlık yolları aşağıdaki nesneler kullanılarak daha ayrıntılı olarak temsil edilebilir.
 
 ```json
 {
@@ -282,7 +282,7 @@ For example, the default asset paths can be represented in more detail using the
 }
 ```
 
-The following example uses the `ignore` field to exclude certain files in the assets directory from being copied into the build:
+Aşağıdaki örnek, varlıklar dizinindeki belirli dosyaları derlemeye kopyalanmaktan hariç tutmak için `ignore` alanını kullanır:
 
 ```json
 {
@@ -310,12 +310,12 @@ The following example uses the `ignore` field to exclude certain files in the as
 
 ### Styles and scripts configuration
 
-An array entry for the `styles` and `scripts` options can be a simple path string, or an object that points to an extra entry-point file.
-The associated builder loads that file and its dependencies as a separate bundle during the build.
-With a configuration object, you have the option of naming the bundle for the entry point, using a `bundleName` field.
+`styles` ve `scripts` seçenekleri için bir dizi girişi basit bir yol dizesi veya ek bir giriş noktası dosyasına işaret eden bir nesne olabilir.
+İlişkili oluşturucu, bu dosyayı ve bağımlılıklarını derleme sırasında ayrı bir paket olarak yükler.
+Bir yapılandırma nesnesiyle, `bundleName` alanını kullanarak giriş noktası için paketi adlandırma seçeneğiniz vardır.
 
-The bundle is injected by default, but you can set `inject` to `false` to exclude the bundle from injection.
-For example, the following object values create and name a bundle that contains styles and scripts, and excludes it from injection:
+Paket varsayılan olarak enjekte edilir, ancak paketi enjeksiyondan hariç tutmak için `inject`'i `false` olarak ayarlayabilirsiniz.
+Örneğin, aşağıdaki nesne değerleri stiller ve betikler içeren bir paket oluşturur ve adlandırır, ve enjeksiyondan hariç tutar:
 
 ```json
 {
@@ -349,9 +349,9 @@ For example, the following object values create and name a bundle that contains 
 
 #### Style preprocessor options
 
-In Sass, you can make use of the `includePaths` feature for both component and global styles. This allows you to add extra base paths that are checked for imports.
+Sass'ta, hem bileşen hem de genel stiller için `includePaths` özelliğini kullanabilirsiniz. Bu, içe aktarmalar için kontrol edilen ek temel yollar eklemenize olanak tanır.
 
-To add paths, use the `stylePreprocessorOptions` option:
+Yol eklemek için `stylePreprocessorOptions` seçeneğini kullanın:
 
 ```json
 {
@@ -372,7 +372,7 @@ To add paths, use the `stylePreprocessorOptions` option:
 }
 ```
 
-Files in that directory, such as `src/style-paths/_variables.scss`, can be imported from anywhere in your project without the need for a relative path:
+Bu dizindeki dosyalar, örneğin `src/style-paths/_variables.scss`, projenizin herhangi bir yerinden göreceli yol olmadan içe aktarılabilir:
 
 ```scss
 // src/app/app.scss
@@ -383,43 +383,43 @@ Files in that directory, such as `src/style-paths/_variables.scss`, can be impor
 @import 'variables';
 ```
 
-HELPFUL: You also need to add any styles or scripts to the `test` builder if you need them for unit tests.
-See also [Using runtime-global libraries inside your application](tools/libraries/using-libraries#using-runtime-global-libraries-inside-your-app).
+HELPFUL: Birim testleri için ihtiyacınız varsa, stilleri veya betikleri `test` oluşturucusuna da eklemeniz gerekir.
+Ayrıca [Uygulamanızda çalışma zamanı global kütüphanelerini kullanma](tools/libraries/using-libraries#using-runtime-global-libraries-inside-your-app) bölümüne de bakın.
 
 ### Optimization configuration
 
-The `optimization` option can be either a boolean or an object for more fine-tune configuration.
-This option enables various optimizations of the build output, including:
+`optimization` seçeneği, derleme çıktısının daha ayrıntılı yapılandırılması için bir boolean veya nesne olabilir.
+Bu seçenek, derleme çıktısının aşağıdaki gibi çeşitli optimizasyonlarını etkinleştirir:
 
-- Minification of scripts and styles
+- Betik ve stillerin küçültülmesi
 - Tree-shaking
-- Dead-code elimination
-- [Inlining of critical CSS](/tools/cli/build#critical-css-inlining)
-- Fonts inlining
+- Ölü kod eliminasyonu
+- [Kritik CSS satır içi ekleme](/tools/cli/build#critical-css-inlining)
+- Font satır içi ekleme
 
-Several options can be used to fine-tune the optimization of an application.
+Bir uygulamanın optimizasyonunu ince ayarlamak için çeşitli seçenekler kullanılabilir.
 
-| Options   | Details                                                        | Value type                                                               | Default value |
-| :-------- | :------------------------------------------------------------- | :----------------------------------------------------------------------- | :------------ |
-| `scripts` | Enables optimization of the scripts output.                    | `boolean`                                                                | `true`        |
-| `styles`  | Enables optimization of the styles output.                     | `boolean` \| [Styles optimization options](#styles-optimization-options) | `true`        |
-| `fonts`   | Enables optimization for fonts. This requires internet access. | `boolean` \| [Fonts optimization options](#fonts-optimization-options)   | `true`        |
+| Seçenekler | Ayrıntılar                                                             | Değer türü                                                                 | Varsayılan değer |
+| :--------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------- | :--------------- |
+| `scripts`  | Betik çıktısının optimizasyonunu etkinleştirir.                        | `boolean`                                                                  | `true`           |
+| `styles`   | Stil çıktısının optimizasyonunu etkinleştirir.                         | `boolean` \| [Stil optimizasyon seçenekleri](#styles-optimization-options) | `true`           |
+| `fonts`    | Fontlar için optimizasyonu etkinleştirir. İnternet erişimi gerektirir. | `boolean` \| [Font optimizasyon seçenekleri](#fonts-optimization-options)  | `true`           |
 
 #### Styles optimization options
 
-| Options                 | Details                                                                                                                  | Value type | Default value |
-| :---------------------- | :----------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
-| `minify`                | Minify CSS definitions by removing extraneous whitespace and comments, merging identifiers, and minimizing values.       | `boolean`  | `true`        |
-| `inlineCritical`        | Extract and inline critical CSS definitions to improve [First Contentful Paint](https://web.dev/first-contentful-paint). | `boolean`  | `true`        |
-| `removeSpecialComments` | Remove comments in global CSS that contains `@license` or `@preserve` or that starts with `//!` or `/*!`.                | `boolean`  | `true`        |
+| Seçenekler              | Ayrıntılar                                                                                                                            | Değer türü | Varsayılan değer |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :--------------- |
+| `minify`                | Fazla boşlukları ve yorumları kaldırarak, tanımlayıcıları birleştirerek ve değerleri en aza indirerek CSS tanımlarını küçültür.       | `boolean`  | `true`           |
+| `inlineCritical`        | [İlk İçerikli Boyama](https://web.dev/first-contentful-paint)'yı iyileştirmek için kritik CSS tanımlarını çıkarır ve satır içi ekler. | `boolean`  | `true`           |
+| `removeSpecialComments` | `@license` veya `@preserve` içeren ya da `//!` veya `/*!` ile başlayan genel CSS'deki yorumları kaldırır.                             | `boolean`  | `true`           |
 
 #### Fonts optimization options
 
-| Options  | Details                                                                                                                                                                                                             | Value type | Default value |
-| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :------------ |
-| `inline` | Reduce [render blocking requests](https://web.dev/render-blocking-resources) by inlining external Google Fonts and Adobe Fonts CSS definitions in the application's HTML index file. This requires internet access. | `boolean`  | `true`        |
+| Seçenekler | Ayrıntılar                                                                                                                                                                                                              | Değer türü | Varsayılan değer |
+| :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :--------------- |
+| `inline`   | Harici Google Fonts ve Adobe Fonts CSS tanımlarını uygulamanın HTML dizin dosyasında satır içi ekleyerek [render engelleyen istekleri](https://web.dev/render-blocking-resources) azaltır. İnternet erişimi gerektirir. | `boolean`  | `true`           |
 
-You can supply a value such as the following to apply optimization to one or the other:
+Optimizasyonu birine veya diğerine uygulamak için aşağıdaki gibi bir değer sağlayabilirsiniz:
 
 ```json
 {
@@ -442,17 +442,17 @@ You can supply a value such as the following to apply optimization to one or the
 
 ### Source map configuration
 
-The `sourceMap` builder option can be either a boolean or an object for more fine-tune configuration to control the source maps of an application.
+`sourceMap` oluşturucu seçeneği, bir uygulamanın kaynak haritalarını kontrol etmek için bir boolean veya daha ayrıntılı yapılandırma nesnesi olabilir.
 
-| Options          | Details                                                      | Value type | Default value |
-| :--------------- | :----------------------------------------------------------- | :--------- | :------------ |
-| `scripts`        | Output source maps for all scripts.                          | `boolean`  | `true`        |
-| `styles`         | Output source maps for all styles.                           | `boolean`  | `true`        |
-| `vendor`         | Resolve vendor packages source maps.                         | `boolean`  | `false`       |
-| `hidden`         | Omit link to sourcemaps from the output JavaScript.          | `boolean`  | `false`       |
-| `sourcesContent` | Output original source content for files within source maps. | `boolean`  | `true`        |
+| Seçenekler       | Ayrıntılar                                                                   | Değer türü | Varsayılan değer |
+| :--------------- | :--------------------------------------------------------------------------- | :--------- | :--------------- |
+| `scripts`        | Tüm betikler için kaynak haritaları çıktılar.                                | `boolean`  | `true`           |
+| `styles`         | Tüm stiller için kaynak haritaları çıktılar.                                 | `boolean`  | `true`           |
+| `vendor`         | Satıcı paketleri kaynak haritalarını çözümler.                               | `boolean`  | `false`          |
+| `hidden`         | Çıktı JavaScript'ten kaynak haritalarına bağlantıyı atlar.                   | `boolean`  | `false`          |
+| `sourcesContent` | Kaynak haritaları içindeki dosyalar için orijinal kaynak içeriğini çıktılar. | `boolean`  | `true`           |
 
-The example below shows how to toggle one or more values to configure the source map outputs:
+Aşağıdaki örnek, kaynak haritası çıktılarını yapılandırmak için bir veya daha fazla değerin nasıl değiştirileceğini gösterir:
 
 ```json
 {
@@ -476,16 +476,16 @@ The example below shows how to toggle one or more values to configure the source
 }
 ```
 
-HELPFUL: When using hidden source maps, source maps are not referenced in the bundle.
-These are useful if you only want source maps to map stack traces in error reporting tools without showing up in browser developer tools.
-Note that even though `hidden` prevents the source map from being linked in the output bundle, your deployment process must take care not to serve the generated sourcemaps in production, or else the information is still leaked.
+HELPFUL: Gizli kaynak haritaları kullanırken, kaynak haritaları pakette referans gösterilmez.
+Bunlar, tarayıcı geliştirici araçlarında görünmeden yalnızca hata raporlama araçlarında yığın izlerini eşleştirmek istiyorsanız faydalıdır.
+`hidden` kaynak haritasının çıktı paketinde bağlanmasını önlese de, dağıtım sürecinizin üretimde oluşturulan kaynak haritalarını sunmadığından emin olması gerektiğini unutmayın, aksi takdirde bilgi yine de sızdırılır.
 
 #### Source maps without sources content
 
-You can generate source maps without the `sourcesContent` field, which contains the original source code.
-This allows you to deploy source maps to production for better error reporting with original source names while protecting your source code from exposure.
+`sourcesContent` alanı olmadan, yani orijinal kaynak kodunu içermeyen kaynak haritaları oluşturabilirsiniz.
+Bu, kaynak kodunuzu ifşa etmeden daha iyi hata raporlaması için orijinal kaynak adlarıyla üretim ortamına kaynak haritaları dağıtmanıza olanak tanır.
 
-To exclude sources content from source maps, set the `sourcesContent` option to `false`:
+Kaynak haritalarından kaynak içeriğini hariç tutmak için `sourcesContent` seçeneğini `false` olarak ayarlayın:
 
 ```json
 {
@@ -510,28 +510,28 @@ To exclude sources content from source maps, set the `sourcesContent` option to 
 
 ### Index configuration
 
-Configures generation of the application's HTML index.
+Uygulamanın HTML dizininin oluşturulmasını yapılandırır.
 
-The `index` option can be either a string or an object for more fine-tune configuration.
+`index` seçeneği, daha ayrıntılı yapılandırma için bir dize veya nesne olabilir.
 
-When supplying the value as a string the filename of the specified path will be used for the generated file and will be created in the root of the application's configured output path.
+Değer bir dize olarak sağlandığında, belirtilen yolun dosya adı oluşturulan dosya için kullanılır ve uygulamanın yapılandırılmış çıktı yolunun kökünde oluşturulur.
 
 #### Index options
 
-| Options  | Details                                                                                                                                                                          | Value type | Default value   |
-| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :-------------- |
-| `input`  | The path of a file to use for the application's generated HTML index.                                                                                                            | `string`   | None (required) |
-| `output` | The output path of the application's generated HTML index file. The full provided path will be used and will be considered relative to the application's configured output path. | `string`   | `index.html`    |
+| Seçenekler | Ayrıntılar                                                                                                                                               | Değer türü | Varsayılan değer |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :--------------- |
+| `input`    | Uygulamanın oluşturulan HTML dizini için kullanılacak dosyanın yolu.                                                                                     | `string`   | Yok (gerekli)    |
+| `output`   | Uygulamanın oluşturulan HTML dizin dosyasının çıktı yolu. Sağlanan tam yol kullanılır ve uygulamanın yapılandırılmış çıktı yoluna göreceli kabul edilir. | `string`   | `index.html`     |
 
 ### Output path configuration
 
-The `outputPath` option can be either a String which will be used as the `base` value or an Object for more fine-tune configuration.
+`outputPath` seçeneği, `base` değeri olarak kullanılacak bir Dize veya daha ayrıntılı yapılandırma için bir Nesne olabilir.
 
-Several options can be used to fine-tune the output structure of an application.
+Bir uygulamanın çıktı yapısını ince ayarlamak için çeşitli seçenekler kullanılabilir.
 
-| Options   | Details                                                                                                                                                           | Value type | Default value |
-| :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
-| `base`    | Specify the output path relative to workspace root.                                                                                                               | `string`   |               |
-| `browser` | The output directory name for your browser build is within the base output path. This can be safely served to users.                                              | `string`   | `browser`     |
-| `server`  | The output directory name of your server build within the output path base.                                                                                       | `string`   | `server`      |
-| `media`   | The output directory name for your media files located within the output browser directory. These media files are commonly referred to as resources in CSS files. | `string`   | `media`       |
+| Seçenekler | Ayrıntılar                                                                                                                                                   | Değer türü | Varsayılan değer |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :--------------- |
+| `base`     | Çalışma alanı köküne göre çıktı yolunu belirtir.                                                                                                             | `string`   |                  |
+| `browser`  | Temel çıktı yolu içindeki tarayıcı derlemeniz için çıktı dizini adı. Bu, kullanıcılara güvenle sunulabilir.                                                  | `string`   | `browser`        |
+| `server`   | Çıktı yolu tabanı içindeki sunucu derlemenizin çıktı dizini adı.                                                                                             | `string`   | `server`         |
+| `media`    | Çıktı tarayıcı dizini içinde bulunan medya dosyalarınız için çıktı dizini adı. Bu medya dosyaları CSS dosyalarında yaygın olarak kaynak olarak adlandırılır. | `string`   | `media`          |

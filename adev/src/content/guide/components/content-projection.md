@@ -1,9 +1,8 @@
 # Content projection with ng-content
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-You often need to create components that act as containers for different types of content. For
-example, you may want to create a custom card component:
+Farkli icerik turleri icin kapsayici gorevi goren bilesenlere siklikla ihtiyac duyarsiniz. Ornegin, ozel bir kart bileseni olusturmak isteyebilirsiniz:
 
 ```angular-ts
 @Component({
@@ -15,7 +14,7 @@ export class CustomCard {
 }
 ```
 
-**You can use the `<ng-content>` element as a placeholder to mark where content should go**:
+**Icerigin nereye yerlestirilecegin i belirtmek icin `<ng-content>` elemanini yer tutucu olarak kullanabilirsiniz**:
 
 ```angular-ts
 @Component({
@@ -27,12 +26,9 @@ export class CustomCard {
 }
 ```
 
-TIP: `<ng-content>` works similarly
-to [the native `<slot>` element](https://developer.mozilla.org/docs/Web/HTML/Element/slot),
-but with some Angular-specific functionality.
+TIP: `<ng-content>`, [yerel `<slot>` elemani](https://developer.mozilla.org/docs/Web/HTML/Element/slot) ile benzer sekilde calisir, ancak bazi Angular'a ozgu islevselliklerle birlikte.
 
-When you use a component with `<ng-content>`, any children of the component host element are
-rendered, or **projected**, at the location of that `<ng-content>`:
+`<ng-content>` iceren bir bilesen kullandiginizda, bilesen host elemaninin tum alt elemanlari o `<ng-content>` konumunda render edilir veya **yansitilir** (project):
 
 ```angular-ts
 // Component source
@@ -65,25 +61,15 @@ export class CustomCard {
 </custom-card>
 ```
 
-Angular refers to any children of a component passed this way as that component's **content**. This
-is distinct from the component's **view**, which refers to the elements defined in the component's
-template.
+Angular, bu sekilde iletilen bir bilesnenin tum alt elemanlarini o bilesnenin **icerigi** olarak adlandirir. Bu, bilesnenin sablonunda tanimlanan elemanlara karsilik gelen bilesnenin **gorunumu**nden (view) farklidir.
 
-**The `<ng-content>` element is neither a component nor DOM element**. Instead, it is a special
-placeholder that tells Angular where to render content. Angular's compiler processes
-all `<ng-content>` elements at build-time. You cannot insert, remove, or modify `<ng-content>` at
-run time. You cannot add directives, styles, or arbitrary attributes to `<ng-content>`.
+**`<ng-content>` elemani ne bir bilesen ne de bir DOM elemanidir**. Bunun yerine, Angular'a icerigi nerede render edecegini soyleyen ozel bir yer tutucudur. Angular'in derleyicisi tum `<ng-content>` elemanlarini derleme zamaninda isler. `<ng-content>` elemanini calisma zamaninda ekleyemez, kaldiramazsiniz veya degistiremezsiniz. `<ng-content>` uzerine direktifler, stiller veya rastgele nitelikler ekleyemezsiniz.
 
-IMPORTANT: You should not conditionally include `<ng-content>` with `@if`, `@for`, or `@switch`. Angular always
-instantiates and creates DOM nodes for content rendered to a `<ng-content>` placeholder, even if
-that `<ng-content>` placeholder is hidden. For conditional rendering of component content,
-see [Template fragments](api/core/ng-template).
+IMPORTANT: `<ng-content>` elemanini `@if`, `@for` veya `@switch` ile kosullu olarak dahil etmemelisiniz. Angular, `<ng-content>` yer tutucusu gizli olsa bile, o yer tutucuya render edilen icerik icin her zaman DOM dugumlerini olusturur ve baslatir. Bilesen iceriginin kosullu render edilmesi icin [Sablon parcalari](api/core/ng-template) belgesine bakin.
 
 ## Multiple content placeholders
 
-Angular supports projecting multiple different elements into different `<ng-content>` placeholders
-based on CSS selector. Expanding the card example from above, you could create two placeholders for
-a card title and a card body by using the `select` attribute:
+Angular, CSS secicisine dayali olarak farkli `<ng-content>` yer tutucularina farkli elemanlarin yansitilmasini destekler. Yukaridaki kart ornegini genisleterek, `select` niteligi kullanarak kart basligi ve kart govdesi icin iki yer tutucu olusturabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -140,12 +126,9 @@ export class App {}
 </custom-card>
 ```
 
-The `<ng-content>` placeholder supports the same CSS selectors
-as [component selectors](guide/components/selectors).
+`<ng-content>` yer tutucusu, [bilesen secicileri](guide/components/selectors) ile ayni CSS secicilerini destekler.
 
-If you include one or more `<ng-content>` placeholders with a `select` attribute and
-one `<ng-content>` placeholder without a `select` attribute, the latter captures all elements that
-did not match a `select` attribute:
+`select` niteligi olan bir veya daha fazla `<ng-content>` yer tutucusu ve `select` niteligi olmayan bir `<ng-content>` yer tutucusu eklerseniz, ikincisi herhangi bir `select` niteligi ile eslesmeyen tum elemanlari yakalar:
 
 ```angular-html
 <!-- Component template -->
@@ -178,12 +161,11 @@ did not match a `select` attribute:
 </custom-card>
 ```
 
-If a component does not include an `<ng-content>` placeholder without a `select` attribute, any
-elements that don't match one of the component's placeholders do not render into the DOM.
+Bir bilesen, `select` niteligi olmayan bir `<ng-content>` yer tutucusu icermiyorsa, bilesnenin yer tutuculariyla eslesmeyen elemanlar DOM'a render edilmez.
 
 ## Fallback content
 
-Angular can show _fallback content_ for a component's `<ng-content>` placeholder if that component doesn't have any matching child content. You can specify fallback content by adding child content to the `<ng-content>` element itself.
+Angular, bir bilesnenin `<ng-content>` yer tutucusu icin eslesen alt icerik yoksa _yedek icerik_ gosterebilir. `<ng-content>` elemaninin kendisine alt icerik ekleyerek yedek icerik belirtebilirsiniz.
 
 ```angular-html
 <!-- Component template -->
@@ -215,9 +197,7 @@ Angular can show _fallback content_ for a component's `<ng-content>` placeholder
 
 ## Aliasing content for projection
 
-Angular supports a special attribute, `ngProjectAs`, that allows you to specify a CSS selector on
-any element. Whenever an element with `ngProjectAs` is checked against an `<ng-content>`
-placeholder, Angular compares against the `ngProjectAs` value instead of the element's identity:
+Angular, herhangi bir eleman uzerinde bir CSS secici belirtmenize olanak taniyan ozel bir `ngProjectAs` niteligi destekler. `ngProjectAs` niteligi olan bir eleman `<ng-content>` yer tutucusuyla kontrol edildiginde, Angular elemanin kimligi yerine `ngProjectAs` degerini karsilastirir:
 
 ```angular-html
 <!-- Component template -->
@@ -248,4 +228,4 @@ placeholder, Angular compares against the `ngProjectAs` value instead of the ele
 </custom-card>
 ```
 
-`ngProjectAs` supports only static values and cannot be bound to dynamic expressions.
+`ngProjectAs` yalnizca statik degerleri destekler ve dinamik ifadelere baglanamaz.

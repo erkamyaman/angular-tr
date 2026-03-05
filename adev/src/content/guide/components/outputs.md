@@ -1,8 +1,8 @@
 # Custom events with outputs
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-Angular components can define custom events by assigning a property to the `output` function:
+Angular bilesenleri, bir ozelligi `output` fonksiyonuna atayarak ozel olaylar tanimlayabilir:
 
 ```ts {highlight:[3]}
 @Component({
@@ -17,25 +17,25 @@ export class ExpandablePanel {
 <expandable-panel (panelClosed)="savePanelState()" />
 ```
 
-The `output` function returns an `OutputEmitterRef`. You can emit an event by calling the `emit` method on the `OutputEmitterRef`:
+`output` fonksiyonu bir `OutputEmitterRef` dondurur. `OutputEmitterRef` uzerinde `emit` yontemini cagirarak bir olay yayabilirsiniz:
 
 ```ts
 this.panelClosed.emit();
 ```
 
-Angular refers to properties initialized with the `output` function as **outputs**. You can use outputs to raise custom events, similar to native browser events like `click`.
+Angular, `output` fonksiyonu ile baslatiilan ozellikleri **ciktilar** olarak adlandirir. `click` gibi yerel tarayici olaylarina benzer sekilde ozel olaylar olusturmak icin ciktilari kullanabilirsiniz.
 
-**Angular custom events do not bubble up the DOM**.
+**Angular ozel olaylari DOM'da yukari dogru kabarciklanmaz (bubble).**
 
-**Output names are case-sensitive.**
+**Cikti adlari buyuk-kucuk harf duyarlidir.**
 
-When extending a component class, **outputs are inherited by the child class.**
+Bir bilesen sinifini genisletirken, **ciktilar alt sinif tarafindan miras alinir.**
 
-The `output` function has special meaning to the Angular compiler. **You can exclusively call `output` in component and directive property initializers.**
+`output` fonksiyonu Angular derleyicisi icin ozel bir anlam tasir. **`output` fonksiyonunu yalnizca bilesen ve direktif ozellik baslangic degerlerinde cagirabilirsiniz.**
 
 ## Emitting event data
 
-You can pass event data when calling `emit`:
+`emit` cagirirken olay verisi iletebilirsiniz:
 
 ```ts
 // You can emit primitive values.
@@ -48,13 +48,13 @@ this.thumbDropped.emit({
 });
 ```
 
-When defining an event listener in a template, you can access the event data from the `$event` variable:
+Bir sablonda olay dinleyicisi tanimlarken, olay verilerine `$event` degiskeninden erisebilirsiniz:
 
 ```angular-html
 <custom-slider (valueChanged)="logValue($event)" />
 ```
 
-Receive the event data in the parent component:
+Ust bilesnde olay verisini alin:
 
 ```ts
 @Component({
@@ -70,7 +70,7 @@ export class App {
 
 ## Customizing output names
 
-The `output` function accepts a parameter that lets you specify a different name for the event in a template:
+`output` fonksiyonu, sablonda olay icin farkli bir ad belirtmenize olanak taniyan bir parametre kabul eder:
 
 ```ts
 @Component({
@@ -85,14 +85,13 @@ export class CustomSlider {
 <custom-slider (valueChanged)="saveVolume()" />
 ```
 
-This alias does not affect usage of the property in TypeScript code.
+Bu takma ad, ozelligin TypeScript kodundaki kullanimini etkilemez.
 
-While you should generally avoid aliasing outputs for components, this feature can be useful for renaming properties while preserving an alias for the original name or for avoiding collisions with the name of native DOM events.
+Bilesen ciktilari icin takma ad kullanmaktan genel olarak kacinmaniz gerekirken, bu ozellik ozellikleri yeniden adlandirirken orijinal ad icin bir takma ad korumak veya yerel DOM olaylariyla ad cakismalarini onlemek icin yararli olabilir.
 
 ## Subscribing to outputs programmatically
 
-When creating a component dynamically, you can programmatically subscribe to output events
-from the component instance. The `OutputRef` type includes a `subscribe` method:
+Bir bileseni dinamik olarak olustururken, bilesen orneginden cikti olaylarina programatik olarak abone olabilirsiniz. `OutputRef` turu bir `subscribe` yontemi icerir:
 
 ```ts
 const someComponentRef: ComponentRef<SomeComponent> = viewContainerRef.createComponent(/*...*/);
@@ -102,7 +101,7 @@ someComponentRef.instance.someEventProperty.subscribe((eventData) => {
 });
 ```
 
-Angular automatically cleans up event subscriptions when it destroys components with subscribers. Alternatively, you can manually unsubscribe from an event. The `subscribe` function returns an `OutputRefSubscription` with an `unsubscribe` method:
+Angular, aboneleri olan bilesenleri yok ettiginde olay aboneliklerini otomatik olarak temizler. Alternatif olarak, bir olaydan manuel olarak aboneligi iptal edebilirsiniz. `subscribe` fonksiyonu bir `unsubscribe` yontemi olan bir `OutputRefSubscription` dondurur:
 
 ```ts
 const eventSubscription = someComponent.someEventProperty.subscribe((eventData) => {
@@ -116,22 +115,21 @@ eventSubscription.unsubscribe();
 
 ## Choosing event names
 
-Avoid choosing output names that collide with events on DOM elements like HTMLElement. Name collisions introduce confusion about whether the bound property belongs to the component or the DOM element.
+DOM elemanlarinin HTMLElement uzerindeki olaylariyla cakisan cikti adlari secmekten kacinin. Ad cakismalari, bagli ozelligin bilesene mi yoksa DOM elemanina mi ait oldugu konusunda kafa karisikligina neden olur.
 
-Avoid adding prefixes for component outputs like you would with component selectors. Since a given element can only host one component, any custom properties can be assumed to belong to the component.
+Bilesen ciktilari icin, bilesen secicilerinde yaptiginiz gibi onek eklemekten kacinin. Belirli bir eleman yalnizca bir bilesen barindirabilecegi icin, herhangi bir ozel ozelligin bilesene ait oldugu varsayilabilir.
 
-Always use [camelCase](https://en.wikipedia.org/wiki/Camel_case) output names. Avoid prefixing output names with "on".
+Cikti adlari icin her zaman [camelCase](https://en.wikipedia.org/wiki/Camel_case) kullanin. Cikti adlarina "on" oneki eklemeyin.
 
 ## Using outputs with RxJS
 
-See [RxJS interop with component and directive outputs](ecosystem/rxjs-interop/output-interop) for details on interoperability between outputs and RxJS.
+Ciktilar ve RxJS arasindaki birlikte calisabilirlik hakkinda ayrintilar icin [Bilesen ve direktif ciktilariyla RxJS birlikte calisabilirligi](ecosystem/rxjs-interop/output-interop) belgesine bakin.
 
 ## Declaring outputs with the `@Output` decorator
 
-TIP: While the Angular team recommends using the `output` function for new projects, the
-original decorator-based `@Output` API remains fully supported.
+TIP: Angular ekibi yeni projeler icin `output` fonksiyonunu onerse de, orijinal dekorator tabanli `@Output` API'si tamamen desteklenmeye devam etmektedir.
 
-You can alternatively define custom events by assigning a property to a new `EventEmitter` and adding the `@Output` decorator:
+Alternatif olarak, bir ozelligi yeni bir `EventEmitter`'a atayarak ve `@Output` dekoratoru ekleyerek ozel olaylar tanimlayabilirsiniz:
 
 ```ts
 @Component({
@@ -142,11 +140,11 @@ export class ExpandablePanel {
 }
 ```
 
-You can emit an event by calling the `emit` method on the `EventEmitter`.
+`EventEmitter` uzerinde `emit` yontemini cagirarak bir olay yayabilirsiniz.
 
 ### Aliases with the `@Output` decorator
 
-The `@Output` decorator accepts a parameter that lets you specify a different name for the event in a template:
+`@Output` dekoratoru, sablonda olay icin farkli bir ad belirtmenize olanak taniyan bir parametre kabul eder:
 
 ```ts
 @Component({
@@ -161,11 +159,11 @@ export class CustomSlider {
 <custom-slider (valueChanged)="saveVolume()" />
 ```
 
-This alias does not affect usage of the property in TypeScript code.
+Bu takma ad, ozelligin TypeScript kodundaki kullanimini etkilemez.
 
 ## Specify outputs in the `@Component` decorator
 
-In addition to the `@Output` decorator, you can also specify a component's outputs with the `outputs` property in the `@Component` decorator. This can be useful when a component inherits a property from a base class:
+`@Output` dekoratorune ek olarak, bir bilesnenin ciktilarini `@Component` dekoratorundeki `outputs` ozelligi ile de belirtebilirsiniz. Bu, bir bilesen bir temel siniftan ozellik miras aldiginda yararli olabilir:
 
 ```ts
 // `CustomSlider` inherits the `valueChanged` property from `BaseSlider`.
@@ -176,7 +174,7 @@ In addition to the `@Output` decorator, you can also specify a component's outpu
 export class CustomSlider extends BaseSlider {}
 ```
 
-You can additionally specify an output alias in the `outputs` list by putting the alias after a colon in the string:
+Dizede iki noktadan sonra takma adi belirterek `outputs` listesinde ek olarak bir cikti takma adi belirtebilirsiniz:
 
 ```ts
 // `CustomSlider` inherits the `valueChanged` property from `BaseSlider`.

@@ -1,30 +1,30 @@
 # App shell pattern
 
-The [App shell pattern](https://developer.chrome.com/blog/app-shell) is a way to render a portion of your application using a route at build time.
-It can improve the user experience by quickly launching a static rendered page (a skeleton common to all pages) while the browser downloads the full client version and switches to it automatically after the code loads.
+[App shell kalıbı](https://developer.chrome.com/blog/app-shell), derleme zamanında bir rota kullanarak uygulamanızın bir bölümünü render etmenin bir yoludur.
+Tarayıcı istemcinin tam sürümünü indirirken ve kod yüklendikten sonra otomatik olarak ona geçerken, hızlıca statik olarak render edilmiş bir sayfa (tüm sayfalarda ortak olan bir iskelet) başlatarak kullanıcı deneyimini iyileştirebilir.
 
-This gives users a meaningful first paint of your application that appears quickly because the browser can render the HTML and CSS without the need to initialize any JavaScript.
+Bu, kullanıcılara uygulamanızın anlamlı bir ilk çizimini hızlıca sunar çünkü tarayıcı herhangi bir JavaScript başlatmaya gerek kalmadan HTML ve CSS'i render edebilir.
 
 <docs-workflow>
 <docs-step title="Prepare the application">
-Do this with the following Angular CLI command:
+Bunu aşağıdaki Angular CLI komutuyla yapın:
 
 ```shell
 ng new my-app
 ```
 
-For an existing application, you have to manually add the `Router` and defining a `<router-outlet>` within your application.
+Mevcut bir uygulama için `Router`'ı manuel olarak eklemeniz ve uygulamanız içinde bir `<router-outlet>` tanımlamanız gerekir.
 </docs-step>
 <docs-step title="Create the application shell">
-Use the Angular CLI to automatically create the application shell.
+Uygulama kabuğunu otomatik olarak oluşturmak için Angular CLI'yi kullanın.
 
 ```shell
 ng generate app-shell
 ```
 
-For more information about this command, see [App shell command](cli/generate/app-shell).
+Bu komut hakkında daha fazla bilgi için [App shell komutu](cli/generate/app-shell) sayfasına bakın.
 
-The command updates the application code and adds extra files to the project structure.
+Komut, uygulama kodunu günceller ve proje yapısına ekstra dosyalar ekler.
 
 ```text
 src
@@ -44,13 +44,13 @@ src
 ng build --configuration=development
 ```
 
-Or to use the production configuration.
+Veya üretim yapılandırmasını kullanmak için.
 
 ```shell
 ng build
 ```
 
-To verify the build output, open <code class="no-auto-link">dist/my-app/browser/index.html</code>.
-Look for default text `app-shell works!` to show that the application shell route was rendered as part of the output.
+Derleme çıktısını doğrulamak için <code class="no-auto-link">dist/my-app/browser/index.html</code> dosyasını açın.
+Uygulama kabuğu rotasının çıktının bir parçası olarak render edildiğini göstermek için varsayılan `app-shell works!` metnini arayın.
 </docs-step>
 </docs-workflow>

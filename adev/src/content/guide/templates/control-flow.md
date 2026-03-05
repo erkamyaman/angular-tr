@@ -1,10 +1,10 @@
 # Control flow
 
-Angular templates support control flow blocks that let you conditionally show, hide, and repeat elements.
+Angular sablonlari, elemanlari kosullu olarak gostermenize, gizlemenize ve tekrarlamaniza olanak taniyan kontrol akisi bloklarini destekler.
 
 ## Conditionally display content with `@if`, `@else if` and `@else`
 
-The `@if` block conditionally displays its content when its condition expression is truthy:
+`@if` blogu, kosul ifadesi truthy oldugunda icerigini kosullu olarak goruntular:
 
 ```angular-html
 @if (a > b) {
@@ -12,7 +12,7 @@ The `@if` block conditionally displays its content when its condition expression
 }
 ```
 
-If you want to display alternative content, you can do so by providing any number of `@else if` blocks and a singular `@else` block.
+Alternatif icerik goruntulmek istiyorsaniz, istediginiz sayida `@else if` blogu ve tek bir `@else` blogu saglayarak bunu yapabilirsiniz.
 
 ```angular-html
 @if (a > b) {
@@ -26,7 +26,7 @@ If you want to display alternative content, you can do so by providing any numbe
 
 ### Referencing the conditional expression's result
 
-The `@if` conditional supports saving the result of the conditional expression into a variable for reuse inside of the block.
+`@if` kosulu, kosul ifadesinin sonucunu blok icinde yeniden kullanmak uzere bir degiskene kaydetmeyi destekler.
 
 ```angular-html
 @if (user.profile.settings.startDate; as startDate) {
@@ -34,13 +34,13 @@ The `@if` conditional supports saving the result of the conditional expression i
 }
 ```
 
-This can be useful for referencing longer expressions that would be easier to read and maintain within the template.
+Bu, sablon icinde okunmasi ve bakimi daha kolay olacak uzun ifadelere referans vermek icin faydali olabilir.
 
 ## Repeat content with the `@for` block
 
-The `@for` block loops through a collection and repeatedly renders the content of a block. The collection can be any JavaScript [iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols), but Angular has additional performance optimizations for `Array` values.
+`@for` blogu, bir koleksiyon uzerinde dongu yaparak bir blogun icerigini tekrar tekrar isler. Koleksiyon herhangi bir JavaScript [iterable](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols) olabilir, ancak Angular'in `Array` degerleri icin ek performans optimizasyonlari vardir.
 
-A typical `@for` loop looks like:
+Tipik bir `@for` dongusu su sekilde gorunur:
 
 ```angular-html
 @for (item of items; track item.id) {
@@ -48,19 +48,19 @@ A typical `@for` loop looks like:
 }
 ```
 
-Angular's `@for` block does not support flow-modifying statements like JavaScript's `continue` or `break`.
+Angular'in `@for` blogu, JavaScript'in `continue` veya `break` gibi akis degistiren ifadelerini desteklemez.
 
 ### Why is `track` in `@for` blocks important?
 
-The `track` expression allows Angular to maintain a relationship between your data and the DOM nodes on the page. This allows Angular to optimize performance by executing the minimum necessary DOM operations when the data changes.
+`track` ifadesi, Angular'in verileriniz ile sayfadaki DOM dugumleri arasinda bir iliski surdurmusini saglar. Bu, veriler degistiginde Angular'in minimum gerekli DOM islemlerini yuruttugu optimize edilmis performans saglar.
 
-Using track effectively can significantly improve your application's rendering performance when looping over data collections.
+Track'i etkili bir sekilde kullanmak, veri koleksiyonlari uzerinde dongu yaparken uygulamanizin isleme performansini onemli olcude iyilestirebilir.
 
-Select a property that uniquely identifies each item in the `track` expression. If your data model includes a uniquely identifying property, commonly `id` or `uuid`, use this value. If your data does not include a field like this, strongly consider adding one.
+`track` ifadesinde her ogeeyi benzersiz sekilde tanimlayan bir ozellik secin. Veri modeliniz benzersiz bir tanimlayici ozellik iceriyorsa (genellikle `id` veya `uuid`), bu degeri kullanin. Verilerinizde boyle bir alan yoksa, bir tane eklemeyi ciddi olarak dusunun.
 
-For static collections that never change, you can use `$index` to tell Angular to track each item by its index in the collection.
+Hic degismeyen statik koleksiyonlar icin, Angular'a her ogeyi koleksiyondaki indeksine gore izlemesini soylemek icin `$index` kullanabilirsiniz.
 
-If no other option is available, you can use the item itself as a tracking key. This tells Angular to track the item by its reference identity using the triple-equals operator (`===`). Avoid this option whenever possible as it can lead to significantly slower rendering updates, as Angular has no way to map which data item corresponds to which DOM nodes.
+Baska bir secenek yoksa, ogeinin kendisini izleme anahtari olarak kullanabilirsiniz. Bu, Angular'a ogeyi uclu esittir operatoru (`===`) kullanarak referans kimligi ile izlemesini soyler. Mumkun oldugunda bu secenekten kacinin cunku onemli olcude daha yavas isleme guncellemelerine yol acabilir; zira Angular'in hangi veri ogesinin hangi DOM dugumune karsilik geldigini eslestirme yolu yoktur.
 
 ```angular-html
 @for (item of items; track item) {
@@ -68,22 +68,22 @@ If no other option is available, you can use the item itself as a tracking key. 
 }
 ```
 
-NOTE: Unlike `*ngFor`, the `@for` block prioritizes view reuse. If a tracked property changes but the object reference remains the same, Angular updates the view's bindings (including component inputs) rather than destroying and recreating the entire element.
+NOTE: `*ngFor`'dan farkli olarak, `@for` blogu gorunum yeniden kullanimina oncelik verir. Izlenen bir ozellik degisse bile nesne referansi ayni kalirsa, Angular tum elemani yok edip yeniden olusturmak yerine gorununun baglamalarini (bilesen girisleri dahil) gunceller.
 
 ### Contextual variables in `@for` blocks
 
-Inside `@for` blocks, several implicit variables are always available:
+`@for` bloklari icinde her zaman kullanilabilir olan birkaC ozel degisken vardir:
 
-| Variable | Meaning                                       |
-| -------- | --------------------------------------------- |
-| `$count` | Number of items in a collection iterated over |
-| `$index` | Index of the current row                      |
-| `$first` | Whether the current row is the first row      |
-| `$last`  | Whether the current row is the last row       |
-| `$even`  | Whether the current row index is even         |
-| `$odd`   | Whether the current row index is odd          |
+| Degisken | Anlami                                     |
+| -------- | ------------------------------------------ |
+| `$count` | Yinelenen koleksiyondaki oge sayisi        |
+| `$index` | Mevcut satirin indeksi                     |
+| `$first` | Mevcut satirin ilk satir olup olmadigi     |
+| `$last`  | Mevcut satirin son satir olup olmadigi     |
+| `$even`  | Mevcut satir indeksinin cift olup olmadigi |
+| `$odd`   | Mevcut satir indeksinin tek olup olmadigi  |
 
-These variables are always available with these names, but can be aliased via a `let` segment:
+Bu degiskenler her zaman bu adlarla kullanilabilir, ancak bir `let` segmenti ile takma ad verilebilir:
 
 ```angular-html
 @for (item of items; track item.id; let idx = $index, e = $even) {
@@ -91,11 +91,11 @@ These variables are always available with these names, but can be aliased via a 
 }
 ```
 
-The aliasing is useful when nesting `@for` blocks, letting you read variables from the outer `@for` block from an inner `@for` block.
+Takma ad verme, ic ice `@for` bloklarinda faydalidir ve bir ic `@for` blogundan dis `@for` blogunun degiskenlerini okumaniza olanak tanir.
 
 ### Providing a fallback for `@for` blocks with the `@empty` block
 
-You can optionally include an `@empty` section immediately after the `@for` block content. The content of the `@empty` block displays when there are no items:
+`@for` blok iceriginin hemen ardindan istege bagli olarak bir `@empty` bolumu ekleyebilirsiniz. `@empty` blogunun icerigi, oge olmadiginda goruntulenir:
 
 ```angular-html
 @for (item of items; track item.name) {
@@ -107,7 +107,7 @@ You can optionally include an `@empty` section immediately after the `@for` bloc
 
 ## Conditionally display content with the `@switch` block
 
-While the `@if` block is great for most scenarios, the `@switch` block provides an alternate syntax to conditionally render data. Its syntax closely resembles JavaScript's `switch` statement.
+`@if` blogu cogu senaryo icin harika olsa da, `@switch` blogu verileri kosullu olarak islemek icin alternatif bir sozdizimi saglar. Sozdizimi, JavaScript'in `switch` ifadesine yakindan benzer.
 
 ```angular-html
 @switch (userPermissions) {
@@ -124,21 +124,21 @@ While the `@if` block is great for most scenarios, the `@switch` block provides 
 }
 ```
 
-The value of the conditional expression is compared to the case expression using the triple-equals (`===`) operator.
+Kosul ifadesinin degeri, case ifadesi ile uclu esittir (`===`) operatoru kullanilarak karsilastirilir.
 
-**`@switch` does not have a fallthrough**, so you do not need an equivalent to a `break` or `return` statement in the block.
+**`@switch` gecisli degildir (fallthrough)**, bu nedenle blokta `break` veya `return` ifadesine esdeser bir seye ihtiyaciniz yoktur.
 
-You can specify multiple conditions for a single block by have consecutive `@case` statements.
+Ard arda `@case` ifadeleri yazarak tek bir blok icin birden fazla kosul belirtebilirsiniz.
 
-You can optionally include a `@default` block. The content of the `@default` block displays if none of the preceding case expressions match the switch value.
+Istege bagli olarak bir `@default` blogu ekleyebilirsiniz. `@default` blogunun icerigi, onceki case ifadelerinin hicbiri switch degerine eslesmedeginde goruntulenir.
 
-If no `@case` matches the expression and there is no `@default` block, nothing is shown.
+Hicbir `@case` ifadeye eslesmezse ve `@default` blogu yoksa hicbir sey gosterilmez.
 
 ### Exhaustive type checking
 
-`@switch` supports exhaustive type checking, allowing Angular to verify at compile time that all possible values of a union type are handled.
+`@switch`, kapsamli tur denetimini destekler ve Angular'in derleme zamaninda bir birlestirme turunun tum olasi degerlerinin ele alindigini dogrulamasina olanak tanir.
 
-By using `@default never;`, you explicitly declare that no remaining cases should exist. If the union type is later extended and a new case is not covered by an @case, Angular’s template type checker will report an error, helping you catch missing branches early.
+`@default never;` kullnarak, kalan hicbir durumun olmamasi gerektigini acikca belirtirsiniz. Birlestirme turu daha sonra genisletilirse ve yeni bir durum bir @case tarafindan karsilanmazsa, Angular'in sablon tur denetleyicisi bir hata bildirir ve eksik dallari erken yakalamaniza yardimci olur.
 
 ```angular-html
 @Component({

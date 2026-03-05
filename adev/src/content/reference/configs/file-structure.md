@@ -1,113 +1,112 @@
 # Workspace and project file structure
 
-You develop applications in the context of an Angular workspace.
-A workspace contains the files for one or more projects.
-A project is the set of files that comprise an application or a shareable library.
+Uygulamaları bir Angular çalışma alanı bağlamında geliştirirsiniz.
+Bir çalışma alanı, bir veya daha fazla proje için dosyaları içerir.
+Bir proje, bir uygulamayı veya paylaşılabilir bir kütüphaneyi oluşturan dosyalar kümesidir.
 
-The Angular CLI `ng new` command creates a workspace.
+Angular CLI `ng new` komutu bir çalışma alanı oluşturur.
 
 ```shell
 ng new my-project
 ```
 
-When you run this command, the CLI installs the necessary Angular npm packages and other dependencies in a new workspace, with a root-level application named _my-project_.
+Bu komutu çalıştırdığınızda, CLI gerekli Angular npm paketlerini ve diğer bağımlılıkları yeni bir çalışma alanına kurar ve _my-project_ adında bir kök düzey uygulama oluşturur.
 
-By default, `ng new` creates an initial skeleton application at the root level of the workspace, along with its end-to-end tests.
-The skeleton is for a simple welcome application that is ready to run and easy to modify.
-The root-level application has the same name as the workspace, and the source files reside in the `src/` subfolder of the workspace.
+Varsayılan olarak, `ng new` çalışma alanının kök düzeyinde bir başlangıç iskelet uygulaması ve uçtan uca testlerini oluşturur.
+İskelet, çalıştırmaya hazır ve değiştirmesi kolay basit bir karşılama uygulaması içindir.
+Kök düzey uygulama çalışma alanıyla aynı ada sahiptir ve kaynak dosyaları çalışma alanının `src/` alt klasöründe bulunur.
 
-This default behavior is suitable for a typical "multi-repo" development style where each application resides in its own workspace.
-Beginners and intermediate users are encouraged to use `ng new` to create a separate workspace for each application.
+Bu varsayılan davranış, her uygulamanın kendi çalışma alanında bulunduğu tipik bir "multi-repo" geliştirme stili için uygundur.
+Başlangıç ve orta düzey kullanıcıların her uygulama için ayrı bir çalışma alanı oluşturmak üzere `ng new` kullanmaları teşvik edilir.
 
-Angular also supports workspaces with [multiple projects](#multiple-projects).
-This type of development environment is suitable for advanced users who are developing shareable libraries,
-and for enterprises that use a "monorepo" development style, with a single repository and global configuration for all Angular projects.
+Angular ayrıca [birden fazla projeli](#multiple-projects) çalışma alanlarını da destekler.
+Bu tür bir geliştirme ortamı, paylaşılabilir kütüphaneler geliştiren ileri düzey kullanıcılar ve tüm Angular projeleri için tek bir depo ve genel yapılandırma kullanan "monorepo" geliştirme stilini benimseyen kuruluşlar için uygundur.
 
-To set up a monorepo workspace, you should skip creating the root application.
-See [Setting up for a multi-project workspace](#multiple-projects) below.
+Bir monorepo çalışma alanı kurmak için kök uygulama oluşturmayı atlamalısınız.
+Aşağıdaki [Çoklu proje çalışma alanı kurulumu](#multiple-projects) bölümüne bakın.
 
 ## Workspace configuration files
 
-All projects within a workspace share a [configuration](reference/configs/workspace-config).
-The top level of the workspace contains workspace-wide configuration files, configuration files for the root-level application, and subfolders for the root-level application source and test files.
+Bir çalışma alanındaki tüm projeler bir [yapılandırmayı](reference/configs/workspace-config) paylaşır.
+Çalışma alanının en üst düzeyi, çalışma alanı genelinde yapılandırma dosyalarını, kök düzey uygulama için yapılandırma dosyalarını ve kök düzey uygulama kaynak ve test dosyaları için alt klasörleri içerir.
 
-| Workspace configuration files | Purpose                                                                                                                                                                                                                                                                                                          |
-| :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.editorconfig`               | Configuration for code editors. See [EditorConfig](https://editorconfig.org).                                                                                                                                                                                                                                    |
-| `.gitignore`                  | Specifies intentionally untracked files that [Git](https://git-scm.com) should ignore.                                                                                                                                                                                                                           |
-| `README.md`                   | Documentation for the workspace.                                                                                                                                                                                                                                                                                 |
-| `angular.json`                | CLI configuration for all projects in the workspace, including configuration options for how to build, serve, and test each project. For details, see [Angular Workspace Configuration](reference/configs/workspace-config).                                                                                     |
-| `package.json`                | Configures [npm package dependencies](reference/configs/npm-packages) that are available to all projects in the workspace. See [npm documentation](https://docs.npmjs.com/files/package.json) for the specific format and contents of this file.                                                                 |
-| `package-lock.json`           | Provides version information for all packages installed into `node_modules` by the npm client. See [npm documentation](https://docs.npmjs.com/files/package-lock.json) for details.                                                                                                                              |
-| `src/`                        | Source files for the root-level application project.                                                                                                                                                                                                                                                             |
-| `public/`                     | Contains image and other asset files to be served as static files by the dev server and copied as-is when you build your application.                                                                                                                                                                            |
-| `node_modules/`               | Installed [npm packages](reference/configs/npm-packages) for the entire workspace. Workspace-wide `node_modules` dependencies are visible to all projects.                                                                                                                                                       |
-| `tsconfig.json`               | The base [TypeScript](https://www.typescriptlang.org) configuration for projects in the workspace. All other configuration files inherit from this base file. For more information, see the [relevant TypeScript documentation](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#tsconfig-bases). |
+| Çalışma alanı yapılandırma dosyaları | Amaç                                                                                                                                                                                                                                                                                                               |
+| :----------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.editorconfig`                      | Kod editörleri için yapılandırma. [EditorConfig](https://editorconfig.org) sayfasına bakın.                                                                                                                                                                                                                        |
+| `.gitignore`                         | [Git](https://git-scm.com)'in yok sayması gereken, kasıtlı olarak izlenmeyen dosyaları belirtir.                                                                                                                                                                                                                   |
+| `README.md`                          | Çalışma alanı için dokümantasyon.                                                                                                                                                                                                                                                                                  |
+| `angular.json`                       | Çalışma alanındaki tüm projeler için CLI yapılandırması; her projenin nasıl derleneceği, sunulacağı ve test edileceğine ilişkin yapılandırma seçenekleri dahil. Ayrıntılar için [Angular Çalışma Alanı Yapılandırması](reference/configs/workspace-config) bölümüne bakın.                                         |
+| `package.json`                       | Çalışma alanındaki tüm projeler için kullanılabilen [npm paket bağımlılıklarını](reference/configs/npm-packages) yapılandırır. Bu dosyanın belirli biçimi ve içeriği için [npm dokümantasyonuna](https://docs.npmjs.com/files/package.json) bakın.                                                                 |
+| `package-lock.json`                  | npm istemcisi tarafından `node_modules` içine kurulan tüm paketler için sürüm bilgisi sağlar. Ayrıntılar için [npm dokümantasyonuna](https://docs.npmjs.com/files/package-lock.json) bakın.                                                                                                                        |
+| `src/`                               | Kök düzey uygulama projesi için kaynak dosyaları.                                                                                                                                                                                                                                                                  |
+| `public/`                            | Geliştirme sunucusu tarafından statik dosyalar olarak sunulacak ve uygulamanızı derlerken olduğu gibi kopyalanacak görüntü ve diğer varlık dosyalarını içerir.                                                                                                                                                     |
+| `node_modules/`                      | Tüm çalışma alanı için kurulmuş [npm paketleri](reference/configs/npm-packages). Çalışma alanı genelindeki `node_modules` bağımlılıkları tüm projeler tarafından görülebilir.                                                                                                                                      |
+| `tsconfig.json`                      | Çalışma alanındaki projeler için temel [TypeScript](https://www.typescriptlang.org) yapılandırması. Diğer tüm yapılandırma dosyaları bu temel dosyadan devralır. Daha fazla bilgi için [ilgili TypeScript dokümantasyonuna](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#tsconfig-bases) bakın. |
 
 ## Application project files
 
-By default, the CLI command `ng new my-app` creates a workspace folder named "my-app" and generates a new application skeleton in a `src/` folder at the top level of the workspace.
-A newly generated application contains source files for a root module, with a root component and template.
+Varsayılan olarak, CLI komutu `ng new my-app` "my-app" adında bir çalışma alanı klasörü oluşturur ve çalışma alanının en üst düzeyinde bir `src/` klasöründe yeni bir uygulama iskeleti oluşturur.
+Yeni oluşturulan uygulama, bir kök bileşen ve şablonla birlikte bir kök modül için kaynak dosyaları içerir.
 
-When the workspace file structure is in place, you can use the `ng generate` command on the command line to add functionality and data to the application.
-This initial root-level application is the _default app_ for CLI commands (unless you change the default after creating [additional apps](#multiple-projects)).
+Çalışma alanı dosya yapısı oluşturulduktan sonra, uygulamaya işlevsellik ve veri eklemek için komut satırında `ng generate` komutunu kullanabilirsiniz.
+Bu başlangıç kök düzey uygulaması, CLI komutları için _varsayılan uygulamadır_ ([ek uygulamalar](#multiple-projects) oluşturduktan sonra varsayılanı değiştirmediğiniz sürece).
 
-For a single-application workspace, the `src` subfolder of the workspace contains the source files (application logic, data, and assets) for the root application.
-For a multi-project workspace, additional projects in the `projects` folder contain a `project-name/src/` subfolder with the same structure.
+Tek uygulamalı bir çalışma alanı için, çalışma alanının `src` alt klasörü kök uygulama için kaynak dosyalarını (uygulama mantığı, veri ve varlıklar) içerir.
+Çoklu proje çalışma alanı için, `projects` klasöründeki ek projeler aynı yapıya sahip bir `project-name/src/` alt klasörü içerir.
 
 ### Application source files
 
-Files at the top level of `src/` support running your application.
-Subfolders contain the application source and application-specific configuration.
+`src/` dizininin en üst düzeyindeki dosyalar uygulamanızın çalışmasını destekler.
+Alt klasörler uygulama kaynağını ve uygulamaya özgü yapılandırmayı içerir.
 
-| Application support files | Purpose                                                                                                                                                                                                                           |
-| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app/`                    | Contains the component files in which your application logic and data are defined. See details below.                                                                                                                             |
-| `favicon.ico`             | An icon to use for this application in the bookmark bar.                                                                                                                                                                          |
-| `index.html`              | The main HTML page that is served when someone visits your site. The CLI automatically adds all JavaScript and CSS files when building your app, so you typically don't need to add any `<script>` or`<link>` tags here manually. |
-| `main.ts`                 | The main entry point for your application.                                                                                                                                                                                        |
-| `styles.css`              | Global CSS styles applied to the entire application.                                                                                                                                                                              |
+| Uygulama destek dosyaları | Amaç                                                                                                                                                                                                                                                |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/`                    | Uygulama mantığınızın ve verilerinizin tanımlandığı bileşen dosyalarını içerir. Ayrıntılar için aşağıya bakın.                                                                                                                                      |
+| `favicon.ico`             | Yer işareti çubuğunda bu uygulama için kullanılacak bir simge.                                                                                                                                                                                      |
+| `index.html`              | Birisi sitenizi ziyaret ettiğinde sunulan ana HTML sayfası. CLI, uygulamanızı derlerken tüm JavaScript ve CSS dosyalarını otomatik olarak ekler, bu nedenle genellikle burada manuel olarak `<script>` veya `<link>` etiketleri eklemeniz gerekmez. |
+| `main.ts`                 | Uygulamanızın ana giriş noktası.                                                                                                                                                                                                                    |
+| `styles.css`              | Tüm uygulamaya uygulanan genel CSS stilleri.                                                                                                                                                                                                        |
 
-Inside the `src` folder, the `app` folder contains your project's logic and data.
-Angular components, templates, and styles go here.
+`src` klasörünün içinde, `app` klasörü projenizin mantığını ve verilerini içerir.
+Angular bileşenleri, şablonları ve stilleri buraya yerleştirilir.
 
-| `src/app/` files        | Purpose                                                                                                                                                                                                                                                                            |
-| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app.config.ts`         | Defines the application configuration that tells Angular how to assemble the application. As you add more providers to the app, they should be declared here.<br><br>_Only generated when using the `--standalone` option._                                                        |
-| `app.component.ts`      | Defines the application's root component, named `AppComponent`. The view associated with this root component becomes the root of the view hierarchy as you add components and services to your application.                                                                        |
-| `app.component.html`    | Defines the HTML template associated with `AppComponent`.                                                                                                                                                                                                                          |
-| `app.component.css`     | Defines the CSS stylesheet for `AppComponent`.                                                                                                                                                                                                                                     |
-| `app.component.spec.ts` | Defines a unit test for `AppComponent`.                                                                                                                                                                                                                                            |
-| `app.module.ts`         | Defines the root module, named `AppModule`, that tells Angular how to assemble the application. Initially declares only the `AppComponent`. As you add more components to the app, they must be declared here.<br><br>_Only generated when using the `--standalone false` option._ |
-| `app.routes.ts`         | Defines the application's routing configuration.                                                                                                                                                                                                                                   |
+| `src/app/` dosyaları    | Amaç                                                                                                                                                                                                                                                                                               |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.config.ts`         | Angular'a uygulamanın nasıl birleştirileceğini söyleyen uygulama yapılandırmasını tanımlar. Uygulamaya daha fazla sağlayıcı ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone` seçeneği kullanıldığında oluşturulur._                                                       |
+| `app.component.ts`      | Uygulamanın `AppComponent` adlı kök bileşenini tanımlar. Bu kök bileşenle ilişkili görünüm, uygulamanıza bileşenler ve servisler ekledikçe görünüm hiyerarşisinin kökü olur.                                                                                                                       |
+| `app.component.html`    | `AppComponent` ile ilişkili HTML şablonunu tanımlar.                                                                                                                                                                                                                                               |
+| `app.component.css`     | `AppComponent` için CSS stil sayfasını tanımlar.                                                                                                                                                                                                                                                   |
+| `app.component.spec.ts` | `AppComponent` için bir birim testi tanımlar.                                                                                                                                                                                                                                                      |
+| `app.module.ts`         | Angular'a uygulamanın nasıl birleştirileceğini söyleyen `AppModule` adlı kök modülü tanımlar. Başlangıçta yalnızca `AppComponent`'i bildirir. Uygulamaya daha fazla bileşen ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone false` seçeneği kullanıldığında oluşturulur._ |
+| `app.routes.ts`         | Uygulamanın yönlendirme yapılandırmasını tanımlar.                                                                                                                                                                                                                                                 |
 
 ### Application configuration files
 
-Application-specific configuration files for the root application reside at the workspace root level.
-For a multi-project workspace, project-specific configuration files are in the project root, under `projects/project-name/`.
+Kök uygulama için uygulamaya özgü yapılandırma dosyaları çalışma alanı kök düzeyinde bulunur.
+Çoklu proje çalışma alanı için, projeye özgü yapılandırma dosyaları `projects/project-name/` altındaki proje kökünde bulunur.
 
-Project-specific [TypeScript](https://www.typescriptlang.org) configuration files inherit from the workspace-wide `tsconfig.json`.
+Projeye özgü [TypeScript](https://www.typescriptlang.org) yapılandırma dosyaları, çalışma alanı genelindeki `tsconfig.json`'dan devralır.
 
-| Application-specific configuration files | Purpose                                                                                                                                                                                             |
-| :--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tsconfig.app.json`                      | Application-specific [TypeScript configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html), including [Angular compiler options](reference/configs/angular-compiler-options). |
-| `tsconfig.spec.json`                     | [TypeScript configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for application tests.                                                                                  |
+| Uygulamaya özgü yapılandırma dosyaları | Amaç                                                                                                                                                                                             |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tsconfig.app.json`                    | [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) dahil, uygulamaya özgü [TypeScript yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). |
+| `tsconfig.spec.json`                   | Uygulama testleri için [TypeScript yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).                                                                             |
 
 ## Multiple projects
 
-A multi-project workspace is suitable for an organization that uses a single repository and global configuration for multiple Angular projects (the "monorepo" model).
-A multi-project workspace also supports library development.
+Çoklu proje çalışma alanı, birden fazla Angular projesi için tek bir depo ve genel yapılandırma kullanan bir kuruluş için uygundur ("monorepo" modeli).
+Çoklu proje çalışma alanı ayrıca kütüphane geliştirmeyi de destekler.
 
 ### Setting up for a multi-project workspace
 
-If you intend to have multiple projects in a workspace, you can skip the initial application generation when you create the workspace, and give the workspace a unique name.
-The following command creates a workspace with all of the workspace-wide configuration files, but no root-level application.
+Çalışma alanında birden fazla proje bulundurmayı planlıyorsanız, çalışma alanını oluştururken ilk uygulama oluşturmayı atlayabilir ve çalışma alanına benzersiz bir ad verebilirsiniz.
+Aşağıdaki komut, tüm çalışma alanı genelinde yapılandırma dosyalarıyla birlikte ancak kök düzey uygulama olmadan bir çalışma alanı oluşturur.
 
 ```shell
 ng new my-workspace --no-create-application
 ```
 
-You can then generate applications and libraries with names that are unique within the workspace.
+Daha sonra çalışma alanı içinde benzersiz adlara sahip uygulamalar ve kütüphaneler oluşturabilirsiniz.
 
 ```shell
 cd my-workspace
@@ -117,9 +116,9 @@ ng generate library my-lib
 
 ### Multiple project file structure
 
-The first explicitly generated application goes into the `projects` folder along with all other projects in the workspace.
-Newly generated libraries are also added under `projects`.
-When you create projects this way, the file structure of the workspace is entirely consistent with the structure of the [workspace configuration file](reference/configs/workspace-config), `angular.json`.
+İlk açıkça oluşturulan uygulama, çalışma alanındaki diğer tüm projelerle birlikte `projects` klasörüne gider.
+Yeni oluşturulan kütüphaneler de `projects` altına eklenir.
+Projeleri bu şekilde oluşturduğunuzda, çalışma alanının dosya yapısı [çalışma alanı yapılandırma dosyası](reference/configs/workspace-config), `angular.json` yapısıyla tamamen tutarlıdır.
 
 ```markdown
 my-workspace/
@@ -133,19 +132,19 @@ my-workspace/
 
 ## Library project files
 
-When you generate a library using the CLI (with a command such as `ng generate library my-lib`), the generated files go into the `projects/` folder of the workspace.
-For more information about creating your own libraries, see [Creating Libraries](tools/libraries/creating-libraries).
+CLI kullanarak bir kütüphane oluşturduğunuzda (`ng generate library my-lib` gibi bir komutla), oluşturulan dosyalar çalışma alanının `projects/` klasörüne gider.
+Kendi kütüphanelerinizi oluşturma hakkında daha fazla bilgi için [Kütüphane Oluşturma](tools/libraries/creating-libraries) bölümüne bakın.
 
-Unlike an application, a library has its own `package.json` configuration file.
+Bir uygulamanın aksine, bir kütüphanenin kendi `package.json` yapılandırma dosyası vardır.
 
-Under the `projects/` folder, the `my-lib` folder contains your library code.
+`projects/` klasörü altında, `my-lib` klasörü kütüphane kodunuzu içerir.
 
-| Library source files     | Purpose                                                                                                                                                                                         |
-| :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/lib`                | Contains your library project's logic and data. Like an application project, a library project can contain components, services, modules, directives, and pipes.                                |
-| `src/public-api.ts`      | Specifies all files that are exported from your library.                                                                                                                                        |
-| `ng-package.json`        | Configuration file used by [ng-packagr](https://github.com/ng-packagr/ng-packagr) for building your library.                                                                                    |
-| `package.json`           | Configures [npm package dependencies](reference/configs/npm-packages) that are required for this library.                                                                                       |
-| `tsconfig.lib.json`      | Library-specific [TypeScript Configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html), including [Angular compiler options](reference/configs/angular-compiler-options). |
-| `tsconfig.lib.prod.json` | Library-specific [TypeScript Configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) that is used when building the library in production mode.                         |
-| `tsconfig.spec.json`     | [TypeScript Configuration](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for the library's unit tests.                                                                       |
+| Kütüphane kaynak dosyaları | Amaç                                                                                                                                                                                              |
+| :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/lib`                  | Kütüphane projenizin mantığını ve verilerini içerir. Bir uygulama projesi gibi, bir kütüphane projesi de bileşenler, servisler, modüller, direktifler ve pipe'lar içerebilir.                     |
+| `src/public-api.ts`        | Kütüphanenizden dışa aktarılan tüm dosyaları belirtir.                                                                                                                                            |
+| `ng-package.json`          | Kütüphanenizi derlemek için [ng-packagr](https://github.com/ng-packagr/ng-packagr) tarafından kullanılan yapılandırma dosyası.                                                                    |
+| `package.json`             | Bu kütüphane için gerekli olan [npm paket bağımlılıklarını](reference/configs/npm-packages) yapılandırır.                                                                                         |
+| `tsconfig.lib.json`        | [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) dahil, kütüphaneye özgü [TypeScript Yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). |
+| `tsconfig.lib.prod.json`   | Kütüphane üretim modunda derlenirken kullanılan kütüphaneye özgü [TypeScript Yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).                                    |
+| `tsconfig.spec.json`       | Kütüphanenin birim testleri için [TypeScript Yapılandırması](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).                                                                    |

@@ -1,12 +1,12 @@
 # Custom service worker scripts
 
-While the Angular service worker provides excellent capabilities, you may need to add custom functionality such as handling push notifications, background sync, or other service worker events. You can create a custom service worker script that imports and extends the Angular service worker.
+Angular service worker mükemmel yetenekler sunsa da, push bildirimlerini işleme, arka plan senkronizasyonu veya diğer service worker olayları gibi özel işlevsellik eklemeniz gerekebilir. Angular service worker'ı içe aktaran ve genişleten özel bir service worker betiği oluşturabilirsiniz.
 
 ## Creating a custom service worker
 
-To create a custom service worker that extends Angular's functionality:
+Angular'ın işlevselliğini genişleten özel bir service worker oluşturmak için:
 
-1. Create a custom service worker file (e.g., `custom-sw.js`) in your `src` directory:
+1. `src` dizininizde özel bir service worker dosyası (örneğin `custom-sw.js`) oluşturun:
 
 ```js
 // Import the Angular service worker
@@ -46,7 +46,7 @@ importScripts('./ngsw-worker.js');
 })();
 ```
 
-2. Update your `angular.json` file to use the custom service worker:
+2. Özel service worker'ı kullanmak için `angular.json` dosyanızı güncelleyin:
 
 ```json
 {
@@ -70,7 +70,7 @@ importScripts('./ngsw-worker.js');
 }
 ```
 
-3. Configure the service worker registration to use your custom script:
+3. Service worker kaydını özel betiğinizi kullanacak şekilde yapılandırın:
 
 ```ts
 import {ApplicationConfig, isDevMode} from '@angular/core';
@@ -88,18 +88,18 @@ export const appConfig: ApplicationConfig = {
 
 ### Best practices for custom service workers
 
-When extending the Angular service worker:
+Angular service worker'ı genişletirken:
 
-- **Always import the Angular service worker first** using `importScripts('./ngsw-worker.js')` to ensure you get all the caching and update functionality
-- **Wrap your custom code in an IIFE** (Immediately Invoked Function Expression) to avoid polluting the global scope
-- **Use `event.waitUntil()`** for asynchronous operations to ensure they complete before the service worker is terminated
-- **Test thoroughly** in both development and production environments
-- **Handle errors gracefully** to prevent your custom code from breaking the Angular service worker functionality
+- Tüm önbellekleme ve güncelleme işlevselliğini aldığınızdan emin olmak için `importScripts('./ngsw-worker.js')` kullanarak **her zaman önce Angular service worker'ını içe aktarın**
+- Global kapsamı kirletmemek için **özel kodunuzu bir IIFE** (Hemen Çağrılan Fonksiyon İfadesi) içine sarın
+- Service worker sonlandırılmadan önce asenkron işlemlerin tamamlanmasını sağlamak için **`event.waitUntil()` kullanın**
+- Hem geliştirme hem de üretim ortamlarında **kapsamlı bir şekilde test edin**
+- Özel kodunuzun Angular service worker işlevselliğini bozmasını önlemek için **hataları zarif bir şekilde işleyin**
 
 ### Common use cases
 
-Custom service workers are commonly used for:
+Özel service worker'lar yaygın olarak şunlar için kullanılır:
 
-- **Push notifications**: Handle incoming push messages and display notifications
-- **Background sync**: Sync data when the network connection is restored
-- **Custom navigation**: Handle special routing or offline page scenarios
+- **Push bildirimleri**: Gelen push mesajlarını işleme ve bildirimleri gösterme
+- **Arka plan senkronizasyonu**: Ağ bağlantısı yeniden kurulduğunda verileri senkronize etme
+- **Özel navigasyon**: Özel yönlendirme veya çevrimdışı sayfa senaryolarını işleme

@@ -1,9 +1,9 @@
 # Migration from NgClass to class bindings
 
-This schematic migrates NgClass directive usages to class bindings in your application.
-It will only migrate usages that are considered safe to migrate.
+Bu şematik, uygulamanızdaki NgClass direktifi kullanımlarını sınıf bağlamalarına geçirir.
+Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```bash
 ng generate @angular/core:ngclass-to-class
@@ -23,18 +23,18 @@ ng generate @angular/core:ngclass-to-class
 
 ## Configuration options
 
-The migration supports a few options for fine tuning the migration to your specific needs.
+Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
 ### `--migrate-space-separated-key`
 
-By default, the migration avoids migrating usages of `NgClass` in which object literal keys contain space-separated class names.
-When the --migrate-space-separated-key flag is enabled, a binding is created for each individual key.
+Varsayılan olarak, geçiş nesne literal anahtarlarının boşlukla ayrılmış sınıf adları içerdiği `NgClass` kullanımlarını geçirmekten kaçınır.
+--migrate-space-separated-key bayrağı etkinleştirildiğinde, her bir anahtar için ayrı bir bağlama oluşturulur.
 
 ```html
 <div [ngClass]="{'class1 class2': condition}"></div>
 ```
 
-to
+şuna dönüşür:
 
 ```html
 <div [class.class1]="condition" [class.class2]="condition"></div>

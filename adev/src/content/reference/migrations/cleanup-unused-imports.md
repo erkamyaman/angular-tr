@@ -1,10 +1,10 @@
 # Clean up unused imports
 
-As of version 19, Angular reports when a component's `imports` array contains symbols that aren't used in its template.
+Sürüm 19 itibarıyla, Angular bir bileşenin `imports` dizisi şablonunda kullanılmayan semboller içerdiğinde bunu bildirir.
 
-Running this schematic will clean up all unused imports within the project.
+Bu şematiği çalıştırmak, proje içindeki tüm kullanılmayan içe aktarmaları temizleyecektir.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```shell
 ng generate @angular/core:cleanup-unused-imports

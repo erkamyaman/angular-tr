@@ -1,106 +1,106 @@
 # Communicating with the Service Worker
 
-Enabling service worker support does more than just register the service worker; it also provides services you can use to interact with the service worker and control the caching of your application.
+Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmekten fazlasını yapar; aynı zamanda service worker ile etkileşim kurmak ve uygulamanızın önbelleklemesini kontrol etmek için kullanabileceğiniz servisler sağlar.
 
 ## `SwUpdate` service
 
-The `SwUpdate` service gives you access to events that indicate when the service worker discovers and installs an available update for your application.
+`SwUpdate` servisi, service worker'ın uygulamanız için mevcut bir güncelleme keşfettiğini ve yüklediğini belirten olaylara erişmenizi sağlar.
 
-The `SwUpdate` service supports three separate operations:
+`SwUpdate` servisi üç ayrı işlemi destekler:
 
-- Receiving notifications when an updated version is _detected_ on the server, _installed and ready_ to be used locally or when an _installation fails_.
-- Asking the service worker to check the server for new updates.
-- Asking the service worker to activate the latest version of the application for the current tab.
+- Güncellenmiş bir sürümün sunucuda _tespit edildiğinde_, _yüklenip yerel olarak kullanıma hazır olduğunda_ veya bir _yükleme başarısız olduğunda_ bildirim alma.
+- Service worker'dan sunucuda yeni güncellemeler olup olmadığını kontrol etmesini isteme.
+- Service worker'dan mevcut sekme için uygulamanın en son sürümünü etkinleştirmesini isteme.
 
 ### Version updates
 
-The `versionUpdates` is an `Observable` property of `SwUpdate` and emits five event types:
+`versionUpdates`, `SwUpdate`'in bir `Observable` özelliğidir ve beş olay türü yayar:
 
-| Event types                      | Details                                                                                                                                                                               |
-| :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `VersionDetectedEvent`           | Emitted when the service worker has detected a new version of the app on the server and is about to start downloading it.                                                             |
-| `NoNewVersionDetectedEvent`      | Emitted when the service worker has checked the version of the app on the server and did not find a new version.                                                                      |
-| `VersionReadyEvent`              | Emitted when a new version of the app is available to be activated by clients. It may be used to notify the user of an available update or prompt them to refresh the page.           |
-| `VersionInstallationFailedEvent` | Emitted when the installation of a new version failed. It may be used for logging/monitoring purposes.                                                                                |
-| `VersionFailedEvent`             | Emitted when a version encounters a critical failure (such as broken hash errors) that affects all clients using that version. Provides error details for debugging and transparency. |
+| Olay türleri                     | Ayrıntılar                                                                                                                                                                                                    |
+| :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `VersionDetectedEvent`           | Service worker, sunucuda uygulamanın yeni bir sürümünü tespit ettiğinde ve indirmeye başlamak üzere olduğunda yayılır.                                                                                        |
+| `NoNewVersionDetectedEvent`      | Service worker, sunucudaki uygulama sürümünü kontrol ettiğinde ve yeni bir sürüm bulamadığında yayılır.                                                                                                       |
+| `VersionReadyEvent`              | Uygulamanın yeni bir sürümü istemciler tarafından etkinleştirilmeye hazır olduğunda yayılır. Kullanıcıyı mevcut bir güncelleme hakkında bilgilendirmek veya sayfayı yenilemesini istemek için kullanılabilir. |
+| `VersionInstallationFailedEvent` | Yeni bir sürümün yüklemesi başarısız olduğunda yayılır. Günlükleme/izleme amaçlarıyla kullanılabilir.                                                                                                         |
+| `VersionFailedEvent`             | Bir sürüm, o sürümü kullanan tüm istemcileri etkileyen kritik bir hatayla (bozuk hash hataları gibi) karşılaştığında yayılır. Hata ayıklama ve şeffaflık için hata ayrıntıları sağlar.                        |
 
 <docs-code header="log-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/log-update.service.ts" region="sw-update"/>
 
 ### Checking for updates
 
-It's possible to ask the service worker to check if any updates have been deployed to the server.
-The service worker checks for updates during initialization and on each navigation request —that is, when the user navigates from a different address to your application.
-However, you might choose to manually check for updates if you have a site that changes frequently or want updates to happen on a schedule.
+Service worker'dan sunucuya herhangi bir güncelleme dağıtılıp dağıtılmadığını kontrol etmesini istemek mümkündür.
+Service worker, başlatma sırasında ve her navigasyon isteğinde — yani kullanıcı farklı bir adresten uygulamanıza gittiğinde — güncellemeleri kontrol eder.
+Ancak, sık sık değişen bir siteniz varsa veya güncellemelerin bir programa göre yapılmasını istiyorsanız, güncellemeleri manuel olarak kontrol etmeyi seçebilirsiniz.
 
-Do this with the `checkForUpdate()` method:
+Bunu `checkForUpdate()` metoduyla yapın:
 
 <docs-code header="check-for-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/check-for-update.service.ts"/>
 
-This method returns a `Promise<boolean>` which indicates if an update is available for activation.
-The check might fail, which will cause a rejection of the `Promise`.
+Bu metot, etkinleştirme için bir güncellemenin mevcut olup olmadığını belirten bir `Promise<boolean>` döndürür.
+Kontrol başarısız olabilir ve bu durumda `Promise` reddedilir.
 
 <docs-callout important title="Stabilization and service worker registration">
-In order to avoid negatively affecting the initial rendering of the page, by default the Angular service worker service waits for up to 30 seconds for the application to stabilize before registering the ServiceWorker script.
+Sayfanın ilk oluşturulmasını olumsuz etkilememek için, varsayılan olarak Angular service worker servisi, ServiceWorker betiğini kaydetmeden önce uygulamanın kararlı hale gelmesi için 30 saniyeye kadar bekler.
 
-Constantly polling for updates, for example, with [setInterval()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) or RxJS' [interval()](https://rxjs.dev/api/index/function/interval), prevents the application from stabilizing and the ServiceWorker script is not registered with the browser until the 30 seconds upper limit is reached.
+Güncellemeler için sürekli yoklama yapmak, örneğin [setInterval()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) veya RxJS'in [interval()](https://rxjs.dev/api/index/function/interval) fonksiyonu ile, uygulamanın kararlı hale gelmesini engeller ve ServiceWorker betiği 30 saniyelik üst sınıra ulaşılana kadar tarayıcıya kaydedilmez.
 
-This is true for any kind of polling done by your application.
-Check the [isStable](api/core/ApplicationRef#isStable) documentation for more information.
+Bu, uygulamanız tarafından yapılan her türlü yoklama için geçerlidir.
+Daha fazla bilgi için [isStable](api/core/ApplicationRef#isStable) belgelerine bakın.
 
-Avoid that delay by waiting for the application to stabilize first, before starting to poll for updates, as shown in the preceding example.
-Alternatively, you might want to define a different [registration strategy](api/service-worker/SwRegistrationOptions#registrationStrategy) for the ServiceWorker.
+Bu gecikmeden kaçınmak için, önceki örnekte gösterildiği gibi, güncelleme yoklamasına başlamadan önce uygulamanın kararlı hale gelmesini bekleyin.
+Alternatif olarak, ServiceWorker için farklı bir [kayıt stratejisi](api/service-worker/SwRegistrationOptions#registrationStrategy) tanımlamak isteyebilirsiniz.
 </docs-callout>
 
 ### Updating to the latest version
 
-You can update an existing tab to the latest version by reloading the page as soon as a new version is ready.
-To avoid disrupting the user's progress, it is generally a good idea to prompt the user and let them confirm that it is OK to reload the page and update to the latest version:
+Mevcut bir sekmeyi, yeni bir sürüm hazır olur olmaz sayfayı yenileyerek en son sürüme güncelleyebilirsiniz.
+Kullanıcının ilerlemesini kesintiye uğratmamak için, genellikle kullanıcıya sormak ve sayfayı yenileyip en son sürüme güncellemenin uygun olduğunu onaylamasını sağlamak iyi bir fikirdir:
 
 <docs-code header="prompt-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/prompt-update.service.ts" region="sw-version-ready"/>
 
 <docs-callout important title="Safety of updating without reloading">
-Calling `activateUpdate()` updates a tab to the latest version without reloading the page, but this could break the application.
+`activateUpdate()` çağrısı, bir sekmeyi sayfayı yeniden yüklemeden en son sürüme günceller, ancak bu uygulamayı bozabilir.
 
-Updating without reloading can create a version mismatch between the application shell and other page resources, such as lazy-loaded chunks, whose filenames may change between versions.
+Yeniden yüklemeden güncelleme, uygulama kabuğu ile tembel yüklenen parçalar gibi diğer sayfa kaynakları arasında bir sürüm uyumsuzluğu yaratabilir; bu dosyaların isimleri sürümler arasında değişebilir.
 
-You should only use `activateUpdate()`, if you are certain it is safe for your specific use case.
+`activateUpdate()`'i yalnızca belirli kullanım durumunuz için güvenli olduğundan eminseniz kullanmalısınız.
 </docs-callout>
 
 ### Handling an unrecoverable state
 
-In some cases, the version of the application used by the service worker to serve a client might be in a broken state that cannot be recovered from without a full page reload.
+Bazı durumlarda, service worker'ın bir istemciye hizmet vermek için kullandığı uygulamanın sürümü, tam bir sayfa yeniden yüklemesi olmadan kurtarılamayan bozuk bir durumda olabilir.
 
-For example, imagine the following scenario:
+Örneğin, aşağıdaki senaryoyu düşünün:
 
-1. A user opens the application for the first time and the service worker caches the latest version of the application.
-   Assume the application's cached assets include `index.html`, `main.<main-hash-1>.js` and `lazy-chunk.<lazy-hash-1>.js`.
+1. Bir kullanıcı uygulamayı ilk kez açar ve service worker uygulamanın en son sürümünü önbelleğe alır.
+   Uygulamanın önbelleğe alınmış varlıklarının `index.html`, `main.<main-hash-1>.js` ve `lazy-chunk.<lazy-hash-1>.js` içerdiğini varsayın.
 
-1. The user closes the application and does not open it for a while.
-1. After some time, a new version of the application is deployed to the server.
-   This newer version includes the files `index.html`, `main.<main-hash-2>.js` and `lazy-chunk.<lazy-hash-2>.js`.
+1. Kullanıcı uygulamayı kapatır ve bir süre açmaz.
+1. Bir süre sonra uygulamanın yeni bir sürümü sunucuya dağıtılır.
+   Bu daha yeni sürüm `index.html`, `main.<main-hash-2>.js` ve `lazy-chunk.<lazy-hash-2>.js` dosyalarını içerir.
 
-IMPORTANT: The hashes are different now, because the content of the files changed. The old version is no longer available on the server.
+IMPORTANT: Dosyaların içeriği değiştiği için hash'ler artık farklıdır. Eski sürüm artık sunucuda mevcut değildir.
 
-1. In the meantime, the user's browser decides to evict `lazy-chunk.<lazy-hash-1>.js` from its cache.
-   Browsers might decide to evict specific (or all) resources from a cache in order to reclaim disk space.
+1. Bu arada kullanıcının tarayıcısı `lazy-chunk.<lazy-hash-1>.js` dosyasını önbelleğinden çıkarmaya karar verir.
+   Tarayıcılar disk alanı geri kazanmak için belirli (veya tüm) kaynakları önbellekten çıkarmaya karar verebilir.
 
-1. The user opens the application again.
-   The service worker serves the latest version known to it at this point, namely the old version (`index.html` and `main.<main-hash-1>.js`).
+1. Kullanıcı uygulamayı tekrar açar.
+   Service worker, bu noktada bildiği en son sürümü, yani eski sürümü (`index.html` ve `main.<main-hash-1>.js`) sunar.
 
-1. At some later point, the application requests the lazy bundle, `lazy-chunk.<lazy-hash-1>.js`.
-1. The service worker is unable to find the asset in the cache (remember that the browser evicted it).
-   Nor is it able to retrieve it from the server (because the server now only has `lazy-chunk.<lazy-hash-2>.js` from the newer version).
+1. Daha sonraki bir noktada uygulama tembel paketi `lazy-chunk.<lazy-hash-1>.js`'yi ister.
+1. Service worker, varlığı önbellekte bulamaz (tarayıcının onu çıkardığını unutmayın).
+   Sunucudan da alamaz (çünkü sunucuda artık yalnızca daha yeni sürümdeki `lazy-chunk.<lazy-hash-2>.js` vardır).
 
-In the preceding scenario, the service worker is not able to serve an asset that would normally be cached.
-That particular application version is broken and there is no way to fix the state of the client without reloading the page.
-In such cases, the service worker notifies the client by sending an `UnrecoverableStateEvent` event.
-Subscribe to `SwUpdate#unrecoverable` to be notified and handle these errors.
+Önceki senaryoda, service worker normalde önbelleğe alınacak bir varlığı sunamaz.
+Bu belirli uygulama sürümü bozuktur ve istemcinin durumunu sayfayı yeniden yüklemeden düzeltmenin bir yolu yoktur.
+Bu gibi durumlarda service worker, istemciyi bir `UnrecoverableStateEvent` olayı göndererek bilgilendirir.
+Bu hataları bildirim almak ve işlemek için `SwUpdate#unrecoverable`'a abone olun.
 
 <docs-code header="handle-unrecoverable-state.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/handle-unrecoverable-state.service.ts" region="sw-unrecoverable-state"/>
 
 ## More on Angular service workers
 
-You might also be interested in the following:
+Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
   <docs-pill href="ecosystem/service-workers/push-notifications" title="Push notifications"/>

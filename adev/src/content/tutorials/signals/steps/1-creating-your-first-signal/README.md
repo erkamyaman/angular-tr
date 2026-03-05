@@ -1,21 +1,21 @@
 # Creating and updating your first signal
 
-Welcome to the Angular signals tutorial! [Signals](/essentials/signals) are Angular's reactive primitive that provide a way to manage state and automatically update your UI when that state changes.
+Angular sinyalleri öğreticisine hoş geldiniz! [Sinyaller](/essentials/signals), Angular'ın reaktif temel yapı taşıdır ve durumu yönetmenin ve bu durum değiştiğinde kullanıcı arayüzünüzü otomatik olarak güncellemenin bir yolunu sağlar.
 
-In this activity, you'll learn how to:
+Bu aktivitede şunları öğreneceksiniz:
 
-- Create your first signal using the `signal()` function
-- Display its value in a template
-- Update the signal value using `set()` and `update()` methods
+- `signal()` fonksiyonunu kullanarak ilk sinyalinizi oluşturma
+- Değerini bir şablonda görüntüleme
+- `set()` ve `update()` metotlarını kullanarak sinyal değerini güncelleme
 
-Let's build an interactive user status system with signals!
+Sinyallerle etkileşimli bir kullanıcı durum sistemi oluşturalım!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Import the signal function">
-Import the `signal` function from `@angular/core` at the top of your component file.
+Bileşen dosyanızın en üstüne `@angular/core` paketinden `signal` fonksiyonunu içe aktarın.
 
 ```ts
 import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
@@ -24,7 +24,7 @@ import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
 </docs-step>
 
 <docs-step title="Create a signal in your component">
-Add a `userStatus` signal to your component class that is initialized with a value of `'offline'`.
+Bileşen sınıfınıza `'offline'` değeriyle başlatılan bir `userStatus` sinyali ekleyin.
 
 ```ts
 @Component({
@@ -38,9 +38,9 @@ export class App {
 </docs-step>
 
 <docs-step title="Display the signal value in the template">
-Update the status indicator to display the current user status by:
-1. Binding the signal to the class attribute with `[class]="userStatus()"`
-2. Displaying the status text by replacing `???` with `{{ userStatus() }}`
+Durum göstergesini, mevcut kullanıcı durumunu görüntüleyecek şekilde güncelleyin:
+1. Sinyali class niteliğine `[class]="userStatus()"` ile bağlama
+2. `???` yerine `{{ userStatus() }}` koyarak durum metnini görüntüleme
 
 ```angular-html
 <!-- Update from: -->
@@ -56,11 +56,11 @@ Update the status indicator to display the current user status by:
 </div>
 ```
 
-Notice how we call the signal `userStatus()` with parentheses to read its value.
+Sinyalin değerini okumak için `userStatus()` şeklinde parantezlerle çağırdığımıza dikkat edin.
 </docs-step>
 
 <docs-step title="Add methods to update the signal">
-Add methods to your component that change the user status using the `set()` method.
+`set()` metodunu kullanarak kullanıcı durumunu değiştiren metotları bileşeninize ekleyin.
 
 ```ts
 goOnline() {
@@ -72,14 +72,14 @@ goOffline() {
 }
 ```
 
-The `set()` method replaces the signal's value entirely with a new value.
+`set()` metodu, sinyalin değerini tamamen yeni bir değerle değiştirir.
 
 </docs-step>
 
 <docs-step title="Wire up the control buttons">
-The buttons are already in the template. Now connect them to your methods by adding:
-1. Click handlers with `(click)`
-2. Disabled states with `[disabled]` when already in that status
+Düğmeler zaten şablonda mevcut. Şimdi aşağıdakileri ekleyerek onları metotlarınıza bağlayın:
+1. `(click)` ile tıklama işleyicileri
+2. Zaten o durumda olunduğunda `[disabled]` ile devre dışı durumlar
 
 ```html
 <!-- Add bindings to the existing buttons: -->
@@ -90,7 +90,7 @@ The buttons are already in the template. Now connect them to your methods by add
 </docs-step>
 
 <docs-step title="Add a toggle method using update()">
-Add a `toggleStatus()` method that switches between online and offline using the `update()` method.
+`update()` metodunu kullanarak çevrimiçi ve çevrimdışı arasında geçiş yapan bir `toggleStatus()` metodu ekleyin.
 
 ```ts
 toggleStatus() {
@@ -98,12 +98,12 @@ toggleStatus() {
 }
 ```
 
-The `update()` method takes a function that receives the current value and returns the new value. This is useful when you need to modify the existing value based on its current state.
+`update()` metodu, mevcut değeri alan ve yeni değeri döndüren bir fonksiyon alır. Bu, mevcut değeri geçerli durumuna göre değiştirmeniz gerektiğinde kullanışlıdır.
 
 </docs-step>
 
 <docs-step title="Add the toggle button handler">
-The toggle button is already in the template. Connect it to your `toggleStatus()` method:
+Geçiş düğmesi zaten şablonda mevcut. Onu `toggleStatus()` metodunuza bağlayın:
 
 ```html
 <button (click)="toggleStatus()" class="toggle-btn">Toggle Status</button>
@@ -113,12 +113,12 @@ The toggle button is already in the template. Connect it to your `toggleStatus()
 
 </docs-workflow>
 
-Congratulations! You've created your first signal and learned how to update it using both `set()` and `update()` methods. The `signal()` function creates a reactive value that Angular tracks, and when you update it, your UI automatically reflects the changes.
+Tebrikler! İlk sinyalinizi oluşturdunuz ve hem `set()` hem de `update()` metotlarını kullanarak nasıl güncelleneceğini öğrendiniz. `signal()` fonksiyonu, Angular'ın izlediği reaktif bir değer oluşturur ve siz onu güncellediğinizde, kullanıcı arayüzünüz değişiklikleri otomatik olarak yansıtır.
 
-Next, you'll learn [how to derive state from signals using computed](/tutorials/signals/2-deriving-state-with-computed-signals)!
+Ardından, [computed kullanarak sinyallerden durum türetmeyi](/tutorials/signals/2-deriving-state-with-computed-signals) öğreneceksiniz!
 
 <docs-callout helpful title="About ChangeDetectionStrategy.OnPush">
 
-You might notice `ChangeDetectionStrategy.OnPush` in the component decorator throughout this tutorial. This is a performance optimization for Angular components that use signals. For now, you can safely ignore it—just know it helps your app run faster when using signals! You can learn more in the [change detection strategies API docs](/api/core/ChangeDetectionStrategy).
+Bu öğretici boyunca bileşen dekoratöründe `ChangeDetectionStrategy.OnPush` görebilirsiniz. Bu, sinyalleri kullanan Angular bileşenleri için bir performans optimizasyonudur. Şimdilik bunu güvenle görmezden gelebilirsiniz - sadece sinyalleri kullanırken uygulamanızın daha hızlı çalışmasına yardımcı olduğunu bilin! Daha fazla bilgi için [değişiklik algılama stratejileri API belgelerine](/api/core/ChangeDetectionStrategy) bakabilirsiniz.
 
 </docs-callout>

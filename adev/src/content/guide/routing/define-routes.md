@@ -1,12 +1,12 @@
 # Define routes
 
-Routes serve as the fundamental building blocks for navigation within an Angular app.
+Rotalar, bir Angular uygulamasında navigasyonun temel yapı taşlarıdır.
 
 ## What are routes?
 
-In Angular, a **route** is an object that defines which component should render for a specific URL path or pattern, as well as additional configuration options about what happens when a user navigates to that URL.
+Angular'da bir **rota**, belirli bir URL yolu veya kalıbı için hangi bileşenin render edileceğini ve kullanıcı o URL'ye gittiğinde ne olacağına dair ek yapılandırma seçeneklerini tanımlayan bir nesnedir.
 
-Here is a basic example of a route:
+İşte bir rotanın temel örneği:
 
 ```ts
 import {AdminPage} from './app-admin';
@@ -17,13 +17,13 @@ const adminPage = {
 };
 ```
 
-For this route, when a user visits the `/admin` path, the app will display the `AdminPage` component.
+Bu rota için, kullanıcı `/admin` yolunu ziyaret ettiğinde uygulama `AdminPage` bileşenini görüntüler.
 
 ### Managing routes in your application
 
-Most projects define routes in a separate file that contains `routes` in the filename.
+Çoğu proje, rotaları dosya adında `routes` içeren ayrı bir dosyada tanımlar.
 
-A collection of routes looks like this:
+Bir rota koleksiyonu şöyle görünür:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -42,13 +42,13 @@ export const routes: Routes = [
 ];
 ```
 
-Tip: If you generated a project with Angular CLI, your routes are defined in `src/app/app.routes.ts`.
+Tip: Angular CLI ile bir proje oluşturduysanız, rotalarınız `src/app/app.routes.ts` dosyasında tanımlanmıştır.
 
 ### Adding the router to your application
 
-When bootstrapping an Angular application without the Angular CLI, you can pass a configuration object that includes a `providers` array.
+Angular CLI olmadan bir Angular uygulamasını başlatırken, `providers` dizisi içeren bir yapılandırma nesnesi geçirebilirsiniz.
 
-Inside of the `providers` array, you can add the Angular router to your application by adding a `provideRouter` function call with your routes.
+`providers` dizisi içinde, rotalarınızla birlikte bir `provideRouter` fonksiyon çağrısı ekleyerek Angular yönlendiriciyi uygulamanıza ekleyebilirsiniz.
 
 ```ts
 import {ApplicationConfig} from '@angular/core';
@@ -68,9 +68,9 @@ export const appConfig: ApplicationConfig = {
 
 ### Static URL Paths
 
-Static URL Paths refer to routes with predefined paths that don't change based on dynamic parameters. These are routes that match a `path` string exactly and have a fixed outcome.
+Statik URL Yolları, dinamik parametrelere göre değişmeyen önceden tanımlanmış yollara sahip rotaları ifade eder. Bunlar, bir `path` dizesiyle tam olarak eşleşen ve sabit bir sonucu olan rotalardır.
 
-Examples of this include:
+Bunlara örnek olarak şunlar verilebilir:
 
 - "/admin"
 - "/blog"
@@ -78,14 +78,14 @@ Examples of this include:
 
 ### Define URL Paths with Route Parameters
 
-Parameterized URLs allow you to define dynamic paths that allow multiple URLs to the same component while dynamically displaying data based on parameters in the URL.
+Parametreli URL'ler, aynı bileşene birden fazla URL'nin erişmesine izin verirken URL'deki parametrelere göre dinamik olarak veri görüntüleyen dinamik yollar tanımlamanıza olanak tanır.
 
-You can define this type of pattern by adding parameters to your route’s `path` string and prefixing each parameter with the colon (`:`) character.
+Bu tür bir kalıbı, rotanızın `path` dizesine parametreler ekleyerek ve her parametreyi iki nokta üst üste (`:`) karakteriyle ön eklendirerek tanımlayabilirsiniz.
 
-IMPORTANT: Parameters are distinct from information in the URL's [query string](https://en.wikipedia.org/wiki/Query_string).
-Learn more about [query parameters in Angular in this guide](/guide/routing/read-route-state#query-parameters).
+IMPORTANT: Parametreler, URL'nin [sorgu dizesindeki](https://en.wikipedia.org/wiki/Query_string) bilgilerden farklıdır.
+[Bu kılavuzda Angular'daki sorgu parametreleri](/guide/routing/read-route-state#query-parameters) hakkında daha fazla bilgi edinin.
 
-The following example displays a user profile component based on the user id passed in through the URL.
+Aşağıdaki örnek, URL aracılığıyla geçirilen kullanıcı kimliğine göre bir kullanıcı profili bileşeni görüntüler.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -94,16 +94,16 @@ import {UserProfile} from './user-profile/user-profile';
 const routes: Routes = [{path: 'user/:id', component: UserProfile}];
 ```
 
-In this example, URLs such as `/user/leeroy` and `/user/jenkins` render the `UserProfile` component. This component can then read the `id` parameter and use it to perform additional work, such as fetching data. See [reading route state guide](/guide/routing/read-route-state) for details on reading route parameters.
+Bu örnekte, `/user/leeroy` ve `/user/jenkins` gibi URL'ler `UserProfile` bileşenini render eder. Bu bileşen daha sonra `id` parametresini okuyabilir ve veri çekme gibi ek işlemler gerçekleştirmek için kullanabilir. Rota parametrelerini okuma hakkında ayrıntılar için [rota durumunu okuma kılavuzuna](/guide/routing/read-route-state) bakın.
 
-Valid route parameter names must start with a letter (a-z, A-Z) and can only contain:
+Geçerli rota parametre adları bir harfle (a-z, A-Z) başlamalıdır ve yalnızca şunları içerebilir:
 
-- Letters (a-z, A-Z)
-- Numbers (0-9)
-- Underscore (\_)
-- Hyphen (-)
+- Harfler (a-z, A-Z)
+- Sayılar (0-9)
+- Alt çizgi (\_)
+- Tire (-)
 
-You can also define paths with multiple parameters:
+Birden fazla parametreye sahip yollar da tanımlayabilirsiniz:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -116,15 +116,15 @@ const routes: Routes = [
 ];
 ```
 
-With this new path, users can visit `/user/leeroy/youtube` and `/user/leeroy/bluesky` and see respective social media feeds based on the parameter for the user leeroy.
+Bu yeni yol ile kullanıcılar `/user/leeroy/youtube` ve `/user/leeroy/bluesky` adreslerini ziyaret edebilir ve leeroy kullanıcısı için parametreye göre ilgili sosyal medya akışlarını görebilir.
 
-See [Reading route state](/guide/routing/read-route-state) for details on reading route parameters.
+Rota parametrelerini okuma hakkında ayrıntılar için [Rota durumunu okuma](/guide/routing/read-route-state) bölümüne bakın.
 
 ### Wildcards
 
-When you need to catch all routes for a specific path, the solution is a wildcard route which is defined with the double asterisk (`**`).
+Belirli bir yol için tüm rotaları yakalamanız gerektiğinde, çözüm çift yıldız (`**`) ile tanımlanan joker rotalardır.
 
-A common example is defining a Page Not Found component.
+Yaygın bir örnek, Sayfa Bulunamadı bileşeni tanımlamaktır.
 
 ```ts
 import {Home} from './home/home';
@@ -138,15 +138,15 @@ const routes: Routes = [
 ];
 ```
 
-In this routes array, the app displays the `NotFound` component when the user visits any path outside of `home` and `user/:id`.
+Bu rota dizisinde, kullanıcı `home` ve `user/:id` dışında herhangi bir yolu ziyaret ettiğinde uygulama `NotFound` bileşenini görüntüler.
 
-Tip: Wildcard routes are typically placed at the end of a routes array.
+Tip: Joker rotalar genellikle rota dizisinin sonuna yerleştirilir.
 
 ## How Angular matches URLs
 
-When you define routes, the order is important because Angular uses a first-match wins strategy. This means that once Angular matches a URL with a route `path`, it stops checking any further routes. As a result, always put more specific routes before less specific routes.
+Rotaları tanımlarken sıra önemlidir çünkü Angular ilk eşleşme kazanır stratejisi kullanır. Bu, Angular bir URL'yi bir rota `path` ile eşleştirdiğinde, daha fazla rotayı kontrol etmeyi bıraktığı anlamına gelir. Sonuç olarak, daha spesifik rotaları her zaman daha az spesifik rotalardan önce koyun.
 
-The following example shows routes defined from most-specific to least specific:
+Aşağıdaki örnek, en spesifikten en az spesifike doğru tanımlanmış rotaları gösterir:
 
 ```ts
 const routes: Routes = [
@@ -158,17 +158,17 @@ const routes: Routes = [
 ];
 ```
 
-If a user visits `/users/new`, Angular router would go through the following steps:
+Bir kullanıcı `/users/new` adresini ziyaret ederse, Angular yönlendirici aşağıdaki adımları izler:
 
-1. Checks `''` - doesn't match
-1. Checks `users/new` - matches! Stops here
-1. Never reaches `users/:id` even though it could match
-1. Never reaches `users`
-1. Never reaches `**`
+1. `''` kontrol edilir - eşleşmiyor
+1. `users/new` kontrol edilir - eşleşti! Burada durur
+1. `users/:id`'ye hiçbir zaman ulaşılmaz, eşleşebilecek olsa bile
+1. `users`'a hiçbir zaman ulaşılmaz
+1. `**`'a hiçbir zaman ulaşılmaz
 
 ## Redirects
 
-You can define a route that redirects to another route instead of rendering a component:
+Bir bileşen render etmek yerine başka bir rotaya yönlendiren bir rota tanımlayabilirsiniz:
 
 ```ts
 import {Blog} from './home/blog';
@@ -185,11 +185,11 @@ const routes: Routes = [
 ];
 ```
 
-If you modify or remove a route, some users may still click on out-of-date links or bookmarks to that route. You can add a redirect to direct those users to an appropriate alternative route instead of a "not found" page.
+Bir rotayı değiştirir veya kaldırırsanız, bazı kullanıcılar hâlâ o rotaya ait eski bağlantılara veya yer imlerine tıklayabilir. "Bulunamadı" sayfası yerine bu kullanıcıları uygun bir alternatif rotaya yönlendirmek için bir yeniden yönlendirme ekleyebilirsiniz.
 
 ## Page titles
 
-You can associate a **title** with each route. Angular automatically updates the [page title](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title) when a route activates. Always define appropriate page titles for your application, as these titles are necessary to create an accessible experience.
+Her rota ile bir **başlık** ilişkilendirebilirsiniz. Angular, bir rota etkinleştirildiğinde [sayfa başlığını](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title) otomatik olarak günceller. Erişilebilir bir deneyim oluşturmak için gerekli olan uygun sayfa başlıklarını uygulamanız için her zaman tanımlayın.
 
 ```ts
 import {Routes} from '@angular/router';
@@ -211,7 +211,7 @@ const routes: Routes = [
 ];
 ```
 
-The page `title` property can be set dynamincally to a resolver function using [`ResolveFn`](/api/router/ResolveFn).
+Sayfa `title` özelliği, [`ResolveFn`](/api/router/ResolveFn) kullanılarak dinamik olarak bir resolver fonksiyonuna ayarlanabilir.
 
 ```ts
 const titleResolver: ResolveFn<string> = (route) => route.queryParams['id'];
@@ -224,13 +224,13 @@ const routes: Routes = [
 ];
 ```
 
-Route titles can also be set via a service extending the [`TitleStrategy`](/api/router/TitleStrategy) abstract class. By default, Angular uses the [`DefaultTitleStrategy`](/api/router/DefaultTitleStrategy).
+Rota başlıkları, [`TitleStrategy`](/api/router/TitleStrategy) soyut sınıfını genişleten bir servis aracılığıyla da ayarlanabilir. Varsayılan olarak Angular, [`DefaultTitleStrategy`](/api/router/DefaultTitleStrategy) kullanır.
 
 ### Using TitleStrategy for page titles
 
-For advanced scenarios where you need centralized control over how the document title is composed, implement a `TitleStrategy`.
+Belge başlığının nasıl oluşturulduğu üzerinde merkezi kontrol gerektiren gelişmiş senaryolarda, bir `TitleStrategy` uygulayın.
 
-`TitleStrategy` is a token you can provide to override the default title strategy used by Angular. You can supply a custom `TitleStrategy` to implement conventions such as adding an application suffix, formatting titles from breadcrumbs, or generating titles dynamically from route data.
+`TitleStrategy`, Angular tarafından kullanılan varsayılan başlık stratejisini geçersiz kılmak için sağlayabileceğiniz bir token'dır. Uygulama son eki ekleme, breadcrumb'lardan başlık biçimlendirme veya rota verilerinden dinamik olarak başlık oluşturma gibi kuralları uygulamak için özel bir `TitleStrategy` sağlayabilirsiniz.
 
 ```ts
 import {inject, Injectable} from '@angular/core';
@@ -250,7 +250,7 @@ export class AppTitleStrategy extends TitleStrategy {
 }
 ```
 
-To use the custom strategy, provide it with the `TitleStrategy` token at the application level:
+Özel stratejiyi kullanmak için, uygulama düzeyinde `TitleStrategy` token'ı ile sağlayın:
 
 ```ts
 import {provideRouter, TitleStrategy} from '@angular/router';
@@ -263,9 +263,9 @@ export const appConfig = {
 
 ## Route-level providers for dependency injection
 
-Each route has a `providers` property that lets you provide dependencies to that route's content via [dependency injection](/guide/di).
+Her rotanın, [bağımlılık enjeksiyonu](/guide/di) aracılığıyla o rotanın içeriğine bağımlılıklar sağlamanıza olanak tanıyan bir `providers` özelliği vardır.
 
-Common scenarios where this can be helpful include applications that have different services based on whether the user is an admin or not.
+Bunun yararlı olabileceği yaygın senaryolar arasında, kullanıcının yönetici olup olmamasına göre farklı servislere sahip uygulamalar yer alır.
 
 ```ts
 export const ROUTES: Route[] = [
@@ -282,19 +282,19 @@ export const ROUTES: Route[] = [
 ];
 ```
 
-In this code sample, the `admin` path contains a protected data property of `ADMIN_API_KEY` that is only available to children within its section. As a result, no other paths will be able to access the data provided via `ADMIN_API_KEY`.
+Bu kod örneğinde, `admin` yolu yalnızca kendi bölümündeki alt rotalara sunulan korumalı bir `ADMIN_API_KEY` veri özelliği içerir. Sonuç olarak, başka hiçbir yol `ADMIN_API_KEY` aracılığıyla sağlanan verilere erişemez.
 
-See the [Dependency injection guide](/guide/di) for more information about providers and injection in Angular.
+Sağlayıcılar ve Angular'da enjeksiyon hakkında daha fazla bilgi için [Bağımlılık enjeksiyonu kılavuzuna](/guide/di) bakın.
 
 ## Associating data with routes
 
-Route data enables you to attach additional information to routes. You are able to configure how components behave based on this data.
+Rota verileri, rotalara ek bilgi eklemenizi sağlar. Bu verilere göre bileşenlerin nasıl davranacağını yapılandırabilirsiniz.
 
-There are two ways to work with route data: static data that remains constant, and dynamic data that can change based on runtime conditions.
+Rota verileriyle çalışmanın iki yolu vardır: sabit kalan statik veriler ve çalışma zamanı koşullarına göre değişebilen dinamik veriler.
 
 ### Static data
 
-You can associate arbitrary static data with a route via the `data` property in order to centralize things like route-specific metadata (e.g., analytics tracking, permissions, etc.):
+Rota bazlı meta verileri (örneğin analitik izleme, izinler vb.) merkezileştirmek amacıyla `data` özelliği aracılığıyla bir rotayla rastgele statik veriler ilişkilendirebilirsiniz:
 
 ```ts
 import {Routes} from '@angular/router';
@@ -316,21 +316,21 @@ const routes: Routes = [
 ];
 ```
 
-In this code sample, the home and about page are configured with specific `analyticsId` which would then be used in their respective components for page tracking analytics.
+Bu kod örneğinde, ana sayfa ve hakkında sayfası, ilgili bileşenlerinde sayfa izleme analitiği için kullanılacak belirli `analyticsId` ile yapılandırılmıştır.
 
-You can read this static data by injecting the `ActivatedRoute`. See [Reading route state](/guide/routing/read-route-state) for details.
+Bu statik verileri `ActivatedRoute` enjekte ederek okuyabilirsiniz. Ayrıntılar için [Rota durumunu okuma](/guide/routing/read-route-state) bölümüne bakın.
 
 ### Dynamic data with data resolvers
 
-When you need to provide dynamic data to a route, check out the [guide on route data resolvers](/guide/routing/data-resolvers).
+Bir rotaya dinamik veri sağlamanız gerektiğinde, [rota veri çözücüleri kılavuzuna](/guide/routing/data-resolvers) göz atın.
 
 ## Nested Routes
 
-Nested routes, also known as child routes, are a common technique for managing more complex navigation routes where a component has a sub-view that changes based on the URL.
+İç içe rotalar, alt rotalar olarak da bilinir ve URL'ye göre değişen bir alt görünüme sahip bir bileşen için daha karmaşık navigasyon rotalarını yönetmek için kullanılan yaygın bir tekniktir.
 
 <img alt="Diagram to illustrate nested routes" src="assets/images/guide/router/nested-routing-diagram.svg">
 
-You can add child routes to any route definition with the `children` property:
+`children` özelliği ile herhangi bir rota tanımına alt rotalar ekleyebilirsiniz:
 
 ```ts
 const routes: Routes = [
@@ -351,11 +351,11 @@ const routes: Routes = [
 ];
 ```
 
-The above example defines a route for a product page that allows a user to change whether the product info or reviews are displayed based on the url.
+Yukarıdaki örnek, bir ürün sayfası için kullanıcının URL'ye göre ürün bilgisi veya yorumların görüntülenip görüntülenmeyeceğini değiştirmesine olanak tanıyan bir rota tanımlar.
 
-The `children` property accepts an array of `Route` objects.
+`children` özelliği, bir `Route` nesneleri dizisi kabul eder.
 
-To display child routes, the parent component (`Product` in the example above) includes its own `<router-outlet>`.
+Alt rotaları görüntülemek için üst bileşen (yukarıdaki örnekte `Product`) kendi `<router-outlet>` öğesini içerir.
 
 ```angular-html
 <!-- Product -->
@@ -365,7 +365,7 @@ To display child routes, the parent component (`Product` in the example above) i
 </article>
 ```
 
-After adding child routes to the configuration and adding a `<router-outlet>` to the component, navigation between URLs that match the child routes updates only the nested outlet.
+Yapılandırmaya alt rotalar ekledikten ve bileşene bir `<router-outlet>` ekledikten sonra, alt rotalarla eşleşen URL'ler arasında navigasyon yalnızca iç içe outlet'i günceller.
 
 ## Next steps
 

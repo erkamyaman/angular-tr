@@ -1,42 +1,42 @@
 # `HttpClient` security
 
-`HttpClient` includes built-in support for two common HTTP security mechanisms: XSSI protection and XSRF/CSRF protection.
+`HttpClient`, iki yaygın HTTP güvenlik mekanizması için yerleşik destek içerir: XSSI koruması ve XSRF/CSRF koruması.
 
-TIP: Also consider adopting a [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Security-Policy) for your APIs.
+TIP: API'leriniz için bir [İçerik Güvenliği Politikası](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Security-Policy) benimsemeyi de düşünün.
 
 ## XSSI protection
 
-Cross-Site Script Inclusion (XSSI) is a form of [Cross-Site Scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attack where an attacker loads JSON data from your API endpoints as `<script>`s on a page they control. Different JavaScript techniques can then be used to access this data.
+Siteler Arası Betik Dahil Etme (XSSI), bir saldırganın API uç noktalarınızdan JSON verilerini kontrol ettikleri bir sayfada `<script>` olarak yüklediği bir [Siteler Arası Betik Çalıştırma](https://en.wikipedia.org/wiki/Cross-site_scripting) saldırısı biçimidir. Bu verilere erişmek için farklı JavaScript teknikleri kullanılabilir.
 
-A common technique to prevent XSSI is to serve JSON responses with a "non-executable prefix", commonly `)]}',\n`. This prefix prevents the JSON response from being interpreted as valid executable JavaScript. When the API is loaded as data, the prefix can be stripped before JSON parsing.
+XSSI'yi önlemek için yaygın bir teknik, JSON yanıtlarını yaygın olarak `)]}',\n` şeklinde olan "çalıştırılamaz bir önek" ile sunmaktır. Bu önek, JSON yanıtının geçerli çalıştırılabilir JavaScript olarak yorumlanmasını engeller. API veri olarak yüklendiğinde, JSON ayrıştırma öncesinde önek kaldırılabilir.
 
-`HttpClient` automatically strips this XSSI prefix (if present) when parsing JSON from a response.
+`HttpClient`, bir yanıttan JSON ayrıştırırken bu XSSI önekini (varsa) otomatik olarak kaldırır.
 
 ## XSRF/CSRF protection
 
-[Cross-Site Request Forgery (XSRF or CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) is an attack technique by which the attacker can trick an authenticated user into unknowingly executing actions on your website.
+[Siteler Arası İstek Sahteciliği (XSRF veya CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery), bir saldırganın kimliği doğrulanmış bir kullanıcıyı bilmeden web sitenizde eylemler gerçekleştirmeye kandırabildiği bir saldırı tekniğidir.
 
-`HttpClient` supports a [common mechanism](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) used to prevent XSRF attacks. When performing HTTP requests, an interceptor reads a token from a cookie, by default `XSRF-TOKEN`, and sets it as an HTTP header, `X-XSRF-TOKEN`. Because only code that runs on your domain could read the cookie, the backend can be certain that the HTTP request came from your client application and not an attacker.
+`HttpClient`, XSRF saldırılarını önlemek için kullanılan [yaygın bir mekanizmayı](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) destekler. HTTP istekleri gerçekleştirirken, bir yakalayıcı varsayılan olarak `XSRF-TOKEN` adlı bir çerezden bir belirteç okur ve bunu `X-XSRF-TOKEN` HTTP başlığı olarak ayarlar. Yalnızca alan adınızda çalışan kod çerezi okuyabildiğinden, arka uç HTTP isteğinin saldırgandan değil istemci uygulamanızdan geldiğinden emin olabilir.
 
-By default, an interceptor sends this header on all mutating requests (such as `POST`) to relative and same origin URLs, but not on `GET` or `HEAD` requests.
+Varsayılan olarak, bir yakalayıcı bu başlığı tüm değiştirici isteklerde (örneğin `POST`) göreli ve aynı kökenli URL'lere gönderir, ancak `GET` veya `HEAD` isteklerinde göndermez.
 
 <docs-callout helpful title="Why not protect GET requests?">
-CSRF protection is only needed for requests that can change state on the backend. By their nature, CSRF attacks cross domain boundaries, and the web's [same-origin policy](https://developer.mozilla.org/docs/Web/Security/Same-origin_policy) will prevent an attacking page from retrieving the results of authenticated `GET` requests.
+CSRF koruması yalnızca arka uçtaki durumu değiştirebilecek istekler için gereklidir. CSRF saldırıları doğası gereği alan adı sınırlarını aşar ve web'in [aynı köken politikası](https://developer.mozilla.org/docs/Web/Security/Same-origin_policy), saldıran bir sayfanın kimliği doğrulanmış `GET` isteklerinin sonuçlarını almasını engelleyecektir.
 </docs-callout>
 
-To take advantage of this, your server needs to set a token in a JavaScript readable session cookie called `XSRF-TOKEN` on either the page load or the first GET request. On subsequent requests the server can verify that the cookie matches the `X-XSRF-TOKEN` HTTP header, and therefore be sure that only code running on your domain could have sent the request. The token must be unique for each user and must be verifiable by the server; this prevents the client from making up its own tokens. Set the token to a digest of your site's authentication cookie with a salt for added security.
+Bu özellikten yararlanmak için sunucunuzun sayfa yüklendiğinde veya ilk GET isteğinde `XSRF-TOKEN` adlı JavaScript tarafından okunabilir bir oturum çerezine bir belirteç ayarlaması gerekir. Sonraki isteklerde sunucu, çerezin `X-XSRF-TOKEN` HTTP başlığıyla eşleştiğini doğrulayabilir ve böylece yalnızca alan adınızda çalışan kodun isteği göndermiş olabileceğinden emin olabilir. Belirteç her kullanıcı için benzersiz olmalı ve sunucu tarafından doğrulanabilir olmalıdır; bu, istemcinin kendi belirteçlerini oluşturmasını engeller. Ek güvenlik için belirteci sitenizin kimlik doğrulama çerezinin bir özetiyle birlikte bir tuz ile ayarlayın.
 
-To prevent collisions in environments where multiple Angular apps share the same domain or subdomain, give each application a unique cookie name.
+Birden fazla Angular uygulamasının aynı alan adını veya alt alan adını paylaştığı ortamlarda çakışmaları önlemek için her uygulamaya benzersiz bir çerez adı verin.
 
 <docs-callout important title="HttpClient supports only the client half of the XSRF protection scheme">
-  Your backend service must be configured to set the cookie for your page, and to verify that the header is present on all eligible requests. Failing to do so renders Angular's default protection ineffective.
+  Arka uç hizmetiniz sayfanız için çerezi ayarlayacak ve tüm uygun isteklerde başlığın mevcut olduğunu doğrulayacak şekilde yapılandırılmalıdır. Bunu yapmamak Angular'ın varsayılan korumasını etkisiz kılar.
 </docs-callout>
 
 ### Configure custom cookie/header names
 
-If your backend service uses different names for the XSRF token cookie or header, use `withXsrfConfiguration` to override the defaults.
+Arka uç hizmetiniz XSRF belirteç çerezi veya başlığı için farklı adlar kullanıyorsa, varsayılanları geçersiz kılmak için `withXsrfConfiguration` kullanın.
 
-Add it to the `provideHttpClient` call as follows:
+Bunu `provideHttpClient` çağrısına aşağıdaki gibi ekleyin:
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -53,7 +53,7 @@ export const appConfig: ApplicationConfig = {
 
 ### Disabling XSRF protection
 
-If the built-in XSRF protection mechanism doesn't work for your application, you can disable it using the `withNoXsrfProtection` feature:
+Yerleşik XSRF koruma mekanizması uygulamanız için çalışmıyorsa, `withNoXsrfProtection` özelliğini kullanarak devre dışı bırakabilirsiniz:
 
 ```ts
 export const appConfig: ApplicationConfig = {

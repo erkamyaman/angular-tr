@@ -1,10 +1,10 @@
 # Migration to the `inject` function
 
-Angular's [`inject`](/api/core/inject) function offers more accurate types and better compatibility with standard decorators, compared to constructor-based injection.
+Angular'ın [`inject`](/api/core/inject) fonksiyonu, yapıcı tabanlı enjeksiyona kıyasla daha doğru türler ve standart dekoratörlerle daha iyi uyumluluk sunar.
 
-This schematic converts constructor-based injection in your classes to use the [`inject`](/api/core/inject) function instead.
+Bu şematik, sınıflarınızdaki yapıcı tabanlı enjeksiyonu bunun yerine [`inject`](/api/core/inject) fonksiyonunu kullanacak şekilde dönüştürür.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```shell
 ng generate @angular/core:inject
@@ -42,27 +42,20 @@ export class MyComp {
 
 ## Migration options
 
-The migration includes several options to customize its output.
+Geçiş, çıktısını özelleştirmek için çeşitli seçenekler içerir.
 
 ### `path`
 
-Determines which sub-path in your project should be migrated. Pass in `.` or leave it blank to
-migrate the entire directory.
+Projenizdeki hangi alt yolun geçirileceğini belirler. Tüm dizini geçirmek için `.` iletin veya boş bırakın.
 
 ### `migrateAbstractClasses`
 
-Angular doesn't validate that parameters of abstract classes are injectable. This means that the
-migration can't reliably migrate them to [`inject`](/api/core/inject) without risking breakages which is why they're
-disabled by default. Enable this option if you want abstract classes to be migrated, but note
-that you may have to **fix some breakages manually**.
+Angular, soyut sınıfların parametrelerinin enjekte edilebilir olduğunu doğrulamaz. Bu, geçişin bunları kırılmalara neden olmadan güvenilir bir şekilde [`inject`](/api/core/inject)'e geçiremeyeceği anlamına gelir, bu nedenle varsayılan olarak devre dışıdır. Soyut sınıfların da geçirilmesini istiyorsanız bu seçeneği etkinleştirin, ancak **bazı kırılmaları manuel olarak düzeltmeniz** gerekebileceğini unutmayın.
 
 ### `backwardsCompatibleConstructors`
 
-By default the migration tries to clean up the code as much as it can, which includes deleting
-parameters from the constructor, or even the entire constructor if it doesn't include any code.
-In some cases this can lead to compilation errors when classes with Angular decorators inherit from
-other classes with Angular decorators. If you enable this option, the migration will generate an
-additional constructor signature to keep it backwards compatible, at the expense of more code.
+Varsayılan olarak, geçiş kodu mümkün olduğunca temizlemeye çalışır, bu da yapıcıdan parametreleri silmeyi veya herhangi bir kod içermiyorsa tüm yapıcıyı silmeyi içerir.
+Bazı durumlarda bu, Angular dekoratörleri olan sınıflar Angular dekoratörleri olan diğer sınıflardan miras aldığında derleme hatalarına yol açabilir. Bu seçeneği etkinleştirirseniz, geçiş daha fazla kod pahasına geriye dönük uyumluluğu korumak için ek bir yapıcı imzası oluşturacaktır.
 
 #### Before
 
@@ -95,15 +88,9 @@ private service = inject(MyService);
 
 ### `nonNullableOptional`
 
-If injection fails for a parameter with the `@Optional` decorator, Angular returns `null` which
-means that the real type of any `@Optional` parameter will be `| null`. However, because decorators
-cannot influence their types, there is a lot of existing code whose type is incorrect. The type is
-fixed in `inject()` which can cause new compilation errors to show up. If you enable this option,
-the migration will produce a non-null assertion after the `inject()` call to match the old type,
-at the expense of potentially hiding type errors.
+`@Optional` dekoratörü olan bir parametre için enjeksiyon başarısız olursa, Angular `null` döndürür, bu da herhangi bir `@Optional` parametresinin gerçek türünün `| null` olacağı anlamına gelir. Ancak dekoratörler türlerini etkileyemediğinden, türü yanlış olan çok sayıda mevcut kod vardır. Tür `inject()` içinde düzeltilmiştir, bu da yeni derleme hatalarının ortaya çıkmasına neden olabilir. Bu seçeneği etkinleştirirseniz, geçiş potansiyel tür hatalarını gizleme pahasına eski türle eşleşmesi için `inject()` çağrısından sonra null olmayan bir iddia üretecektir.
 
-**NOTE:** non-null assertions won't be added to parameters that are already typed to be nullable,
-because the code that depends on them likely already accounts for their nullability.
+**NOTE:** Zaten nullable olarak tip atanmış parametrelere null olmayan iddialar eklenmeyecektir, çünkü bunlara bağımlı kod muhtemelen zaten null olabilirliğini hesaba katmaktadır.
 
 #### Before
 

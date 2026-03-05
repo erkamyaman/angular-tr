@@ -1,140 +1,140 @@
 # Complex animation sequences
 
-IMPORTANT: The `@angular/animations` package is now deprecated. The Angular team recommends using native CSS with `animate.enter` and `animate.leave` for animations for all new code. Learn more at the new enter and leave [animation guide](/guide/animations). Also see [Migrating away from Angular's Animations package](guide/animations/migration) to learn how you can start migrating to pure CSS animations in your apps.
+IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](/guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
 
-So far, we've learned simple animations of single HTML elements.
-Angular also lets you animate coordinated sequences, such as an entire grid or list of elements as they enter and leave a page.
-You can choose to run multiple animations in parallel, or run discrete animations sequentially, one following another.
+Simdiye kadar, tek HTML elemanlarinin basit animasyonlarini ogrendik.
+Angular ayrica, sayfaya girerken ve sayfadan ayrilirken tam bir grid veya eleman listesi gibi koordineli dizileri animasyonlamaniza da olanak tanir.
+Birden fazla animasyonu paralel olarak calistirmayi veya birbiri ardina sirali olarak ayrik animasyonlar calistirmayi secebilirsiniz.
 
-The functions that control complex animation sequences are:
+Karmasik animasyon dizilerini kontrol eden fonksiyonlar sunlardir:
 
-| Functions                         | Details                                                        |
-| :-------------------------------- | :------------------------------------------------------------- |
-| `query()`                         | Finds one or more inner HTML elements.                         |
-| `stagger()`                       | Applies a cascading delay to animations for multiple elements. |
-| [`group()`](api/animations/group) | Runs multiple animation steps in parallel.                     |
-| `sequence()`                      | Runs animation steps one after another.                        |
+| Functions                         | Details                                                              |
+| :-------------------------------- | :------------------------------------------------------------------- |
+| `query()`                         | Bir veya daha fazla ic HTML elemani bulur.                           |
+| `stagger()`                       | Birden fazla eleman icin animasyonlara kademeli bir gecikme uygular. |
+| [`group()`](api/animations/group) | Birden fazla animasyon adimini paralel olarak calistirir.            |
+| `sequence()`                      | Animasyon adimlarini birer birer calistirir.                         |
 
 ## The query() function
 
-Most complex animations rely on the `query()` function to find child elements and apply animations to them, basic examples of such are:
+Karmasik animasyonlarin cogu, alt elemanlari bulmak ve onlara animasyon uygulamak icin `query()` fonksiyonuna dayanir, bunlarin temel ornekleri sunlardir:
 
-| Examples                               | Details                                                                                                                                                                                               |
-| :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `query()` followed by `animate()`      | Used to query simple HTML elements and directly apply animations to them.                                                                                                                             |
-| `query()` followed by `animateChild()` | Used to query child elements, which themselves have animations metadata applied to them and trigger such animation \(which would be otherwise be blocked by the current/parent element's animation\). |
+| Examples                            | Details                                                                                                                                                                            |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `query()` ardindan `animate()`      | Basit HTML elemanlarini sorgulamak ve dogrudan animasyon uygulamak icin kullanilir.                                                                                                |
+| `query()` ardindan `animateChild()` | Kendi animasyon metaverileri olan alt elemanlari sorgulamak ve bu animasyonlari tetiklemek icin kullanilir \(aksi takdirde mevcut/ust elemanin animasyonu tarafindan engellenir\). |
 
-The first argument of `query()` is a [css selector](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) string which can also contain the following Angular-specific tokens:
+`query()`'nin ilk argumani, asagidaki Angular'a ozel tokenleri de icerebilen bir [css secicisi](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) dizesidir:
 
-| Tokens                     | Details                                      |
-| :------------------------- | :------------------------------------------- |
-| `:enter` <br /> `:leave`   | For entering/leaving elements.               |
-| `:animating`               | For elements currently animating.            |
-| `@*` <br /> `@triggerName` | For elements with any—or a specific—trigger. |
-| `:self`                    | The animating element itself.                |
+| Tokens                     | Details                                                           |
+| :------------------------- | :---------------------------------------------------------------- |
+| `:enter` <br /> `:leave`   | Giren/ayrilan elemanlar icin.                                     |
+| `:animating`               | Su anda animasyonlu olan elemanlar icin.                          |
+| `@*` <br /> `@triggerName` | Herhangi bir veya belirli bir tetikleyiciye sahip elemanlar icin. |
+| `:self`                    | Animasyonlu elemanin kendisi.                                     |
 
 <docs-callout title="Entering and Leaving Elements">
 
-Not all child elements are actually considered as entering/leaving; this can, at times, be counterintuitive and confusing. Please see the [query api docs](api/animations/query#entering-and-leaving-elements) for more information.
+Tum alt elemanlar aslinda giren/ayrilan olarak kabul edilmez; bu bazen karsi-sezgisel ve kafa karistirici olabilir. Daha fazla bilgi icin lutfen [query api belgelerine](api/animations/query#entering-and-leaving-elements) bakin.
 
-You can also see an illustration of this in the animations example \(introduced in the animations [introduction section](guide/legacy-animations#about-this-guide)\) under the Querying tab.
+Ayrica bunu animasyonlar orneginde \(animasyonlar [giris bolumunde](guide/legacy-animations#about-this-guide) tanitilan\) Sorgulama sekmesi altinda gorebilirsiniz.
 
 </docs-callout>
 
 ## Animate multiple elements using query() and stagger() functions
 
-After having queried child elements via `query()`, the `stagger()` function lets you define a timing gap between each queried item that is animated and thus animates elements with a delay between them.
+`query()` araciligiyla alt elemanlari sorguladiktan sonra, `stagger()` fonksiyonu, animasyonlu her sorgulanan oge arasinda bir zamanlama boslugu tanimlayarak elemanlari aralarinda bir gecikmeyle animasyonlar.
 
-The following example demonstrates how to use the `query()` and `stagger()` functions to animate a list \(of heroes\) adding each in sequence, with a slight delay, from top to bottom.
+Asagidaki ornek, yukaridan asagiya dogru sirayla, hafif bir gecikmeyle her birini ekleyen bir listeyi \(kahramanlar\) animasyonlamak icin `query()` ve `stagger()` fonksiyonlarinin nasil kullanilacagini gostermektedir.
 
-- Use `query()` to look for an element entering the page that meets certain criteria
-- For each of these elements, use `style()` to set the same initial style for the element.
-  Make it transparent and use `transform` to move it out of position so that it can slide into place.
+- Sayfaya giren ve belirli kriterleri karsilayan bir eleman aramak icin `query()` kullanin
+- Bu elemanlarin her biri icin, eleman icin ayni baslangic stilini ayarlamak icin `style()` kullanin.
+  Seffaf yapin ve yerine kayabilmesi icin konumundan cikarmak icin `transform` kullanin.
 
-- Use `stagger()` to delay each animation by 30 milliseconds
-- Animate each element on screen for 0.5 seconds using a custom-defined easing curve, simultaneously fading it in and un-transforming it
+- Her animasyonu 30 milisaniye geciktirmek icin `stagger()` kullanin
+- Ozel tanimli bir yumusaklik egrisi kullanarak ekrandaki her elemani 0.5 saniye boyunca animasyonlayin, ayni anda solarak ve donusumu geri alarak
 
 <docs-code header="hero-list-page.ts" path="adev/src/content/examples/animations/src/app/hero-list-page.ts" region="page-animations"/>
 
 ## Parallel animation using group() function
 
-You've seen how to add a delay between each successive animation.
-But you might also want to configure animations that happen in parallel.
-For example, you might want to animate two CSS properties of the same element but use a different `easing` function for each one.
-For this, you can use the animation [`group()`](api/animations/group) function.
+Art arda gelen her animasyon arasinda nasil gecikme ekleyeceginizi gordunuz.
+Ancak paralel olarak gerceklesen animasyonlari yapilandirmak da isteyebilirsiniz.
+Ornegin, ayni elemanin iki CSS ozelligini animasyonlamak ancak her biri icin farkli bir `easing` fonksiyonu kullanmak isteyebilirsiniz.
+Bunun icin animasyon [`group()`](api/animations/group) fonksiyonunu kullanabilirsiniz.
 
-HELPFUL: The [`group()`](api/animations/group) function is used to group animation _steps_, rather than animated elements.
+HELPFUL: [`group()`](api/animations/group) fonksiyonu, animasyonlu elemanlar yerine animasyon _adimlarini_ gruplamak icin kullanilir.
 
-The following example uses [`group()`](api/animations/group)s on both `:enter` and `:leave` for two different timing configurations, thus applying two independent animations to the same element in parallel.
+Asagidaki ornek, iki farkli zamanlama yapilandirmasi icin hem `:enter` hem de `:leave` uzerinde [`group()`](api/animations/group) kullanir, boylece ayni elemana paralel olarak iki bagimsiz animasyon uygular.
 
 <docs-code header="hero-list-groups.ts (excerpt)" path="adev/src/content/examples/animations/src/app/hero-list-groups.ts" region="animationdef"/>
 
 ## Sequential vs. parallel animations
 
-Complex animations can have many things happening at once.
-But what if you want to create an animation involving several animations happening one after the other? Earlier you used [`group()`](api/animations/group) to run multiple animations all at the same time, in parallel.
+Karmasik animasyonlarda ayni anda bircok sey olabilir.
+Ancak biri digeri ardina gerceklesen bircok animasyon iceren bir animasyon olusturmak isterseniz ne olur? Daha once birden fazla animasyonu ayni anda, paralel olarak calistirmak icin [`group()`](api/animations/group) kullandiniz.
 
-A second function called `sequence()` lets you run those same animations one after the other.
-Within `sequence()`, the animation steps consist of either `style()` or `animate()` function calls.
+`sequence()` adinda ikinci bir fonksiyon, ayni animasyonlari birbiri ardina calistirmaniza olanak tanir.
+`sequence()` icinde, animasyon adimlari `style()` veya `animate()` fonksiyon cagrilarindan olusur.
 
-- Use `style()` to apply the provided styling data immediately.
-- Use `animate()` to apply styling data over a given time interval.
+- Saglanan stil verilerini hemen uygulamak icin `style()` kullanin.
+- Belirli bir zaman araligi boyunca stil verilerini uygulamak icin `animate()` kullanin.
 
 ## Filter animation example
 
-Take a look at another animation on the example page.
-Under the Filter/Stagger tab, enter some text into the **Search Heroes** text box, such as `Magnet` or `tornado`.
+Ornek sayfadaki baska bir animasyona goz atin.
+Filtre/Kademeli sekmesi altinda, **Search Heroes** metin kutusuna `Magnet` veya `tornado` gibi bir metin girin.
 
-The filter works in real time as you type.
-Elements leave the page as you type each new letter and the filter gets progressively stricter.
-The heroes list gradually re-enters the page as you delete each letter in the filter box.
+Filtre, siz yazarken gercek zamanli olarak calisir.
+Her yeni harf yazdiginizda elemanlar sayfadan ayrilir ve filtre giderek daha kati hale gelir.
+Filtre kutusundaki her harfi sildiginizde kahramanlar listesi yavaş yavaş sayfaya geri doner.
 
-The HTML template contains a trigger called `filterAnimation`.
+HTML sablonu `filterAnimation` adinda bir tetikleyici icerir.
 
 <docs-code header="hero-list-page.html" path="adev/src/content/examples/animations/src/app/hero-list-page.html" region="filter-animations" language="angular-html"/>
 
-The `filterAnimation` in the component's decorator contains three transitions.
+Bilesenin dekoratorundaki `filterAnimation` uc gecis icerir.
 
 <docs-code header="hero-list-page.ts" path="adev/src/content/examples/animations/src/app/hero-list-page.ts" region="filter-animations"/>
 
-The code in this example performs the following tasks:
+Bu ornekteki kod asagidaki gorevleri gerceklestirir:
 
-- Skips animations when the user first opens or navigates to this page \(the filter animation narrows what is already there, so it only works on elements that already exist in the DOM\)
-- Filters heroes based on the search input's value
+- Kullanici ilk kez bu sayfayi actiginda veya bu sayfaya gittiginde animasyonlari atlar \(filtre animasyonu zaten orada olani daraltir, bu nedenle yalnizca DOM'da zaten var olan elemanlar uzerinde calisir\)
+- Arama girdisinin degerine gore kahramanlari filtreler
 
-For each change:
+Her degisiklik icin:
 
-- Hides an element leaving the DOM by setting its opacity and width to 0
-- Animates an element entering the DOM over 300 milliseconds.
-  During the animation, the element assumes its default width and opacity.
+- DOM'dan ayrilan bir elemani opakligini ve genisligini 0'a ayarlayarak gizler
+- DOM'a giren bir elemani 300 milisaniye boyunca animasyonlar.
+  Animasyon sirasinda eleman varsayilan genisligini ve opakligini alir.
 
-- If there are multiple elements entering or leaving the DOM, staggers each animation starting at the top of the page, with a 50-millisecond delay between each element
+- DOM'a giren veya DOM'dan ayrilan birden fazla eleman varsa, sayfanin ustunden baslayarak her eleman arasinda 50 milisaniyelik bir gecikmeyle her animasyonu kademeli yapar
 
 ## Animating the items of a reordering list
 
-Although Angular animates correctly `*ngFor` list items out of the box, it will not be able to do so if their ordering changes.
-This is because it will lose track of which element is which, resulting in broken animations.
-The only way to help Angular keep track of such elements is by assigning a `TrackByFunction` to the `NgForOf` directive.
-This makes sure that Angular always knows which element is which, thus allowing it to apply the correct animations to the correct elements all the time.
+Angular `*ngFor` liste ögelerini kutudan cikar cikmaz dogru sekilde animasyonlasa da, siralari degistiginde bunu yapamaz.
+Bunun nedeni, hangi elemanin hangisi oldugunu kaybetmesi ve bu da bozuk animasyonlara yol acmasidir.
+Angular'in bu elemanlari takip etmesine yardimci olmanin tek yolu, `NgForOf` yonergesine bir `TrackByFunction` atamaktir.
+Bu, Angular'in hangi elemanin hangisi oldugunu her zaman bilmesini saglar ve boylece dogru animasyonlari dogru elemanlara her zaman uygulamasina olanak tanir.
 
-IMPORTANT: If you need to animate the items of an `*ngFor` list and there is a possibility that the order of such items will change during runtime, always use a `TrackByFunction`.
+IMPORTANT: Bir `*ngFor` listesinin ogelerini animasyonlamaniz gerekiyorsa ve bu ogelerin sirasinin calisma zamaninda degisme olasiligi varsa, her zaman bir `TrackByFunction` kullanin.
 
 ## Animations and Component View Encapsulation
 
-Angular animations are based on the components DOM structure and do not directly take [View Encapsulation](guide/components/styling#style-scoping) into account, this means that components using `ViewEncapsulation.Emulated` behave exactly as if they were using `ViewEncapsulation.None` (`ViewEncapsulation.ShadowDom` and `ViewEncapsulation.ExperimentalIsolatedShadowDom` behave differently as we'll discuss shortly).
+Angular animasyonlari, bilesenlerin DOM yapisina dayanir ve [Gorünum Kapsullemeyi](guide/components/styling#style-scoping) dogrudan dikkate almaz; bu, `ViewEncapsulation.Emulated` kullanan bilesenlerin, `ViewEncapsulation.None` kullaniyorlarmis gibi davrandiklari anlamina gelir (`ViewEncapsulation.ShadowDom` ve `ViewEncapsulation.ExperimentalIsolatedShadowDom` kisaca tartisacagimiz gibi farkli davranir).
 
-For example if the `query()` function (which you'll see more of in the rest of the Animations guide) were to be applied at the top of a tree of components using the emulated view encapsulation, such query would be able to identify (and thus animate) DOM elements on any depth of the tree.
+Ornegin, `query()` fonksiyonu (Animasyonlar rehberinin geri kalaninda daha fazlasini goreceksiniz) emule edilmis gorünum kapsullemesi kullanan bir bilesen agacinin en ustune uygulanirsa, boyle bir sorgu agacin herhangi bir derinligindeki DOM elemanlarini tanimlayabilir (ve dolayisiyla animasyonlayabilir).
 
-On the other hand the `ViewEncapsulation.ShadowDom` and `ViewEncapsulation.ExperimentalIsolatedShadowDom` changes the component's DOM structure by "hiding" DOM elements inside [`ShadowRoot`](https://developer.mozilla.org/docs/Web/API/ShadowRoot) elements. Such DOM manipulations do prevent some of the animations implementation to work properly since it relies on simple DOM structures and doesn't take `ShadowRoot` elements into account. Therefore it is advised to avoid applying animations to views incorporating components using the ShadowDom view encapsulation.
+Ote yandan, `ViewEncapsulation.ShadowDom` ve `ViewEncapsulation.ExperimentalIsolatedShadowDom`, DOM elemanlarini [`ShadowRoot`](https://developer.mozilla.org/docs/Web/API/ShadowRoot) elemanlari icinde "gizleyerek" bilesenin DOM yapisini degistirir. Bu tur DOM manipulasyonlari, basit DOM yapisina dayanan ve `ShadowRoot` elemanlarini dikkate almayan bazi animasyon uygulamalarinin duzgun calismesini engeller. Bu nedenle, ShadowDom gorünum kapsullemesini kullanan bilesenleri iceren gorünumlere animasyon uygulamaktan kacinilmasi onerilir.
 
 ## Animation sequence summary
 
-Angular functions for animating multiple elements start with `query()` to find inner elements; for example, gathering all images within a `<div>`.
-The remaining functions, `stagger()`, [`group()`](api/animations/group), and `sequence()`, apply cascades or let you control how multiple animation steps are applied.
+Birden fazla elemani animasyonlamak icin Angular fonksiyonlari, ic elemanlari bulmak icin `query()` ile baslar; ornegin, bir `<div>` icindeki tum resimleri toplamak.
+Kalan fonksiyonlar, `stagger()`, [`group()`](api/animations/group) ve `sequence()`, kademeler uygular veya birden fazla animasyon adiminin nasil uygulanacagini kontrol etmenize olanak tanir.
 
 ## More on Angular animations
 
-You might also be interested in the following:
+Asagidakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
   <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>

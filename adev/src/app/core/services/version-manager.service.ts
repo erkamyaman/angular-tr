@@ -62,7 +62,7 @@ export class VersionManager {
   // which is the most up-to-date anyway.
   remoteVersions = httpResource(
     () => ({
-      url: 'https://angular.dev/assets/others/versions.json',
+      url: '/assets/others/versions.json',
       transferCache: false,
       cache: 'no-cache',
     }),
@@ -94,11 +94,16 @@ export class VersionManager {
   );
 
   readonly currentDocsVersion = computed(() => {
-    // In devmode the version is 0, so we'll target next (which is first on the list)
+    const versions = this.versions();
+
+    // Default to v21 if available
+    const v21 = versions.find((v) => v.displayName === 'v21');
+
+    // In devmode the version is 0, so we'll target v21
     if (VERSION.major === '0' || VERSION.patch.includes('next')) {
-      return this.versions()[0];
+      return v21 ?? versions[0];
     }
 
-    return this.versions().find((v) => v.displayName.includes(VERSION.major)) ?? this.versions()[0];
+    return versions.find((v) => v.displayName.includes(VERSION.major)) ?? v21 ?? versions[0];
   });
 }

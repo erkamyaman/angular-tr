@@ -1,16 +1,16 @@
 # Creating an injectable service
 
-Dependency injection (DI) in Angular is one of the framework's most powerful features. Consider dependency injection to be the ability for Angular to _provide_ resources you need for your application at runtime. A dependency could be a service or some other resources.
+Angular'da bağımlılık enjeksiyonu (DI), framework'ün en güçlü özelliklerinden biridir. Bağımlılık enjeksiyonunu, Angular'ın uygulamanız için çalışma zamanında ihtiyaç duyduğunuz kaynakları _sağlama_ yeteneği olarak düşünün. Bir bağımlılık, bir servis veya başka bir kaynak olabilir.
 
-NOTE: Learn more about [dependency injection in the essentials guide](/essentials/dependency-injection).
+NOTE: [Temel kılavuzda bağımlılık enjeksiyonu](/essentials/dependency-injection) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to create an `injectable` service.
+Bu aktivitede, `injectable` (enjekte edilebilir) bir servis oluşturmayı öğreneceksiniz.
 
 <hr>
 
-One way to use a service is to act as a way to interact with data and APIs. To make a service reusable you should keep the logic in the service and share it throughout the application when it is needed.
+Bir servisi kullanmanın yollarından biri, veriler ve API'lerle etkileşim kurmak için bir aracı olarak görev yapmasıdır. Bir servisi yeniden kullanılabilir kılmak için mantığı servis içinde tutmalı ve ihtiyaç duyulduğunda uygulama genelinde paylaşmalısınız.
 
-To make a service eligible to be injected by the DI system use the `@Injectable` decorator. For example:
+Bir servisi DI sistemi tarafından enjekte edilmeye uygun hale getirmek için `@Injectable` dekoratörünü kullanın. Örneğin:
 
 ```ts {highlight:[1,2,3]}
 @Injectable({
@@ -21,25 +21,25 @@ class UserService {
 }
 ```
 
-The `@Injectable` decorator notifies the DI system that the `UserService` is available to be requested in a class. `providedIn` sets the scope in which this resource is available. For now, it is good enough to understand that `providedIn: 'root'` means that the `UserService` is available to the entire application.
+`@Injectable` dekoratörü, DI sistemine `UserService`'in bir sınıfta talep edilmeye hazır olduğunu bildirir. `providedIn` bu kaynağın hangi kapsamda kullanılabilir olduğunu belirler. Şimdilik, `providedIn: 'root'` ifadesinin `UserService`'in tüm uygulama genelinde kullanılabilir olduğu anlamına geldiğini anlamak yeterlidir.
 
-Alright, you try:
+Pekala, siz deneyin:
 
 <docs-workflow>
 
 <docs-step title="Add the `@Injectable` decorator">
-Update the code in `car.service.ts` by adding the `@Injectable` decorator.
+`car.service.ts` dosyasındaki kodu `@Injectable` dekoratörünü ekleyerek güncelleyin.
 </docs-step>
 
 <docs-step title="Configure the decorator">
-The values in the object passed to the decorator are considered to be the configuration for the decorator.
+Dekoratöre aktarılan nesnedeki değerler, dekoratörün yapılandırması olarak kabul edilir.
 <br>
-Update the `@Injectable` decorator in `car.service.ts` to include the configuration for `providedIn: 'root'`.
+`car.service.ts` dosyasındaki `@Injectable` dekoratörünü `providedIn: 'root'` yapılandırmasını içerecek şekilde güncelleyin.
 
-TIP: Use the above example to find the correct syntax.
+TIP: Doğru sözdizimini bulmak için yukarıdaki örneği kullanın.
 
 </docs-step>
 
 </docs-workflow>
 
-Well, done 👍 that service is now `injectable` and can participate in the fun. Now that the service is `injectable`, let's try injecting it into a component 👉
+Aferin, bu servis artık `injectable` (enjekte edilebilir) ve eğlenceye katılabilir. Servis artık `injectable` olduğuna göre, bir bileşene enjekte etmeyi deneyelim.

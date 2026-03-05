@@ -1,10 +1,10 @@
 # Performance
 
-Angular includes many optimizations out of the box, but as applications grow, you may need to fine-tune both how quickly your app loads and how responsive it feels during use. These guides cover the tools and techniques Angular provides to help you build fast applications.
+Angular, kutudan cikan bircok optimizasyon icerir, ancak uygulamalar buyudukce, hem uygulamanizin ne kadar hizli yuklendigini hem de kullanim sirasinda ne kadar duyarli hissettirdigini ince ayar yapmaniz gerekebilir. Bu kilavuzlar, Angular'in hizli uygulamalar olusturmaniza yardimci olmak icin sagladigi araclari ve teknikleri kapsamaktadir.
 
 ## Loading performance
 
-Loading performance determines how quickly your application becomes visible and interactive. Slow loading directly impacts [Core Web Vitals](https://web.dev/vitals/) like Largest Contentful Paint (LCP) and Time to First Byte (TTFB).
+Yukleme performansi, uygulamanizin ne kadar hizli gorunur ve etkilesimli hale geldigini belirler. Yavas yukleme, Largest Contentful Paint (LCP) ve Time to First Byte (TTFB) gibi [Core Web Vitals](https://web.dev/vitals/) metriklerini dogrudan etkiler.
 
 | Technique                                                                                               | What it does                                                                                                                                                                                                                    | When to use it                                                                                |
 | :------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------- |
@@ -15,7 +15,7 @@ Loading performance determines how quickly your application becomes visible and 
 
 ## Runtime performance
 
-Runtime performance determines how responsive your application feels after it loads. Angular's change detection system keeps the DOM in sync with your data, and optimizing how and when it runs is the primary lever for improving runtime performance.
+Calisma zamani performansi, uygulamanizin yuklendikten sonra ne kadar duyarli hissettirdigini belirler. Angular'in degisiklik algilama sistemi DOM'u verilerinizle senkronize tutar ve calisma zamani performansini iyilestirmek icin birincil kaldiraci, bunun nasil ve ne zaman calistigini optimize etmektir.
 
 | Technique                                                       | What it does                                                                                        | When to use it                                                                        |
 | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ |
@@ -26,7 +26,7 @@ Runtime performance determines how responsive your application feels after it lo
 
 ## Measuring performance
 
-Identifying what to optimize is just as important as knowing how to optimize it. Angular integrates with browser developer tools to help you find bottlenecks.
+Neyi optimize edeceginizi belirlemek, nasil optimize edeceginizi bilmek kadar onemlidir. Angular, darbogazlari bulmaniza yardimci olmak icin tarayici gelistirici araclariyla entegre olur.
 
 | Tool                                                                       | What it does                                                                                                                                                                     |
 | :------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,9 +35,9 @@ Identifying what to optimize is just as important as knowing how to optimize it.
 
 ## What to optimize first
 
-If you are unsure where to start, profile your application first using the [Chrome DevTools Angular track](best-practices/profiling-with-chrome-devtools) to identify specific bottlenecks.
+Nereden baslayacaginizdan emin degilseniz, belirli darbogazlari belirlemek icin oncelikle uygulamanizi [Chrome DevTools Angular track](best-practices/profiling-with-chrome-devtools) ile profil cikartin.
 
-As a general starting point:
+Genel bir baslangic noktasi olarak:
 
-- **Slow initial load** — Use [`@defer`](best-practices/performance/defer) to split large components out of the main bundle, [`NgOptimizedImage`](best-practices/performance/image-optimization) to prioritize above-the-fold images, and [server-side rendering](best-practices/performance/ssr) to deliver content faster.
-- **Slow interactions after load** — Check whether [zoneless change detection](guide/zoneless) is enabled, look for [slow computations](best-practices/slow-computations) in templates or lifecycle hooks, and consider [`OnPush`](best-practices/skipping-subtrees) to reduce unnecessary change detection.
+- **Yavas ilk yukleme** — Buyuk bilesenleri ana paketten ayirmak icin [`@defer`](best-practices/performance/defer), ekranin ust kismindaki goruntulere oncelik vermek icin [`NgOptimizedImage`](best-practices/performance/image-optimization) ve icerigi daha hizli sunmak icin [sunucu tarafli render](best-practices/performance/ssr) kullanin.
+- **Yukleme sonrasi yavas etkilesimler** — [Zone'suz degisiklik algilama](guide/zoneless)'nin etkin olup olmadigini kontrol edin, sablonlarda veya yasam dongusu kancalarinda [yavas hesaplamalara](best-practices/slow-computations) bakin ve gereksiz degisiklik algilamayi azaltmak icin [`OnPush`](best-practices/skipping-subtrees)'u dikkate alin.

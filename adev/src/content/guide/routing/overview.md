@@ -1,32 +1,32 @@
 <docs-decorative-header title="Angular Routing" imgSrc="adev/src/assets/images/routing.svg"> <!-- markdownlint-disable-line -->
-Routing helps you change what the user sees in a single-page app.
+Yönlendirme, tek sayfalık bir uygulamada kullanıcının gördüğü içeriği değiştirmenize yardımcı olur.
 </docs-decorative-header>
 
-Angular Router (`@angular/router`) is the official library for managing navigation in Angular applications and a core part of the framework. It is included by default in all projects created by Angular CLI.
+Angular Router (`@angular/router`), Angular uygulamalarında navigasyonu yönetmek için kullanılan resmi kütüphane ve framework'ün temel bir parçasıdır. Angular CLI tarafından oluşturulan tüm projelerde varsayılan olarak dahil edilmiştir.
 
 ## Why is routing necessary in a SPA?
 
-When you navigate to a URL in your web browser, the browser normally makes a network request to a web server and displays the returned HTML page. When you navigate to a different URL, such as clicking a link, the browser makes another network request and replaces the entire page with a new one.
+Web tarayıcınızda bir URL'ye gittiğinizde, tarayıcı normalde bir web sunucusuna ağ isteği gönderir ve döndürülen HTML sayfasını görüntüler. Bir bağlantıya tıklamak gibi farklı bir URL'ye gittiğinizde, tarayıcı başka bir ağ isteği gönderir ve tüm sayfayı yenisiyle değiştirir.
 
-A single-page application (SPA) differs in that the browser only makes a request to a web server for the first page, the `index.html`. After that, a client-side router takes over, controlling which content displays based on the URL. When a user navigates to a different URL, the router updates the page's content in place without triggering a full-page reload.
+Tek sayfalık uygulama (SPA), tarayıcının yalnızca ilk sayfa olan `index.html` için web sunucusuna istek göndermesi bakımından farklıdır. Bundan sonra, istemci tarafındaki bir yönlendirici devreye girerek URL'ye göre hangi içeriğin görüntüleneceğini kontrol eder. Kullanıcı farklı bir URL'ye gittiğinde, yönlendirici tam sayfa yenilemesi tetiklemeden sayfanın içeriğini yerinde günceller.
 
 ## How Angular manages routing
 
-Routing in Angular is comprised of three primary parts:
+Angular'da yönlendirme üç temel bölümden oluşur:
 
-1. **Routes** define which component displays when a user visits a specific URL.
-2. **Outlets** are placeholders in your templates that dynamically load and render components based on the active route.
-3. **Links** provide a way for users to navigate between different routes in your application without triggering a full page reload.
+1. **Rotalar**, kullanıcı belirli bir URL'yi ziyaret ettiğinde hangi bileşenin görüntüleneceğini tanımlar.
+2. **Outlet'ler**, şablonlarınızda aktif rotaya göre bileşenleri dinamik olarak yükleyen ve render eden yer tutuculardır.
+3. **Bağlantılar**, kullanıcıların tam sayfa yenilemesi tetiklemeden uygulamanızdaki farklı rotalar arasında gezinmesini sağlar.
 
-In addition, the Angular Routing library offers additional functionality such as:
+Buna ek olarak, Angular Yönlendirme kütüphanesi şu ek işlevleri de sunar:
 
-- Nested routes
-- Programmatic navigation
-- Route params, queries and wildcards
-- Activated route information with `ActivatedRoute`
-- View transition effects
-- Navigation guards
+- İç içe rotalar
+- Programatik navigasyon
+- Rota parametreleri, sorgular ve joker karakterler
+- `ActivatedRoute` ile aktif rota bilgisi
+- Görünüm geçiş efektleri
+- Navigasyon koruyucuları
 
 ## Next steps
 
-Learn about how you can [define routes using Angular router](/guide/routing/define-routes).
+[Angular router kullanarak rotaları nasıl tanımlayacağınızı](/guide/routing/define-routes) öğrenin.

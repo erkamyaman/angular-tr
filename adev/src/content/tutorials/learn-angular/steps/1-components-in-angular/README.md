@@ -1,23 +1,23 @@
 # Components in Angular
 
-Components are the foundational building blocks for any Angular application. Each component has three parts:
+Bileşenler, herhangi bir Angular uygulamasının temel yapı taşlarıdır. Her bileşenin üç parçası vardır:
 
-- TypeScript class
-- HTML template
-- CSS styles
+- TypeScript sınıfı
+- HTML şablonu
+- CSS stilleri
 
-NOTE: Learn more about [components in the essentials guide](/essentials/components).
+NOTE: [Temel bilgiler rehberindeki bileşenler](/essentials/components) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to update the template and styles of a component.
+Bu aktivitede, bir bileşenin şablonunu ve stillerini nasıl güncelleyeceğinizi öğreneceksiniz.
 
 <hr />
 
-This is a great opportunity for you to get started with Angular.
+Bu, Angular ile başlamak için harika bir fırsat.
 
 <docs-workflow>
 
 <docs-step title="Update the component template">
-Update the `template` property to read `Hello Universe`
+`template` özelliğini `Hello Universe` olarak güncelleyin
 
 ```ts
 template: `
@@ -25,11 +25,11 @@ template: `
 `,
 ```
 
-When you changed the HTML template, the preview updated with your message. Let's go one step further: change the color of the text.
+HTML şablonunu değiştirdiğinizde, önizleme mesajınızla güncellendi. Bir adım daha ileri gidelim: metnin rengini değiştirelim.
 </docs-step>
 
 <docs-step title="Update the component styles">
-Update the styles value and change the `color` property from `blue` to `#a144eb`.
+Stil değerini güncelleyin ve `color` özelliğini `blue`'dan `#a144eb`'ye değiştirin.
 
 ```ts
 styles: `
@@ -39,9 +39,9 @@ styles: `
 `,
 ```
 
-When you check the preview, you'll find that the text color will be changed.
+Önizlemeyi kontrol ettiğinizde, metin renginin değiştiğini göreceksiniz.
 </docs-step>
 
 </docs-workflow>
 
-In Angular, you can use all the browser supported CSS and HTML that's available. If you'd like, you can store your template and styles in separate files.
+Angular'da, tarayıcı tarafından desteklenen tüm CSS ve HTML'yi kullanabilirsiniz. İsterseniz, şablonunuzu ve stillerinizi ayrı dosyalarda saklayabilirsiniz.

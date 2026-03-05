@@ -3,7 +3,7 @@
 
 ## Overview
 
-An accessible input field that filters and suggests options as users type, helping them find and select values from a list.
+Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulmalarına ve secmelerine yardimci olan erisilebilir bir giris alani.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -33,35 +33,35 @@ An accessible input field that filters and suggests options as users type, helpi
 
 ## Usage
 
-Autocomplete works best when users need to select from a large set of options where typing is faster than scrolling. Consider using autocomplete when:
+Otomatik tamamlama, kullanicilarin yazmanin kaydirmadan daha hizli oldugu buyuk bir secenek kumesinden secim yapmasi gerektiginde en iyi calisir. Su durumlarda otomatik tamamlama kullanmayi dusunun:
 
-- **The option list is long** (more than 20 items) - Typing narrows down choices faster than scrolling through a dropdown
-- **Users know what they're looking for** - They can type part of the expected value (like a state name, product, or username)
-- **Options follow predictable patterns** - Users can guess partial matches (like country codes, email domains, or categories)
-- **Speed matters** - Forms benefit from quick selection without extensive navigation
+- **Secenek listesi uzun** (20'den fazla oge) - Yazmak, bir acilir menuyu kaydirmaya gore secimleri daha hizli daraltir
+- **Kullanicilar ne aradıklarını biliyor** - Beklenen degerin bir kismini yazabilirler (il adi, urun veya kullanici adi gibi)
+- **Secenekler tahmin edilebilir kaliplari takip ediyor** - Kullanicilar kismi eslesmeleri tahmin edebilir (ulke kodlari, e-posta alanlari veya kategoriler gibi)
+- **Hiz onemli** - Formlar kapsamli navigasyon olmadan hizli secimden faydalanir
 
-Avoid autocomplete when:
+Su durumlarda otomatik tamamlamadan kacinin:
 
-- The list has fewer than 10 options - A regular dropdown or radio group provides better visibility
-- Users need to browse options - If discovery is important, show all options upfront
-- Options are unfamiliar - Users can't type what they don't know exists in the list
+- Listede 10'dan az secenek var - Duzgun bir acilir menu veya radyo grubu daha iyi gorunurluk saglar
+- Kullanicilarin seceneklere goz atmasi gerekiyor - Kesfetmek onemliyse, tum secenekleri onceden gosterin
+- Secenekler bilinmiyor - Kullanicilar listede var olduğunu bilmedikleri seyleri yazamaz
 
 ## Features
 
-Angular's autocomplete provides a fully accessible combobox implementation with:
+Angular'in otomatik tamamlamasi, tam erisilebilir bir combobox uygulamasi saglar:
 
-- **Keyboard Navigation** - Navigate options with arrow keys, select with Enter, close with Escape
-- **Screen Reader Support** - Built-in ARIA attributes for assistive technologies
-- **Three Filter Modes** - Choose between auto-select, manual selection, or highlighting behavior
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
-- **Popover API Integration** - Leverages the native HTML Popover API for optimal positioning
-- **Bidirectional Text Support** - Automatically handles right-to-left (RTL) languages
+- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Enter ile secin, Escape ile kapatin
+- **Ekran Okuyucu Destegi** - Yardimci teknolojiler icin yerlesik ARIA nitelikleri
+- **Uc Filtre Modu** - Otomatik secim, manuel secim veya vurgulama davranisi arasinda secim yapin
+- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
+- **Popover API Entegrasyonu** - Optimum konumlandirma icin yerel HTML Popover API'sinden yararlanir
+- **Cift Yonlu Metin Destegi** - Sagdan sola (RTL) dilleri otomatik olarak isler
 
 ## Examples
 
 ### Auto-select mode
 
-Users typing partial text expect immediate confirmation that their input matches an available option. Auto-select mode updates the input value to match the first filtered option as users type, reducing the number of keystrokes needed and providing instant feedback that their search is on the right track.
+Kismi metin yazan kullanicilar, girdilerinin mevcut bir secenekle eslestigine dair aninda onay bekler. Otomatik secim modu, kullanicilar yazarken giris degerini ilk filtrelenmis secenekle eslesecek sekilde gunceller, gereken tus vurusu sayisini azaltir ve aramalarinin dogru yolda olduguna dair aninda geri bildirim saglar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -91,7 +91,7 @@ Users typing partial text expect immediate confirmation that their input matches
 
 ### Manual selection mode
 
-Manual selection mode keeps the typed text unchanged while users navigate the suggestion list, preventing confusion from automatic updates. The input only changes when users explicitly confirm their choice with Enter or a click.
+Manuel secim modu, kullanicilar oneri listesinde gezinirken yazilan metni degistirmeden tutar ve otomatik guncellemelerden kaynaklanan karisikligi onler. Giris, yalnizca kullanicilar secimlerini Enter veya tiklamayla acikca onayladiklarinda degisir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -121,7 +121,7 @@ Manual selection mode keeps the typed text unchanged while users navigate the su
 
 ### Highlight mode
 
-Highlight mode allows the user to navigate options with arrow keys without changing the input value as they browse until they explicitly select a new option with Enter or click.
+Vurgulama modu, kullanicinin Enter veya tiklama ile acikca yeni bir secenek secene kadar, ok tuslariyla secenekler arasinda gezinirken giris degerini degistirmeden gezinmesine olanak tanir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -153,38 +153,38 @@ Highlight mode allows the user to navigate options with arrow keys without chang
 
 ### Combobox Directive
 
-The `ngCombobox` directive provides the container for autocomplete functionality.
+`ngCombobox` yonergesi otomatik tamamlama islevi icin kapsayici saglar.
 
 #### Inputs
 
-| Property     | Type                                           | Default    | Description                                       |
-| ------------ | ---------------------------------------------- | ---------- | ------------------------------------------------- |
-| `filterMode` | `'auto-select'` \| `'manual'` \| `'highlight'` | `'manual'` | Controls selection behavior                       |
-| `disabled`   | `boolean`                                      | `false`    | Disables the combobox                             |
-| `firstMatch` | `string`                                       | -          | The value of the first matching item in the popup |
+| Property     | Type                                           | Default    | Description                                  |
+| ------------ | ---------------------------------------------- | ---------- | -------------------------------------------- |
+| `filterMode` | `'auto-select'` \| `'manual'` \| `'highlight'` | `'manual'` | Secim davranisini kontrol eder               |
+| `disabled`   | `boolean`                                      | `false`    | Combobox'i devre disi birakir                |
+| `firstMatch` | `string`                                       | -          | Acilir penceredeki ilk eslesen ogenin degeri |
 
 #### Outputs
 
-| Property   | Type              | Description                                           |
-| ---------- | ----------------- | ----------------------------------------------------- |
-| `expanded` | `Signal<boolean>` | Signal indicating whether the popup is currently open |
+| Property   | Type              | Description                                                    |
+| ---------- | ----------------- | -------------------------------------------------------------- |
+| `expanded` | `Signal<boolean>` | Acilir pencerenin su anda acik olup olmadigini gosteren sinyal |
 
 ### ComboboxInput Directive
 
-The `ngComboboxInput` directive connects an input element to the combobox.
+`ngComboboxInput` yonergesi bir giris elemanini combobox'a baglar.
 
 #### Model
 
-| Property | Type     | Description                                                  |
-| -------- | -------- | ------------------------------------------------------------ |
-| `value`  | `string` | Two-way bindable string value of the input using `[(value)]` |
+| Property | Type     | Description                                                 |
+| -------- | -------- | ----------------------------------------------------------- |
+| `value`  | `string` | `[(value)]` kullanilarak iki yonlu baglanabilir dize degeri |
 
 ### ComboboxPopupContainer Directive
 
-The `ngComboboxPopupContainer` directive wraps the popup content and manages its display.
+`ngComboboxPopupContainer` yonergesi acilir pencere icerigini sarar ve gorunumunu yonetir.
 
-Must be used with `<ng-template>` inside a popover element.
+Bir popover elemani icinde `<ng-template>` ile kullanilmalidir.
 
 ### Related components
 
-Autocomplete uses [Listbox](/api/aria/listbox/Listbox) and [Option](/api/aria/listbox/Option) directives to render the suggestion list. See the [Listbox documentation](/guide/aria/listbox) for additional customization options.
+Otomatik tamamlama, oneri listesini render etmek icin [Listbox](/api/aria/listbox/Listbox) ve [Option](/api/aria/listbox/Option) yonergelerini kullanir. Ek ozellestirme secenekleri icin [Listbox dokumantasyonuna](/guide/aria/listbox) bakin.

@@ -1,20 +1,20 @@
 <docs-decorative-header title="Angular Signals" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
-Angular Signals is a system that granularly tracks how and where your state is used throughout an application, allowing the framework to optimize rendering updates.
+Angular Signals, durumunuzun uygulamanız genelinde nasıl ve nerede kullanıldığını ayrıntılı olarak izleyen, çerçevenin render güncellemelerini optimize etmesine olanak tanıyan bir sistemdir.
 </docs-decorative-header>
 
-TIP: Check out Angular's [Essentials](essentials/signals) before diving into this comprehensive guide.
+TIP: Bu kapsamlı kılavuza dalmadan önce Angular'ın [Temel Bilgiler](essentials/signals) bölümüne göz atın.
 
-## What are signals?
+## Sinyaller nedir?
 
-A **signal** is a wrapper around a value that notifies interested consumers when that value changes. Signals can contain any value, from primitives to complex data structures.
+Bir **sinyal**, ilgili tüketicileri değer değiştiğinde bilgilendiren bir değer etrafındaki sarmalayıcıdır. Sinyaller, ilkel değerlerden karmaşık veri yapılarına kadar herhangi bir değer içerebilir.
 
-You read a signal's value by calling its getter function, which allows Angular to track where the signal is used.
+Bir sinyalin değerini, getter fonksiyonunu çağırarak okursunuz ve bu, Angular'ın sinyalin nerede kullanıldığını izlemesine olanak tanır.
 
-Signals may be either _writable_ or _read-only_.
+Sinyaller _yazılabilir_ veya _salt okunur_ olabilir.
 
-### Writable signals
+### Yazılabilir sinyaller
 
-Writable signals provide an API for updating their values directly. You create writable signals by calling the `signal` function with the signal's initial value:
+Yazılabilir sinyaller, değerlerini doğrudan güncellemek için bir API sağlar. Yazılabilir sinyalleri, sinyalin başlangıç değeri ile `signal` fonksiyonunu çağırarak oluşturursunuz:
 
 ```ts
 const count = signal(0);
@@ -23,24 +23,24 @@ const count = signal(0);
 console.log('The count is: ' + count());
 ```
 
-To change the value of a writable signal, either `.set()` it directly:
+Yazılabilir bir sinyalin değerini değiştirmek için doğrudan `.set()` yapabilirsiniz:
 
 ```ts
 count.set(3);
 ```
 
-or use the `.update()` operation to compute a new value from the previous one:
+veya önceki değerden yeni bir değer hesaplamak için `.update()` işlemini kullanabilirsiniz:
 
 ```ts
 // Increment the count by 1.
 count.update((value) => value + 1);
 ```
 
-Writable signals have the type `WritableSignal`.
+Yazılabilir sinyaller `WritableSignal` türüne sahiptir.
 
 #### Converting writable signals to readonly
 
-`WritableSignal` provide a `asReadonly()` method that returns a readonly version of the signal. This is useful when you want to expose a signal's value to consumers without allowing them to modify it directly:
+`WritableSignal`, sinyalin salt okunur bir versiyonunu döndüren bir `asReadonly()` yöntemi sağlar. Bu, bir sinyalin değerini tüketicilere doğrudan değiştirme izni vermeden sunmak istediğinizde kullanışlıdır:
 
 ```ts
 @Injectable({providedIn: 'root'})
@@ -69,42 +69,42 @@ export class AwesomeCounter {
 }
 ```
 
-The readonly signal reflects any changes made to the original writable signal, but cannot be modified using `set()` or `update()` methods.
+Salt okunur sinyal, orijinal yazılabilir sinyalde yapılan değişiklikleri yansıtır, ancak `set()` veya `update()` yöntemleri kullanılarak değiştirilemez.
 
-IMPORTANT: The readonly signals do **not** have any built-in mechanism that would prevent deep-mutation of their value.
+IMPORTANT: Salt okunur sinyallerin, değerlerinin derin değişikliğini önleyecek herhangi bir yerleşik mekanizması **yoktur**.
 
 ### Computed signals
 
-**Computed signal** are read-only signals that derive their value from other signals. You define computed signals using the `computed` function and specifying a derivation:
+**Hesaplanmış sinyaller**, değerlerini diğer sinyallerden türeten salt okunur sinyallerdir. Hesaplanmış sinyalleri `computed` fonksiyonunu kullanarak ve bir türetme belirterek tanımlarsınız:
 
 ```typescript
 const count: WritableSignal<number> = signal(0);
 const doubleCount: Signal<number> = computed(() => count() * 2);
 ```
 
-The `doubleCount` signal depends on the `count` signal. Whenever `count` updates, Angular knows that `doubleCount` needs to update as well.
+`doubleCount` sinyali `count` sinyaline bağlıdır. `count` her güncellendiğinde Angular, `doubleCount`'un da güncellenmesi gerektiğini bilir.
 
 #### Computed signals are both lazily evaluated and memoized
 
-`doubleCount`'s derivation function does not run to calculate its value until the first time you read `doubleCount`. The calculated value is then cached, and if you read `doubleCount` again, it will return the cached value without recalculating.
+`doubleCount`'un türetme fonksiyonu, `doubleCount`'u ilk kez okuyana kadar değerini hesaplamak için çalışmaz. Hesaplanan değer daha sonra önbelleğe alınır ve `doubleCount`'u tekrar okursanız, yeniden hesaplama yapmadan önbelleğe alınmış değeri döndürür.
 
-If you then change `count`, Angular knows that `doubleCount`'s cached value is no longer valid, and the next time you read `doubleCount` its new value will be calculated.
+Daha sonra `count`'u değiştirirseniz, Angular `doubleCount`'un önbelleğe alınmış değerinin artık geçerli olmadığını bilir ve `doubleCount`'u bir sonraki okuduğunuzda yeni değeri hesaplanır.
 
-As a result, you can safely perform computationally expensive derivations in computed signals, such as filtering arrays.
+Sonuç olarak, hesaplanmış sinyallerde dizi filtreleme gibi hesaplama açısından maliyetli türetmeleri güvenle gerçekleştirebilirsiniz.
 
 #### Computed signals are not writable signals
 
-You cannot directly assign values to a computed signal. That is,
+Hesaplanmış bir sinyale doğrudan değer atayamazsınız. Yani,
 
 ```ts
 doubleCount.set(3);
 ```
 
-produces a compilation error, because `doubleCount` is not a `WritableSignal`.
+`doubleCount` bir `WritableSignal` olmadığından derleme hatası üretir.
 
 #### Computed signal dependencies are dynamic
 
-Only the signals actually read during the derivation are tracked. For example, in this `computed` the `count` signal is only read if the `showCount` signal is true:
+Yalnızca türetme sırasında gerçekten okunan sinyaller izlenir. Örneğin, bu `computed`'da `count` sinyali yalnızca `showCount` sinyali true ise okunur:
 
 ```ts
 const showCount = signal(false);
@@ -118,29 +118,29 @@ const conditionalCount = computed(() => {
 });
 ```
 
-When you read `conditionalCount`, if `showCount` is `false` the "Nothing to see here!" message is returned _without_ reading the `count` signal. This means that if you later update `count` it will _not_ result in a recomputation of `conditionalCount`.
+`conditionalCount`'u okuduğunuzda, `showCount` `false` ise `count` sinyali okunmadan "Nothing to see here!" mesajı döndürülür. Bu, daha sonra `count`'u güncellerseniz `conditionalCount`'un yeniden hesaplanmasına _neden olmayacağı_ anlamına gelir.
 
-If you set `showCount` to `true` and then read `conditionalCount` again, the derivation will re-execute and take the branch where `showCount` is `true`, returning the message which shows the value of `count`. Changing `count` will then invalidate `conditionalCount`'s cached value.
+`showCount`'u `true` olarak ayarlar ve ardından `conditionalCount`'u tekrar okursanız, türetme yeniden yürütülür ve `showCount`'un `true` olduğu dalı alarak `count`'un değerini gösteren mesajı döndürür. `count`'u değiştirmek artık `conditionalCount`'un önbelleğe alınmış değerini geçersiz kılar.
 
-Note that dependencies can be removed during a derivation as well as added. If you later set `showCount` back to `false`, then `count` will no longer be considered a dependency of `conditionalCount`.
+Bağımlılıkların bir türetme sırasında eklenebileceği gibi kaldırılabileceğini de unutmayın. Daha sonra `showCount`'u tekrar `false` olarak ayarlarsanız, `count` artık `conditionalCount`'un bir bağımlılığı olarak değerlendirilmez.
 
 ## Reactive contexts
 
-A **reactive context** is a runtime state where Angular monitors signal reads to establish a dependency. The code reading the signal is the _consumer_, and the signal being read is the _producer_.
+Bir **reaktif bağlam**, Angular'ın bir bağımlılık kurmak için sinyal okumalarını izlediği bir çalışma zamanı durumudur. Sinyali okuyan kod _tüketicidir_ ve okunan sinyal _üreticidir_.
 
-Angular automatically enters a reactive context when:
+Angular aşağıdaki durumlarda otomatik olarak bir reaktif bağlama girer:
 
-- Executing an `effect`, `afterRenderEffect` callback.
-- Evaluating a `computed` signal.
-- Evaluating a `linkedSignal`.
-- Evaluating a `resource`'s params or loader function.
-- Rendering a component template (including bindings in the [host property](guide/components/host-elements#binding-to-the-host-element)).
+- Bir `effect`, `afterRenderEffect` geri çağrısı yürütürken.
+- Bir `computed` sinyali değerlendirilirken.
+- Bir `linkedSignal` değerlendirilirken.
+- Bir `resource`'un params veya loader fonksiyonu değerlendirilirken.
+- Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#binding-to-the-host-element) bağlamalar dahil).
 
-During these operations, Angular creates a _live_ connection. If a tracked signal changes, Angular will _eventually_ re-run the consumer.
+Bu işlemler sırasında Angular _canlı_ bir bağlantı oluşturur. İzlenen bir sinyal değişirse, Angular _sonunda_ tüketiciyi yeniden çalıştıracaktır.
 
 ### Asserts the reactive context
 
-Angular provides the `assertNotInReactiveContext` helper function to assert that code is not executing within a reactive context. Pass a reference to the calling function so the error message points to the correct API entry point if the assertion fails. This produces a clearer, more actionable error message than a generic reactive context error.
+Angular, kodun bir reaktif bağlam içinde yürütülmediğini doğrulamak için `assertNotInReactiveContext` yardımcı fonksiyonunu sağlar. Doğrulama başarısız olursa hata mesajının doğru API giriş noktasını göstermesi için çağıran fonksiyona bir referans iletin. Bu, genel bir reaktif bağlam hatasından daha net ve eyleme geçirilebilir bir hata mesajı üretir.
 
 ```ts
 import {assertNotInReactiveContext} from '@angular/core';
@@ -153,9 +153,9 @@ function subscribeToEvents() {
 
 ### Reading without tracking dependencies
 
-Rarely, you may want to execute code which may read signals within a reactive function such as `computed` or `effect` _without_ creating a dependency.
+Nadiren, `computed` veya `effect` gibi reaktif bir fonksiyon içinde sinyal okuyabilecek kodu bir bağımlılık oluşturmadan yürütmek isteyebilirsiniz.
 
-For example, suppose that when `currentUser` changes, the value of a `counter` should be logged. You could create an `effect` which reads both signals:
+Örneğin, `currentUser` değiştiğinde bir `counter` değerinin günlüklenmesi gerektiğini varsayalım. Her iki sinyali de okuyan bir `effect` oluşturabilirsiniz:
 
 ```ts
 effect(() => {
@@ -163,9 +163,9 @@ effect(() => {
 });
 ```
 
-This example will log a message when _either_ `currentUser` or `counter` changes. However, if the effect should only run when `currentUser` changes, then the read of `counter` is only incidental and changes to `counter` shouldn't log a new message.
+Bu örnek, `currentUser` veya `counter` değiştiğinde bir mesaj günlükler. Ancak, effect yalnızca `currentUser` değiştiğinde çalışmalıysa, `counter`'ın okunması yalnızca tesadüfi olup `counter`'daki değişiklikler yeni bir mesaj günlüklememeli.
 
-You can prevent a signal read from being tracked by calling its getter with `untracked`:
+Bir sinyal okumasının izlenmesini önlemek için getter'ını `untracked` ile çağırabilirsiniz:
 
 ```ts
 effect(() => {
@@ -173,7 +173,7 @@ effect(() => {
 });
 ```
 
-`untracked` is also useful when an effect needs to invoke some external code which shouldn't be treated as a dependency:
+`untracked` ayrıca bir effect'in bağımlılık olarak değerlendirilmemesi gereken harici kodu çağırması gerektiğinde de kullanışlıdır:
 
 ```ts
 effect(() => {
@@ -188,7 +188,7 @@ effect(() => {
 
 ### Reactive context and async operations
 
-The reactive context is only active for synchronous code. Any signal reads that occur after an asynchronous boundary will not be tracked as dependencies.
+Reaktif bağlam yalnızca senkron kod için aktiftir. Asenkron bir sınırdan sonra gerçekleşen sinyal okumaları bağımlılık olarak izlenmeyecektir.
 
 ```ts {avoid}
 effect(async () => {
@@ -198,7 +198,7 @@ effect(async () => {
 });
 ```
 
-To ensure all signal reads are tracked, read signals before the `await`. This includes passing them as arguments to the awaited function, since arguments are evaluated synchronously:
+Tüm sinyal okumalarının izlenmesini sağlamak için sinyalleri `await`'ten önce okuyun. Bu, beklenen fonksiyona argüman olarak iletmeyi de içerir, çünkü argümanlar senkron olarak değerlendirilir:
 
 ```ts {prefer}
 effect(async () => {
@@ -217,24 +217,24 @@ effect(async () => {
 
 ## Advanced derivations
 
-While `computed` handles simple readonly derivations, you might find yourself needing a writable state that is dependent on other signals.
-For more information see the [Dependent state with linkedSignal](/guide/signals/linked-signal) guide.
+`computed` basit salt okunur türetmeleri yönetirken, diğer sinyallere bağlı olan yazılabilir bir duruma ihtiyaç duyabilirsiniz.
+Daha fazla bilgi için [linkedSignal ile bağımlı durum](/guide/signals/linked-signal) kılavuzuna bakın.
 
-All signal APIs are synchronous— `signal`, `computed`, `input`, etc. However, applications often need to deal with data that is available asynchronously. A `Resource` gives you a way to incorporate async data into your application's signal-based code and still allow you to access its data synchronously. For more information see the [Async reactivity with resources](/guide/signals/resource) guide.
+Tüm sinyal API'leri senkrondur-- `signal`, `computed`, `input`, vb. Ancak uygulamalar genellikle asenkron olarak kullanılabilen verilerle uğraşmak zorundadır. Bir `Resource`, asenkron verileri uygulamanızın sinyal tabanlı koduna dahil etmenin ve yine de verilerine senkron olarak erişmenin bir yolunu sunar. Daha fazla bilgi için [Resource'larla asenkron reaktivite](/guide/signals/resource) kılavuzuna bakın.
 
 ## Executing side effects on non-reactive APIs
 
-Synchronous or asynchronous derivations are recommended when we want to react to state changes. However, this doesn't cover all the possible use cases, and you'll sometimes find yourself in a situation where you need to react to signal changes on non-reactive apis. Use `effect` or `afterRenderEffect` for those specific usecases. For more information see [Side effects for non-reactive APIs](/guide/signals/effect) guide.
+Durum değişikliklerine tepki vermek istediğimizde senkron veya asenkron türetmeler önerilir. Ancak bu tüm olası kullanım durumlarını kapsamaz ve bazen kendinizi reaktif olmayan API'lerdeki sinyal değişikliklerine tepki vermeniz gereken bir durumda bulabilirsiniz. Bu özel kullanım durumları için `effect` veya `afterRenderEffect` kullanın. Daha fazla bilgi için [Reaktif olmayan API'ler için yan etkiler](/guide/signals/effect) kılavuzuna bakın.
 
 ## Reading signals in `OnPush` components
 
-When you read a signal within an `OnPush` component's template, Angular tracks the signal as a dependency of that component. When the value of that signal changes, Angular automatically [marks](api/core/ChangeDetectorRef#markforcheck) the component to ensure it gets updated the next time change detection runs. Refer to the [Skipping component subtrees](best-practices/skipping-subtrees) guide for more information about `OnPush` components.
+Bir `OnPush` bileşeninin şablonunda bir sinyal okuduğunuzda, Angular sinyali o bileşenin bir bağımlılığı olarak izler. O sinyalin değeri değiştiğinde, Angular bir sonraki değişiklik algılama çalıştığında güncellendiğinden emin olmak için bileşeni otomatik olarak [işaretler](api/core/ChangeDetectorRef#markforcheck). `OnPush` bileşenleri hakkında daha fazla bilgi için [Bileşen alt ağaçlarını atlama](best-practices/skipping-subtrees) kılavuzuna bakın.
 
 ## Advanced topics
 
 ### Signal equality functions
 
-When creating a signal, you can optionally provide an equality function, which will be used to check whether the new value is actually different than the previous one.
+Bir sinyal oluştururken, isteğe bağlı olarak yeni değerin önceki değerden gerçekten farklı olup olmadığını kontrol etmek için kullanılacak bir eşitlik fonksiyonu sağlayabilirsiniz.
 
 ```ts
 import _ from 'lodash';
@@ -247,13 +247,13 @@ const data = signal(['test'], {equal: _.isEqual});
 data.set(['test']);
 ```
 
-Equality functions can be provided to both writable and computed signals.
+Eşitlik fonksiyonları hem yazılabilir hem de hesaplanmış sinyallere sağlanabilir.
 
-HELPFUL: By default, signals use referential equality ([`Object.is()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison).
+HELPFUL: Varsayılan olarak, sinyaller referans eşitliğini ([`Object.is()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is) karşılaştırması) kullanır.
 
 ### Type checking signals
 
-You can use `isSignal` to check if a value is a `Signal`:
+Bir değerin `Signal` olup olmadığını kontrol etmek için `isSignal` kullanabilirsiniz:
 
 ```ts
 const count = signal(0);
@@ -264,7 +264,7 @@ isSignal(doubled); // true
 isSignal(42); // false
 ```
 
-To specifically check if a signal is writable, use `isWritableSignal`:
+Bir sinyalin özellikle yazılabilir olup olmadığını kontrol etmek için `isWritableSignal` kullanın:
 
 ```ts
 const count = signal(0);
@@ -276,4 +276,4 @@ isWritableSignal(doubled); // false
 
 ## Using signals with RxJS
 
-See [RxJS interop with Angular signals](ecosystem/rxjs-interop) for details on interoperability between signals and RxJS.
+Sinyaller ve RxJS arasındaki birlikte çalışabilirlik hakkında ayrıntılar için [Angular sinyalleri ile RxJS birlikte çalışma](ecosystem/rxjs-interop) bölümüne bakın.

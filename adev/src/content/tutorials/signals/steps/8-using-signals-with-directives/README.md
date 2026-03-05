@@ -1,15 +1,15 @@
 # Using signals with directives
 
-Now that you've learned [using signals with services](/tutorials/signals/7-using-signals-with-services), let's explore how directives use signals. **The great news: signals work exactly the same in directives as they do in components!** The main difference is that since directives don't have templates, you'll primarily use signals in host bindings to reactively update the host element.
+Artık [sinyalleri servislerle kullanmayı](/tutorials/signals/7-using-signals-with-services) öğrendiğinize göre, direktiflerin sinyalleri nasıl kullandığını keşfedelim. **Harika haber: sinyaller direktiflerde bileşenlerdeki gibi tamamen aynı şekilde çalışır!** Temel fark, direktiflerin şablonları olmadığı için, sinyalleri ağırlıklı olarak ana eleman (host element) üzerinde reaktif güncellemeler yapmak için host bağlamalarında kullanacak olmanızdır.
 
-In this activity, you'll build a highlight directive that demonstrates how signals create reactive behavior in directives.
+Bu aktivitede, sinyallerin direktiflerde nasıl reaktif davranış oluşturduğunu gösteren bir vurgulama direktifi oluşturacaksınız.
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Set up signals just like in a component">
-Import the signal functions and create your reactive state. This works exactly the same as in components:
+Sinyal fonksiyonlarını içe aktarın ve reaktif durumunuzu oluşturun. Bu, bileşenlerdeki ile tamamen aynı şekilde çalışır:
 
 ```ts
 import {Directive, input, signal, computed} from '@angular/core';
@@ -42,11 +42,11 @@ export class HighlightDirective {
 }
 ```
 
-Notice how this is identical to component patterns - the only difference is we're in a `@Directive` instead of `@Component`.
+Bunun bileşen kalıplarıyla aynı olduğuna dikkat edin - tek fark `@Component` yerine `@Directive` içinde olmamızdır.
 </docs-step>
 
 <docs-step title="Use signals in host bindings">
-Since directives don't have templates, you'll use signals in **host bindings** to reactively update the host element. Add the `host` configuration and event handlers:
+Direktiflerin şablonları olmadığı için, sinyalleri ana elemanı reaktif olarak güncellemek için **host bağlamalarında** kullanacaksınız. `host` yapılandırmasını ve olay işleyicilerini ekleyin:
 
 ```ts
 @Directive({
@@ -70,11 +70,11 @@ export class HighlightDirective {
 }
 ```
 
-The host bindings automatically re-evaluate when the signals change - just like template bindings in components! When `isHovered` changes, the `backgroundStyle` computed signal recalculates, and the host binding updates the element's style.
+Host bağlamaları, sinyaller değiştiğinde otomatik olarak yeniden değerlendirilir - tıpkı bileşenlerdeki şablon bağlamaları gibi! `isHovered` değiştiğinde, `backgroundStyle` computed sinyali yeniden hesaplanır ve host bağlaması elemanın stilini günceller.
 </docs-step>
 
 <docs-step title="Use the directive in your template">
-Update the app template to demonstrate the reactive directive:
+Reaktif direktifi göstermek için uygulama şablonunu güncelleyin:
 
 ```angular-html
 template: `
@@ -90,15 +90,15 @@ template: `
 `,
 ```
 
-The directive automatically applies reactive highlighting based on the signal inputs!
+Direktif, sinyal input'larına göre otomatik olarak reaktif vurgulama uygular!
 </docs-step>
 
 </docs-workflow>
 
-Perfect! You've now seen how signals work with directives. Some key takeaways from this lesson are:
+Mükemmel! Artık sinyallerin direktiflerle nasıl çalıştığını gördünüz. Bu dersten bazı önemli çıkarımlar:
 
-- **Signals are universal** - All signal APIs (`input()`, `signal()`, `computed()`, `effect()`) work the same in both directives and components
-- **Host bindings are the primary use case** - Since directives don't have templates, you use signals in host bindings to reactively modify the host element
-- **Same reactive patterns** - Signal updates trigger automatic re-evaluation of computed signals and host bindings, just like in component templates
+- **Sinyaller evrenseldir** - Tüm sinyal API'leri (`input()`, `signal()`, `computed()`, `effect()`) hem direktiflerde hem de bileşenlerde aynı şekilde çalışır
+- **Host bağlamaları birincil kullanım alanıdır** - Direktiflerin şablonları olmadığı için, ana elemanı reaktif olarak değiştirmek için sinyalleri host bağlamalarında kullanırsınız
+- **Aynı reaktif kalıplar** - Sinyal güncellemeleri, bileşen şablonlarında olduğu gibi computed sinyallerin ve host bağlamalarının otomatik yeniden değerlendirilmesini tetikler
 
-In the next lesson, you'll [learn how to query child elements with signal queries](/tutorials/signals/9-query-child-elements-with-signal-queries)!
+Bir sonraki derste, [sinyal sorguları ile alt elemanları nasıl sorgulayacağınızı](/tutorials/signals/9-query-child-elements-with-signal-queries) öğreneceksiniz!

@@ -8,7 +8,7 @@
 
 ## Overview
 
-A container for grouping related controls and actions with keyboard navigation, commonly used for text formatting, toolbars, and command panels.
+Klavye navigasyonu ile ilgili kontrolleri ve eylemleri gruplamak için kullanılan bir kapsayıcı; genellikle metin biçimlendirme, araç çubukları ve komut panelleri için kullanılır.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -38,36 +38,36 @@ A container for grouping related controls and actions with keyboard navigation, 
 
 ## Usage
 
-Toolbar works best for grouping related controls that users access frequently. Consider using toolbar when:
+Toolbar, kullanıcıların sık eriştiği ilgili kontrolleri gruplamak için en iyi şekilde çalışır. Şu durumlarda toolbar kullanmayı düşünün:
 
-- **Multiple related actions** - You have several controls that perform related functions (like text formatting buttons)
-- **Keyboard efficiency matters** - Users benefit from quick keyboard navigation through arrow keys
-- **Grouped controls** - You need to organize controls into logical sections with separators
-- **Frequent access** - Controls are used repeatedly within a workflow
+- **Birden fazla ilgili eylem** - İlgili işlevleri gerçekleştiren birkaç kontrolünüz var (metin biçimlendirme düğmeleri gibi)
+- **Klavye verimliliği önemli** - Kullanıcılar ok tuşları aracılığıyla hızlı klavye navigasyonundan faydalanır
+- **Gruplanmış kontroller** - Kontrolleri ayırıcılarla mantıksal bölümlere organize etmeniz gerekiyor
+- **Sık erişim** - Kontroller bir iş akışı içinde tekrar tekrar kullanılıyor
 
-Avoid toolbar when:
+Şu durumlarda toolbar'dan kaçının:
 
-- A simple button group is sufficient - For just 2-3 unrelated actions, individual buttons work better
-- Controls aren't related - Toolbar implies a logical grouping; unrelated controls confuse users
-- Complex nested navigation - Deep hierarchies are better served by menus or navigation components
+- Basit bir düğme grubu yeterliyse - Sadece 2-3 ilgisiz eylem için ayrı düğmeler daha iyi çalışır
+- Kontroller ilişkili değilse - Toolbar mantıksal bir gruplama ima eder; ilgisiz kontroller kullanıcıları karıştırır
+- Karmaşık iç içe navigasyon - Derin hiyerarşiler menüler veya navigasyon bileşenleri tarafından daha iyi karşılanır
 
 ## Features
 
-Angular's toolbar provides a fully accessible toolbar implementation with:
+Angular'ın toolbar'ı tam erişilebilir bir araç çubuğu uygulaması sağlar:
 
-- **Keyboard Navigation** - Navigate widgets with arrow keys, activate with Enter or Space
-- **Screen Reader Support** - Built-in ARIA attributes for assistive technologies
-- **Widget Groups** - Organize related widgets like radio button groups or toggle button groups
-- **Flexible Orientation** - Horizontal or vertical layouts with automatic keyboard navigation
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
-- **Bidirectional Text Support** - Automatically handles right-to-left (RTL) languages
-- **Configurable Focus** - Choose between wrapping navigation or hard stops at edges
+- **Klavye Navigasyonu** - Ok tuşlarıyla widget'lar arasında gezinin, Enter veya Space ile etkinleştirin
+- **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA öznitelikleri
+- **Widget Grupları** - Radyo düğmesi grupları veya geçiş düğmesi grupları gibi ilgili widget'ları organize edin
+- **Esnek Yönelim** - Otomatik klavye navigasyonu ile yatay veya dikey düzenler
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanarak reaktif durum yönetimi
+- **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak yönetir
+- **Yapılandırılabilir Odak** - Kenarlarda sarmalama navigasyonu veya sert duraklar arasında seçim yapın
 
 ## Examples
 
 ### Basic horizontal toolbar
 
-Horizontal toolbars organize controls from left to right, matching the common pattern in text editors and design tools. Arrow keys navigate between widgets, maintaining focus within the toolbar until users press Tab to move to the next page element.
+Yatay araç çubukları kontrolleri soldan sağa düzenler ve metin editörleri ve tasarım araçlarındaki yaygın kalıba uyar. Ok tuşları widget'lar arasında gezinir ve kullanıcılar bir sonraki sayfa öğesine geçmek için Tab'a basana kadar odağı araç çubuğu içinde tutar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -97,7 +97,7 @@ Horizontal toolbars organize controls from left to right, matching the common pa
 
 ### Vertical toolbar
 
-Vertical toolbars stack controls top to bottom, useful for side panels or vertical command palettes. Up and down arrow keys navigate between widgets.
+Dikey araç çubukları kontrolleri yukarıdan aşağıya yığar; yan paneller veya dikey komut paletleri için kullanışlıdır. Yukarı ve aşağı ok tuşları widget'lar arasında gezinir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -127,11 +127,11 @@ Vertical toolbars stack controls top to bottom, useful for side panels or vertic
 
 ### Widget groups
 
-Widget groups contain related controls that work together, like text alignment options or list formatting choices. Groups maintain their own internal state while participating in toolbar navigation.
+Widget grupları birlikte çalışan ilgili kontrolleri içerir; metin hizalama seçenekleri veya liste biçimlendirme seçimleri gibi. Gruplar, araç çubuğu navigasyonuna katılırken kendi iç durumlarını korur.
 
-In the examples above, the alignment buttons are wrapped in `ngToolbarWidgetGroup` with `role="radiogroup"` to create a mutually exclusive selection group.
+Yukarıdaki örneklerde hizalama düğmeleri, karşılıklı dışlayıcı bir seçim grubu oluşturmak için `role="radiogroup"` ile `ngToolbarWidgetGroup` içine sarılmıştır.
 
-The `multi` input controls whether multiple widgets within a group can be selected simultaneously:
+`multi` girişi, bir grup içindeki birden fazla widget'ın aynı anda seçilip seçilemeyeceğini kontrol eder:
 
 ```html {highlight: [15]}
 <!-- Single selection (radio group) -->
@@ -151,12 +151,12 @@ The `multi` input controls whether multiple widgets within a group can be select
 
 ### Disabled widgets
 
-Toolbars support two disabled modes:
+Araç çubukları iki devre dışı bırakma modunu destekler:
 
-1. **Soft-disabled** widgets remain focusable but visually indicate they're unavailable
-2. **Hard-disabled** widgets are completely removed from keyboard navigation.
+1. **Yumuşak devre dışı** widget'lar odaklanılabilir kalır ancak görsel olarak kullanılamaz olduklarını gösterir
+2. **Sert devre dışı** widget'lar klavye navigasyonundan tamamen kaldırılır.
 
-By default, `softDisabled` is `true`, which allows disabled widgets to still receive focus. If you want to enable hard-disabled mode, set `[softDisabled]="false"` on the toolbar.
+Varsayılan olarak `softDisabled` `true`'dur, bu da devre dışı widget'ların hala odak almasına izin verir. Sert devre dışı modunu etkinleştirmek istiyorsanız, araç çubuğunda `[softDisabled]="false"` ayarlayın.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -186,7 +186,7 @@ By default, `softDisabled` is `true`, which allows disabled widgets to still rec
 
 ### Right-to-left (RTL) support
 
-Toolbars automatically support right-to-left languages. Wrap the toolbar in a container with `dir="rtl"` to reverse the layout and keyboard navigation direction. Arrow key navigation adjusts automatically: left arrow moves to the next widget, right arrow to the previous.
+Araç çubukları sağdan sola dilleri otomatik olarak destekler. Düzeni ve klavye navigasyon yönünü tersine çevirmek için araç çubuğunu `dir="rtl"` içeren bir kapsayıcı ile sarın. Ok tuşu navigasyonu otomatik olarak ayarlanır: sol ok sonraki widget'a, sağ ok önceki widget'a hareket eder.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -218,50 +218,50 @@ Toolbars automatically support right-to-left languages. Wrap the toolbar in a co
 
 ### Toolbar Directive
 
-The `ngToolbar` directive provides the container for toolbar functionality.
+`ngToolbar` direktifi, araç çubuğu işlevselliği için kapsayıcıyı sağlar.
 
 #### Inputs
 
-| Property       | Type                           | Default        | Description                                            |
-| -------------- | ------------------------------ | -------------- | ------------------------------------------------------ |
-| `orientation`  | `'vertical'` \| `'horizontal'` | `'horizontal'` | Whether toolbar is vertically or horizontally oriented |
-| `disabled`     | `boolean`                      | `false`        | Disables the entire toolbar                            |
-| `softDisabled` | `boolean`                      | `true`         | Whether disabled items can receive focus               |
-| `wrap`         | `boolean`                      | `true`         | Whether focus should wrap at the edges                 |
+| Property       | Type                           | Default        | Description                                      |
+| -------------- | ------------------------------ | -------------- | ------------------------------------------------ |
+| `orientation`  | `'vertical'` \| `'horizontal'` | `'horizontal'` | Araç çubuğunun dikey mi yatay mı yönlendirildiği |
+| `disabled`     | `boolean`                      | `false`        | Tüm araç çubuğunu devre dışı bırakır             |
+| `softDisabled` | `boolean`                      | `true`         | Devre dışı öğelerin odak alıp alamayacağı        |
+| `wrap`         | `boolean`                      | `true`         | Odağın kenarlarda sarılıp sarılmayacağı          |
 
 ### ToolbarWidget Directive
 
-The `ngToolbarWidget` directive marks an element as a navigable widget within the toolbar.
+`ngToolbarWidget` direktifi, araç çubuğu içinde bir öğeyi gezinilebilir widget olarak işaretler.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                                     |
-| ---------- | --------- | ------- | ----------------------------------------------- |
-| `id`       | `string`  | auto    | Unique identifier for the widget                |
-| `disabled` | `boolean` | `false` | Disables the widget                             |
-| `value`    | `V`       | -       | The value associated with the widget (required) |
+| Property   | Type      | Default | Description                         |
+| ---------- | --------- | ------- | ----------------------------------- |
+| `id`       | `string`  | auto    | Widget için benzersiz tanımlayıcı   |
+| `disabled` | `boolean` | `false` | Widget'ı devre dışı bırakır         |
+| `value`    | `V`       | -       | Widget ile ilişkili değer (zorunlu) |
 
 #### Signals
 
 | Property   | Type              | Description                                 |
 | ---------- | ----------------- | ------------------------------------------- |
-| `active`   | `Signal<boolean>` | Whether the widget is currently focused     |
-| `selected` | `Signal<boolean>` | Whether the widget is selected (in a group) |
+| `active`   | `Signal<boolean>` | Widget'ın şu anda odaklanıp odaklanmadığı   |
+| `selected` | `Signal<boolean>` | Widget'ın seçili olup olmadığı (bir grupta) |
 
 ### ToolbarWidgetGroup Directive
 
-The `ngToolbarWidgetGroup` directive groups related widgets together.
+`ngToolbarWidgetGroup` direktifi ilgili widget'ları birlikte gruplar.
 
 #### Inputs
 
-| Property   | Type      | Default | Description                              |
-| ---------- | --------- | ------- | ---------------------------------------- |
-| `disabled` | `boolean` | `false` | Disables all widgets in the group        |
-| `multi`    | `boolean` | `false` | Whether multiple widgets can be selected |
+| Property   | Type      | Default | Description                                   |
+| ---------- | --------- | ------- | --------------------------------------------- |
+| `disabled` | `boolean` | `false` | Gruptaki tüm widget'ları devre dışı bırakır   |
+| `multi`    | `boolean` | `false` | Birden fazla widget'ın seçilip seçilemeyeceği |
 
 ### Related components
 
-Toolbar can contain various widget types including buttons, trees, and comboboxes. See individual component documentation for specific widget implementations.
+Araç çubuğu düğmeler, ağaçlar ve combobox'lar dahil çeşitli widget türlerini içerebilir. Belirli widget uygulamaları için ayrı bileşen belgelerine bakın.
 
 <docs-pill-row>
   <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/" title="Toolbar ARIA pattern"/>

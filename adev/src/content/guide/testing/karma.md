@@ -1,14 +1,14 @@
 # Testing with Karma and Jasmine
 
-While [Vitest](https://vitest.dev) is the default test runner for new Angular projects, [Karma](https://karma-runner.github.io) is still a supported and widely used test runner. This guide provides instructions for testing your Angular application using the Karma test runner with the [Jasmine](https://jasmine.github.io) testing framework.
+[Vitest](https://vitest.dev) yeni Angular projeleri için varsayılan test çalıştırıcısı olsa da, [Karma](https://karma-runner.github.io) hâlâ desteklenen ve yaygın olarak kullanılan bir test çalıştırıcısıdır. Bu kılavuz, Angular uygulamanızı [Jasmine](https://jasmine.github.io) test çerçevesi ile Karma test çalıştırıcısını kullanarak test etme talimatları sağlar.
 
 ## Setting Up Karma and Jasmine
 
-You can set up Karma and Jasmine for a new project or add it to an existing one.
+Karma ve Jasmine'i yeni bir proje için kurabilir veya mevcut bir projeye ekleyebilirsiniz.
 
 ### For New Projects
 
-To create a new project with Karma and Jasmine pre-configured, run the `ng new` command with the `--test-runner=karma` option:
+Karma ve Jasmine önceden yapılandırılmış yeni bir proje oluşturmak için `ng new` komutunu `--test-runner=karma` seçeneği ile çalıştırın:
 
 ```shell
 ng new my-karma-app --test-runner=karma
@@ -16,9 +16,9 @@ ng new my-karma-app --test-runner=karma
 
 ### For Existing Projects
 
-To add Karma and Jasmine to an existing project, follow these steps:
+Mevcut bir projeye Karma ve Jasmine eklemek için şu adımları izleyin:
 
-1.  **Install the necessary packages:**
+1.  **Gerekli paketleri yükleyin:**
 
     <docs-code-multifile>
       <docs-code header="npm" language="shell">
@@ -35,9 +35,9 @@ To add Karma and Jasmine to an existing project, follow these steps:
       </docs-code>
     </docs-code-multifile>
 
-2.  **Configure the test runner in `angular.json`:**
+2.  **`angular.json` dosyasında test çalıştırıcısını yapılandırın:**
 
-    In your `angular.json` file, find the `test` target and set the `runner` option to `karma`:
+    `angular.json` dosyanızda `test` hedefini bulun ve `runner` seçeneğini `karma` olarak ayarlayın:
 
     ```json
     {
@@ -59,9 +59,9 @@ To add Karma and Jasmine to an existing project, follow these steps:
     }
     ```
 
-3.  **Update `tsconfig.spec.json` for Jasmine types:**
+3.  **Jasmine tipleri için `tsconfig.spec.json`'ı güncelleyin:**
 
-    To ensure TypeScript recognizes global testing functions like `describe` and `it`, add `"jasmine"` to the `types` array in your `tsconfig.spec.json`:
+    TypeScript'in `describe` ve `it` gibi global test fonksiyonlarını tanımasını sağlamak için `tsconfig.spec.json` dosyanızdaki `types` dizisine `"jasmine"` ekleyin:
 
     ```json
     {
@@ -76,15 +76,15 @@ To add Karma and Jasmine to an existing project, follow these steps:
 
 ## Running Tests
 
-Once your project is configured, run the tests using the [`ng test`](cli/test) command:
+Projeniz yapılandırıldıktan sonra [`ng test`](cli/test) komutunu kullanarak testleri çalıştırın:
 
 ```shell
 ng test
 ```
 
-The `ng test` command builds the application in _watch mode_ and launches the [Karma test runner](https://karma-runner.github.io).
+`ng test` komutu uygulamayı _izleme modunda_ derler ve [Karma test çalıştırıcısını](https://karma-runner.github.io) başlatır.
 
-The console output looks like below:
+Konsol çıktısı aşağıdaki gibi görünür:
 
 ```shell
 
@@ -97,31 +97,31 @@ TOTAL: 3 SUCCESS
 
 ```
 
-The test output is displayed in the browser using [Karma Jasmine HTML Reporter](https://github.com/dfederm/karma-jasmine-html-reporter).
+Test çıktısı, [Karma Jasmine HTML Reporter](https://github.com/dfederm/karma-jasmine-html-reporter) kullanılarak tarayıcıda görüntülenir.
 
 <img alt="Jasmine HTML Reporter in the browser" src="assets/images/guide/testing/initial-jasmine-html-reporter.png">
 
-Click on a test row to re-run just that test or click on a description to re-run the tests in the selected test group ("test suite").
+Sadece o testi yeniden çalıştırmak için bir test satırına tıklayın veya seçilen test grubundaki ("test paketi") testleri yeniden çalıştırmak için bir açıklamaya tıklayın.
 
-Meanwhile, the `ng test` command is watching for changes. To see this in action, make a small change to a source file and save. The tests run again, the browser refreshes, and the new test results appear.
+Bu arada `ng test` komutu değişiklikleri izlemeye devam eder. Bunu çalışırken görmek için bir kaynak dosyada küçük bir değişiklik yapıp kaydedin. Testler tekrar çalışır, tarayıcı yenilenir ve yeni test sonuçları görünür.
 
 ## Configuration
 
-The Angular CLI takes care of Jasmine and Karma configuration for you. It constructs the full configuration in memory, based on options specified in the `angular.json` file.
+Angular CLI, Jasmine ve Karma yapılandırmasını sizin için yönetir. `angular.json` dosyasında belirtilen seçeneklere dayalı olarak tam yapılandırmayı bellekte oluşturur.
 
 ### Customizing Karma Configuration
 
-If you want to customize Karma, you can create a `karma.conf.js` by running the following command:
+Karma'yı özelleştirmek istiyorsanız, aşağıdaki komutu çalıştırarak bir `karma.conf.js` oluşturabilirsiniz:
 
 ```shell
 ng generate config karma
 ```
 
-HELPFUL: Read more about Karma configuration in the [Karma configuration guide](http://karma-runner.github.io/6.4/config/configuration-file.html).
+HELPFUL: Karma yapılandırması hakkında daha fazla bilgi için [Karma yapılandırma kılavuzunu](http://karma-runner.github.io/6.4/config/configuration-file.html) okuyun.
 
 ### Setting the Test Runner in `angular.json`
 
-To explicitly set Karma as the test runner for your project, locate the `test` target in your `angular.json` file and set the `runner` option to `karma`:
+Projeniz için test çalıştırıcısını açıkça Karma olarak ayarlamak istiyorsanız, `angular.json` dosyanızdaki `test` hedefini bulun ve `runner` seçeneğini `karma` olarak ayarlayın:
 
 ```json
 {
@@ -145,9 +145,9 @@ To explicitly set Karma as the test runner for your project, locate the `test` t
 
 ## Code coverage enforcement
 
-To enforce a minimum code coverage level, you can use the `check` property in the `coverageReporter` section of your `karma.conf.js` file.
+Minimum bir kod kapsam seviyesini zorunlu kılmak için `karma.conf.js` dosyanızdaki `coverageReporter` bölümünde `check` özelliğini kullanabilirsiniz.
 
-For example, to require a minimum of 80% coverage:
+Örneğin, minimum %80 kapsam gerektirmek için:
 
 ```javascript
 coverageReporter: {
@@ -168,30 +168,30 @@ coverageReporter: {
 }
 ```
 
-This will cause the test run to fail if the specified coverage thresholds are not met.
+Bu, belirtilen kapsam eşikleri karşılanmazsa test çalışmasının başarısız olmasına neden olur.
 
 ## Testing in continuous integration
 
-To run your Karma tests in a CI environment, use the following command:
+Karma testlerinizi bir CI ortamında çalıştırmak için aşağıdaki komutu kullanın:
 
 ```shell
 ng test --no-watch --no-progress --browsers=ChromeHeadless
 ```
 
-NOTE: The `--no-watch` and `--no-progress` flags are crucial for Karma in CI environments to ensure tests run once and exit cleanly. The `--browsers=ChromeHeadless` flag is also essential for running tests in a browser environment without a graphical interface.
+NOTE: `--no-watch` ve `--no-progress` bayrakları, testlerin bir kez çalışıp temiz bir şekilde çıkmasını sağlamak için CI ortamlarında Karma için kritik öneme sahiptir. `--browsers=ChromeHeadless` bayrağı da grafik arayüz olmadan tarayıcı ortamında testleri çalıştırmak için gereklidir.
 
 ## Debugging tests
 
-If your tests aren't working as you expect, you can inspect and debug them in the browser.
+Testleriniz beklediğiniz gibi çalışmıyorsa, bunları tarayıcıda inceleyebilir ve hata ayıklayabilirsiniz.
 
-To debug an application with the Karma test runner:
+Karma test çalıştırıcısı ile bir uygulamada hata ayıklamak için:
 
-1.  Reveal the Karma browser window. See [Set up for testing](guide/testing#set-up-for-testing) if you need help with this step.
-2.  Click the **DEBUG** button to open a new browser tab and re-run the tests.
-3.  Open the browser's **Developer Tools**. On Windows, press `Ctrl-Shift-I`. On macOS, press `Command-Option-I`.
-4.  Pick the **Sources** section.
-5.  Press `Control/Command-P`, and then start typing the name of your test file to open it.
-6.  Set a breakpoint in the test.
-7.  Refresh the browser, and notice how it stops at the breakpoint.
+1.  Karma tarayıcı penceresini açın. Bu adımda yardıma ihtiyacınız varsa [Test için kurulum](guide/testing#set-up-for-testing) bölümüne bakın.
+2.  Yeni bir tarayıcı sekmesi açmak ve testleri yeniden çalıştırmak için **DEBUG** düğmesine tıklayın.
+3.  Tarayıcının **Geliştirici Araçlarını** açın. Windows'ta `Ctrl-Shift-I` tuşlarına basın. macOS'ta `Command-Option-I` tuşlarına basın.
+4.  **Sources** bölümünü seçin.
+5.  `Control/Command-P` tuşlarına basın ve ardından test dosyanızın adını yazmaya başlayarak açın.
+6.  Testte bir kesme noktası ayarlayın.
+7.  Tarayıcıyı yenileyin ve kesme noktasında durduğunu fark edin.
 
 <img alt="Karma debugging" src="assets/images/guide/testing/karma-1st-spec-debug.png">

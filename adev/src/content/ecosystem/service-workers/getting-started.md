@@ -1,10 +1,10 @@
 # Getting started with service workers
 
-This document explains how to enable Angular service worker support in projects that you created with the [Angular CLI](tools/cli). It then uses an example to show you a service worker in action, demonstrating loading and basic caching.
+Bu belge, [Angular CLI](tools/cli) ile oluşturduğunuz projelerde Angular service worker desteğini nasıl etkinleştireceğinizi açıklamaktadır. Ardından, bir service worker'ı çalışırken göstermek, yükleme ve temel önbellekleme işlemlerini göstermek için bir örnek kullanır.
 
 ## Adding a service worker to your project
 
-To set up the Angular service worker in your project, run the following CLI command:
+Projenizde Angular service worker'ı kurmak için aşağıdaki CLI komutunu çalıştırın:
 
 ```shell
 
@@ -12,19 +12,18 @@ ng add @angular/pwa
 
 ```
 
-The CLI configures your application to use service workers with the following actions:
+CLI, uygulamanızı aşağıdaki işlemlerle service worker'ları kullanacak şekilde yapılandırır:
 
-1. Adds the `@angular/service-worker` package to your project.
-1. Enables service worker build support in the CLI.
-1. Imports and registers the service worker with the application's root providers.
-1. Updates the `index.html` file:
-   - Includes a link to add the `manifest.webmanifest` file
-   - Adds a meta tag for `theme-color`
-1. Installs icon files to support the installed Progressive Web App (PWA).
-1. Creates the service worker configuration file called [`ngsw-config.json`](ecosystem/service-workers/config),
-   which specifies the caching behaviors and other settings.
+1. Projenize `@angular/service-worker` paketini ekler.
+1. CLI'da service worker derleme desteğini etkinleştirir.
+1. Service worker'ı uygulamanın kök sağlayıcılarına içe aktarır ve kaydeder.
+1. `index.html` dosyasını günceller:
+   - `manifest.webmanifest` dosyasını eklemek için bir bağlantı ekler
+   - `theme-color` için bir meta etiketi ekler
+1. Yüklü Progressive Web App'i (PWA) desteklemek için simge dosyalarını yükler.
+1. Önbellekleme davranışlarını ve diğer ayarları belirten [`ngsw-config.json`](ecosystem/service-workers/config) adlı service worker yapılandırma dosyasını oluşturur.
 
-Now, build the project:
+Şimdi projeyi derleyin:
 
 ```shell
 
@@ -32,12 +31,11 @@ ng build
 
 ```
 
-The CLI project is now set up to use the Angular service worker.
+CLI projesi artık Angular service worker'ı kullanmak üzere ayarlanmıştır.
 
 ## Service worker in action: a tour
 
-This section demonstrates a service worker in action,
-using an example application. To enable service worker support during local development, use the production configuration with the following command:
+Bu bölüm, bir örnek uygulama kullanarak bir service worker'ı çalışırken gösterir. Yerel geliştirme sırasında service worker desteğini etkinleştirmek için aşağıdaki komutla üretim yapılandırmasını kullanın:
 
 ```shell
 
@@ -45,8 +43,7 @@ ng serve --configuration=production
 
 ```
 
-Alternatively, you can use the [`http-server package`](https://www.npmjs.com/package/http-server) from
-npm, which supports service worker applications. Run it without installation using:
+Alternatif olarak, service worker uygulamalarını destekleyen npm'den [`http-server paketi`](https://www.npmjs.com/package/http-server) kullanabilirsiniz. Yükleme yapmadan şu şekilde çalıştırın:
 
 ```shell
 
@@ -54,75 +51,75 @@ npx http-server -p 8080 -c-1 dist/<project-name>/browser
 
 ```
 
-This will serve your application with service worker support at http://localhost:8080.
+Bu, uygulamanızı http://localhost:8080 adresinde service worker desteğiyle sunacaktır.
 
 ### Initial load
 
-With the server running on port `8080`, point your browser at `http://localhost:8080`.
-Your application should load normally.
+Sunucu `8080` portunda çalışırken, tarayıcınızı `http://localhost:8080` adresine yönlendirin.
+Uygulamanız normal şekilde yüklenmelidir.
 
-TIP: When testing Angular service workers, it's a good idea to use an incognito or private window in your browser to ensure the service worker doesn't end up reading from a previous leftover state, which can cause unexpected behavior.
+TIP: Angular service worker'larını test ederken, service worker'ın önceki kalan bir durumdan okumadığından emin olmak için tarayıcınızda gizli veya özel pencere kullanmak iyi bir fikirdir; bu, beklenmeyen davranışlara neden olabilir.
 
-HELPFUL: If you are not using HTTPS, the service worker will only be registered when accessing the application on `localhost`.
+HELPFUL: HTTPS kullanmıyorsanız, service worker yalnızca uygulamaya `localhost` üzerinden erişildiğinde kaydedilecektir.
 
 ### Simulating a network issue
 
-To simulate a network issue, disable network interaction for your application.
+Bir ağ sorununu simüle etmek için uygulamanız için ağ etkileşimini devre dışı bırakın.
 
-In Chrome:
+Chrome'da:
 
-1. Select **Tools** > **Developer Tools** (from the Chrome menu located in the top right corner).
-1. Go to the **Network tab**.
-1. Select **Offline** in the **Throttling** dropdown menu.
+1. **Araçlar** > **Geliştirici Araçları**'nı seçin (sağ üst köşedeki Chrome menüsünden).
+1. **Network sekmesine** gidin.
+1. **Throttling** açılır menüsünde **Offline**'ı seçin.
 
 <img alt="The offline option in the Network tab is selected" src="assets/images/guide/service-worker/offline-option.png">
 
-Now the application has no access to network interaction.
+Artık uygulamanın ağ etkileşimine erişimi yoktur.
 
-For applications that do not use the Angular service worker, refreshing now would display Chrome's Internet disconnected page that says "There is no Internet connection".
+Angular service worker'ı kullanmayan uygulamalar için şimdi yenilemek, "İnternet bağlantısı yok" yazan Chrome'un İnternet bağlantısı kesildi sayfasını gösterir.
 
-With the addition of an Angular service worker, the application behavior changes.
-On a refresh, the page loads normally.
+Angular service worker'ının eklenmesiyle uygulama davranışı değişir.
+Yenilemede sayfa normal şekilde yüklenir.
 
-Look at the Network tab to verify that the service worker is active.
+Service worker'ın aktif olduğunu doğrulamak için Network sekmesine bakın.
 
 <img alt="Requests are marked as from ServiceWorker" src="assets/images/guide/service-worker/sw-active.png">
 
-HELPFUL: Under the "Size" column, the requests state is `(ServiceWorker)`.
-This means that the resources are not being loaded from the network.
-Instead, they are being loaded from the service worker's cache.
+HELPFUL: "Size" sütununun altında, istek durumu `(ServiceWorker)` olarak gösterilir.
+Bu, kaynakların ağdan yüklenmediği anlamına gelir.
+Bunun yerine, service worker'ın önbelleğinden yüklenmektedir.
 
 ### What's being cached?
 
-Notice that all of the files the browser needs to render this application are cached.
-The `ngsw-config.json` boilerplate configuration is set up to cache the specific resources used by the CLI:
+Tarayıcının bu uygulamayı oluşturmak için ihtiyaç duyduğu tüm dosyaların önbelleğe alındığına dikkat edin.
+`ngsw-config.json` şablon yapılandırması, CLI tarafından kullanılan belirli kaynakları önbelleğe alacak şekilde ayarlanmıştır:
 
 - `index.html`
 - `favicon.ico`
-- Build artifacts (JS and CSS bundles)
-- Anything under `assets`
-- Images and fonts directly under the configured `outputPath` (by default `./dist/<project-name>/`) or `resourcesOutputPath`.
-  See the documentation for `ng build` for more information about these options.
+- Derleme çıktıları (JS ve CSS paketleri)
+- `assets` altındaki her şey
+- Yapılandırılmış `outputPath` (varsayılan olarak `./dist/<project-name>/`) veya `resourcesOutputPath` altındaki doğrudan resimler ve yazı tipleri.
+  Bu seçenekler hakkında daha fazla bilgi için `ng build` belgelerine bakın.
 
-IMPORTANT: The generated `ngsw-config.json` includes a limited list of cacheable fonts and images extensions. In some cases, you might want to modify the glob pattern to suit your needs.
+IMPORTANT: Oluşturulan `ngsw-config.json`, önbelleğe alınabilir yazı tipi ve resim uzantılarının sınırlı bir listesini içerir. Bazı durumlarda, glob desenini ihtiyaçlarınıza uyacak şekilde değiştirmek isteyebilirsiniz.
 
-IMPORTANT: If `resourcesOutputPath` or `assets` paths are modified after the generation of configuration file, you need to change the paths manually in `ngsw-config.json`.
+IMPORTANT: Yapılandırma dosyası oluşturulduktan sonra `resourcesOutputPath` veya `assets` yolları değiştirilirse, `ngsw-config.json` içindeki yolları manuel olarak değiştirmeniz gerekir.
 
 ### Making changes to your application
 
-Now that you've seen how service workers cache your application, the next step is understanding how updates work.
-Make a change to the application, and watch the service worker install the update:
+Artık service worker'ların uygulamanızı nasıl önbelleğe aldığını gördüğünüze göre, bir sonraki adım güncellemelerin nasıl çalıştığını anlamaktır.
+Uygulamada bir değişiklik yapın ve service worker'ın güncellemeyi yüklediğini izleyin:
 
-1. If you're testing in an incognito window, open a second blank tab.
-   This keeps the incognito and the cache state alive during your test.
+1. Gizli pencerede test ediyorsanız, ikinci bir boş sekme açın.
+   Bu, testiniz sırasında gizli pencere ve önbellek durumunu canlı tutar.
 
-1. Close the application tab, but not the window.
-   This should also close the Developer Tools.
+1. Uygulama sekmesini kapatın, ancak pencereyi kapatmayın.
+   Bu, Geliştirici Araçlarını da kapatmalıdır.
 
-1. Shut down `http-server` (Ctrl-c).
-1. Open `src/app/app.component.html` for editing.
-1. Change the text `Welcome to {{title}}!` to `Bienvenue à {{title}}!`.
-1. Build and run the server again:
+1. `http-server`'ı kapatın (Ctrl-c).
+1. `src/app/app.component.html` dosyasını düzenlemek için açın.
+1. `Welcome to {{title}}!` metnini `Bienvenue à {{title}}!` olarak değiştirin.
+1. Sunucuyu yeniden derleyin ve çalıştırın:
 
 ```shell
     ng build
@@ -131,39 +128,39 @@ Make a change to the application, and watch the service worker install the updat
 
 ### Updating your application in the browser
 
-Now look at how the browser and service worker handle the updated application.
+Şimdi tarayıcının ve service worker'ın güncellenmiş uygulamayı nasıl işlediğine bakın.
 
-1. Open [http://localhost:8080](http://localhost:8080) again in the same window.
-   What happens?
+1. Aynı pencerede [http://localhost:8080](http://localhost:8080) adresini tekrar açın.
+   Ne olur?
 
    <img alt="It still says Welcome to Service Workers!" src="assets/images/guide/service-worker/welcome-msg-en.png">
 
-   What went wrong?
-   _Nothing, actually!_
-   The Angular service worker is doing its job and serving the version of the application that it has **installed**, even though there is an update available.
-   In the interest of speed, the service worker doesn't wait to check for updates before it serves the application that it has cached.
+   Ne yanlış gitti?
+   _Aslında hiçbir şey!_
+   Angular service worker işini yapıyor ve bir güncelleme mevcut olsa bile **yüklediği** uygulamanın sürümünü sunuyor.
+   Hız açısından, service worker önbelleğe aldığı uygulamayı sunmadan önce güncellemeleri kontrol etmeyi beklemez.
 
-   Look at the `http-server` logs to see the service worker requesting `/ngsw.json`.
+   Service worker'ın `/ngsw.json` istediğini görmek için `http-server` günlüklerine bakın.
 
    ```text
    [2023-09-07T00:37:24.372Z]  "GET /ngsw.json?ngsw-cache-bust=0.9365263935102124" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
    ```
 
-   This is how the service worker checks for updates.
+   Service worker güncellemeleri bu şekilde kontrol eder.
 
-1. Refresh the page.
+1. Sayfayı yenileyin.
 
    <img alt="The text has changed to say Bienvenue à app!" src="assets/images/guide/service-worker/welcome-msg-fr.png">
 
-   The service worker installed the updated version of your application _in the background_, and the next time the page is loaded or reloaded, the service worker switches to the latest version.
+   Service worker, uygulamanızın güncellenmiş sürümünü _arka planda_ yükledi ve sayfa bir sonraki yüklendiğinde veya yenilendiğinde, service worker en son sürüme geçer.
 
 ## Service worker configuration
 
-Angular service workers support comprehensive configuration options through the `SwRegistrationOptions` interface, providing fine-grained control over registration behavior, caching, and script execution.
+Angular service worker'ları, `SwRegistrationOptions` arayüzü aracılığıyla kapsamlı yapılandırma seçeneklerini destekler ve kayıt davranışı, önbellekleme ve betik yürütme üzerinde ayrıntılı kontrol sağlar.
 
 ### Enabling and disabling service workers
 
-The `enabled` option controls whether the service worker will be registered and related services will attempt to communicate with it.
+`enabled` seçeneği, service worker'ın kaydedilip kaydedilmeyeceğini ve ilgili servislerin onunla iletişim kurmaya çalışıp çalışmayacağını kontrol eder.
 
 ```ts
 import {ApplicationConfig, isDevMode} from '@angular/core';
@@ -180,7 +177,7 @@ export const appConfig: ApplicationConfig = {
 
 ### Cache control with updateViaCache
 
-The `updateViaCache` option controls how the browser consults the HTTP cache during service worker updates. This provides fine-grained control over when the browser fetches updated service worker scripts and imported modules.
+`updateViaCache` seçeneği, service worker güncellemeleri sırasında tarayıcının HTTP önbelleğine nasıl başvuracağını kontrol eder. Bu, tarayıcının güncellenmiş service worker betiklerini ve içe aktarılan modülleri ne zaman alacağı üzerinde ayrıntılı kontrol sağlar.
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -193,15 +190,15 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-The `updateViaCache` option accepts the following values:
+`updateViaCache` seçeneği aşağıdaki değerleri kabul eder:
 
-- **`'imports'`** - The HTTP cache is consulted for the service worker script's imported scripts, but not for the service worker script itself
-- **`'all'`** - The HTTP cache is consulted for both the service worker script and its imported scripts
-- **`'none'`** - The HTTP cache is not consulted for the service worker script or its imported scripts
+- **`'imports'`** - HTTP önbelleği, service worker betiğinin içe aktarılan betikleri için sorgulanır, ancak service worker betiğinin kendisi için sorgulanmaz
+- **`'all'`** - HTTP önbelleği, hem service worker betiği hem de içe aktarılan betikleri için sorgulanır
+- **`'none'`** - HTTP önbelleği, service worker betiği veya içe aktarılan betikleri için sorgulanmaz
 
 ### ES Module support with type option
 
-The `type` option enables specifying the script type when registering service workers, providing support for ES module features in your service worker scripts.
+`type` seçeneği, service worker'ları kaydederken betik türünü belirtmeyi etkinleştirerek, service worker betiklerinizde ES modül özelliklerine destek sağlar.
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -214,14 +211,14 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-The `type` option accepts the following values:
+`type` seçeneği aşağıdaki değerleri kabul eder:
 
-- **`'classic'`** (default) - Traditional service worker script execution. ES module features such as `import` and `export` are NOT allowed in the script
-- **`'module'`** - Registers the script as an ES module. Allows use of `import`/`export` syntax and module features
+- **`'classic'`** (varsayılan) - Geleneksel service worker betik yürütme. `import` ve `export` gibi ES modül özellikleri betikte kullanılmasına İZİN VERİLMEZ
+- **`'module'`** - Betiği bir ES modülü olarak kaydeder. `import`/`export` sözdizimi ve modül özelliklerinin kullanımına izin verir
 
 ### Registration scope control
 
-The `scope` option defines the service worker's registration scope, determining what range of URLs it can control.
+`scope` seçeneği, service worker'ın kayıt kapsamını tanımlayarak, hangi URL aralığını kontrol edebileceğini belirler.
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -234,13 +231,13 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-- Controls which URLs the service worker can intercept and manage
-- By default, the scope is the directory containing the service worker script
-- Used when calling `ServiceWorkerContainer.register()`
+- Service worker'ın hangi URL'leri yakalayıp yönetebileceğini kontrol eder
+- Varsayılan olarak kapsam, service worker betiğini içeren dizindir
+- `ServiceWorkerContainer.register()` çağrılırken kullanılır
 
 ### Registration strategy configuration
 
-The `registrationStrategy` option defines when the service worker will be registered with the browser, providing control over the timing of registration.
+`registrationStrategy` seçeneği, service worker'ın tarayıcıya ne zaman kaydedileceğini tanımlayarak, kayıt zamanlaması üzerinde kontrol sağlar.
 
 ```ts
 export const appConfig: ApplicationConfig = {
@@ -253,11 +250,11 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-Available registration strategies:
+Mevcut kayıt stratejileri:
 
-- **`'registerWhenStable:timeout'`** (default: `'registerWhenStable:30000'`) - Register as soon as the application stabilizes (no pending micro-/macro-tasks) but no later than the specified timeout in milliseconds
-- **`'registerImmediately'`** - Register the service worker immediately
-- **`'registerWithDelay:timeout'`** - Register with a delay of the specified timeout in milliseconds
+- **`'registerWhenStable:timeout'`** (varsayılan: `'registerWhenStable:30000'`) - Uygulama kararlı hale gelir gelmez (bekleyen mikro/makro görev kalmadığında) ancak belirtilen milisaniye cinsinden zaman aşımından geç olmamak üzere kaydeder
+- **`'registerImmediately'`** - Service worker'ı hemen kaydeder
+- **`'registerWithDelay:timeout'`** - Belirtilen milisaniye cinsinden bir gecikmeyle kaydeder
 
 ```ts
 // Register immediately
@@ -281,7 +278,7 @@ export const delayedConfig: ApplicationConfig = {
 };
 ```
 
-You can also provide an Observable factory function for custom registration timing:
+Özel kayıt zamanlaması için bir Observable fabrika fonksiyonu da sağlayabilirsiniz:
 
 ```ts
 import {timer} from 'rxjs';
@@ -298,7 +295,7 @@ export const customConfig: ApplicationConfig = {
 
 ## More on Angular service workers
 
-You might also be interested in the following:
+Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
   <docs-pill href="ecosystem/service-workers/config" title="Configuration file"/>

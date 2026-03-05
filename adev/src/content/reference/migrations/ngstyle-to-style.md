@@ -1,9 +1,9 @@
 # Migration from NgStyle to style bindings
 
-This schematic migrates NgStyle directive usages to style bindings in your application.
-It will only migrate usages that are considered safe to migrate.
+Bu şematik, uygulamanızdaki NgStyle direktifi kullanımlarını stil bağlamalarına geçirir.
+Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```bash
 ng generate @angular/core:ngstyle-to-style
@@ -23,19 +23,19 @@ ng generate @angular/core:ngstyle-to-style
 
 ## Configuration options
 
-The migration supports a few options for fine tuning the migration to your specific needs.
+Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
 ### `--best-effort-mode`
 
-By default, the migration avoids migrating object references usages of `NgStyle`
-When the `--best-effort-mode` flag is enabled, `ngStyle` instances binded to object references are also migrated.
-This can be unsafe to migrate, for example if the binded object is mutated.
+Varsayılan olarak, geçiş `NgStyle`'ın nesne referansı kullanımlarını geçirmekten kaçınır.
+`--best-effort-mode` bayrağı etkinleştirildiğinde, nesne referanslarına bağlı `ngStyle` örnekleri de geçirilir.
+Bu, geçirilmesi güvenli olmayabilir, örneğin bağlı nesne değiştiriliyorsa.
 
 ```html
 <div [ngStyle]="styleObject"></div>
 ```
 
-to
+şuna dönüşür:
 
 ```html
 <div [style]="styleObject"></div>

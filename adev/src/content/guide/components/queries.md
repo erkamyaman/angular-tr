@@ -1,19 +1,18 @@
 # Referencing component children with queries
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
 
-A component can define **queries** that find child elements and read values from their injectors.
+Bir bilesen, alt elemanlari bulan ve injector'larindan deger okuyan **sorgular** tanimlayabilir.
 
-Developers most commonly use queries to retrieve references to child components, directives, DOM elements, and more.
+Gelistiriciler en yaygin olarak alt bilesenlere, direktiflere, DOM elemanlarina ve daha fazlasina referanslar almak icin sorgulari kullanir.
 
-All query functions return signals that reflect the most up-to-date results. You can read the
-result by calling the signal function, including in [reactive contexts](guide/signals#reactive-contexts) like `computed` and `effect`.
+Tum sorgu fonksiyonlari, en guncel sonuclari yansitan sinyaller dondurur. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contexts) dahil olmak uzere sinyal fonksiyonunu cagirarak sonucu okuyabilirsiniz.
 
-There are two categories of query: **view queries** and **content queries.**
+Iki sorgu kategorisi vardir: **gorunum sorgulari** ve **icerik sorgulari.**
 
 ## View queries
 
-View queries retrieve results from the elements in the component's _view_ — the elements defined in the component's own template. You can query for a single result with the `viewChild` function.
+Gorunum sorgulari, bilesnenin _gorunumundeki_ -- bilesnenin kendi sablonunda tanimlanan -- elemanlardan sonuclari alir. Tek bir sonuc icin `viewChild` fonksiyonu ile sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -34,11 +33,11 @@ export class CustomCard {
 }
 ```
 
-In this example, the `CustomCard` component queries for a child `CustomCardHeader` and uses the result in a `computed`.
+Bu ornekte, `CustomCard` bileseni bir alt `CustomCardHeader` icin sorgu yapar ve sonucu bir `computed` icinde kullanir.
 
-If the query does not find a result, its value is `undefined`. This may occur if the target element is hidden by `@if`. Angular keeps the result of `viewChild` up to date as your application state changes.
+Sorgu bir sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman `@if` tarafindan gizlenmisse gerceklesebilir. Angular, uygulama durumunuz degistikce `viewChild` sonucunu guncel tutar.
 
-You can also query for multiple results with the `viewChildren` function.
+`viewChildren` fonksiyonu ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [17]}
 @Component({
@@ -62,13 +61,13 @@ export class CustomCard {
 }
 ```
 
-`viewChildren` creates a signal with an `Array` of the query results.
+`viewChildren`, sorgu sonuclarinin bir `Array`'ini iceren bir sinyal olusturur.
 
-**Queries never pierce through component boundaries.** View queries can only retrieve results from the component's template.
+**Sorgular asla bilesen sinirlarini delmez.** Gorunum sorgulari yalnizca bilesnenin sablonundan sonuc alabilir.
 
 ## Content queries
 
-Content queries retrieve results from the elements in the component's _content_— the elements nested inside the component in the template where it's used. You can query for a single result with the `contentChild` function.
+Icerik sorgulari, bilesnenin _icerigindeki_ -- bilesnenin kullanildigi sablonda bilesnenin icerisine yuvalanan -- elemanlardan sonuclari alir. Tek bir sonuc icin `contentChild` fonksiyonu ile sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -100,11 +99,11 @@ export class CustomExpando {
 export class UserProfile {}
 ```
 
-If the query does not find a result, its value is `undefined`. This may occur if the target element is absent or hidden by `@if`. Angular keeps the result of `contentChild` up to date as your application state changes.
+Sorgu bir sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman mevcut degilse veya `@if` tarafindan gizlenmisse gerceklesebilir. Angular, uygulama durumunuz degistikce `contentChild` sonucunu guncel tutar.
 
-By default, content queries find only _direct_ children of the component and do not traverse into descendants.
+Varsayilan olarak, icerik sorgulari yalnizca bilesnenin _dogrudan_ alt elemanlarini bulur ve alt elemanlarin icerisine inmez.
 
-You can also query for multiple results with the `contentChildren` function.
+`contentChildren` fonksiyonu ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -136,15 +135,15 @@ export class CustomMenu {
 export class UserProfile {}
 ```
 
-`contentChildren` creates a signal with an `Array` of the query results.
+`contentChildren`, sorgu sonuclarinin bir `Array`'ini iceren bir sinyal olusturur.
 
-**Queries never pierce through component boundaries.** Content queries can only retrieve results from the same template as the component itself.
+**Sorgular asla bilesen sinirlarini delmez.** Icerik sorgulari yalnizca bilesnenin kendisi ile ayni sablondaki sonuclari alabilir.
 
 ## Required queries
 
-If a child query (`viewChild` or `contentChild`) does not find a result, its value is `undefined`. This may occur if the target element is hidden by a control flow statement like `@if` or `@for`. Because of this, the child queries return a signal that include `undefined` in their value type.
+Bir alt sorgu (`viewChild` veya `contentChild`) sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman `@if` veya `@for` gibi bir kontrol akisi ifadesi tarafindan gizlenmisse gerceklesebilir. Bu nedenle, alt sorgular deger turlerinde `undefined` iceren bir sinyal dondurur.
 
-In some cases, especially with `viewChild`, you know with certainty that a specific child is always available. In other cases, you may want to strictly enforce that a specific child is present. For these cases, you can use a _required query_.
+Bazi durumlarda, ozellikle `viewChild` ile, belirli bir alt elemanin her zaman mevcut oldugunu kesinlikle bilirsiniz. Diger durumlarda, belirli bir alt elemanin mevcut olmasini katici bir sekilde zorunlu kilmak isteyebilirsiniz. Bu durumlar icin _zorunlu sorgu_ kullanabilirsiniz.
 
 ```ts
 @Component({
@@ -156,16 +155,15 @@ export class CustomCard {
 }
 ```
 
-If a required query does not find a matching result, Angular reports an error. Because this guarantees that a result is available, required queries do not automatically include `undefined` in the signal's value type.
+Zorunlu bir sorgu eslesen bir sonuc bulamazsa, Angular bir hata bildirir. Bu bir sonucun mevcut oldugunu garanti ettigi icin, zorunlu sorgular sinyalin deger turune otomatik olarak `undefined` eklemez.
 
 ## Query locators
 
-This first parameter for each query decorator is its **locator**.
+Her sorgu dekoratorunun ilk parametresi **konumlandirici**sidir (locator).
 
-Most of the time, you want to use a component or directive as your locator.
+Cogunlukla konumlandirici olarak bir bilesen veya direktif kullanmak istersiniz.
 
-You can alternatively specify a string locator corresponding to
-a [template reference variable](guide/templates/variables#template-reference-variables).
+Alternatif olarak, bir [sablon referans degiskeni](guide/templates/variables#template-reference-variables)'ne karsilik gelen bir dize konumlandirici belirtebilirsiniz.
 
 ```angular-ts
 @Component({
@@ -180,15 +178,15 @@ export class ActionBar {
 }
 ```
 
-If more than one element defines the same template reference variable, the query retrieves the first matching element.
+Birden fazla eleman ayni sablon referans degiskenini tanimliyorsa, sorgu eslesen ilk elemani alir.
 
-Angular does not support CSS selectors as query locators.
+Angular, sorgu konumlandiricilari olarak CSS secicilerini desteklemez.
 
 ### Queries and the injector tree
 
-TIP: See [Dependency Injection](guide/di) for background on providers and Angular's injection tree.
+TIP: Saglayicilar ve Angular'in enjeksiyon agaci hakkinda arka plan bilgisi icin [Bagimlilik Enjeksiyonu](guide/di) belgesine bakin.
 
-For more advanced cases, you can use any `ProviderToken` as a locator. This lets you locate elements based on component and directive providers.
+Daha ileri durumlar icin, konumlandirici olarak herhangi bir `ProviderToken` kullanabilirsiniz. Bu, bilesen ve direktif saglayicilarina dayali olarak elemanlari bulmaniza olanak tanir.
 
 ```angular-ts
 const SUB_ITEM = new InjectionToken<string>('sub-item');
@@ -207,15 +205,15 @@ export class CustomList {
 }
 ```
 
-The above example uses an `InjectionToken` as a locator, but you can use any `ProviderToken` to locate specific elements.
+Yukaridaki ornek konumlandirici olarak bir `InjectionToken` kullanir, ancak belirli elemanlari bulmak icin herhangi bir `ProviderToken` kullanabilirsiniz.
 
 ## Query options
 
-All query functions accept an options object as a second parameter. These options control how the query finds its results.
+Tum sorgu fonksiyonlari ikinci parametre olarak bir secenekler nesnesi kabul eder. Bu secenekler, sorgunun sonuclarini nasil bulacagini kontrol eder.
 
 ### Reading specific values from an element's injector
 
-By default, the query locator indicates both the element you're searching for and the value retrieved. You can alternatively specify the `read` option to retrieve a different value from the element matched by the locator.
+Varsayilan olarak, sorgu konumlandiricisi hem aradiginiz elemani hem de alinan degeri belirtir. Konumlandirici tarafindan eslestirilen elemandan farkli bir deger almak icin alternatif olarak `read` secenegini belirtebilirsiniz.
 
 ```ts
 @Component({
@@ -226,15 +224,14 @@ export class CustomExpando {
 }
 ```
 
-The above example, locates an element with the directive `ExpandoContent` and retrieves
-the `TemplateRef` associated with that element.
+Yukaridaki ornek, `ExpandoContent` direktifine sahip bir eleman bulur ve o elemanla iliskili `TemplateRef`'i alir.
 
-Developers most commonly use `read` to retrieve `ElementRef` and `TemplateRef`.
+Gelistiriciler en yaygin olarak `read` ile `ElementRef` ve `TemplateRef` alir.
 
 ### Content descendants
 
-By default, `contentChildren` queries find only _direct_ children of the component and do not traverse into descendants.
-`contentChild` queries do traverse into descendants by default.
+Varsayilan olarak, `contentChildren` sorgulari yalnizca bilesnenin _dogrudan_ alt elemanlarini bulur ve alt elemanlarin icerisine inmez.
+`contentChild` sorgulari varsayilan olarak alt elemanlarin icerisine iner.
 
 ```angular-ts {highlight: [13, 14, 15, 16, 17]}
 @Component({
@@ -259,20 +256,19 @@ export class CustomExpando {
 export class UserProfile {}
 ```
 
-In the example above, `CustomExpando` cannot find `<custom-toggle>` with `contentChildren` because it is not a direct child of `<custom-expando>`. By setting `descendants: true`, you configure the query to traverse all descendants in the same template. Queries, however, _never_ pierce into components to traverse elements in other templates.
+Yukaridaki ornekte, `CustomExpando` `contentChildren` ile `<custom-toggle>`'i bulamaz cunku bu, `<custom-expando>`'nun dogrudan alt elemani degildir. `descendants: true` ayarlayarak, sorguyu ayni sablondaki tum alt elemanlara inecek sekilde yapilandirirsiniz. Ancak sorgular, diger sablonlardaki elemanlari gezmek icin _asla_ bilesenlerin icerisine girmez.
 
-View queries do not have this option because they _always_ traverse into descendants.
+Gorunum sorgulari her zaman alt elemanlara indigi icin bu secenege sahip degildir.
 
 ## Decorator-based queries
 
-TIP: While the Angular team recommends using the signal-based query function for new projects, the
-original decorator-based query APIs remain fully supported.
+TIP: Angular ekibi yeni projeler icin sinyal tabanli sorgu fonksiyonlarini onerse de, orijinal dekorator tabanli sorgu API'leri tamamen desteklenmeye devam etmektedir.
 
-You can alternatively declare queries by adding the corresponding decorator to a property. Decorator-based queries behave the same way as signal-based queries except as described below.
+Alternatif olarak, karsilik gelen dekoratoru bir ozellige ekleyerek sorgular bildirebilirsiniz. Dekorator tabanli sorgular, asagida acikladigi durumlar disinda sinyal tabanli sorgularla ayni sekilde davranir.
 
 ### View queries {#decorator-view-queries}
 
-You can query for a single result with the `@ViewChild` decorator.
+`@ViewChild` dekoratoru ile tek bir sonuc icin sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18]}
 @Component({
@@ -296,13 +292,13 @@ export class CustomCard implements AfterViewInit {
 }
 ```
 
-In this example, the `CustomCard` component queries for a child `CustomCardHeader` and accesses the result in `ngAfterViewInit`.
+Bu ornekte, `CustomCard` bileseni bir alt `CustomCardHeader` icin sorgu yapar ve sonuca `ngAfterViewInit` icinde erisir.
 
-Angular keeps the result of `@ViewChild` up to date as your application state changes.
+Angular, uygulama durumunuz degistikce `@ViewChild` sonucunu guncel tutar.
 
-**View query results become available in the `ngAfterViewInit` lifecycle method**. Before this point, the value is `undefined`. See the [Lifecycle](guide/components/lifecycle) section for details on the component lifecycle.
+**Gorunum sorgu sonuclari `ngAfterViewInit` yasam dongusu yonteminde kullanilabilir hale gelir**. Bu noktadan once deger `undefined` olur. Bilesen yasam dongusu hakkinda ayrintilar icin [Yasam Dongusu](guide/components/lifecycle) bolumune bakin.
 
-You can also query for multiple results with the `@ViewChildren` decorator.
+`@ViewChildren` dekoratoru ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [17, 19, 20, 21, 22, 23]}
 @Component({
@@ -331,11 +327,11 @@ export class CustomCard implements AfterViewInit {
 }
 ```
 
-`@ViewChildren` creates a `QueryList` object that contains the query results. You can subscribe to changes to the query results over time via the `changes` property.
+`@ViewChildren`, sorgu sonuclarini iceren bir `QueryList` nesnesi olusturur. `changes` ozelligi araciligiyla sorgu sonuclarindaki degisikliklere zaman icinde abone olabilirsiniz.
 
 ### Content queries {#decorator-content-queries}
 
-You can query for a single result with the `@ContentChild` decorator.
+`@ContentChild` dekoratoru ile tek bir sonuc icin sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18]}
 @Component({
@@ -369,13 +365,13 @@ export class CustomExpando implements AfterContentInit {
 export class UserProfile {}
 ```
 
-In this example, the `CustomExpando` component queries for a child `CustomToggle` and accesses the result in `ngAfterContentInit`.
+Bu ornekte, `CustomExpando` bileseni bir alt `CustomToggle` icin sorgu yapar ve sonuca `ngAfterContentInit` icinde erisir.
 
-Angular keeps the result of `@ContentChild` up to date as your application state changes.
+Angular, uygulama durumunuz degistikce `@ContentChild` sonucunu guncel tutar.
 
-**Content query results become available in the `ngAfterContentInit` lifecycle method**. Before this point, the value is `undefined`. See the [Lifecycle](guide/components/lifecycle) section for details on the component lifecycle.
+**Icerik sorgu sonuclari `ngAfterContentInit` yasam dongusu yonteminde kullanilabilir hale gelir**. Bu noktadan once deger `undefined` olur. Bilesen yasam dongusu hakkinda ayrintilar icin [Yasam Dongusu](guide/components/lifecycle) bolumune bakin.
 
-You can also query for multiple results with the `@ContentChildren` decorator.
+`@ContentChildren` dekoratoru ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18, 19, 20]}
 @Component({
@@ -412,15 +408,15 @@ export class CustomMenu implements AfterContentInit {
 export class UserProfile {}
 ```
 
-`@ContentChildren` creates a `QueryList` object that contains the query results. You can subscribe to changes to the query results over time via the `changes` property.
+`@ContentChildren`, sorgu sonuclarini iceren bir `QueryList` nesnesi olusturur. `changes` ozelligi araciligiyla sorgu sonuclarindaki degisikliklere zaman icinde abone olabilirsiniz.
 
 ### Decorator-based query options
 
-All query decorators accept an options object as a second parameter. These options work the same way as signal-based queries except where described below.
+Tum sorgu dekoratorleri ikinci parametre olarak bir secenekler nesnesi kabul eder. Bu secenekler, asagida acikladigi durumlar disinda sinyal tabanli sorgularla ayni sekilde calisir.
 
 ### Static queries
 
-`@ViewChild` and `@ContentChild` decorators accept the `static` option.
+`@ViewChild` ve `@ContentChild` dekoratorleri `static` secenegini kabul eder.
 
 ```angular-ts
 @Component({
@@ -436,26 +432,26 @@ export class CustomCard implements OnInit {
 }
 ```
 
-By setting `static: true`, you guarantee to Angular that the target of this query is _always_ present and is not conditionally rendered. This makes the result available earlier, in the `ngOnInit` lifecycle method.
+`static: true` ayarlayarak, Angular'a bu sorgunun hedefinin _her zaman_ mevcut oldugunu ve kosullu olarak render edilmedigini garanti edersiniz. Bu, sonucu daha erken, `ngOnInit` yasam dongusu yonteminde kullanilabilir kilar.
 
-Static query results do not update after initialization.
+Statik sorgu sonuclari baslatmadan sonra guncellenmez.
 
-The `static` option is not available for `@ViewChildren` and `@ContentChildren` queries.
+`static` secenegi `@ViewChildren` ve `@ContentChildren` sorgulari icin mevcut degildir.
 
 ### Using QueryList
 
-`@ViewChildren` and `@ContentChildren` both provide a `QueryList` object that contains a list of results.
+`@ViewChildren` ve `@ContentChildren` her ikisi de sonuclarin bir listesini iceren bir `QueryList` nesnesi saglar.
 
-`QueryList` offers a number of convenience APIs for working with results in an array-like manner, such as `map`, `reduce`, and `forEach`. You can get an array of the current results by calling `toArray`.
+`QueryList`, `map`, `reduce` ve `forEach` gibi sonuclarla dizi benzeri bir sekilde calismanizi saglayan bir dizi kolaylik API'si sunar. Mevcut sonuclarin bir dizisini `toArray` cagirarak alabilirsiniz.
 
-You can subscribe to the `changes` property to do something any time the results change.
+Sonuclar her degistiginde bir islem yapmak icin `changes` ozelligine abone olabilirsiniz.
 
 ## Common query pitfalls
 
-When using queries, common pitfalls can make your code harder to understand and maintain.
+Sorgulari kullanirken, yaygin tuzaklar kodunuzun anlasilmasini ve bakimini zorlastirabilir.
 
-Always maintain a single source of truth for state shared between multiple components. This avoids scenarios where repeated state in different components becomes out of sync.
+Birden fazla bilesen arasinda paylasilan durum icin her zaman tek bir dogru kaynagi koruyun. Bu, farkli bilesenlerdeki tekrarlanan durumun senkronizasyondan cikmasi senaryolarindan kacinir.
 
-Avoid directly writing state to child components. This pattern can lead to brittle code that is hard to understand and is prone to [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) errors.
+Alt bilesenlere dogrudan durum yazmayin. Bu kalip, anlasilmasi zor ve kirilgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarina yol acabilir.
 
-Never directly write state to parent or ancestor components. This pattern can lead to brittle code that is hard to understand and is prone to [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) errors.
+Ust veya ata bilesenlere asla dogrudan durum yazmayin. Bu kalip, anlasilmasi zor ve kirilgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarina yol acabilir.

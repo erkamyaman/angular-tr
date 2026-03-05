@@ -1,8 +1,8 @@
 # Validation
 
-Forms need validation to ensure users provide correct, complete data before submission. Without validation, you would need to handle data quality issues on the server, provide poor user experience with unclear error messages, and manually check every constraint.
+Formlar, gönderimden önce kullanıcıların doğru ve eksiksiz veriler sağlamasını garanti etmek için doğrulamaya ihtiyaç duyar. Doğrulama olmadan, sunucuda veri kalitesi sorunlarını yönetmeniz, net olmayan hata mesajlarıyla zayıf kullanıcı deneyimi sunmanız ve her kısıtlamayı manuel olarak kontrol etmeniz gerekirdi.
 
-Signal Forms provides a schema-based validation approach. Validation rules bind to fields using a schema function, run automatically when values change, and expose errors through field state signals. This enables reactive validation that updates as users interact with the form.
+Signal Forms, şema tabanlı bir doğrulama yaklaşımı sunar. Doğrulama kuralları, bir şema fonksiyonu kullanarak alanlara bağlanır, değerler değiştiğinde otomatik olarak çalışır ve hataları alan durumu sinyalleri aracılığıyla açığa çıkarır. Bu, kullanıcılar formla etkileşime girdikçe güncellenen reaktif doğrulamayı mümkün kılar.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/signal-forms/src/login-validation-complete/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/signal-forms/src/login-validation-complete/app/app.ts"/>
@@ -12,11 +12,11 @@ Signal Forms provides a schema-based validation approach. Validation rules bind 
 
 ## Validation basics
 
-Validation in Signal Forms is defined through a schema function passed as the second argument to `form()`.
+Signal Forms'ta doğrulama, `form()`'a ikinci argüman olarak geçirilen bir şema fonksiyonu aracılığıyla tanımlanır.
 
 ### The schema function
 
-The schema function receives a `SchemaPathTree` object that lets you define your validation rules:
+Şema fonksiyonu, doğrulama kurallarınızı tanımlamanıza olanak tanıyan bir `SchemaPathTree` nesnesi alır:
 
 <docs-code
   header="app.ts"
@@ -25,40 +25,40 @@ The schema function receives a `SchemaPathTree` object that lets you define your
   highlight="[23,24,26]"
 />
 
-The schema function runs once during form initialization. Validation rules bind to fields using the schema path parameter (such as `schemaPath.email`, `schemaPath.password`), and validation runs automatically whenever field values change.
+Şema fonksiyonu, form başlatma sırasında bir kez çalışır. Doğrulama kuralları, şema yol parametresi kullanılarak alanlara bağlanır (`schemaPath.email`, `schemaPath.password` gibi) ve doğrulama, alan değerleri değiştiğinde otomatik olarak çalışır.
 
-NOTE: The schema callback parameter (`schemaPath` in these examples) is a `SchemaPathTree` object that provides paths to all fields in your form. You can name this parameter anything you like.
+NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`) formunuzdaki tüm alanlara yollar sağlayan bir `SchemaPathTree` nesnesidir. Bu parametreyi istediğiniz gibi adlandırabilirsiniz.
 
 ### How validation works
 
-Validation in Signal Forms follows this pattern:
+Signal Forms'ta doğrulama şu kalıbı takip eder:
 
-1. **Define validation rules in schema** - Bind validation rules to fields in the schema function
-2. **Automatic execution** - Validation rules run when field values change
-3. **Error propagation** - Validation errors are exposed through field state signals
-4. **Reactive updates** - UI automatically updates when validation state changes
+1. **Doğrulama kurallarını şemada tanımlayın** - Doğrulama kurallarını şema fonksiyonundaki alanlara bağlayın
+2. **Otomatik yürütme** - Doğrulama kuralları alan değerleri değiştiğinde çalışır
+3. **Hata yayılımı** - Doğrulama hataları alan durumu sinyalleri aracılığıyla açığa çıkar
+4. **Reaktif güncellemeler** - Doğrulama durumu değiştiğinde kullanıcı arayüzü otomatik olarak güncellenir
 
-Validation runs on every value change for interactive fields. Hidden and disabled fields don't run validation - their validation rules are skipped until the field becomes interactive again.
+Doğrulama, etkileşimli alanlar için her değer değişikliğinde çalışır. Gizli ve devre dışı alanlar doğrulama çalıştırmaz -- alan tekrar etkileşimli olana kadar doğrulama kuralları atlanır.
 
 ### Validation timing
 
-Validation rules execute in this order:
+Doğrulama kuralları şu sırayla yürütülür:
 
-1. **Synchronous validation** - All synchronous validation rules run when value changes
-2. **Asynchronous validation** - Asynchronous validation rules run only after all synchronous validation rules pass
-3. **Field state updates** - The `valid()`, `invalid()`, `errors()`, and `pending()` signals update
+1. **Senkron doğrulama** - Değer değiştiğinde tüm senkron doğrulama kuralları çalışır
+2. **Asenkron doğrulama** - Asenkron doğrulama kuralları yalnızca tüm senkron doğrulama kuralları geçtikten sonra çalışır
+3. **Alan durumu güncellemeleri** - `valid()`, `invalid()`, `errors()` ve `pending()` sinyalleri güncellenir
 
-Synchronous validation rules (like `required()`, `email()`) complete immediately. Asynchronous validation rules (like `validateHttp()`) may take time and set the `pending()` signal to `true` while executing.
+Senkron doğrulama kuralları (`required()`, `email()` gibi) anında tamamlanır. Asenkron doğrulama kuralları (`validateHttp()` gibi) zaman alabilir ve yürütülürken `pending()` sinyalini `true` olarak ayarlar.
 
-All validation rules run on every change - validation doesn't short-circuit after the first error. If a field has both `required()` and `email()` validation rules, both run, and both can produce errors simultaneously.
+Tüm doğrulama kuralları her değişiklikte çalışır -- doğrulama ilk hatadan sonra kısa devre yapmaz. Bir alanda hem `required()` hem de `email()` doğrulama kuralları varsa, her ikisi de çalışır ve her ikisi de aynı anda hata üretebilir.
 
 ## Built-in validation rules
 
-Signal Forms provides validation rules for common validation scenarios. All built-in validation rules accept an options object for custom error messages and conditional logic.
+Signal Forms, yaygın doğrulama senaryoları için doğrulama kuralları sağlar. Tüm yerleşik doğrulama kuralları, özel hata mesajları ve koşullu mantık için bir seçenekler nesnesi kabul eder.
 
 ### required()
 
-The `required()` validation rule ensures a field has a value:
+`required()` doğrulama kuralı bir alanın değere sahip olmasını sağlar:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -96,14 +96,14 @@ export class RegistrationComponent {
 }
 ```
 
-A field is considered "empty" when:
+Bir alan şu durumlarda "boş" kabul edilir:
 
-| Condition                | Example |
-| ------------------------ | ------- |
-| Value is `null`          | `null`, |
-| Value is an empty string | `''`    |
+| Koşul          | Örnek   |
+| -------------- | ------- |
+| Değer `null`   | `null`, |
+| Değer boş dize | `''`    |
 
-For conditional requirements, use the `when` option:
+Koşullu gereksinimler için `when` seçeneğini kullanın:
 
 ```ts
 registrationForm = form(this.registrationModel, (schemaPath) => {
@@ -114,13 +114,13 @@ registrationForm = form(this.registrationModel, (schemaPath) => {
 });
 ```
 
-The validation rule only runs when the `when` function returns `true`.
+Doğrulama kuralı yalnızca `when` fonksiyonu `true` döndürdüğünde çalışır.
 
-NOTE: `required` will return `true` for empty array. Use [`minLength()`](#minlength-and-maxlength) to validate arrays.
+NOTE: `required`, boş dizi için `true` döndürür. Dizileri doğrulamak için [`minLength()`](#minlength-and-maxlength) kullanın.
 
 ### email()
 
-The `email()` validation rule checks for valid email format:
+`email()` doğrulama kuralı geçerli e-posta biçimini kontrol eder:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -147,11 +147,11 @@ export class ContactComponent {
 }
 ```
 
-The `email()` validation rule uses a standard email format regex. It accepts addresses like `user@example.com` but rejects malformed addresses like `user@` or `@example.com`.
+`email()` doğrulama kuralı standart bir e-posta biçimi regex'i kullanır. `user@example.com` gibi adresleri kabul eder ancak `user@` veya `@example.com` gibi hatalı biçimlendirilmiş adresleri reddeder.
 
 ### min() and max()
 
-The `min()` and `max()` validation rules work with numeric values:
+`min()` ve `max()` doğrulama kuralları sayısal değerlerle çalışır:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -190,7 +190,7 @@ export class AgeFormComponent {
 }
 ```
 
-You can use computed values for dynamic constraints:
+Dinamik kısıtlamalar için hesaplanmış değerler kullanabilirsiniz:
 
 ```ts
 ageForm = form(this.ageModel, (schemaPath) => {
@@ -202,7 +202,7 @@ ageForm = form(this.ageModel, (schemaPath) => {
 
 ### minLength() and maxLength()
 
-The `minLength()` and `maxLength()` validation rules work with strings and arrays:
+`minLength()` ve `maxLength()` doğrulama kuralları dizeler ve dizilerle çalışır:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -240,11 +240,11 @@ export class PasswordFormComponent {
 }
 ```
 
-For strings, "length" means the number of characters. For arrays, "length" means the number of elements.
+Dizeler için "uzunluk" karakter sayısı anlamına gelir. Diziler için "uzunluk" eleman sayısı anlamına gelir.
 
 ### pattern()
 
-The `pattern()` validation rule validates against a regular expression:
+`pattern()` doğrulama kuralı bir düzenli ifadeye karşı doğrular:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -285,18 +285,18 @@ export class PhoneFormComponent {
 }
 ```
 
-Common patterns:
+Yaygın kalıplar:
 
-| Pattern Type     | Regular Expression      | Example      |
+| Kalıp Türü       | Düzenli İfade           | Örnek        |
 | ---------------- | ----------------------- | ------------ |
-| Phone            | `/^\d{3}-\d{3}-\d{4}$/` | 555-123-4567 |
-| Postal code (US) | `/^\d{5}$/`             | 12345        |
-| Alphanumeric     | `/^[a-zA-Z0-9]+$/`      | abc123       |
-| URL-safe         | `/^[a-zA-Z0-9_-]+$/`    | my-url_123   |
+| Telefon          | `/^\d{3}-\d{3}-\d{4}$/` | 555-123-4567 |
+| Posta kodu (ABD) | `/^\d{5}$/`             | 12345        |
+| Alfanümerik      | `/^[a-zA-Z0-9]+$/`      | abc123       |
+| URL güvenli      | `/^[a-zA-Z0-9_-]+$/`    | my-url_123   |
 
 ## Validation of array items
 
-Forms can include arrays of nested objects (for example, a list of order items). To apply validation rules to each item in an array, use `applyEach()` inside your schema function. `applyEach()` iterates the array path and supplies a path for each item where you can apply validators just like top-level fields.
+Formlar iç içe nesnelerin dizilerini içerebilir (örneğin, bir sipariş öğeleri listesi). Bir dizideki her öğeye doğrulama kuralları uygulamak için şema fonksiyonunuzun içinde `applyEach()` kullanın. `applyEach()`, dizi yolunu yineleyerek her öğe için üst düzey alanlar gibi doğrulayıcılar uygulayabileceğiniz bir yol sağlar.
 
 ```ts
 import {Component, signal} from '@angular/core';
@@ -334,26 +334,26 @@ export class OrderComponent {
 
 ## Validation errors
 
-When validation rules fail, they produce error objects that describe what went wrong. Understanding error structure helps you provide clear feedback to users.
+Doğrulama kuralları başarısız olduğunda, neyin yanlış gittiğini tanımlayan hata nesneleri üretir. Hata yapısını anlamak, kullanıcılara net geri bildirim sağlamanıza yardımcı olur.
 
 <!-- TODO: Uncomment when field state management guide is published
 
-NOTE: This section covers the errors that validation rules produce. For displaying and using validation errors in your UI, see the [Field State Management guide](guide/forms/signals/field-state-management). -->
+NOTE: Bu bölüm doğrulama kurallarının ürettiği hataları ele alır. Doğrulama hatalarını kullanıcı arayüzünüzde görüntüleme ve kullanma hakkında [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın. -->
 
 ### Error structure
 
-Each validation error object contains these properties:
+Her doğrulama hatası nesnesi şu özellikleri içerir:
 
-| Property  | Description                                                              |
-| --------- | ------------------------------------------------------------------------ |
-| `kind`    | The validation rule that failed (e.g., "required", "email", "minLength") |
-| `message` | Optional human-readable error message                                    |
+| Özellik   | Açıklama                                                                |
+| --------- | ----------------------------------------------------------------------- |
+| `kind`    | Başarısız olan doğrulama kuralı (örn. "required", "email", "minLength") |
+| `message` | İsteğe bağlı insan tarafından okunabilir hata mesajı                    |
 
-Built-in validation rules automatically set the `kind` property. The `message` property is optional - you can provide custom messages through validation rule options.
+Yerleşik doğrulama kuralları `kind` özelliğini otomatik olarak ayarlar. `message` özelliği isteğe bağlıdır -- doğrulama kuralı seçenekleri aracılığıyla özel mesajlar sağlayabilirsiniz.
 
 ### Custom error messages
 
-All built-in validation rules accept a `message` option for custom error text:
+Tüm yerleşik doğrulama kuralları, özel hata metni için bir `message` seçeneği kabul eder:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -397,11 +397,11 @@ export class SignupComponent {
 }
 ```
 
-Custom messages should be clear, specific, and tell users how to fix the problem. Instead of "Invalid input", use "Password must be at least 12 characters for security".
+Özel mesajlar net, spesifik olmalı ve kullanıcılara sorunu nasıl düzelteceklerini söylemelidir. "Geçersiz girdi" yerine "Güvenlik için şifre en az 12 karakter olmalıdır" kullanın.
 
 ### Multiple errors per field
 
-When a field has multiple validation rules, each validation rule runs independently and can produce an error:
+Bir alanda birden fazla doğrulama kuralı olduğunda, her doğrulama kuralı bağımsız olarak çalışır ve bir hata üretebilir:
 
 ```ts
 signupForm = form(this.signupModel, (schemaPath) => {
@@ -411,22 +411,22 @@ signupForm = form(this.signupModel, (schemaPath) => {
 });
 ```
 
-If the email field is empty, only the `required()` error appears. If the user types "a@b", both `email()` and `minLength()` errors appear. All validation rules run - validation doesn't stop after the first failure.
+E-posta alanı boşsa, yalnızca `required()` hatası görünür. Kullanıcı "a@b" yazarsa, hem `email()` hem de `minLength()` hataları görünür. Tüm doğrulama kuralları çalışır -- doğrulama ilk başarısızlıktan sonra durmaz.
 
-TIP: Use the `touched() && invalid()` pattern in your templates to prevent errors from appearing before users have interacted with a field. For comprehensive guidance on displaying validation errors, see the [Field State Management guide](guide/forms/signals/field-state-management#conditional-error-display).
+TIP: Hataların kullanıcılar alanla etkileşime girmeden önce görünmesini önlemek için şablonlarınızda `touched() && invalid()` kalıbını kullanın. Doğrulama hatalarını görüntüleme hakkında kapsamlı rehberlik için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management#conditional-error-display) bakın.
 
 ## Custom validation rules
 
-While built-in validation rules handle common cases, you'll often need custom validation logic for business rules, complex formats, or domain-specific constraints.
+Yerleşik doğrulama kuralları yaygın durumları ele alsa da, iş kuralları, karmaşık biçimler veya alana özgü kısıtlamalar için sıklıkla özel doğrulama mantığına ihtiyaç duyarsınız.
 
 ### Using validate()
 
-The `validate()` function creates custom validation rules. It receives a validator function that accesses the field context and returns:
+`validate()` fonksiyonu özel doğrulama kuralları oluşturur. Alan bağlamına erişen ve şunları döndüren bir doğrulayıcı fonksiyon alır:
 
-| Return Value          | Meaning          |
-| --------------------- | ---------------- |
-| Error object          | Value is invalid |
-| `null` or `undefined` | Value is valid   |
+| Dönüş Değeri            | Anlam          |
+| ----------------------- | -------------- |
+| Hata nesnesi            | Değer geçersiz |
+| `null` veya `undefined` | Değer geçerli  |
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -462,25 +462,25 @@ export class UrlFormComponent {
 }
 ```
 
-The validator function receives a `FieldContext` object with:
+Doğrulayıcı fonksiyon şunları içeren bir `FieldContext` nesnesi alır:
 
-| Property        | Type       | Description                                 |
-| --------------- | ---------- | ------------------------------------------- |
-| `value`         | Signal     | Signal containing the current field value   |
-| `state`         | FieldState | The field state reference                   |
-| `field`         | FieldTree  | The field tree reference                    |
-| `valueOf()`     | Method     | Get the value of another field by path      |
-| `stateOf()`     | Method     | Get the state of another field by path      |
-| `fieldTreeOf()` | Method     | Get the field tree of another field by path |
-| `pathKeys`      | Signal     | Path keys from root to current field        |
+| Özellik         | Tür        | Açıklama                                     |
+| --------------- | ---------- | -------------------------------------------- |
+| `value`         | Signal     | Mevcut alan değerini içeren sinyal           |
+| `state`         | FieldState | Alan durumu referansı                        |
+| `field`         | FieldTree  | Alan ağacı referansı                         |
+| `valueOf()`     | Yöntem     | Yola göre başka bir alanın değerini alma     |
+| `stateOf()`     | Yöntem     | Yola göre başka bir alanın durumunu alma     |
+| `fieldTreeOf()` | Yöntem     | Yola göre başka bir alanın alan ağacını alma |
+| `pathKeys`      | Signal     | Kökten mevcut alana kadar yol anahtarları    |
 
-NOTE: Child fields also have a `key` signal, and array item fields have both `key` and `index` signals.
+NOTE: Alt alanların ayrıca bir `key` sinyali vardır ve dizi öğesi alanlarının hem `key` hem de `index` sinyalleri vardır.
 
-Return an error object with `kind` and `message` when validation fails. Return `null` or `undefined` when validation passes.
+Doğrulama başarısız olduğunda `kind` ve `message` ile bir hata nesnesi döndürün. Doğrulama geçtiğinde `null` veya `undefined` döndürün.
 
 ### Using validateTree()
 
-The `validateTree()` function creates custom validation rules that can target multiple fields or provide complex validation logic for a whole subtree.
+`validateTree()` fonksiyonu, birden fazla alanı hedefleyebilen veya tüm alt ağaç için karmaşık doğrulama mantığı sağlayan özel doğrulama kuralları oluşturur.
 
 ```angular-ts
 import {Component, model} from '@angular/core';
@@ -516,11 +516,11 @@ export class UserFormComponent {
 }
 ```
 
-The `validateTree()` validator function receives the same `FieldContext` object as `validate()`.
+`validateTree()` doğrulayıcı fonksiyonu, `validate()` ile aynı `FieldContext` nesnesini alır.
 
 ### Reusable validation rules
 
-Create reusable validation rule functions by wrapping `validate()`:
+`validate()`'i sararak yeniden kullanılabilir doğrulama kuralı fonksiyonları oluşturun:
 
 ```ts
 function url(path: SchemaPath<string>, options?: {message?: string}) {
@@ -553,7 +553,7 @@ function phoneNumber(path: SchemaPath<string>, options?: {message?: string}) {
 }
 ```
 
-You can use custom validation rules just like built-in validation rules:
+Özel doğrulama kurallarını yerleşik doğrulama kuralları gibi kullanabilirsiniz:
 
 ```ts
 urlForm = form(this.urlModel, (schemaPath) => {
@@ -564,9 +564,9 @@ urlForm = form(this.urlModel, (schemaPath) => {
 
 ## Cross-field validation
 
-Cross-field validation compares or relates multiple field values.
+Çapraz alan doğrulama, birden fazla alan değerini karşılaştırır veya ilişkilendirir.
 
-A common scenario for cross-field validation is password confirmation:
+Çapraz alan doğrulama için yaygın bir senaryo şifre onayıdır:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -620,15 +620,15 @@ export class PasswordChangeComponent {
 }
 ```
 
-The confirmation validation rule accesses the password field value using `valueOf(schemaPath.password)` and compares it to the confirmation value. This validation rule runs reactively - if either password changes, validation reruns automatically.
+Onay doğrulama kuralı, `valueOf(schemaPath.password)` kullanarak şifre alanı değerine erişir ve onay değeriyle karşılaştırır. Bu doğrulama kuralı reaktif olarak çalışır -- şifrelerden herhangi biri değişirse, doğrulama otomatik olarak yeniden çalışır.
 
 ## Async validation
 
-Async validation handles validation that requires external data sources, like checking username availability on a server or validating against an API.
+Asenkron doğrulama, kullanıcı adı kullanılabilirliğini bir sunucuda kontrol etmek veya bir API'ye karşı doğrulama gibi harici veri kaynaklarını gerektiren doğrulamayı ele alır.
 
 ### Using validateHttp()
 
-The `validateHttp()` function performs HTTP-based validation:
+`validateHttp()` fonksiyonu HTTP tabanlı doğrulama gerçekleştirir:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -676,17 +676,17 @@ export class UsernameFormComponent {
 }
 ```
 
-The `validateHttp()` validation rule:
+`validateHttp()` doğrulama kuralı:
 
-1. Calls the URL or request returned by the `request` function
-2. Maps the successful response to a validation error or `null` using `onSuccess`
-3. Handles request failures (network errors, HTTP errors) using `onError`
-4. Sets `pending()` to `true` while the request is in progress
-5. Only runs after all synchronous validation rules pass
+1. `request` fonksiyonu tarafından döndürülen URL'yi veya isteği çağırır
+2. `onSuccess` kullanarak başarılı yanıtı bir doğrulama hatasına veya `null`'a eşler
+3. İstek başarısızlıklarını (ağ hataları, HTTP hataları) `onError` kullanarak yönetir
+4. İstek devam ederken `pending()`'i `true` olarak ayarlar
+5. Yalnızca tüm senkron doğrulama kuralları geçtikten sonra çalışır
 
 ### Pending state
 
-While async validation runs, the field's `pending()` signal returns `true`. Use this to show loading indicators:
+Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndürür. Yükleme göstergeleri göstermek için bunu kullanın:
 
 ```angular-html
 @if (form.username().pending()) {
@@ -694,23 +694,23 @@ While async validation runs, the field's `pending()` signal returns `true`. Use 
 }
 ```
 
-The `valid()` signal returns `false` while validation is pending, even if there are no errors yet. The `invalid()` signal only returns `true` if errors exist.
+`valid()` sinyali, doğrulama beklemedeyken henüz hata olmasa bile `false` döndürür. `invalid()` sinyali yalnızca hatalar mevcutsa `true` döndürür.
 
 ## Integration with schema validation libraries
 
-Signal Forms have built-in support for libraries that conform to [Standard Schema](https://standardschema.dev/) like [Zod](https://zod.dev/) or [Valibot](https://valibot.dev/). The integration is provided via the `validateStandardSchema` function. This allows you to use existing schemas while maintaining Signal Forms' reactive validation benefits.
+Signal Forms, [Zod](https://zod.dev/) veya [Valibot](https://valibot.dev/) gibi [Standard Schema](https://standardschema.dev/)'ya uygun kütüphaneler için yerleşik desteğe sahiptir. Entegrasyon, `validateStandardSchema` fonksiyonu aracılığıyla sağlanır. Bu, Signal Forms'un reaktif doğrulama avantajlarını koruyarak mevcut şemaları kullanmanıza olanak tanır.
 
 ```ts
 import {form, validateStandardSchema} from '@angular/forms/signals';
 import * as z from 'zod';
 
-// Define your schema
+// Şemanızı tanımlayın
 const userSchema = z.object({
   email: z.email(),
   password: z.string().min(8),
 });
 
-// Use with Signal Forms
+// Signal Forms ile kullanın
 const userForm = form(signal({email: '', password: ''}), (schemaPath) => {
   validateStandardSchema(schemaPath, userSchema);
 });
@@ -718,7 +718,7 @@ const userForm = form(signal({email: '', password: ''}), (schemaPath) => {
 
 ### Dynamic schemas
 
-You can pass a signal instead of a static schema so the validation schema updates automatically when its dependencies change.
+Doğrulama şemasının bağımlılıkları değiştiğinde otomatik olarak güncellenmesi için statik bir şema yerine bir sinyal geçirebilirsiniz.
 
 ```angular-ts
 import {Component, computed, signal} from '@angular/core';
@@ -731,7 +731,7 @@ import z from 'zod';
 export class DynamicSchema {
   model = signal({document: '', type: 'dni'});
 
-  // Schema reacts automatically to type changes
+  // Şema otomatik olarak tür değişikliklerine tepki verir
   schema = computed(() =>
     z.object({
       document:
@@ -747,7 +747,7 @@ export class DynamicSchema {
 
 ## Next steps
 
-This guide covered creating and applying validation rules. Related guides explore other aspects of Signal Forms:
+Bu kılavuz doğrulama kuralları oluşturmayı ve uygulamayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <!-- TODO: UNCOMMENT WHEN THE GUIDES ARE AVAILABLE -->
 <docs-pill-row>

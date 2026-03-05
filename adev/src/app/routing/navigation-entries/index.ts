@@ -35,89 +35,89 @@ interface SubNavigationData {
 
 export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
   {
-    label: 'Introduction',
+    label: 'Giriş',
     children: [
       {
-        label: 'What is Angular?',
+        label: 'Angular Nedir?',
         path: 'overview',
         contentPath: 'introduction/what-is-angular',
       },
       {
-        label: 'Installation',
+        label: 'Kurulum',
         path: 'installation',
         contentPath: 'introduction/installation',
       },
       {
-        label: 'Essentials',
+        label: 'Temel Bilgiler',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'essentials',
             contentPath: 'introduction/essentials/overview',
           },
           {
-            label: 'Composition with components',
+            label: 'Bileşenlerle kompozisyon',
             path: 'essentials/components',
             contentPath: 'introduction/essentials/components',
           },
           {
-            label: 'Reactivity with signals',
+            label: 'Sinyallerle reaktiflik',
             path: 'essentials/signals',
             contentPath: 'introduction/essentials/signals',
           },
           {
-            label: 'Dynamic interfaces with templates',
+            label: 'Şablonlarla dinamik arayüzler',
             path: 'essentials/templates',
             contentPath: 'introduction/essentials/templates',
           },
           {
-            label: 'Forms with signals',
+            label: 'Sinyallerle formlar',
             path: 'essentials/signal-forms',
             contentPath: 'introduction/essentials/signal-forms',
             status: 'new',
           },
           {
-            label: 'Modular design with dependency injection',
+            label: 'Bağımlılık enjeksiyonu ile modüler tasarım',
             path: 'essentials/dependency-injection',
             contentPath: 'introduction/essentials/dependency-injection',
           },
           {
-            label: 'Next Steps',
+            label: 'Sonraki Adımlar',
             path: 'essentials/next-steps',
             contentPath: 'introduction/essentials/next-steps',
           },
         ],
       },
       {
-        label: 'Start coding! 🚀',
+        label: 'Kodlamaya başla! 🚀',
         path: 'tutorials/learn-angular',
       },
     ],
   },
   {
-    label: 'In-depth Guides',
+    label: 'Detaylı Rehberler',
     children: [
       {
-        label: 'Signals',
+        label: 'Sinyaller',
         status: 'updated',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/signals',
             contentPath: 'guide/signals/overview',
           },
           {
-            label: 'Dependent state with linkedSignal',
+            label: 'linkedSignal ile bağımlı durum',
             path: 'guide/signals/linked-signal',
             contentPath: 'guide/signals/linked-signal',
           },
           {
-            label: 'Async reactivity with resources',
+            label: 'Kaynaklar ile asenkron reaktiflik',
             path: 'guide/signals/resource',
             contentPath: 'guide/signals/resource',
           },
           {
-            label: 'Side effects for non-reactives APIs',
+            label: "Reaktif olmayan API'ler için yan etkiler",
             path: 'guide/signals/effect',
             contentPath: 'guide/signals/effect',
             status: 'new',
@@ -125,224 +125,224 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'Components',
+        label: 'Bileşenler',
         children: [
           {
-            label: 'Anatomy of components',
+            label: 'Bileşenlerin anatomisi',
             path: 'guide/components',
             contentPath: 'guide/components/anatomy-of-components',
           },
           {
-            label: 'Selectors',
+            label: 'Seçiciler',
             path: 'guide/components/selectors',
             contentPath: 'guide/components/selectors',
           },
           {
-            label: 'Styling',
+            label: 'Stillendirme',
             path: 'guide/components/styling',
             contentPath: 'guide/components/styling',
           },
           {
-            label: 'Accepting data with input properties',
+            label: 'Input özellikleri ile veri alma',
             path: 'guide/components/inputs',
             contentPath: 'guide/components/inputs',
           },
           {
-            label: 'Custom events with outputs',
+            label: "Output'lar ile özel olaylar",
             path: 'guide/components/outputs',
             contentPath: 'guide/components/outputs',
           },
           {
-            label: 'Content projection with ng-content',
+            label: 'ng-content ile içerik projeksiyonu',
             path: 'guide/components/content-projection',
             contentPath: 'guide/components/content-projection',
           },
           {
-            label: 'Host elements',
+            label: 'Host elemanları',
             path: 'guide/components/host-elements',
             contentPath: 'guide/components/host-elements',
           },
           {
-            label: 'Lifecycle',
+            label: 'Yaşam Döngüsü',
             path: 'guide/components/lifecycle',
             contentPath: 'guide/components/lifecycle',
           },
           {
-            label: 'Referencing component children with queries',
+            label: 'Sorgularla bileşen alt öğelerine başvurma',
             path: 'guide/components/queries',
             contentPath: 'guide/components/queries',
           },
           {
-            label: 'Using DOM APIs',
+            label: "DOM API'lerini kullanma",
             path: 'guide/components/dom-apis',
             contentPath: 'guide/components/dom-apis',
           },
           {
-            label: 'Inheritance',
+            label: 'Kalıtım',
             path: 'guide/components/inheritance',
             contentPath: 'guide/components/inheritance',
           },
           {
-            label: 'Programmatically rendering components',
+            label: 'Bileşenleri programatik olarak oluşturma',
             path: 'guide/components/programmatic-rendering',
             contentPath: 'guide/components/programmatic-rendering',
           },
           {
-            label: 'Advanced configuration',
+            label: 'Gelişmiş yapılandırma',
             path: 'guide/components/advanced-configuration',
             contentPath: 'guide/components/advanced-configuration',
           },
           {
-            label: 'Custom Elements',
+            label: 'Özel Elemanlar',
             path: 'guide/elements',
             contentPath: 'guide/elements',
           },
         ],
       },
       {
-        label: 'Templates',
+        label: 'Şablonlar',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/templates',
             contentPath: 'guide/templates/overview',
           },
           {
-            label: 'Binding dynamic text, properties and attributes',
+            label: 'Dinamik metin, özellik ve nitelik bağlama',
             path: 'guide/templates/binding',
             contentPath: 'guide/templates/binding',
           },
           {
-            label: 'Adding event listeners',
+            label: 'Olay dinleyicileri ekleme',
             path: 'guide/templates/event-listeners',
             contentPath: 'guide/templates/event-listeners',
           },
           {
-            label: 'Two-way binding',
+            label: 'İki yönlü bağlama',
             path: 'guide/templates/two-way-binding',
             contentPath: 'guide/templates/two-way-binding',
           },
           {
-            label: 'Control flow',
+            label: 'Kontrol akışı',
             path: 'guide/templates/control-flow',
             contentPath: 'guide/templates/control-flow',
           },
           {
-            label: 'Pipes',
+            label: "Pipe'lar",
             path: 'guide/templates/pipes',
             contentPath: 'guide/templates/pipes',
           },
           {
-            label: 'Slotting child content with ng-content',
+            label: 'ng-content ile alt içerik yerleştirme',
             path: 'guide/templates/ng-content',
             contentPath: 'guide/templates/ng-content',
           },
           {
-            label: 'Create template fragments with ng-template',
+            label: 'ng-template ile şablon parçaları oluşturma',
             path: 'guide/templates/ng-template',
             contentPath: 'guide/templates/ng-template',
           },
           {
-            label: 'Grouping elements with ng-container',
+            label: 'ng-container ile elemanları gruplama',
             path: 'guide/templates/ng-container',
             contentPath: 'guide/templates/ng-container',
           },
           {
-            label: 'Variables in templates',
+            label: 'Şablonlarda değişkenler',
             path: 'guide/templates/variables',
             contentPath: 'guide/templates/variables',
           },
           {
-            label: 'Deferred loading with @defer',
+            label: '@defer ile ertelenmiş yükleme',
             path: 'guide/templates/defer',
             contentPath: 'guide/templates/defer',
           },
           {
-            label: 'Expression syntax',
+            label: 'İfade söz dizimi',
             path: 'guide/templates/expression-syntax',
             contentPath: 'guide/templates/expression-syntax',
           },
           {
-            label: 'Whitespace in templates',
+            label: 'Şablonlarda boşluk',
             path: 'guide/templates/whitespace',
             contentPath: 'guide/templates/whitespace',
           },
         ],
       },
       {
-        label: 'Directives',
+        label: 'Direktifler',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/directives',
             contentPath: 'guide/directives/overview',
           },
           {
-            label: 'Attribute directives',
+            label: 'Nitelik direktifleri',
             path: 'guide/directives/attribute-directives',
             contentPath: 'guide/directives/attribute-directives',
           },
           {
-            label: 'Structural directives',
+            label: 'Yapısal direktifler',
             path: 'guide/directives/structural-directives',
             contentPath: 'guide/directives/structural-directives',
           },
           {
-            label: 'Directive composition API',
+            label: "Direktif kompozisyon API'si",
             path: 'guide/directives/directive-composition-api',
             contentPath: 'guide/directives/directive-composition-api',
           },
           {
-            label: 'Optimizing images with NgOptimizedImage',
+            label: 'NgOptimizedImage ile görsel optimizasyonu',
             path: 'guide/image-optimization',
             contentPath: 'guide/image-optimization',
           },
         ],
       },
       {
-        label: 'Dependency Injection',
+        label: 'Bağımlılık Enjeksiyonu',
         status: 'updated',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/di',
             contentPath: 'guide/di/overview',
             status: 'updated',
           },
           {
-            label: 'Creating and using services',
+            label: 'Servis oluşturma ve kullanma',
             path: 'guide/di/creating-and-using-services',
             contentPath: 'guide/di/creating-and-using-services',
             status: 'updated',
           },
           {
-            label: 'Defining dependency providers',
+            label: 'Bağımlılık sağlayıcılarını tanımlama',
             path: 'guide/di/defining-dependency-providers',
             contentPath: 'guide/di/defining-dependency-providers',
             status: 'updated',
           },
           {
-            label: 'Injection context',
+            label: 'Enjeksiyon bağlamı',
             path: 'guide/di/dependency-injection-context',
             contentPath: 'guide/di/dependency-injection-context',
           },
           {
-            label: 'Hierarchical injectors',
+            label: 'Hiyerarşik enjektörler',
             path: 'guide/di/hierarchical-dependency-injection',
             contentPath: 'guide/di/hierarchical-dependency-injection',
           },
           {
-            label: 'Optimizing injection tokens',
+            label: "Enjeksiyon token'larını optimize etme",
             path: 'guide/di/lightweight-injection-tokens',
             contentPath: 'guide/di/lightweight-injection-tokens',
           },
           {
-            label: 'DI in action',
+            label: 'DI uygulamada',
             path: 'guide/di/di-in-action',
             contentPath: 'guide/di/di-in-action',
           },
           {
-            label: 'Debugging and troubleshooting DI',
+            label: 'DI hata ayıklama ve sorun giderme',
             path: 'guide/di/debugging-and-troubleshooting-di',
             contentPath: 'guide/di/debugging-and-troubleshooting-di',
             status: 'new',
@@ -350,212 +350,212 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'Routing',
+        label: 'Yönlendirme',
         status: 'updated',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/routing',
             contentPath: 'guide/routing/overview',
           },
           {
-            label: 'Define routes',
+            label: 'Rotaları tanımlama',
             path: 'guide/routing/define-routes',
             contentPath: 'guide/routing/define-routes',
           },
           {
-            label: 'Route Loading Strategies',
+            label: 'Rota yükleme stratejileri',
             path: 'guide/routing/loading-strategies',
             contentPath: 'guide/routing/loading-strategies',
           },
           {
-            label: 'Show routes with Outlets',
+            label: "Outlet'ler ile rotaları gösterme",
             path: 'guide/routing/show-routes-with-outlets',
             contentPath: 'guide/routing/show-routes-with-outlets',
           },
           {
-            label: 'Navigate to routes',
+            label: 'Rotalara yönlendirme',
             path: 'guide/routing/navigate-to-routes',
             contentPath: 'guide/routing/navigate-to-routes',
           },
           {
-            label: 'Read route state',
+            label: 'Rota durumunu okuma',
             path: 'guide/routing/read-route-state',
             contentPath: 'guide/routing/read-route-state',
           },
           {
-            label: 'Redirecting routes',
+            label: 'Rotaları yeniden yönlendirme',
             path: 'guide/routing/redirecting-routes',
             contentPath: 'guide/routing/redirecting-routes',
           },
           {
-            label: 'Control route access with guards',
+            label: "Guard'lar ile rota erişimini kontrol etme",
             path: 'guide/routing/route-guards',
             contentPath: 'guide/routing/route-guards',
           },
           {
-            label: 'Route data resolvers',
+            label: 'Rota veri çözücüleri',
             path: 'guide/routing/data-resolvers',
             contentPath: 'guide/routing/data-resolvers',
           },
           {
-            label: 'Lifecycle and events',
+            label: 'Yaşam döngüsü ve olaylar',
             path: 'guide/routing/lifecycle-and-events',
             contentPath: 'guide/routing/lifecycle-and-events',
           },
           {
-            label: 'Testing routing and navigation',
+            label: 'Yönlendirme ve navigasyon testi',
             path: 'guide/routing/testing',
             contentPath: 'guide/routing/testing',
             status: 'new',
           },
           {
-            label: 'Other routing tasks',
+            label: 'Diğer yönlendirme görevleri',
             path: 'guide/routing/common-router-tasks',
             contentPath: 'guide/routing/common-router-tasks',
           },
           {
-            label: 'Creating custom route matches',
+            label: 'Özel rota eşleştirmeleri oluşturma',
             path: 'guide/routing/routing-with-urlmatcher',
             contentPath: 'guide/routing/routing-with-urlmatcher',
           },
           {
-            label: 'Rendering strategies',
+            label: 'Oluşturma stratejileri',
             path: 'guide/routing/rendering-strategies',
             contentPath: 'guide/routing/rendering-strategies',
             status: 'new',
           },
           {
-            label: 'Customizing route behavior',
+            label: 'Rota davranışını özelleştirme',
             path: 'guide/routing/customizing-route-behavior',
             contentPath: 'guide/routing/customizing-route-behavior',
             status: 'new',
           },
           {
-            label: 'Router reference',
+            label: 'Router referansı',
             path: 'guide/routing/router-reference',
             contentPath: 'guide/routing/router-reference',
           },
           {
-            label: 'Route transition animations',
+            label: 'Rota geçiş animasyonları',
             path: 'guide/routing/route-transition-animations',
             contentPath: 'guide/routing/route-transition-animations',
           },
         ],
       },
       {
-        label: 'Forms',
+        label: 'Formlar',
         status: 'updated',
         preserveOtherCategoryOrder: true,
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/forms',
             contentPath: 'guide/forms/overview',
           },
 
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/forms/signals/overview',
             contentPath: 'guide/forms/signals/overview',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Form models',
+            label: 'Form modelleri',
             path: 'guide/forms/signals/models',
             contentPath: 'guide/forms/signals/models',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Form model design',
+            label: 'Form model tasarımı',
             path: 'guide/forms/signals/model-design',
             contentPath: 'guide/forms/signals/designing-your-form-model',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Field state management',
+            label: 'Alan durumu yönetimi',
             path: 'guide/forms/signals/field-state-management',
             contentPath: 'guide/forms/signals/field-state-management',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Validation',
+            label: 'Doğrulama',
             path: 'guide/forms/signals/validation',
             contentPath: 'guide/forms/signals/validation',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Form logic',
+            label: 'Form mantığı',
             path: 'guide/forms/signals/form-logic',
             contentPath: 'guide/forms/signals/form-logic',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Async operations',
+            label: 'Asenkron işlemler',
             path: 'guide/forms/signals/async-operations',
             contentPath: 'guide/forms/signals/async-operations',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Custom controls',
+            label: 'Özel kontroller',
             path: 'guide/forms/signals/custom-controls',
             contentPath: 'guide/forms/signals/custom-controls',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Comparison with other form systems',
+            label: 'Diğer form sistemleriyle karşılaştırma',
             path: 'guide/forms/signals/comparison',
             contentPath: 'guide/forms/signals/comparison',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Migrating from Reactive Forms',
+            label: "Reactive Forms'dan geçiş",
             path: 'guide/forms/signals/migration',
             contentPath: 'guide/forms/signals/migration',
             category: 'Signal Forms',
             status: 'new',
           },
           {
-            label: 'Reactive forms',
+            label: 'Reaktif formlar',
             path: 'guide/forms/reactive-forms',
             contentPath: 'guide/forms/reactive-forms',
             category: 'Reactive Forms',
           },
           {
-            label: 'Strictly typed reactive forms',
+            label: 'Katı tipli reaktif formlar',
             path: 'guide/forms/typed-forms',
             contentPath: 'guide/forms/typed-forms',
             category: 'Reactive Forms',
           },
           {
-            label: 'Template-driven forms',
+            label: 'Şablon güdümlü formlar',
             path: 'guide/forms/template-driven-forms',
             contentPath: 'guide/forms/template-driven-forms',
             category: 'Template driven Forms',
           },
           {
-            label: 'Validate form input',
+            label: 'Form girdisini doğrulama',
             path: 'guide/forms/form-validation',
             contentPath: 'guide/forms/form-validation',
             category: 'Reactive Forms',
           },
           {
-            label: 'Validate form input',
+            label: 'Form girdisini doğrulama',
             path: 'guide/forms/form-validation',
             contentPath: 'guide/forms/form-validation',
             category: 'Template driven Forms',
           },
           {
-            label: 'Building dynamic forms',
+            label: 'Dinamik formlar oluşturma',
             path: 'guide/forms/dynamic-forms',
             contentPath: 'guide/forms/dynamic-forms',
             category: 'Reactive Forms',
@@ -563,151 +563,151 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'HTTP Client',
+        label: 'HTTP İstemcisi',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/http',
             contentPath: 'guide/http/overview',
           },
           {
-            label: 'Setting up HttpClient',
+            label: 'HttpClient kurulumu',
             path: 'guide/http/setup',
             contentPath: 'guide/http/setup',
           },
           {
-            label: 'Making requests',
+            label: 'İstek yapma',
             path: 'guide/http/making-requests',
             contentPath: 'guide/http/making-requests',
           },
           {
-            label: 'Reactive data fetching with httpResource',
+            label: 'httpResource ile reaktif veri çekme',
             path: 'guide/http/http-resource',
             contentPath: 'guide/http/http-resource',
           },
           {
-            label: 'Intercepting requests and responses',
+            label: 'İstek ve yanıtları yakalama',
             path: 'guide/http/interceptors',
             contentPath: 'guide/http/interceptors',
           },
           {
-            label: 'Testing',
+            label: 'Test',
             path: 'guide/http/testing',
             contentPath: 'guide/http/testing',
           },
         ],
       },
       {
-        label: 'Server-side & hybrid-rendering',
+        label: 'Sunucu taraflı ve hibrit oluşturma',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/performance',
             contentPath: 'guide/performance/overview',
           },
           {
-            label: 'Server-side and hybrid-rendering',
+            label: 'Sunucu taraflı ve hibrit oluşturma',
             path: 'guide/ssr',
             contentPath: 'guide/ssr',
           },
           {
-            label: 'Hydration',
+            label: 'Hidrasyon',
             path: 'guide/hydration',
             contentPath: 'guide/hydration',
           },
           {
-            label: 'Incremental Hydration',
+            label: 'Artımlı Hidrasyon',
             path: 'guide/incremental-hydration',
             contentPath: 'guide/incremental-hydration',
           },
         ],
       },
       {
-        label: 'Testing',
+        label: 'Test',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/testing',
             contentPath: 'guide/testing/overview',
           },
           {
-            label: 'Basics of testing components',
+            label: 'Bileşen testi temelleri',
             path: 'guide/testing/components-basics',
             contentPath: 'guide/testing/components-basics',
           },
           {
-            label: 'Component testing scenarios',
+            label: 'Bileşen test senaryoları',
             path: 'guide/testing/components-scenarios',
             contentPath: 'guide/testing/components-scenarios',
           },
           {
-            label: 'Testing services',
+            label: 'Servis testi',
             path: 'guide/testing/services',
             contentPath: 'guide/testing/services',
           },
           {
-            label: 'Testing attribute directives',
+            label: 'Nitelik direktiflerini test etme',
             path: 'guide/testing/attribute-directives',
             contentPath: 'guide/testing/attribute-directives',
           },
           {
-            label: 'Testing pipes',
+            label: "Pipe'ları test etme",
             path: 'guide/testing/pipes',
             contentPath: 'guide/testing/pipes',
           },
           {
-            label: 'Testing routing and navigation',
+            label: 'Yönlendirme ve navigasyon testi',
             path: 'guide/routing/testing',
             contentPath: 'guide/routing/testing',
             status: 'new',
           },
           {
-            label: 'Debugging tests',
+            label: 'Testlerde hata ayıklama',
             path: 'guide/testing/debugging',
             contentPath: 'guide/testing/debugging',
           },
           {
-            label: 'Code coverage',
+            label: 'Kod kapsamı',
             path: 'guide/testing/code-coverage',
             contentPath: 'guide/testing/code-coverage',
           },
           {
-            label: 'Testing utility APIs',
+            label: "Test yardımcı API'leri",
             path: 'guide/testing/utility-apis',
             contentPath: 'guide/testing/utility-apis',
           },
           {
-            label: 'Component harnesses overview',
+            label: "Bileşen harness'larına genel bakış",
             path: 'guide/testing/component-harnesses-overview',
             contentPath: 'guide/testing/component-harnesses-overview',
           },
           {
-            label: 'Using component harnesses in tests',
+            label: "Testlerde bileşen harness'larını kullanma",
             path: 'guide/testing/using-component-harnesses',
             contentPath: 'guide/testing/using-component-harnesses',
           },
           {
-            label: 'Creating harnesses for your components',
+            label: 'Bileşenleriniz için harness oluşturma',
             path: 'guide/testing/creating-component-harnesses',
             contentPath: 'guide/testing/creating-component-harnesses',
           },
           {
-            label: 'Adding harness support for additional testing environments',
+            label: 'Ek test ortamları için harness desteği ekleme',
             path: 'guide/testing/component-harnesses-testing-environments',
             contentPath: 'guide/testing/component-harnesses-testing-environments',
           },
           {
-            label: 'Migrating from Karma to Vitest',
+            label: "Karma'dan Vitest'e geçiş",
             path: 'guide/testing/migrating-to-vitest',
             contentPath: 'guide/testing/migrating-to-vitest',
           },
           {
-            label: 'Testing with Karma and Jasmine',
+            label: 'Karma ve Jasmine ile test',
             path: 'guide/testing/karma',
             contentPath: 'guide/testing/karma',
           },
           {
-            label: 'Zone.js Testing Utilities',
+            label: 'Zone.js Test Yardımcıları',
             path: 'guide/testing/zone-js-testing-utilities',
             contentPath: 'guide/testing/zone-js-testing-utilities',
           },
@@ -718,7 +718,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         status: 'new',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/aria/overview',
             contentPath: 'guide/aria/overview',
           },
@@ -785,228 +785,228 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'Internationalization',
+        label: 'Uluslararasılaştırma',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/i18n',
             contentPath: 'guide/i18n/overview',
           },
           {
-            label: 'Add the localize package',
+            label: 'Yerelleştirme paketini ekleme',
             path: 'guide/i18n/add-package',
             contentPath: 'guide/i18n/add-package',
           },
           {
-            label: 'Refer to locales by ID',
+            label: 'Yerel ayarları kimliğe göre belirtme',
             path: 'guide/i18n/locale-id',
             contentPath: 'guide/i18n/locale-id',
           },
           {
-            label: 'Format data based on locale',
+            label: 'Yerel ayara göre veri biçimlendirme',
             path: 'guide/i18n/format-data-locale',
             contentPath: 'guide/i18n/format-data-locale',
           },
           {
-            label: 'Prepare component for translation',
+            label: 'Bileşeni çeviri için hazırlama',
             path: 'guide/i18n/prepare',
             contentPath: 'guide/i18n/prepare',
           },
           {
-            label: 'Work with translation files',
+            label: 'Çeviri dosyalarıyla çalışma',
             path: 'guide/i18n/translation-files',
             contentPath: 'guide/i18n/translation-files',
           },
           {
-            label: 'Merge translations into the app',
+            label: 'Çevirileri uygulamaya birleştirme',
             path: 'guide/i18n/merge',
             contentPath: 'guide/i18n/merge',
           },
           {
-            label: 'Deploy multiple locales',
+            label: 'Birden fazla yerel ayar dağıtma',
             path: 'guide/i18n/deploy',
             contentPath: 'guide/i18n/deploy',
           },
           {
-            label: 'Import global variants of the locale data',
+            label: 'Yerel ayar verilerinin global varyantlarını içe aktarma',
             path: 'guide/i18n/import-global-variants',
             contentPath: 'guide/i18n/import-global-variants',
           },
           {
-            label: 'Manage marked text with custom IDs',
+            label: 'İşaretlenmiş metni özel kimliklerle yönetme',
             path: 'guide/i18n/manage-marked-text',
             contentPath: 'guide/i18n/manage-marked-text',
           },
           {
-            label: 'Example Angular application',
+            label: 'Örnek Angular uygulaması',
             path: 'guide/i18n/example',
             contentPath: 'guide/i18n/example',
           },
         ],
       },
       {
-        label: 'Animations',
+        label: 'Animasyonlar',
         status: 'updated',
         children: [
           {
-            label: 'Enter and Leave animations',
+            label: 'Giriş ve Çıkış animasyonları',
             path: 'guide/animations',
             contentPath: 'guide/animations/enter-and-leave',
             status: 'new',
           },
           {
-            label: 'Complex Animations with CSS',
+            label: 'CSS ile karmaşık animasyonlar',
             path: 'guide/animations/css',
             contentPath: 'guide/animations/css',
           },
           {
-            label: 'Route transition animations',
+            label: 'Rota geçiş animasyonları',
             path: 'guide/routing/route-transition-animations',
             contentPath: 'guide/routing/route-transition-animations',
           },
         ],
       },
       {
-        label: 'Drag and drop',
+        label: 'Sürükle ve bırak',
         path: 'guide/drag-drop',
         contentPath: 'guide/drag-drop',
       },
     ],
   },
   {
-    label: 'Build with AI',
+    label: 'Yapay Zeka ile Geliştir',
     status: 'new',
     children: [
       {
-        label: 'Get Started',
+        label: 'Başlangıç',
         path: 'ai',
         contentPath: 'ai/overview',
       },
       {
-        label: 'LLM prompts and AI IDE setup',
+        label: 'LLM komutları ve AI IDE kurulumu',
         path: 'ai/develop-with-ai',
         contentPath: 'ai/develop-with-ai',
       },
       {
-        label: 'Design Patterns',
+        label: 'Tasarım Kalıpları',
         path: 'ai/design-patterns',
         contentPath: 'ai/design-patterns',
       },
       {
-        label: 'Angular CLI MCP Server setup',
+        label: 'Angular CLI MCP Server kurulumu',
         path: 'ai/mcp',
         contentPath: 'ai/mcp-server-setup',
       },
       {
-        label: 'Angular AI Tutor',
+        label: 'Angular AI Eğitmeni',
         path: 'ai/ai-tutor',
         contentPath: 'ai/ai-tutor',
       },
     ],
   },
   {
-    label: 'Developer Tools',
+    label: 'Geliştirici Araçları',
     children: [
       {
         label: 'Angular CLI',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'tools/cli',
             contentPath: 'tools/cli/overview',
           },
           {
-            label: 'Local set-up',
+            label: 'Yerel kurulum',
             path: 'tools/cli/setup-local',
             contentPath: 'tools/cli/setup-local',
           },
           {
-            label: 'Building Angular apps',
+            label: 'Angular uygulamalarını derleme',
             path: 'tools/cli/build',
             contentPath: 'tools/cli/build',
           },
           {
-            label: 'Serving Angular apps for development',
+            label: 'Geliştirme için Angular uygulamalarını sunma',
             path: 'tools/cli/serve',
             contentPath: 'tools/cli/serve',
           },
           {
-            label: 'Deployment',
+            label: 'Dağıtım',
             path: 'tools/cli/deployment',
             contentPath: 'tools/cli/deployment',
           },
           {
-            label: 'End-to-End Testing',
+            label: 'Uçtan Uca Test',
             path: 'tools/cli/end-to-end',
             contentPath: 'tools/cli/end-to-end',
           },
           {
-            label: 'Migrating to new build system',
+            label: 'Yeni derleme sistemine geçiş',
             path: 'tools/cli/build-system-migration',
             contentPath: 'tools/cli/build-system-migration',
           },
           {
-            label: 'Build environments',
+            label: 'Derleme ortamları',
             path: 'tools/cli/environments',
             contentPath: 'tools/cli/environments',
           },
           {
-            label: 'Angular CLI builders',
+            label: "Angular CLI builder'ları",
             path: 'tools/cli/cli-builder',
             contentPath: 'tools/cli/cli-builder',
           },
           {
-            label: 'Generating code using schematics',
+            label: 'Şematiklerle kod üretme',
             path: 'tools/cli/schematics',
             contentPath: 'tools/cli/schematics',
           },
           {
-            label: 'Authoring schematics',
+            label: 'Şematik yazma',
             path: 'tools/cli/schematics-authoring',
             contentPath: 'tools/cli/schematics-authoring',
           },
           {
-            label: 'Schematics for libraries',
+            label: 'Kütüphaneler için şematikler',
             path: 'tools/cli/schematics-for-libraries',
             contentPath: 'tools/cli/schematics-for-libraries',
           },
           {
-            label: 'Template type checking',
+            label: 'Şablon tip kontrolü',
             path: 'tools/cli/template-typecheck',
             contentPath: 'tools/cli/template-typecheck',
           },
           {
-            label: 'Ahead-of-time (AOT) compilation',
+            label: 'Önceden (AOT) derleme',
             path: 'tools/cli/aot-compiler',
             contentPath: 'tools/cli/aot-compiler',
           },
           {
-            label: 'AOT metadata errors',
+            label: 'AOT meta veri hataları',
             path: 'tools/cli/aot-metadata-errors',
             contentPath: 'tools/cli/aot-metadata-errors',
           },
         ],
       },
       {
-        label: 'Libraries',
+        label: 'Kütüphaneler',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'tools/libraries',
             contentPath: 'tools/libraries/overview',
           },
           {
-            label: 'Creating Libraries',
+            label: 'Kütüphane oluşturma',
             path: 'tools/libraries/creating-libraries',
             contentPath: 'tools/libraries/creating-libraries',
           },
           {
-            label: 'Using Libraries',
+            label: 'Kütüphane kullanma',
             path: 'tools/libraries/using-libraries',
             contentPath: 'tools/libraries/using-libraries',
           },
           {
-            label: 'Angular Package Format',
+            label: 'Angular Paket Formatı',
             path: 'tools/libraries/angular-package-format',
             contentPath: 'tools/libraries/angular-package-format',
           },
@@ -1016,12 +1016,12 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         label: 'DevTools',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'tools/devtools',
             contentPath: 'tools/devtools/overview',
           },
           {
-            label: 'Components',
+            label: 'Bileşenler',
             path: 'tools/devtools/component',
             contentPath: 'tools/devtools/component',
           },
@@ -1031,7 +1031,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             contentPath: 'tools/devtools/profiler',
           },
           {
-            label: 'Injectors',
+            label: 'Enjektörler',
             path: 'tools/devtools/injectors',
             contentPath: 'tools/devtools/injectors',
           },
@@ -1050,67 +1050,67 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'Language Service',
+        label: 'Dil Servisi',
         path: 'tools/language-service',
         contentPath: 'tools/language-service',
       },
     ],
   },
   {
-    label: 'Best Practices',
+    label: 'En İyi Uygulamalar',
     children: [
       {
-        label: 'Style Guide',
+        label: 'Stil Rehberi',
         path: 'style-guide',
         contentPath: 'best-practices/style-guide',
         status: 'updated',
       },
       {
-        label: 'Security',
+        label: 'Güvenlik',
         path: 'best-practices/security',
         contentPath: 'guide/security', // Have not refactored due to build issues
       },
       {
-        label: 'Accessibility',
+        label: 'Erişilebilirlik',
         path: 'best-practices/a11y',
         contentPath: 'best-practices/a11y',
       },
       {
-        label: 'Unhandled errors in Angular',
+        label: "Angular'da işlenmeyen hatalar",
         path: 'best-practices/error-handling',
         contentPath: 'best-practices/error-handling',
       },
       {
-        label: 'Performance',
+        label: 'Performans',
         preserveOtherCategoryOrder: true,
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'best-practices/performance',
             contentPath: 'best-practices/performance/overview',
           },
 
           // Loading Performance
           {
-            label: 'Lazy-loaded routes',
+            label: 'Tembel yüklenen rotalar',
             path: 'best-practices/performance/lazy-loaded-routes',
             contentPath: 'guide/routing/loading-strategies',
             category: 'Loading Performance',
           },
           {
-            label: 'Deferred loading with @defer',
+            label: '@defer ile ertelenmiş yükleme',
             path: 'best-practices/performance/defer',
             contentPath: 'guide/templates/defer',
             category: 'Loading Performance',
           },
           {
-            label: 'Image optimization',
+            label: 'Görsel optimizasyonu',
             path: 'best-practices/performance/image-optimization',
             contentPath: 'guide/image-optimization',
             category: 'Loading Performance',
           },
           {
-            label: 'Server-side rendering',
+            label: 'Sunucu taraflı oluşturma',
             path: 'best-practices/performance/ssr',
             contentPath: 'guide/ssr',
             category: 'Loading Performance',
@@ -1118,7 +1118,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
 
           // Runtime Performance
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'best-practices/runtime-performance',
             contentPath: 'best-practices/runtime-performance/overview',
             category: 'Runtime Performance',
@@ -1130,26 +1130,26 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             category: 'Runtime Performance',
           },
           {
-            label: 'Slow computations',
+            label: 'Yavaş hesaplamalar',
             path: 'best-practices/slow-computations',
             contentPath: 'best-practices/runtime-performance/slow-computations',
             category: 'Runtime Performance',
           },
           {
-            label: 'Skipping component subtrees',
+            label: 'Bileşen alt ağaçlarını atlama',
             path: 'best-practices/skipping-subtrees',
             contentPath: 'best-practices/runtime-performance/skipping-subtrees',
             category: 'Runtime Performance',
           },
           {
-            label: 'Zone pollution',
+            label: 'Zone kirliliği',
             path: 'best-practices/zone-pollution',
             contentPath: 'best-practices/runtime-performance/zone-pollution',
             category: 'Runtime Performance',
           },
 
           {
-            label: 'Chrome DevTools profiling',
+            label: 'Chrome DevTools profilleme',
             path: 'best-practices/profiling-with-chrome-devtools',
             contentPath: 'best-practices/runtime-performance/profiling-with-chrome-devtools',
             category: 'Runtime Performance',
@@ -1157,17 +1157,17 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         ],
       },
       {
-        label: 'Keeping up-to-date',
+        label: 'Güncel kalma',
         path: 'update',
         contentPath: 'best-practices/update',
       },
     ],
   },
   {
-    label: 'Developer Events',
+    label: 'Geliştirici Etkinlikleri',
     children: [
       {
-        label: 'Angular v21 Release',
+        label: 'Angular v21 Sürümü',
         path: 'events/v21',
         contentPath: 'events/v21',
         status: 'new',
@@ -1175,7 +1175,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
     ],
   },
   {
-    label: 'Extended Ecosystem',
+    label: 'Genişletilmiş Ekosistem',
     children: [
       {
         label: 'NgModules',
@@ -1183,85 +1183,85 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         contentPath: 'guide/ngmodules/overview',
       },
       {
-        label: 'Legacy Animations',
+        label: 'Eski Animasyonlar',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'guide/legacy-animations',
             contentPath: 'guide/animations/overview',
           },
           {
-            label: 'Transition and Triggers',
+            label: 'Geçiş ve Tetikleyiciler',
             path: 'guide/legacy-animations/transition-and-triggers',
             contentPath: 'guide/animations/transition-and-triggers',
           },
           {
-            label: 'Complex Sequences',
+            label: 'Karmaşık Diziler',
             path: 'guide/legacy-animations/complex-sequences',
             contentPath: 'guide/animations/complex-sequences',
           },
           {
-            label: 'Reusable Animations',
+            label: 'Yeniden Kullanılabilir Animasyonlar',
             path: 'guide/legacy-animations/reusable-animations',
             contentPath: 'guide/animations/reusable-animations',
           },
           {
-            label: 'Migrating to Native CSS Animations',
+            label: 'Yerel CSS Animasyonlarına Geçiş',
             path: 'guide/animations/migration',
             contentPath: 'guide/animations/migration',
           },
         ],
       },
       {
-        label: 'Using RxJS with Angular',
+        label: 'Angular ile RxJS Kullanımı',
         children: [
           {
-            label: 'Signals interop',
+            label: 'Sinyal etkileşimi',
             path: 'ecosystem/rxjs-interop',
             contentPath: 'ecosystem/rxjs-interop/signals-interop',
           },
           {
-            label: 'Component output interop',
+            label: 'Bileşen output etkileşimi',
             path: 'ecosystem/rxjs-interop/output-interop',
             contentPath: 'ecosystem/rxjs-interop/output-interop',
           },
           {
-            label: 'Unsubscribing with takeUntilDestroyed',
+            label: 'takeUntilDestroyed ile abonelik iptali',
             path: 'ecosystem/rxjs-interop/take-until-destroyed',
             contentPath: 'ecosystem/rxjs-interop/take-until-destroyed',
           },
         ],
       },
       {
-        label: 'Service Workers & PWAs',
+        label: "Service Worker'lar ve PWA'lar",
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'ecosystem/service-workers',
             contentPath: 'ecosystem/service-workers/overview',
           },
           {
-            label: 'Getting started',
+            label: 'Başlangıç',
             path: 'ecosystem/service-workers/getting-started',
             contentPath: 'ecosystem/service-workers/getting-started',
           },
           {
-            label: 'Custom service worker scripts',
+            label: 'Özel service worker betikleri',
             path: 'ecosystem/service-workers/custom-service-worker-scripts',
             contentPath: 'ecosystem/service-workers/custom-service-worker-scripts',
           },
           {
-            label: 'Configuration file',
+            label: 'Yapılandırma dosyası',
             path: 'ecosystem/service-workers/config',
             contentPath: 'ecosystem/service-workers/config',
           },
           {
-            label: 'Communicating with the service worker',
+            label: 'Service worker ile iletişim',
             path: 'ecosystem/service-workers/communications',
             contentPath: 'ecosystem/service-workers/communications',
           },
           {
-            label: 'Push notifications',
+            label: 'Push bildirimleri',
             path: 'ecosystem/service-workers/push-notifications',
             contentPath: 'ecosystem/service-workers/push-notifications',
           },
@@ -1271,19 +1271,19 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             contentPath: 'ecosystem/service-workers/devops',
           },
           {
-            label: 'App shell pattern',
+            label: 'App shell kalıbı',
             path: 'ecosystem/service-workers/app-shell',
             contentPath: 'ecosystem/service-workers/app-shell',
           },
         ],
       },
       {
-        label: 'Web workers',
+        label: "Web worker'lar",
         path: 'ecosystem/web-workers',
         contentPath: 'ecosystem/web-workers',
       },
       {
-        label: 'Custom build pipeline',
+        label: 'Özel derleme hattı',
         path: 'ecosystem/custom-build-pipeline',
         contentPath: 'ecosystem/custom-build-pipeline',
       },
@@ -1322,7 +1322,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
   ...(isDevMode()
     ? [
         {
-          label: 'Adev Dev Guide',
+          label: 'Adev Geliştirici Rehberi',
           children: [
             {
               label: 'Kitchen Sink',
@@ -1344,36 +1344,36 @@ export const TUTORIALS_SUB_NAVIGATION_DATA: NavigationItem[] = [
   {
     path: 'tutorials',
     contentPath: 'tutorials/home',
-    label: 'Tutorials',
+    label: 'Eğitimler',
   },
 ];
 
 export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
   {
-    label: 'Roadmap',
+    label: 'Yol Haritası',
     path: 'roadmap',
     contentPath: 'reference/roadmap',
   },
   {
-    label: 'Get involved',
+    label: 'Katkıda bulunun',
     path: 'https://github.com/angular/angular/blob/main/CONTRIBUTING.md',
   },
   {
-    label: 'API Reference',
+    label: 'API Referansı',
     preserveOtherCategoryOrder: true,
     children: [
       {
-        label: 'Overview',
+        label: 'Genel Bakış',
         path: 'api',
       },
       ...getApiNavigationItems(),
     ],
   },
   {
-    label: 'CLI Reference',
+    label: 'CLI Referansı',
     children: [
       {
-        label: 'Overview',
+        label: 'Genel Bakış',
         path: 'cli',
         contentPath: 'reference/cli',
       },
@@ -1385,7 +1385,7 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         label: 'ng analytics',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'cli/analytics',
           },
           {
@@ -1414,7 +1414,7 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         label: 'ng cache',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'cli/cache',
           },
           {
@@ -1439,7 +1439,7 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         label: 'ng completion',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'cli/completion',
           },
           {
@@ -1468,7 +1468,7 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         label: 'ng generate',
         children: [
           {
-            label: 'Overview',
+            label: 'Genel Bakış',
             path: 'cli/generate',
           },
           {
@@ -1580,10 +1580,10 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
     ],
   },
   {
-    label: 'Error Encyclopedia',
+    label: 'Hata Ansiklopedisi',
     children: [
       {
-        label: 'Overview',
+        label: 'Genel Bakış',
         path: 'errors',
         contentPath: 'reference/errors/overview',
       },
@@ -1591,10 +1591,10 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
     ],
   },
   {
-    label: 'Extended Diagnostics',
+    label: 'Genişletilmiş Tanılamalar',
     children: [
       {
-        label: 'Overview',
+        label: 'Genel Bakış',
         path: 'extended-diagnostics',
         contentPath: 'reference/extended-diagnostics/overview',
       },
@@ -1602,49 +1602,49 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
     ],
   },
   {
-    label: 'Versioning and releases',
+    label: 'Sürüm ve yayınlar',
     path: 'reference/releases',
     contentPath: 'reference/releases',
   },
   {
-    label: 'Version compatibility',
+    label: 'Sürüm uyumluluğu',
     path: 'reference/versions',
     contentPath: 'reference/versions',
   },
   {
-    label: 'Update guide',
+    label: 'Güncelleme rehberi',
     path: 'update-guide',
   },
   {
-    label: 'Configurations',
+    label: 'Yapılandırmalar',
     children: [
       {
-        label: 'File structure',
+        label: 'Dosya yapısı',
         path: 'reference/configs/file-structure',
         contentPath: 'reference/configs/file-structure',
       },
       {
-        label: 'Workspace configuration',
+        label: 'Çalışma alanı yapılandırması',
         path: 'reference/configs/workspace-config',
         contentPath: 'reference/configs/workspace-config',
       },
       {
-        label: 'Angular compiler options',
+        label: 'Angular derleyici seçenekleri',
         path: 'reference/configs/angular-compiler-options',
         contentPath: 'reference/configs/angular-compiler-options',
       },
       {
-        label: 'npm dependencies',
+        label: 'npm bağımlılıkları',
         path: 'reference/configs/npm-packages',
         contentPath: 'reference/configs/npm-packages',
       },
     ],
   },
   {
-    label: 'Migrations',
+    label: 'Geçişler',
     children: [
       {
-        label: 'Overview',
+        label: 'Genel Bakış',
         path: 'reference/migrations',
         contentPath: 'reference/migrations/overview',
       },
@@ -1654,65 +1654,65 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         contentPath: 'reference/migrations/standalone',
       },
       {
-        label: 'Control Flow Syntax',
+        label: 'Kontrol Akışı Söz Dizimi',
         path: 'reference/migrations/control-flow',
         contentPath: 'reference/migrations/control-flow',
       },
       {
-        label: 'inject() Function',
+        label: 'inject() Fonksiyonu',
         path: 'reference/migrations/inject-function',
         contentPath: 'reference/migrations/inject-function',
       },
       {
-        label: 'Lazy-loaded routes',
+        label: 'Tembel yüklenen rotalar',
         path: 'reference/migrations/route-lazy-loading',
         contentPath: 'reference/migrations/route-lazy-loading',
       },
       {
-        label: 'Signal inputs',
+        label: "Sinyal input'ları",
         path: 'reference/migrations/signal-inputs',
         contentPath: 'reference/migrations/signal-inputs',
       },
       {
-        label: 'Outputs',
+        label: "Output'lar",
         path: 'reference/migrations/outputs',
         contentPath: 'reference/migrations/outputs',
       },
       {
-        label: 'Signal queries',
+        label: 'Sinyal sorguları',
         path: 'reference/migrations/signal-queries',
         contentPath: 'reference/migrations/signal-queries',
       },
       {
-        label: 'Clean up unused imports',
+        label: "Kullanılmayan import'ları temizleme",
         path: 'reference/migrations/cleanup-unused-imports',
         contentPath: 'reference/migrations/cleanup-unused-imports',
       },
       {
-        label: 'Self-closing tags',
+        label: 'Kendini kapatan etiketler',
         path: 'reference/migrations/self-closing-tags',
         contentPath: 'reference/migrations/self-closing-tags',
       },
       {
-        label: 'NgClass to Class',
+        label: "NgClass'tan Class'a",
         path: 'reference/migrations/ngclass-to-class',
         contentPath: 'reference/migrations/ngclass-to-class',
         status: 'new',
       },
       {
-        label: 'NgStyle to Style',
+        label: "NgStyle'dan Style'a",
         path: 'reference/migrations/ngstyle-to-style',
         contentPath: 'reference/migrations/ngstyle-to-style',
         status: 'new',
       },
       {
-        label: 'Router Testing Module Migration',
+        label: 'Router Test Modülü Geçişi',
         path: 'reference/migrations/router-testing-module-migration',
         contentPath: 'reference/migrations/router-testing-module-migration',
         status: 'new',
       },
       {
-        label: 'CommonModule to Standalone',
+        label: "CommonModule'den Standalone'a",
         path: 'reference/migrations/common-to-standalone',
         contentPath: 'reference/migrations/common-to-standalone',
         status: 'new',
@@ -1723,12 +1723,12 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
 
 export const FOOTER_NAVIGATION_DATA: NavigationItem[] = [
   {
-    label: 'Press Kit',
+    label: 'Basın Kiti',
     path: 'press-kit',
     contentPath: 'reference/press-kit',
   },
   {
-    label: 'License',
+    label: 'Lisans',
     path: 'license',
     contentPath: 'reference/license',
   },

@@ -1,22 +1,22 @@
 # Display validation errors
 
-Now that you're able to validate the form, it's important to show validation errors to users.
+Artık formu doğrulayabildiğinize göre, doğrulama hatalarını kullanıcılara göstermek önemlidir.
 
-In this activity, you'll learn how to:
+Bu aktivitede şunları öğreneceksiniz:
 
-- Access field state with validation signals
-- Use `@if` to conditionally display errors
-- Loop through errors with `@for`
-- Show errors only after user interaction
+- Doğrulama sinyalleriyle alan durumuna erişme
+- Hataları koşullu olarak göstermek için `@if` kullanma
+- `@for` ile hatalar arasında döngü oluşturma
+- Hataları yalnızca kullanıcı etkileşiminden sonra gösterme
 
-Let's display validation feedback!
+Doğrulama geri bildirimi gösterelim!
 
 <hr />
 
 <docs-workflow>
 
 <docs-step title="Add error display for email field">
-Below the email input, add conditional error display. This will only show errors when the field is both invalid and touched:
+E-posta input'unun altına, koşullu hata görüntüleme ekleyin. Bu, yalnızca alan hem geçersiz hem de dokunulmuş (touched) olduğunda hataları gösterecektir:
 
 ```angular-html
 <label>
@@ -32,11 +32,11 @@ Below the email input, add conditional error display. This will only show errors
 }
 ```
 
-The `loginForm.email()` call accesses the field's state signal. The `invalid()` method returns `true` when validation fails, `touched()` returns `true` after the user has interacted with the field, and `errors()` provides an array of validation errors with their custom messages.
+`loginForm.email()` çağrısı, alanın durum sinyaline erişir. `invalid()` metodu doğrulama başarısız olduğunda `true` döndürür, `touched()` kullanıcı alanla etkileşime girdikten sonra `true` döndürür ve `errors()` özel mesajlarıyla birlikte doğrulama hataları dizisi sağlar.
 </docs-step>
 
 <docs-step title="Add error display for password field">
-Below the password input, add the same pattern for password errors:
+Parola input'unun altına, parola hataları için aynı deseni ekleyin:
 
 ```angular-html
 <label>
@@ -56,6 +56,6 @@ Below the password input, add the same pattern for password errors:
 
 </docs-workflow>
 
-Excellent! You've added error display to your form. The errors appear only after users interact with a field, providing helpful feedback without being intrusive.
+Mükemmel! Formunuza hata görüntüleme eklediniz. Hatalar yalnızca kullanıcılar bir alanla etkileşime girdikten sonra görünür ve müdahaleci olmadan yararlı geri bildirim sağlar.
 
-Next, you'll learn [how to handle form submission](/tutorials/signal-forms/5-add-submission)!
+Ardından, [form gönderimini nasıl yöneteceğinizi](/tutorials/signal-forms/5-add-submission) öğreneceksiniz!

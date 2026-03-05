@@ -1,40 +1,40 @@
 # Authoring schematics
 
-You can create your own schematics to operate on Angular projects.
-Library developers typically package schematics with their libraries to integrate them with the Angular CLI.
-You can also create stand-alone schematics to manipulate the files and constructs in Angular applications as a way of customizing them for your development environment and making them conform to your standards and constraints.
-Schematics can be chained, running other schematics to perform complex operations.
+Angular projelerinde çalışacak kendi şematiklerinizi oluşturabilirsiniz.
+Kütüphane geliştiricileri genellikle şematikleri kütüphaneleriyle birlikte paketleyerek Angular CLI ile entegre ederler.
+Ayrıca, Angular uygulamalarındaki dosya ve yapıları, geliştirme ortamınız için özelleştirmek ve standartlarınıza ve kısıtlamalarınıza uygun hale getirmek amacıyla manipüle etmek için bağımsız şematikler de oluşturabilirsiniz.
+Şematikler zincirlenerek karmaşık işlemler gerçekleştirmek için diğer şematikleri çalıştırabilir.
 
-Manipulating the code in an application has the potential to be both very powerful and correspondingly dangerous.
-For example, creating a file that already exists would be an error, and if it was applied immediately, it would discard all the other changes applied so far.
-The Angular Schematics tooling guards against side effects and errors by creating a virtual file system.
-A schematic describes a pipeline of transformations that can be applied to the virtual file system.
-When a schematic runs, the transformations are recorded in memory, and only applied in the real file system once they're confirmed to be valid.
+Bir uygulamadaki kodu manipüle etmek hem çok güçlü hem de buna karşılık tehlikeli olma potansiyeline sahiptir.
+Örneğin, zaten var olan bir dosya oluşturmak bir hata olur ve hemen uygulanırsa, o ana kadar uygulanan tüm diğer değişiklikleri iptal eder.
+Angular Schematics araçları, sanal bir dosya sistemi oluşturarak yan etkilere ve hatalara karşı koruma sağlar.
+Bir şematik, sanal dosya sistemine uygulanabilecek bir dönüşüm hattını tanımlar.
+Bir şematik çalıştığında, dönüşümler bellekte kaydedilir ve yalnızca geçerli oldukları doğrulandıktan sonra gerçek dosya sisteminde uygulanır.
 
 ## Schematics concepts
 
-The public API for schematics defines classes that represent the basic concepts.
+Şematiklerin genel API'si, temel kavramları temsil eden sınıfları tanımlar.
 
-- The virtual file system is represented by a `Tree`.
-  The `Tree` data structure contains a _base_ \(a set of files that already exists\) and a _staging area_ \(a list of changes to be applied to the base\).
-  When making modifications, you don't actually change the base, but add those modifications to the staging area.
+- Sanal dosya sistemi bir `Tree` ile temsil edilir.
+  `Tree` veri yapısı, bir _temel_ \(zaten var olan dosyalar kümesi\) ve bir _hazırlık alanı_ \(tabana uygulanacak değişikliklerin listesi\) içerir.
+  Değişiklikler yaparken, aslında tabanı değiştirmezsiniz, bunun yerine bu değişiklikleri hazırlık alanına eklersiniz.
 
-- A `Rule` object defines a function that takes a `Tree`, applies transformations, and returns a new `Tree`.
-  The main file for a schematic, `index.ts`, defines a set of rules that implement the schematic's logic.
+- Bir `Rule` nesnesi, bir `Tree` alan, dönüşümler uygulayan ve yeni bir `Tree` döndüren bir fonksiyon tanımlar.
+  Bir şematiğin ana dosyası olan `index.ts`, şematiğin mantığını uygulayan bir kurallar kümesi tanımlar.
 
-- A transformation is represented by an `Action`.
-  There are four action types: `Create`, `Rename`, `Overwrite`, and `Delete`.
+- Bir dönüşüm bir `Action` ile temsil edilir.
+  Dört eylem türü vardır: `Create`, `Rename`, `Overwrite` ve `Delete`.
 
-- Each schematic runs in a context, represented by a `SchematicContext` object.
+- Her şematik, bir `SchematicContext` nesnesiyle temsil edilen bir bağlamda çalışır.
 
-The context object passed into a rule provides access to utility functions and metadata that the schematic might need to work with, including a logging API to help with debugging.
-The context also defines a _merge strategy_ that determines how changes are merged from the staged tree into the base tree.
-A change can be accepted or ignored, or throw an exception.
+Bir kurala geçirilen bağlam nesnesi, şematiğin çalışması için ihtiyaç duyabileceği yardımcı fonksiyonlara ve meta verilere erişim sağlar ve hata ayıklamaya yardımcı olan bir loglama API'si içerir.
+Bağlam ayrıca, hazırlık ağacındaki değişikliklerin temel ağaca nasıl birleştirileceğini belirleyen bir _birleştirme stratejisi_ tanımlar.
+Bir değişiklik kabul edilebilir, görmezden gelinebilir veya bir istisna fırlatabilir.
 
 ### Defining rules and actions
 
-When you create a new blank schematic with the [Schematics CLI](#schematics-cli), the generated entry function is a _rule factory_.
-A `RuleFactory` object defines a higher-order function that creates a `Rule`.
+[Schematics CLI](#schematics-cli) ile yeni bir boş şematik oluşturduğunuzda, üretilen giriş fonksiyonu bir _kural fabrikasıdır_.
+Bir `RuleFactory` nesnesi, bir `Rule` oluşturan üst düzey bir fonksiyon tanımlar.
 
 ```ts {header: "index.ts"}
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
@@ -48,11 +48,11 @@ export function helloWorld(\_options: any): Rule {
 }
 ```
 
-Your rules can make changes to your projects by calling external tools and implementing logic.
-You need a rule, for example, to define how a template in the schematic is to be merged into the hosting project.
+Kurallarınız, harici araçları çağırarak ve mantık uygulayarak projelerinizde değişiklikler yapabilir.
+Örneğin, şematikteki bir şablonun barındırma projesine nasıl birleştirileceğini tanımlamak için bir kurala ihtiyacınız vardır.
 
-Rules can make use of utilities provided with the `@schematics/angular` package.
-Look for helper functions for working with modules, dependencies, TypeScript, AST, JSON, Angular CLI workspaces and projects, and more.
+Kurallar, `@schematics/angular` paketiyle sağlanan yardımcı fonksiyonları kullanabilir.
+Modüller, bağımlılıklar, TypeScript, AST, JSON, Angular CLI çalışma alanları ve projeleri ile çalışmak için yardımcı fonksiyonlara bakın.
 
 ```ts {header: "index.ts"}
 import {
@@ -68,12 +68,12 @@ import {
 
 ### Defining input options with a schema and interfaces
 
-Rules can collect option values from the caller and inject them into templates.
-The options available to your rules, with their allowed values and defaults, are defined in the schematic's JSON schema file, `<schematic>/schema.json`.
-Define variable or enumerated data types for the schema using TypeScript interfaces.
+Kurallar, çağırandan seçenek değerlerini toplayabilir ve şablonlara enjekte edebilir.
+Kurallarınız için mevcut seçenekler, izin verilen değerleri ve varsayılanlarıyla birlikte şematiğin JSON şema dosyası `<schematic>/schema.json` içinde tanımlanır.
+Şema için TypeScript arayüzlerini kullanarak değişken veya numaralı veri türlerini tanımlayın.
 
-The schema defines the types and default values of variables used in the schematic.
-For example, the hypothetical "Hello World" schematic might have the following schema.
+Şema, şematikte kullanılan değişkenlerin türlerini ve varsayılan değerlerini tanımlar.
+Örneğin, varsayımsal "Hello World" şematiği aşağıdaki şemaya sahip olabilir.
 
 ```json {header: "schema.json"}
 {
@@ -90,20 +90,20 @@ For example, the hypothetical "Hello World" schematic might have the following s
 }
 ```
 
-See examples of schema files for the Angular CLI command schematics in [`@schematics/angular`](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/schema.json).
+Angular CLI komut şematikleri için şema dosyalarının örneklerini [`@schematics/angular`](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/schema.json) içinde görebilirsiniz.
 
 ### Schematic prompts
 
-Schematic _prompts_ introduce user interaction into schematic execution.
-Configure schematic options to display a customizable question to the user.
-The prompts are displayed before the execution of the schematic, which then uses the response as the value for the option.
-This lets users direct the operation of the schematic without requiring in-depth knowledge of the full spectrum of available options.
+Şematik _istemler_, şematik yürütmesine kullanıcı etkileşimi getirir.
+Şematik seçeneklerini, kullanıcıya özelleştirilebilir bir soru görüntüleyecek şekilde yapılandırın.
+İstemler, şematiğin yürütülmesinden önce görüntülenir ve ardından yanıtı seçeneğin değeri olarak kullanır.
+Bu, kullanıcıların mevcut seçeneklerin tam kapsamı hakkında derinlemesine bilgiye ihtiyaç duymadan şematiğin çalışmasını yönlendirmesine olanak tanır.
 
-The "Hello World" schematic might, for example, ask the user for their name, and display that name in place of the default name "world".
-To define such a prompt, add an `x-prompt` property to the schema for the `name` variable.
+"Hello World" şematiği, örneğin, kullanıcıdan adını isteyebilir ve bu adı varsayılan "world" adının yerine görüntüleyebilir.
+Böyle bir istem tanımlamak için `name` değişkeninin şemasına bir `x-prompt` özelliği ekleyin.
 
-Similarly, you can add a prompt to let the user decide whether the schematic uses color when executing its hello action.
-The schema with both prompts would be as follows.
+Benzer şekilde, kullanıcının şematiğin hello eylemini gerçekleştirirken renk kullanıp kullanmayacağına karar vermesine izin vermek için bir istem ekleyebilirsiniz.
+Her iki istemli şema aşağıdaki gibi olur.
 
 ```json {header: "schema.json"}
 {
@@ -124,33 +124,33 @@ The schema with both prompts would be as follows.
 
 #### Prompt short-form syntax
 
-These examples use a shorthand form of the prompt syntax, supplying only the text of the question.
-In most cases, this is all that is required.
-Notice however, that the two prompts expect different types of input.
-When using the shorthand form, the most appropriate type is automatically selected based on the property's schema.
-In the example, the `name` prompt uses the `input` type because it is a string property.
-The `useColor` prompt uses a `confirmation` type because it is a Boolean property.
-In this case, "yes" corresponds to `true` and "no" corresponds to `false`.
+Bu örnekler, yalnızca sorunun metnini sağlayan kısa biçimli istem sözdizimini kullanır.
+Çoğu durumda, gereken tek şey budur.
+Ancak, iki istemin farklı türde girdi beklediğine dikkat edin.
+Kısa biçim kullanıldığında, özelliğin şemasına göre en uygun tür otomatik olarak seçilir.
+Örnekte, `name` istemi bir dize özelliği olduğu için `input` türünü kullanır.
+`useColor` istemi, Boolean bir özellik olduğu için `confirmation` türünü kullanır.
+Bu durumda, "yes" `true`'ya ve "no" `false`'a karşılık gelir.
 
-There are three supported input types.
+Desteklenen üç girdi türü vardır.
 
-| Input type   | Details                                            |
-| :----------- | :------------------------------------------------- |
-| confirmation | A yes or no question; ideal for Boolean options.   |
-| input        | Textual input; ideal for string or number options. |
-| list         | A predefined set of allowed values.                |
+| Girdi türü   | Ayrıntılar                                                |
+| :----------- | :-------------------------------------------------------- |
+| confirmation | Evet veya hayır sorusu; Boolean seçenekler için idealdir. |
+| input        | Metin girdisi; dize veya sayı seçenekleri için idealdir.  |
+| list         | Önceden tanımlanmış izin verilen değerler kümesi.         |
 
-In the short form, the type is inferred from the property's type and constraints.
+Kısa biçimde, tür özelliğin türünden ve kısıtlamalarından çıkarılır.
 
-| Property schema   | Prompt type                                  |
-| :---------------- | :------------------------------------------- |
-| "type": "boolean" | confirmation \("yes"=`true`, "no"=`false`\)  |
-| "type": "string"  | input                                        |
-| "type": "number"  | input \(only valid numbers accepted\)        |
-| "type": "integer" | input \(only valid numbers accepted\)        |
-| "enum": […]       | list \(enum members become list selections\) |
+| Özellik şeması    | İstem türü                                      |
+| :---------------- | :---------------------------------------------- |
+| "type": "boolean" | confirmation \("yes"=`true`, "no"=`false`\)     |
+| "type": "string"  | input                                           |
+| "type": "number"  | input \(yalnızca geçerli sayılar kabul edilir\) |
+| "type": "integer" | input \(yalnızca geçerli sayılar kabul edilir\) |
+| "enum": [...]     | list \(enum üyeleri liste seçenekleri olur\)    |
 
-In the following example, the property takes an enumerated value, so the schematic automatically chooses the list type, and creates a menu from the possible values.
+Aşağıdaki örnekte, özellik numaralı bir değer alır, bu nedenle şematik otomatik olarak liste türünü seçer ve olası değerlerden bir menü oluşturur.
 
 ```json {header: "schema.json"}
 {
@@ -164,24 +164,24 @@ In the following example, the property takes an enumerated value, so the schemat
 }
 ```
 
-The prompt runtime automatically validates the provided response against the constraints provided in the JSON schema.
-If the value is not acceptable, the user is prompted for a new value.
-This ensures that any values passed to the schematic meet the expectations of the schematic's implementation, so that you do not need to add additional checks within the schematic's code.
+İstem çalışma zamanı, sağlanan yanıtı JSON şemasında sağlanan kısıtlamalara göre otomatik olarak doğrular.
+Değer kabul edilebilir değilse, kullanıcıdan yeni bir değer istenir.
+Bu, şematiğe geçirilen herhangi bir değerin şematiğin uygulamasının beklentilerini karşılamasını sağlar, böylece şematiğin kodu içinde ek kontroller eklemenize gerek kalmaz.
 
 #### Prompt long-form syntax
 
-The `x-prompt` field syntax supports a long form for cases where you require additional customization and control over the prompt.
-In this form, the `x-prompt` field value is a JSON object with subfields that customize the behavior of the prompt.
+`x-prompt` alanı sözdizimi, istem üzerinde ek özelleştirme ve kontrol gerektiren durumlar için uzun bir biçimi destekler.
+Bu biçimde, `x-prompt` alanı değeri, istemin davranışını özelleştiren alt alanları olan bir JSON nesnesidir.
 
-| Field   | Data value                                                                  |
-| :------ | :-------------------------------------------------------------------------- |
-| type    | `confirmation`, `input`, or `list` \(selected automatically in short form\) |
-| message | string \(required\)                                                         |
-| items   | string and/or label/value object pair \(only valid with type `list`\)       |
+| Alan    | Veri değeri                                                               |
+| :------ | :------------------------------------------------------------------------ |
+| type    | `confirmation`, `input` veya `list` \(kısa biçimde otomatik seçilir\)     |
+| message | dize \(gerekli\)                                                          |
+| items   | dize ve/veya etiket/değer nesne çifti \(yalnızca `list` türüyle geçerli\) |
 
-The following example of the long form is from the JSON schema for the schematic that the CLI uses to [generate applications](https://github.com/angular/angular-cli/blob/ba8a6ea59983bb52a6f1e66d105c5a77517f062e/packages/schematics/angular/application/schema.json#L56).
-It defines the prompt that lets users choose which style preprocessor they want to use for the application being created.
-By using the long form, the schematic can provide more explicit formatting of the menu choices.
+Aşağıdaki uzun biçim örneği, CLI'ın [uygulama oluşturmak](https://github.com/angular/angular-cli/blob/ba8a6ea59983bb52a6f1e66d105c5a77517f062e/packages/schematics/angular/application/schema.json#L56) için kullandığı şematiğin JSON şemasındandır.
+Oluşturulan uygulama için kullanıcıların hangi stil ön işlemcisini kullanmak istediklerini seçmelerini sağlayan istemi tanımlar.
+Uzun biçim kullanarak, şematik menü seçeneklerinin daha açık biçimlendirilmesini sağlayabilir.
 
 ```json {header: "schema.json"}
 {
@@ -209,9 +209,9 @@ By using the long form, the schematic can provide more explicit formatting of th
 
 #### x-prompt schema
 
-The JSON schema that defines a schematic's options supports extensions to allow the declarative definition of prompts and their respective behavior.
-No additional logic or changes are required to the code of a schematic to support the prompts.
-The following JSON schema is a complete description of the long-form syntax for the `x-prompt` field.
+Bir şematiğin seçeneklerini tanımlayan JSON şeması, istem ve ilgili davranışlarının bildirimsel tanımına izin veren uzantıları destekler.
+İstemleri desteklemek için bir şematiğin kodunda ek mantık veya değişiklik gerekmez.
+Aşağıdaki JSON şeması, `x-prompt` alanı için uzun biçim sözdiziminin eksiksiz bir tanımıdır.
 
 ```json {header: "x-prompt schema"}
 {
@@ -257,8 +257,8 @@ The following JSON schema is a complete description of the long-form syntax for 
 
 ## Schematics CLI
 
-Schematics come with their own command-line tool.
-Using Node 6.9 or later, install the Schematics command line tool globally:
+Şematikler kendi komut satırı aracıyla birlikte gelir.
+Node 6.9 veya üstünü kullanarak, Schematics komut satırı aracını global olarak yükleyin:
 
 ```shell
 
@@ -266,17 +266,17 @@ npm install -g @angular-devkit/schematics-cli
 
 ```
 
-This installs the `schematics` executable, which you can use to create a new schematics collection in its own project folder, add a new schematic to an existing collection, or extend an existing schematic.
+Bu, kendi proje klasöründe yeni bir şematik koleksiyonu oluşturmak, mevcut bir koleksiyona yeni bir şematik eklemek veya mevcut bir şematiği genişletmek için kullanabileceğiniz `schematics` çalıştırılabilir dosyasını yükler.
 
-In the following sections, you will create a new schematics collection using the CLI to introduce the files and file structure, and some of the basic concepts.
+Aşağıdaki bölümlerde, dosyaları ve dosya yapısını tanıtmak ve bazı temel kavramları açıklamak için CLI kullanarak yeni bir şematik koleksiyonu oluşturacaksınız.
 
-The most common use of schematics, however, is to integrate an Angular library with the Angular CLI.
-Do this by creating the schematic files directly within the library project in an Angular workspace, without using the Schematics CLI.
-See [Schematics for Libraries](tools/cli/schematics-for-libraries).
+Ancak şematiklerin en yaygın kullanımı, bir Angular kütüphanesini Angular CLI ile entegre etmektir.
+Bunu, Schematics CLI'ı kullanmadan doğrudan bir Angular çalışma alanındaki kütüphane projesi içinde şematik dosyalarını oluşturarak yapın.
+[Kütüphaneler için Şematikler](tools/cli/schematics-for-libraries) belgesine bakın.
 
 ### Creating a schematics collection
 
-The following command creates a new schematic named `hello-world` in a new project folder of the same name.
+Aşağıdaki komut, aynı adda yeni bir proje klasöründe `hello-world` adlı yeni bir şematik oluşturur.
 
 ```shell
 
@@ -284,11 +284,11 @@ schematics blank --name=hello-world
 
 ```
 
-The `blank` schematic is provided by the Schematics CLI.
-The command creates a new project folder \(the root folder for the collection\) and an initial named schematic in the collection.
+`blank` şematiği, Schematics CLI tarafından sağlanır.
+Komut, yeni bir proje klasörü \(koleksiyonun kök klasörü\) ve koleksiyonda bir başlangıç adlandırılmış şematiği oluşturur.
 
-Go to the collection folder, install your npm dependencies, and open your new collection in your favorite editor to see the generated files.
-For example, if you are using VS Code:
+Koleksiyon klasörüne gidin, npm bağımlılıklarınızı yükleyin ve oluşturulan dosyaları görmek için yeni koleksiyonunuzu favori editörünüzde açın.
+Örneğin, VS Code kullanıyorsanız:
 
 ```shell
 
@@ -299,14 +299,14 @@ code .
 
 ```
 
-The initial schematic gets the same name as the project folder, and is generated in `src/hello-world`.
-Add related schematics to this collection, and modify the generated skeleton code to define your schematic's functionality.
-Each schematic name must be unique within the collection.
+Başlangıç şematiği, proje klasörüyle aynı adı alır ve `src/hello-world` içinde oluşturulur.
+Bu koleksiyona ilgili şematikleri ekleyin ve şematiğinizin işlevselliğini tanımlamak için oluşturulan iskelet kodu değiştirin.
+Her şematik adı koleksiyon içinde benzersiz olmalıdır.
 
 ### Running a schematic
 
-Use the `schematics` command to run a named schematic.
-Provide the path to the project folder, the schematic name, and any mandatory options, in the following format.
+Adlandırılmış bir şematiği çalıştırmak için `schematics` komutunu kullanın.
+Proje klasörünün yolunu, şematik adını ve gerekli seçenekleri aşağıdaki biçimde sağlayın.
 
 ```shell
 
@@ -314,8 +314,8 @@ schematics <path-to-schematics-project>:<schematics-name> --<required-option>=<v
 
 ```
 
-The path can be absolute or relative to the current working directory where the command is executed.
-For example, to run the schematic you just generated \(which has no required options\), use the following command.
+Yol, komutun çalıştırıldığı geçerli çalışma dizinine göre mutlak veya göreli olabilir.
+Örneğin, az önce oluşturduğunuz şematiği \(gerekli seçenekleri olmayan\) çalıştırmak için aşağıdaki komutu kullanın.
 
 ```shell
 
@@ -325,7 +325,7 @@ schematics .:hello-world
 
 ### Adding a schematic to a collection
 
-To add a schematic to an existing collection, use the same command you use to start a new schematics project, but run the command inside the project folder.
+Mevcut bir koleksiyona şematik eklemek için, yeni bir şematik projesi başlatmak için kullandığınız aynı komutu kullanın, ancak proje klasörü içinde çalıştırın.
 
 ```shell
 
@@ -334,14 +334,14 @@ schematics blank --name=goodbye-world
 
 ```
 
-The command generates the new named schematic inside your collection, with a main `index.ts` file and its associated test spec.
-It also adds the name, description, and factory function for the new schematic to the collection's schema in the `collection.json` file.
+Komut, koleksiyonunuz içinde ana `index.ts` dosyası ve ilişkili test spec dosyasıyla yeni adlandırılmış şematiği oluşturur.
+Ayrıca yeni şematiğin adını, açıklamasını ve fabrika fonksiyonunu koleksiyonun `collection.json` dosyasındaki şemasına ekler.
 
 ## Collection contents
 
-The top level of the root project folder for a collection contains configuration files, a `node_modules` folder, and a `src/` folder.
-The `src/` folder contains subfolders for named schematics in the collection, and a schema, `collection.json`, which describes the collected schematics.
-Each schematic is created with a name, description, and factory function.
+Bir koleksiyonun kök proje klasörünün üst düzeyi yapılandırma dosyalarını, bir `node_modules` klasörünü ve bir `src/` klasörünü içerir.
+`src/` klasörü, koleksiyondaki adlandırılmış şematikler için alt klasörleri ve toplanan şematikleri açıklayan bir şema olan `collection.json`'ı içerir.
+Her şematik bir ad, açıklama ve fabrika fonksiyonu ile oluşturulur.
 
 ```json
 {
@@ -355,36 +355,36 @@ Each schematic is created with a name, description, and factory function.
 }
 ```
 
-- The `$schema` property specifies the schema that the CLI uses for validation.
-- The `schematics` property lists named schematics that belong to this collection.
-  Each schematic has a plain-text description, and points to the generated entry function in the main file.
+- `$schema` özelliği, CLI'ın doğrulama için kullandığı şemayı belirtir.
+- `schematics` özelliği, bu koleksiyona ait adlandırılmış şematikleri listeler.
+  Her şematiğin düz metin bir açıklaması vardır ve ana dosyadaki oluşturulan giriş fonksiyonuna işaret eder.
 
-- The `factory` property points to the generated entry function.
-  In this example, you invoke the `hello-world` schematic by calling the `helloWorld()` factory function.
+- `factory` özelliği, oluşturulan giriş fonksiyonuna işaret eder.
+  Bu örnekte, `helloWorld()` fabrika fonksiyonunu çağırarak `hello-world` şematiğini çağırırsınız.
 
-- The optional `schema` property points to a JSON schema file that defines the command-line options available to the schematic.
-- The optional `aliases` array specifies one or more strings that can be used to invoke the schematic.
-  For example, the schematic for the Angular CLI "generate" command has an alias "g", that lets you use the command `ng g`.
+- İsteğe bağlı `schema` özelliği, şematik için mevcut komut satırı seçeneklerini tanımlayan bir JSON şema dosyasına işaret eder.
+- İsteğe bağlı `aliases` dizisi, şematiği çağırmak için kullanılabilecek bir veya daha fazla dize belirtir.
+  Örneğin, Angular CLI "generate" komutu için şematiğin `ng g` komutunu kullanmanıza izin veren "g" takma adı vardır.
 
 ### Named schematics
 
-When you use the Schematics CLI to create a blank schematics project, the new blank schematic is the first member of the collection, and has the same name as the collection.
-When you add a new named schematic to this collection, it is automatically added to the `collection.json` schema.
+Schematics CLI'ı kullanarak boş bir şematik projesi oluşturduğunuzda, yeni boş şematik koleksiyonun ilk üyesidir ve koleksiyonla aynı ada sahiptir.
+Bu koleksiyona yeni bir adlandırılmış şematik eklediğinizde, otomatik olarak `collection.json` şemasına eklenir.
 
-In addition to the name and description, each schematic has a `factory` property that identifies the schematic's entry point.
-In the example, you invoke the schematic's defined functionality by calling the `helloWorld()` function in the main file, `hello-world/index.ts`.
+Ad ve açıklamaya ek olarak, her şematiğin şematiğin giriş noktasını tanımlayan bir `factory` özelliği vardır.
+Örnekte, ana dosyadaki `hello-world/index.ts` dosyasında `helloWorld()` fonksiyonunu çağırarak şematiğin tanımlı işlevselliğini çağırırsınız.
 
 <img alt="overview" src="assets/images/guide/schematics/collection-files.gif">
 
-Each named schematic in the collection has the following main parts.
+Koleksiyondaki her adlandırılmış şematiğin aşağıdaki ana parçaları vardır.
 
-| Parts         | Details                                                           |
-| :------------ | :---------------------------------------------------------------- |
-| `index.ts`    | Code that defines the transformation logic for a named schematic. |
-| `schema.json` | Schematic variable definition.                                    |
-| `schema.d.ts` | Schematic variables.                                              |
-| `files/`      | Optional component/template files to replicate.                   |
+| Parçalar      | Ayrıntılar                                                       |
+| :------------ | :--------------------------------------------------------------- |
+| `index.ts`    | Adlandırılmış bir şematik için dönüşüm mantığını tanımlayan kod. |
+| `schema.json` | Şematik değişken tanımı.                                         |
+| `schema.d.ts` | Şematik değişkenleri.                                            |
+| `files/`      | Çoğaltılacak isteğe bağlı bileşen/şablon dosyaları.              |
 
-It is possible for a schematic to provide all of its logic in the `index.ts` file, without additional templates.
-You can create dynamic schematics for Angular, however, by providing components and templates in the `files` folder, like those in standalone Angular projects.
-The logic in the index file configures these templates by defining rules that inject data and modify variables.
+Bir şematiğin tüm mantığını ek şablonlar olmadan `index.ts` dosyasında sağlaması mümkündür.
+Ancak, bağımsız Angular projelerindekine benzer şekilde `files` klasöründe bileşenler ve şablonlar sağlayarak Angular için dinamik şematikler oluşturabilirsiniz.
+Index dosyasındaki mantık, veri enjekte eden ve değişkenleri değiştiren kurallar tanımlayarak bu şablonları yapılandırır.

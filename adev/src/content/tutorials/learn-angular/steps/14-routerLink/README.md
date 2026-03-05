@@ -1,10 +1,10 @@
 # Use RouterLink for Navigation
 
-In the app's current state, the entire page refreshes when we click on an internal link that exists within the app. While this may not seem significant with a small app, this can have performance implications for larger pages with more content where users have to redownload assets and run calculations again.
+Uygulamanın mevcut durumunda, uygulama içinde var olan dahili bir bağlantıya tıkladığımızda tüm sayfa yenilenir. Küçük bir uygulamada bu önemsiz görünebilir, ancak daha fazla içeriğe sahip büyük sayfalarda kullanıcıların varlıkları yeniden indirmesi ve hesaplamaları tekrar çalıştırması gerektiğinden performans etkileri olabilir.
 
-NOTE: Learn more about [adding routes to your application in the in-depth guide](/guide/routing/define-routes#adding-the-router-to-your-application).
+NOTE: [Ayrıntılı kılavuzdaki uygulamanıza rota ekleme](/guide/routing/define-routes#adding-the-router-to-your-application) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to leverage the `RouterLink` directive to make the most use of Angular Router.
+Bu aktivitede, Angular Router'dan en iyi şekilde yararlanmak için `RouterLink` direktifini nasıl kullanacağınızı öğreneceksiniz.
 
 <hr>
 
@@ -12,7 +12,7 @@ In this activity, you'll learn how to leverage the `RouterLink` directive to mak
 
 <docs-step title="Import `RouterLink` directive">
 
-In `app.ts` add the `RouterLink` directive import to the existing import statement from `@angular/router` and add it to the `imports` array of your component decorator.
+`app.ts` dosyasında, `@angular/router`'dan mevcut import ifadesine `RouterLink` direktif import'unu ekleyin ve bileşen dekoratörünüzün `imports` dizisine ekleyin.
 
 ```ts
 ...
@@ -28,7 +28,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 <docs-step title="Add a `routerLink` to template">
 
-To use the `RouterLink` directive, replace the `href` attributes with `routerLink`. Update the template with this change.
+`RouterLink` direktifini kullanmak için `href` niteliklerini `routerLink` ile değiştirin. Şablonu bu değişiklikle güncelleyin.
 
 ```angular-ts
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -49,6 +49,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 </docs-workflow>
 
-When you click on the links in the navigation now, you should not see any blinking and only the content of the page itself (i.e., `router-outlet`) being changed 🎉
+Navigasyondaki bağlantılara tıkladığınızda artık herhangi bir yanıp sönme görmemeli ve yalnızca sayfanın içeriğinin (yani `router-outlet`) değiştiğini görmelisiniz 🎉
 
-Great job learning about routing with Angular. This is just the surface of the `Router` API, to learn more check out the [Angular Router Documentation](guide/routing).
+Angular ile yönlendirme konusunda harika bir iş çıkardınız. Bu, `Router` API'sinin sadece yüzeyi; daha fazla bilgi edinmek için [Angular Router Belgelerine](guide/routing) göz atın.

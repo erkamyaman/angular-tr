@@ -1,15 +1,15 @@
 # Testing Pipes
 
-You can test [pipes](guide/templates/pipes) without the Angular testing utilities.
+[Pipe'ları](guide/templates/pipes) Angular test araçları olmadan test edebilirsiniz.
 
 ## Testing the `TitleCasePipe`
 
-A pipe class has one method, `transform`, that manipulates the input value into a transformed output value.
-The `transform` implementation rarely interacts with the DOM.
-Most pipes have no dependence on Angular other than the `@Pipe` metadata and an interface.
+Bir pipe sınıfı, girdi değerini dönüştürülmüş bir çıktı değerine manipüle eden tek bir `transform` metoduna sahiptir.
+`transform` uygulaması nadiren DOM ile etkileşim kurar.
+Çoğu pipe'ın, `@Pipe` meta verisi ve bir arayüz dışında Angular'a bağımlılığı yoktur.
 
-Consider a `TitleCasePipe` that capitalizes the first letter of each word.
-Here's an implementation with a regular expression.
+Her kelimenin ilk harfini büyük yapan bir `TitleCasePipe` düşünün.
+İşte düzenli ifade ile bir uygulama.
 
 ```ts
 import {Pipe, PipeTransform} from '@angular/core';
@@ -25,7 +25,7 @@ export class TitleCasePipe implements PipeTransform {
 }
 ```
 
-Anything that uses a regular expression is worth testing thoroughly. You can use standard unit testing techniques to explore the expected cases and the edge cases.
+Düzenli ifade kullanan her şey kapsamlı bir şekilde test edilmeye değerdir. Beklenen durumları ve uç durumları keşfetmek için standart birim test tekniklerini kullanabilirsiniz.
 
 ```ts
 describe('TitleCasePipe', () => {
@@ -46,10 +46,10 @@ describe('TitleCasePipe', () => {
 
 ## Writing DOM tests to support a pipe test
 
-These are tests of the pipe _in isolation_.
-They can't tell if the `TitleCasePipe` is working properly as applied in the application components.
+Bunlar pipe'ın _izole_ testleridir.
+`TitleCasePipe`'ın uygulama bileşenlerinde uygulandığında düzgün çalışıp çalışmadığını söyleyemezler.
 
-Consider adding component tests such as this one:
+Bunun gibi bileşen testleri eklemeyi düşünün:
 
 ```ts
 it('should convert hero name to Title Case', async () => {
