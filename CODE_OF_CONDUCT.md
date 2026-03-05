@@ -1,79 +1,51 @@
-# Contributor Covenant Code of Conduct
+# Katkıda Bulunanlar Sözleşmesi Davranış Kuralları
 
-## Our Pledge
+## Taahhüdümüz
 
-In the interest of fostering a safe and welcoming environment, we as
-the Angular team pledge to make participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, sex characteristics, gender identity, gender expression,
-level of experience, education, socio-economic status, nationality, personal
-appearance, race, religion, or sexual identity and orientation.
+Güvenli ve hoşgörülü bir ortam oluşturmak adına, Angular ekibi olarak projemize ve topluluğumuza katılımın yaş, beden ölçüsü, engellilik durumu, etnik köken, cinsiyet özellikleri, cinsiyet kimliği, cinsiyet ifadesi, deneyim düzeyi, eğitim, sosyo-ekonomik durum, milliyet, kişisel görünüm, ırk, din veya cinsel kimlik ve yönelim fark etmeksizin herkes için tacizden arınmış bir deneyim olmasını taahhüt ediyoruz.
 
-## Our Standards
+## Standartlarımız
 
-Examples of behavior that contributes to creating a positive environment
-include:
+Olumlu bir ortam oluşturmaya katkıda bulunan davranış örnekleri:
 
-- Use welcoming and inclusive language
-- Respect each other
-- Provide and gracefully accept constructive criticism
-- Show empathy towards other community members
+- Hoşgörülü ve kapsayıcı bir dil kullanmak
+- Birbirine saygı göstermek
+- Yapıcı eleştirileri nazikçe sunmak ve kabul etmek
+- Diğer topluluk üyelerine empati göstermek
 
-Examples of unacceptable behavior by participants include:
+Katılımcıların kabul edilemez davranış örnekleri:
 
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-- The use of sexualized language or imagery
-- Unwelcome sexual attention or advances
-- Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+- Trolleme, hakaret/aşağılayıcı yorumlar ve kişisel veya siyasi saldırılar
+- Aleni veya özel taciz
+- Başkalarının fiziksel veya elektronik adres gibi özel bilgilerini açık izin olmadan yayınlamak
+- Cinselleştirilmiş dil veya görüntü kullanımı
+- İstenmeyen cinsel ilgi veya yaklaşımlar
+- Profesyonel bir ortamda makul olarak uygunsuz sayılabilecek diğer davranışlar
 
-## Our Responsibilities
+## Sorumluluklarımız
 
-Angular team are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
+Angular ekibi, kabul edilebilir davranış standartlarını netleştirmekten sorumludur ve kabul edilemez davranış durumlarına karşı uygun ve adil düzeltici önlemler alması beklenmektedir.
 
-Angular team have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, and to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+Angular ekibi, bu Davranış Kuralları ile uyumlu olmayan yorumları, commit'leri, kodu, wiki düzenlemelerini, issue'ları ve diğer katkıları kaldırma, düzenleme veya reddetme hakkına ve sorumluluğuna sahiptir; ayrıca uygunsuz, tehditkar, saldırgan veya zararlı buldukları davranışlar nedeniyle herhangi bir katkıda bulunanı geçici veya kalıcı olarak yasaklayabilir.
 
-## Scope
+## Kapsam
 
-This Code of Conduct applies to all Angular communication channels - online or in person,
-and it also applies when an individual is representing the project or its community in
-public spaces. Examples of representing a project or community include using an official
-project e-mail address, posting via an official social media account, or acting
-as an appointed representative at an online or offline event. Representation of
-a project may be further defined and clarified by project maintainers.
+Bu Davranış Kuralları, çevrimiçi veya yüz yüze tüm Angular iletişim kanallarında geçerlidir ve bir bireyin projeyi veya topluluğu kamusal alanlarda temsil ettiği durumlarda da uygulanır. Bir projeyi veya topluluğu temsil etme örnekleri arasında resmi proje e-posta adresi kullanma, resmi sosyal medya hesabı üzerinden paylaşım yapma veya çevrimiçi ya da çevrimdışı bir etkinlikte atanmış temsilci olarak hareket etme yer alır. Bir projenin temsili, proje sürdürücüleri tarafından daha ayrıntılı olarak tanımlanabilir ve netleştirilebilir.
 
-## Enforcement
+## Uygulama
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the Angular team at conduct@angular.io. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The Angular team
-will maintain confidentiality with regard to the reporter of an incident.
-Enforcement may result in an indefinite ban from all official Angular communication
-channels, or other actions as deemed appropriate by the Angular team.
+Taciz edici, kötü niyetli veya başka türlü kabul edilemez davranış örnekleri conduct@angular.io adresine başvurularak Angular ekibine bildirilebilir. Tüm şikayetler incelenecek ve araştırılacak; koşullara uygun ve gerekli görülen bir yanıt verilecektir. Angular ekibi, olayı bildiren kişinin gizliliğini koruyacaktır. Uygulama, tüm resmi Angular iletişim kanallarından süresiz yasaklama veya Angular ekibinin uygun gördüğü diğer önlemlerle sonuçlanabilir.
 
-Angular maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+Davranış Kurallarını iyi niyetle uygulamayan veya izlemeyen Angular sürdürücüleri, projenin liderliğindeki diğer üyeler tarafından belirlenen geçici veya kalıcı yaptırımlarla karşılaşabilir.
 
-### Appeal
+### İtiraz
 
-If you are banned you may contest the decision. To do so email conduct@angular.io with the subject line "Repeal Ban for {{your name here}}" and body with the responses to the following:
+Yasaklandıysanız karara itiraz edebilirsiniz. Bunu yapmak için conduct@angular.io adresine "{{adınız}} için Yasağın Kaldırılması" konu başlığıyla ve aşağıdaki sorulara yanıtlarınızı içeren bir e-posta gönderin:
 
-- Why do you believe you did not violate the Code of Conduct?
-- Were other factors involved in this situation the leadership team may have been unaware of?
-- Why do you wish to be a part of the Angular community?
+- Davranış Kurallarını ihlal etmediğinize neden inanıyorsunuz?
+- Liderlik ekibinin haberdar olmayabileceği başka faktörler bu duruma dahil miydi?
+- Neden Angular topluluğunun bir parçası olmak istiyorsunuz?
 
-## Attribution
+## Atıf
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 1.4,
-available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+Bu Davranış Kuralları, [Contributor Covenant](https://www.contributor-covenant.org) sürüm 1.4'ten uyarlanmıştır ve https://www.contributor-covenant.org/version/1/4/code-of-conduct.html adresinde mevcuttur.
