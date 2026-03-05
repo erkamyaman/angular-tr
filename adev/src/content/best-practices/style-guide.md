@@ -1,76 +1,76 @@
 # Angular coding style guide
 
-## Introduction
+## Giriş
 
-Bu kilavuz, Angular uygulama kodu icin bir dizi stil kuralini kapsamaktadir. Bu oneriler
-Angular'in calismasi icin gerekli degildir, bunun yerine Angular ekosisteminde tutarlilik saglayan bir dizi kodlama pratigidir. Tutarli bir pratikler seti, kod paylasiminni ve projeler arasi gecisi kolaylastirir.
+Bu kılavuz, Angular uygulama kodu için bir dizi stil kuralını kapsamaktadır. Bu öneriler
+Angular'ın çalışması için gerekli değildir, bunun yerine Angular ekosisteminde tutarlılık sağlayan bir dizi kodlama pratiğidir. Tutarlı bir pratikler seti, kod paylaşımını ve projeler arası geçişi kolaylaştırır.
 
-Bu kilavuz, Angular ile ilgili olmayan TypeScript veya genel kodlama pratiklerini _kapsamaz_. TypeScript icin
-[Google'in TypeScript stil kilavuzuna](https://google.github.io/styleguide/tsguide.html) bakin.
+Bu kılavuz, Angular ile ilgili olmayan TypeScript veya genel kodlama pratiklerini _kapsamaz_. TypeScript için
+[Google'ın TypeScript stil kılavuzuna](https://google.github.io/styleguide/tsguide.html) bakın.
 
-### When in doubt, prefer consistency
+### Şüpheye düştüğünüzde tutarlılığı tercih edin
 
-Bu kurallarin belirli bir dosyanin stiliyle celisktigi bir durumla karsilastiginizda,
-dosya icindeki tutarliligi korumaya oncelik verin. Tek bir
-dosyada farkli stil kurallarini karistirmak, bu kilavuzdaki onerilerden sapmasindan daha fazla karisiliga neden olur.
+Bu kuralların belirli bir dosyanın stiliyle çeliştiği bir durumla karşılaştığınızda,
+dosya içindeki tutarlılığı korumaya öncelik verin. Tek bir
+dosyada farklı stil kurallarını karıştırmak, bu kılavuzdaki önerilerden sapmasından daha fazla karışıklığa neden olur.
 
-## Naming
+## İsimlendirme
 
-### Separate words in file names with hyphens
+### Dosya adlarında sözcükleri tire ile ayırın
 
-Bir dosya adindaki sozcukleri tire (`-`) ile ayirin. Ornegin, `UserProfile` adinda bir bilesen
-`user-profile.ts` dosya adina sahiptir.
+Bir dosya adındaki sözcükleri tire (`-`) ile ayırın. Örneğin, `UserProfile` adında bir bileşen
+`user-profile.ts` dosya adına sahiptir.
 
-### Use the same name for a file's tests with `.spec` at the end
+### Dosya testleri için sonuna `.spec` ekleyerek aynı adı kullanın
 
-Birim testleri icin dosya adlarini `.spec.ts` ile bitirin. Ornegin,
-`UserProfile` bileseni icin birim test dosyasi `user-profile.spec.ts` dosya adina sahiptir.
+Birim testleri için dosya adlarını `.spec.ts` ile bitirin. Örneğin,
+`UserProfile` bileşeni için birim test dosyası `user-profile.spec.ts` dosya adına sahiptir.
 
-### Match file names to the TypeScript identifier within
+### Dosya adlarını içindeki TypeScript tanımlayıcısıyla eşleştirin
 
-Dosya adlari genellikle dosyadaki kodun icerigini tanimlamalidir. Dosya bir
-TypeScript sinifi icerdiginde, dosya adi o sinif adini yansitmalidir. Ornegin,
-`UserProfile` adinda bir bilesen iceren bir dosya `user-profile.ts` adina sahiptir.
+Dosya adları genellikle dosyadaki kodun içeriğini tanımlamalıdır. Dosya bir
+TypeScript sınıfı içerdiğinde, dosya adı o sınıf adını yansıtmalıdır. Örneğin,
+`UserProfile` adında bir bileşen içeren bir dosya `user-profile.ts` adına sahiptir.
 
-Dosya birden fazla birincil adlandirilabilir tanimlayici iceriyorsa, icerdeki kodun ortak temasini
-tanimlayan bir ad secin. Dosyadaki kod ortak bir tema veya ozellik
-alani icinde uymuyorsa, kodu farkli dosyalara ayirmayi dusunun. `helpers.ts`, `utils.ts` veya `common.ts`
-gibi asiri genel dosya adlarindan kacinin.
+Dosya birden fazla birincil adlandırılabilir tanımlayıcı içeriyorsa, içerdeki kodun ortak temasını
+tanımlayan bir ad seçin. Dosyadaki kod ortak bir tema veya özellik
+alanı içinde uymuyorsa, kodu farklı dosyalara ayırmayı düşünün. `helpers.ts`, `utils.ts` veya `common.ts`
+gibi aşırı genel dosya adlarından kaçının.
 
-### Use the same file name for a component's TypeScript, template, and styles
+### Bileşenin TypeScript, şablon ve stil dosyaları için aynı dosya adını kullanın
 
-Bilesenler tipik olarak bir TypeScript dosyasi, bir sablon dosyasi ve bir stil dosyasindan olusur. Bu
-dosyalar farkli dosya uzantilariyla ayni adi paylasmalidir. Ornegin, bir `UserProfile`
-bileseni `user-profile.ts`, `user-profile.html` ve `user-profile.css` dosyalarina sahip olabilir.
+Bileşenler tipik olarak bir TypeScript dosyası, bir şablon dosyası ve bir stil dosyasından oluşur. Bu
+dosyalar farklı dosya uzantılarıyla aynı adı paylaşmalıdır. Örneğin, bir `UserProfile`
+bileşeni `user-profile.ts`, `user-profile.html` ve `user-profile.css` dosyalarına sahip olabilir.
 
-Bir bilesenin birden fazla stil dosyasi varsa, o dosyaya ozgu stilleri tanimlayan ek sozcuklerle adi ekleyin. Ornegin, `UserProfile`'in
-`user-profile-settings.css` ve `user-profile-subscription.css` stil dosyalari olabilir.
+Bir bileşenin birden fazla stil dosyası varsa, o dosyaya özgü stilleri tanımlayan ek sözcüklerle adı ekleyin. Örneğin, `UserProfile`'ın
+`user-profile-settings.css` ve `user-profile-subscription.css` stil dosyaları olabilir.
 
-## Project structure
+## Proje yapısı
 
-### All the application's code goes in a directory named `src`
+### Uygulamanın tüm kodu `src` adlı bir dizinde bulunur
 
-Tum Angular UI kodunuz (TypeScript, HTML ve stiller) `src` adinda bir dizinin
-icinde yasamalidir. Yapilandirma dosyalari veya betikler gibi UI ile ilgili olmayan kod, `src` dizininin disinda yasamalidir.
+Tüm Angular UI kodunuz (TypeScript, HTML ve stiller) `src` adında bir dizinin
+içinde yaşamalıdır. Yapılandırma dosyaları veya betikler gibi UI ile ilgili olmayan kod, `src` dizininin dışında yaşamalıdır.
 
-Bu, kok uygulama dizinini farkli Angular projeleri arasinda tutarli tutar ve
-projenizde UI kodu ile diger kod arasinda net bir ayrim olusturur.
+Bu, kök uygulama dizinini farklı Angular projeleri arasında tutarlı tutar ve
+projenizde UI kodu ile diğer kod arasında net bir ayrım oluşturur.
 
-### Bootstrap your application in a file named `main.ts` directly inside `src`
+### Uygulamanızı doğrudan `src` içindeki `main.ts` dosyasında bootstrap edin
 
-Bir Angular uygulamasini baslatmak veya **bootstrap** etmek icin gereken kod her zaman
-`main.ts` adinda bir dosyada yasamalidir. Bu, uygulamanin birincil giris noktasini temsil eder.
+Bir Angular uygulamasını başlatmak veya **bootstrap** etmek için gereken kod her zaman
+`main.ts` adında bir dosyada yaşamalıdır. Bu, uygulamanın birincil giriş noktasını temsil eder.
 
-### Group closely related files together in the same directory
+### Yakından ilişkili dosyaları aynı dizinde gruplayın
 
-Angular bilesenleri bir TypeScript dosyasi ve istege bagli olarak bir sablon ve bir veya daha fazla stil
-dosyasindan olusur. Bunlari ayni dizinde gruplamaniz gerekir.
+Angular bileşenleri bir TypeScript dosyası ve isteğe bağlı olarak bir şablon ve bir veya daha fazla stil
+dosyasından oluşur. Bunları aynı dizinde gruplamanız gerekir.
 
-Birim testleri, test edilen kodla ayni dizinde yasamalidir. Ilgisiz testleri tek bir `tests` dizininde toplamaktan kacinin.
+Birim testleri, test edilen kodla aynı dizinde yaşamalıdır. İlgisiz testleri tek bir `tests` dizininde toplamaktan kaçının.
 
-### Organize your project by feature areas
+### Projenizi özellik alanlarına göre organize edin
 
-Projenizi, uygulamanizin ozelliklerine veya bu dizinlerdeki kodun ortak temalarina dayali olarak alt dizinlere organize edin. Ornegin, bir sinema sitesi olan MovieReel'in proje yapisi soyle gorunebilir:
+Projenizi, uygulamanızın özelliklerine veya bu dizinlerdeki kodun ortak temalarına dayalı olarak alt dizinlere organize edin. Örneğin, bir sinema sitesi olan MovieReel'in proje yapısı şöyle görünebilir:
 
 ```
 src/
@@ -83,73 +83,73 @@ src/
 │ │ ├─ purchase-confirmation/
 ```
 
-Bu dizinlerde bulunan kod turune dayali alt dizinler olusturmaktan kacinin. Ornegin,
-`components`, `directives` ve `services` gibi dizinler olusturmaktan kacinin.
+Bu dizinlerde bulunan kod türüne dayalı alt dizinler oluşturmaktan kaçının. Örneğin,
+`components`, `directives` ve `services` gibi dizinler oluşturmaktan kaçının.
 
-Bir dizine okunmasi veya gezinilmesi zor olacak kadar cok dosya koymaktan kacinin. Bir dizindeki dosya sayisi arttikca, ek alt dizinlere bolmeyi dusunun.
+Bir dizine okunması veya gezinilmesi zor olacak kadar çok dosya koymaktan kaçının. Bir dizindeki dosya sayısı arttıkça, ek alt dizinlere bölmeyi düşünün.
 
-### One concept per file
+### Dosya başına tek kavram
 
-Kaynak dosyalari tek bir _kavrama_ odaklanmayi tercih edin. Angular siniflari icin, bu genellikle
-dosya basina bir bilesen, direktif veya servis anlamina gelir. Ancak, siniflariniz nispeten kucukse ve tek bir kavram olarak bir araya geliyorlarsa, bir dosyanin birden fazla bilesen veya direktif icermesi sorun degildir.
+Kaynak dosyaları tek bir _kavrama_ odaklanmayı tercih edin. Angular sınıfları için, bu genellikle
+dosya başına bir bileşen, direktif veya servis anlamına gelir. Ancak, sınıflarınız nispeten küçükse ve tek bir kavram olarak bir araya geliyorlarsa, bir dosyanın birden fazla bileşen veya direktif içermesi sorun değildir.
 
-Supheliyseniz, daha kucuk dosyalara yol acan yaklasimla gidin.
+Şüpheliyseniz, daha küçük dosyalara yol açan yaklaşımla gidin.
 
 ## Dependency injection
 
-### Prefer the `inject` function over constructor parameter injection
+### `inject` fonksiyonunu constructor parametre enjeksiyonuna tercih edin
 
-Constructor parametre enjeksiyonu yerine [`inject`](/api/core/inject) fonksiyonunu kullanmayi tercih edin. [`inject`](/api/core/inject) fonksiyonu constructor parametre enjeksiyonuyla ayni sekilde calisir, ancak cesitli stil avantajlari sunar:
+Constructor parametre enjeksiyonu yerine [`inject`](/api/core/inject) fonksiyonunu kullanmayı tercih edin. [`inject`](/api/core/inject) fonksiyonu constructor parametre enjeksiyonuyla aynı şekilde çalışır, ancak çeşitli stil avantajları sunar:
 
-- [`inject`](/api/core/inject), ozellikle bir sinif cok sayida bagimlilik enjekte ettiginde genellikle daha okunabilirdir.
-- Enjekte edilen bagimliliklara yorum eklemek soz dizimsel olarak daha basittir
-- [`inject`](/api/core/inject) daha iyi tip cikarimi sunar.
-- ES2022+ hedeflendiginde [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig/#useDefineForClassFields) ile, enjekte edilen bagimliliklari okuyan alanlarda alan bildirimi ve baslatma islemini ayirmaktan kacinabilirsiniz.
+- [`inject`](/api/core/inject), özellikle bir sınıf çok sayıda bağımlılık enjekte ettiğinde genellikle daha okunabilirdir.
+- Enjekte edilen bağımlılıklara yorum eklemek sözdizimsel olarak daha basittir
+- [`inject`](/api/core/inject) daha iyi tip çıkarımı sunar.
+- ES2022+ hedeflendiğinde [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig/#useDefineForClassFields) ile, enjekte edilen bağımlılıkları okuyan alanlarda alan bildirimi ve başlatma işlemini ayırmaktan kaçınabilirsiniz.
 
-[Mevcut kodu otomatik bir aracla `inject`'e yeniden duzenleyebilirsiniz](reference/migrations/inject-function).
+[Mevcut kodu otomatik bir araçla `inject`'e yeniden düzenleyebilirsiniz](reference/migrations/inject-function).
 
-## Components and directives
+## Bileşenler ve direktifler
 
-### Choosing component selectors
+### Bileşen seçicilerini seçme
 
-Bilesen secimleri hakkinda ayrintilar icin
-[Bilesenler kilavuzuna](guide/components/selectors#choosing-a-selector) bakin.
+Bileşen seçimleri hakkında ayrıntılar için
+[Bileşenler kılavuzuna](guide/components/selectors#choosing-a-selector) bakın.
 
-### Naming component and directive members
+### Bileşen ve direktif üyelerini adlandırma
 
-Bilesenler kilavuzunda
-[giris ozelliklerini adlandirma](guide/components/inputs#choosing-input-names)
-ve [cikis ozelliklerini adlandirma](guide/components/outputs#choosing-event-names) hakkinda ayrintilar icin bakin.
+Bileşenler kılavuzunda
+[giriş özelliklerini adlandırma](guide/components/inputs#choosing-input-names)
+ve [çıkış özelliklerini adlandırma](guide/components/outputs#choosing-event-names) hakkında ayrıntılar için bakın.
 
-### Choosing directive selectors
+### Direktif seçicilerini seçme
 
-Direktifler, bilesenlerinizle ayni [uygulamaya ozgu oneki](guide/components/selectors#selector-prefixes) kullanmalidir.
+Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#selector-prefixes) kullanmalıdır.
 
-Bir direktif icin ozellik secici kullanirken camelCase ozellik adi kullanin. Ornegin,
-uygulamaniz "MovieReel" olarak adlandiriliyorsa ve bir elemana araç ipucu ekleyen bir direktif olusturuyorsaniz, `[mrTooltip]` secicisini kullanabilirsiniz.
+Bir direktif için özellik seçici kullanırken camelCase özellik adı kullanın. Örneğin,
+uygulamanız "MovieReel" olarak adlandırılıyorsa ve bir elemana araç ipucu ekleyen bir direktif oluşturuyorsanız, `[mrTooltip]` seçicisini kullanabilirsiniz.
 
-### Group Angular-specific properties before methods
+### Angular'a özgü özellikleri yöntemlerden önce gruplayın
 
-Bilesenler ve direktifler, Angular'a ozgu ozellikleri genellikle sinif bildiriminin ust kisimlarinda birlikte gruplamalidir. Bu, enjekte edilen bagimliliklari, girisleri, cikislari ve sorgulari icerir. Bunlari ve diger ozellikleri sinifin yontemlerinden once tanimlayin.
+Bileşenler ve direktifler, Angular'a özgü özellikleri genellikle sınıf bildiriminin üst kısımlarında birlikte gruplamalıdır. Bu, enjekte edilen bağımlılıkları, girişleri, çıkışları ve sorguları içerir. Bunları ve diğer özellikleri sınıfın yöntemlerinden önce tanımlayın.
 
-Bu uygulama, sinifin sablon API'lerini ve bagimliliklerini bulmay kolaylastirir.
+Bu uygulama, sınıfın şablon API'lerini ve bağımlılıklarını bulmayı kolaylaştırır.
 
-### Keep components and directives focused on presentation
+### Bileşenleri ve direktifleri sunum odaklı tutun
 
-Bilesenlerinizin ve direktiflerinizin icindeki kod genellikle sayfada gosterilen kullanici arayuzu ile ilgili olmalidir. Kullanici arayuzunden bagimsiz olarak kendi basina anlam ifade eden kod icin, diger dosyalara yeniden duzenlemeyi tercih edin. Ornegin, form dogrulama kurallarini veya veri donusumlerini ayri fonksiyonlara veya siniflara cikarabilirsiniz.
+Bileşenlerinizin ve direktiflerinizin içindeki kod genellikle sayfada gösterilen kullanıcı arayüzü ile ilgili olmalıdır. Kullanıcı arayüzünden bağımsız olarak kendi başına anlam ifade eden kod için, diğer dosyalara yeniden düzenlemeyi tercih edin. Örneğin, form doğrulama kurallarını veya veri dönüşümlerini ayrı fonksiyonlara veya sınıflara çıkarabilirsiniz.
 
-### Avoid overly complex logic in templates
+### Şablonlarda aşırı karmaşık mantıktan kaçının
 
-Angular sablonlari, [JavaScript benzeri ifadeleri](guide/templates/expression-syntax) barindirmak uzere tasarlanmistir.
-Nispeten basit mantigi dogrudan sablon ifadelerinde yakalamak icin bu ifadelerden yararlanmalisiniz.
+Angular şablonları, [JavaScript benzeri ifadeleri](guide/templates/expression-syntax) barındırmak üzere tasarlanmıştır.
+Nispeten basit mantığı doğrudan şablon ifadelerinde yakalamak için bu ifadelerden yararlanmalısınız.
 
-Sablondaki kod cok karmasik hale geldiginde, mantigi TypeScript koduna yeniden duzenleyin (tipik olarak bir [computed](guide/signals#computed-signals) ile).
+Şablondaki kod çok karmaşık hale geldiğinde, mantığı TypeScript koduna yeniden düzenleyin (tipik olarak bir [computed](guide/signals#computed-sinyaller) ile).
 
-"Karmasik"in ne oldugunu belirleyen kesin ve degismez bir kural yoktur. En iyi yarginizi kullanin.
+"Karmaşık"ın ne olduğunu belirleyen kesin ve değişmez bir kural yoktur. En iyi yargınızı kullanın.
 
-### Use `protected` on class members that are only used by a component's template
+### Yalnızca bileşenin şablonu tarafından kullanılan sınıf üyelerinde `protected` kullanın
 
-Bir bilesen sinifinin public uyeleri, bagimlilik enjeksiyonu ve [sorgular](guide/components/queries) araciligiyla erisilebilir bir public API tanimlar. Bilesenin sablonundan okunmasi amaclanan uyeler icin `protected` erisimi tercih edin.
+Bir bileşen sınıfının public üyeleri, bağımlılık enjeksiyonu ve [sorgular](guide/components/queries) aracılığıyla erişilebilir bir public API tanımlar. Bileşenin şablonundan okunması amaçlanan üyeler için `protected` erişimi tercih edin.
 
 ```ts
 @Component({
@@ -165,10 +165,10 @@ export class UserProfile {
 }
 ```
 
-### Use `readonly` for properties that shouldn't change
+### Değişmemesi gereken özellikler için `readonly` kullanın
 
-Angular tarafindan baslatilan bilesen ve direktif ozelliklerini `readonly` olarak isaretleyin. Bu,
-`input`, `model`, `output` ve sorgular tarafindan baslatilan ozellikleri icerir. readonly erisim degistiricisi, Angular tarafindan ayarlanan degerin uzerine yazilmamasini saglar.
+Angular tarafından başlatılan bileşen ve direktif özelliklerini `readonly` olarak işaretleyin. Bu,
+`input`, `model`, `output` ve sorgular tarafından başlatılan özellikleri içerir. readonly erişim değiştiricisi, Angular tarafından ayarlanan değerin üzerine yazılmamasını sağlar.
 
 ```ts
 @Component({
@@ -181,8 +181,8 @@ export class UserProfile {
 }
 ```
 
-Dekorator tabanli `@Input`, `@Output` ve sorgu API'lerini kullanan bilesenler ve direktifler icin, bu
-tavsiye cikis ozelliklerine ve sorgulara uygulanir, ancak giris ozelliklerine uygulanmaz.
+Dekoratör tabanlı `@Input`, `@Output` ve sorgu API'lerini kullanan bileşenler ve direktifler için, bu
+tavsiye çıkış özelliklerine ve sorgulara uygulanır, ancak giriş özelliklerine uygulanmaz.
 
 ```ts
 @Component({
@@ -194,9 +194,9 @@ export class UserProfile {
 }
 ```
 
-### Prefer `class` and `style` over `ngClass` and `ngStyle`
+### `ngClass` ve `ngStyle` yerine `class` ve `style` tercih edin
 
-[`NgClass`](/api/common/NgClass) ve [`NgStyle`](/api/common/NgStyle) direktiflerini kullanmak yerine `class` ve `style` baglamalarini tercih edin.
+[`NgClass`](/api/common/NgClass) ve [`NgStyle`](/api/common/NgStyle) direktiflerini kullanmak yerine `class` ve `style` bağlamalarını tercih edin.
 
 ```html {prefer}
 <div [class.admin]="isAdmin" [class.dense]="density === 'high'">
@@ -215,15 +215,15 @@ export class UserProfile {
 </div>
 ```
 
-Hem `class` hem de `style` baglamalari, standart HTML ozelliklerine yakindan uyum saglayan daha basit bir soz dizimi kullanir. Bu, sablonlarinizi okumay ve anlamayi kolaylastirir, ozellikle temel HTML'ye asina gelistiriciler icin.
+Hem `class` hem de `style` bağlamaları, standart HTML özelliklerine yakından uyum sağlayan daha basit bir sözdizimi kullanır. Bu, şablonlarınızı okumayı ve anlamayı kolaylaştırır, özellikle temel HTML'ye aşina geliştiriciler için.
 
-Ek olarak, `NgClass` ve `NgStyle` direktifleri, yerlesik `class` ve `style` baglama soz dizimine kiyasla ek bir performans maliyeti getirir.
+Ek olarak, `NgClass` ve `NgStyle` direktifleri, yerleşik `class` ve `style` bağlama sözdizimine kıyasla ek bir performans maliyeti getirir.
 
-Daha fazla ayrinti icin [baglamalar kilavuzuna](/guide/templates/binding#css-class-and-style-property-bindings) bakin.
+Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-class-and-style-property-bindings) bakın.
 
-### Name event handlers for what they _do_, not for the triggering event
+### Olay işleyicilerini tetikleyen olay için değil, yaptıkları eylem için adlandırın
 
-Olay isleyicilerini tetikleyen olay icin degil, gerceklestirdikleri eylem icin adlandirmayi tercih edin:
+Olay işleyicilerini tetikleyen olay için değil, gerçekleştirdikleri eylem için adlandırmayı tercih edin:
 
 ```html {prefer}
 <button (click)="saveUserData()">Save</button>
@@ -233,15 +233,15 @@ Olay isleyicilerini tetikleyen olay icin degil, gerceklestirdikleri eylem icin a
 <button (click)="handleClick()">Save</button>
 ```
 
-Bunun gibi anlamli adlar kullanmak, bir olayin ne yaptigini sablonu okuyarak anlamayi kolaylastirir.
+Bunun gibi anlamlı adlar kullanmak, bir olayın ne yaptığını şablonu okuyarak anlamayı kolaylaştırır.
 
-Klavye olaylari icin, belirli isleyici adlariyla Angular'in tus olayı degistiricilerini kullanabilirsiniz:
+Klavye olayları için, belirli işleyici adlarıyla Angular'ın tuş olayı değiştiricilerini kullanabilirsiniz:
 
 ```html
 <textarea (keydown.control.enter)="commitNotes()" (keydown.control.space)="showSuggestions()">
 ```
 
-Bazen olay isleme mantigi ozellikle uzun veya karmasiktir, bu da tek bir iyi adlandirilmis isleyici bildirmeyi pratik olmaktan cikarir. Bu durumlarda, 'handleKeydown' gibi bir ada geri donmek ve ardindan olay ayrintilarina gore daha belirli davranislara devredmek sorun degildir:
+Bazen olay işleme mantığı özellikle uzun veya karmaşıktır, bu da tek bir iyi adlandırılmış işleyici bildirmeyi pratik olmaktan çıkarır. Bu durumlarda, 'handleKeydown' gibi bir ada geri dönmek ve ardından olay ayrıntılarına göre daha belirli davranışlara devretmek sorun değildir:
 
 ```ts
 @Component({
@@ -261,10 +261,10 @@ class RichText {
 }
 ```
 
-### Keep lifecycle methods simple
+### Yaşam döngüsü yöntemlerini basit tutun
 
-`ngOnInit` gibi yasam dongusu kancalarina uzun veya karmasik mantik koymaktan kacinin. Bunun yerine, bu mantigi iceren iyi adlandirilmis yontemler olusturmayi ve ardindan yasam dongusu kancalarinizda _bu yontemleri cagirmayi_ tercih edin.
-Yasam dongusu kanca adlari _ne zaman_ calistiklarini tanimlar, yani icerdeki kodun ne yaptigini tanimlayan anlamli bir adi yoktur.
+`ngOnInit` gibi yaşam döngüsü kancalarına uzun veya karmaşık mantık koymaktan kaçının. Bunun yerine, bu mantığı içeren iyi adlandırılmış yöntemler oluşturmayı ve ardından yaşam döngüsü kancalarınızda _bu yöntemleri çağırmayı_ tercih edin.
+Yaşam döngüsü kanca adları _ne zaman_ çalıştıklarını tanımlar, yani içerdeki kodun ne yaptığını tanımlayan anlamlı bir adı yoktur.
 
 ```ts {prefer}
 ngOnInit() {
@@ -281,9 +281,9 @@ ngOnInit() {
 }
 ```
 
-### Use lifecycle hook interfaces
+### Yaşam döngüsü hook arayüzlerini kullanın
 
-Angular, her yasam dongusu yontemi icin bir TypeScript arayuzu saglar. Siniflariniza bir yasam dongusu kancasi eklerken, yontemlerin dogru adlandirilmasini saglamak icin bu arayuzleri iceri aktarin ve `implement` edin.
+Angular, her yaşam döngüsü yöntemi için bir TypeScript arayüzü sağlar. Sınıflarınıza bir yaşam döngüsü kancası eklerken, yöntemlerin doğru adlandırılmasını sağlamak için bu arayüzleri içeri aktarın ve `implement` edin.
 
 ```ts
 import {Component, OnInit} from '@angular/core';

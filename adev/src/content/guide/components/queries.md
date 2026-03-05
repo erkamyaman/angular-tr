@@ -6,7 +6,7 @@ Bir bilesen, alt elemanlari bulan ve injector'larindan deger okuyan **sorgular**
 
 Gelistiriciler en yaygin olarak alt bilesenlere, direktiflere, DOM elemanlarina ve daha fazlasina referanslar almak icin sorgulari kullanir.
 
-Tum sorgu fonksiyonlari, en guncel sonuclari yansitan sinyaller dondurur. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contexts) dahil olmak uzere sinyal fonksiyonunu cagirarak sonucu okuyabilirsiniz.
+Tum sorgu fonksiyonlari, en guncel sonuclari yansitan sinyaller dondurur. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contextler) dahil olmak uzere sinyal fonksiyonunu cagirarak sonucu okuyabilirsiniz.
 
 Iki sorgu kategorisi vardir: **gorunum sorgulari** ve **icerik sorgulari.**
 

@@ -228,7 +228,7 @@ export class MediaControls {
 
 Yukaridaki ornekte, `CustomSlider` kendi `value` model girdisine deger yazabilir ve bu degerler `MediaControls`'daki `volume` sinyaline geri yayilir. Bu baglama, `value` ve `volume` degerlerini senkronize tutar. Baglama isleminin sinyal _ornegini_ ilettigine, sinyalin _degerini_ degil, dikkat edin.
 
-Diger acilardan, model girdileri standart girdilere benzer sekilde calisir. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contexts) dahil olmak uzere sinyal fonksiyonunu cagirarak degeri okuyabilirsiniz.
+Diger acilardan, model girdileri standart girdilere benzer sekilde calisir. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contextler) dahil olmak uzere sinyal fonksiyonunu cagirarak degeri okuyabilirsiniz.
 
 Sablonlarda iki yonlu baglama hakkinda daha fazla bilgi icin [Iki yonlu baglama](guide/templates/two-way-binding) belgesine bakin.
 
