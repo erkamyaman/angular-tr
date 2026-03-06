@@ -1,4 +1,4 @@
-# Defer triggers
+# Erteleme tetikleyicileri
 
 `@defer` için varsayılan seçenekler, bileşenlerinizin bölümlerini tembel yükleme (lazy loading) için harika seçenekler sunarken, ertelenmiş yükleme deneyimini daha da özelleştirmek istenebilir.
 

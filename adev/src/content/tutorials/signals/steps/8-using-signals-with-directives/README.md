@@ -1,4 +1,4 @@
-# Using signals with directives
+# Sinyalleri direktiflerle kullanma
 
 Artık [sinyalleri servislerle kullanmayı](/tutorials/signals/7-using-signals-with-services) öğrendiğinize göre, direktiflerin sinyalleri nasıl kullandığını keşfedelim. **Harika haber: sinyaller direktiflerde bileşenlerdeki gibi tamamen aynı şekilde çalışır!** Temel fark, direktiflerin şablonları olmadığı için, sinyalleri ağırlıklı olarak ana eleman (host element) üzerinde reaktif güncellemeler yapmak için host bağlamalarında kullanacak olmanızdır.
 

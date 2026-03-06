@@ -1,4 +1,4 @@
-# Use @for to list objects in component
+# Bileşende nesneleri listelemek için @for kullanın
 
 Bu eğitim dersi, bir şablonda dinamik olarak tekrarlanan verileri görüntülemek için Angular şablonlarında `@for` bloğunun nasıl kullanılacağını gösterir.
 
@@ -6,12 +6,12 @@ Bu eğitim dersi, bir şablonda dinamik olarak tekrarlanan verileri görüntüle
 
 NOTE: Bu video eski bir sözdizimini yansıtmaktadır, ancak temel kavramlar geçerliliğini korumaktadır.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamaya bir veri seti eklemiş olacaksınız
 - Uygulamanız, `@for` kullanarak yeni veri setindeki öğelerin bir listesini görüntüleyecek
 
-## Conceptual preview of `@for`
+## `@for` kavramsal önizlemesi
 
 Angular'da `@for`, bir şablonda verileri dinamik olarak tekrarlamak için kullanılan belirli bir [kontrol akışı bloğu](/guide/templates/control-flow) türüdür. Düz JavaScript'te bir for döngüsü kullanırsınız - `@for` Angular şablonları için benzer işlevsellik sağlar.
 

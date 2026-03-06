@@ -1,4 +1,4 @@
-# Creating and updating your first signal
+# İlk sinyalinizi oluşturma ve güncelleme
 
 Angular sinyalleri öğreticisine hoş geldiniz! [Sinyaller](/essentials/signals), Angular'ın reaktif temel yapı taşıdır ve durumu yönetmenin ve bu durum değiştiğinde kullanıcı arayüzünüzü otomatik olarak güncellemenin bir yolunu sağlar.
 

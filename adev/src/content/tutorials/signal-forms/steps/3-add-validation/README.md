@@ -1,4 +1,4 @@
-# Add validation to your form
+# Formunuza doğrulama ekleme
 
 Kullanıcıların geçerli veri girmesini sağlamak için formunuza doğrulama eklemek kritik öneme sahiptir. Signal Forms, `form()` fonksiyonuna ilettiğiniz bir şema fonksiyonunda doğrulayıcılar (validators) kullanır.
 

@@ -1,4 +1,4 @@
-# Reactive Forms
+# Reaktif Formlar
 
 Formlarınızı tamamen şablona güvenmek yerine programatik olarak yönetmek istediğinizde, reaktif formlar çözümdür.
 

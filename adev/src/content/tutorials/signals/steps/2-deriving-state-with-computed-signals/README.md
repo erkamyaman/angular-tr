@@ -1,4 +1,4 @@
-# Deriving state with computed signals
+# Computed sinyallerle durum türetme
 
 Artık [sinyal oluşturmayı ve güncellemeyi](/tutorials/signals/1-creating-your-first-signal) öğrendiğinize göre, hesaplanmış (computed) sinyalleri öğrenelim. Hesaplanmış sinyaller, bağımlılıkları değiştiğinde otomatik olarak güncellenen türetilmiş değerlerdir. Diğer sinyallere dayalı reaktif hesaplamalar oluşturmak için mükemmeldirler.
 

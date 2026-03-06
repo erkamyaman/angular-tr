@@ -1,4 +1,4 @@
-# Connect your form to the template
+# Formunuzu şablona bağlama
 
 Şimdi, `[formField]` direktifini kullanarak formunuzu şablona bağlamanız gerekiyor. Bu, form modeliniz ile input elemanları arasında iki yönlü veri bağlama oluşturur.
 

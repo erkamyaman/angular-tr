@@ -1,4 +1,4 @@
-# Create a custom pipe
+# Özel pipe oluşturma
 
 Veri dönüştürme ihtiyaçlarınıza uygun özel pipe'lar oluşturabilirsiniz.
 

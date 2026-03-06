@@ -1,4 +1,4 @@
-# Property Binding in Angular
+# Property Binding
 
 Angular'da özellik bağlama, HTML öğelerinin, Angular bileşenlerinin ve daha fazlasının özellikleri için değer belirlemenizi sağlar.
 

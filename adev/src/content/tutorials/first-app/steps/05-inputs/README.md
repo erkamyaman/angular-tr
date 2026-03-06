@@ -1,4 +1,4 @@
-# Add an input parameter to the component
+# Bileşene bir input parametresi ekleyin
 
 Bu eğitim dersi, bir bileşen `input`'u oluşturmayı ve bileşeni özelleştirmek için ona veri aktarmayı gösterir.
 
@@ -6,11 +6,11 @@ Bu eğitim dersi, bir bileşen `input`'u oluşturmayı ve bileşeni özelleştir
 
 NOTE: Bu video eski bir sözdizimini yansıtmaktadır, ancak temel kavramlar geçerliliğini korumaktadır.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Uygulamanızın `HousingLocation` şablonunda girdi almak için bir `HousingLocation` özelliği bulunmaktadır.
 
-## Conceptual preview of Inputs
+## Input'ların kavramsal önizlemesi
 
 [Input'lar](api/core/input) bileşenlerin, bir üst bileşenden kendisine aktarılabilecek verileri belirtmesine olanak tanır.
 

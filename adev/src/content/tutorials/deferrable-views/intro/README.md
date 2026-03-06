@@ -1,11 +1,11 @@
-# Deferrable views tutorial
+# Ertelenebilir Görünümler Eğitimi
 
 Bu etkileşimli öğretici, Angular ertelenebilir görünümler kavramlarını tanıtan derslerden oluşmaktadır.
 
-## How to use this tutorial
+## Bu eğitimi nasıl kullanabilirsiniz
 
 Her adım, Angular ertelenebilir görünümlerinde bir kavramı temsil eder. Birini veya hepsini yapabilirsiniz.
 
-Takılırsanız, üstteki "Reveal answer" seçeneğine tıklayın.
+Takılırsanız, üstteki "Cevabı Göster" seçeneğine tıklayın.
 
 Pekala, [başlayalım](/tutorials/deferrable-views/1-what-are-deferrable-views).

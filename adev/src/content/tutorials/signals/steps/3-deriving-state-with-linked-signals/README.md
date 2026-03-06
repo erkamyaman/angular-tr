@@ -1,4 +1,4 @@
-# Deriving state with linked signals
+# Linked sinyallerle durum türetme
 
 Artık [computed sinyalleri ile durum türetmeyi](/tutorials/signals/2-deriving-state-with-computed-signals) öğrendiğinize göre, kullanıcı durumunuzu otomatik olarak takip eden `notificationsEnabled` için bir computed sinyal oluşturdunuz. Peki ya kullanıcılar çevrimiçi olsalar bile bildirimleri manuel olarak devre dışı bırakmak isterlerse? İşte burada bağlantılı sinyaller (linked signals) devreye girer.
 

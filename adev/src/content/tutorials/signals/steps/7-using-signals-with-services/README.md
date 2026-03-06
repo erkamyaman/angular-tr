@@ -1,4 +1,4 @@
-# Using signals with services
+# Sinyalleri servislerle kullanma
 
 Artık [model sinyalleri ile iki yönlü bağlamayı](/tutorials/signals/6-two-way-binding-with-model-signals) öğrendiğinize göre, sinyalleri Angular servisleriyle nasıl kullanacağınızı keşfedelim. Servisler, birden fazla bileşen arasında reaktif durumu paylaşmak için mükemmeldir ve sinyaller, otomatik değişiklik algılama ve temiz reaktif kalıplar sağlayarak bunu daha da güçlü hale getirir.
 

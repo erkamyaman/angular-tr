@@ -1,4 +1,4 @@
-# Add HTTP communication to your app
+# Uygulamanıza HTTP iletişimi ekleyin
 
 Bu eğitim, HTTP ve bir API'yi uygulamanıza nasıl entegre edeceğinizi gösterir.
 
@@ -8,7 +8,7 @@ Bu noktaya kadar uygulamanız, bir Angular servisindeki statik bir diziden veri 
 
 IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Uygulamanız bir JSON sunucusundan veri kullanacak
 

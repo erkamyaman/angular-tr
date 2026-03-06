@@ -1,4 +1,4 @@
-# Use RouterLink for Navigation
+# RouterLink ile Route'lara Bağlama
 
 Uygulamanın mevcut durumunda, uygulama içinde var olan dahili bir bağlantıya tıkladığımızda tüm sayfa yenilenir. Küçük bir uygulamada bu önemsiz görünebilir, ancak daha fazla içeriğe sahip büyük sayfalarda kullanıcıların varlıkları yeniden indirmesi ve hesaplamaları tekrar çalıştırması gerektiğinden performans etkileri olabilir.
 

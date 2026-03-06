@@ -58,11 +58,11 @@
           (click)="answerRevealed() ? handleResetAnswer() : handleRevealAnswer()"
           [disabled]="!canRevealAnswer()"
           class="docs-reveal-answer-button adev-reveal-desktop-button docs-primary-btn"
-          [attr.text]="answerRevealed() ? 'Reset' : 'Reveal Answer'"
-          [attr.aria-label]="answerRevealed() ? 'Reset' : 'Reveal Answer'"
+          [attr.text]="answerRevealed() ? 'Sıfırla' : 'Cevabı Göster'"
+          [attr.aria-label]="answerRevealed() ? 'Sıfırla' : 'Cevabı Göster'"
           [class.adev-reset-answer-button]="answerRevealed()"
         >
-          {{ answerRevealed() ? 'Reset' : 'Reveal Answer' }}
+          {{ answerRevealed() ? 'Sıfırla' : 'Cevabı Göster' }}
         </button>
       }
 
@@ -112,11 +112,11 @@
             (click)="answerRevealed() ? handleResetAnswer() : handleRevealAnswer()"
             [disabled]="!canRevealAnswer()"
             class="docs-reveal-answer-button adev-reveal-mobile-button docs-primary-btn"
-            [attr.text]="answerRevealed() ? 'Reset' : 'Reveal Answer'"
-            [attr.aria-label]="answerRevealed() ? 'Reset' : 'Reveal Answer'"
+            [attr.text]="answerRevealed() ? 'Sıfırla' : 'Cevabı Göster'"
+            [attr.aria-label]="answerRevealed() ? 'Sıfırla' : 'Cevabı Göster'"
             [class.adev-reset-answer-button]="answerRevealed()"
           >
-            {{ answerRevealed() ? 'Reset' : 'Reveal Answer' }}
+            {{ answerRevealed() ? 'Sıfırla' : 'Cevabı Göster' }}
           </button>
         }
       </div>
@@ -129,7 +129,7 @@
             class="adev-nav-list"
           />
           @if (nextTutorialPath()) {
-            <a [routerLink]="'/' + nextTutorialPath()">Next Tutorial</a>
+            <a [routerLink]="'/' + nextTutorialPath()">Sonraki Eğitim</a>
           }
         </div>
       }

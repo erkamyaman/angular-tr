@@ -1,4 +1,4 @@
-# Getting form control value
+# Form kontrol değerlerini alma
 
 Formlarınız Angular ile kurulduğuna göre, bir sonraki adım form kontrollerindeki değerlere erişmektir.
 

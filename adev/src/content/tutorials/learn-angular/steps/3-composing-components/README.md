@@ -1,4 +1,4 @@
-# Composing Components
+# Bileşenleri Birleştirme
 
 Bileşen şablonunu, bileşen mantığını ve bileşen stillerini güncellemeyi öğrendiniz, peki bir bileşeni uygulamanızda nasıl kullanırsınız?
 

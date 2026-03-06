@@ -1,4 +1,4 @@
-# Optimizing images
+# Görüntüleri Optimize Etme
 
 Resimler birçok uygulamanın büyük bir parçasıdır ve düşük [Core Web Vitals](https://web.dev/explore/learn-core-web-vitals) puanları da dahil olmak üzere uygulama performans sorunlarına önemli bir katkıda bulunabilir.
 

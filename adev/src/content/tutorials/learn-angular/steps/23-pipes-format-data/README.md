@@ -1,4 +1,4 @@
-# Formatting data with pipes
+# Pipe'larla veri biçimlendirme
 
 Pipe'ları yapılandırarak kullanımınızı daha da ileri taşıyabilirsiniz. Pipe'lar, kendilerine seçenekler aktarılarak yapılandırılabilir.
 

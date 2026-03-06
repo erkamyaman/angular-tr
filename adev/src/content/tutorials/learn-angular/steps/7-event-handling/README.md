@@ -1,4 +1,4 @@
-# Event handling
+# Olay Yönetimi
 
 Olay yönetimi, web uygulamalarında etkileşimli özellikleri mümkün kılar. Geliştirici olarak buton tıklamaları, form gönderimleri ve daha fazlası gibi kullanıcı eylemlerine yanıt verme imkanı sağlar.
 

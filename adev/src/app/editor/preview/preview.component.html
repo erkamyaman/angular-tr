@@ -3,7 +3,7 @@
     <iframe
       class="adev-embedded-editor-preview"
       allow="cross-origin-isolated"
-      title="Editor preview"
+      title="Düzenleyici önizlemesi"
       [src]="previewUrlForIFrame()"
     ></iframe>
   } @else {
@@ -14,25 +14,25 @@
     <div class="adev-embedded-editor-preview-loading">
       @switch (loadingProgressValue()) {
         @case (loadingEnum.NOT_STARTED) {
-          <span class="adev-embedded-editor-preview-loading-starting">Starting</span>
+          <span class="adev-embedded-editor-preview-loading-starting">Başlatılıyor</span>
         }
         @case (loadingEnum.BOOT) {
-          <span class="adev-embedded-editor-preview-loading-boot">Booting</span>
+          <span class="adev-embedded-editor-preview-loading-boot">Önyükleniyor</span>
         }
         @case (loadingEnum.LOAD_FILES) {
-          <span class="adev-embedded-editor-preview-loading-load-files">Creating project</span>
+          <span class="adev-embedded-editor-preview-loading-load-files">Proje oluşturuluyor</span>
         }
         @case (loadingEnum.INSTALL) {
-          <span class="adev-embedded-editor-preview-loading-install">Installing packages</span>
+          <span class="adev-embedded-editor-preview-loading-install">Paketler yükleniyor</span>
         }
         @case (loadingEnum.START_DEV_SERVER) {
           <span class="adev-embedded-editor-preview-loading-start-dev-server">
-            Initializing dev server
+            Geliştirme sunucusu başlatılıyor
           </span>
         }
       }
       <progress
-        title="Preview progress"
+        title="Önizleme ilerlemesi"
         [value]="loadingProgressValue()"
         [max]="loadingEnum.READY"
       ></progress>

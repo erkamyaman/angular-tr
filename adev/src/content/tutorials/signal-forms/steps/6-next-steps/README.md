@@ -1,8 +1,8 @@
-# Congratulations!
+# Tebrikler!
 
 Signal Forms öğreticisini tamamladınız ve sıfırdan eksiksiz bir giriş formu oluşturdunuz!
 
-## What you learned
+## Neler öğrendiniz
 
 Bu öğretici boyunca Angular Signal Forms'un temellerini öğrendiniz:
 
@@ -12,11 +12,11 @@ Bu öğretici boyunca Angular Signal Forms'un temellerini öğrendiniz:
 4. **Error Display** - Alan durumuna göre doğrulama hatalarını koşullu olarak gösterme
 5. **Form Submission** - `submit()` fonksiyonu ile form gönderimini yönetme
 
-## Next steps
+## Sonraki adımlar
 
 Daha fazla öğrenmeye hazır mısınız? İşte önerilen sonraki adımlar:
 
-### Explore the documentation
+### Dokümantasyonu keşfedin
 
 - **[Signal Forms Overview](guide/forms/signals/overview)** - Signal Forms'a giriş ve ne zaman kullanılacağı
 - **[Form Models Guide](guide/forms/signals/models)** - Form modelleri ve veri yönetimi üzerine detaylı inceleme
@@ -24,7 +24,7 @@ Daha fazla öğrenmeye hazır mısınız? İşte önerilen sonraki adımlar:
 - **[Field State Management Guide](guide/forms/signals/field-state-management)** - İleri düzey durum kalıpları
 - **[Custom Controls Guide](guide/forms/signals/custom-controls)** - Yeniden kullanılabilir form bileşenleri oluşturma -->
 
-## Keep learning
+## Öğrenmeye devam edin
 
 Unutmayın: Signal Forms deneysel aşamadadır, bu nedenle API güncellemeleri için [resmi belgelere](guide/forms/signals/overview) göz atın.
 

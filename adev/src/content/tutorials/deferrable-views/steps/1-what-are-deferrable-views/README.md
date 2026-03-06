@@ -1,4 +1,4 @@
-# What are deferrable views?
+# Ertelenebilir görünümler nedir?
 
 Tam olarak render edilmiş bir Angular sayfası birçok farklı bileşen, direktif ve pipe içerebilir. Sayfanın bazı bölümleri kullanıcıya hemen gösterilmesi gerekirken, bazı bölümler daha sonra gösterilmek üzere bekleyebilir.
 Angular'ın _ertelenebilir görünümleri_, `@defer` sözdizimini kullanarak, sayfanın hemen gösterilmesi gerekmeyen bölümleri için JavaScript'in indirilmesini beklemesini Angular'a söyleyerek uygulamanızı hızlandırmanıza yardımcı olabilir.

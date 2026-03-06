@@ -1,18 +1,18 @@
-# Ready to explore more of Angular?
+# Angular'ı daha fazla keşfetmeye hazır mısınız?
 
 Ayrıca [kılavuzlarımızda](overview) ve [referanslar](api) bölümünde daha fazla bilgi edinebilir veya `ng new` komutunu kullanabilirsiniz.
 
 <docs-card-container>
-  <docs-card title="What is Angular?" href="overview">
+  <docs-card title="Angular Nedir?" href="overview">
   Angular, modern uygulamalar geliştirmek için kullanılan web geliştirme framework'üdür!
   </docs-card>
-  <docs-card title="Angular's Roadmap" href="roadmap">
+  <docs-card title="Angular Yol Haritası" href="roadmap">
   Mevcut, gelecek ve tamamlanmış projeler dahil olmak üzere Angular'ın açık kaynak yol haritasını okuyun.
   </docs-card>
-  <docs-card title="Playground" href="playground" link="Start playing">
+  <docs-card title="Oyun Alanı" href="playground" link="Oynamaya başla">
   Angular ile tarayıcınızda oynayın!
   </docs-card>
-  <docs-card title="Angular YouTube Course" href="https://youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF" link="Start learning">
+  <docs-card title="Angular YouTube Kursu" href="https://youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF" link="Öğrenmeye başla">
   Videolar, kurslar ve daha fazlası için resmi Angular YouTube kanalına göz atın!
   </docs-card>
 </docs-card-container>

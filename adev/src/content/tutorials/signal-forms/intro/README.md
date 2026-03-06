@@ -1,10 +1,10 @@
-# Learn Angular Signal Forms
+# Angular Sinyal Formlarını Öğrenin
 
 Bu etkileşimli öğretici, Angular'ın deneysel Signal Forms API'sini kullanarak reaktif formlar oluşturmayı size öğretecektir.
 
 IMPORTANT: Signal Forms şu anda [deneysel](reference/releases#deneysel) aşamadadır. API, kararlı hale gelmeden önce değişebilir. En son güncellemeler için [resmi belgelere](guide/forms/signals/overview) göz atın.
 
-## How to use this tutorial
+## Bu eğitimi nasıl kullanabilirsiniz
 
 Bu öğretici, Angular'ın temel kavramlarını anladığınızı ve sinyaller (signals) konusunda temel bir bilginiz olduğunu varsayar. Angular'da yeniyseniz, [temel kavramlar rehberimizi](/essentials) okuyun. Sinyallerde yeniyseniz, önce [sinyaller öğreticisini](/tutorials/signals) tamamlayın.
 
@@ -19,6 +19,6 @@ Her adım, Signal Forms'daki bir kavramı temsil eder. Sıfırdan eksiksiz bir g
 5. Form gönderimini yönetme
 6. İleri düzey konuları ve sonraki adımları keşfetme
 
-Takılırsanız, üstteki "Reveal answer" seçeneğine tıklayın.
+Takılırsanız, üstteki "Cevabı Göster" seçeneğine tıklayın.
 
 Pekala, [başlayalım](/tutorials/signal-forms/1-set-up-form-model)!

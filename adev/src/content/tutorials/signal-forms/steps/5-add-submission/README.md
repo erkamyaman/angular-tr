@@ -1,4 +1,4 @@
-# Add form submission
+# Form gönderimini ekleme
 
 Son olarak, form gönderimini nasıl yöneteceğimizi öğrenelim. Form geçerli olduğunda asenkron işlemleri çalıştırmak için `submit()` fonksiyonunu kullanmayı ve formda hatalar olduğunda gönder düğmesini devre dışı bırakmayı öğreneceksiniz.
 

@@ -47,7 +47,7 @@ const updateGuidePageRoute: Route = {
   loadComponent: () => import('../features/update/update.component'),
   data: {
     ...commonReferenceRouteData,
-    label: 'Update guide',
+    label: 'Güncelleme Rehberi',
   },
 };
 
@@ -157,6 +157,6 @@ export const routes: Route[] = [
   {
     path: '**',
     loadComponent: () => import('../features/not-found/not-found').then((m) => m.NotFound),
-    data: {label: 'Page not found'},
+    data: {label: 'Sayfa bulunamadı'},
   },
 ];

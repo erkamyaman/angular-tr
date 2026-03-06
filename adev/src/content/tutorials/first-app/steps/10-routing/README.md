@@ -1,4 +1,4 @@
-# Add routes to the application
+# Routing ekleyin
 
 Bu eğitim dersi, uygulamanıza rotaların nasıl ekleneceğini gösterir.
 
@@ -6,11 +6,11 @@ Bu eğitim dersi, uygulamanıza rotaların nasıl ekleneceğini gösterir.
 
 IMPORTANT: Yönlendirmeyi (routing) öğrenmek için yerel ortamınızı kullanmanızı öneriyoruz.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Bu dersin sonunda uygulamanız yönlendirme desteğine sahip olacaktır.
 
-## Conceptual preview of routing
+## Yönlendirmenin kavramsal önizlemesi
 
 Bu eğitim, Angular'da yönlendirmeyi tanıtır. Yönlendirme, uygulamadaki bir bileşenden diğerine navigasyon yapabilme yeteneğidir. [Tek Sayfa Uygulamalarında (SPA)](guide/routing), kullanıcı için istenen görünümü temsil etmek üzere sayfanın yalnızca bazı bölümleri güncellenir.
 

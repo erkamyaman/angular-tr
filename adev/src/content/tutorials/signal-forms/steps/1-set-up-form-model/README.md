@@ -1,4 +1,4 @@
-# Set up the form model
+# Form modelini oluşturma
 
 Her Signal Form, bir form veri modeli ile başlar - verilerinizin şeklini tanımlayan ve form verilerinizi depolayan bir sinyal.
 

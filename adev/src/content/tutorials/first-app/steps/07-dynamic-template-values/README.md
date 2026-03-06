@@ -1,15 +1,15 @@
-# Add an interpolation to a component's template
+# Bileşen şablonuna interpolation ekleyin
 
 Bu eğitim dersi, bir şablonda dinamik verileri görüntülemek için Angular şablonlarına interpolasyon eklemeyi gösterir.
 
 <docs-video src="https://www.youtube.com/embed/eM3zi_n7lNs?si=IFAly3Ss8dwqFx8N&amp;start=338"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanız `HousingLocation` şablonunda interpolasyon değerlerini görüntüleyecektir.
 - Uygulamanız bir konut konumu verisini tarayıcıya işleyecektir.
 
-## Conceptual preview of interpolation
+## İnterpolasyonun kavramsal önizlemesi
 
 Bu adımda, interpolasyon kullanarak `input` özelliklerinden okunan değerleri bir şablonda görüntüleyeceksiniz.
 

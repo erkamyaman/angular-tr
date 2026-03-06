@@ -1,4 +1,4 @@
-# Components in Angular
+# Angular'da Bileşenler
 
 Bileşenler, herhangi bir Angular uygulamasının temel yapı taşlarıdır. Her bileşenin üç parçası vardır:
 

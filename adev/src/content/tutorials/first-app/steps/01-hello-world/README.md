@@ -1,10 +1,10 @@
-# Hello world
+# Merhaba dünya
 
 Bu ilk ders, bu eğitimdeki her dersin eksiksiz bir Angular uygulaması oluşturmak için yeni özellikler eklediği başlangıç noktası olarak hizmet eder. Bu derste, uygulamayı ünlü "Hello World" metnini görüntüleyecek şekilde güncelleyeceğiz.
 
 <docs-video src="https://www.youtube.com/embed/UnOwDuliqZA?si=uML-cDRbrxmYdD_9"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Uygulamanız tarayıcıda başarıyla çalışıyorsa ve yürütülen içeriği hatasız görüntülüyorsa, geliştirme ortamınızın ve IDE'nizin bir Angular uygulaması oluşturmaya başlamak için doğru şekilde kurulduğunu doğrular.
 

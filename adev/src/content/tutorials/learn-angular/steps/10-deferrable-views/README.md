@@ -1,4 +1,4 @@
-# Deferrable Views
+# Ertelenebilir Görünümler
 
 Bazen uygulama geliştirmede, uygulamanızda referans vermeniz gereken çok sayıda bileşen olur, ancak bazılarının çeşitli nedenlerle hemen yüklenmesi gerekmez.
 

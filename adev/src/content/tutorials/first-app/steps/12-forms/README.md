@@ -1,4 +1,4 @@
-# Adding a form to your Angular app
+# Angular uygulamanıza form ekleme
 
 Bu eğitim dersi, bir Angular uygulamasına kullanıcı verilerini toplayan bir formun nasıl ekleneceğini gösterir.
 Bu ders, çalışan bir Angular uygulamasıyla başlar ve ona nasıl form ekleneceğini gösterir.
@@ -10,7 +10,7 @@ Form verilerini göndermek ve almak için bir REST API kullanmak bu derste ele a
 
 IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanızda, kullanıcıların uygulamanızın servisine gönderilen verileri girebileceği bir form var.
 - Servis, formdaki verileri tarayıcının konsol günlüğüne yazar.

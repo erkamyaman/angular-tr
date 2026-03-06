@@ -1,15 +1,15 @@
-# Add a property binding to a component's template
+# Bileşen şablonuna property binding ekleyin
 
 Bu eğitim dersi, bir şablona özellik bağlama eklemeyi ve bileşenlere dinamik veri aktarmak için nasıl kullanılacağını gösterir.
 
 <docs-video src="https://www.youtube.com/embed/eM3zi_n7lNs?si=AsiczpWnMz5HhJqB&amp;start=599"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanızın `Home` şablonunda veri bağlamaları vardır.
 - Uygulamanız `Home`'dan `HousingLocation`'a veri gönderir.
 
-## Conceptual preview of Inputs
+## Input'ların kavramsal önizlemesi
 
 Bu derste, şablondaki özelliklere özellik bağlama kullanarak veri bağlayarak, üst bileşenden alt bileşene veri paylaşma sürecine devam edeceksiniz.
 

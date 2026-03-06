@@ -1,4 +1,4 @@
-# Passing data to components with input signals
+# Sinyallerle bileşen iletişimi
 
 Artık [sinyallerle asenkron veri yönetmeyi](/tutorials/signals/4-managing-async-data-with-signals) öğrendiğinize göre, üst bileşenden alt bileşene veri aktarmak için Angular'ın sinyal tabanlı `input()` API'sini keşfedelim; bu, bileşen veri akışını daha reaktif ve verimli hale getirir. Diğer framework'lerdeki bileşen prop'larına aşinaysanız, input'lar aynı fikirdir.
 

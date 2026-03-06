@@ -1,4 +1,4 @@
-# Forms Overview
+# Formlar
 
 Formlar birçok uygulamanın önemli bir parçasıdır çünkü uygulamanızın kullanıcı girdisi kabul etmesini sağlar. Angular'da formların nasıl işlendiğini öğrenelim.
 

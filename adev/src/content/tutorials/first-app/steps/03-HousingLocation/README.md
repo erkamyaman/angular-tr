@@ -1,10 +1,10 @@
-# Create the application's HousingLocation component
+# Uygulamanın HousingLocation bileşenini oluşturun
 
 Bu eğitim dersi, Angular uygulamanıza `HousingLocation` bileşeninin nasıl ekleneceğini gösterir.
 
 <docs-video src="https://www.youtube.com/embed/R0nRX8jD2D0?si=U4ONEbPvtptdUHTt&amp;start=440"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanızda yeni bir bileşen var: `HousingLocation` ve bileşenin uygulamanıza eklendiğini doğrulayan bir mesaj görüntüler.
 

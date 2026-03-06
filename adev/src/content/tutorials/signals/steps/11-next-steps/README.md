@@ -1,4 +1,4 @@
-# Want to dive deeper into signals?
+# Sinyaller hakkında daha derine inmek ister misiniz?
 
 Aşağıdaki kaynaklarla sinyaller hakkında daha fazla bilgi edinebilirsiniz:
 

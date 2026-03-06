@@ -96,7 +96,7 @@
               <button
                 type="button"
                 (click)="toggle(item)"
-                [attr.aria-label]="(item.isExpanded ? 'Collapse' : 'Expand') + ' ' + item.label"
+                [attr.aria-label]="(item.isExpanded ? 'Daralt' : 'Genişlet') + ' ' + item.label"
                 [attr.aria-expanded]="item.isExpanded"
                 class="docs-secondary-nav-button"
                 [class.docs-faceted-list-item-active]="item | isActiveNavigationItem: activeItem()"

@@ -31,8 +31,8 @@
               <button
                 type="button"
                 class="docs-rename-file"
-                aria-label="rename file"
-                matTooltip="Rename file"
+                aria-label="Dosyayı yeniden adlandır"
+                matTooltip="Dosyayı yeniden adlandır"
                 matTooltipPosition="above"
                 (click)="onRenameButtonClick()"
               >
@@ -43,8 +43,8 @@
               <button
                 type="button"
                 class="docs-delete-file"
-                aria-label="Delete file"
-                matTooltip="Delete file"
+                aria-label="Dosyayı sil"
+                matTooltip="Dosyayı sil"
                 matTooltipPosition="above"
                 (click)="deleteFile(file.filename)"
               >
@@ -76,8 +76,8 @@
         type="button"
         class="adev-add-file"
         (click)="onAddButtonClick()"
-        aria-label="Add a new file"
-        matTooltip="Add a new file"
+        aria-label="Yeni dosya ekle"
+        matTooltip="Yeni dosya ekle"
         matTooltipPosition="above"
       >
         <docs-icon>add</docs-icon>
@@ -88,7 +88,7 @@
   <button
     class="adev-editor-download-button"
     type="button"
-    aria-label="Open current code in editor in an online editor"
+    aria-label="Mevcut kodu çevrimiçi düzenleyicide aç"
     [cdkMenuTriggerFor]="launcherMenu"
   >
     <docs-icon>launch</docs-icon>
@@ -97,22 +97,22 @@
   <ng-template #launcherMenu>
     <div class="adev-editor-dropdown" cdkMenu>
       <button cdkMenuItem (click)="openCurrentSolutionInFirebaseStudio()">
-        <span>Open in Firebase Studio </span>
+        <span>Firebase Studio'da aç </span>
         <img
           class="icon"
           src="assets/images/tutorials/common/firebase-studio_logo.svg"
           height="32"
         />
       </button>
-      <button cdkMenuItem (click)="openCurrentCodeInStackBlitz()">Open in StackBlitz</button>
+      <button cdkMenuItem (click)="openCurrentCodeInStackBlitz()">StackBlitz'de aç</button>
     </div>
   </ng-template>
   <button
     class="adev-editor-download-button"
     type="button"
     (click)="downloadCurrentCodeEditorState()"
-    aria-label="Download current source code"
-    matTooltip="Download current source code"
+    aria-label="Mevcut kaynak kodunu indir"
+    matTooltip="Mevcut kaynak kodunu indir"
     matTooltipPosition="above"
   >
     <docs-icon>download</docs-icon>

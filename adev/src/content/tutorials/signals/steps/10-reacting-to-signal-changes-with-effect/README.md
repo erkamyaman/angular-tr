@@ -1,4 +1,4 @@
-# Reacting to signal changes with effect
+# Effect ile sinyal değişikliklerine tepki verme
 
 Artık [sinyal sorguları ile alt elemanları sorgulamayı](/tutorials/signals/9-query-child-elements-with-signal-queries) öğrendiğinize göre, sinyal değişikliklerine efektlerle nasıl tepki verileceğini keşfedelim. Efektler, bağımlılıkları değiştiğinde otomatik olarak çalışan fonksiyonlardır ve loglama, DOM manipülasyonu veya API çağrıları gibi yan etkiler için mükemmeldirler.
 

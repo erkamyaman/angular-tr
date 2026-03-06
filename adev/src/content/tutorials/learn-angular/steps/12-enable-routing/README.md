@@ -1,4 +1,4 @@
-# Routing Overview
+# Routing'i Etkinleştirme
 
 Çoğu uygulama için, uygulamanın tek bir sayfadan fazlasına ihtiyaç duyduğu bir nokta gelir. Bu zaman kaçınılmaz olarak geldiğinde, yönlendirme (routing) kullanıcılar için performans hikayesinin büyük bir parçası haline gelir.
 

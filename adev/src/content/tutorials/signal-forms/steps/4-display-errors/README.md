@@ -1,4 +1,4 @@
-# Display validation errors
+# Doğrulama hatalarını görüntüleme
 
 Artık formu doğrulayabildiğinize göre, doğrulama hatalarını kullanıcılara göstermek önemlidir.
 

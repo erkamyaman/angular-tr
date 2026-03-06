@@ -1,4 +1,4 @@
-# Add the search feature to your app
+# Uygulamanıza arama özelliği ekleyin
 
 Bu eğitim dersi, Angular uygulamanıza arama işlevselliğinin nasıl ekleneceğini gösterir.
 
@@ -8,7 +8,7 @@ Uygulama, kullanıcıların uygulamanız tarafından sağlanan veriler arasında
 
 IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanız, eşleşen konut konumlarını aramak için bir formdaki verileri kullanacak
 - Uygulamanız yalnızca eşleşen konut konumlarını görüntüleyecek

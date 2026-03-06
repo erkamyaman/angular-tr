@@ -35,7 +35,7 @@ export function headingRender(
 
   return `
   <h${depth} id="${link}">
-    <a href="#${link}" class="docs-anchor" tabindex="-1" aria-label="Link to ${normalizedLabel}">${label}</a>
+    <a href="#${link}" class="docs-anchor" tabindex="-1" aria-label="${normalizedLabel} bağlantısı">${label}</a>
   </h${depth}>
   `;
 }
@@ -53,7 +53,7 @@ export function getPageTitle(text: string, filePath?: string): string {
     <h1 tabindex="-1">${text}</h1>
     ${
       filePath
-        ? `<a class="docs-github-links" target="_blank" href="${GITHUB_EDIT_CONTENT_URL}/${filePath}" title="Edit this page" aria-label="Edit this page">
+        ? `<a class="docs-github-links" target="_blank" href="${GITHUB_EDIT_CONTENT_URL}/${filePath}" title="Bu sayfayı düzenle" aria-label="Bu sayfayı düzenle">
       <!-- Pencil -->
       <docs-icon role="presentation">edit</docs-icon>
     </a>`

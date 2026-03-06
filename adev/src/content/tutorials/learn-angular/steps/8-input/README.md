@@ -1,4 +1,4 @@
-# Component input properties
+# @input ile Bileşen İletişimi
 
 Bazen uygulama geliştirme, bir bileşene veri göndermenizi gerektirir. Bu veri, bir bileşeni özelleştirmek veya bir üst bileşenden alt bileşene bilgi göndermek için kullanılabilir.
 

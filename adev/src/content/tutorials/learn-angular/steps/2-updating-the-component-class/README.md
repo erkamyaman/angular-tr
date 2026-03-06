@@ -1,4 +1,4 @@
-# Updating the Component Class
+# Bileşen sınıfını güncelleme
 
 Angular'da, bileşenin mantığı ve davranışı bileşenin TypeScript sınıfında tanımlanır.
 

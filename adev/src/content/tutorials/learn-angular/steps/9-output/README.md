@@ -1,4 +1,4 @@
-# Component output properties
+# @output ile Bileşen İletişimi
 
 Bileşenlerle çalışırken, diğer bileşenlere bir şeyin gerçekleştiğini bildirmek gerekebilir. Belki bir butona tıklanmış, bir öğe listeden eklenmiş/çıkarılmış veya başka önemli bir güncelleme olmuştur. Bu senaryoda bileşenlerin üst bileşenlerle iletişim kurması gerekir.
 

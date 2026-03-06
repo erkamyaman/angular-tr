@@ -1,27 +1,27 @@
-# Angular services
+# Angular uygulamasına servisler ekleyin
 
 Bu eğitim dersi, bir Angular servisi oluşturmayı ve bağımlılık enjeksiyonu kullanarak uygulamanıza dahil etmeyi gösterir.
 
 <docs-video src="https://www.youtube.com/embed/-jRxG84AzCI?si=rieGfJawp9xJ00Sz"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Uygulamanız, verilerinizi uygulamanıza sunan bir servise sahiptir.
 Bu dersin sonunda, servis verileri yerel, statik verilerden okur.
 İlerideki bir derste, servisi bir web servisinden veri alacak şekilde güncelleyeceksiniz.
 
-## Conceptual preview of services
+## Servislerin kavramsal önizlemesi
 
 Bu eğitim, Angular servisleri ve bağımlılık enjeksiyonunu tanıtır.
 
-### Angular services
+### Angular servisleri
 
 _Angular servisleri_, uygulamanızdaki birden fazla bileşen tarafından kullanılabilen Angular uygulama verilerini ve işlevlerini ayırmanız için bir yol sağlar.
 Birden fazla bileşen tarafından kullanılabilmesi için, bir servisin _enjekte edilebilir_ olması gerekir.
 Enjekte edilebilir olan ve bir bileşen tarafından kullanılan servisler, o bileşenin bağımlılıkları haline gelir.
 Bileşen bu servislere bağımlıdır ve onlar olmadan çalışamaz.
 
-### Dependency injection
+### Bağımlılık enjeksiyonu
 
 _Bağımlılık enjeksiyonu_, bir uygulamanın bileşenlerinin bağımlılıklarını ve diğer bileşenlerin kullanabileceği servisleri yöneten mekanizmadır.
 

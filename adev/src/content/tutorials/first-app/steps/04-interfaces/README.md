@@ -1,15 +1,15 @@
-# Creating an interface
+# Arayüz oluşturma
 
 Bu eğitim dersi, bir arayüz oluşturmayı ve onu uygulamanızın bir bileşenine dahil etmeyi gösterir.
 
 <docs-video src="https://www.youtube.com/embed/eM3zi_n7lNs?si=YkFSeUeV8Ixtz8pm"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 - Uygulamanızda veri türü olarak kullanabileceği yeni bir arayüz var.
 - Uygulamanızda örnek verilerle yeni arayüzün bir örneği var.
 
-## Conceptual preview of interfaces
+## Arayüzlerin kavramsal önizlemesi
 
 [Arayüzler](https://www.typescriptlang.org/docs/handbook/interfaces.html) uygulamanız için özel veri türleridir.
 

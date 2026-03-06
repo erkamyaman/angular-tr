@@ -147,18 +147,17 @@ export default class UpdateComponent {
 
     // Refuse to generate recommendations for downgrades
     if (this.to.number < this.from.number) {
-      alert('We do not support downgrading versions of Angular.');
+      alert('Angular sürümlerini düşürmeyi desteklemiyoruz.');
       return;
     }
 
-    const labelTitle = 'Guide to update your Angular application';
-    const labelBasic = 'basic applications';
-    const labelMedium = 'medium applications';
-    const labelAdvanced = 'advanced applications';
+    const labelTitle = 'Angular uygulamanızı güncelleme rehberi';
+    const labelBasic = 'temel uygulamalar';
+    const labelMedium = 'orta düzey uygulamalar';
+    const labelAdvanced = 'ileri düzey uygulamalar';
 
     this.title.set(`${labelTitle} v${this.from.name} -> v${this.to.name}
-    for
-    ${this.level < 2 ? labelBasic : this.level < 3 ? labelMedium : labelAdvanced}`);
+    ${this.level < 2 ? labelBasic : this.level < 3 ? labelMedium : labelAdvanced} için`);
 
     // Find applicable steps and organize them into before, during, and after upgrade
     for (const step of this.steps) {
@@ -293,12 +292,12 @@ export default class UpdateComponent {
 
   protected getComplexityLevelName(level: ApplicationComplexity): string {
     const names: Record<ApplicationComplexity, string> = {
-      [ApplicationComplexity.Basic]: 'Basic',
-      [ApplicationComplexity.Medium]: 'Medium',
-      [ApplicationComplexity.Advanced]: 'Advanced',
+      [ApplicationComplexity.Basic]: 'Temel',
+      [ApplicationComplexity.Medium]: 'Orta',
+      [ApplicationComplexity.Advanced]: 'İleri',
     };
 
-    return names[level] ?? 'Unknown';
+    return names[level] ?? 'Bilinmeyen';
   }
 
   private replaceVariables(action: string): string {

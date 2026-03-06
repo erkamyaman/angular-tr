@@ -1,4 +1,4 @@
-# Control Flow in Components - `@for`
+# Kontrol Akışı - `@for`
 
 Web uygulamaları geliştirirken sıklıkla belirli bir kodu belirli sayıda tekrarlamanız gerekir - örneğin, bir isim dizisi verildiğinde her ismi bir `<p>` etiketinde göstermek isteyebilirsiniz.
 

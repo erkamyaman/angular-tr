@@ -427,7 +427,7 @@ export class CodeMirrorEditor {
 
         this.currentFile().language,
 
-        placeholderExtension('Type your code here...'),
+        placeholderExtension('Kodunuzu buraya yazın...'),
 
         ...this.getLanguageExtensions(),
       ],

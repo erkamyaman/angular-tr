@@ -1,4 +1,4 @@
-# Inject-based dependency injection
+# Inject tabanlı DI
 
 Enjekte edilebilir bir servis oluşturmak, Angular'daki bağımlılık enjeksiyonu (DI) sisteminin ilk kısmıdır. Bir servisi bir bileşene nasıl enjekte edersiniz? Angular'ın uygun bağlamda kullanılabilecek `inject()` adında pratik bir fonksiyonu vardır.
 

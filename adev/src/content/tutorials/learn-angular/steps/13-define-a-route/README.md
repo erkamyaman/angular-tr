@@ -1,4 +1,4 @@
-# Define a Route
+# Route Tanımlama
 
 Uygulamayı Angular Router kullanacak şekilde kurduğunuza göre, artık rotaları tanımlamanız gerekiyor.
 

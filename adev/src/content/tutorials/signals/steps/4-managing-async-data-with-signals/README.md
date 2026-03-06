@@ -1,4 +1,4 @@
-# Managing async data with signals using the Resources API
+# Sinyallerle asenkron veri yönetimi - Resources API kullanımı
 
 Artık [bağlantılı sinyallerle durum türetmeyi](/tutorials/signals/3-deriving-state-with-linked-signals) öğrendiğinize göre, Resource API ile asenkron verileri nasıl yöneteceğinizi keşfedelim. Resource API, yerleşik yükleme durumları, hata yönetimi ve istek yönetimi ile sinyalleri kullanarak asenkron işlemleri yönetmenin güçlü bir yolunu sağlar.
 

@@ -23,20 +23,20 @@ export type ComponentAlignment = 'left' | 'center' | 'right';
   template: `
     @if (animation(); as anim) {
       <div class="deck" [class]="[alignment()]">
-        <div class="progress-bar" (click)="seek($event)" title="Seek">
+        <div class="progress-bar" (click)="seek($event)" title="İlerle">
           <div class="progress" [style.width]="progressPerc()"></div>
         </div>
         <div class="controls">
-          <button (click)="anim.back(TIMESTEP)" title="Go back">⏪</button>
+          <button (click)="anim.back(TIMESTEP)" title="Geri sar">⏪</button>
           <button
             (click)="playPause()"
-            [attr.title]="!anim.isPlaying() ? 'Play' : 'Pause'"
+            [attr.title]="!anim.isPlaying() ? 'Oynat' : 'Duraklat'"
             [style.background-color]="anim.isPlaying() ? '#666' : null"
           >
             {{ !anim.isPlaying() ? '▶️' : '⏸️' }}
           </button>
-          <button (click)="anim.stop()" title="Stop">⏹️</button>
-          <button (click)="anim.forward(TIMESTEP)" title="Go forward">⏩</button>
+          <button (click)="anim.stop()" title="Durdur">⏹️</button>
+          <button (click)="anim.forward(TIMESTEP)" title="İleri sar">⏩</button>
         </div>
       </div>
     }

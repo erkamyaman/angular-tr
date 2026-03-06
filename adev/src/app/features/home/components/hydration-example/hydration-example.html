@@ -84,7 +84,7 @@
 
           <!-- Viewport Content -->
           <div class="viewport">
-            @if (currentState() === 'Server-Side Rendering...') {
+            @if (currentState() === 'Sunucu Tarafı Render...') {
               <div class="ssr-overlay animate-fade">
                 <div class="ssr-spinner">
                   <div class="spinner-outer"></div>
@@ -103,7 +103,7 @@
                   </p>
                 </div>
                 <div class="viewport-stats">
-                  <div class="stats-label">Main App</div>
+                  <div class="stats-label">Ana Uygulama</div>
                   <div class="stats-value font-tabular">{{ progress() }}%</div>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                       </div>
                       @if (card.clickCount > 0) {
                         <div class="click-badge font-tabular animate-zoom">
-                          <span class="badge-label">CLICKS:</span> {{ card.clickCount }}
+                          <span class="badge-label">TIKLAMALAR:</span> {{ card.clickCount }}
                         </div>
                       }
                     </div>
@@ -147,17 +147,17 @@
                       @if (card.isHydrating) {
                         <div class="tag tag-deferred animate-slide-in">
                           <span class="tag-dot spin"></span>
-                          Hydrating...
+                          Hydrate ediliyor...
                         </div>
                       } @else if (!card.isHydrated) {
                         <div class="tag tag-deferred">
                           <span class="tag-dot pulse"></span>
-                          Static
+                          Statik
                         </div>
                       } @else {
                         <div class="tag tag-hydrated animate-slide-in">
                           <span class="tag-dot"></span>
-                          Hydrated
+                          Hydrate edildi
                         </div>
                       }
                     </div>
@@ -187,14 +187,16 @@
     <!-- Explanatory Feature Cards -->
     <div class="explainer-grid">
       <div class="explainer-item">
-        <h5 class="explainer-title"><span class="dot-red"></span> Eager Hydration</h5>
+        <h5 class="explainer-title">
+          <span class="dot-red"></span> Eager Hydration (Hızlı Hidrasyon)
+        </h5>
         <p class="explainer-text">
           Temel bileşenler (navigasyon veya üst kısım içeriği gibi) ana uygulama bundle'ı hazır olur
           olmaz hydrate olur.
         </p>
       </div>
       <div class="explainer-item">
-        <h5 class="explainer-title"><span class="dot-violet"></span> Incremental Hydration</h5>
+        <h5 class="explainer-title"><span class="dot-violet"></span> Artımlı Hydration</h5>
         <p class="explainer-text">
           Kritik olmayan elementler için JS çalıştırmayı geciktirmek üzere
           <code>on interaction</code> veya <code>on timer</code> gibi hydration tetikleyicilerini
@@ -202,9 +204,9 @@
         </p>
       </div>
       <div class="explainer-item">
-        <h5 class="explainer-title"><span class="dot-green"></span> Event Replay</h5>
+        <h5 class="explainer-title"><span class="dot-green"></span> Olay Tekrarı</h5>
         <p class="explainer-text">
-          Kullanıcı tıklamaları asla kaybolmaz. Angular, "Static" aşamasında olayları kaydeder ve
+          Kullanıcı tıklamaları asla kaybolmaz. Angular, "Statik" aşamasında olayları kaydeder ve
           hydrate olduktan sonra yeniden gönderir.
         </p>
       </div>

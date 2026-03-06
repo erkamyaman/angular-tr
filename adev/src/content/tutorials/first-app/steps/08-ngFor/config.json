@@ -1,5 +1,5 @@
 {
-  "title": "Use the `@for` block in templates",
+  "title": "Şablonlarda `@for` bloğunu kullanma",
   "type": "editor",
   "answerSrc": "../09-services/src",
   "answerRootDir": "../09-services/",

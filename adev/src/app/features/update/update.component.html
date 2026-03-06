@@ -1,14 +1,14 @@
 <div class="page docs-viewer">
-  <h1 class="page-header" tabindex="-1">Update Guide</h1>
+  <h1 class="page-header" tabindex="-1">Güncelleme Rehberi</h1>
   <div class="wizard">
     <div>
-      <h2>Select the options that match your update</h2>
+      <h2>Güncellemenize uygun seçenekleri belirleyin</h2>
 
-      <h3>Angular versions</h3>
+      <h3>Angular sürümleri</h3>
 
       <div class="adev-version-selector">
         <span class="adev-template-select">
-          From v.
+          Sürüm
 
           <button type="button" [cdkMenuTriggerFor]="templatesMenuFrom">
             <span>{{ from.name }}</span>
@@ -30,7 +30,7 @@
 
         <span>
           <span class="adev-template-select">
-            To v.
+            Sürüm
             <button type="button" [cdkMenuTriggerFor]="templatesMenuTo">
               <span>{{ to.name }}</span>
               <docs-icon>expand_more</docs-icon>
@@ -54,9 +54,9 @@
       @if (from.number >= futureVersion || to.number >= futureVersion) {
         <div class="docs-alert docs-alert-critical">
           <p>
-            <strong>Warning:</strong>
-            Plans for releases after the current major release are not finalized and may change.
-            These recommendations are based on scheduled deprecations.
+            <strong>Uyarı:</strong>
+            Mevcut ana sürümden sonraki sürümler için planlar kesinleşmemiştir ve değişebilir. Bu
+            öneriler planlanan kullanımdan kaldırmalara dayanmaktadır.
           </p>
         </div>
       }
@@ -64,8 +64,8 @@
       @if (from.number > to.number) {
         <div class="docs-alert docs-alert-critical">
           <p>
-            <strong>Warning:</strong>
-            We do not support downgrading versions of Angular.
+            <strong>Uyarı:</strong>
+            Angular sürümlerini düşürmeyi desteklemiyoruz.
           </p>
         </div>
       }
@@ -73,46 +73,46 @@
       @if (to.number - from.number > 150 && from.number > 240) {
         <div class="docs-alert docs-alert-critical">
           <p>
-            <strong>Warning:</strong>
-            Be sure to follow the guide below to migrate your application to the new version. You
-            can't run
+            <strong>Uyarı:</strong>
+            Uygulamanızı yeni sürüme geçirmek için aşağıdaki rehberi takip ettiğinizden emin olun.
+            Aynı anda birden fazla ana sürüm atlamak için
             <code>ng update</code>
-            to update Angular applications more than one major version at a time.
+            kullanamazsınız.
           </p>
         </div>
       }
 
-      <h3>Application complexity</h3>
+      <h3>Uygulama karmaşıklığı</h3>
       <mat-button-toggle-group
         (change)="level = $event.value; showUpdatePath()"
         [value]="level"
         style="margin-bottom: 16px"
       >
-        <mat-button-toggle [value]="1">Basic</mat-button-toggle>
-        <mat-button-toggle [value]="2">Medium</mat-button-toggle>
-        <mat-button-toggle [value]="3">Advanced</mat-button-toggle>
+        <mat-button-toggle [value]="1">Temel</mat-button-toggle>
+        <mat-button-toggle [value]="2">Orta</mat-button-toggle>
+        <mat-button-toggle [value]="3">İleri</mat-button-toggle>
       </mat-button-toggle-group>
       @if (level === 1) {
-        <p>Shows information for all Angular developers.</p>
+        <p>Tüm Angular geliştiricileri için bilgileri gösterir.</p>
       } @else if (level === 2) {
-        <p>Shows information that's of interest to more advanced Angular developers.</p>
+        <p>Daha ileri düzey Angular geliştiricilerinin ilgisini çekebilecek bilgileri gösterir.</p>
       } @else if (level === 3) {
-        <p>Shows all the information we have about this update.</p>
+        <p>Bu güncelleme hakkındaki tüm bilgileri gösterir.</p>
       }
 
-      <h3>Other dependencies</h3>
+      <h3>Diğer bağımlılıklar</h3>
       @for (option of optionList; track $index) {
         <div>
           <mat-checkbox
             (change)="options[option.id] = $event.checked; showUpdatePath()"
             [checked]="options[option.id]"
-            >I use {{ option.name }} {{ option.description }}</mat-checkbox
+            >{{ option.name }} {{ option.description }} kullanıyorum</mat-checkbox
           >
         </div>
       }
 
       @if (from.number < 600) {
-        <h4>Package Manager</h4>
+        <h4>Paket Yöneticisi</h4>
         <mat-button-toggle-group
           (change)="packageManager = $event.value; showUpdatePath()"
           [value]="packageManager"
@@ -126,15 +126,15 @@
         type="button"
         (click)="showUpdatePath()"
         class="docs-primary-btn show-button"
-        [attr.text]="'Show me how to update!'"
+        [attr.text]="'Nasıl güncelleyeceğimi göster!'"
       >
-        Show me how to update!
+        Nasıl güncelleyeceğimi göster!
       </button>
     </div>
   </div>
 
   <hr />
-  <!-- RECOMMENDATIONS SECTION -->
+  <!-- ÖNERİLER BÖLÜMÜ -->
 
   @if (
     beforeRecommendations.length > 0 ||
@@ -144,7 +144,7 @@
     <div class="recommendations">
       <h2>{{ title() }}</h2>
 
-      <h3>Before you update</h3>
+      <h3>Güncellemeden önce</h3>
       @for (r of beforeRecommendations; track $index) {
         <div class="adev-recommendation-item">
           <mat-checkbox />
@@ -158,14 +158,17 @@
       }
       @if (beforeRecommendations.length <= 0) {
         <div>
-          <em>You don't need to do anything before moving between these versions.</em>
+          <em>Bu sürümler arasında geçiş yapmadan önce herhangi bir şey yapmanız gerekmiyor.</em>
         </div>
       }
 
-      <h3>Update to the new version</h3>
+      <h3>Yeni sürüme güncelle</h3>
       @if (duringRecommendations.length > 0) {
         <div>
-          <em>Review these changes and perform the actions to update your application.</em>
+          <em
+            >Bu değişiklikleri inceleyin ve uygulamanızı güncellemek için gerekli işlemleri
+            yapın.</em
+          >
         </div>
       }
 
@@ -182,11 +185,11 @@
       }
       @if (duringRecommendations.length <= 0) {
         <div>
-          <em>There aren't any recommendations for moving between these versions.</em>
+          <em>Bu sürümler arasında geçiş için herhangi bir öneri bulunmuyor.</em>
         </div>
       }
 
-      <h3>After you update</h3>
+      <h3>Güncelledikten sonra</h3>
       @for (r of afterRecommendations; track $index) {
         <div class="adev-recommendation-item">
           <mat-checkbox />
@@ -200,7 +203,7 @@
       }
       @if (afterRecommendations.length <= 0) {
         <div>
-          <em>You don't need to do anything after moving between these versions.</em>
+          <em>Bu sürümler arasında geçiş yaptıktan sonra herhangi bir şey yapmanız gerekmiyor.</em>
         </div>
       }
     </div>

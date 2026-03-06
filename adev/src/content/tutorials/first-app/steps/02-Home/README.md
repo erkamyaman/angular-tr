@@ -1,14 +1,14 @@
-# Create Home component
+# Home bileşenini oluşturun
 
 Bu eğitim dersi, Angular uygulamanız için nasıl yeni bir [bileşen](guide/components) oluşturacağınızı gösterir.
 
 <docs-video src="https://www.youtube.com/embed/R0nRX8jD2D0?si=OMVaw71EIa44yIOJ"/>
 
-## What you'll learn
+## Neler öğreneceksiniz
 
 Uygulamanızda yeni bir bileşen var: `Home`.
 
-## Conceptual preview of Angular components
+## Angular bileşenlerinin kavramsal önizlemesi
 
 Angular uygulamaları, Angular'ın yapı taşları olan bileşenler etrafında oluşturulur.
 Bileşenler, uygulamadaki bir öğenin işlevini ve görünümünü sağlayan kodu, HTML düzenini ve CSS stil bilgilerini içerir.

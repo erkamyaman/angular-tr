@@ -1,4 +1,4 @@
-# Creating an injectable service
+# Injectable servis oluşturma
 
 Angular'da bağımlılık enjeksiyonu (DI), framework'ün en güçlü özelliklerinden biridir. Bağımlılık enjeksiyonunu, Angular'ın uygulamanız için çalışma zamanında ihtiyaç duyduğunuz kaynakları _sağlama_ yeteneği olarak düşünün. Bir bağımlılık, bir servis veya başka bir kaynak olabilir.
 

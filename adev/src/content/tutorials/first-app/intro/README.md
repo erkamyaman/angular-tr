@@ -1,4 +1,4 @@
-# Build your first Angular app
+# İlk Angular Uygulamanızı Oluşturun
 
 Bu eğitim, Angular'da kod yazmaya başlamak için bilmeniz gereken Angular kavramlarını tanıtan derslerden oluşmaktadır.
 
@@ -8,11 +8,11 @@ HELPFUL: Video mu tercih ediyorsunuz? Bu eğitim için eksiksiz bir [YouTube kur
 
 <docs-video src="https://www.youtube.com/embed/xAT0lHYhHMY?si=cKUW_MGn3MesFT7o"/>
 
-## Before you start
+## Başlamadan önce
 
 Bu eğitimde en iyi deneyimi yaşamak için, başarılı olmak için ihtiyacınız olanları kontrol etmek üzere bu gereksinimleri gözden geçirin.
 
-### Your experience
+### Deneyiminiz
 
 Bu eğitimdeki dersler, aşağıdaki konularda deneyiminiz olduğunu varsaymaktadır:
 
@@ -21,20 +21,20 @@ Bu eğitimdeki dersler, aşağıdaki konularda deneyiminiz olduğunu varsaymakta
 1. Basamaklı Stil Sayfası (CSS) içeriğini okumak ve seçicilerin nasıl kullanıldığını anlamak.
 1. Bilgisayarınızda görevleri gerçekleştirmek için komut satırı talimatlarını kullanmış olmak.
 
-### Your equipment
+### Gerekli donanım
 
 Bu dersler, Angular araçlarının yerel kurulumu veya gömülü editörümüz kullanılarak tamamlanabilir. Yerel Angular geliştirmesi Windows, MacOS veya Linux tabanlı sistemlerde yapılabilir.
 
 NOTE: Bu gibi uyarılara dikkat edin, bunlar yalnızca yerel editörünüz için geçerli olabilecek adımları belirtir.
 
-## Conceptual preview of your first Angular app
+## İlk Angular uygulamanızın kavramsal önizlemesi
 
 Bu eğitimdeki dersler, kiralık evleri listeleyen ve bireysel evlerin ayrıntılarını gösteren bir Angular uygulaması oluşturur.
 Bu uygulama, birçok Angular uygulamasında yaygın olan özellikleri kullanır.
 
 <img alt="Output of homes landing page" src="assets/images/tutorials/first-app/homes-app-landing-page.png">
 
-## Local development environment
+## Yerel geliştirme ortamı
 
 NOTE: Bu adım yalnızca yerel ortamınız içindir!
 

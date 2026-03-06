@@ -1,4 +1,4 @@
-# Query child elements with signal queries
+# Sinyal sorgularıyla alt elemanları sorgulama
 
 Artık [sinyalleri direktiflerle nasıl kullanacağınızı](/tutorials/signals/8-using-signals-with-directives) öğrendiğinize göre, sinyal tabanlı sorgu API'lerini keşfedelim. Bunlar, alt bileşenlere ve direktiflere erişmenin ve onlarla etkileşim kurmanın reaktif bir yolunu sağlar. Hem bileşenler hem de direktifler sorgu yapabilirken aynı zamanda kendileri de sorgulanabilir. Geleneksel ViewChild'ın aksine, sinyal sorguları otomatik olarak güncellenir ve alt bileşenlere ve direktiflere tür güvenli erişim sağlar.
 

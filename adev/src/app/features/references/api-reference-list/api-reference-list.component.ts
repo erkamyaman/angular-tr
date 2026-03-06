@@ -82,7 +82,7 @@ export default class ApiReferenceList {
   );
 
   protected packageOptions = computed<SelectOption[]>(() => [
-    {label: 'All Packages', value: ALL_PACKAGES},
+    {label: 'Tüm Paketler', value: ALL_PACKAGES},
     ...this.apiReferenceManager.apiGroups().map((group) => ({
       label: group.title,
       value: group.id,
@@ -94,10 +94,10 @@ export default class ApiReferenceList {
   protected readonly statuses = STATUSES;
 
   protected readonly statusLabels = {
-    [STATUSES.stable]: 'Stable',
-    [STATUSES.developerPreview]: 'Developer Preview',
-    [STATUSES.experimental]: 'Experimental',
-    [STATUSES.deprecated]: 'Deprecated',
+    [STATUSES.stable]: 'Kararlı',
+    [STATUSES.developerPreview]: 'Geliştirici Önizlemesi',
+    [STATUSES.experimental]: 'Deneysel',
+    [STATUSES.deprecated]: 'Kullanımdan Kaldırılmış',
   };
 
   readonly filteredGroups = computed((): ApiItemsGroup[] => {

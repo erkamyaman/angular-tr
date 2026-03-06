@@ -5,7 +5,7 @@
       [attr.id]="id()"
       [attr.name]="name()"
       [value]="displayValue()"
-      placeholder="Select an option..."
+      placeholder="Bir seçenek belirleyin..."
       readonly
     />
     <span class="material-symbols-outlined docs-select-arrow" translate="no" aria-hidden="true"
@@ -26,14 +26,14 @@
           <input
             ngComboboxInput
             class="docs-select-search-input"
-            placeholder="Search..."
+            placeholder="Ara..."
             [(value)]="searchString"
           />
         </div>
 
         <ng-template ngComboboxPopupContainer>
           @if (filteredOptions().length === 0) {
-            <div class="docs-select-no-results">No results found</div>
+            <div class="docs-select-no-results">Sonuç bulunamadı</div>
           }
 
           <div ngListbox [(values)]="selectedValues" class="docs-select-listbox">

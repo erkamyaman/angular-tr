@@ -1,4 +1,4 @@
-# Pipes
+# Pipe'lar
 
 Pipe'lar, şablonlarda verileri dönüştürmek için kullanılan fonksiyonlardır. Genel olarak, pipe'lar yan etki oluşturmayan "saf" (pure) fonksiyonlardır. Angular, bileşenlerinizde içe aktarıp kullanabileceğiniz bir dizi faydalı yerleşik pipe'a sahiptir. Ayrıca özel bir pipe da oluşturabilirsiniz.
 

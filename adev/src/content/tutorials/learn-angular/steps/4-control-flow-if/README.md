@@ -1,4 +1,4 @@
-# Control Flow in Components - `@if`
+# Kontrol Akışı - `@if`
 
 Kullanıcıya ekranda neyin gösterileceğine karar vermek, uygulama geliştirmede yaygın bir görevdir. Çoğu zaman bu karar, koşullar kullanılarak programatik olarak verilir.
 

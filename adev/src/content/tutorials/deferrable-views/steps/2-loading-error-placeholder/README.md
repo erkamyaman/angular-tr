@@ -1,4 +1,4 @@
-# @loading, @error and @placeholder blocks
+# @loading, @error ve @placeholder blokları
 
 Ertelenebilir görünümler, farklı yükleme durumlarında gösterilecek içerikleri tanımlamanıza olanak tanır.
 

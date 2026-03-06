@@ -1,4 +1,4 @@
-# Two-way binding with model signals
+# Model sinyalleriyle çift yönlü bağlama
 
 Artık [input sinyalleri ile bileşenlere veri aktarmayı](/tutorials/signals/5-component-communication-with-signals) öğrendiğinize göre, iki yönlü bağlama için Angular'ın `model()` API'sini keşfedelim. Model sinyalleri, bileşenin hem bir değer alması HEM DE onu güncellemesi gereken onay kutuları, kaydırıcılar veya özel form kontrolleri gibi UI bileşenleri için mükemmeldir.
 

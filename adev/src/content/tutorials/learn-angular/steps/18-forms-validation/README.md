@@ -1,4 +1,4 @@
-# Validating forms
+# Form Doğrulama
 
 Formlarla çalışırken karşılaşılan bir diğer yaygın senaryo, doğru verilerin gönderildiğinden emin olmak için girdilerin doğrulanması gerekliliğidir.
 
