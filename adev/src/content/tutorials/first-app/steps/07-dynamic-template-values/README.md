@@ -55,6 +55,6 @@ Bu becerilerle, uygulamanız artık veri paylaşabilir ve tarayıcıda dinamik d
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/templates" title="Template syntax"/>
-  <docs-pill href="guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme" title="Displaying values with interpolation"/>
+  <docs-pill href="guide/templates" title="Şablon sözdizimi"/>
+  <docs-pill href="guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme" title="İnterpolasyon ile değerleri görüntüleme"/>
 </docs-pill-row>

@@ -24,7 +24,7 @@ Angular'da bileşenler, özelliklerini tanımlayan meta verilere sahiptir.
 - `styleUrls`: bileşenin kullandığı CSS dosyalarının URL'lerini bir dizi içinde listeler.
 
 <docs-pill-row>
-  <docs-pill href="api/core/Component" title="Learn more about Components"/>
+  <docs-pill href="api/core/Component" title="Bileşenler hakkında daha fazla bilgi"/>
 </docs-pill-row>
 
 <docs-workflow>
@@ -141,6 +141,6 @@ Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="cli/generate/component" title="`ng generate component`"/>
-  <docs-pill href="api/core/Component" title="`Component` reference"/>
-  <docs-pill href="guide/components" title="Angular components overview"/>
+  <docs-pill href="api/core/Component" title="`Component` referansı"/>
+  <docs-pill href="guide/components" title="Angular bileşenlerine genel bakış"/>
 </docs-pill-row>

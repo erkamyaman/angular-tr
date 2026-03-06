@@ -103,8 +103,8 @@ Bu, uygulamanızın verilerini nasıl aldığını bölümlere ayırır.
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/di/creating-and-using-services" title="Creating an injectable service"/>
-  <docs-pill href="guide/di" title="Dependency injection in Angular"/>
+  <docs-pill href="guide/di/creating-and-using-services" title="Injectable servis oluşturma"/>
+  <docs-pill href="guide/di" title="Angular'da bağımlılık enjeksiyonu"/>
   <docs-pill href="cli/generate/service" title="ng generate service"/>
   <docs-pill href="cli/generate" title="ng generate"/>
 </docs-pill-row>

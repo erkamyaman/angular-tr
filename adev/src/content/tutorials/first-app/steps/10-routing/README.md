@@ -83,6 +83,6 @@ Uygulamanızla büyük ilerleme kaydediyorsunuz, aferin.
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/routing" title="Routing in Angular Overview"/>
-  <docs-pill href="guide/routing/common-router-tasks" title="Common Routing Tasks"/>
+  <docs-pill href="guide/routing" title="Angular'da Routing'e Genel Bakış"/>
+  <docs-pill href="guide/routing/common-router-tasks" title="Yaygın Routing Görevleri"/>
 </docs-pill-row>

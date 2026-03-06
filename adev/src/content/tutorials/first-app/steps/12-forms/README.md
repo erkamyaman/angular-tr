@@ -101,6 +101,6 @@ SUMMARY: Bu derste, Angular'ın form özelliğini kullanarak uygulamanıza bir f
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms" title="Angular Forms"/>
-  <docs-pill href="guide/templates/event-listeners" title="Event Handling"/>
+  <docs-pill href="guide/forms" title="Angular Formları"/>
+  <docs-pill href="guide/templates/event-listeners" title="Olay Yönetimi"/>
 </docs-pill-row>

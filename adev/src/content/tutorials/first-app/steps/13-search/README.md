@@ -74,6 +74,6 @@ SUMMARY: Bu derste, şablon değerleriyle etkileşim kurmak için şablon deği�
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/templates" title="Template Variables"/>
-  <docs-pill href="guide/templates/event-listeners" title="Event Handling"/>
+  <docs-pill href="guide/templates" title="Şablon Değişkenleri"/>
+  <docs-pill href="guide/templates/event-listeners" title="Olay Yönetimi"/>
 </docs-pill-row>

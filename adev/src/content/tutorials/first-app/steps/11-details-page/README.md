@@ -101,7 +101,7 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
 1. Tarayıcıda sayfayı yenileyin ve belirli bir konut konumu için "Learn More" bağlantısına tıkladığınızda, ayrıntılar sayfasının seçilen öğenin verilerine göre doğru bilgileri görüntülediğini doğrulayın.
 
-<img alt="Details page listing home info" src="assets/images/tutorials/first-app/homes-app-lesson-11-step-3.png">
+<img alt="Ev bilgilerini listeleyen detay sayfası" src="assets/images/tutorials/first-app/homes-app-lesson-11-step-3.png">
 
 </docs-step>
 
@@ -131,8 +131,8 @@ Artık şunları biliyorsunuz:
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/routing/read-route-state#activatedroute-ile-geçerli-rota-hakkında-bilgi-alma" title="Route Parameters"/>
-  <docs-pill href="guide/routing" title="Routing in Angular Overview"/>
-  <docs-pill href="guide/routing/common-router-tasks" title="Common Routing Tasks"/>
-  <docs-pill href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Optional_chaining" title="Optional Chaining Operator"/>
+  <docs-pill href="guide/routing/read-route-state#activatedroute-ile-geçerli-rota-hakkında-bilgi-alma" title="Rota Parametreleri"/>
+  <docs-pill href="guide/routing" title="Angular'da Routing'e Genel Bakış"/>
+  <docs-pill href="guide/routing/common-router-tasks" title="Yaygın Routing Görevleri"/>
+  <docs-pill href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Optional_chaining" title="Opsiyonel Zincirleme Operatörü"/>
 </docs-pill-row>

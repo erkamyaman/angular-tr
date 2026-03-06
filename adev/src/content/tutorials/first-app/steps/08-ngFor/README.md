@@ -60,7 +60,7 @@ Uygulama şekilleniyor, harika iş.
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/templates/control-flow" title="Control flow blocks"/>
-  <docs-pill href="guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama" title="@for guide"/>
+  <docs-pill href="guide/templates/control-flow" title="Kontrol akışı blokları"/>
+  <docs-pill href="guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama" title="@for rehberi"/>
   <docs-pill href="/api/core/@for" title="@for"/>
 </docs-pill-row>

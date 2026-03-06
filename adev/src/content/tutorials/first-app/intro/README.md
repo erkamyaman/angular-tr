@@ -32,7 +32,7 @@ NOTE: Bu gibi uyarılara dikkat edin, bunlar yalnızca yerel editörünüz için
 Bu eğitimdeki dersler, kiralık evleri listeleyen ve bireysel evlerin ayrıntılarını gösteren bir Angular uygulaması oluşturur.
 Bu uygulama, birçok Angular uygulamasında yaygın olan özellikleri kullanır.
 
-<img alt="Output of homes landing page" src="assets/images/tutorials/first-app/homes-app-landing-page.png">
+<img alt="Evler ana sayfası çıktısı" src="assets/images/tutorials/first-app/homes-app-landing-page.png">
 
 ## Yerel geliştirme ortamı
 
@@ -80,7 +80,7 @@ Bu eğitimi tercih ettiğiniz yapay zeka destekli IDE'de takip ediyorsanız, [An
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="/overview" title="What is Angular"/>
-  <docs-pill href="/tools/cli/setup-local" title="Setting up the local environment and workspace"/>
-  <docs-pill href="/cli" title="Angular CLI Reference"/>
+  <docs-pill href="/overview" title="Angular Nedir?"/>
+  <docs-pill href="/tools/cli/setup-local" title="Yerel ortam ve çalışma alanı kurulumu"/>
+  <docs-pill href="/cli" title="Angular CLI Referansı"/>
 </docs-pill-row>

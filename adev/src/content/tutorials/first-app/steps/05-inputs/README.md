@@ -48,6 +48,6 @@ Kod editöründe, `@angular/core` paketinden `input` yardımcı metodunu `Housin
 SUMMARY: Bu derste, yeni bir `input` özelliği oluşturdunuz. Ayrıca sinyal değerinin her zaman tanımlı olmasını sağlamak için `.required` metodunu kullandınız.
 
 <docs-pill-row>
-  <docs-pill href="guide/components/inputs" title="Accepting data with input properties"/>
-  <docs-pill href="guide/components/outputs" title="Custom events with outputs"/>
+  <docs-pill href="guide/components/inputs" title="Input özellikleriyle veri kabul etme"/>
+  <docs-pill href="guide/components/outputs" title="Output'larla özel olaylar"/>
 </docs-pill-row>

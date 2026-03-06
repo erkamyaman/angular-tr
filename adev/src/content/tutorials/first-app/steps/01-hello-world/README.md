@@ -117,6 +117,6 @@ Bu süreçte, uygulamanızı test için yerel olarak sunmak üzere `ng serve` ko
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/components" title="Angular Components"/>
-  <docs-pill href="tools/cli" title="Creating applications with the Angular CLI"/>
+  <docs-pill href="guide/components" title="Angular Bileşenleri"/>
+  <docs-pill href="tools/cli" title="Angular CLI ile uygulama oluşturma"/>
 </docs-pill-row>
