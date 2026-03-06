@@ -33,7 +33,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'Extends OnInit',
     action:
-      "Ensure you don't use `extends OnInit`, or use `extends` with any lifecycle event. Instead use `implements <lifecycle event>.`",
+      '`extends OnInit` kullanmadığınızdan veya herhangi bir yaşam döngüsü olayıyla `extends` kullanmadığınızdan emin olun. Bunun yerine `implements <yaşam döngüsü olayı>` kullanın.',
   },
   {
     possibleIn: 200,
@@ -41,7 +41,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'Deep Imports',
     action:
-      'Stop using deep imports, these symbols are now marked with ɵ and are not part of our public API.',
+      "Derin içe aktarmaları kullanmayı bırakın, bu semboller artık ɵ ile işaretlenmiştir ve genel API'mizin bir parçası değildir.",
   },
   {
     possibleIn: 200,
@@ -49,7 +49,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'invokeElementMethod',
     action:
-      'Stop using `Renderer.invokeElementMethod` as this method has been removed. There is not currently a replacement.',
+      '`Renderer.invokeElementMethod` kullanmayı bırakın çünkü bu metot kaldırılmıştır. Şu anda bir alternatifi yoktur.',
   },
   {
     possibleIn: 400,
@@ -57,7 +57,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'Non Animations Module',
     action:
-      'If you use animations in your application, you should import `BrowserAnimationsModule` from `@angular/platform-browser/animations` in your App `NgModule`.',
+      "Uygulamanızda animasyon kullanıyorsanız, `@angular/platform-browser/animations` paketinden `BrowserAnimationsModule` modülünü uygulama `NgModule`'ünüze aktarmalısınız.",
   },
   {
     possibleIn: 400,
@@ -65,14 +65,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'Native Form Validation',
     action:
-      'Angular began adding a `novalidate` attribute to form elements when you include `FormsModule`. To re-enable native forms behaviors, use `ngNoForm` or add `ngNativeValidate`.',
+      'Angular, `FormsModule` dahil edildiğinde form elemanlarına `novalidate` özniteliği eklemeye başladı. Yerel form davranışlarını yeniden etkinleştirmek için `ngNoForm` kullanın veya `ngNativeValidate` ekleyin.',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 400,
     level: ApplicationComplexity.Advanced,
     step: 'RootRenderer',
-    action: 'Replace `RootRenderer` with `RendererFactoryV2` instead.',
+    action: '`RootRenderer` yerine `RendererFactoryV2` kullanın.',
   },
   {
     possibleIn: 400,
@@ -80,7 +80,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     ngUpgrade: true,
     step: 'downgradeInjectable',
-    action: 'The return value of `upgrade/static/downgradeInjectable` has changed.',
+    action: '`upgrade/static/downgradeInjectable` dönüş değeri değişmiştir.',
   },
   {
     possibleIn: 400,
@@ -88,7 +88,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'Animations Tests',
     action:
-      'If you use Animations and tests, add `mods[1].NoopAnimationsModule` to your `TestBed.initTestEnvironment` call.',
+      'Animasyonlar ve testler kullanıyorsanız, `TestBed.initTestEnvironment` çağrınıza `mods[1].NoopAnimationsModule` ekleyin.',
   },
   {
     possibleIn: 200,
@@ -96,35 +96,35 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'DefaultIterableDiffer',
     action:
-      'Stop using `DefaultIterableDiffer`, `KeyValueDiffers#factories`, or `IterableDiffers#factories`',
+      '`DefaultIterableDiffer`, `KeyValueDiffers#factories` veya `IterableDiffers#factories` kullanmayı bırakın',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 500,
     level: ApplicationComplexity.Basic,
     step: 'Template Tag',
-    action: 'Rename your `template` tags to `ng-template`',
+    action: '`template` etiketlerinizi `ng-template` olarak yeniden adlandırın',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 500,
     level: ApplicationComplexity.Medium,
     step: 'OpaqueToken',
-    action: 'Replace any `OpaqueToken` with `InjectionToken`.',
+    action: 'Tüm `OpaqueToken` kullanımlarını `InjectionToken` ile değiştirin.',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 500,
     level: ApplicationComplexity.Advanced,
     step: 'DifferFactory',
-    action: 'If you call `DifferFactory.create(...)` remove the `ChangeDetectorRef` argument.',
+    action: '`DifferFactory.create(...)` çağırıyorsanız `ChangeDetectorRef` argümanını kaldırın.',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 500,
     level: ApplicationComplexity.Advanced,
     step: 'ErrorHandler Parameter',
-    action: 'Stop passing any arguments to the constructor for ErrorHandler',
+    action: 'ErrorHandler yapıcısına herhangi bir argüman geçirmeyi bırakın',
   },
   {
     possibleIn: 400,
@@ -132,14 +132,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'ngProbeToken',
     action:
-      'If you use ngProbeToken, make sure you import it from @angular/core instead of @angular/platform-browser',
+      "ngProbeToken kullanıyorsanız, @angular/platform-browser yerine @angular/core'dan içe aktardığınızdan emin olun",
   },
   {
     possibleIn: 400,
     necessaryAsOf: 500,
     level: ApplicationComplexity.Advanced,
     step: 'TrackByFn',
-    action: 'If you use TrackByFn, instead use TrackByFunction',
+    action: 'TrackByFn kullanıyorsanız, bunun yerine TrackByFunction kullanın',
   },
   {
     possibleIn: 500,
@@ -147,7 +147,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'i18n Pipe Change',
     action:
-      'If you rely on the date, currency, decimal, or percent pipes, in 5 you will see minor changes to the format. For applications using locales other than en-us you will need to import it and optionally `locale_extended_fr` from `@angular/common/i18n_data/locale_fr` and registerLocaleData(local).',
+      "Tarih, para birimi, ondalık veya yüzde pipe'larına bağımlıysanız, 5. sürümde formatta küçük değişiklikler göreceksiniz. en-us dışındaki yerel ayarları kullanan uygulamalar için `@angular/common/i18n_data/locale_fr` paketinden ilgili yerel ayarı ve isteğe bağlı olarak `locale_extended_fr` modülünü içe aktarıp registerLocaleData(local) çağırmanız gerekecektir.",
   },
   {
     possibleIn: 500,
@@ -155,7 +155,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'gendir',
     action:
-      'Do not rely on `gendir`, instead look at using `skipTemplateCodeGen`. <a href=https://github.com/angular/angular/issues/19339#issuecomment-332607471" target="_blank">Read More</a>',
+      '`gendir`\'e bağımlı olmayın, bunun yerine `skipTemplateCodeGen` kullanmayı değerlendirin. <a href=https://github.com/angular/angular/issues/19339#issuecomment-332607471" target="_blank">Daha Fazla Bilgi</a>',
   },
   {
     possibleIn: 220,
@@ -164,7 +164,7 @@ export const RECOMMENDATIONS: Step[] = [
     ngUpgrade: true,
     step: 'Dynamic ngUpgrade',
     action:
-      'Replace `downgradeComponent`, `downgradeInjectable`, `UpgradeComponent`, and `UpgradeModule` imported from `@angular/upgrade`. Instead use the new versions in `@angular/upgrade/static`',
+      '`@angular/upgrade` paketinden içe aktarılan `downgradeComponent`, `downgradeInjectable`, `UpgradeComponent` ve `UpgradeModule` kullanımlarını değiştirin. Bunun yerine `@angular/upgrade/static` içindeki yeni sürümleri kullanın',
   },
   {
     possibleIn: 400,
@@ -172,35 +172,35 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'Animations in Core',
     action:
-      'If you import any animations services or tools from @angular/core, you should import them from @angular/animations',
+      "@angular/core'dan herhangi bir animasyon servisi veya aracı içe aktarıyorsanız, bunları @angular/animations'dan içe aktarmalısınız",
   },
   {
     possibleIn: 400,
     necessaryAsOf: 600,
     level: ApplicationComplexity.Advanced,
     step: 'ngOutletContext',
-    action: 'Replace `ngOutletContext` with `ngTemplateOutletContext`.',
+    action: '`ngOutletContext` yerine `ngTemplateOutletContext` kullanın.',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 600,
     level: ApplicationComplexity.Advanced,
     step: 'collectionChangeRecord',
-    action: 'Replace `CollectionChangeRecord` with `IterableChangeRecord`',
+    action: '`CollectionChangeRecord` yerine `IterableChangeRecord` kullanın',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 900,
     level: ApplicationComplexity.Advanced,
     step: 'Renderer',
-    action: 'Anywhere you use Renderer, now use Renderer2',
+    action: 'Renderer kullandığınız her yerde artık Renderer2 kullanın',
   },
   {
     possibleIn: 400,
     necessaryAsOf: 600,
     level: ApplicationComplexity.Advanced,
     step: 'Router Query Params',
-    action: 'If you use preserveQueryParams, instead use queryParamsHandling',
+    action: 'preserveQueryParams kullanıyorsanız, bunun yerine queryParamsHandling kullanın',
   },
   {
     possibleIn: 430,
@@ -208,7 +208,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'Http',
     action:
-      "If you use the legacy `HttpModule` and the `Http` service, switch to `HttpClientModule` and the `HttpClient` service. HttpClient simplifies the default ergonomics (you don't need to map to JSON anymore) and now supports typed return values and interceptors. Read more on [angular.dev](https://angular.dev/guide/http).",
+      "Eski `HttpModule` ve `Http` servisini kullanıyorsanız, `HttpClientModule` ve `HttpClient` servisine geçin. HttpClient varsayılan kullanımı basitleştirir (artık JSON'a dönüştürmeniz gerekmez) ve artık tipli dönüş değerleri ile interceptor'ları destekler. Daha fazla bilgi için [angular.dev](https://angular.dev/guide/http) adresini ziyaret edin.",
   },
   {
     possibleIn: 430,
@@ -216,14 +216,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'DOCUMENT in @angular/platform-browser',
     action:
-      'If you use DOCUMENT from @angular/platform-browser, you should start to import this from @angular/common',
+      "@angular/platform-browser'dan DOCUMENT kullanıyorsanız, bunu @angular/common'dan içe aktarmaya başlamalısınız",
   },
   {
     possibleIn: 500,
     necessaryAsOf: 600,
     level: ApplicationComplexity.Advanced,
     step: 'ReflectiveInjector',
-    action: 'Anywhere you use ReflectiveInjector, now use StaticInjector',
+    action: 'ReflectiveInjector kullandığınız her yerde artık StaticInjector kullanın',
   },
   {
     possibleIn: 500,
@@ -231,7 +231,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'Whitespace',
     action:
-      'Choose a value of `off` for `preserveWhitespaces` in your `tsconfig.json` under the `angularCompilerOptions` key to gain the benefits of this setting, which was set to `off` by default in v6.',
+      "v6'da varsayılan olarak `off` olarak ayarlanan bu ayarın avantajlarından yararlanmak için `tsconfig.json` dosyanızda `angularCompilerOptions` anahtarı altında `preserveWhitespaces` için `off` değerini seçin.",
   },
   {
     possibleIn: 600,
@@ -239,7 +239,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 8',
     action:
-      'Make sure you are using <a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 8 or later</a>',
+      '<a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 8 veya üstünü</a> kullandığınızdan emin olun',
   },
   {
     possibleIn: 600,
@@ -248,7 +248,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'Update to CLI v6',
     action:
-      'Update your Angular CLI, and migrate the configuration to the <a href="https://github.com/angular/angular-cli/wiki/angular-workspace" target="_blank">new angular.json format</a> by running the following:<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/cli@6`<br/>',
+      'Angular CLI\'nizi güncelleyin ve aşağıdaki komutu çalıştırarak yapılandırmayı <a href="https://github.com/angular/angular-cli/wiki/angular-workspace" target="_blank">yeni angular.json formatına</a> taşıyın:<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/cli@6`<br/>',
   },
   {
     possibleIn: 600,
@@ -257,7 +257,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'Update to CLI v6',
     action:
-      'Update your Angular CLI, and migrate the configuration to the <a href="https://github.com/angular/angular-cli/wiki/angular-workspace" target="_blank">new angular.json format</a> by running the following:<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/cli@6 @angular/core@6"`<br/>',
+      'Angular CLI\'nizi güncelleyin ve aşağıdaki komutu çalıştırarak yapılandırmayı <a href="https://github.com/angular/angular-cli/wiki/angular-workspace" target="_blank">yeni angular.json formatına</a> taşıyın:<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/cli@6 @angular/core@6"`<br/>',
   },
   {
     possibleIn: 600,
@@ -265,7 +265,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'cli v6 scripts',
     action:
-      'Update any `scripts` you may have in your `package.json` to use the latest Angular CLI commands. All CLI commands now use two dashes for flags (eg `ng build --prod --source-map`) to be POSIX compliant.',
+      '`package.json` dosyanızdaki `scripts` bölümünü en son Angular CLI komutlarını kullanacak şekilde güncelleyin. Tüm CLI komutları artık POSIX uyumlu olması için bayraklar için iki tire kullanır (örn. `ng build --prod --source-map`).',
   },
   {
     possibleIn: 600,
@@ -274,7 +274,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'Update to Angular v6',
     action:
-      "Update all of your Angular framework packages to v6, and the correct version of RxJS and TypeScript.<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/core@6`<br/><br/>After the update, TypeScript and RxJS will more accurately flow types across your application, which may expose existing errors in your application's typings",
+      "Tüm Angular framework paketlerinizi v6'ya ve RxJS ile TypeScript'in doğru sürümüne güncelleyin.<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/core@6`<br/><br/>Güncelleme sonrasında TypeScript ve RxJS, uygulamanız genelinde türleri daha doğru şekilde aktaracaktır ve bu, uygulamanızın tür tanımlarındaki mevcut hataları ortaya çıkarabilir",
   },
   {
     possibleIn: 600,
@@ -283,7 +283,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'Update to Angular v6',
     action:
-      'Update all of your Angular framework packages to v6, and the correct version of RxJS and TypeScript.<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/cli@6 @angular/core@6"`<br/><br/>After the update, TypeScript and RxJS will more accurately flow types across your application, which may expose existing errors in your application\'s typings',
+      'Tüm Angular framework paketlerinizi v6\'ya ve RxJS ile TypeScript\'in doğru sürümüne güncelleyin.<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/cli@6 @angular/core@6"`<br/><br/>Güncelleme sonrasında TypeScript ve RxJS, uygulamanız genelinde türleri daha doğru şekilde aktaracaktır ve bu, uygulamanızın tür tanımlarındaki mevcut hataları ortaya çıkarabilir',
   },
   {
     possibleIn: 600,
@@ -291,7 +291,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'forms v6',
     action:
-      'In Angular Forms, `AbstractControl#statusChanges` now emits an event of `PENDING` when you call `AbstractControl#markAsPending`. Ensure that if you are filtering or checking events from `statusChanges` that you account for the new event when calling `markAsPending`.',
+      "Angular Forms'da, `AbstractControl#markAsPending` çağırdığınızda `AbstractControl#statusChanges` artık `PENDING` olayı yayınlar. `statusChanges`'dan gelen olayları filtreliyorsanız veya kontrol ediyorsanız, `markAsPending` çağırırken yeni olayı hesaba kattığınızdan emin olun.",
   },
   {
     possibleIn: 600,
@@ -299,7 +299,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'animations timing',
     action:
-      'If you use totalTime from an `AnimationEvent` within a disabled Zone, it will no longer report a time of 0. To detect if an animation event is reporting a disabled animation then the `event.disabled` property can be used instead.',
+      "Devre dışı bırakılmış bir Zone içinde `AnimationEvent`'ten totalTime kullanıyorsanız, artık 0 zamanı bildirmeyecektir. Bir animasyon olayının devre dışı bırakılmış bir animasyonu bildirip bildirmediğini tespit etmek için bunun yerine `event.disabled` özelliğini kullanabilirsiniz.",
   },
   {
     possibleIn: 600,
@@ -307,7 +307,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'ngModel on form control',
     action:
-      'Support for using the ngModel input property and ngModelChange event with reactive form directives has been deprecated in v6 and removed in v7.',
+      "Reaktif form direktifleriyle ngModel giriş özelliği ve ngModelChange olayını kullanma desteği v6'da kullanımdan kaldırılmış ve v7'de kaldırılmıştır.",
   },
   {
     possibleIn: 600,
@@ -315,7 +315,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'ngModelChange order',
     action:
-      'ngModelChange is now emitted after the value/validity is updated on its control instead of before to better match expectations. If you rely on the order of these events, you will need to begin tracking the old value in your component.',
+      'ngModelChange artık beklentilere daha iyi uyması için kontrolün değeri/geçerliliği güncellenmeden önce değil, güncellendikten sonra yayınlanır. Bu olayların sırasına bağımlıysanız, bileşeninizde eski değeri takip etmeye başlamanız gerekecektir.',
   },
   {
     possibleIn: 600,
@@ -325,7 +325,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'Update Dependencies for v6',
     action:
-      'Update Angular Material to the latest version.<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/material@6`<br/><br/>This will also automatically migrate deprecated APIs.',
+      "Angular Material'i en son sürüme güncelleyin.<br/><br/>`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@6 update @angular/material@6`<br/><br/>Bu, kullanımdan kaldırılmış API'leri de otomatik olarak taşıyacaktır.",
   },
   {
     possibleIn: 600,
@@ -335,7 +335,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'Update Dependencies for v6',
     action:
-      'Update Angular Material to the latest version.<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/material@6"`<br/><br/>This will also automatically migrate deprecated APIs.',
+      'Angular Material\'i en son sürüme güncelleyin.<br/><br/>`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@6 update @angular/material@6"`<br/><br/>Bu, kullanımdan kaldırılmış API\'leri de otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 600,
@@ -343,7 +343,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'strictPropertyInitializer',
     action:
-      'If you have TypeScript configured to be strict (if you have set `strict` to `true` in your `tsconfig.json` file), update your `tsconfig.json` to disable `strictPropertyInitialization` or move property initialization from `ngOnInit` to your constructor. You can learn more about this flag on the <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#strict-class-initialization">TypeScript 2.7 release notes</a>.',
+      'TypeScript\'i katı (strict) olarak yapılandırdıysanız (`tsconfig.json` dosyanızda `strict` değerini `true` olarak ayarladıysanız), `tsconfig.json` dosyanızda `strictPropertyInitialization` seçeneğini devre dışı bırakın veya özellik başlatma işlemini `ngOnInit`\'ten yapıcıya taşıyın. Bu bayrak hakkında daha fazla bilgiyi <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#strict-class-initialization">TypeScript 2.7 sürüm notlarında</a> bulabilirsiniz.',
   },
   {
     possibleIn: 600,
@@ -351,14 +351,15 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'update to RxJS 6',
     action:
-      'Remove deprecated RxJS 5 features using <a href="https://github.com/ReactiveX/rxjs-tslint" target="_blank">rxjs-tslint auto update rules</a><br/><br/>For most applications this will mean running the following two commands:<br/><br/>`npx rxjs-tslint`<br/>`rxjs-5-to-6-migrate -p src/tsconfig.app.json`',
+      '<a href="https://github.com/ReactiveX/rxjs-tslint" target="_blank">rxjs-tslint otomatik güncelleme kurallarını</a> kullanarak kullanımdan kaldırılmış RxJS 5 özelliklerini kaldırın<br/><br/>Çoğu uygulama için bu, aşağıdaki iki komutu çalıştırmak anlamına gelir:<br/><br/>`npx rxjs-tslint`<br/>`rxjs-5-to-6-migrate -p src/tsconfig.app.json`',
   },
   {
     possibleIn: 600,
     necessaryAsOf: 800,
     level: ApplicationComplexity.Medium,
     step: 'remove rxjs-compat',
-    action: 'Once you and all of your dependencies have updated to RxJS 6, remove `rxjs-compat`.',
+    action:
+      "Siz ve tüm bağımlılıklarınız RxJS 6'ya güncellendikten sonra `rxjs-compat` paketini kaldırın.",
   },
   {
     possibleIn: 610,
@@ -366,7 +367,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'use files instead of versionedFiles',
     action:
-      'If you use the Angular Service worker, migrate any `versionedFiles` to the `files` array. The behavior is the same.',
+      'Angular Service Worker kullanıyorsanız, `versionedFiles` öğelerini `files` dizisine taşıyın. Davranış aynıdır.',
   },
   {
     possibleIn: 700,
@@ -374,15 +375,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'TypeScript 3.1',
     action:
-      'Angular now uses TypeScript 3.1, read more about any potential breaking changes: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-1.html',
+      'Angular artık TypeScript 3.1 kullanıyor, olası uyumsuz değişiklikler hakkında daha fazla bilgi edinin: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-1.html',
   },
   {
     possibleIn: 700,
     necessaryAsOf: 700,
     level: ApplicationComplexity.Basic,
     step: 'Node 10',
-    action:
-      'Angular has now added support for Node 10: https://nodejs.org/en/blog/release/v10.0.0/',
+    action: 'Angular artık Node 10 desteği eklemiştir: https://nodejs.org/en/blog/release/v10.0.0/',
   },
   {
     possibleIn: 700,
@@ -391,7 +391,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'v7 update',
     action:
-      'Update to v7 of the core framework and CLI by running `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@7 update @angular/cli@7 @angular/core@7` in your terminal.',
+      "Terminalinizde `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@7 update @angular/cli@7 @angular/core@7` komutunu çalıştırarak çekirdek framework ve CLI'yi v7'ye güncelleyin.",
   },
   {
     possibleIn: 700,
@@ -400,7 +400,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'v7 update',
     action:
-      'Update to v7 of the core framework and CLI by running `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@7 update @angular/cli@7 @angular/core@7"` in your terminal.',
+      'Terminalinizde `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@7 update @angular/cli@7 @angular/core@7"` komutunu çalıştırarak çekirdek framework ve CLI\'yi v7\'ye güncelleyin.',
   },
   {
     possibleIn: 700,
@@ -410,7 +410,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v7 material update',
     action:
-      'Update Angular Material to v7 by running `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@7 update @angular/material@7` in your terminal. You should test your application for sizing and layout changes.',
+      "Terminalinizde `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@7 update @angular/material@7` komutunu çalıştırarak Angular Material'i v7'ye güncelleyin. Uygulamanızı boyutlandırma ve düzen değişiklikleri açısından test etmelisiniz.",
   },
   {
     possibleIn: 700,
@@ -420,7 +420,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v7 material update',
     action:
-      'Update Angular Material to v7 by running `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@7 update @angular/material@7"` in your terminal. You should test your application for sizing and layout changes.',
+      'Terminalinizde `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@7 update @angular/material@7"` komutunu çalıştırarak Angular Material\'i v7\'ye güncelleyin. Uygulamanızı boyutlandırma ve düzen değişiklikleri açısından test etmelisiniz.',
   },
   {
     possibleIn: 700,
@@ -429,7 +429,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v7 material changes',
     action:
-      "If you use screenshot tests, you'll need to regenerate your screenshot golden files as many minor visual tweaks have landed.",
+      'Ekran görüntüsü testleri kullanıyorsanız, birçok küçük görsel düzenleme yapıldığı için ekran görüntüsü referans dosyalarınızı yeniden oluşturmanız gerekecektir.',
   },
   {
     possibleIn: 700,
@@ -438,7 +438,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v7 material deprecations',
     action:
-      'Stop using `matRippleSpeedFactor` and `baseSpeedFactor` for ripples, using Animation config instead.',
+      'Dalgalanmalar (ripple) için `matRippleSpeedFactor` ve `baseSpeedFactor` kullanmayı bırakın, bunun yerine Animasyon yapılandırmasını kullanın.',
   },
   {
     possibleIn: 800,
@@ -447,7 +447,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'v8 update',
     action:
-      'Update to version 8 of the core framework and CLI by running `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/cli@8 @angular/core@8` in your terminal and review and commit the changes.',
+      "Terminalinizde `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/cli@8 @angular/core@8` komutunu çalıştırarak çekirdek framework ve CLI'yi sürüm 8'e güncelleyin, ardından değişiklikleri gözden geçirip commit edin.",
   },
   {
     possibleIn: 800,
@@ -456,7 +456,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'v8 update',
     action:
-      'Update to version 8 of the core framework and CLI by running `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/cli@8 @angular/core@8"` in your terminal and review and commit the changes.',
+      'Terminalinizde `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/cli@8 @angular/core@8"` komutunu çalıştırarak çekirdek framework ve CLI\'yi sürüm 8\'e güncelleyin, ardından değişiklikleri gözden geçirip commit edin.',
   },
   {
     possibleIn: 800,
@@ -464,7 +464,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'use ::ng-deep instead of /deep/',
     action:
-      'Replace `/deep/` with `::ng-deep` in your styles, [read more about angular component styles and ::ng-deep](https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep). `/deep/` and `::ng-deep` both are deprecated but using `::ng-deep` is preferred until the shadow-piercing descendant combinator is [removed from browsers and tools](https://www.chromestatus.com/features/6750456638341120) completely.',
+      'Stillerinizde `/deep/` yerine `::ng-deep` kullanın, [angular bileşen stilleri ve ::ng-deep hakkında daha fazla bilgi edinin](https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep). `/deep/` ve `::ng-deep` her ikisi de kullanımdan kaldırılmıştır ancak gölge delici alt öğe birleştiricisi tarayıcılar ve araçlardan [tamamen kaldırılana](https://www.chromestatus.com/features/6750456638341120) kadar `::ng-deep` kullanmak tercih edilir.',
   },
   {
     possibleIn: 800,
@@ -472,7 +472,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'TypeScript 3.4',
     action:
-      'Angular now uses TypeScript 3.4, [read more about errors that might arise from improved type checking](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html).',
+      'Angular artık TypeScript 3.4 kullanıyor, [geliştirilmiş tür denetiminden kaynaklanabilecek hatalar hakkında daha fazla bilgi edinin](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html).',
   },
   {
     possibleIn: 800,
@@ -480,7 +480,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 10',
     action:
-      'Make sure you are using <a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 10 or later</a>.',
+      '<a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 10 veya üstünü</a> kullandığınızdan emin olun.',
   },
   {
     possibleIn: 800,
@@ -488,7 +488,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'Differential Loading',
     action:
-      "The CLI's build command now automatically creates a modern ES2015 build with minimal polyfills and a compatible ES5 build for older browsers, and loads the appropriate file based on the browser.  You may opt-out of this change by setting your `target` back to `es5` in your `tsconfig.json`. Learn more on [angular.io](https://angular.io/guide/deployment#differential-loading).",
+      "CLI'nin build komutu artık otomatik olarak minimum polyfill'lerle modern bir ES2015 derlemesi ve eski tarayıcılar için uyumlu bir ES5 derlemesi oluşturur ve tarayıcıya göre uygun dosyayı yükler. `tsconfig.json` dosyanızda `target` değerini `es5` olarak ayarlayarak bu değişikliği devre dışı bırakabilirsiniz. Daha fazla bilgi için [angular.io](https://angular.io/guide/deployment#differential-loading) adresini ziyaret edin.",
   },
   {
     possibleIn: 800,
@@ -496,7 +496,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'CLI Telemetry',
     action:
-      'When using new versions of the CLI, you will be asked if you want to opt-in to share your CLI usage data. You can also add your own Google Analytics account. This lets us make better decisions about which CLI features to prioritize, and measure the impact of our improvements. Learn more on [angular.io](https://angular.io/analytics).',
+      "CLI'nin yeni sürümlerini kullanırken, CLI kullanım verilerinizi paylaşmayı kabul etmek isteyip istemediğiniz sorulacaktır. Kendi Google Analytics hesabınızı da ekleyebilirsiniz. Bu, hangi CLI özelliklerine öncelik vereceğimiz konusunda daha iyi kararlar almamızı ve iyileştirmelerimizin etkisini ölçmemizi sağlar. Daha fazla bilgi için [angular.io](https://angular.io/analytics) adresini ziyaret edin.",
   },
   {
     possibleIn: 800,
@@ -504,7 +504,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'static query timing',
     action:
-      "If you use `ViewChild` or `ContentChild`, we're updating the way we resolve these queries to give developers more control. You must now specify that change detection should run before results are set. Example: `@ContentChild('foo', {static: false}) foo !: ElementRef;`. `ng update` will update your queries automatically, but it will err on the side of making your queries `static` for compatibility. Learn more on [angular.io](https://angular.io/guide/static-query-migration).",
+      "`ViewChild` veya `ContentChild` kullanıyorsanız, geliştiricilere daha fazla kontrol sağlamak için bu sorguları çözme şeklimizi güncelliyoruz. Artık sonuçlar ayarlanmadan önce değişiklik algılamanın çalışması gerektiğini belirtmeniz gerekir. Örnek: `@ContentChild('foo', {static: false}) foo !: ElementRef;`. `ng update` sorgularınızı otomatik olarak güncelleyecektir ancak uyumluluk için sorgularınızı `static` yapma tarafında hata yapacaktır. Daha fazla bilgi için [angular.io](https://angular.io/guide/static-query-migration) adresini ziyaret edin.",
   },
   {
     possibleIn: 800,
@@ -514,7 +514,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v8 material update',
     action:
-      'Update Angular Material to version 8 by running `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/material@8` in your terminal.',
+      "Terminalinizde `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/material@8` komutunu çalıştırarak Angular Material'i sürüm 8'e güncelleyin.",
   },
   {
     possibleIn: 800,
@@ -524,7 +524,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v8 material update',
     action:
-      'Update Angular Material to version 8 by running `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/material@8"` in your terminal.',
+      'Terminalinizde `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/material@8"` komutunu çalıştırarak Angular Material\'i sürüm 8\'e güncelleyin.',
   },
   {
     possibleIn: 800,
@@ -533,7 +533,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'deep imports',
     action:
-      'Instead of importing from `@angular/material`, you should import deeply from the specific component. E.g. `@angular/material/button`. `ng update` will do this automatically for you.',
+      '`@angular/material` yerine belirli bileşenden derinlemesine içe aktarmalısınız. Örn. `@angular/material/button`. `ng update` bunu sizin için otomatik olarak yapacaktır.',
   },
   {
     possibleIn: 800,
@@ -541,7 +541,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'new loadChildren',
     action:
-      'For lazy loaded modules via the router, make sure you are [using dynamic imports](https://angular.io/guide/deprecations#loadchildren-string-syntax). Importing via string is removed in v9. `ng update` should take care of this automatically. Learn more on [angular.io](https://angular.io/guide/deprecations#loadchildren-string-syntax).',
+      "Router üzerinden tembel yüklenen modüller için [dinamik içe aktarma kullandığınızdan](https://angular.io/guide/deprecations#loadchildren-string-syntax) emin olun. String ile içe aktarma v9'da kaldırılmıştır. `ng update` bunu otomatik olarak halletmelidir. Daha fazla bilgi için [angular.io](https://angular.io/guide/deprecations#loadchildren-string-syntax) adresini ziyaret edin.",
   },
   {
     possibleIn: 800,
@@ -549,7 +549,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'platform deprecated',
     action:
-      "We are deprecating support for `@angular/platform-webworker`, as it has been incompatible with the CLI. Running Angular's rendering architecture in a web worker did not meet developer needs. You can still use web workers with Angular. Learn more in our [web worker guide](https://v9.angular.io/guide/web-worker). If you have use cases where you need this, let us know at devrel@angular.io!",
+      "CLI ile uyumsuz olduğu için `@angular/platform-webworker` desteğini kullanımdan kaldırıyoruz. Angular'ın render mimarisini bir web worker'da çalıştırmak geliştirici ihtiyaçlarını karşılamadı. Yine de Angular ile web worker'ları kullanabilirsiniz. [Web worker rehberimizde](https://v9.angular.io/guide/web-worker) daha fazla bilgi edinin. Buna ihtiyaç duyduğunuz kullanım senaryolarınız varsa devrel@angular.io adresinden bize bildirin!",
   },
   {
     possibleIn: 800,
@@ -557,7 +557,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'node-sass',
     action:
-      'We have switched from the native Sass compiler to the JavaScript compiler. To switch back to the native version, install it as a devDependency: `npm install node-sass --save-dev`.',
+      'Yerel Sass derleyicisinden JavaScript derleyicisine geçtik. Yerel sürüme geri dönmek için devDependency olarak yükleyin: `npm install node-sass --save-dev`.',
   },
   {
     possibleIn: 800,
@@ -565,7 +565,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'schematics async',
     action:
-      'If you are building your own Schematics, they have previously been *potentially* asynchronous. As of 8.0, all schematics will be asynchronous.',
+      "Kendi Schematics'lerinizi oluşturuyorsanız, bunlar daha önce *potansiyel olarak* asenkrondu. 8.0 itibarıyla tüm schematics'ler asenkron olacaktır.",
   },
   {
     possibleIn: 900,
@@ -573,7 +573,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 10.13',
     action:
-      'Make sure you are using <a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 10.13 or later</a>.',
+      '<a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 10.13 veya üstünü</a> kullandığınızdan emin olun.',
   },
   {
     possibleIn: 900,
@@ -582,7 +582,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'cli v8 latest',
     action:
-      'Run `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/core@8 @angular/cli@8` in your workspace directory to update to the latest 8.x version of `@angular/core` and `@angular/cli` and commit these changes.',
+      '`@angular/core` ve `@angular/cli` paketlerinin en son 8.x sürümüne güncellemek için çalışma alanı dizininizde `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@8 update @angular/core@8 @angular/cli@8` komutunu çalıştırın ve bu değişiklikleri kaydedin.',
   },
   {
     possibleIn: 900,
@@ -591,7 +591,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'cli v8 latest',
     action:
-      'Run `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/cli@8 @angular/core@8"` in your workspace directory to update to the latest 8.x version of `@angular/core` and `@angular/cli` and commit these changes.',
+      '`@angular/core` ve `@angular/cli` paketlerinin en son 8.x sürümüne güncellemek için çalışma alanı dizininizde `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@8 update @angular/cli@8 @angular/core@8"` komutunu çalıştırın ve bu değişiklikleri kaydedin.',
   },
   {
     possibleIn: 900,
@@ -599,7 +599,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'create commits',
     action:
-      'You can optionally pass the `--create-commits` (or `-C`) flag to [ng update](https://angular.io/cli/update) commands to create a git commit per individual migration.',
+      'Her bir taşıma işlemi için ayrı bir git commit oluşturmak üzere [ng update](https://angular.io/cli/update) komutlarına isteğe bağlı olarak `--create-commits` (veya `-C`) bayrağını geçirebilirsiniz.',
   },
   {
     possibleIn: 900,
@@ -608,7 +608,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'ng update v9',
     action:
-      'Run `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @angular/core@9 @angular/cli@9` which should bring you to version 9 of Angular.',
+      "Sizi Angular sürüm 9'a güncellemesi gereken `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @angular/core@9 @angular/cli@9` komutunu çalıştırın.",
   },
   {
     possibleIn: 900,
@@ -617,7 +617,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'ng update v9',
     action:
-      'Run `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @angular/cli@9 @angular/core@9"` which should bring you to version 9 of Angular.',
+      'Sizi Angular sürüm 9\'a güncellemesi gereken `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @angular/cli@9 @angular/core@9"` komutunu çalıştırın.',
   },
   {
     possibleIn: 900,
@@ -625,7 +625,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'typescript 3.8',
     action:
-      'Your project has now been updated to TypeScript 3.8, read more about new compiler checks and errors that might require you to fix issues in your code in the [TypeScript 3.7](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html) or [TypeScript 3.8](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html) announcements.',
+      "Projeniz artık TypeScript 3.8'e güncellendi. Kodunuzda düzeltmeniz gerekebilecek yeni derleyici kontrolleri ve hatalar hakkında daha fazla bilgi için [TypeScript 3.7](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html) veya [TypeScript 3.8](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html) duyurularını okuyun.",
   },
   {
     possibleIn: 900,
@@ -634,7 +634,8 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @angular/material@9`.',
+    action:
+      '`NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @angular/material@9` komutunu çalıştırın.',
   },
   {
     possibleIn: 900,
@@ -644,7 +645,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'update @angular/material',
     action:
-      'Run `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @angular/material@9"`.',
+      '`cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @angular/material@9"` komutunu çalıştırın.',
   },
   {
     possibleIn: 900,
@@ -653,7 +654,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: false,
     step: 'update @nguniversal/hapi-engine',
     action:
-      'If you use Angular Universal, run `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @nguniversal/hapi-engine@9` or `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @nguniversal/express-engine@9` depending on the engine you use. This step may require the `--force` flag if any of your third-party dependencies have not updated the Angular version of their peer dependencies.',
+      'Angular Universal kullanıyorsanız, kullandığınız motora bağlı olarak `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @nguniversal/hapi-engine@9` veya `NG_DISABLE_VERSION_CHECK=1 npx @angular/cli@9 update @nguniversal/express-engine@9` komutunu çalıştırın. Üçüncü taraf bağımlılıklarınızdan herhangi biri eş bağımlılıklarının Angular sürümünü güncellemediyse, bu adım `--force` bayrağı gerektirebilir.',
   },
   {
     possibleIn: 900,
@@ -662,7 +663,7 @@ export const RECOMMENDATIONS: Step[] = [
     windows: true,
     step: 'update @nguniversal/hapi-engine',
     action:
-      'If you use Angular Universal, run `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @nguniversal/hapi-engine@9"` or `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @nguniversal/express-engine@9"` depending on the engine you use. This step may require the `--force` flag if any of your third-party dependencies have not updated the Angular version of their peer dependencies.',
+      'Angular Universal kullanıyorsanız, kullandığınız motora bağlı olarak `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @nguniversal/hapi-engine@9"` veya `cmd /C "set "NG_DISABLE_VERSION_CHECK=1" && npx @angular/cli@9 update @nguniversal/express-engine@9"` komutunu çalıştırın. Üçüncü taraf bağımlılıklarınızdan herhangi biri eş bağımlılıklarının Angular sürümünü güncellemediyse, bu adım `--force` bayrağı gerektirebilir.',
   },
   {
     possibleIn: 900,
@@ -670,7 +671,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'dependencies update',
     action:
-      'If your project depends on other Angular libraries, we recommend that you consider updating to their latest version. In some cases this update might be required in order to resolve API incompatibilities. Consult `ng update` or `npm outdated` to learn about your outdated libraries.',
+      'Projeniz diğer Angular kütüphanelerine bağlıysa, bunları en son sürümlerine güncellemenizi öneririz. Bazı durumlarda bu güncelleme, API uyumsuzluklarını çözmek için gerekli olabilir. Güncel olmayan kütüphanelerinizi öğrenmek için `ng update` veya `npm outdated` komutlarına başvurun.',
   },
   {
     possibleIn: 900,
@@ -678,7 +679,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'ivy update',
     action:
-      'During the update to version 9, your project was transformed as necessary via code migrations in order to remove any incompatible or deprecated API calls from your code base. You can now review these changes, and consult the [Updating to version 9 guide](https://v9.angular.io/guide/updating-to-version-9) to learn more about the changes.',
+      "Sürüm 9'a güncelleme sırasında, kod tabanınızdan uyumsuz veya kullanımdan kaldırılmış API çağrılarını kaldırmak için projeniz kod taşımaları aracılığıyla gerektiği şekilde dönüştürüldü. Artık bu değişiklikleri inceleyebilir ve değişiklikler hakkında daha fazla bilgi edinmek için [Sürüm 9'a güncelleme kılavuzu](https://v9.angular.io/guide/updating-to-version-9)na başvurabilirsiniz.",
   },
   {
     possibleIn: 900,
@@ -686,7 +687,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'stylesUpdate',
     action:
-      'Bound CSS styles and classes previously were applied with a "last change wins" strategy, but now follow a defined precedence. Learn more about [Styling Precedence](https://angular.io/guide/attribute-binding#styling-precedence).',
+      'Bağlı CSS stilleri ve sınıfları daha önce "son değişiklik kazanır" stratejisiyle uygulanıyordu, ancak artık tanımlanmış bir öncelik sırasını takip etmektedir. [Stil Önceliği](https://angular.io/guide/attribute-binding#styling-precedence) hakkında daha fazla bilgi edinin.',
   },
   {
     possibleIn: 900,
@@ -694,7 +695,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'ModuleWithProviders',
     action:
-      'If you are a library author and you had a method returning `ModuleWithProviders`  (typically via a method named `forRoot()`), you will need to specify the generic type. Learn more [angular.io](https://v9.angular.io/guide/deprecations#modulewithproviders-type-without-a-generic)',
+      'Bir kütüphane yazarıysanız ve `ModuleWithProviders` döndüren bir metodunuz varsa (genellikle `forRoot()` adlı bir metot aracılığıyla), genel türü belirtmeniz gerekecektir. [angular.io](https://v9.angular.io/guide/deprecations#modulewithproviders-type-without-a-generic) adresinden daha fazla bilgi edinin',
   },
   {
     possibleIn: 800,
@@ -702,7 +703,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'wtf',
     action:
-      'Support for web tracing framework in Angular was deprecated in version 8. You should stop using any of the `wtf*` APIs. To do performance tracing, we recommend using [browser performance tools](https://developers.google.com/web/tools/lighthouse/audits/user-timing).',
+      "Angular'da web izleme çerçevesi desteği sürüm 8'de kullanımdan kaldırılmıştır. Tüm `wtf*` API'lerini kullanmayı bırakmalısınız. Performans izleme için [tarayıcı performans araçları](https://developers.google.com/web/tools/lighthouse/audits/user-timing) kullanmanızı öneririz.",
   },
   {
     possibleIn: 800,
@@ -710,7 +711,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'es5browser',
     action:
-      'Remove any `es5BrowserSupport` flags in your `angular.json` and set your `target` to `es2015` in your `tsconfig.json`. Angular now uses your browserslist to determine if an ES5 build is needed. `ng update` will migrate you automatically.',
+      '`angular.json` dosyanızdaki tüm `es5BrowserSupport` bayraklarını kaldırın ve `tsconfig.json` dosyanızda `target` değerini `es2015` olarak ayarlayın. Angular artık ES5 derlemesinin gerekip gerekmediğini belirlemek için browserslist dosyanızı kullanmaktadır. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 900,
@@ -718,7 +719,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'ngForm selector',
     action:
-      'If you use `ngForm` element selector to create Angular Forms, you should instead use `ng-form`.',
+      'Angular Formları oluşturmak için `ngForm` eleman seçicisini kullanıyorsanız, bunun yerine `ng-form` kullanmalısınız.',
   },
   {
     possibleIn: 900,
@@ -726,7 +727,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'typings compilation',
     action:
-      'We have updated the `tsconfig.app.json` to limit the files compiled. If you rely on other files being included in the compilation, such as a `typings.d.ts` file, you need to manually add it to the compilation.',
+      'Derlenen dosyaları sınırlamak için `tsconfig.app.json` dosyasını güncelledik. Derlemeye dahil edilen diğer dosyalara (örneğin `typings.d.ts` dosyası) bağımlıysanız, bunu derlemeye manuel olarak eklemeniz gerekir.',
   },
   {
     possibleIn: 900,
@@ -734,7 +735,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'debug',
     action:
-      'With Angular 9 Ivy is now the default rendering engine, for any compatibility problems that might arise, read the [Ivy compatibility guide](https://v9.angular.io/guide/ivy-compatibility).',
+      'Angular 9 ile Ivy artık varsayılan işleme motorudur. Ortaya çıkabilecek uyumluluk sorunları için [Ivy uyumluluk kılavuzu](https://v9.angular.io/guide/ivy-compatibility)nu okuyun.',
   },
   {
     possibleIn: 900,
@@ -742,7 +743,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'express-universal-server',
     action:
-      'If you use Angular Universal with  `@nguniversal/express-engine` or `@nguniversal/hapi-engine`, several backup files will be created. One of them for `server.ts`. If this file defers from the default one, you may need to copy some changes from the `server.ts.bak` to `server.ts` manually.',
+      "Angular Universal'ı `@nguniversal/express-engine` veya `@nguniversal/hapi-engine` ile kullanıyorsanız, birkaç yedek dosya oluşturulacaktır. Bunlardan biri `server.ts` içindir. Bu dosya varsayılandan farklıysa, `server.ts.bak` dosyasından `server.ts` dosyasına bazı değişiklikleri manuel olarak kopyalamanız gerekebilir.",
   },
   {
     possibleIn: 900,
@@ -750,7 +751,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'ivy i18n',
     action:
-      "Angular 9 introduced a global `$localize()` function that needs to be loaded if you depend on Angular's internationalization (i18n). Run `ng add @angular/localize` to add the necessary packages and code modifications. Consult the [$localize Global Import Migration guide](https://v9.angular.io/guide/migration-localize) to learn more about the changes.",
+      "Angular 9, Angular'ın uluslararasılaştırma (i18n) özelliğine bağımlıysanız yüklenmesi gereken global bir `$localize()` fonksiyonu tanıttı. Gerekli paketleri ve kod değişikliklerini eklemek için `ng add @angular/localize` komutunu çalıştırın. Değişiklikler hakkında daha fazla bilgi edinmek için [$localize Global Import Taşıma kılavuzu](https://v9.angular.io/guide/migration-localize)na başvurun.",
   },
   {
     possibleIn: 900,
@@ -758,7 +759,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'entryComponents',
     action:
-      'In your application projects, you can remove `entryComponents` NgModules and any uses of `ANALYZE_FOR_ENTRY_COMPONENTS`. They are no longer required with the Ivy compiler and runtime. You may need to keep these if building a library that will be consumed by a View Engine application.',
+      'Uygulama projelerinizde `entryComponents` NgModules tanımlarını ve `ANALYZE_FOR_ENTRY_COMPONENTS` kullanımlarını kaldırabilirsiniz. Ivy derleyicisi ve çalışma zamanı ile bunlar artık gerekli değildir. View Engine uygulaması tarafından tüketilecek bir kütüphane oluşturuyorsanız bunları korumanız gerekebilir.',
   },
   {
     possibleIn: 900,
@@ -766,7 +767,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'testbed-get',
     action:
-      'If you use `TestBed.get`, you should instead use `TestBed.inject`. This new method has the same behavior, but is type safe.',
+      '`TestBed.get` kullanıyorsanız, bunun yerine `TestBed.inject` kullanmalısınız. Bu yeni metot aynı davranışa sahiptir ancak tür güvenlidir.',
   },
   {
     possibleIn: 900,
@@ -774,7 +775,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '$localize',
     action:
-      "If you use [Angular's i18n support](http://angular.io/guide/i18n), you will need to begin using `@angular/localize`. Learn more about the [$localize Global Import Migration](https://v9.angular.io/guide/migration-localize).",
+      "[Angular'ın i18n desteğini](http://angular.io/guide/i18n) kullanıyorsanız, `@angular/localize` kullanmaya başlamanız gerekecektir. [$localize Global Import Taşıması](https://v9.angular.io/guide/migration-localize) hakkında daha fazla bilgi edinin.",
   },
 
   {
@@ -783,7 +784,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v10 NodeJS 12',
     action:
-      'Make sure you are using <a href="https://nodejs.org/dist/latest-v12.x/" target="_blank">Node 12 or later</a>.',
+      '<a href="https://nodejs.org/dist/latest-v12.x/" target="_blank">Node 12 veya üstünü</a> kullandığınızdan emin olun.',
   },
   {
     possibleIn: 1000,
@@ -791,7 +792,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'ng update v10',
     action:
-      'Run `npx @angular/cli@10 update @angular/core@10 @angular/cli@10` which should bring you to version 10 of Angular.',
+      "Sizi Angular sürüm 10'a güncellemesi gereken `npx @angular/cli@10 update @angular/core@10 @angular/cli@10` komutunu çalıştırın.",
   },
   {
     possibleIn: 1000,
@@ -799,7 +800,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `npx @angular/cli@10 update @angular/material@10`.',
+    action: '`npx @angular/cli@10 update @angular/material@10` komutunu çalıştırın.',
   },
   {
     possibleIn: 1000,
@@ -807,7 +808,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'browserlist',
     action:
-      'New projects use the filename `.browserslistrc` instead of `browserslist`. `ng update` will migrate you automatically.',
+      'Yeni projeler `browserslist` yerine `.browserslistrc` dosya adını kullanır. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 1000,
@@ -815,7 +816,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v10-versions',
     action:
-      'Angular now requires `tslint` v6, `tslib` v2, and [TypeScript 3.9](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html). `ng update` will migrate you automatically.',
+      'Angular artık `tslint` v6, `tslib` v2 ve [TypeScript 3.9](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html) gerektirmektedir. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 1000,
@@ -823,7 +824,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'styleext',
     action:
-      'Stop using `styleext` or `spec` in your Angular schematics. `ng update` will migrate you automatically.',
+      'Angular şemalarınızda `styleext` veya `spec` kullanmayı bırakın. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 900,
@@ -831,7 +832,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'classes-without-decorators',
     action:
-      'In version 10, classes that use Angular features and do not have an Angular decorator are no longer supported.  [Read more](https://v10.angular.io/guide/migration-undecorated-classes).  `ng update` will migrate you automatically.',
+      "Sürüm 10'da, Angular özelliklerini kullanan ancak Angular dekoratörü olmayan sınıflar artık desteklenmemektedir.  [Daha fazla bilgi](https://v10.angular.io/guide/migration-undecorated-classes).  `ng update` sizi otomatik olarak taşıyacaktır.",
   },
   {
     possibleIn: 900,
@@ -839,7 +840,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'injectable-definitions',
     action:
-      'As of Angular 9, enforcement of @Injectable decorators for DI is stricter and incomplete provider definitions behave differently. [Read more](https://v9.angular.io/guide/migration-injectable). `ng update` will migrate you automatically.',
+      'Angular 9 itibarıyla, DI için @Injectable dekoratörlerinin uygulanması daha katıdır ve eksik sağlayıcı tanımları farklı davranır. [Daha fazla bilgi](https://v9.angular.io/guide/migration-injectable). `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 1000,
@@ -847,7 +848,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'closure-jsdoc-comments',
     action:
-      "Angular's NPM packages no longer contain jsdoc comments, which are necessary for use with closure compiler (extremely uncommon). This support was experimental and only worked in some use cases. There will be an alternative recommended path announced shortly.",
+      "Angular'ın NPM paketleri artık closure derleyicisi ile kullanım için gerekli olan jsdoc yorumlarını içermemektedir (son derece nadir). Bu destek deneyseldi ve yalnızca bazı kullanım durumlarında çalışıyordu. Yakında önerilen alternatif bir yol duyurulacaktır.",
   },
   {
     possibleIn: 1000,
@@ -855,7 +856,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'forms-number-input',
     action:
-      'If you use Angular forms, inputs of type `number` no longer listen to [change events](https://developer.mozilla.org/docs/Web/API/HTMLElement/change_event) (this events are not necessarily fired for each alteration the value), instead listen for an [input events](https://developer.mozilla.org/docs/Web/API/HTMLElement/input_event). ',
+      'Angular formları kullanıyorsanız, `number` türündeki girdiler artık [change olaylarını](https://developer.mozilla.org/docs/Web/API/HTMLElement/change_event) dinlememektedir (bu olaylar değerdeki her değişiklik için tetiklenmeyebilir), bunun yerine [input olaylarını](https://developer.mozilla.org/docs/Web/API/HTMLElement/input_event) dinlemektedir. ',
   },
   {
     possibleIn: 1000,
@@ -863,7 +864,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'forms-length-input',
     action:
-      "For Angular forms validation, the `minLength` and `maxLength` validators now verify that the form control's value has a numeric length property, and only validate for length if that's the case.",
+      'Angular form doğrulaması için `minLength` ve `maxLength` doğrulayıcıları artık form kontrolünün değerinin sayısal bir length özelliğine sahip olup olmadığını kontrol etmekte ve yalnızca bu durumda uzunluk doğrulaması yapmaktadır.',
   },
   {
     possibleIn: 1000,
@@ -871,7 +872,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'esm5-bundles',
     action:
-      "The [Angular Package Format](https://g.co/ng/apf) has been updated to remove `esm5` and `fesm5` formats. These are no longer distributed in our npm packages. If you don't use the CLI, you may need to downlevel Angular code to ES5 yourself.",
+      "[Angular Paket Formatı](https://g.co/ng/apf), `esm5` ve `fesm5` formatlarını kaldırmak için güncellendi. Bunlar artık npm paketlerimizde dağıtılmamaktadır. CLI kullanmıyorsanız, Angular kodunu kendiniz ES5'e dönüştürmeniz gerekebilir.",
   },
   {
     possibleIn: 1000,
@@ -879,7 +880,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'console-errors',
     action:
-      "Warnings about unknown elements are now logged as errors. This won't break your app, but it may trip up tools that expect nothing to be logged via `console.error`.",
+      'Bilinmeyen öğelerle ilgili uyarılar artık hata olarak günlüğe kaydedilmektedir. Bu uygulamanızı bozmayacaktır, ancak `console.error` aracılığıyla hiçbir şeyin günlüğe kaydedilmemesini bekleyen araçları etkileyebilir.',
   },
   {
     possibleIn: 1000,
@@ -887,7 +888,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'router-resolver-empty',
     action:
-      'Any resolver which returns `EMPTY` will cancel navigation. If you want to allow navigation to continue, you will need to update the resolvers to emit some value, (i.e. `defaultIfEmpty(...)`, `of(...)`, etc).',
+      '`EMPTY` döndüren herhangi bir çözümleyici navigasyonu iptal edecektir. Navigasyonun devam etmesine izin vermek istiyorsanız, çözümleyicileri bir değer yayacak şekilde güncellemeniz gerekecektir (örneğin `defaultIfEmpty(...)`, `of(...)` vb.).',
   },
   {
     possibleIn: 1000,
@@ -895,7 +896,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'sw-vary-headers',
     action:
-      'If you use the Angular service worker and rely on resources with [Vary](https://developer.mozilla.org/docs/Web/HTTP/Headers/Vary) headers, these headers are now ignored to avoid unpredictable behavior across browsers. To avoid this, [configure](https://angular.io/guide/service-worker-config) your service worker to avoid caching these resources.',
+      "Angular service worker kullanıyorsanız ve [Vary](https://developer.mozilla.org/docs/Web/HTTP/Headers/Vary) başlıklarına sahip kaynaklara bağımlıysanız, tarayıcılar arasında öngörülemeyen davranışları önlemek için bu başlıklar artık yok sayılmaktadır. Bunu önlemek için service worker'ınızı bu kaynakları önbelleğe almayacak şekilde [yapılandırın](https://angular.io/guide/service-worker-config).",
   },
   {
     possibleIn: 1000,
@@ -903,7 +904,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'expression-changed-after-checked-new',
     action:
-      'You may see `ExpressionChangedAfterItHasBeenChecked` errors that were not detected before when using the `async` pipe. The error could previously have gone undetected because two `WrappedValues` are considered "equal" in all cases for the purposes of the check, even if their respective unwrapped values are not. In version 10, `WrappedValue` has been removed.',
+      '`async` pipe kullanırken daha önce tespit edilmeyen `ExpressionChangedAfterItHasBeenChecked` hataları görebilirsiniz. Bu hata daha önce fark edilmemiş olabilir çünkü kontrol amacıyla iki `WrappedValues`, sarılmış değerleri farklı olsa bile tüm durumlarda "eşit" kabul ediliyordu. Sürüm 10\'da `WrappedValue` kaldırılmıştır.',
   },
   {
     possibleIn: 1000,
@@ -911,7 +912,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'property-binding-change-detection',
     action:
-      'If you have a property binding such as `[val]=(observable | async).someProperty`, this will no longer trigger change detection if the value of `someProperty` is identical to the previous emit. If you rely on this, either manually subscribe and call `markForCheck` as needed or update the binding to ensure the reference changes.',
+      '`[val]=(observable | async).someProperty` gibi bir özellik bağlamanız varsa, `someProperty` değeri önceki yayınla aynıysa bu artık değişiklik algılamayı tetiklemeyecektir. Buna bağımlıysanız, ya manuel olarak abone olup gerektiğinde `markForCheck` çağırın ya da referansın değişmesini sağlamak için bağlamayı güncelleyin.',
   },
   {
     possibleIn: 1000,
@@ -919,7 +920,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'day-periods-crossing-midnight',
     action:
-      'If you use either `formatDate()` or `DatePipe` and any of the `b` or `B` format codes, the logic has been updated so that it matches times that are within a day period that spans midnight, so it will now render the correct output, such as at `night` in the case of English.',
+      '`formatDate()` veya `DatePipe` ve `b` veya `B` format kodlarından herhangi birini kullanıyorsanız, mantık gece yarısını kapsayan bir gün dilimine denk gelen zamanlarla eşleşecek şekilde güncellendi, böylece artık İngilizce durumunda `night` gibi doğru çıktıyı oluşturacaktır.',
   },
   {
     possibleIn: 1000,
@@ -927,7 +928,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'urlmatcher-null',
     action:
-      'If you use the `UrlMatcher`, the type now reflects that it could always return `null`.',
+      '`UrlMatcher` kullanıyorsanız, tür artık her zaman `null` döndürebileceğini yansıtmaktadır.',
   },
   {
     possibleIn: 1000,
@@ -935,7 +936,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v10-more-details',
     action:
-      'For more details about deprecations, automated migrations, and changes visit the [guide angular.io](https://v10.angular.io/guide/updating-to-version-10)',
+      'Kullanımdan kaldırmalar, otomatik taşımalar ve değişiklikler hakkında daha fazla ayrıntı için [angular.io kılavuzu](https://v10.angular.io/guide/updating-to-version-10)nu ziyaret edin',
   },
   {
     possibleIn: 1020,
@@ -943,7 +944,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'universal-baseurl',
     action:
-      'For Angular Universal users, if you use `useAbsoluteUrl` to setup `platform-server`, you now need to also specify `baseUrl`.',
+      'Angular Universal kullanıcıları için, `platform-server` kurulumunda `useAbsoluteUrl` kullanıyorsanız, artık `baseUrl` değerini de belirtmeniz gerekmektedir.',
   },
 
   {
@@ -952,7 +953,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v11 ng update',
     action:
-      'Run `ng update @angular/core@11 @angular/cli@11` which should bring you to version 11 of Angular.',
+      "Sizi Angular sürüm 11'e güncellemesi gereken `ng update @angular/core@11 @angular/cli@11` komutunu çalıştırın.",
   },
   {
     possibleIn: 1100,
@@ -960,7 +961,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@11`.',
+    action: '`ng update @angular/material@11` komutunu çalıştırın.',
   },
   {
     possibleIn: 1100,
@@ -968,7 +969,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v11 versions',
     action:
-      'Angular now requires [TypeScript 4.0](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/). `ng update` will migrate you automatically.',
+      'Angular artık [TypeScript 4.0](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/) gerektirmektedir. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 1100,
@@ -976,7 +977,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v11 browser support',
     action:
-      'Support for IE9, IE10, and IE mobile has been removed. This was announced in the [v10 update](http://blog.angular.dev/version-10-of-angular-now-available-78960babd41#c357). ',
+      'IE9, IE10 ve IE mobile desteği kaldırılmıştır. Bu, [v10 güncellemesinde](http://blog.angular.dev/version-10-of-angular-now-available-78960babd41#c357) duyurulmuştu. ',
   },
   {
     possibleIn: 1100,
@@ -984,7 +985,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'webpack5 optin',
     action:
-      'You can now opt-in to use webpack 5 by using Yarn and adding `"resolutions": {"webpack": "^5.0.0"}` to your `package.json`.',
+      'Artık Yarn kullanarak ve `package.json` dosyanıza `"resolutions": {"webpack": "^5.0.0"}` ekleyerek webpack 5 kullanmayı tercih edebilirsiniz.',
   },
   {
     possibleIn: 1100,
@@ -992,7 +993,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'ng new strict prompt',
     action:
-      'When generating new projects, you will be asked if you want to enable strict mode. This will configure TypeScript and the Angular compiler for stricter type checking, and apply smaller bundle budgets by default. You can use the `--strict=true` or `--strict=false` to skip the prompt.',
+      'Yeni projeler oluştururken katı modunu etkinleştirmek isteyip istemediğiniz sorulacaktır. Bu, TypeScript ve Angular derleyicisini daha katı tür denetimi için yapılandıracak ve varsayılan olarak daha küçük paket bütçeleri uygulayacaktır. İstemi atlamak için `--strict=true` veya `--strict=false` kullanabilirsiniz.',
   },
   {
     possibleIn: 1100,
@@ -1000,7 +1001,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 router relativeLinkResolution',
     action:
-      "If you use the router, the default value of `relativeLinkResolution` has changed from `legacy` to `corrected`. If your application previously used the default by not specifying a value in the `ExtraOptions` and uses relative links when navigating from children of empty path routes, you will need to update your `RouterModule`'s configuration to specifically specify `legacy` for `relativeLinkResolution`. See [the documentation](https://v11.angular.io/api/router/ExtraOptions#relativeLinkResolution) for more details.",
+      "Yönlendirici kullanıyorsanız, `relativeLinkResolution` varsayılan değeri `legacy`'den `corrected`'a değiştirilmiştir. Uygulamanız daha önce `ExtraOptions`'da bir değer belirtmeden varsayılanı kullanıyorsa ve boş yol rotalarının alt öğelerinden gezinirken göreli bağlantılar kullanıyorsa, `RouterModule` yapılandırmanızı `relativeLinkResolution` için özellikle `legacy` belirtecek şekilde güncellemeniz gerekecektir. Daha fazla ayrıntı için [belgelere](https://v11.angular.io/api/router/ExtraOptions#relativeLinkResolution) bakın.",
   },
   {
     possibleIn: 1100,
@@ -1008,7 +1009,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'router initialNavigation',
     action:
-      'In the Angular Router, the options deprecated in v4 for `initialNavigation` have been removed. If you previously used `enabled` or `true`, now choose `enabledNonBlocking` or `enabledBlocking`. If you previously used `false` or `legacy_disabled`, now use `disabled`.',
+      "Angular Yönlendiricisinde, `initialNavigation` için v4'te kullanımdan kaldırılan seçenekler kaldırılmıştır. Daha önce `enabled` veya `true` kullandıysanız, şimdi `enabledNonBlocking` veya `enabledBlocking` seçin. Daha önce `false` veya `legacy_disabled` kullandıysanız, şimdi `disabled` kullanın.",
   },
   {
     possibleIn: 1100,
@@ -1016,7 +1017,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'routerlink preserveQueryParams',
     action:
-      'In the Angular Router\'s `routerLink`, `preserveQueryParams` has been removed, use `queryParamsHandling="preserve"` instead.',
+      'Angular Yönlendiricisinin `routerLink` özelliğinde `preserveQueryParams` kaldırılmıştır, bunun yerine `queryParamsHandling="preserve"` kullanın.',
   },
   {
     possibleIn: 1100,
@@ -1024,7 +1025,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'routerlink queryParams typing',
     action:
-      'If you were accessing the `routerLink` values of `queryParams`, `fragment` or `queryParamsHandling` you might need to relax the typing to also accept `undefined` and `null`.',
+      '`routerLink` öğesinin `queryParams`, `fragment` veya `queryParamsHandling` değerlerine erişiyorsanız, `undefined` ve `null` değerlerini de kabul edecek şekilde tür tanımını gevşetmeniz gerekebilir.',
   },
   {
     possibleIn: 1100,
@@ -1032,7 +1033,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'viewencapsulation native removed',
     action:
-      'The component view encapsulation option `ViewEncapsulation.Native` has been removed. Use `ViewEncapsulation.ShadowDom` instead. `ng update` will migrate you automatically.',
+      'Bileşen görünüm kapsülleme seçeneği `ViewEncapsulation.Native` kaldırılmıştır. Bunun yerine `ViewEncapsulation.ShadowDom` kullanın. `ng update` sizi otomatik olarak taşıyacaktır.',
   },
   {
     possibleIn: 1100,
@@ -1040,7 +1041,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'ICU expressions typechecked',
     action:
-      'If you use i18n, expressions within International Components for Unicode (ICUs) expressions are now type-checked again. This may cause compilation failures if errors are found in expressions that appear within an ICU. ',
+      'i18n kullanıyorsanız, International Components for Unicode (ICU) ifadeleri içindeki ifadeler artık tekrar tür denetiminden geçirilmektedir. Bir ICU içinde görünen ifadelerde hatalar bulunursa bu derleme hatalarına neden olabilir. ',
   },
   {
     possibleIn: 1100,
@@ -1048,7 +1049,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'forms validators asyncValidators typing',
     action:
-      "Directives in the `@angular/forms` package used to have `any[]` as the type of the expected `validators` and `asyncValidators` arguments in constructors. Now these arguments are properly typed, so if your code relies on form's directive constructor types it may require some updates to improve type safety.",
+      '`@angular/forms` paketindeki direktifler, yapıcılarındaki beklenen `validators` ve `asyncValidators` argümanları için `any[]` türüne sahipti. Artık bu argümanlar düzgün şekilde türlendirildi, bu nedenle kodunuz form direktiflerinin yapıcı türlerine bağlıysa, tür güvenliğini artırmak için bazı güncellemeler gerekebilir.',
   },
   {
     possibleIn: 1100,
@@ -1056,7 +1057,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'forms AbstractFormControl',
     action:
-      "If you use Angular Forms, the type of `AbstractFormControl.parent` now includes null.  `ng update` will migrate you automatically, but in an unlikely case your code was testing the parent against undefined with strict equality, you'll need to change this to `=== null` instead, since the parent is now explicitly initialized with `null` instead of being left undefined.",
+      'Angular Forms kullanıyorsanız, `AbstractFormControl.parent` türü artık null içermektedir. `ng update` sizi otomatik olarak taşıyacaktır, ancak kodunuzun parent değerini katı eşitlikle undefined ile test ettiği nadir bir durumda, bunu `=== null` olarak değiştirmeniz gerekecektir, çünkü parent artık undefined bırakılmak yerine açıkça `null` ile başlatılmaktadır.',
   },
   {
     possibleIn: 1100,
@@ -1064,7 +1065,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'platform-webworker',
     action:
-      'The rarely used `@angular/platform-webworker` and `@angular/platform-webworker-dynamic` were deprecated in v8 and have been removed. Running parts of Angular in a web worker was an experiment that never worked well for common use cases. Angular still has great support for [Web Workers](https://angular.io/guide/web-worker). ',
+      "Nadiren kullanılan `@angular/platform-webworker` ve `@angular/platform-webworker-dynamic` paketleri v8'de kullanımdan kaldırılmıştı ve artık tamamen kaldırılmıştır. Angular'ın bir kısmını web worker içinde çalıştırma denemesi, yaygın kullanım senaryolarında hiçbir zaman iyi sonuç vermedi. Angular hâlâ [Web Workers](https://angular.io/guide/web-worker) için mükemmel destek sunmaktadır. ",
   },
   {
     possibleIn: 1100,
@@ -1072,7 +1073,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 slice pipe typing',
     action:
-      'The `slice` pipe now returns null for the undefined input value, which is consistent with the behavior of most pipes.',
+      "`slice` pipe'ı artık tanımsız (undefined) giriş değeri için null döndürmektedir; bu davranış çoğu pipe ile tutarlıdır.",
   },
   {
     possibleIn: 1100,
@@ -1080,7 +1081,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 keyvalue typing',
     action:
-      'The `keyvalue` pipe has been fixed to report that for input objects that have number keys, the result type will contain the string representation of the keys. This was already the case and the code has simply been updated to reflect this. Please update the consumers of the pipe output if they were relying on the incorrect types. Note that this does not affect use cases where the input values are `Map`s, so if you need to preserve `number`s, this is an effective way.',
+      "`keyvalue` pipe'ı, sayısal anahtarlara sahip giriş nesneleri için sonuç türünün anahtarların string temsilini içereceğini bildirmek üzere düzeltildi. Bu zaten böyleydi ve kod yalnızca bunu yansıtacak şekilde güncellendi. Hatalı türlere bağımlı olan pipe çıktı tüketicilerini lütfen güncelleyin. Bunun, giriş değerlerinin `Map` olduğu kullanım senaryolarını etkilemediğini unutmayın; bu nedenle `number` değerlerini korumanız gerekiyorsa, bu etkili bir yöntemdir.",
   },
   {
     possibleIn: 1100,
@@ -1088,14 +1089,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 number pipe typing',
     action:
-      'The number pipes (`decimal`, `percent`, `currency`, etc) now explicitly state which types are accepted.',
+      "Sayı pipe'ları (`decimal`, `percent`, `currency`, vb.) artık hangi türlerin kabul edildiğini açıkça belirtmektedir.",
   },
   {
     possibleIn: 1100,
     necessaryAsOf: 1100,
     level: ApplicationComplexity.Advanced,
     step: 'v11 date pipe typing',
-    action: 'The `date` pipe now explicitly states which types are accepted.',
+    action: "`date` pipe'ı artık hangi türlerin kabul edildiğini açıkça belirtmektedir.",
   },
   {
     possibleIn: 1100,
@@ -1103,7 +1104,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 datetime rounding',
     action:
-      'When passing a date-time formatted string to the `DatePipe` in a format that contains fractions of a millisecond, the milliseconds will now always be rounded down rather than to the nearest millisecond. Most applications will not be affected by this change. If this is not the desired behaviour then consider pre-processing the string to round the millisecond part before passing it to the `DatePipe`.',
+      "Milisaniyenin kesirlerini içeren bir biçimde `DatePipe`'a tarih-saat biçimli bir string geçirildiğinde, milisaniyeler artık en yakın milisaniyeye yuvarlanmak yerine her zaman aşağı yuvarlanacaktır. Çoğu uygulama bu değişiklikten etkilenmeyecektir. Bu istenen davranış değilse, string'i `DatePipe`'a geçirmeden önce milisaniye kısmını yuvarlamak için ön işleme yapmayı düşünün.",
   },
   {
     possibleIn: 1100,
@@ -1111,7 +1112,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 async pipe typing',
     action:
-      'The `async` pipe no longer claims to return undefined for an input that was typed as undefined. Note that the code actually returned null on undefined inputs.',
+      "`async` pipe'ı artık undefined olarak tanımlanan bir giriş için undefined döndürdüğünü iddia etmemektedir. Kodun aslında undefined girişlerde null döndürdüğünü unutmayın.",
   },
   {
     possibleIn: 1100,
@@ -1119,7 +1120,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v11 case pipe update',
     action:
-      'The `uppercase` and `lowercase` pipes no longer let falsy values through. They now map both `null` and `undefined` to `null` and raise an exception on invalid input (`0`, `false`, `NaN`). This matches other Angular pipes.',
+      "`uppercase` ve `lowercase` pipe'ları artık falsy değerleri geçirmemektedir. Artık hem `null` hem de `undefined` değerlerini `null` olarak eşler ve geçersiz girişlerde (`0`, `false`, `NaN`) istisna fırlatır. Bu davranış diğer Angular pipe'ları ile tutarlıdır.",
   },
   {
     possibleIn: 1100,
@@ -1127,7 +1128,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 router NavigationExtras typing',
     action:
-      'If you use the router with `NavigationExtras`, new typings allow a variable of type `NavigationExtras` to be passed in, but they will not allow object literals, as they may only specify known properties. They will also not accept types that do not have properties in common with the ones in the `Pick`. If you are affected by this change, only specify properties from the NavigationExtras which are actually used in the respective function calls or use a type assertion on the object or variable: `as NavigationExtras`.',
+      "Router'ı `NavigationExtras` ile kullanıyorsanız, yeni tür tanımlamaları `NavigationExtras` türünde bir değişkenin geçirilmesine izin verir, ancak yalnızca bilinen özellikler belirtebilecekleri için nesne literallerine izin vermez. Ayrıca `Pick` içindekilerle ortak özellikleri olmayan türleri de kabul etmez. Bu değişiklikten etkileniyorsanız, yalnızca ilgili fonksiyon çağrılarında gerçekten kullanılan NavigationExtras özelliklerini belirtin veya nesne ya da değişken üzerinde tür doğrulaması kullanın: `as NavigationExtras`.",
   },
   {
     possibleIn: 1100,
@@ -1135,7 +1136,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v11 TestBed.overrideProvider',
     action:
-      'In your tests if you call `TestBed.overrideProvider` after TestBed initialization, provider overrides are no longer applied. This behavior is consistent with other override methods (such as `TestBed.overrideDirective`, etc) but they throw an error to indicate that. The check was previously missing in the TestBed.overrideProvider function. If you see this error, you should move `TestBed.overrideProvider` calls before TestBed initialization is completed.',
+      'Testlerinizde TestBed başlatıldıktan sonra `TestBed.overrideProvider` çağırırsanız, sağlayıcı geçersiz kılmaları artık uygulanmamaktadır. Bu davranış diğer geçersiz kılma yöntemleriyle (örneğin `TestBed.overrideDirective`, vb.) tutarlıdır, ancak onlar bunu belirtmek için bir hata fırlatır. Bu kontrol daha önce TestBed.overrideProvider fonksiyonunda eksikti. Bu hatayı görürseniz, `TestBed.overrideProvider` çağrılarını TestBed başlatılması tamamlanmadan önceye taşımalısınız.',
   },
   {
     possibleIn: 1100,
@@ -1143,7 +1144,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v11 router RouteReuseStrategy',
     action:
-      "If you use the Router's RouteReuseStrategy, the argument order has changed. When calling `RouteReuseStrategy#shouldReuseRoute` previously when evaluating child routes, they would be called with the `future` and `current` arguments swapped. If your `RouteReuseStrategy` relies specifically on only the future or current snapshot state, you may need to update the `shouldReuseRoute` implementation's use of `future` and `current` `ActivateRouteSnapshots`.",
+      "Router'ın RouteReuseStrategy'sini kullanıyorsanız, argüman sırası değişmiştir. Daha önce alt rotalar değerlendirilirken `RouteReuseStrategy#shouldReuseRoute` çağrıldığında, `future` ve `current` argümanları ters sırada geçiriliyordu. `RouteReuseStrategy`'niz özellikle yalnızca gelecek (future) veya mevcut (current) anlık görüntü durumuna bağlıysa, `shouldReuseRoute` uygulamanızın `future` ve `current` `ActivateRouteSnapshots` kullanımını güncellemeniz gerekebilir.",
   },
   {
     possibleIn: 1100,
@@ -1151,7 +1152,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 locale data readonly',
     action:
-      'If you use locale data arrays, this API will now return readonly arrays. If you were mutating them (e.g. calling `sort()`, `push()`, `splice()`, etc) then your code will not longer compile. If you need to mutate the array, you should now take a copy (e.g. by calling `slice()`) and mutate the copy.',
+      'Yerel ayar veri dizilerini kullanıyorsanız, bu API artık salt okunur (readonly) diziler döndürecektir. Bunları değiştiriyorsanız (örneğin `sort()`, `push()`, `splice()`, vb. çağırarak) kodunuz artık derlenmeyecektir. Diziyi değiştirmeniz gerekiyorsa, artık bir kopya almalı (örneğin `slice()` çağırarak) ve kopyayı değiştirmelisiniz.',
   },
   {
     possibleIn: 1100,
@@ -1159,7 +1160,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v11 CollectionChangeRecord',
     action:
-      'In change detection, `CollectionChangeRecord` has been removed, use `IterableChangeRecord` instead.',
+      'Değişiklik algılamada `CollectionChangeRecord` kaldırılmıştır, bunun yerine `IterableChangeRecord` kullanın.',
   },
   {
     possibleIn: 1100,
@@ -1167,7 +1168,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v11 forms async validators',
     action:
-      'If you use Angular Forms with async validators defined at initialization time on class instances of `FormControl`, `FormGroup` or `FormArray` , the status change event was not previously emitted once async validator completed. This has been changed so that the status event is emitted into the `statusChanges` observable. If your code relies on the old behavior, you can filter/ignore this additional status change event.',
+      "Angular Forms'u `FormControl`, `FormGroup` veya `FormArray` sınıf örneklerinde başlatma zamanında tanımlanan asenkron doğrulayıcılarla kullanıyorsanız, asenkron doğrulayıcı tamamlandığında durum değişikliği olayı daha önce yayılmıyordu. Bu, durum olayının `statusChanges` observable'ına yayılması için değiştirilmiştir. Kodunuz eski davranışa bağımlıysa, bu ek durum değişikliği olayını filtreleyebilir/yok sayabilirsiniz.",
   },
 
   {
@@ -1176,7 +1177,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v12 ng update',
     action:
-      'Run `ng update @angular/core@12 @angular/cli@12` which should bring you to version 12 of Angular.',
+      "Angular'ın 12. sürümüne geçmenizi sağlayacak olan `ng update @angular/core@12 @angular/cli@12` komutunu çalıştırın.",
   },
   {
     possibleIn: 1200,
@@ -1184,7 +1185,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@12`.',
+    action: '`ng update @angular/material@12` komutunu çalıştırın.',
   },
   {
     possibleIn: 1200,
@@ -1192,7 +1193,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v12 versions',
     action:
-      'Angular now requires [TypeScript 4.2](https://devblogs.microsoft.com/typescript/announcing-typescript-4-2/). `ng update` will update you automatically.',
+      'Angular artık [TypeScript 4.2](https://devblogs.microsoft.com/typescript/announcing-typescript-4-2/) gerektirmektedir. `ng update` sizi otomatik olarak güncelleyecektir.',
   },
   {
     possibleIn: 1200,
@@ -1200,21 +1201,22 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v12 browser support',
     action:
-      'IE11 support has been deprecated. Find details in the [RFC for IE11 removal](https://github.com/angular/angular/issues/41840).',
+      "IE11 desteği kullanımdan kaldırılmıştır. Ayrıntıları [IE11 kaldırma RFC'sinde](https://github.com/angular/angular/issues/41840) bulabilirsiniz.",
   },
   {
     possibleIn: 1200,
     necessaryAsOf: 1200,
     level: ApplicationComplexity.Basic,
     step: 'v12 minimum  Node.js version',
-    action: 'You can no longer use Angular with Node.js version 10 or older',
+    action: "Artık Angular'ı Node.js 10 veya daha eski sürümlerle kullanamazsınız",
   },
   {
     possibleIn: 1200,
     necessaryAsOf: 1200,
     level: ApplicationComplexity.Medium,
     step: 'v12 `XhrFactory` relocation',
-    action: 'Change the import of `XhrFactory` from `@angular/common/http` to `@angular/common`.',
+    action:
+      "`XhrFactory` import'unu `@angular/common/http` yerine `@angular/common` olarak değiştirin.",
   },
   {
     possibleIn: 1200,
@@ -1222,7 +1224,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v12 i18n message ids',
     action:
-      'If you rely on legacy i18n message IDs use the `localize-migrate` tool to [move away from them](https://angular.io/guide/migration-legacy-message-id).',
+      'Eski i18n mesaj kimliklerine bağımlıysanız, `localize-migrate` aracını kullanarak [bunlardan uzaklaşın](https://angular.io/guide/migration-legacy-message-id).',
   },
   {
     possibleIn: 1200,
@@ -1230,7 +1232,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v12 deprecates `emitDistinctChangesOnly`',
     action:
-      'If you are using `emitDistinctChangesOnly` to configure `@ContentChildren` and `@ViewChildren` queries, you may need to update its value to `false` to align with its previous behavior. In v12 `emitDistinctChangesOnly` has default value `true`, and in future releases we will remove this configuration option to prevent triggering of unnecessary changes.',
+      "`@ContentChildren` ve `@ViewChildren` sorgularını yapılandırmak için `emitDistinctChangesOnly` kullanıyorsanız, önceki davranışıyla uyumlu olması için değerini `false` olarak güncellemeniz gerekebilir. v12'de `emitDistinctChangesOnly` varsayılan değeri `true`'dur ve gelecek sürümlerde gereksiz değişikliklerin tetiklenmesini önlemek için bu yapılandırma seçeneğini kaldıracağız.",
   },
   {
     possibleIn: 1200,
@@ -1238,7 +1240,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v12 prod by default',
     action:
-      'You can run the optional migration for enabling production builds by default `ng update @angular/cli@12 --migrate-only production-by-default`.',
+      'Varsayılan olarak üretim derlemelerini etkinleştirmek için isteğe bağlı taşımayı çalıştırabilirsiniz: `ng update @angular/cli@12 --migrate-only production-by-default`.',
   },
   {
     possibleIn: 1200,
@@ -1246,7 +1248,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 min and max form attributes',
     action:
-      'If you  use Angular forms, `min` and `max` attributes on `<input type="number">` will now trigger validation logic.',
+      'Angular forms kullanıyorsanız, `<input type="number">` üzerindeki `min` ve `max` öznitelikleri artık doğrulama mantığını tetikleyecektir.',
   },
   {
     possibleIn: 1200,
@@ -1254,7 +1256,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `emitEvent` in `FormArray` and `FormGroup`',
     action:
-      'If your app has custom classes that extend `FormArray` or `FormGroup` classes and override the above-mentioned methods, you may need to update your implementation',
+      'Uygulamanızda `FormArray` veya `FormGroup` sınıflarını genişleten ve yukarıda belirtilen yöntemleri geçersiz kılan özel sınıflar varsa, uygulamanızı güncellemeniz gerekebilir',
   },
   {
     possibleIn: 1200,
@@ -1262,7 +1264,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 zone.js minimum version',
     action:
-      'Update zone.js to version 0.11.4. `ng update` will update this dependency automatically.',
+      "zone.js'u 0.11.4 sürümüne güncelleyin. `ng update` bu bağımlılığı otomatik olarak güncelleyecektir.",
   },
   {
     possibleIn: 1200,
@@ -1270,7 +1272,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `HttpParams` method params update',
     action:
-      'If you extend the `HttpParams` class you may have to update the signature of its method to reflect changes in the parameter types.',
+      '`HttpParams` sınıfını genişletiyorsanız, parametre türlerindeki değişiklikleri yansıtmak için metodunun imzasını güncellemeniz gerekebilir.',
   },
   {
     possibleIn: 1200,
@@ -1278,7 +1280,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `routerLinkActiveOptions`',
     action:
-      '`routerLinkActiveOptions` property of `RouterLinkActive` now has a more specific type. You may need to update code accessing this property to align with the changes.',
+      '`RouterLinkActive` bileşeninin `routerLinkActiveOptions` özelliği artık daha spesifik bir türe sahiptir. Değişikliklere uyum sağlamak için bu özelliğe erişen kodu güncellemeniz gerekebilir.',
   },
   {
     possibleIn: 1200,
@@ -1286,7 +1288,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `APP_INITIALIZER` callback types',
     action:
-      'The initializer callbacks now have more specific return types, which may require update of your code if you are getting an `APP_INITIALIZER` instance via `Injector.get` or `TestBed.inject`.',
+      'Başlatıcı geri çağırma fonksiyonları artık daha spesifik dönüş türlerine sahiptir. `Injector.get` veya `TestBed.inject` aracılığıyla bir `APP_INITIALIZER` örneği alıyorsanız kodunuzu güncellemeniz gerekebilir.',
   },
   {
     possibleIn: 1200,
@@ -1294,7 +1296,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 fragment typings',
     action:
-      'The router fragments now could be `null`. Add `null` checks to avoid TypeScript failing with type errors.',
+      "Yönlendirici parçaları artık `null` olabilir. TypeScript'ın tür hatalarıyla başarısız olmasını önlemek için `null` kontrolleri ekleyin.",
   },
   {
     possibleIn: 1200,
@@ -1302,7 +1304,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `ng.getDirectives`',
     action:
-      "Make sure you don't rely on `ng.getDirectives` throwing an error if it can't find a directive associated with a particular DOM node.",
+      "`ng.getDirectives`'in belirli bir DOM düğümüyle ilişkili bir direktif bulamadığında hata fırlatmasına güvenmediğinizden emin olun.",
   },
   {
     possibleIn: 1200,
@@ -1310,7 +1312,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v12 `optimization.styles.inlineCritical`',
     action:
-      'Check out `optimization.styles.inlineCritical` option in your angular.json file. It now defaults to `true`. Remember that the whole `optimization` option can be set as boolean which will set all the suboptions to defaults.',
+      'angular.json dosyanızdaki `optimization.styles.inlineCritical` seçeneğini kontrol edin. Artık varsayılan olarak `true` değerindedir. Tüm `optimization` seçeneğinin boolean olarak ayarlanabileceğini ve bunun tüm alt seçenekleri varsayılanlara ayarlayacağını unutmayın.',
   },
 
   {
@@ -1319,7 +1321,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v13 ng update',
     action:
-      'Run `ng update @angular/core@13 @angular/cli@13` which should bring you to version 13 of Angular.',
+      "Angular'ın 13. sürümüne geçmenizi sağlayacak olan `ng update @angular/core@13 @angular/cli@13` komutunu çalıştırın.",
   },
   {
     possibleIn: 1300,
@@ -1327,7 +1329,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@13`.',
+    action: '`ng update @angular/material@13` komutunu çalıştırın.',
   },
   {
     possibleIn: 1300,
@@ -1335,7 +1337,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'TypeScript 4.4',
     action:
-      'Angular now uses TypeScript 4.4, read more about any potential breaking changes: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html',
+      'Angular artık TypeScript 4.4 kullanıyor, olası kırılma değişiklikleri hakkında daha fazla bilgi edinin: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html',
   },
   {
     possibleIn: 1300,
@@ -1343,7 +1345,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v13 node',
     action:
-      'Make sure you are using <a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 12.20.0 or later</a>',
+      '<a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 12.20.0 veya üstünü</a> kullandığınızdan emin olun',
   },
   {
     possibleIn: 1300,
@@ -1351,7 +1353,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v13 routerLink',
     action:
-      'You can now disable the navigation of a `routerLink` by passing `undefined` and `null`. Previously the `routerLink` directive used to accept these two values as equivalent to an empty string.',
+      "Artık `undefined` ve `null` geçirerek bir `routerLink`'in gezinmesini devre dışı bırakabilirsiniz. Daha önce `routerLink` direktifi bu iki değeri boş bir dizeye eşdeğer olarak kabul ediyordu.",
   },
   {
     possibleIn: 1300,
@@ -1359,7 +1361,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v13 router loadChildren',
     action:
-      'You can no longer specify lazy-loaded routes by setting a string value to `loadChildren`. Make sure you move to dynamic ESM import statements.',
+      "Artık `loadChildren`'a bir string değer atayarak tembel yüklenen rotaları belirtemezsiniz. Dinamik ESM import ifadelerine geçtiğinizden emin olun.",
   },
   {
     possibleIn: 1300,
@@ -1367,7 +1369,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v13 service worker activated',
     action:
-      'The `activated` observable of `SwUpdate` is now deprecated. To check the activation status of a service worker use the `activatedUpdate` method instead.',
+      "`SwUpdate`'ın `activated` observable'ı artık kullanımdan kaldırılmıştır. Bir service worker'ın etkinleştirme durumunu kontrol etmek için bunun yerine `activatedUpdate` metodunu kullanın.",
   },
   {
     possibleIn: 1300,
@@ -1375,7 +1377,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v13 service worker available',
     action:
-      'The `available` observable of `SwUpdate` is now deprecated. To get the same information use `versionUpdates` and filter only the `VersionReadyEvent` events.',
+      "`SwUpdate`'ın `available` observable'ı artık kullanımdan kaldırılmıştır. Aynı bilgiyi almak için `versionUpdates` kullanın ve yalnızca `VersionReadyEvent` olaylarını filtreleyin.",
   },
   {
     possibleIn: 1300,
@@ -1383,7 +1385,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v13 renderModuleFactory',
     action:
-      'The `renderModuleFactory` from `@angular/platform-server` is no longer necessary with Ivy. Use `renderModule` instead.',
+      "`@angular/platform-server`'daki `renderModuleFactory` artık Ivy ile gerekli değildir. Bunun yerine `renderModule` kullanın.",
   },
   {
     possibleIn: 1300,
@@ -1391,7 +1393,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v13 forms status',
     action:
-      'We narrowed the type of `AbstractControl.status` to `FormControlStatus` and `AbstractControl.status` to `Observable<FormControlStatus>`. `FormControlStatus` is the union of all possible status strings for form controls.',
+      '`AbstractControl.status` türünü `FormControlStatus` olarak ve `AbstractControl.statusChanges` türünü `Observable<FormControlStatus>` olarak daralttık. `FormControlStatus`, form kontrolleri için tüm olası durum dizelerinin birleşimidir.',
   },
   {
     possibleIn: 1300,
@@ -1399,7 +1401,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v13 router serializer',
     action:
-      'To align with the URI spec, now the URL serializer respects question marks in the query parameters. For example `/path?q=hello?&q2=2` will now be parsed to `{ q: `hello?`, q2: 2 }`',
+      'URI spesifikasyonuyla uyum sağlamak için URL serileştirici artık sorgu parametrelerindeki soru işaretlerini dikkate alır. Örneğin `/path?q=hello?&q2=2` artık `{ q: `hello?`, q2: 2 }` olarak ayrıştırılacaktır',
   },
   {
     possibleIn: 1300,
@@ -1407,7 +1409,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v13 host binding',
     action:
-      "`href` is now an attribute binding. This means that `DebugElement.properties['href']` now returns the `href` value returned by the native element, rather than the internal value of the `href` property of the `routerLink`.",
+      "`href` artık bir öznitelik bağlamasıdır. Bu, `DebugElement.properties['href']` ifadesinin artık `routerLink`'in `href` özelliğinin iç değeri yerine, yerel öğe tarafından döndürülen `href` değerini döndürdüğü anlamına gelir.",
   },
   {
     possibleIn: 1300,
@@ -1415,7 +1417,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v13 spy location',
     action:
-      '`SpyLocation` no longer emits the `popstate` event when `location.go` is called. In addition, `simulateHashChange` now triggers both `haschange` and `popstate`. Tests that rely on `location.go` most likely need to now use `simulateHashChange` to capture `popstate`.',
+      "`SpyLocation` artık `location.go` çağrıldığında `popstate` olayını yaymaz. Ayrıca, `simulateHashChange` artık hem `haschange` hem de `popstate` olaylarını tetikler. `location.go`'ya dayanan testlerin büyük olasılıkla `popstate`'i yakalamak için artık `simulateHashChange` kullanması gerekir.",
   },
   {
     possibleIn: 1300,
@@ -1424,7 +1426,7 @@ export const RECOMMENDATIONS: Step[] = [
     ngUpgrade: true,
     step: 'v13 router URL replacement',
     action:
-      'The router will no longer replace the browser URL when a new navigation cancels an ongoing navigation. Hybrid applications which rely on the `navigationId` being present on initial navigations that were handled by the Angular router should subscribe to `NavigationCancel` events and perform the `location.replaceState` to add `navigationId` to the `Router` state. In addition, tests which assert `urlChanges` on the `SpyLocation` may need to be adjusted to account for the `replaceState` which is no longer triggered.',
+      "Yönlendirici, yeni bir gezinme devam eden bir gezinmeyi iptal ettiğinde artık tarayıcı URL'sini değiştirmeyecektir. Angular yönlendiricisi tarafından işlenen ilk gezinmelerde `navigationId`'nin bulunmasına dayanan hibrit uygulamalar, `NavigationCancel` olaylarına abone olmalı ve `Router` durumuna `navigationId` eklemek için `location.replaceState` kullanmalıdır. Ayrıca, `SpyLocation` üzerinde `urlChanges` doğrulayan testlerin, artık tetiklenmeyen `replaceState`'i hesaba katmak için ayarlanması gerekebilir.",
   },
   {
     possibleIn: 1300,
@@ -1432,7 +1434,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v13 removed symbols',
     action:
-      'The route package no longer exports `SpyNgModuleFactoryLoader` and `DeprecatedLoadChildren`. In case you use them, make sure you remove their corresponding import statements.',
+      'Rota paketi artık `SpyNgModuleFactoryLoader` ve `DeprecatedLoadChildren` dışa aktarmıyor. Bunları kullanıyorsanız, ilgili import ifadelerini kaldırdığınızdan emin olun.',
   },
 
   {
@@ -1441,7 +1443,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v14 ng update',
     action:
-      'Run `ng update @angular/core@14 @angular/cli@14` which should bring you to version 14 of Angular.',
+      "Angular'un 14. sürümüne geçmenizi sağlayacak olan `ng update @angular/core@14 @angular/cli@14` komutunu çalıştırın.",
   },
   {
     possibleIn: 1400,
@@ -1449,7 +1451,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@14`.',
+    action: '`ng update @angular/material@14` komutunu çalıştırın.',
   },
   {
     possibleIn: 1400,
@@ -1457,7 +1459,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'TypeScript 4.6',
     action:
-      'Angular now uses TypeScript 4.6, read more about any potential breaking changes: https://devblogs.microsoft.com/typescript/announcing-typescript-4-6/',
+      'Angular artık TypeScript 4.6 kullanıyor, olası kırılma değişiklikleri hakkında daha fazla bilgi edinin: https://devblogs.microsoft.com/typescript/announcing-typescript-4-6/',
   },
 
   {
@@ -1466,7 +1468,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v14 node',
     action:
-      'Make sure you are using <a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 14.15.0 or later</a>',
+      '<a href="http://www.hostingadvice.com/how-to/update-node-js-latest-version/" target="_blank">Node 14.15.0 veya üstünü</a> kullandığınızdan emin olun',
   },
   {
     possibleIn: 1400,
@@ -1474,14 +1476,15 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v14 strict forms',
     action:
-      'Form models now require a generic type parameter. For gradual migration you can opt-out using the untyped version of the form model classes.',
+      'Form modelleri artık genel bir tür parametresi gerektiriyor. Kademeli geçiş için form model sınıflarının türsüz (untyped) sürümünü kullanarak devre dışı bırakabilirsiniz.',
   },
   {
     possibleIn: 1400,
     necessaryAsOf: 1400,
     level: ApplicationComplexity.Medium,
     step: 'v14 aotSummaries',
-    action: 'Remove `aotSummaries` from `TestBed` since Angular no longer needs them in Ivy.',
+    action:
+      "Angular artık Ivy'de bunlara ihtiyaç duymadığı için `aotSummaries` öğesini `TestBed` üzerinden kaldırın.",
   },
   {
     possibleIn: 1400,
@@ -1490,7 +1493,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v14 MatVertical and Horizontal Stepper',
     action:
-      'If you are using `MatVerticalStepper` or `MatHorizontalStepper` make sure you switch to `MatStepper`.',
+      '`MatVerticalStepper` veya `MatHorizontalStepper` kullanıyorsanız `MatStepper` kullanmaya geçtiğinizden emin olun.',
   },
   {
     possibleIn: 1400,
@@ -1498,7 +1501,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v14 JSONP',
     action:
-      'Remove headers from JSONP requests. JSONP does not supports headers and if specified the HTTP module will now throw an error rather than ignoring them.',
+      'JSONP isteklerinden başlıkları (header) kaldırın. JSONP başlıkları desteklemez ve belirtildiğinde HTTP modülü artık bunları yok saymak yerine hata fırlatır.',
   },
   {
     possibleIn: 1400,
@@ -1506,7 +1509,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v14 resolvers',
     action:
-      'Resolvers now will take the first emitted value by an observable and after that proceed to navigation to better align with other guards rather than taking the last emitted value.',
+      "Resolver'lar artık diğer guard'larla daha iyi uyum sağlamak için bir observable'dan son yayınlanan değer yerine ilk yayınlanan değeri alacak ve ardından navigasyona devam edecektir.",
   },
   {
     possibleIn: 1400,
@@ -1514,7 +1517,8 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     material: true,
     step: 'v14 deprecate protractor entry',
-    action: 'The deprecated `angular/cdk/testing/protractor` entry point is now removed.',
+    action:
+      'Kullanımdan kaldırılmış `angular/cdk/testing/protractor` giriş noktası artık kaldırıldı.',
   },
   {
     possibleIn: 1400,
@@ -1522,7 +1526,8 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     material: true,
     step: 'v14 chipInput',
-    action: 'Make sure you specify `chipInput` of `MatChipInputEvent` because it is now required.',
+    action:
+      '`MatChipInputEvent` öğesinin `chipInput` özelliğini belirttiğinizden emin olun çünkü artık zorunludur.',
   },
   {
     possibleIn: 1400,
@@ -1531,7 +1536,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v14 mixinErrorState',
     action:
-      'You need to implement `stateChanges` class member in abstractions using `mixinErrorState` because the mixin no longer provides it.',
+      '`mixinErrorState` kullanan soyutlamalarda `stateChanges` sınıf üyesini uygulamanız gerekir çünkü mixin artık bunu sağlamıyor.',
   },
   {
     possibleIn: 1400,
@@ -1539,7 +1544,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     material: true,
     step: 'v14 CdkStepper orientation',
-    action: 'Use `CdkStepper.orientation` instead of `CdkStepper._orientation`.',
+    action: '`CdkStepper._orientation` yerine `CdkStepper.orientation` kullanın.',
   },
   {
     possibleIn: 1400,
@@ -1548,7 +1553,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v14 CdkStepper and MatStepper',
     action:
-      'If you are extending or using `CdkStepper` or `MatStepper` in the constructor you should no longer pass the `_document` parameter since it is now removed.',
+      "Constructor'da `CdkStepper` veya `MatStepper` kullanıyor veya genişletiyorsanız, artık kaldırıldığı için `_document` parametresini geçmemelisiniz.",
   },
   {
     possibleIn: 1400,
@@ -1556,7 +1561,8 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     material: true,
     step: 'v14 mat-list-item-avatar',
-    action: 'Rename the `mat-list-item-avatar` CSS class to `mat-list-item-with-avatar`.',
+    action:
+      '`mat-list-item-avatar` CSS sınıfını `mat-list-item-with-avatar` olarak yeniden adlandırın.',
   },
   {
     possibleIn: 1400,
@@ -1564,7 +1570,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     material: true,
     step: 'v14 MatSelectionListChange.option',
-    action: 'Use `MatSelectionListChange.options` rather than `MatSelectionListChange.option`.',
+    action: '`MatSelectionListChange.option` yerine `MatSelectionListChange.options` kullanın.',
   },
   {
     possibleIn: 1400,
@@ -1573,7 +1579,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v14 getHarnessLoaderForContent',
     action:
-      'Use `getChildLoader(MatListItemSection.CONTENT)` rather than `getHarnessLoaderForContent`.',
+      '`getHarnessLoaderForContent` yerine `getChildLoader(MatListItemSection.CONTENT)` kullanın.',
   },
   {
     possibleIn: 1400,
@@ -1582,14 +1588,15 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v14 MatSelectionList',
     action:
-      'If you are using `MatSelectionList` make sure you pass `_focusMonitor` in its constructor because it is now required. Additionally, this class no longer has `tabIndex` property and a `tabIndex` constructor parameter.',
+      "`MatSelectionList` kullanıyorsanız, artık zorunlu olduğu için constructor'ında `_focusMonitor` geçtiğinizden emin olun. Ayrıca bu sınıf artık `tabIndex` özelliğine ve `tabIndex` constructor parametresine sahip değildir.",
   },
   {
     possibleIn: 1400,
     necessaryAsOf: 1400,
     level: ApplicationComplexity.Advanced,
     step: 'v14 initialNavigation',
-    action: "Update `initialNavigation: 'enabled'` to `initialNavigation: 'enabledBlocking'`.",
+    action:
+      "`initialNavigation: 'enabled'` değerini `initialNavigation: 'enabledBlocking'` olarak güncelleyin.",
   },
   {
     possibleIn: 1400,
@@ -1597,7 +1604,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 Route.pathMatch',
     action:
-      'If you are defining routes with `pathMatch`, you may have to cast it to `Route` or `Routes` explicitly. `Route.pathMatch` is no longer compatible with `string` type.',
+      'Rotaları `pathMatch` ile tanımlıyorsanız, açıkça `Route` veya `Routes` türüne dönüştürmeniz gerekebilir. `Route.pathMatch` artık `string` türü ile uyumlu değildir.',
   },
   {
     possibleIn: 1400,
@@ -1605,7 +1612,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 stricter LoadChildrenCallback',
     action:
-      'The promise returned by `LoadChildrenCallback` now has a stricter type parameter `Type<any>|NgModuleFactory<any>` rather than `any`.',
+      '`LoadChildrenCallback` tarafından döndürülen promise artık `any` yerine daha katı bir tür parametresi olan `Type<any>|NgModuleFactory<any>` kullanıyor.',
   },
   {
     possibleIn: 1400,
@@ -1613,15 +1620,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 router scheduling',
     action:
-      'The router does no longer schedule redirect navigation within a `setTimeout`. Make sure your tests do not rely on this behavior.',
+      'Router artık yönlendirme navigasyonunu bir `setTimeout` içinde planlamıyor. Testlerinizin bu davranışa bağlı olmadığından emin olun.',
   },
   {
     possibleIn: 1400,
     necessaryAsOf: 1400,
     level: ApplicationComplexity.Advanced,
     step: 'v14 LocationStrategy',
-    action:
-      'Implementing the `LocationStrategy` interface now requires definition of `getState()`.',
+    action: '`LocationStrategy` arayüzünü uygulamak artık `getState()` tanımını gerektiriyor.',
   },
   {
     possibleIn: 1400,
@@ -1629,14 +1635,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 http queries',
     action:
-      'Sending `+` as part of a query no longer requires workarounds since `+` no longer sends a space.',
+      'Sorgu parametresi olarak `+` göndermek artık geçici çözümler gerektirmiyor çünkü `+` artık boşluk göndermez.',
   },
   {
     possibleIn: 1400,
     necessaryAsOf: 1400,
     level: ApplicationComplexity.Advanced,
     step: 'v14 AnimationDriver.getParentElement',
-    action: 'Implementing `AnimationDriver` now requires the `getParentElement` method.',
+    action: '`AnimationDriver` uygulamak artık `getParentElement` metodunu gerektiriyor.',
   },
   {
     possibleIn: 1400,
@@ -1644,7 +1650,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 invalid config',
     action:
-      'Invalid route configurations of lazy-loaded modules will now throw an error rather than being ignored.',
+      'Tembel yüklenen (lazy-loaded) modüllerin geçersiz rota yapılandırmaları artık göz ardı edilmek yerine hata fırlatacaktır.',
   },
   {
     possibleIn: 1400,
@@ -1652,7 +1658,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 router resolver',
     action:
-      'Remove the `resolver` from `RouterOutletContract.activateWith` function and the `resolver` from `OutletContext` class since factory resolvers are no longer needed.',
+      'Fabrika çözümleyicileri artık gerekli olmadığından `RouterOutletContract.activateWith` fonksiyonundan ve `OutletContext` sınıfından `resolver` parametresini kaldırın.',
   },
   {
     possibleIn: 1400,
@@ -1660,7 +1666,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v14 initialUrl',
     action:
-      '`Router.initialUrl` accepts only `UrlTree` to prevent a misuse of the API by assigning a `string` value.',
+      "`Router.initialUrl` artık yalnızca `UrlTree` kabul ediyor; bu, `string` değeri atayarak API'nin yanlış kullanılmasını önlemek içindir.",
   },
 
   {
@@ -1669,7 +1675,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 node support',
     action:
-      'Make sure that you are using a supported version of node.js before you upgrade your application. Angular v15 supports node.js versions: 14.20.x, 16.13.x and 18.10.x. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-01" alt="Link to more information about this change">Read further</a>',
+      'Uygulamanızı yükseltmeden önce desteklenen bir node.js sürümü kullandığınızdan emin olun. Angular v15, node.js sürümleri: 14.20.x, 16.13.x ve 18.10.x\'i destekler. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-01" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1677,7 +1683,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 ts support',
     action:
-      'Make sure that you are using a supported version of TypeScript before you upgrade your application. Angular v15 supports TypeScript version 4.8 or later.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-02" alt="Link to more information about this change">Read further</a>',
+      'Uygulamanızı yükseltmeden önce desteklenen bir TypeScript sürümü kullandığınızdan emin olun. Angular v15, TypeScript sürüm 4.8 veya üstünü destekler.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-02" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1685,7 +1691,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 ng update',
     action:
-      "In the application's project directory, run `ng update @angular/core@15 @angular/cli@15` to update your application to Angular v15.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v15'e güncellemek için `ng update @angular/core@15 @angular/cli@15` komutunu çalıştırın.",
   },
   {
     possibleIn: 1500,
@@ -1693,7 +1699,8 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'V15 update @angular/material',
-    action: 'Run `ng update @angular/material@15` to update the Material components.',
+    action:
+      'Material bileşenlerini güncellemek için `ng update @angular/material@15` komutunu çalıştırın.',
   },
   {
     possibleIn: 1500,
@@ -1701,7 +1708,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 keyframe',
     action:
-      'In v15, the Angular compiler prefixes `@keyframes` in CSS with the component\'s scope. This means that any TypeScript code that relies on `keyframes` names no longer works in v15. Update any such instances to: define keyframes programmatically, use global stylesheets, or change the component\'s view encapsulation. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-03" alt="Link to more information about this change">Read further</a>',
+      'v15\'te Angular derleyicisi, CSS\'deki `@keyframes` ifadelerinin önüne bileşenin kapsamını ekler. Bu, `keyframes` adlarına dayanan herhangi bir TypeScript kodunun v15\'te artık çalışmayacağı anlamına gelir. Bu tür örnekleri şu şekilde güncelleyin: keyframes\'leri programatik olarak tanımlayın, global stil dosyaları kullanın veya bileşenin görünüm kapsüllemesini değiştirin. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-03" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1709,7 +1716,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 no-ivy',
     action:
-      "In your application's `tsconfig.json` file, remove `enableIvy`. In v15, Ivy is the only rendering engine so `enableIvy` is not required.",
+      "Uygulamanızın `tsconfig.json` dosyasından `enableIvy` seçeneğini kaldırın. v15'te Ivy tek işleme motoru olduğundan `enableIvy` gerekli değildir.",
   },
   {
     possibleIn: 1500,
@@ -1717,7 +1724,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 base-decorators',
     action:
-      'Make sure to use decorators in base classes with child classes that inherit constructors and use dependency injection. Such base classes should be decorated with either `@Injectable` or `@Directive` or the compiler returns an error. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-05" alt="Link to more information about this change">Read further</a>',
+      'Constructor\'ları miras alan ve bağımlılık enjeksiyonu kullanan alt sınıflara sahip temel sınıflarda dekoratör kullandığınızdan emin olun. Bu tür temel sınıflar `@Injectable` veya `@Directive` ile dekore edilmelidir, aksi takdirde derleyici hata döndürür. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-05" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1725,7 +1732,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 setDisabledState',
     action:
-      'In v15, `setDisabledState` is always called when a `ControlValueAccessor` is attached. To opt-out of this behavior, use `FormsModule.withConfig` or `ReactiveFormsModule.withConfig`. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-06" alt="Link to more information about this change">Read further</a>',
+      'v15\'te, bir `ControlValueAccessor` eklendiğinde `setDisabledState` her zaman çağrılır. Bu davranışı devre dışı bırakmak için `FormsModule.withConfig` veya `ReactiveFormsModule.withConfig` kullanın. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-06" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1733,7 +1740,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v15 canParse',
     action:
-      'Applications that use `canParse` should use `analyze` from `@angular/localize/tools` instead. In v15, the `canParse` method was removed from all translation parsers in `@angular/localize/tools`.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-07" alt="Link to more information about this change">Read further</a>',
+      '`canParse` kullanan uygulamalar bunun yerine `@angular/localize/tools` paketindeki `analyze` metodunu kullanmalıdır. v15\'te `canParse` metodu `@angular/localize/tools` içindeki tüm çeviri ayrıştırıcılarından kaldırılmıştır.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-07" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1741,7 +1748,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 ActivatedRoutSnapshot',
     action:
-      'Make sure that all `ActivatedRouteSnapshot` objects have a `title` property. In v15, the `title` property is a required property of `ActivatedRouteSnapshot`. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-08" alt="Link to more information about this change">Read further</a>',
+      'Tüm `ActivatedRouteSnapshot` nesnelerinin bir `title` özelliğine sahip olduğundan emin olun. v15\'te `title` özelliği `ActivatedRouteSnapshot` için zorunlu bir özelliktir. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-08" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1749,7 +1756,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v15 RouterOutlet',
     action:
-      'If your tests with `RouterOutlet` break, make sure they don\'t depend on the instantiation order of the corresponding component relative to change detection. In v15, `RouterOutlet` instantiates the component after change detection. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-09" alt="Link to more information about this change">Read further</a>',
+      '`RouterOutlet` ile testleriniz bozuluyorsa, değişiklik algılamaya göre ilgili bileşenin oluşturulma sırasına bağlı olmadıklarından emin olun. v15\'te `RouterOutlet` bileşeni değişiklik algılamadan sonra oluşturur. <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-09" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1757,7 +1764,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 relativeLinkResolution',
     action:
-      'In v15, `relativeLinkResolution` is not configurable in the Router. It was used to opt out of an earlier bug fix that is now standard.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-10" alt="Link to more information about this change">Read further</a>',
+      'v15\'te `relativeLinkResolution` Router\'da yapılandırılabilir değildir. Bu seçenek, artık standart olan önceki bir hata düzeltmesini devre dışı bırakmak için kullanılıyordu.  <a href="https://v15.angular.io/guide/update-to-version-15#v15-bc-10" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1765,7 +1772,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 DATE_PIPE_DEFAULT_OPTIONS',
     action:
-      'Change instances of the `DATE_PIPE_DEFAULT_TIMEZONE` token to use `DATE_PIPE_DEFAULT_OPTIONS` to configure time zones.  In v15, the `DATE_PIPE_DEFAULT_TIMEZONE` token is deprecated. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-01" alt="Link to more information about this change">Read further</a>',
+      'Saat dilimlerini yapılandırmak için `DATE_PIPE_DEFAULT_TIMEZONE` token kullanımlarını `DATE_PIPE_DEFAULT_OPTIONS` kullanacak şekilde değiştirin. v15\'te `DATE_PIPE_DEFAULT_TIMEZONE` tokeni kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-01" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1773,7 +1780,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 iframe',
     action:
-      "Existing `<iframe>` instances might have security-sensitive attributes applied to them as an attribute or property binding. These security-sensitive attributes can occur in a template or in a directive's host bindings. Such occurrences require an update to ensure compliance with the new and stricter rules about `<iframe>` bindings. For more information, see [the error page](https://v15.angular.io/errors/NG0910).",
+      'Mevcut `<iframe>` örneklerinde öznitelik veya özellik bağlama olarak güvenlik açısından hassas öznitelikler uygulanmış olabilir. Bu güvenlik açısından hassas öznitelikler bir şablonda veya bir direktifin host bağlamalarında bulunabilir. Bu tür durumlar, `<iframe>` bağlamaları hakkındaki yeni ve daha katı kurallara uyumu sağlamak için güncelleme gerektirir. Daha fazla bilgi için [hata sayfasına](https://v15.angular.io/errors/NG0910) bakın.',
   },
   {
     possibleIn: 1500,
@@ -1781,7 +1788,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 Injector.get',
     action:
-      'Update instances of `Injector.get()` that use an `InjectFlags` parameter to use an `InjectOptions` parameter. The `InjectFlags` parameter of `Injector.get()` is deprecated in v15. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-02" alt="Link to more information about this change">Read further</a>',
+      '`InjectFlags` parametresi kullanan `Injector.get()` kullanımlarını `InjectOptions` parametresi kullanacak şekilde güncelleyin. `Injector.get()` metodunun `InjectFlags` parametresi v15\'te kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-02" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1789,7 +1796,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 TestBed.inject',
     action:
-      'Update instances of `TestBed.inject()` that use an `InjectFlags` parameter to use an `InjectOptions` parameter. The `InjectFlags` parameter of `TestBed.inject()` is deprecated in v15. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-01" alt="Link to more information about this change">Read further</a>',
+      '`InjectFlags` parametresi kullanan `TestBed.inject()` kullanımlarını `InjectOptions` parametresi kullanacak şekilde güncelleyin. `TestBed.inject()` metodunun `InjectFlags` parametresi v15\'te kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-01" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1797,7 +1804,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 ngModule in providedIn',
     action:
-      'Using `providedIn: ngModule` for an `@Injectable` and `InjectionToken` is deprecated in v15. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-04" alt="Link to more information about this change">Read further</a>',
+      '`@Injectable` ve `InjectionToken` için `providedIn: ngModule` kullanımı v15\'te kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-04" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1805,7 +1812,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 providedIn any',
     action:
-      'Using `providedIn: \'any\'` for an `@Injectable` or `InjectionToken` is deprecated in v15. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-05" alt="Link to more information about this change">Read further</a>',
+      '`@Injectable` veya `InjectionToken` için `providedIn: \'any\'` kullanımı v15\'te kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-05" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1813,7 +1820,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v15 RouterLinkWithHref',
     action:
-      'Update instances of the `RouterLinkWithHref`directive to use the `RouterLink` directive. The `RouterLinkWithHref` directive is deprecated in v15. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-06" alt="Link to more information about this change">Read further</a>',
+      '`RouterLinkWithHref` direktifinin kullanımlarını `RouterLink` direktifini kullanacak şekilde güncelleyin. `RouterLinkWithHref` direktifi v15\'te kullanımdan kaldırılmıştır. <a href="https://v15.angular.io/guide/update-to-version-15#v15-dp-06" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1822,7 +1829,7 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'v15 mat refactor',
     action:
-      'In Angular Material v15, many of the components have been refactored to be based on the official Material Design Components for Web (MDC). This change affected the DOM and CSS classes of many components. <a href="https://rc.material.angular.dev/guide/mdc-migration" alt="Link to more information about this change">Read further</a>',
+      'Angular Material v15\'te birçok bileşen, resmi Material Design Components for Web (MDC) tabanlı olacak şekilde yeniden düzenlenmiştir. Bu değişiklik birçok bileşenin DOM ve CSS sınıflarını etkilemiştir. <a href="https://rc.material.angular.dev/guide/mdc-migration" alt="Bu değişiklik hakkında daha fazla bilgi bağlantısı">Daha fazla bilgi</a>',
   },
   {
     possibleIn: 1500,
@@ -1830,7 +1837,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v15 visual review',
     action:
-      'After you update your application to v15, visually review your application and its interactions to ensure everything is working as it should.',
+      "Uygulamanızı v15'e güncelledikten sonra, her şeyin olması gerektiği gibi çalıştığından emin olmak için uygulamanızı ve etkileşimlerini görsel olarak gözden geçirin.",
   },
 
   {
@@ -1839,7 +1846,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 node support',
     action:
-      'Make sure that you are using a supported version of node.js before you upgrade your application. Angular v16 supports node.js versions: v16 and v18.',
+      "Uygulamanızı yükseltmeden önce desteklenen bir node.js sürümü kullandığınızdan emin olun. Angular v16, node.js sürümleri: v16 ve v18'i destekler.",
   },
   {
     possibleIn: 1600,
@@ -1847,7 +1854,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 ts support',
     action:
-      'Make sure that you are using a supported version of TypeScript before you upgrade your application. Angular v16 supports TypeScript version 4.9.3 or later.',
+      'Uygulamanızı yükseltmeden önce desteklenen bir TypeScript sürümü kullandığınızdan emin olun. Angular v16, TypeScript sürüm 4.9.3 veya üstünü destekler.',
   },
   {
     possibleIn: 1600,
@@ -1855,7 +1862,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 ng update',
     action:
-      "In the application's project directory, run `ng update @angular/core@16 @angular/cli@16` to update your application to Angular v16.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v16'ya güncellemek için `ng update @angular/core@16 @angular/cli@16` komutunu çalıştırın.",
   },
   {
     possibleIn: 1600,
@@ -1863,7 +1870,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@16`.',
+    action: '`ng update @angular/material@16` komutunu çalıştırın.',
   },
   {
     possibleIn: 1600,
@@ -1871,7 +1878,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 zone.js support',
     action:
-      'Make sure that you are using a supported version of Zone.js before you upgrade your application. Angular v16 supports Zone.js version 0.13.x or later.',
+      'Uygulamanızı yükseltmeden önce desteklenen bir Zone.js sürümü kullandığınızdan emin olun. Angular v16, Zone.js sürüm 0.13.x veya üstünü destekler.',
   },
   {
     possibleIn: 1600,
@@ -1879,7 +1886,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 RouterEvent',
     action:
-      "The Event union no longer contains `RouterEvent`, which means that if you're using the Event type you may have to change the type definition from `(e: Event)` to `(e: Event|RouterEvent)`",
+      'Event birleşimi artık `RouterEvent` içermiyor, bu da Event türünü kullanıyorsanız tür tanımını `(e: Event)` yerine `(e: Event|RouterEvent)` olarak değiştirmeniz gerekebileceği anlamına gelir',
   },
   {
     possibleIn: 1600,
@@ -1887,7 +1894,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 routerEvent prop type',
     action:
-      'In addition to `NavigationEnd` the `routerEvent` property now also accepts type `NavigationSkipped`',
+      '`NavigationEnd` ile birlikte `routerEvent` özelliği artık `NavigationSkipped` türünü de kabul ediyor',
   },
   {
     possibleIn: 1600,
@@ -1895,7 +1902,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 RendererType2',
     action:
-      'Pass only flat arrays to `RendererType2.styles` because it no longer accepts nested arrays',
+      '`RendererType2.styles` artık iç içe dizileri kabul etmediği için yalnızca düz diziler iletin',
   },
   {
     possibleIn: 1600,
@@ -1903,7 +1910,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 BrowserPlatformLocation',
     action:
-      'You may have to update tests that use `BrowserPlatformLocation` because `MockPlatformLocation` is now provided by default in tests. [Read further](https://github.com/angular/angular/blob/main/CHANGELOG.md#common-9).',
+      '`MockPlatformLocation` artık testlerde varsayılan olarak sağlandığından, `BrowserPlatformLocation` kullanan testleri güncellemeniz gerekebilir. [Daha fazla bilgi](https://github.com/angular/angular/blob/main/CHANGELOG.md#common-9).',
   },
   {
     possibleIn: 1600,
@@ -1911,7 +1918,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 ngcc',
     action:
-      'Due to the removal of the Angular Compatibility Compiler (ngcc) in v16, projects on v16 and later no longer support View Engine libraries.',
+      "Angular Uyumluluk Derleyicisi (ngcc) v16'da kaldırıldığından, v16 ve sonraki sürümlerdeki projeler artık View Engine kütüphanelerini desteklememektedir.",
   },
   {
     possibleIn: 1600,
@@ -1919,14 +1926,15 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 createUrlTree',
     action:
-      'After bug fixes in `Router.createUrlTree` you may have to readjust tests which mock `ActivatedRoute`. [Read further](https://github.com/angular/angular/blob/main/CHANGELOG.md#1600-2023-05-03)',
+      "`Router.createUrlTree` hata düzeltmelerinden sonra `ActivatedRoute` mock'layan testleri yeniden ayarlamanız gerekebilir. [Daha fazla bilgi](https://github.com/angular/angular/blob/main/CHANGELOG.md#1600-2023-05-03)",
   },
   {
     possibleIn: 1600,
     necessaryAsOf: 1600,
     level: ApplicationComplexity.Medium,
     step: 'v16 ApplicationConfig imports',
-    action: 'Change imports of `ApplicationConfig` to be from `@angular/core`.',
+    action:
+      "`ApplicationConfig` import'larını `@angular/core` üzerinden yapacak şekilde değiştirin.",
   },
   {
     possibleIn: 1600,
@@ -1934,7 +1942,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 renderModule',
     action:
-      'Revise your code to use `renderModule` instead of `renderModuleFactory` because it has been deleted.',
+      '`renderModuleFactory` silindiği için kodunuzu `renderModule` kullanacak şekilde güncelleyin.',
   },
   {
     possibleIn: 1600,
@@ -1942,7 +1950,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 XhrFactory',
     action:
-      'Revise your code to use `XhrFactory` from `@angular/common` instead of `XhrFactory` export from `@angular/common/http`.',
+      'Kodunuzu `@angular/common/http` yerine `@angular/common` üzerinden `XhrFactory` kullanacak şekilde güncelleyin.',
   },
   {
     possibleIn: 1600,
@@ -1950,7 +1958,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 withServerTransition',
     action:
-      "If you're running multiple Angular apps on the same page and you're using `BrowserModule.withServerTransition({ appId: 'serverApp' })` make sure you set the `APP_ID` instead since `withServerTransition` is now deprecated. [Read further](https://github.com/angular/angular/blob/main/CHANGELOG.md#platform-browser-4)",
+      "Aynı sayfada birden fazla Angular uygulaması çalıştırıyorsanız ve `BrowserModule.withServerTransition({ appId: 'serverApp' })` kullanıyorsanız, `withServerTransition` artık kullanımdan kaldırıldığı için bunun yerine `APP_ID` ayarladığınızdan emin olun. [Daha fazla bilgi](https://github.com/angular/angular/blob/main/CHANGELOG.md#platform-browser-4)",
   },
   {
     possibleIn: 1600,
@@ -1958,7 +1966,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 EnvironmentInjector',
     action:
-      'Change `EnvironmentInjector.runInContext` to `runInInjectionContext` and pass the environment injector as the first parameter.',
+      '`EnvironmentInjector.runInContext` yerine `runInInjectionContext` kullanın ve ortam enjektörünü ilk parametre olarak iletin.',
   },
   {
     possibleIn: 1600,
@@ -1966,14 +1974,15 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 ViewContainerRef.createComponent',
     action:
-      'Update your code to use `ViewContainerRef.createComponent` without the factory resolver. `ComponentFactoryResolver` has been removed from Router APIs.',
+      "Kodunuzu fabrika çözümleyici olmadan `ViewContainerRef.createComponent` kullanacak şekilde güncelleyin. `ComponentFactoryResolver` Router API'lerinden kaldırıldı.",
   },
   {
     possibleIn: 1600,
     necessaryAsOf: 1600,
     level: ApplicationComplexity.Advanced,
     step: 'v16 APP_ID',
-    action: 'If you bootstrap multiple apps on the same page, make sure you set unique `APP_IDs`.',
+    action:
+      "Aynı sayfada birden fazla uygulama başlatıyorsanız, benzersiz `APP_ID`'ler ayarladığınızdan emin olun.",
   },
   {
     possibleIn: 1600,
@@ -1981,7 +1990,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 server renderApplication',
     action:
-      'Update your code to revise `renderApplication` method as it no longer accepts a root component as first argument, but instead a callback that should bootstrap your app. [Read further](https://github.com/angular/angular/blob/main/CHANGELOG.md#platform-server-3)',
+      '`renderApplication` metodu artık ilk argüman olarak kök bileşen kabul etmeyip bunun yerine uygulamanızı başlatması gereken bir geri çağırma kabul ettiğinden kodunuzu güncelleyin. [Daha fazla bilgi](https://github.com/angular/angular/blob/main/CHANGELOG.md#platform-server-3)',
   },
   {
     possibleIn: 1600,
@@ -1989,7 +1998,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 PlatformConfig.baseUrl',
     action:
-      'Update your code to remove any reference to `PlatformConfig.baseUrl` and `PlatformConfig.useAbsoluteUrl` platform-server config options as it has been deprecated.',
+      'Kullanımdan kaldırıldığı için kodunuzdaki `PlatformConfig.baseUrl` ve `PlatformConfig.useAbsoluteUrl` platform-server yapılandırma seçeneklerine yapılan tüm referansları kaldırın.',
   },
   {
     possibleIn: 1600,
@@ -1997,7 +2006,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 moduleid',
     action:
-      'Update your code to remove any reference to `@Directive`/`@Component` `moduleId` property as it does not have any effect and will be removed in v17.',
+      "`@Directive`/`@Component` `moduleId` özelliği herhangi bir etkiye sahip olmadığından ve v17'de kaldırılacağından kodunuzdaki tüm referansları kaldırın.",
   },
   {
     possibleIn: 1600,
@@ -2005,7 +2014,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 transfer state imports',
     action:
-      "Update imports from `import {makeStateKey, StateKey, TransferState} from '@angular/platform-browser'` to `import {makeStateKey, StateKey, TransferState} from '@angular/core'`",
+      "Import'ları `import {makeStateKey, StateKey, TransferState} from '@angular/platform-browser'` yerine `import {makeStateKey, StateKey, TransferState} from '@angular/core'` olarak güncelleyin",
   },
   {
     possibleIn: 1600,
@@ -2013,7 +2022,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 ComponentRef',
     action:
-      "If you rely on `ComponentRef.setInput` to set the component input even if it's the same based on `Object.is` equality check, make sure you copy its value.",
+      '`Object.is` eşitlik kontrolüne göre aynı olsa bile bileşen girdisini ayarlamak için `ComponentRef.setInput` kullanıyorsanız, değerini kopyaladığınızdan emin olun.',
   },
   {
     possibleIn: 1600,
@@ -2021,7 +2030,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 ANALYZE_FOR_ENTRY_COMPONENTS',
     action:
-      'Update your code to remove any reference to `ANALYZE_FOR_ENTRY_COMPONENTS` injection token as it has been deleted.',
+      '`ANALYZE_FOR_ENTRY_COMPONENTS` enjeksiyon belirteci silindiği için kodunuzdaki tüm referansları kaldırın.',
   },
   {
     possibleIn: 1600,
@@ -2029,7 +2038,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 entry components',
     action:
-      '`entryComponents` is no longer available and any reference to it can be removed from the `@NgModule` and `@Component` public APIs.',
+      "`entryComponents` artık mevcut değildir ve `@NgModule` ile `@Component` genel API'lerinden tüm referansları kaldırılabilir.",
   },
   {
     possibleIn: 1600,
@@ -2037,7 +2046,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 ngTemplateOutletContext',
     action:
-      'ngTemplateOutletContext has stricter type checking which requires you to declare all the properties in the corresponding object. [Read further](https://github.com/angular/angular/blob/main/CHANGELOG.md#common-1).',
+      'ngTemplateOutletContext artık daha katı tür denetimi uygulamaktadır ve ilgili nesnedeki tüm özellikleri bildirmenizi gerektirir. [Daha fazla bilgi](https://github.com/angular/angular/blob/main/CHANGELOG.md#common-1).',
   },
   {
     possibleIn: 1600,
@@ -2045,7 +2054,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 APF',
     action:
-      'Angular packages no longer include FESM2015 and the distributed ECMScript has been updated from 2020 to 2022.',
+      "Angular paketleri artık FESM2015 içermiyor ve dağıtılan ECMScript 2020'den 2022'ye güncellendi.",
   },
   {
     possibleIn: 1600,
@@ -2053,7 +2062,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v16 EventManager',
     action:
-      'The deprecated `EventManager` method `addGlobalEventListener` has been removed as it is not used by Ivy.',
+      'Kullanımdan kaldırılmış `EventManager` metodu `addGlobalEventListener`, Ivy tarafından kullanılmadığı için kaldırıldı.',
   },
   {
     possibleIn: 1600,
@@ -2061,7 +2070,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 BrowserTransferStateModule',
     action:
-      '`BrowserTransferStateModule` is no longer available and any reference to it can be removed from your applications.',
+      '`BrowserTransferStateModule` artık mevcut değildir ve uygulamalarınızdan tüm referansları kaldırılabilir.',
   },
   {
     possibleIn: 1600,
@@ -2069,7 +2078,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v16 ReflectiveInjector',
     action:
-      'Update your code to use `Injector.create` rather than `ReflectiveInjector` since `ReflectiveInjector` is removed.',
+      '`ReflectiveInjector` kaldırıldığı için kodunuzu `ReflectiveInjector` yerine `Injector.create` kullanacak şekilde güncelleyin.',
   },
   {
     possibleIn: 1600,
@@ -2077,7 +2086,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v16 QueryList',
     action:
-      '`QueryList.filter` now supports type guard functions. Since the type will be narrowed, you may have to update your application code that relies on the old behavior.',
+      '`QueryList.filter` artık tür koruma fonksiyonlarını destekliyor. Tür daraltılacağından, eski davranışa dayanan uygulama kodunuzu güncellemeniz gerekebilir.',
   },
 
   {
@@ -2086,7 +2095,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 node support',
     action:
-      'Make sure that you are using a supported version of node.js before you upgrade your application. Angular v17 supports node.js versions: v18.13.0 and newer',
+      'Uygulamanızı yükseltmeden önce desteklenen bir node.js sürümü kullandığınızdan emin olun. Angular v17, node.js sürümleri: v18.13.0 ve üstünü destekler',
   },
   {
     possibleIn: 1700,
@@ -2094,7 +2103,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 ts support',
     action:
-      'Make sure that you are using a supported version of TypeScript before you upgrade your application. Angular v17 supports TypeScript version 5.2 or later.',
+      'Uygulamanızı yükseltmeden önce desteklenen bir TypeScript sürümü kullandığınızdan emin olun. Angular v17, TypeScript sürüm 5.2 veya üstünü destekler.',
   },
   {
     possibleIn: 1700,
@@ -2102,7 +2111,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 zone.js support',
     action:
-      'Make sure that you are using a supported version of Zone.js before you upgrade your application. Angular v17 supports Zone.js version 0.14.x or later.',
+      'Uygulamanızı yükseltmeden önce desteklenen bir Zone.js sürümü kullandığınızdan emin olun. Angular v17, Zone.js sürüm 0.14.x veya üstünü destekler.',
   },
   {
     possibleIn: 1700,
@@ -2110,7 +2119,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 ng update',
     action:
-      "In the application's project directory, run `ng update @angular/core@17 @angular/cli@17` to update your application to Angular v17.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v17'ye güncellemek için `ng update @angular/core@17 @angular/cli@17` komutunu çalıştırın.",
   },
   {
     possibleIn: 1700,
@@ -2118,7 +2127,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@17`.',
+    action: '`ng update @angular/material@17` komutunu çalıştırın.',
   },
   {
     possibleIn: 1700,
@@ -2126,7 +2135,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v17 style removal',
     action:
-      'Angular now automatically removes styles of destroyed components, which may impact your existing apps in cases you rely on leaked styles. To change this update the value of the `REMOVE_STYLES_ON_COMPONENT_DESTROY` provider to `false`.',
+      'Angular artık yok edilen bileşenlerin stillerini otomatik olarak kaldırır, bu da sızan stillere dayandığınız durumlarda mevcut uygulamalarınızı etkileyebilir. Bunu değiştirmek için `REMOVE_STYLES_ON_COMPONENT_DESTROY` sağlayıcısının değerini `false` olarak güncelleyin.',
   },
   {
     possibleIn: 1700,
@@ -2134,7 +2143,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 router removals',
     action:
-      "Make sure you configure `setupTestingRouter`, `canceledNavigationResolution`, `paramsInheritanceStrategy`, `titleStrategy`, `urlUpdateStrategy`, `urlHandlingStrategy`, and `malformedUriErrorHandler` in `provideRouter` or `RouterModule.forRoot` since these properties are now not part of the `Router`'s public API",
+      "Bu özellikler artık `Router`'ın genel API'sinin bir parçası olmadığından, `setupTestingRouter`, `canceledNavigationResolution`, `paramsInheritanceStrategy`, `titleStrategy`, `urlUpdateStrategy`, `urlHandlingStrategy` ve `malformedUriErrorHandler` yapılandırmalarını `provideRouter` veya `RouterModule.forRoot` içinde yaptığınızdan emin olun",
   },
   {
     possibleIn: 1700,
@@ -2142,7 +2151,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v17 ngDoCheck dynamic components',
     action:
-      'For dynamically instantiated components we now execute `ngDoCheck` during change detection if the component is marked as dirty. You may need to update your tests or logic within `ngDoCheck` for dynamically instantiated components.',
+      'Dinamik olarak oluşturulan bileşenler için, bileşen kirli olarak işaretlenmişse artık değişiklik algılama sırasında `ngDoCheck` çalıştırılıyor. Dinamik olarak oluşturulan bileşenler için `ngDoCheck` içindeki testlerinizi veya mantığınızı güncellemeniz gerekebilir.',
   },
   {
     possibleIn: 1700,
@@ -2150,7 +2159,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v17 malformedUriErrorHandler',
     action:
-      "Handle URL parsing errors in the `UrlSerializer.parse` instead of `malformedUriErrorHandler` because it's now part of the public API surface.",
+      '`malformedUriErrorHandler` artık genel API yüzeyinin bir parçası olduğundan, URL ayrıştırma hatalarını `malformedUriErrorHandler` yerine `UrlSerializer.parse` içinde ele alın.',
   },
   {
     possibleIn: 1700,
@@ -2158,7 +2167,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v17 zone deep imports',
     action:
-      'Change Zone.js deep imports like `zone.js/bundles/zone-testing.js` and `zone.js/dist/zone` to `zone.js` and `zone.js/testing`.',
+      "`zone.js/bundles/zone-testing.js` ve `zone.js/dist/zone` gibi Zone.js derin import'larını `zone.js` ve `zone.js/testing` olarak değiştirin.",
   },
   {
     possibleIn: 1700,
@@ -2166,7 +2175,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v17 absolute redirects',
     action:
-      'You may need to adjust your router configuration to prevent infinite redirects after absolute redirects. In v17 we no longer prevent additional redirects after absolute redirects.',
+      "Mutlak yönlendirmelerden sonra sonsuz yönlendirmeleri önlemek için yönlendirici yapılandırmanızı ayarlamanız gerekebilir. v17'de mutlak yönlendirmelerden sonra ek yönlendirmeler artık engellenmemektedir.",
   },
   {
     possibleIn: 1700,
@@ -2174,7 +2183,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v17 AnimationDriver',
     action:
-      'Change references to `AnimationDriver.NOOP` to use `NoopAnimationDriver` because `AnimationDriver.NOOP` is now deprecated.',
+      '`AnimationDriver.NOOP` artık kullanımdan kaldırıldığı için `AnimationDriver.NOOP` referanslarını `NoopAnimationDriver` kullanacak şekilde değiştirin.',
   },
   {
     possibleIn: 1700,
@@ -2182,7 +2191,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 switch strictness',
     action:
-      "You may need to adjust the equality check for `NgSwitch` because now it defaults to stricter check with `===` instead of `==`. Angular will log a warning message for the usages where you'd need to provide an adjustment.",
+      '`NgSwitch` için eşitlik kontrolünü ayarlamanız gerekebilir çünkü artık varsayılan olarak `==` yerine `===` ile daha katı bir kontrol kullanılmaktadır. Angular, ayarlama yapmanız gereken kullanımlar için bir uyarı mesajı kaydedecektir.',
   },
   {
     possibleIn: 1700,
@@ -2190,7 +2199,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'v17 mutate in signals',
     action:
-      'Use `update` instead of `mutate` in Angular Signals. For example `items.mutate(itemsArray => itemsArray.push(newItem));` will now be `items.update(itemsArray => [itemsArray, …newItem]);`',
+      "Angular Signals'da `mutate` yerine `update` kullanın. Örneğin `items.mutate(itemsArray => itemsArray.push(newItem));` artık `items.update(itemsArray => [itemsArray, …newItem]);` şeklinde olacaktır.",
   },
   {
     possibleIn: 1700,
@@ -2198,7 +2207,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: 'v17 withNoDomReuse',
     action:
-      'To disable hydration use `ngSkipHydration` or remove the `provideClientHydration` call from the provider list since `withNoDomReuse` is no longer part of the public API.',
+      "`withNoDomReuse` artık genel API'nin bir parçası olmadığından, hidrasyon'u devre dışı bırakmak için `ngSkipHydration` kullanın veya sağlayıcı listesinden `provideClientHydration` çağrısını kaldırın.",
   },
   {
     possibleIn: 1700,
@@ -2206,7 +2215,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v17 paramsInheritanceStrategy',
     action:
-      'If you want the child routes of `loadComponent` routes to inherit data from their parent specify the `paramsInheritanceStrategy` to `always`, which in v17 is now set to `emptyOnly`.',
+      "`loadComponent` rotalarının alt rotalarının üst rotalarından veri miras almasını istiyorsanız, `paramsInheritanceStrategy` değerini `always` olarak belirtin; v17'de bu değer artık `emptyOnly` olarak ayarlanmıştır.",
   },
 
   {
@@ -2215,7 +2224,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v18 node support',
     action:
-      'Make sure that you are using a supported version of node.js before you upgrade your application. Angular v18 supports node.js versions: v18.19.0 and newer',
+      'Uygulamanızı yükseltmeden önce desteklenen bir node.js sürümü kullandığınızdan emin olun. Angular v18, node.js sürümleri: v18.19.0 ve üstünü destekler.',
   },
   {
     possibleIn: 1800,
@@ -2223,7 +2232,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v18 ng update',
     action:
-      "In the application's project directory, run `ng update @angular/core@18 @angular/cli@18` to update your application to Angular v18.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v18'e güncellemek için `ng update @angular/core@18 @angular/cli@18` komutunu çalıştırın.",
   },
   {
     possibleIn: 1800,
@@ -2231,28 +2240,29 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@18`.',
+    action: '`ng update @angular/material@18` komutunu çalıştırın.',
   },
   {
     possibleIn: 1800,
     necessaryAsOf: 1800,
     level: ApplicationComplexity.Basic,
     step: '18.0.0 Upgrade TypeScript',
-    action: 'Update TypeScript to versions 5.4 or newer.',
+    action: "TypeScript'ı 5.4 veya daha yeni sürümlere güncelleyin.",
   },
   {
     possibleIn: 1800,
     necessaryAsOf: 1800,
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: async has been removed, use `waitForAsync` instead',
-    action: 'Replace `async` from `@angular/core` with `waitForAsync`.',
+    action: '`@angular/core` paketindeki `async` kullanımını `waitForAsync` ile değiştirin.',
   },
   {
     possibleIn: 1800,
     necessaryAsOf: 1800,
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: Deprecated matchesElement method removed from AnimationDriver',
-    action: "Remove calls to `matchesElement` because it's now not part of `AnimationDriver`.",
+    action:
+      '`matchesElement` artık `AnimationDriver` bileşeninin bir parçası olmadığından, `matchesElement` çağrılarını kaldırın.',
   },
   {
     possibleIn: 1800,
@@ -2260,7 +2270,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0. Use `@angular/core` StateKey and TransferState',
     action:
-      'Import `StateKey` and `TransferState` from `@angular/core` instead of `@angular/platform-browser`.',
+      "`StateKey` ve `TransferState` import'larını `@angular/platform-browser` yerine `@angular/core` paketinden yapın.",
   },
   {
     possibleIn: 1800,
@@ -2268,7 +2278,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0. Opt-in of caching for HTTP requests with auth headers',
     action:
-      'Use `includeRequestsWithAuthHeaders: true` in `withHttpTransferCache` to opt-in of caching for HTTP requests that require authorization.',
+      'Yetkilendirme gerektiren HTTP istekleri için önbelleğe almayı etkinleştirmek üzere `withHttpTransferCache` içinde `includeRequestsWithAuthHeaders: true` kullanın.',
   },
   {
     possibleIn: 1800,
@@ -2276,7 +2286,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0.REMOVE_OBSOLETE_IS_WORKER',
     action:
-      'Update the application to remove `isPlatformWorkerUi` and `isPlatformWorkerApp` since they were part of platform WebWorker which is now not part of Angular.',
+      "`isPlatformWorkerUi` ve `isPlatformWorkerApp` artık Angular'ın bir parçası olmayan platform WebWorker'a ait olduğundan, uygulamanızdan bu kullanımları kaldırın.",
   },
   {
     possibleIn: 1800,
@@ -2284,14 +2294,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0.FORCE_ZONE_CHANGE_DETECTION',
     action:
-      'Tests may run additional rounds of change detection to fully reflect test state in the DOM. As a last resort, revert to the old behavior by adding `provideZoneChangeDetection({ignoreChangesOutsideZone: true})` to the TestBed providers.',
+      "Testler, test durumunu DOM'da tam olarak yansıtmak için ek değişiklik algılama turları çalıştırabilir. Son çare olarak, TestBed sağlayıcılarına `provideZoneChangeDetection({ignoreChangesOutsideZone: true})` ekleyerek eski davranışa geri dönün.",
   },
   {
     possibleIn: 1800,
     necessaryAsOf: 1800,
     level: ApplicationComplexity.Medium,
     step: '18.0.0: Remove two-way binding expressions in writable bindings',
-    action: 'Remove expressions that write to properties in templates that use `[(ngModel)]`',
+    action: '`[(ngModel)]` kullanan şablonlarda özelliklere yazan ifadeleri kaldırın.',
   },
   {
     possibleIn: 1800,
@@ -2299,7 +2309,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: Use zones to track pending requests',
     action:
-      'Remove calls to `Testability` methods `increasePendingRequestCount`, `decreasePendingRequestCount`, and `getPendingRequestCount`. This information is tracked by ZoneJS.',
+      '`Testability` metotları `increasePendingRequestCount`, `decreasePendingRequestCount` ve `getPendingRequestCount` çağrılarını kaldırın. Bu bilgi artık ZoneJS tarafından takip edilmektedir.',
   },
   {
     possibleIn: 1800,
@@ -2307,7 +2317,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0: Move shared providers to the routed component',
     action:
-      'Move any environment providers that should be available to routed components from the component that defines the `RouterOutlet` to the providers of `bootstrapApplication` or the `Route` config.',
+      'Yönlendirilen bileşenler için kullanılabilir olması gereken ortam sağlayıcılarını, `RouterOutlet` tanımlayan bileşenden `bootstrapApplication` sağlayıcılarına veya `Route` yapılandırmasına taşıyın.',
   },
   {
     possibleIn: 1800,
@@ -2315,7 +2325,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0 Use RedirectCommand or new NavigationBehaviorOptions',
     action:
-      'When a guard returns a `UrlTree` as a redirect, the redirecting navigation will now use `replaceUrl` if the initial navigation was also using the `replaceUrl` option. If you prefer the previous behavior, configure the redirect using the new `NavigationBehaviorOptions` by returning a `RedirectCommand` with the desired options instead of `UrlTree`.',
+      'Bir guard yönlendirme olarak `UrlTree` döndürdüğünde, ilk gezinme de `replaceUrl` seçeneğini kullanıyorsa yönlendirme gezinmesi artık `replaceUrl` kullanacaktır. Önceki davranışı tercih ediyorsanız, `UrlTree` yerine istediğiniz seçeneklerle bir `RedirectCommand` döndürerek yeni `NavigationBehaviorOptions` ile yönlendirmeyi yapılandırın.',
   },
   {
     possibleIn: 1800,
@@ -2323,7 +2333,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: Remove deprecated resource cache providers',
     action:
-      "Remove dependencies of `RESOURCE_CACHE_PROVIDER` since it's no longer part of the Angular runtime.",
+      '`RESOURCE_CACHE_PROVIDER` artık Angular çalışma zamanının bir parçası olmadığından bağımlılıklarını kaldırın.',
   },
   {
     possibleIn: 1800,
@@ -2331,7 +2341,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: Update Node.js URL parsing in `ServerPlatformLocation`',
     action:
-      'In `@angular/platform-server` now `pathname` is always suffixed with `/` and the default ports for http: and https: respectively are 80 and 443.',
+      "`@angular/platform-server` paketinde artık `pathname` her zaman `/` son ekiyle biter ve http: ile https: için varsayılan portlar sırasıyla 80 ve 443'tür.",
   },
   {
     possibleIn: 1800,
@@ -2339,7 +2349,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0. Use absolute URLs',
     action:
-      'Provide an absolute `url` instead of using `useAbsoluteUrl` and `baseUrl` from `PlatformConfig`.',
+      '`PlatformConfig` paketindeki `useAbsoluteUrl` ve `baseUrl` yerine mutlak bir `url` sağlayın.',
   },
   {
     possibleIn: 1800,
@@ -2347,7 +2357,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0. Switch from `platformDynamicServer` to `platformServer`.',
     action:
-      'Replace the usage of `platformDynamicServer` with `platformServer`. Also, add an `import @angular/compiler`.',
+      '`platformDynamicServer` kullanımını `platformServer` ile değiştirin. Ayrıca `import @angular/compiler` ekleyin.',
   },
   {
     possibleIn: 1800,
@@ -2355,7 +2365,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0. Remove `ServerTransferStateModule` from app imports',
     action:
-      'Remove all imports of `ServerTransferStateModule` from your application. It is no longer needed.',
+      "Uygulamanızdaki tüm `ServerTransferStateModule` import'larını kaldırın. Artık buna ihtiyaç yoktur.",
   },
   {
     possibleIn: 1800,
@@ -2363,7 +2373,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0. Update `Route.redirectTo` to accept functions',
     action:
-      '`Route.redirectTo` can now include a function in addition to a string. Any code which reads `Route` objects directly and expects `redirectTo` to be a string may need to update to account for functions as well.',
+      "`Route.redirectTo` artık bir string'e ek olarak bir fonksiyon da içerebilir. `Route` nesnelerini doğrudan okuyan ve `redirectTo` değerinin bir string olmasını bekleyen kodların fonksiyonları da hesaba katacak şekilde güncellenmesi gerekebilir.",
   },
   {
     possibleIn: 1800,
@@ -2371,7 +2381,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: Guards can return `RedirectCommand`',
     action:
-      '`Route` guards and resolvers can now return a `RedirectCommand` object in addition to a `UrlTree` and `boolean`. Any code which reads `Route` objects directly and expects only `boolean` or `UrlTree` may need to update to account for `RedirectCommand` as well.',
+      "`Route` guard'ları ve resolver'ları artık `UrlTree` ve `boolean` değerlerine ek olarak bir `RedirectCommand` nesnesi döndürebilir. `Route` nesnelerini doğrudan okuyan ve yalnızca `boolean` veya `UrlTree` bekleyen kodların `RedirectCommand` değerini de hesaba katacak şekilde güncellenmesi gerekebilir.",
   },
   {
     possibleIn: 1800,
@@ -2379,7 +2389,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '18.0.0: Mark `OnPush` views dirty',
     action:
-      'For any components using `OnPush` change detection, ensure they are properly marked dirty to enable host binding updates.',
+      '`OnPush` değişiklik algılama kullanan bileşenler için, host binding güncellemelerini etkinleştirmek amacıyla düzgün şekilde kirli olarak işaretlendiklerinden emin olun.',
   },
   {
     possibleIn: 1800,
@@ -2387,7 +2397,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0-Refresh-Newly-Created-Views',
     action:
-      'Be aware that newly created views or views marked for check and reattached during change detection are now guaranteed to be refreshed in that same change detection cycle.',
+      'Yeni oluşturulan görünümlerin veya kontrol için işaretlenip değişiklik algılama sırasında yeniden eklenen görünümlerin artık aynı değişiklik algılama döngüsünde yenilenmesinin garanti edildiğini unutmayın.',
   },
   {
     possibleIn: 1800,
@@ -2395,7 +2405,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0: `ComponentFixture.whenStable` matches `ApplicationRef.isStable`',
     action:
-      'After aligning the semantics of `ComponentFixture.whenStable` and `ApplicationRef.isStable`, your tests may wait longer when using `whenStable`.',
+      '`ComponentFixture.whenStable` ve `ApplicationRef.isStable` semantikleri hizalandıktan sonra, `whenStable` kullanırken testleriniz daha uzun süre bekleyebilir.',
   },
   {
     possibleIn: 1800,
@@ -2403,11 +2413,11 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '18.0.0. `ComponentFixture.autoDetect` behavior more closely matches Application behavior',
     action:
-      'You may experience tests failures if you have tests that rely on change detection execution order when using `ComponentFixture.autoDetect` because it now executes change detection for fixtures within `ApplicationRef.tick`. For example, this will cause test fixture to refresh before any dialogs that it creates whereas this may have been the other way around in the past.',
+      "`ComponentFixture.autoDetect` kullanırken değişiklik algılama yürütme sırasına dayanan testleriniz varsa test hataları yaşayabilirsiniz, çünkü artık `ApplicationRef.tick` içinde fixture'lar için değişiklik algılama yürütülmektedir. Örneğin, bu durum test fixture'ının oluşturduğu diyaloglardan önce yenilenmesine neden olacaktır; oysa geçmişte bunun tersi olabiliyordu.",
   },
   {
     action:
-      "In the application's project directory, run `ng update @angular/core@19 @angular/cli@19` to update your application to Angular v19.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v19'a güncellemek için `ng update @angular/core@19 @angular/cli@19` komutunu çalıştırın.",
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2419,11 +2429,11 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@19`.',
+    action: '`ng update @angular/material@19` komutunu çalıştırın.',
   },
   {
     action:
-      'Angular directives, components and pipes are now standalone by default. Specify "standalone: false" for declarations that are currently declared in an NgModule. The Angular CLI will automatically update your code to reflect that.',
+      'Angular direktifleri, bileşenleri ve pipe\'ları artık varsayılan olarak bağımsızdır (standalone). Şu anda bir NgModule içinde bildirilen deklarasyonlar için "standalone: false" belirtin. Angular CLI kodunuzu bunu yansıtacak şekilde otomatik olarak güncelleyecektir.',
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2431,7 +2441,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Remove `this.` prefix when accessing template reference variables. For example, refactor `<div #foo></div>{{ this.foo }}` to `<div #foo></div>{{ foo }}`',
+      'Şablon referans değişkenlerine erişirken `this.` önekini kaldırın. Örneğin, `<div #foo></div>{{ this.foo }}` ifadesini `<div #foo></div>{{ foo }}` olarak yeniden düzenleyin.',
     level: ApplicationComplexity.Medium,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2439,14 +2449,14 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Replace usages of `BrowserModule.withServerTransition()` with injection of the `APP_ID` token to set the application `id` instead.',
+      '`BrowserModule.withServerTransition()` kullanımlarını, uygulama `id` değerini ayarlamak için `APP_ID` token enjeksiyonu ile değiştirin.',
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 1900,
     possibleIn: 1900,
     step: '19.0.0-remove-browser-module-with-server-transition',
   },
   {
-    action: 'The `factories` property in `KeyValueDiffers` has been removed.',
+    action: '`KeyValueDiffers` içindeki `factories` özelliği kaldırıldı.',
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2454,14 +2464,14 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'In angular.json, replace the "name" option with "project" for the `@angular/localize` builder.',
+      'angular.json dosyasında, `@angular/localize` oluşturucusu için "name" seçeneğini "project" ile değiştirin.',
     level: ApplicationComplexity.Medium,
     necessaryAsOf: 1900,
     possibleIn: 1900,
     step: '19.0.0_localize_builder_project_option',
   },
   {
-    action: 'Rename `ExperimentalPendingTasks` to `PendingTasks`.',
+    action: '`ExperimentalPendingTasks` adını `PendingTasks` olarak yeniden adlandırın.',
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2469,14 +2479,14 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      "Update tests that relied on the `Promise` timing of effects to use `await whenStable()` or call `.detectChanges()` to trigger effects. For effects triggered during change detection, ensure they don't depend on the application being fully rendered or consider using `afterRenderEffect()`. Tests using faked clocks may need to fast-forward/flush the clock.",
+      'Efektlerin `Promise` zamanlamasına dayanan testleri, `await whenStable()` kullanacak veya efektleri tetiklemek için `.detectChanges()` çağıracak şekilde güncelleyin. Değişiklik algılama sırasında tetiklenen efektler için, uygulamanın tamamen render edilmesine bağlı olmadığından emin olun veya `afterRenderEffect()` kullanmayı düşünün. Sahte saat kullanan testlerin saati ileri sarması/temizlemesi gerekebilir.',
     level: ApplicationComplexity.Medium,
     necessaryAsOf: 1900,
     possibleIn: 1900,
     step: '19.0.0.1',
   },
   {
-    action: 'Upgrade to TypeScript version 5.5 or later.',
+    action: 'TypeScript sürüm 5.5 veya daha yenisine yükseltin.',
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2484,7 +2494,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Update tests using `fakeAsync` that rely on specific timing of zone coalescing and scheduling when a change happens outside the Angular zone (hybrid mode scheduling) as these timers are now affected by `tick` and `flush`.',
+      'Angular zone dışında bir değişiklik olduğunda (hibrit mod zamanlama) zone birleştirme ve zamanlama ile ilgili belirli zamanlamaya dayanan `fakeAsync` kullanan testleri güncelleyin, çünkü bu zamanlayıcılar artık `tick` ve `flush` tarafından etkilenmektedir.',
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2492,7 +2502,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      "When using `createComponent` API and not passing content for the first `ng-content`, provide `document.createTextNode('')` as a `projectableNode` to prevent rendering the default fallback content.",
+      "`createComponent` API kullanırken ve ilk `ng-content` için içerik geçirmediğinizde, varsayılan yedek içeriğin render edilmesini önlemek için `projectableNode` olarak `document.createTextNode('')` sağlayın.",
     level: ApplicationComplexity.Medium,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2500,7 +2510,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Update tests that rely on specific timing or ordering of change detection around custom elements, as the timing may have changed due to the switch to the hybrid scheduler.',
+      'Özel öğeler (custom elements) etrafındaki değişiklik algılamanın belirli zamanlamasına veya sıralamasına dayanan testleri güncelleyin, çünkü hibrit zamanlayıcıya geçiş nedeniyle zamanlama değişmiş olabilir.',
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2508,7 +2518,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Migrate from using `Router.errorHandler` to `withNavigationErrorHandler` from `provideRouter` or `errorHandler` from `RouterModule.forRoot`.',
+      '`Router.errorHandler` kullanımından `provideRouter` içindeki `withNavigationErrorHandler` veya `RouterModule.forRoot` içindeki `errorHandler` kullanımına geçiş yapın.',
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2516,14 +2526,15 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      'Update tests to handle errors thrown during `ApplicationRef.tick` by either triggering change detection synchronously or rejecting outstanding `ComponentFixture.whenStable` promises.',
+      "`ApplicationRef.tick` sırasında fırlatılan hataları ele almak için testleri güncelleyin; değişiklik algılamayı eşzamanlı olarak tetikleyin veya bekleyen `ComponentFixture.whenStable` promise'larını reddedin.",
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
     step: '19.0.0-testbed-error-handling',
   },
   {
-    action: 'Update usages of `Resolve` interface to include `RedirectCommand` in its return type.',
+    action:
+      '`Resolve` arayüzünün kullanımlarını, dönüş türüne `RedirectCommand` dahil edecek şekilde güncelleyin.',
     level: ApplicationComplexity.Medium,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2531,7 +2542,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      '`fakeAsync` will flush pending timers by default. For tests that require the previous behavior, explicitly pass `{flush: false}` in the options parameter.',
+      '`fakeAsync` varsayılan olarak bekleyen zamanlayıcıları temizleyecektir. Önceki davranışı gerektiren testler için, seçenekler parametresinde açıkça `{flush: false}` geçirin.',
     level: ApplicationComplexity.Advanced,
     necessaryAsOf: 1900,
     possibleIn: 1900,
@@ -2539,7 +2550,7 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
-      "In the application's project directory, run `ng update @angular/core@20 @angular/cli@20` to update your application to Angular v20.",
+      "Uygulamanızın proje dizininde, Angular v20'ye güncellemek için `ng update @angular/core@20 @angular/cli@20` komutunu çalıştırın.",
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 2000,
     possibleIn: 2000,
@@ -2551,14 +2562,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@20`.',
+    action: '`ng update @angular/material@20` komutunu çalıştırın.',
   },
   {
     possibleIn: 2000,
     necessaryAsOf: 2000,
     level: ApplicationComplexity.Basic,
     step: '20.0.0_rename_afterRender_to_afterEveryRender',
-    action: 'Rename the `afterRender` lifecycle hook to `afterEveryRender`',
+    action: '`afterRender` yaşam döngüsü kancasını `afterEveryRender` olarak yeniden adlandırın',
   },
   {
     possibleIn: 2000,
@@ -2566,7 +2577,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '20.0.0_replace_TestBed_flushEffects_with_tick',
     action:
-      'Replace uses of `TestBed.flushEffects()` with `TestBed.tick()`, the closest equivalent to synchronously flush effects.',
+      'Efektleri eşzamanlı olarak temizlemenin en yakın karşılığı olan `TestBed.tick()` ile `TestBed.flushEffects()` kullanımlarını değiştirin.',
   },
   {
     possibleIn: 2000,
@@ -2574,7 +2585,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_provideCheckNoChangesConfig',
     action:
-      'Rename `provideExperimentalCheckNoChangesForDebug` to `provideCheckNoChangesConfig`. Note its behavior now applies to all `checkNoChanges` runs. The `useNgZoneOnStable` option is no longer available.',
+      '`provideExperimentalCheckNoChangesForDebug` adını `provideCheckNoChangesConfig` olarak değiştirin. Davranışının artık tüm `checkNoChanges` çalıştırmalarına uygulandığını unutmayın. `useNgZoneOnStable` seçeneği artık mevcut değildir.',
   },
   {
     possibleIn: 2000,
@@ -2582,7 +2593,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_refactor_ng_reflect_attributes_usage',
     action:
-      'Refactor application and test code to avoid relying on `ng-reflect-*` attributes. If needed temporarily for migration, use `provideNgReflectAttributes()` from `@angular/core` in bootstrap providers to re-enable them in dev mode only.',
+      '`ng-reflect-*` özniteliklerine bağımlılıktan kaçınmak için uygulama ve test kodunu yeniden düzenleyin. Geçiş için geçici olarak gerekiyorsa, bunları yalnızca geliştirme modunda yeniden etkinleştirmek için önyükleme sağlayıcılarında `@angular/core` paketinden `provideNgReflectAttributes()` kullanın.',
   },
   {
     possibleIn: 2000,
@@ -2590,14 +2601,14 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_adjust_RedirectFn_return_type_handling',
     action:
-      'Adjust code that directly calls functions returning `RedirectFn`. These functions can now also return an `Observable` or `Promise`; ensure your logic correctly handles these asynchronous return types.',
+      '`RedirectFn` döndüren fonksiyonları doğrudan çağıran kodu düzenleyin. Bu fonksiyonlar artık `Observable` veya `Promise` de döndürebilir; mantığınızın bu asenkron dönüş türlerini doğru şekilde işlediğinden emin olun.',
   },
   {
     possibleIn: 2000,
     necessaryAsOf: 2000,
     level: ApplicationComplexity.Basic,
     step: '20.0.0_rename_resource_request_to_param',
-    action: 'Rename the `request` property passed in resources to `params`.',
+    action: 'Kaynaklara iletilen `request` özelliğini `params` olarak yeniden adlandırın.',
   },
   {
     possibleIn: 2000,
@@ -2605,7 +2616,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '20.0.0_rename_rxResource_loader_to_stream',
     action:
-      'Rename the `request` and `loader` properties passed in RxResource to `params` and `stream`.',
+      "RxResource'a iletilen `request` ve `loader` özelliklerini `params` ve `stream` olarak yeniden adlandırın.",
   },
   {
     possibleIn: 2000,
@@ -2613,7 +2624,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '20.0.0_replace_ResourceStatus_by_corresponding_strings',
     action:
-      '`ResourceStatus` is no longer an enum. Use the corresponding constant string values instead.',
+      '`ResourceStatus` artık bir enum değildir. Bunun yerine karşılık gelen sabit string değerlerini kullanın.',
   },
   {
     possibleIn: 2000,
@@ -2621,7 +2632,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_rename_provideExperimentalZonelessChangeDetection',
     action:
-      'Rename `provideExperimentalZonelessChangeDetection` to `provideZonelessChangeDetection`.',
+      '`provideExperimentalZonelessChangeDetection` adını `provideZonelessChangeDetection` olarak değiştirin.',
   },
   {
     possibleIn: 2000,
@@ -2629,7 +2640,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_template_expressions_using_in_property',
     action:
-      "If your templates use `{{ in }}` or `in` in expressions to refer to a component property named 'in', change it to `{{ this.in }}` or `this.in` as 'in' now refers to the JavaScript 'in' operator. If you're using `in` as a template reference, you'd have to rename the reference.",
+      "Şablonlarınız 'in' adlı bir bileşen özelliğine başvurmak için `{{ in }}` veya ifadelerde `in` kullanıyorsa, 'in' artık JavaScript'in 'in' operatörüne karşılık geldiği için bunu `{{ this.in }}` veya `this.in` olarak değiştirin. `in`'i şablon referansı olarak kullanıyorsanız, referansı yeniden adlandırmanız gerekecektir.",
   },
   {
     possibleIn: 2000,
@@ -2637,7 +2648,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_router_method_array_parameters_to_readonly',
     action:
-      'The type for the commands arrays passed to Router methods (`createUrlTree`, `navigate`, `createUrlTreeFromSnapshot`) have been updated to use `readonly T[]` since the array is not mutated. Code which extracts these types (e.g. with `typeof`) may need to be adjusted if it expects mutable arrays.',
+      'Router metotlarına (`createUrlTree`, `navigate`, `createUrlTreeFromSnapshot`) iletilen komut dizilerinin türü, dizi değiştirilmediği için `readonly T[]` kullanacak şekilde güncellenmiştir. Bu türleri çıkaran kod (örn. `typeof` ile) değiştirilebilir diziler bekliyorsa ayarlanması gerekebilir.',
   },
   {
     possibleIn: 2000,
@@ -2645,7 +2656,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_animation_tests_for_guaranteed_flushing',
     action:
-      'Review and update tests asserting on DOM elements involved in animations. Animations are now guaranteed to be flushed with change detection or `ApplicationRef.tick`, potentially altering previous test outcomes.',
+      'Animasyonlara dahil olan DOM elemanları üzerinde doğrulama yapan testleri gözden geçirip güncelleyin. Animasyonların artık değişiklik algılama veya `ApplicationRef.tick` ile temizlenmesi garanti edilmektedir ve bu, önceki test sonuçlarını değiştirebilir.',
   },
   {
     possibleIn: 2000,
@@ -2653,7 +2664,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '20.0.0_handle_uncaught_listener_errors_in_tests',
     action:
-      'In tests, uncaught errors in event listeners are now rethrown by default. Previously, these were only logged to the console by default. Catch them if intentional for the test case, or use `rethrowApplicationErrors: false` in `configureTestingModule` as a last resort.',
+      'Testlerde, olay dinleyicilerindeki yakalanmamış hatalar artık varsayılan olarak yeniden fırlatılır. Daha önce bunlar yalnızca varsayılan olarak konsola kaydediliyordu. Test senaryosu için kasıtlıysa yakalayın veya son çare olarak `configureTestingModule` içinde `rethrowApplicationErrors: false` kullanın.',
   },
   {
     possibleIn: 2000,
@@ -2661,7 +2672,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_route_guards_array_types',
     action:
-      'The `any` type is removed from the Route guard arrays (canActivate, canDeactivate, etc); ensure guards are functions, `ProviderToken<T>`, or (deprecated) strings. Refactor string guards to `ProviderToken<T>` or functions.',
+      "Route guard dizilerinden (canActivate, canDeactivate vb.) `any` türü kaldırılmıştır; guard'ların fonksiyon, `ProviderToken<T>` veya (kullanımdan kaldırılmış) string olduğundan emin olun. String guard'ları `ProviderToken<T>` veya fonksiyonlara dönüştürün.",
   },
   {
     possibleIn: 2000,
@@ -2669,7 +2680,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '20.0.0_update_nodejs_version',
     action:
-      'Ensure your Node.js version is at least 20.11.1 and not v18 or v22.0-v22.10 before upgrading to Angular v20. Check https://angular.dev/reference/versions for the full list of supported Node.js versions.',
+      "Angular v20'ye yükseltmeden önce Node.js sürümünüzün en az 20.11.1 olduğundan ve v18 veya v22.0-v22.10 olmadığından emin olun. Desteklenen Node.js sürümlerinin tam listesi için https://angular.dev/reference/versions adresini kontrol edin.",
   },
   {
     possibleIn: 2000,
@@ -2677,7 +2688,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '20.0.0_replace_TestBed_get_with_TestBed_inject',
     action:
-      'Replace all occurrences of the deprecated `TestBed.get()` method with `TestBed.inject()` in your Angular tests for dependency injection.',
+      'Angular testlerinizde bağımlılık enjeksiyonu için kullanımdan kaldırılmış `TestBed.get()` metodunun tüm kullanımlarını `TestBed.inject()` ile değiştirin.',
   },
   {
     possibleIn: 2000,
@@ -2685,7 +2696,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '20.0.0_remove_InjectFlags_usage',
     action:
-      'Remove `InjectFlags` enum and its usage from `inject`, `Injector.get`, `EnvironmentInjector.get`, and `TestBed.inject` calls. Use options like `{optional: true}` for `inject` or handle null for `*.get` methods.',
+      "`inject`, `Injector.get`, `EnvironmentInjector.get` ve `TestBed.inject` çağrılarından `InjectFlags` enum'ını ve kullanımını kaldırın. `inject` için `{optional: true}` gibi seçenekleri kullanın veya `*.get` metotları için null kontrolü yapın.",
   },
   {
     possibleIn: 2000,
@@ -2693,7 +2704,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_injector_get_calls_to_use_ProviderToken',
     action:
-      'Update `injector.get()` calls to use a specific `ProviderToken<T>` instead of relying on the removed `any` overload. If using string tokens (deprecated since v4), migrate them to `ProviderToken<T>`.',
+      "Kaldırılan `any` overload'una bağımlı olmak yerine `injector.get()` çağrılarını belirli bir `ProviderToken<T>` kullanacak şekilde güncelleyin. String token'lar kullanıyorsanız (v4'ten beri kullanımdan kaldırılmış), bunları `ProviderToken<T>`'ye taşıyın.",
   },
   {
     possibleIn: 2000,
@@ -2701,7 +2712,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '20.0.0_update_typescript_version',
     action:
-      "Upgrade your project's TypeScript version to at least 5.8 before upgrading to Angular v20 to ensure compatibility.",
+      "Uyumluluk sağlamak için Angular v20'ye yükseltmeden önce projenizin TypeScript sürümünü en az 5.8'e yükseltin.",
   },
   {
     possibleIn: 2000,
@@ -2709,7 +2720,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_review_AsyncPipe_error_handling_in_tests',
     action:
-      '`Unhandled errors in subscriptions/promises of AsyncPipe` are now directly reported to `ErrorHandler`. This may alter test outcomes; ensure tests correctly handle these reported errors.',
+      "AsyncPipe'ın subscription/promise'larındaki yakalanmamış hatalar artık doğrudan `ErrorHandler`'a bildirilir. Bu, test sonuçlarını değiştirebilir; testlerin bu bildirilen hataları doğru şekilde işlediğinden emin olun.",
   },
   {
     possibleIn: 2000,
@@ -2717,7 +2728,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_refactor_PendingTasks_run_usage',
     action:
-      'If relying on the return value of `PendingTasks.run`, refactor to use `PendingTasks.add`. Handle promise results/rejections manually, especially for SSR to prevent node process shutdown on unhandled rejections.',
+      "`PendingTasks.run` dönüş değerine bağımlıysanız, `PendingTasks.add` kullanacak şekilde yeniden düzenleyin. Promise sonuçlarını/reddedilmelerini manuel olarak işleyin, özellikle SSR'de yakalanmamış reddedilmelerde node sürecinin kapanmasını önlemek için.",
   },
   {
     possibleIn: 2000,
@@ -2725,7 +2736,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_update_template_expressions_using_void_property',
     action:
-      "If your templates use `{{ void }}` or `void` in expressions to refer to a component property named 'void', change it to `{{ this.void }}` or `this.void` as 'void' now refers to the JavaScript `void` operator.",
+      "Şablonlarınız 'void' adlı bir bileşen özelliğine başvurmak için `{{ void }}` veya ifadelerde `void` kullanıyorsa, 'void' artık JavaScript `void` operatörüne karşılık geldiği için bunu `{{ this.void }}` veya `this.void` olarak değiştirin.",
   },
   {
     possibleIn: 2000,
@@ -2733,7 +2744,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_review_date_pipe_formatter_Y_usage',
     action:
-      'Review `DatePipe` usages. Using the `Y` (week-numbering year) formatter without also including `w` (week number) is now detected as suspicious. Use `y` (year) if that was the intent, or include `w` alongside `Y`.',
+      '`DatePipe` kullanımlarını gözden geçirin. `Y` (hafta numaralı yıl) biçimlendiricisini `w` (hafta numarası) olmadan kullanmak artık şüpheli olarak algılanır. Amaç buysa `y` (yıl) kullanın veya `Y` ile birlikte `w` ekleyin.',
   },
   {
     possibleIn: 2000,
@@ -2741,7 +2752,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '20.0.0_handle_uncaught_listener_errors_in_tests',
     action:
-      'In templates parentheses are now always respected. This can lead to runtime breakages when nullish coalescing were nested in parathesis. eg `(foo?.bar).baz` will throw if `foo` is nullish as it would in native JavaScript.',
+      "Şablonlarda parantezler artık her zaman dikkate alınır. Bu, nullish coalescing parantez içine yerleştirildiğinde çalışma zamanı hatalarına yol açabilir. Örn. `(foo?.bar).baz`, yerel JavaScript'te olduğu gibi `foo` nullish ise hata fırlatacaktır.",
   },
   {
     possibleIn: 2000,
@@ -2749,11 +2760,11 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '20.0.0_router_generate_error_redirectTo_and_canMatch_incompatible_together',
     action:
-      'Route configurations are now validated more rigorously. Routes that combine `redirectTo` and `canMatch` protections will generate an error, as these properties are incompatible together by default.',
+      'Rota yapılandırmaları artık daha sıkı doğrulanır. `redirectTo` ve `canMatch` korumalarını birleştiren rotalar, bu özellikler varsayılan olarak birlikte uyumsuz olduğundan hata üretecektir.',
   },
   {
     action:
-      "In the application's project directory, run `ng update @angular/core@21 @angular/cli@21` to update your application to Angular v21.",
+      "Uygulamanın proje dizininde, uygulamanızı Angular v21'e güncellemek için `ng update @angular/core@21 @angular/cli@21` komutunu çalıştırın.",
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 2100,
     possibleIn: 2100,
@@ -2766,7 +2777,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: 'Run `ng update @angular/material@21`.',
+    action: '`ng update @angular/material@21` komutunu çalıştırın.',
   },
   {
     possibleIn: 2100,
@@ -2774,7 +2785,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-update-signal-input-access-in-custom-elements',
     action:
-      'When using signal inputs with Angular custom elements, update property access to be direct (`elementRef.newInput`) instead of a function call (`elementRef.newInput()`) to align with the behavior of decorator-based inputs.',
+      'Angular özel elemanlarıyla sinyal girdileri kullanırken, dekoratör tabanlı girdilerin davranışıyla uyumlu olması için özellik erişimini fonksiyon çağrısı (`elementRef.newInput()`) yerine doğrudan erişim (`elementRef.newInput`) olarak güncelleyin.',
   },
   {
     possibleIn: 2100,
@@ -2782,7 +2793,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-zone-scheduler-behavior-change',
     action:
-      "If using `provideZoneChangeDetection` without the ZoneJS polyfill, note that the internal scheduler is now always enabled. Review your app's timing as this may alter behavior that previously relied on the disabled scheduler.",
+      "ZoneJS polyfill'i olmadan `provideZoneChangeDetection` kullanıyorsanız, dahili zamanlayıcının artık her zaman etkin olduğunu unutmayın. Daha önce devre dışı bırakılmış zamanlayıcıya dayanan davranışı değiştirebileceğinden uygulamanızın zamanlamasını gözden geçirin.",
   },
   {
     possibleIn: 2100,
@@ -2790,7 +2801,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '21.0.0-provide-zone-change-detection-required',
     action:
-      "Zone-based applications should add `provideZoneChangeDetection()` to your application's root providers. For standalone apps, add it to the `bootstrapApplication` call. For NgModule-based apps, add it to your root `AppModule`'s `providers` array. An automated migration should handle this.",
+      "Zone tabanlı uygulamalar, uygulamanızın kök sağlayıcılarına `provideZoneChangeDetection()` eklemelidir. Bağımsız uygulamalar için `bootstrapApplication` çağrısına ekleyin. NgModule tabanlı uygulamalar için kök `AppModule`'ünüzün `providers` dizisine ekleyin. Otomatik bir taşıma işlemi bunu halletmelidir.",
   },
   {
     possibleIn: 2100,
@@ -2798,7 +2809,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-remove-interpolation-option',
     action:
-      "Remove the 'interpolation' property from your @Component decorators. Angular now only supports the default '{{' and '}}' interpolation markers.",
+      "@Component dekoratörlerinizden 'interpolation' özelliğini kaldırın. Angular artık yalnızca varsayılan '{{' ve '}}' interpolasyon işaretçilerini destekler.",
   },
   {
     possibleIn: 2100,
@@ -2806,7 +2817,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-remove-moduleid-property',
     action:
-      "Remove the 'moduleId' property from your @Component decorators. This property was used for resolving relative URLs for templates and styles, a functionality now handled by modern build tools.",
+      "@Component dekoratörlerinizden 'moduleId' özelliğini kaldırın. Bu özellik, şablonlar ve stiller için göreli URL'leri çözümlemek için kullanılıyordu; bu işlevsellik artık modern derleme araçları tarafından sağlanmaktadır.",
   },
   {
     possibleIn: 2100,
@@ -2814,7 +2825,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-ng-component-outlet-content-type-change',
     action:
-      'The `ngComponentOutletContent` input has been strictly typed from `any[][]` to `Node[][]`. Update the value you pass to this input to match the new `Node[][] | undefined` type.',
+      '`ngComponentOutletContent` girdisi `any[][]` yerine `Node[][]` olarak katı şekilde tiplendirilmiştir. Bu girdiye ilettiğiniz değeri yeni `Node[][] | undefined` türüne uyacak şekilde güncelleyin.',
   },
   {
     possibleIn: 2100,
@@ -2822,7 +2833,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '21.0.0-stricter-host-binding-type-checking',
     action:
-      "Host binding type checking is now enabled by default and may surface new build errors. Resolve any new type errors or set `typeCheckHostBindings: false` in your `tsconfig.json`'s `angularCompilerOptions`.",
+      'Host binding tür denetimi artık varsayılan olarak etkindir ve yeni derleme hataları ortaya çıkarabilir. Yeni tür hatalarını çözün veya `tsconfig.json` dosyanızın `angularCompilerOptions` bölümünde `typeCheckHostBindings: false` olarak ayarlayın.',
   },
   {
     possibleIn: 2100,
@@ -2830,7 +2841,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: '21.0.0-typescript-5.9-required',
     action:
-      "Update your project's TypeScript version to 5.9 or later. The `ng update` command will typically handle this automatically.",
+      'Projenizin TypeScript sürümünü 5.9 veya üstüne güncelleyin. `ng update` komutu genellikle bunu otomatik olarak halleder.',
   },
   {
     possibleIn: 2100,
@@ -2838,7 +2849,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-remove-application-config-from-platform-browser',
     action:
-      'The `ApplicationConfig` export from `@angular/platform-browser` has been removed. Update your imports to use `ApplicationConfig` from `@angular/core` instead.',
+      '`@angular/platform-browser` paketinden `ApplicationConfig` dışa aktarımı kaldırılmıştır. İçe aktarımlarınızı bunun yerine `@angular/core` paketinden `ApplicationConfig` kullanacak şekilde güncelleyin.',
   },
   {
     possibleIn: 2100,
@@ -2846,7 +2857,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-remove-ignore-changes-outside-zone-option',
     action:
-      'The `ignoreChangesOutsideZone` option for configuring ZoneJS is no longer available. Remove this option from your ZoneJS configuration in your polyfills file.',
+      'ZoneJS yapılandırması için `ignoreChangesOutsideZone` seçeneği artık mevcut değildir. Bu seçeneği polyfills dosyanızdaki ZoneJS yapılandırmanızdan kaldırın.',
   },
   {
     possibleIn: 2100,
@@ -2854,7 +2865,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-testbed-rethrows-errors-with-provideZoneChangeDetection',
     action:
-      'Update tests using `provideZoneChangeDetection` as TestBed now rethrows errors. Fix the underlying issues in your tests or, as a last resort, configure TestBed with `rethrowApplicationErrors: false` to disable this behavior.',
+      "TestBed artık hataları yeniden fırlattığı için `provideZoneChangeDetection` kullanan testleri güncelleyin. Testlerinizdeki temel sorunları düzeltin veya son çare olarak bu davranışı devre dışı bırakmak için TestBed'i `rethrowApplicationErrors: false` ile yapılandırın.",
   },
   {
     possibleIn: 2100,
@@ -2862,7 +2873,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-router-navigation-timing-changed',
     action:
-      'Update tests that rely on router navigation timing. Navigations may now take additional microtasks to complete. Ensure navigations are fully completed before making assertions, for example by using `fakeAsync` with `flush` or waiting for promises/observables to resolve.',
+      "Router navigasyon zamanlamasına dayanan testleri güncelleyin. Navigasyonların tamamlanması artık ek mikro görevler gerektirebilir. Doğrulamalar yapmadan önce navigasyonların tamamen tamamlandığından emin olun, örneğin `fakeAsync` ile `flush` kullanarak veya promise/observable'ların çözümlenmesini bekleyerek.",
   },
   {
     possibleIn: 2100,
@@ -2870,7 +2881,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-test-bed-provides-fake-platform-location',
     action:
-      'Tests using `TestBed` might be affected by the new fake `PlatformLocation`. If your tests fail, provide the old `MockPlatformLocation` from `@angular/common/testing` via `{provide: PlatformLocation, useClass: MockPlatformLocation}` in your `TestBed` configuration.',
+      "`TestBed` kullanan testler yeni sahte `PlatformLocation` tarafından etkilenebilir. Testleriniz başarısız olursa, `TestBed` yapılandırmanızda `{provide: PlatformLocation, useClass: MockPlatformLocation}` ile `@angular/common/testing` paketinden eski `MockPlatformLocation`'ı sağlayın.",
   },
   {
     possibleIn: 2100,
@@ -2878,7 +2889,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-remove-upgrade-adapter',
     action:
-      'The `UpgradeAdapter` has been removed. Update your hybrid Angular/AngularJS application to use the static APIs from the `@angular/upgrade/static` package instead.',
+      "`UpgradeAdapter` kaldırılmıştır. Hibrit Angular/AngularJS uygulamanızı bunun yerine `@angular/upgrade/static` paketindeki statik API'leri kullanacak şekilde güncelleyin.",
   },
   {
     possibleIn: 2100,
@@ -2886,7 +2897,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-form-array-directive-conflict',
     action:
-      'The new standalone `formArray` directive might conflict with existing custom directives or inputs. Rename any custom directives named `FormArray` or inputs named `formArray` on elements that also use reactive forms to resolve the conflict.',
+      'Yeni bağımsız `formArray` direktifi mevcut özel direktifler veya girdilerle çakışabilir. Çakışmayı çözmek için reaktif formlar da kullanan elemanlardaki `FormArray` adlı özel direktifleri veya `formArray` adlı girdileri yeniden adlandırın.',
   },
   {
     possibleIn: 2100,
@@ -2894,7 +2905,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-ngmodulefactory-removed',
     action:
-      'The deprecated `NgModuleFactory` has been removed. Update any code that uses `NgModuleFactory` to use `NgModule` directly, which is common in dynamic component loading scenarios.',
+      "Kullanımdan kaldırılmış `NgModuleFactory` kaldırılmıştır. `NgModuleFactory` kullanan tüm kodu, dinamik bileşen yükleme senaryolarında yaygın olan `NgModule`'ü doğrudan kullanacak şekilde güncelleyin.",
   },
   {
     possibleIn: 2100,
@@ -2902,7 +2913,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: '21.0.0-emit-declaration-only-not-supported',
     action:
-      'The `emitDeclarationOnly` TypeScript compiler option is not supported. Please disable it in your `tsconfig.json` file to allow the Angular compiler to function correctly.',
+      '`emitDeclarationOnly` TypeScript derleyici seçeneği desteklenmemektedir. Angular derleyicisinin düzgün çalışması için lütfen `tsconfig.json` dosyanızda bu seçeneği devre dışı bırakın.',
   },
   {
     possibleIn: 2100,
@@ -2910,6 +2921,6 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '21.0.0-lastsuccessfulnavigation-is-a-signal',
     action:
-      'The `lastSuccessfulNavigation` property on the Router has been converted to a signal. To get its value, you now need to invoke it as a function: `router.lastSuccessfulNavigation()`.',
+      'Router üzerindeki `lastSuccessfulNavigation` özelliği bir sinyale dönüştürülmüştür. Değerini almak için artık bunu bir fonksiyon olarak çağırmanız gerekir: `router.lastSuccessfulNavigation()`.',
   },
 ];
