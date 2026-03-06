@@ -21,7 +21,7 @@ Bu derste, tek bir konut konumu hakkındaki verileri temsil eden özellikleri ta
 
 <docs-workflow>
 
-<docs-step title="Create a new Angular interface">
+<docs-step title="Yeni bir Angular arayüzü oluşturun">
 Bu adım, uygulamanızda yeni bir arayüz oluşturur.
 
 IDE'nizin **Terminal** bölmesinde:
@@ -41,7 +41,7 @@ IDE'nizin **Terminal** bölmesinde:
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
    </docs-step>
 
-<docs-step title="Add properties to the new interface">
+<docs-step title="Yeni arayüze özellikler ekleyin">
 Bu adım, uygulamanızın bir konut konumunu temsil etmesi için gereken özellikleri arayüze ekler.
 
 1.  IDE'nizin **Terminal** bölmesinde, uygulamayı derlemek ve `http://localhost:4200` adresinde sunmak için `ng serve` komutunu başlatın (zaten çalışmıyorsa).
@@ -55,7 +55,7 @@ Bu adım, uygulamanızın bir konut konumunu temsil etmesi için gereken özelli
 Bu noktada, bir `id`, `name` ve konum bilgileri dahil olmak üzere bir konut konumu hakkındaki verileri temsil eden bir arayüz tanımladınız.
 </docs-step>
 
-<docs-step title="Create a test house for your app">
+<docs-step title="Uygulamanız için bir test evi oluşturun">
 Bir arayüzünüz var, ancak henüz kullanmıyorsunuz.
 
 Bu adımda, arayüzün bir örneğini oluşturacak ve ona bazı örnek veriler atayacaksınız.

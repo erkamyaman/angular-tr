@@ -1,8 +1,8 @@
-# Creating and using services
+# Service'ler oluşturma ve kullanma
 
 Servisler, Angular uygulamanız genelinde paylaşılabilen yeniden kullanılabilir kod parçalarıdır. Genellikle veri getirme, iş mantığı veya birden fazla bileşenin erişmesi gereken diğer işlevleri yönetirler.
 
-## Creating a service
+## Bir service oluşturma
 
 [Angular CLI](tools/cli) ile aşağıdaki komutu kullanarak bir servis oluşturabilirsiniz:
 
@@ -34,7 +34,7 @@ export class BasicDataStore {
 }
 ```
 
-## How services become available
+## Service'ler nasıl kullanılabilir hale gelir
 
 Servisinizde `@Injectable({ providedIn: 'root' })` kullandığınızda, Angular:
 
@@ -44,11 +44,11 @@ Servisinizde `@Injectable({ providedIn: 'root' })` kullandığınızda, Angular:
 
 Bu, çoğu servis için önerilen yaklaşımdır.
 
-## Injecting a service
+## Bir service'i enjekte etme
 
 `providedIn: 'root'` ile bir servis oluşturduktan sonra, `@angular/core`'dan `inject()` fonksiyonunu kullanarak uygulamanızın herhangi bir yerinde enjekte edebilirsiniz.
 
-### Injecting into a component
+### Bir bileşene enjekte etme
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -68,7 +68,7 @@ export class Example {
 }
 ```
 
-### Injecting into another service
+### Başka bir service'e enjekte etme
 
 ```ts
 import {inject, Injectable} from '@angular/core';
@@ -91,7 +91,7 @@ export class BasicDataStore {
 }
 ```
 
-## Next steps
+## Sonraki adımlar
 
 `providedIn: 'root'` çoğu kullanım durumunu karşılarken, Angular özel senaryolar için servisleri sağlamanın ek yollarını sunar:
 

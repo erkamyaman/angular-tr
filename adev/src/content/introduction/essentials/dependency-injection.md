@@ -1,10 +1,10 @@
-<docs-decorative-header title="Dependency Injection" imgSrc="adev/src/assets/images/dependency_injection.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Bağımlılık Enjeksiyonu" imgSrc="adev/src/assets/images/dependency_injection.svg"> <!-- markdownlint-disable-line -->
 Uygulamanız ve testleriniz genelinde kodu yeniden kullanın ve davranışları kontrol edin.
 </docs-decorative-header>
 
 Bileşenler arasında mantık paylaşmanız gerektiğinde, Angular [bağımlılık enjeksiyonu](guide/di) tasarım kalıbını kullanır. Bu kalıp, tek bir doğruluk kaynağından yönetirken bileşenlere kod enjekte etmenizi sağlayan bir "servis" oluşturmanıza olanak tanır.
 
-## What are services?
+## Servisler Nedir?
 
 Servisler, enjekte edilebilen yeniden kullanılabilir kod parçalarıdır.
 
@@ -26,7 +26,7 @@ export class Calculator {
 }
 ```
 
-## How to use a service
+## Bir Servis Nasıl Kullanılır
 
 Bir bileşende servis kullanmak istediğinizde şunları yapmanız gerekir:
 
@@ -51,9 +51,9 @@ export class Receipt {
 
 Bu örnekte, `Calculator` Angular'ın [`inject`](/api/core/inject) fonksiyonu çağrılarak ve servis ona geçirilerek kullanılmaktadır.
 
-## Next Step
+## Sonraki Adım
 
 <docs-pill-row>
-  <docs-pill title="Next Steps After Essentials" href="essentials/next-steps" />
-  <docs-pill title="In-depth dependency injection guide" href="guide/di" />
+  <docs-pill title="Temel Kavramlar Sonrası Adımlar" href="essentials/next-steps" />
+  <docs-pill title="Detaylı bağımlılık enjeksiyonu kılavuzu" href="guide/di" />
 </docs-pill-row>

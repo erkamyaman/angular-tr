@@ -1,13 +1,13 @@
-<docs-decorative-header title="Forms with Angular Signals" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Angular Sinyalleri ile Formlar" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-CRITICAL: Signal Forms [deneyseldir](/reference/releases#experimental). API gelecek sürümlerde değişebilir. Riskleri anlamadan deneysel API'leri üretim uygulamalarında kullanmaktan kaçının.
+CRITICAL: Signal Forms [deneyseldir](/reference/releases#deneysel). API gelecek sürümlerde değişebilir. Riskleri anlamadan deneysel API'leri üretim uygulamalarında kullanmaktan kaçının.
 
 Signal Forms, sinyallerin reaktif temeli üzerine kurularak Angular uygulamalarında form durumunu yönetmenize olanak tanıyan deneysel bir kütüphanedir. Otomatik çift yönlü bağlama, tür güvenli alan erişimi ve şema tabanlı doğrulama ile Signal Forms, sağlam formlar oluşturmanıza yardımcı olur.
 
 TIP: Signal Forms'a hızlı bir giriş için [Signal Forms temel kılavuzuna](essentials/signal-forms) bakın.
 
-## Why Signal Forms?
+## Neden Signal Form'lar?
 
 Web uygulamalarında form oluşturmak, birbirine bağlı birkaç konuyu yönetmeyi içerir: alan değerlerini takip etme, kullanıcı girdisini doğrulama, hata durumlarını yönetme ve kullanıcı arayüzünü veri modelinizle senkronize tutma. Bu konuları ayrı ayrı yönetmek, tekrarlayan kod ve karmaşıklık oluşturur.
 
@@ -21,13 +21,13 @@ Signal Forms, sinyallerle oluşturulan yeni uygulamalarda en iyi şekilde çalı
 
 NOTE: Şablon veya reaktif formlardan geliyorsanız, [karşılaştırma kılavuzuyla](guide/forms/signals/comparison) ilgilenebilirsiniz.
 
-## Prerequisites
+## Ön koşullar
 
 Signal Forms şunları gerektirir:
 
 - Angular v21 veya üstü
 
-## Setup
+## Kurulum
 
 Signal Forms zaten `@angular/forms` paketine dahildir. Gerekli fonksiyonları ve direktifleri `@angular/forms/signals`'dan içe aktarın:
 
@@ -44,7 +44,7 @@ import {form, FormField, required, email} from '@angular/forms/signals';
 })
 ```
 
-## Next steps
+## Sonraki adımlar
 
 Signal Forms'un nasıl çalıştığı hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzlara göz atın:
 

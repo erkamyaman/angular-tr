@@ -1,11 +1,11 @@
-# Template type checking
+# Şablon tür denetimi
 
-## Overview of template type checking
+## Şablon tür denetimine genel bakış
 
 TypeScript'in kodunuzdaki tür hatalarını yakalaması gibi, Angular da uygulamanızın şablonlarındaki ifadeleri ve bağlamaları kontrol eder ve bulduğu tür hatalarını raporlayabilir.
 Angular şu anda bunu, [Angular'ın derleyici seçeneklerindeki](reference/configs/angular-compiler-options) `fullTemplateTypeCheck` ve `strictTemplates` bayraklarının değerine bağlı olarak üç modda yapmaktadır.
 
-### Basic mode
+### Temel mod
 
 En temel tür denetimi modunda, `fullTemplateTypeCheck` bayrağı `false` olarak ayarlandığında, Angular bir şablondaki yalnızca üst düzey ifadeleri doğrular.
 
@@ -24,7 +24,7 @@ Derleyicinin bu modda bazı önemli sınırlamaları da vardır:
 
 Birçok durumda bunlar `any` türü olarak sonuçlanır ve bu da ifadenin sonraki bölümlerinin denetlenmemesine neden olabilir.
 
-### Full mode
+### Tam mod
 
 `fullTemplateTypeCheck` bayrağı `true` olarak ayarlanırsa, Angular şablonlardaki tür denetiminde daha agresif davranır.
 Özellikle:
@@ -42,7 +42,7 @@ Aşağıdakiler hâlâ `any` türündedir.
 IMPORTANT: `fullTemplateTypeCheck` bayrağı Angular 13'te kullanımdan kaldırılmıştır.
 Bunun yerine `strictTemplates` derleyici seçenekleri ailesi kullanılmalıdır.
 
-### Strict mode
+### Katı mod
 
 Angular, `fullTemplateTypeCheck` bayrağının davranışını korur ve üçüncü bir "katı mod" sunar.
 Katı mod, tam modun bir üst kümesidir ve `strictTemplates` bayrağı true olarak ayarlanarak erişilir.
@@ -57,7 +57,7 @@ Tam mod davranışına ek olarak Angular şunları yapar:
 - Bileşen/direktif, DOM ve animasyon olay bağlamalarında `$event`'in doğru türünü çıkarsar
 - Etiket adına dayalı olarak DOM öğelerine yapılan yerel referansların doğru türünü çıkarsar \(örneğin, `document.createElement`'in o etiket için döndüreceği tür\)
 
-## Checking of `*ngFor`
+## `*ngFor` denetimi
 
 Tür denetiminin üç modu gömülü görünümleri farklı şekilde ele alır.
 Aşağıdaki örneği inceleyin.
@@ -84,7 +84,7 @@ Temel modda Angular bunların hiçbirini denetlemez.
 Ancak tam modda Angular, `config` ve `user`'ın var olduğunu kontrol eder ve `any` türünü varsayar.
 Katı modda Angular, `<span>` içindeki `user`'ın `User` türünde olduğunu ve `address`'in `string` türünde bir `city` özelliğine sahip bir nesne olduğunu bilir.
 
-## Troubleshooting template errors
+## Şablon hatalarını giderme
 
 Katı modda, önceki modların hiçbirinde ortaya çıkmayan şablon hatalarıyla karşılaşabilirsiniz.
 Bu hatalar genellikle şablonlardaki, önceki araçlar tarafından yakalanmayan gerçek tür uyumsuzluklarını temsil eder.
@@ -128,7 +128,7 @@ Bu da işe yaramazsa, son çare olarak `fullTemplateTypeCheck: false` ile tam mo
 Temel moda geri dönmeyi gerektiren hatalar alıyorsanız, bunun büyük olasılıkla böyle bir hata olduğunu gösterir.
 Bu durumda, ekibin bunu ele alabilmesi için [bir sorun bildirin](https://github.com/angular/angular/issues).
 
-## Inputs and type-checking
+## Girdiler ve tür denetimi
 
 Şablon tür denetleyicisi, bir bağlama ifadesinin türünün ilgili direktif girdisinin türüyle uyumlu olup olmadığını kontrol eder.
 Örnek olarak aşağıdaki bileşeni inceleyin:
@@ -165,9 +165,9 @@ TypeScript, atamayı kendi tür sistemine göre kontrol eder ve uygulamada yapı
 
 Şablon tür denetleyicisine daha spesifik şablon içi tür gereksinimleri sağlayarak çalışma zamanı tür hatalarından kaçının.
 Direktif tanımında şablon koruma fonksiyonları sağlayarak kendi direktifleriniz için girdi türü gereksinimlerini mümkün olduğunca spesifik hale getirin.
-Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) bölümüne bakın.
+Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) bölümüne bakın.
 
-### Strict null checks
+### Katı null denetimleri
 
 `strictTemplates`'i ve TypeScript `strictNullChecks` bayrağını etkinleştirdiğinizde, kolayca kaçınılamayacak belirli durumlar için tür denetimi hataları oluşabilir.
 Örneğin:
@@ -205,14 +205,14 @@ Bu örnekte, derleyici TypeScript kodunda olduğu gibi nullability'deki tür uyu
   `strictNullInputTypes` seçeneğini `false` olarak ayarlamak, Angular şablonlarındaki katı null denetimlerini devre dışı bırakır.
   Bu bayrak, uygulamanın parçası olan tüm bileşenler için geçerlidir.
 
-### Advice for library authors
+### Kütüphane yazarları için tavsiyeler
 
 Bir kütüphane yazarı olarak, kullanıcılarınız için en iyi deneyimi sağlamak adına birkaç önlem alabilirsiniz.
 İlk olarak, `strictNullChecks`'i etkinleştirmek ve girdinin türüne uygun şekilde `null` dahil etmek, tüketicilerinize nullable bir değer sağlayıp sağlayamayacaklarını iletir.
 Ek olarak, şablon tür denetleyicisine özel tür ipuçları sağlamak da mümkündür.
-Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) ve [Input setter coercion](#input-setter-coercion) bölümlerine bakın.
+Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) ve [Input setter coercion](#girdi-setter-zorlaması) bölümlerine bakın.
 
-## Input setter coercion
+## Girdi setter zorlaması
 
 Bazen bir direktifin veya bileşenin `input()` özelliğinin, kendisine bağlanan değeri değiştirmesi, genellikle girdi için bir `transform` fonksiyonu kullanması istenir.
 Örnek olarak bu özel düğme bileşenini inceleyin:
@@ -292,7 +292,7 @@ Son ek, `@Input` _alan_ adı olmalıdır.
 
 Belirli bir girdi için bir `ngAcceptInputType_` geçersiz kılması mevcutsa, setter'ın geçersiz kılınan türün herhangi bir değerini işleyebilmesi gerektiğine dikkat edilmelidir.
 
-## Disabling type checking using `$any()`
+## `$any()` kullanarak tür denetimini devre dışı bırakma
 
 Bir bağlama ifadesini `$any()` dönüştürme sözde fonksiyonuna yapılan bir çağrı ile çevreleyerek ifadenin denetlenmesini devre dışı bırakın.
 Derleyici bunu, TypeScript'te `<any>` veya `as any` dönüştürmesi kullanıldığında olduğu gibi `any` türüne bir dönüştürme olarak ele alır.

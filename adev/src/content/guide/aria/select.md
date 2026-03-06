@@ -1,9 +1,9 @@
 <docs-decorative-header title="Select">
 </docs-decorative-header>
 
-## Overview
+## Genel Bakış
 
-Klavye navigasyonu ve ekran okuyucu destegi ile tek secimli acilir menuler olusturmak icin salt okunur combobox'i listbox ile birlestiren bir kalip.
+Klavye navigasyonu ve ekran okuyucu desteği ile tek seçimli açılır menüler oluşturmak için salt okunur combobox'ı listbox ile birleştiren bir kalıp.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -31,41 +31,41 @@ Klavye navigasyonu ve ekran okuyucu destegi ile tek secimli acilir menuler olust
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım
 
-Select kalibi, kullanicilarin bilinen bir secenek kumesinden tek bir deger secmesi gerektiginde en iyi calisir.
+Select kalıbı, kullanıcıların bilinen bir seçenek kümesinden tek bir değer seçmesi gerektiğinde en iyi çalışır.
 
-Su durumlarda bu kalibi kullanmayi dusunun:
+Şu durumlarda bu kalıbı kullanmayı düşünün:
 
-- **Secenek listesi sabit** (20'den az oge) - Kullanicilar filtrelemeye gerek kalmadan tarayip secebilir
-- **Secenekler bilinir** - Kullanicilar arama yapmadan secimleri tanir
-- **Formlar standart alanlar gerektiriyor** - Ulke, il, kategori veya durum secimi
-- **Ayarlar ve yapilandirma** - Tercihler veya secenekler icin acilir menuler
-- **Acik secenek etiketleri** - Her secimin belirgin, taranabilir bir adi var
+- **Seçenek listesi sabit** (20'den az öğe) - Kullanıcılar filtrelemeye gerek kalmadan tarayıp seçebilir
+- **Seçenekler bilinir** - Kullanıcılar arama yapmadan seçimleri tanır
+- **Formlar standart alanlar gerektiriyor** - Ülke, il, kategori veya durum seçimi
+- **Ayarlar ve yapılandırma** - Tercihler veya seçenekler için açılır menüler
+- **Açık seçenek etiketleri** - Her seçimin belirgin, taranabilir bir adı var
 
-Su durumlarda bu kaliptan kacinin:
+Şu durumlarda bu kalıptan kaçının:
 
-- **Liste 20'den fazla oge icerir** - Daha iyi filtreleme icin [Autocomplete kalibini](guide/aria/autocomplete) kullanin
-- **Kullanicilarin secenekleri aramasi gerekiyor** - [Autocomplete](guide/aria/autocomplete) metin girisi ve filtreleme saglar
-- **Coklu secim gerekli** - Bunun yerine [Multiselect kalibini](guide/aria/multiselect) kullanin
-- **Cok az secenek var (2-3)** - Radyo butonlari tum secimlerin daha iyi gorunurlugunu saglar
+- **Liste 20'den fazla öğe içerir** - Daha iyi filtreleme için [Autocomplete kalıbını](guide/aria/autocomplete) kullanın
+- **Kullanıcıların seçenekleri araması gerekiyor** - [Autocomplete](guide/aria/autocomplete) metin girişi ve filtreleme sağlar
+- **Çoklu seçim gerekli** - Bunun yerine [Multiselect kalıbını](guide/aria/multiselect) kullanın
+- **Çok az seçenek var (2-3)** - Radyo butonları tüm seçimlerin daha iyi görünürlüğünü sağlar
 
-## Features
+## Özellikler
 
-Select kalibi, tam erisilebilir bir acilir menu saglamak icin [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yonergelerini birlestirir:
+Select kalıbı, tam erişilebilir bir açılır menü sağlamak için [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yönergelerini birleştirir:
 
-- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Enter ile secin, Escape ile kapatin
-- **Ekran Okuyucu Destegi** - Yardimci teknolojiler icin yerlesik ARIA nitelikleri
-- **Ozel Gorunum** - Secili degerleri simgeler, bicimlendirme veya zengin icerikle gosterin
-- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
-- **Akilli Konumlandirma** - CDK Overlay gorunum alani kenarlarini ve kaydirmayi yonetir
-- **Cift Yonlu Metin Destegi** - Sagdan sola (RTL) dilleri otomatik olarak isler
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Enter ile seçin, Escape ile kapatın
+- **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA nitelikleri
+- **Özel Görünüm** - Seçili değerleri simgeler, biçimlendirme veya zengin içerikle gösterin
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+- **Akıllı Konumlandırma** - CDK Overlay görünüm alanı kenarlarını ve kaydırmayı yönetir
+- **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak işler
 
-## Examples
+## Örnekler
 
-### Basic select
+### Temel select
 
-Kullanicilarin bir degerler listesinden secim yapmak icin standart bir acilir menuye ihtiyaci vardir. Salt okunur combobox, listbox ile eslestirildiginde, tam erisilebilirlik destegi ile tanidik select deneyimi saglar.
+Kullanıcıların bir değerler listesinden seçim yapmak için standart bir açılır menüye ihtiyacı vardır. Salt okunur combobox, listbox ile eşleştirildiğinde, tam erişilebilirlik desteği ile tanıdık select deneyimi sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -93,11 +93,11 @@ Kullanicilarin bir degerler listesinden secim yapmak icin standart bir acilir me
   </docs-tab>
 </docs-tab-group>
 
-`ngCombobox` uzerindeki `readonly` niteligi, klavye navigasyonunu korurken metin girisini engeller. Kullanicilar, yerel select elemani gibi ok tuslari ve Enter kullanarak acilir menuyle etkilesir.
+`ngCombobox` üzerindeki `readonly` niteliği, klavye navigasyonunu korurken metin girişini engeller. Kullanıcılar, yerel select elemanı gibi ok tuşları ve Enter kullanarak açılır menüyle etkileşir.
 
-### Select with custom display
+### Özel görünümlü select
 
-Seceneklerin genellikle kullanicilarin secimleri hizla tanimasina yardimci olacak simgeler veya rozetler gibi gorsel gostergelere ihtiyaci vardir. Secenekler icindeki ozel sablonlar, erisilebilirligi korurken zengin bicimlendirme saglar.
+Seçeneklerin genellikle kullanıcıların seçimleri hızla tanımasına yardımcı olacak simgeler veya rozetler gibi görsel göstergelere ihtiyacı vardır. Seçenekler içindeki özel şablonlar, erişilebilirliği korurken zengin biçimlendirme sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -125,11 +125,11 @@ Seceneklerin genellikle kullanicilarin secimleri hizla tanimasina yardimci olaca
   </docs-tab>
 </docs-tab-group>
 
-Her secenek etiketin yaninda bir simge gosterir. Secili deger, secilen secenegin simgesini ve metnini gostermek uzere guncellenir ve net gorsel geri bildirim saglar.
+Her seçenek etiketin yanında bir simge gösterir. Seçili değer, seçilen seçeneğin simgesini ve metnini göstermek üzere güncellenir ve net görsel geri bildirim sağlar.
 
-### Disabled select
+### Devre dışı select
 
-Belirli form kosullari karsilanmadiginda kullanici etkilesimini engellemek icin select'ler devre disi birakilabilir. Devre disi durumu gorsel geri bildirim saglar ve klavye etkilesimini engeller.
+Belirli form koşulları karşılanmadığında kullanıcı etkileşimini engellemek için select'ler devre dışı bırakılabilir. Devre dışı durumu görsel geri bildirim sağlar ve klavye etkileşimini engeller.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -157,37 +157,37 @@ Belirli form kosullari karsilanmadiginda kullanici etkilesimini engellemek icin 
   </docs-tab>
 </docs-tab-group>
 
-Devre disi birakildiginda, select devre disi gorsel durum gosterir ve tum kullanici etkilesimini engeller. Ekran okuyuculari yardimci teknoloji kullanicilarina devre disi durumunu duyurur.
+Devre dışı bırakıldığında, select devre dışı görsel durum gösterir ve tüm kullanıcı etkileşimini engeller. Ekran okuyucuları yardımcı teknoloji kullanıcılarına devre dışı durumunu duyurur.
 
-## APIs
+## API'ler
 
-Select kalibi, Angular'in Aria kutuphanesindeki asagidaki yonergeleri kullanir. Baglantili rehberlerdeki tam API dokumantasyonuna bakin.
+Select kalıbı, Angular'ın Aria kütüphanesindeki aşağıdaki yönergeleri kullanır. Bağlantılı rehberlerdeki tam API dokümantasyonuna bakın.
 
-### Combobox Directives
+### Combobox Yönergeleri
 
-Select kalibi, klavye navigasyonunu korurken metin girisini engellemek icin `readonly` niteligi ile `ngCombobox` kullanir.
+Select kalıbı, klavye navigasyonunu korurken metin girişini engellemek için `readonly` niteliği ile `ngCombobox` kullanır.
 
-#### Inputs
+#### Girişler
 
 | Property   | Type      | Default | Description                                                   |
 | ---------- | --------- | ------- | ------------------------------------------------------------- |
-| `readonly` | `boolean` | `false` | Acilir menu davranisi olusturmak icin `true` olarak ayarlayin |
-| `disabled` | `boolean` | `false` | Tum select'i devre disi birakir                               |
+| `readonly` | `boolean` | `false` | Açılır menü davranışı oluşturmak için `true` olarak ayarlayın |
+| `disabled` | `boolean` | `false` | Tüm select'i devre dışı bırakır                               |
 
-Mevcut tum girisler ve sinyaller hakkinda eksiksiz bilgi icin [Combobox API dokumantasyonuna](guide/aria/combobox#apis) bakin.
+Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Combobox API dokümantasyonuna](guide/aria/combobox#apiler) bakın.
 
-### Listbox Directives
+### Listbox Yönergeleri
 
-Select kalibi, acilir liste icin `ngListbox` ve her secilebilir oge icin `ngOption` kullanir.
+Select kalıbı, açılır liste için `ngListbox` ve her seçilebilir öğe için `ngOption` kullanır.
 
 #### Model
 
 | Property | Type    | Description                                                                    |
 | -------- | ------- | ------------------------------------------------------------------------------ |
-| `values` | `any[]` | Secili degerlerin iki yonlu baglanabilir dizisi (select icin tek deger icerir) |
+| `values` | `any[]` | Seçili değerlerin iki yönlü bağlanabilir dizisi (select için tek değer içerir) |
 
-Listbox yapilandirmasi, secim modlari ve secenek ozellikleri hakkinda eksiksiz bilgi icin [Listbox API dokumantasyonuna](guide/aria/listbox#apis) bakin.
+Listbox yapılandırması, seçim modları ve seçenek özellikleri hakkında eksiksiz bilgi için [Listbox API dokümantasyonuna](guide/aria/listbox#apiler) bakın.
 
-### Positioning
+### Konumlandırma
 
-Select kalibi, akilli konumlandirma icin [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Gorunum alani kenarlarini ve kaydirmayi otomatik olarak yonetmek icin `cdkConnectedOverlay` kullanin.
+Select kalıbı, akıllı konumlandırma için [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak yönetmek için `cdkConnectedOverlay` kullanın.

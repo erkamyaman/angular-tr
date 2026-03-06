@@ -1,4 +1,4 @@
-# Clean up unused imports
+# Kullanılmayan import'ları temizleme
 
 Sürüm 19 itibarıyla, Angular bir bileşenin `imports` dizisi şablonunda kullanılmayan semboller içerdiğinde bunu bildirir.
 
@@ -10,7 +10,7 @@ Bu şematiği çalıştırmak, proje içindeki tüm kullanılmayan içe aktarmal
 ng generate @angular/core:cleanup-unused-imports
 ```
 
-#### Before
+#### Önce
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -23,7 +23,7 @@ import {UnusedDirective} from './unused';
 export class MyComp {}
 ```
 
-#### After
+#### Sonra
 
 ```angular-ts
 import {Component} from '@angular/core';

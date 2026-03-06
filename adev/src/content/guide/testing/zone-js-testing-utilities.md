@@ -1,4 +1,4 @@
-# Zone.js Testing Utilities
+# Zone.js Test Araçları
 
 Bu kılavuz, öncelikli olarak birim testlerinde asenkron görevleri yönetmek ve kontrol etmek için kullanılan test araçlarını açıklar. Bu araçlar esasen Zone.js'ye özgü sahte saat araçlarıdır ve özellikle testler içindeki asenkron işlemlerin akışını kontrol etmek için geçerlidir.
 

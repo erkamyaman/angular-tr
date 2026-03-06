@@ -1,4 +1,4 @@
-# Push notifications
+# Push bildirimleri
 
 Push bildirimleri, kullanıcılarla etkileşim kurmanın etkileyici bir yoludur.
 Service worker'ların gücüyle, uygulamanız odakta olmasa bile bir cihaza bildirimler iletilebilir.
@@ -8,7 +8,7 @@ Angular service worker'ı, push bildirimlerinin görüntülenmesini ve bildirim 
 HELPFUL: Angular service worker kullanılırken, push bildirim etkileşimleri `SwPush` servisi kullanılarak işlenir.
 İlgili tarayıcı API'leri hakkında daha fazla bilgi edinmek için [Push API](https://developer.mozilla.org/docs/Web/API/Push_API) ve [Using the Notifications API](https://developer.mozilla.org/docs/Web/API/Notifications_API/Using_the_Notifications_API) sayfalarına bakın.
 
-## Notification payload
+## Bildirim yükü
 
 Geçerli bir yük ile bir mesaj göndererek push bildirimlerini tetikleyin.
 Rehberlik için `SwPush` belgelerine bakın.
@@ -16,7 +16,7 @@ Rehberlik için `SwPush` belgelerine bakın.
 HELPFUL: Chrome'da, bir backend olmadan push bildirimlerini test edebilirsiniz.
 Devtools -> Application -> Service Workers'ı açın ve bir JSON bildirim yükü göndermek için `Push` girdisini kullanın.
 
-## Notification click handling
+## Bildirim tıklama işleme
 
 `notificationclick` olayı için varsayılan davranış, bildirimi kapatmak ve `SwPush.notificationClicks`'i bilgilendirmektir.
 
@@ -36,7 +36,7 @@ Bu, özellikle bir bildirim tıklandığında açık istemci olmadığında kull
 }
 ```
 
-### Operations
+### İşlemler
 
 Angular service worker aşağıdaki işlemleri destekler:
 
@@ -49,7 +49,7 @@ Angular service worker aşağıdaki işlemleri destekler:
 
 IMPORTANT: URL'ler, service worker'ın kayıt kapsamına göre çözümlenir.<br />Bir `onActionClick` öğesi bir `url` tanımlamazsa, service worker'ın kayıt kapsamı kullanılır.
 
-### Actions
+### Eylemler
 
 Eylemler, kullanıcının bir bildirimle nasıl etkileşim kurabileceğini özelleştirmenin bir yolunu sunar.
 
@@ -84,7 +84,7 @@ Ayrıca, `data` nesnesindeki `onActionClick` özelliğini kullanarak, ilgili eyl
 
 IMPORTANT: Bir eylemin karşılık gelen `onActionClick` girişi yoksa, bildirim kapatılır ve mevcut istemcilerde `SwPush.notificationClicks` bilgilendirilir.
 
-## More on Angular service workers
+## Angular service worker'lar hakkında daha fazlası
 
 Aşağıdakiler de ilginizi çekebilir:
 

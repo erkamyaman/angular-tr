@@ -16,7 +16,7 @@ Bu, Angular ile başlamak için harika bir fırsat.
 
 <docs-workflow>
 
-<docs-step title="Update the component template">
+<docs-step title="Bileşen şablonunu güncelleyin">
 `template` özelliğini `Hello Universe` olarak güncelleyin
 
 ```ts
@@ -28,7 +28,7 @@ template: `
 HTML şablonunu değiştirdiğinizde, önizleme mesajınızla güncellendi. Bir adım daha ileri gidelim: metnin rengini değiştirelim.
 </docs-step>
 
-<docs-step title="Update the component styles">
+<docs-step title="Bileşen stillerini güncelleyin">
 Stil değerini güncelleyin ve `color` özelliğini `blue`'dan `#a144eb`'ye değiştirin.
 
 ```ts

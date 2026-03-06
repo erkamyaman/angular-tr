@@ -1,4 +1,4 @@
-# Prepare component for translation
+# Bileşeni çeviriye hazırlama
 
 Projenizi çeviriye hazırlamak için aşağıdaki işlemleri tamamlayın.
 
@@ -6,7 +6,7 @@ Projenizi çeviriye hazırlamak için aşağıdaki işlemleri tamamlayın.
 - Bileşen şablonlarındaki nitelik metin dizelerini işaretlemek için `i18n-` niteliğini kullanın
 - Bileşen kodundaki metin dizelerini işaretlemek için `$localize` etiketli mesaj dizesini kullanın
 
-## Mark text in component template
+## Bileşen şablonunda metni işaretleme
 
 Bir bileşen şablonunda, i18n meta verisi `i18n` niteliğinin değeridir.
 
@@ -19,7 +19,7 @@ Bileşen şablonlarınızdaki statik bir metin mesajını çeviri için işaretl
 
 HELPFUL: `i18n` niteliği, Angular araçlarının ve derleyicilerinin tanıdığı özel bir niteliktir.
 
-### `i18n` example
+### `i18n` örneği
 
 Aşağıdaki `<h1>` etiketi basit bir İngilizce selamlama olan "Hello i18n!" ifadesini görüntüler.
 
@@ -29,7 +29,7 @@ Selamlamayı çeviri için işaretlemek üzere `<h1>` etiketine `i18n` niteliği
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/doc-files/app.component.html" region="i18n-attribute"/>
 
-### using conditional statement with `i18n`
+### `i18n` ile koşullu ifade kullanma
 
 Aşağıdaki `<div>` etiketi, değiştirme durumuna bağlı olarak `div` ve `aria-label` kapsamında çevrilmiş metni görüntüler
 
@@ -38,7 +38,7 @@ Aşağıdaki `<div>` etiketi, değiştirme durumuna bağlı olarak `div` ve `ari
     <docs-code header="app.component.ts" path="adev/src/content/examples/i18n/src/app/app.component.ts" visibleLines="[[14,21],[33,37]]"/>
 </docs-code-multifile>
 
-### Translate inline text without HTML element
+### HTML öğesi olmadan satır içi metni çevirme
 
 Metnin görüntülenme biçimini değiştirmeden belirli bir metin için çeviri davranışı ilişkilendirmek üzere `<ng-container>` öğesini kullanın.
 
@@ -48,7 +48,7 @@ Aşağıdaki örnek, `<ng-container>` öğesinin görüntülenmeyen bir HTML yor
 
 <docs-code path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-ng-container"/>
 
-## Mark element attributes for translations
+## Çeviriler için öğe niteliklerini işaretleme
 
 Bir bileşen şablonunda, i18n meta verisi `i18n-{attribute_name}` niteliğinin değeridir.
 
@@ -65,7 +65,7 @@ Bir anlam, açıklama ve özel kimlik atamak için aşağıdaki söz dizimini ku
 i18n-{attribute_name}="{meaning}|{description}@@{id}"
 ```
 
-### `i18n-title` example
+### `i18n-title` örneği
 
 Bir görüntünün başlığını çevirmek için bu örneği inceleyin.
 Aşağıdaki örnek, `title` niteliğine sahip bir görüntüyü göstermektedir.
@@ -80,7 +80,7 @@ Aşağıdaki örnek, `img` etiketindeki `title` niteliğinin `i18n-title` eklene
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-title-translate"/>
 
-## Mark text in component code
+## Bileşen kodundaki metni işaretleme
 
 Bileşen kodunda, çeviri kaynak metni ve meta veriler geri tırnak \(<code>&#96;</code>\) karakterleriyle çevrelenir.
 
@@ -96,27 +96,27 @@ i18n meta verisi iki nokta üst üste \(`:`\) karakterleriyle çevrelenir ve çe
 $localize`:{i18n_metadata}:string_to_translate`;
 ```
 
-### Include interpolated text
+### Enterpolasyonlu metin ekleme
 
-Bir [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesine [enterpolasyonlar](guide/templates/binding#render-dynamic-text-with-text-interpolation) ekleyin.
+Bir [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesine [enterpolasyonlar](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) ekleyin.
 
 ```ts
 $localize`string_to_translate ${variable_name}`;
 ```
 
-### Name the interpolation placeholder
+### Enterpolasyon yer tutucusunu adlandırma
 
 ```ts
 $localize`string_to_translate ${variable_name}:placeholder_name:`;
 ```
 
-### Conditional syntax for translations
+### Çeviriler için koşullu söz dizimi
 
 ```ts
 return this.show ? $localize`Show Tabs` : $localize`Hide tabs`;
 ```
 
-## i18n metadata for translation
+## Çeviri için i18n meta verileri
 
 ```html
 {meaning}|{description}@@{custom_id}
@@ -132,7 +132,7 @@ Aşağıdaki parametreler, çevirmeniniz için karışıklığı azaltmak amacı
 
 Özel kimlikler hakkında ek bilgi için [Manage marked text with custom IDs][GuideI18nOptionalManageMarkedText] bölümüne bakın.
 
-### Add helpful descriptions and meanings
+### Yardımcı açıklamalar ve anlamlar ekleme
 
 Bir metin mesajını doğru şekilde çevirmek için çevirmene ek bilgi veya bağlam sağlayın.
 
@@ -151,7 +151,7 @@ $localize`:An introduction header for this sample:Hello i18n!`;
 Çevirmenin, metni aynı anlama sahip diğer metinlerle aynı şekilde çevirmek için bu belirli uygulama bağlamında metin mesajının anlamını veya amacını bilmesi de gerekebilir.
 `i18n` nitelik değerini _anlam_ ile başlatın ve `|` karakteri ile _açıklamadan_ ayırın: `{meaning}|{description}`.
 
-#### `h1` example
+#### `h1` örneği
 
 Örneğin, `<h1>` etiketinin bir başlık olarak kullanılsın veya metnin başka bir bölümünde referans verilsin, aynı şekilde çevrilmesi gereken bir site başlığı olduğunu belirtmek isteyebilirsiniz.
 
@@ -167,7 +167,7 @@ Aşağıdaki kod örneği, anlam ve açıklama içeren [`$localize`][ApiLocalize
 $localize`:site header|An introduction header for this sample:Hello i18n!`;
 ```
 
-<docs-callout title="How meanings control text extraction and merges">
+<docs-callout title="Anlamların metin çıkarmayı ve birleştirmeleri nasıl kontrol ettiği">
 
 Angular çıkarma aracı, bir şablondaki her `i18n` niteliği için bir çeviri birimi girişi oluşturur.
 Angular çıkarma aracı, her çeviri birimine _anlam_ ve _açıklamaya_ dayalı benzersiz bir kimlik atar.
@@ -189,7 +189,7 @@ Bu tek çeviri girişi, aynı metin öğelerinin göründüğü her yerde uygula
 
 </docs-callout>
 
-## ICU expressions
+## ICU ifadeleri
 
 ICU ifadeleri, bileşen şablonlarında koşulları karşılamak için alternatif metin işaretlemenize yardımcı olur.
 Bir ICU ifadesi, bir bileşen özelliği, bir ICU yan tümcesi ve açık süslü parantez \(`{`\) ile kapalı süslü parantez \(`}`\) karakterleriyle çevrili durum ifadelerini içerir.
@@ -210,7 +210,7 @@ Bir ICU yan tümcesi koşullu metin türünü tanımlar.
 
 HELPFUL: ICU yan tümceleri, [CLDR çoğullama kurallarında][UnicodeCldrIndexCldrSpecPluralRules] belirtilen [ICU Mesaj Formatına][GithubUnicodeOrgIcuUserguideFormatParseMessages] uyar.
 
-### Mark plurals
+### Çoğulları işaretleme
 
 Farklı diller, çevirinin zorluğunu artıran farklı çoğullama kurallarına sahiptir.
 Diğer yerel ayarlar kardinaliteyi farklı şekilde ifade ettiğinden, İngilizce ile uyumlu olmayan çoğullama kategorileri ayarlamanız gerekebilir.
@@ -259,7 +259,7 @@ Aşağıdaki kod örneği, [en-US `plural()`][GithubAngularAngularBlobEcffc3557f
 
 </docs-callout>
 
-#### `minutes` example
+#### `minutes` örneği
 
 Aşağıdaki ifadeyi İngilizce olarak görüntülemek istiyorsanız, burada `x` bir sayıdır.
 
@@ -283,7 +283,7 @@ updated just now
 updated one minute ago
 ```
 
-HTML işaretlemesi ve [enterpolasyonlar](guide/templates/binding#render-dynamic-text-with-text-interpolation) kullanın.
+HTML işaretlemesi ve [enterpolasyonlar](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) kullanın.
 Aşağıdaki kod örneği, önceki üç durumu bir `<span>` öğesinde ifade etmek için `plural` yan tümcesinin nasıl kullanılacağını göstermektedir.
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-plural"/>
@@ -298,9 +298,9 @@ Aşağıdaki kod örneği, önceki üç durumu bir `<span>` öğesinde ifade etm
 | `=1 {one minute}`                 | Bir dakika için çoğullama kategorisi `=1`'dir. Değer `one minute`'dir.                                                     |
 | `other {{{minutes}} minutes ago}` | Eşleşmeyen herhangi bir kardinalite için varsayılan çoğullama kategorisi `other`'dır. Değer `{{minutes}} minutes ago`'dur. |
 
-`{{minutes}}` bir [enterpolasyondur](guide/templates/binding#render-dynamic-text-with-text-interpolation).
+`{{minutes}}` bir [enterpolasyondur](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme).
 
-### Mark alternates and nested expressions
+### Alternatifleri ve iç içe ifadeleri işaretleme
 
 `select` yan tümcesi, tanımladığınız dize değerlerine dayalı alternatif metin seçimlerini işaretler.
 
@@ -324,7 +324,7 @@ Seçim kategorilerinden hiçbiri eşleşmezse, Angular eksik bir kategori için 
 other { default_value }
 ```
 
-#### `gender` example
+#### `gender` örneği
 
 Aşağıdaki ifadeyi İngilizce olarak görüntülemek istiyorsanız.
 
@@ -363,22 +363,22 @@ Aşağıdaki kod örneği, select yan tümcesiyle birlikte kullanılan `gender` 
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-select"/>
 
-#### `gender` and `minutes` example
+#### `gender` ve `minutes` örneği
 
 `plural` ve `select` yan tümceleri gibi farklı yan tümceleri bir araya getirin.
 Aşağıdaki kod örneği, `gender` ve `minutes` örneklerine dayalı iç içe yan tümceleri göstermektedir.
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-nested"/>
 
-## What's next
+## Sıradaki
 
 <docs-pill-row>
   <docs-pill href="guide/i18n/translation-files" title="Work with translation files"/>
 </docs-pill-row>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API  | Angular'
-[GuideI18nCommonPrepareMarkAlternatesAndNestedExpressions]: guide/i18n/prepare#mark-alternates-and-nested-expressions 'Mark alternates and nested expressions - Prepare templates for translation | Angular'
-[GuideI18nCommonPrepareMarkPlurals]: guide/i18n/prepare#mark-plurals 'Mark plurals - Prepare component for translation | Angular'
+[GuideI18nCommonPrepareMarkAlternatesAndNestedExpressions]: guide/i18n/prepare#alternatifleri-ve-iç-içe-ifadeleri-işaretleme 'Mark alternates and nested expressions - Prepare templates for translation | Angular'
+[GuideI18nCommonPrepareMarkPlurals]: guide/i18n/prepare#çoğulları-işaretleme 'Mark plurals - Prepare component for translation | Angular'
 [GuideI18nOptionalManageMarkedText]: guide/i18n/manage-marked-text 'Manage marked text with custom IDs | Angular'
 [GithubAngularAngularBlobEcffc3557fe1bff9718c01277498e877ca44588dPackagesCoreSrcI18nLocaleEnTsL14L18]: https://github.com/angular/angular/blob/ecffc3557fe1bff9718c01277498e877ca44588d/packages/core/src/i18n/locale_en.ts#L14-L18 'Line 14 to 18 - angular/packages/core/src/i18n/locale_en.ts | angular/angular | GitHub'
 [GithubUnicodeOrgIcuUserguideFormatParseMessages]: https://unicode-org.github.io/icu/userguide/format_parse/messages 'ICU Message Format - ICU Documentation | Unicode | GitHub'

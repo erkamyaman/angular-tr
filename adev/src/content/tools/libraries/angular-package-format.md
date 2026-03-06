@@ -1,4 +1,4 @@
-# Angular package format
+# Angular Paket Formatı
 
 Bu belge Angular Paket Formatını \(APF\) açıklar.
 APF, tüm birinci taraf Angular paketleri \(`@angular/core`, `@angular/material`, vb.\) ve çoğu üçüncü taraf Angular kütüphanesi tarafından kullanılan, npm paketlerinin yapısı ve formatı için Angular'a özgü bir spesifikasyondur.
@@ -10,7 +10,7 @@ APF kullanan paketler, Angular ekibi tarafından sunulan araçlar ve daha geniş
 HELPFUL: APF, Angular'ın geri kalanıyla birlikte sürümlenir ve her ana sürüm paket formatını iyileştirir.
 v13 öncesi spesifikasyonun sürümlerini bu [google doc](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)'da bulabilirsiniz.
 
-## Why specify a package format?
+## Neden Bir Paket Formatı Belirleyelim?
 
 Günümüz JavaScript ortamında, geliştiriciler paketleri birçok farklı araç zinciri \(webpack, Rollup, esbuild, vb.\) kullanarak çeşitli yollarla tüketir.
 Bu araçlar farklı girdileri anlayabilir ve gerektirebilir - bazı araçlar en son ES dil sürümünü işleyebilirken, diğerleri doğrudan daha eski bir ES sürümünü tüketmekten fayda görebilir.
@@ -20,7 +20,7 @@ Angular dağıtım formatı, yaygın olarak kullanılan tüm geliştirme araçla
 Geliştiriciler, Angular Paket Formatında paketler üretmek için Angular CLI'ye ve [ng-packagr](https://github.com/ng-packagr/ng-packagr)'a \(Angular CLI'nin kullandığı bir derleme aracı\) güvenebilir.
 Daha fazla ayrıntı için [Creating Libraries](tools/libraries/creating-libraries) kılavuzuna bakın.
 
-## File layout
+## Dosya Düzeni
 
 Aşağıdaki örnek, `@angular/core` paketinin dosya düzeninin basitleştirilmiş bir sürümünü ve paketteki her dosya için bir açıklama gösterir.
 
@@ -51,14 +51,14 @@ Bu tablo, dosya ve dizinlerin amacını açıklamak için açıklamalı `node_mo
 
 Birincil `package.json` aşağıdakiler dahil olmak üzere önemli paket meta verilerini içerir:
 
-- Paketi EcmaScript Modülü \(ESM\) formatında olduğunu [bildirir](#esm-declaration)
+- Paketi EcmaScript Modülü \(ESM\) formatında olduğunu [bildirir](#esm-bildirimi)
 - Tüm giriş noktalarının mevcut kaynak kodu formatlarını tanımlayan bir `"exports"` alanı içerir
-- `"exports"`'u anlamayan araçlar için birincil `@angular/core` giriş noktasının mevcut kaynak kodu formatlarını tanımlayan [anahtarlar](#legacy-resolution-keys) içerir.
+- `"exports"`'u anlamayan araçlar için birincil `@angular/core` giriş noktasının mevcut kaynak kodu formatlarını tanımlayan [anahtarlar](#eski-çözümleme-anahtarları) içerir.
   Bu anahtarlar kullanımdan kaldırılmış olarak kabul edilir ve `"exports"` desteği ekosistem genelinde yaygınlaştıkça kaldırılabilir.
 
-- Paketin [yan etkileri](#side-effects) içerip içermediğini bildirir
+- Paketin [yan etkileri](#yan-etkiler) içerip içermediğini bildirir
 
-### ESM declaration
+### ESM Bildirimi
 
 Üst düzey `package.json` şu anahtarı içerir:
 
@@ -105,9 +105,9 @@ Bu anahtarların farkında olan araçlar, `"exports"`'tan tercih edilen bir kod 
 
 Kütüphaneler, JavaScript tabanlı giriş noktalarının dışa aktarımları tarafından yakalanmayan Sass mixin'leri veya önceden derlenmiş CSS gibi ek statik dosyaları sunmak isteyebilir.
 
-Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creating-libraries#managing-assets-in-a-library).
+Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creating-libraries#bir-kütüphanedeki-varlıkları-yönetme).
 
-### Legacy resolution keys
+### Eski Çözümleme Anahtarları
 
 `"exports"`'a ek olarak, üst düzey `package.json` ayrıca `"exports"`'u desteklemeyen çözümleyiciler için eski modül çözümleme anahtarları tanımlar.
 `@angular/core` için bunlar şunlardır:
@@ -121,9 +121,9 @@ Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creat
 
 Önceki kod parçacığında gösterildiği gibi, bir modül çözümleyici belirli bir kod formatını yüklemek için bu anahtarları kullanabilir.
 
-### Side effects
+### Yan Etkiler
 
-`package.json`'ın son işlevi, paketin [yan etkileri](#sideeffects-flag) içerip içermediğini bildirmektir.
+`package.json`'ın son işlevi, paketin [yan etkileri](#sideeffects-bayrağı) içerip içermediğini bildirmektir.
 
 ```js
 {
@@ -133,7 +133,7 @@ Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creat
 
 Çoğu Angular paketi üst düzey yan etkilere bağlı olmamalıdır ve bu nedenle bu bildirimi içermelidir.
 
-## Entrypoints and code splitting
+## Giriş Noktaları ve Kod Bölme
 
 Angular Paket Formatındaki paketler bir birincil giriş noktası ve sıfır veya daha fazla ikincil giriş noktası \(örneğin `@angular/common/http`\) içerir.
 Giriş noktaları çeşitli işlevlere hizmet eder.
@@ -158,7 +158,7 @@ Tüm kütüphaneler böyle bir ayrıntı düzeyi gerektirmez.
 Tek bir mantıksal amaca sahip çoğu kütüphane, tek bir giriş noktası olarak yayınlanmalıdır.
 Örneğin `@angular/core`, çalışma zamanı için tek bir giriş noktası kullanır çünkü Angular çalışma zamanı genellikle tek bir varlık olarak kullanılır.
 
-### Resolution of secondary entry points
+### İkincil Giriş Noktalarının Çözümlenmesi
 
 İkincil giriş noktaları, paketin `package.json`'ındaki `"exports"` alanı aracılığıyla çözümlenebilir.
 
@@ -174,7 +174,7 @@ the main [Angular](https://github.com/angular/angular) repo.Please file issues a
 against that repo. License: MIT
 ```
 
-## Partial compilation
+## Kısmi Derleme
 
 Angular Paket Formatındaki kütüphaneler "kısmi derleme" modunda yayınlanmalıdır.
 Bu, `ngc` için Angular derleyicisi ve çalışma zamanı sürümlerinin tam olarak eşleşmesi gereken uygulamalar için kullanılan tam derlemenin aksine, belirli bir Angular çalışma zamanı sürümüne bağlı olmayan derlenmiş Angular kodu üreten bir derleme modudur.
@@ -192,11 +192,11 @@ Angular kodunu kısmen derlemek için `tsconfig.json`'unuzdaki `angularCompilerO
 
 Kısmen derlenmiş kütüphane kodu, daha sonra uygulama derleme sürecinde Angular CLI tarafından tam olarak derlenmiş koda dönüştürülür.
 
-Derleme süreciniz Angular CLI kullanmıyorsa [Consuming partial ivy code outside the Angular CLI](tools/libraries/creating-libraries#consuming-partial-ivy-code-outside-the-angular-cli) kılavuzuna bakın.
+Derleme süreciniz Angular CLI kullanmıyorsa [Consuming partial ivy code outside the Angular CLI](tools/libraries/creating-libraries#angular-cli-dışında-partial-ivy-kodunu-kullanma) kılavuzuna bakın.
 
-## Optimizations
+## Optimizasyonlar
 
-### Flattening of ES modules
+### ES Modüllerinin Düzleştirilmesi
 
 Angular Paket Formatı, kodun "düzleştirilmiş" ES modülü formatında yayınlanmasını belirtir.
 Bu, Angular uygulamalarının derleme süresini ve nihai uygulama paketinin indirme ve ayrıştırma süresini önemli ölçüde azaltır.
@@ -232,7 +232,7 @@ Düzleştirilmiş bir ES Modülü indeks dosyası oluşturmak için tsconfig.jso
 
 ngc tarafından indeks dosyası \(örneğin, `my-ui-lib.js`\) oluşturulduktan sonra, düzleştirilmiş ESM dosyasını üretmek için Rollup gibi paketleyiciler ve optimize ediciler kullanılabilir.
 
-### "sideEffects" flag
+### "sideEffects" Bayrağı
 
 Varsayılan olarak EcmaScript Modülleri yan etkilidir: bir modülden içe aktarmak, o modülün üst düzeyindeki herhangi bir kodun çalışmasını sağlar.
 Bu genellikle istenmeyen bir durumdur çünkü tipik modüllerdeki yan etkili kodun çoğu gerçekten yan etkili değildir, bunun yerine yalnızca belirli sembolleri etkiler.
@@ -245,12 +245,12 @@ Bu optimizasyon, yerel olmayan yan etkiler içeriyorsa kodunuzu bozabilir - anca
 
 Daha fazla bilgi: [webpack docs on side effects](https://github.com/webpack/webpack/tree/master/examples/side-effects)
 
-### ES2022 language level
+### ES2022 Dil Düzeyi
 
 ES2022 dil düzeyi artık Angular CLI ve diğer araçlar tarafından tüketilen varsayılan dil düzeyidir.
 Angular CLI, paketi uygulama derleme zamanında tüm hedeflenen tarayıcılar tarafından desteklenen bir dil düzeyine düşürür.
 
-### d.ts bundling / type definition flattening
+### d.ts Paketleme / Tip Tanımlamalarının Düzleştirilmesi
 
 APF v8'den itibaren TypeScript tanımlamalarının paketlenmesi önerilir.
 Tip tanımlamalarının paketlenmesi, özellikle kütüphanenizde çok sayıda bireysel `.ts` kaynak dosyası varsa, kullanıcılar için derlemeleri önemli ölçüde hızlandırabilir.
@@ -266,19 +266,19 @@ Bu istenen bir durumdur ve tiplerin tekrarlanmasını önler.
 APF v10'dan itibaren tslib'in birincil giriş noktanızın doğrudan bir bağımlılığı olarak eklenmesi önerilir.
 Bunun nedeni, tslib sürümünün kütüphanenizi derlemek için kullanılan TypeScript sürümüne bağlı olmasıdır.
 
-## Examples
+## Örnekler
 
 <docs-pill-row>
   <docs-pill href="https://app.unpkg.com/@angular/core@21.0.6" title="@angular/core package"/>
   <docs-pill href="https://app.unpkg.com/@angular/material@21.0.3" title="@angular/material package"/>
 </docs-pill-row>
 
-## Definition of terms
+## Terimlerin Tanımı
 
 Aşağıdaki terimler bu belge boyunca kasıtlı olarak kullanılmaktadır.
 Bu bölümde, ek netlik sağlamak için hepsinin tanımları yer almaktadır.
 
-### Package
+### Paket
 
 NPM'e yayınlanan ve birlikte yüklenen en küçük dosya kümesi, örneğin `@angular/core`.
 Bu paket; package.json adlı bir manifest, derlenmiş kaynak kodu, typescript tip tanımlama dosyaları, kaynak haritaları, meta veriler vb. içerir.

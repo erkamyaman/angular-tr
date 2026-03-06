@@ -1,8 +1,8 @@
-# Code coverage
+# Kod coverage
 
 Kod kapsam raporları, birim testleriniz tarafından düzgün şekilde test edilmemiş olabilecek kod tabanınızın herhangi bir bölümünü gösterir.
 
-## Prerequisites
+## Ön koşullar
 
 Vitest ile kod kapsam raporları oluşturmak için `@vitest/coverage-v8` paketini yüklemeniz gerekir:
 
@@ -21,7 +21,7 @@ Vitest ile kod kapsam raporları oluşturmak için `@vitest/coverage-v8` paketin
   </docs-code>
 </docs-code-multifile>
 
-## Generating a report
+## Rapor oluşturma
 
 Bir kapsam raporu oluşturmak için `ng test` komutuna `--coverage` bayrağını ekleyin:
 
@@ -50,7 +50,7 @@ Her test ettiğinizde kod kapsam raporları oluşturmak istiyorsanız, `angular.
 }
 ```
 
-## Enforcing code coverage thresholds
+## Kod coverage eşiklerini zorunlu kılma
 
 Kod kapsam yüzdeleri, kodunuzun ne kadarının test edildiğini tahmin etmenize olanak tanır. Ekibiniz birim testi yapılması gereken minimum bir miktar belirlerse, bu minimumu yapılandırmanızda zorunlu kılabilirsiniz.
 
@@ -81,7 +81,7 @@ Kod kapsam yüzdeleri, kodunuzun ne kadarının test edildiğini tahmin etmenize
 
 Artık testlerinizi çalıştırdığınızda kapsamınız %80'in altına düşerse, komut başarısız olur.
 
-## Advanced configuration
+## Gelişmiş yapılandırma
 
 `angular.json` dosyanızda birkaç başka kapsam seçeneğini yapılandırabilirsiniz:
 

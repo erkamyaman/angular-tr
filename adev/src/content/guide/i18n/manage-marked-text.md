@@ -1,4 +1,4 @@
-# Manage marked text with custom IDs
+# İşaretli metni özel kimliklerle yönetme
 
 Angular çıkarıcı, aşağıdaki örneklerin her biri için bir çeviri birimi girişi olan bir dosya oluşturur.
 
@@ -40,7 +40,7 @@ Metni değiştirirseniz, çıkarıcı kimliği değiştirmez.
 Sonuç olarak, çeviriyi güncelleme adımını atlamanız gerekmez.
 Özel kimliklerin dezavantajı, metni değiştirirseniz çevirinizin yeni değiştirilen kaynak metinle senkronizasyonun bozulabilmesidir.
 
-## Use a custom ID with a description
+## Özel kimliği açıklama ile kullanma
 
 Çevirmene daha fazla yardımcı olmak için özel bir kimliği açıklama ve anlam ile birlikte kullanın.
 
@@ -64,7 +64,7 @@ Aşağıdaki örnek, bir değişken için `introductionHeader` özel kimliğini 
 variableText3 = $localize`:site header|An introduction header for this sample@@introductionHeader:Hello i18n!`;
 ```
 
-### Define unique custom IDs
+### Benzersiz özel kimlikler tanımlama
 
 Benzersiz özel kimlikler tanımladığınızdan emin olun.
 Aynı kimliği iki farklı metin öğesi için kullanırsanız, çıkarma aracı yalnızca ilkini çıkarır ve Angular çeviriyi her iki orijinal metin öğesinin yerine kullanır.
@@ -82,4 +82,4 @@ Her iki öğe de artık aynı çeviriyi \(`Bonjour`\) kullanır, çünkü her ik
 <docs-code path="adev/src/content/examples/i18n/doc-files/rendered-output.html"/>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API | Angular'
-[GuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges]: guide/i18n/prepare#h1-example 'How meanings control text extraction and merges - Prepare components for translations | Angular'
+[GuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges]: guide/i18n/prepare#h1-örneği 'How meanings control text extraction and merges - Prepare components for translations | Angular'

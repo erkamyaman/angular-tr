@@ -1,4 +1,4 @@
-# Angular Press Kit
+# Angular Basın Kiti
 
 Bu sayfada indirilebilen logo grafikleri [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) kapsamında sağlanmaktadır.
 
@@ -16,11 +16,11 @@ Bu sayfada indirilebilen logo grafikleri [CC BY 4.0](https://creativecommons.org
   </docs-card>
 </docs-card-container>
 
-## Press and Media
+## Basın ve Medya
 
 Basın ve medya sorularınız için lütfen press@angular.io adresinden bizimle iletişime geçin. Geliştirici soruları için devrel@angular.io adresinden iletişime geçin.
 
-## Adapting the logo
+## Logoyu uyarlama
 
 Angular'ın başarısı topluluğumuzla derinden bağlantılıdır. Birçok topluluğun, buluşmanın, konferansın, blogun, web sitesinin, YouTube kanalının ve geliştiricinin markasını bizimkinin üzerine kurduğunu biliyoruz. Bu logo bizim ve topluluğumuz içindir ve markanızı güncellememize katılabilmeniz önemlidir.
 
@@ -32,21 +32,21 @@ Yeni logoyu uyarlama veya kendi logonuzu güncelleme konusunda herhangi bir soru
 
 <docs-workflow>
 
-<docs-step title="Adapt the logo colors as your own">
+<docs-step title="Logo renklerini kendinize göre uyarlayın">
 Logo renklerini marka renklerinize, bayrağınıza, amacınıza vb. uyacak şekilde değiştirerek Angular'ın yeni logosunun şekline yaslanın.
 
 Bu örnekte, renkleri Angular Pride logo varyasyonu oluşturmak için uyarladık:
 ![Angular pride logo](assets/images/press-kit/angular_pride.png#small 'Angular pride logo')
 </docs-step>
 
-<docs-step title="Adapt the logo shape as your own">
+<docs-step title="Logo şeklini kendinize göre uyarlayın">
 Kalkanı kendi markanıza uyacak şekilde uyarlayarak Angular'ın yeni logosunun şekline yaslanın.
 
 Bu örnekte, kalkanı Angular Signals logo varyasyonu oluşturmak için uyarladık:
 ![Angular Signals logo](assets/images/press-kit/angular_signals.png#medium 'Angular Signals logo')
 </docs-step>
 
-<docs-step title="Do's and don'ts of using Angular's brand">
+<docs-step title="Angular markasını kullanmanın yapılması ve yapılmaması gerekenler">
 Kendi logonuzu oluşturuyorsanız, karışıklığa neden olmamak için logonuzu bizimkinden farklılaştırmanızı teşvik ediyoruz. Logoyu uyarlarken, renkleri ve şekli değiştirerek kendinize özgü hale getirmekte serbestsiniz.
 
 Orijinal logo ile Angular'ı temsil ederken lütfen şu yönergeleri izleyin:
@@ -55,7 +55,7 @@ Orijinal logo ile Angular'ı temsil ederken lütfen şu yönergeleri izleyin:
 
 </docs-workflow>
 
-## Deprecated logos
+## Kullanımdan kaldırılan logolar
 
 ### 2016 Angular (v3-v16)
 

@@ -10,7 +10,7 @@ Bu aktivitede, reaktif formları nasıl kuracağınızı öğreneceksiniz.
 
 <docs-workflow>
 
-<docs-step title="Import `ReactiveForms` module">
+<docs-step title="`ReactiveForms` modülünü içe aktarın">
 
 `app.ts` dosyasında, `ReactiveFormsModule`'ü `@angular/forms` paketinden içe aktarın ve bileşenin `imports` dizisine ekleyin.
 
@@ -36,7 +36,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 </docs-step>
 
-<docs-step title="Create the `FormGroup` object with FormControls">
+<docs-step title="FormControl'lar ile `FormGroup` nesnesini oluşturun">
 
 Reaktif formlar, form kontrollerini (örneğin giriş alanları) temsil etmek için `FormControl` sınıfını kullanır. Angular, form kontrollerini geliştiriciler için büyük formları daha kolay yönetmeyi sağlayan yardımcı bir nesne olarak gruplamak için `FormGroup` sınıfını sağlar.
 
@@ -55,7 +55,7 @@ export class App {
 
 </docs-step>
 
-<docs-step title="Link the FormGroup and FormControls to the form">
+<docs-step title="FormGroup ve FormControl'ları forma bağlayın">
 
 Her `FormGroup`, `[formGroup]` direktifi kullanılarak bir forma bağlanmalıdır.
 
@@ -77,7 +77,7 @@ Ek olarak, her `FormControl`, `formControlName` direktifi ile bağlanabilir ve i
 
 </docs-step>
 
-<docs-step title="Handle update to the form">
+<docs-step title="Form güncellemesini yönetin">
 
 `FormGroup`'tan verilere erişmek istediğinizde, bunu `FormGroup`'un value özelliğine erişerek yapabilirsiniz. Form değerlerini görüntülemek için `template`'i güncelleyin:
 
@@ -90,7 +90,7 @@ Ek olarak, her `FormControl`, `formControlName` direktifi ile bağlanabilir ve i
 
 </docs-step>
 
-<docs-step title="Access FormGroup values">
+<docs-step title="FormGroup değerlerine erişin">
 Bileşen sınıfına, daha sonra form gönderimini işlemek için kullanacağınız `handleSubmit` adında yeni bir metot ekleyin.
 Bu metot formdan gelen değerleri gösterecektir, FormGroup'tan değerlere erişebilirsiniz.
 
@@ -106,7 +106,7 @@ handleSubmit() {
 
 </docs-step>
 
-<docs-step title="Add `ngSubmit` to the form">
+<docs-step title="Forma `ngSubmit` ekleyin">
 Form değerlerine erişiminiz var, şimdi gönderim olayını işleme ve `handleSubmit` metodunu kullanma zamanı.
 Angular'ın bu amaca özel `ngSubmit` adında bir olay işleyicisi vardır. Form gönderildiğinde `handleSubmit` metodunu çağırmak için form elementini güncelleyin.
 

@@ -1,4 +1,4 @@
-# Skipping component subtrees
+# Bileşen alt ağaçlarını atlama
 
 JavaScript, varsayilan olarak birden fazla farkli bilesenden referans verebileceginiz degistirilebilir veri yapilari kullanir. Angular, veri yapilarinizin en guncel durumunun DOM'a yansitildigından emin olmak icin tum bilesen agaci uzerinde degisiklik algilamasi calistirir.
 
@@ -6,7 +6,7 @@ Degisiklik algilama cogu uygulama icin yeterince hizlidir. Ancak, bir uygulama o
 
 Bir uygulamanin bir bolumunun bir durum degisikliginden etkilenmediginden eminseniz, tum bir bilesen alt agacinda degisiklik algilamasini atlamak icin [OnPush](/api/core/ChangeDetectionStrategy) kullanabilirsiniz.
 
-## Using `OnPush`
+## `OnPush` kullanımı
 
 OnPush degisiklik algilama, Angular'a bir bilesen alt agaci icin degisiklik algilamasini **yalnizca** su durumlarda calistirmasi talimatini verir:
 
@@ -24,11 +24,11 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 export class MyComponent {}
 ```
 
-## Common change detection scenarios
+## Yaygın değişiklik algılama senaryoları
 
 Bu bolum, Angular'in davranisini gostermek icin birkaç yaygin degisiklik algilama senaryosunu incelemektedir.
 
-### An event is handled by a component with default change detection
+### Bir olay, varsayılan değişiklik algılamaya sahip bir bileşen tarafından işlenir
 
 Angular, `OnPush` stratejisi olmayan bir bilesen icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasi calistirir. Angular, yeni giris almamis OnPush kullanan koklere sahip torun bilesen alt agaclarini atlayacaktir.
 
@@ -51,7 +51,7 @@ class search checkedNode
 class event eventNode
 ```
 
-## An event is handled by a component with OnPush
+## Bir olay, OnPush'a sahip bir bileşen tarafından işlenir
 
 Angular, OnPush stratejisine sahip bir bilesen icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasini calistiracaktir. Angular, yeni giris almamis ve olayı isleyen bilesenin disinda kalan OnPush kullanan koklere sahip bilesen alt agaclarini gormezden gelecektir.
 
@@ -76,7 +76,7 @@ class details checkedNode
 class event eventNode
 ```
 
-## An event is handled by a descendant of a component with OnPush
+## Bir olay, OnPush'a sahip bir bileşenin alt öğesi tarafından işlenir
 
 Angular, OnPush'a sahip bir bilesenin icinde bir olayı islediginde, framework tum bilesen agacinda degisiklik algilamasi calistiracak ve bilesenin atalarini da dahil edecektir.
 
@@ -102,7 +102,7 @@ class details checkedNode
 class event eventNode
 ```
 
-## New inputs to component with OnPush
+## OnPush'a sahip bileşene yeni girişler
 
 Angular, bir sablon baglamasi sonucunda bir giris ozelligini ayarlarken `OnPush`'a sahip bir alt bilesende degisiklik algilamasi calistiracaktir.
 
@@ -127,7 +127,7 @@ class details checkedNode
 class event eventNode
 ```
 
-## Edge cases
+## Uç durumlar
 
 - **TypeScript kodunda giris ozelliklerini degistirme**. TypeScript'te bir bilesene referans almak icin `@ViewChild` veya `@ContentChild` gibi bir API kullandiginiizda ve bir `@Input` ozelligini manuel olarak degistirdiginizde, Angular OnPush bilesenleri icin degisiklik algilamasi otomatik olarak calistirmayacaktir. Angular'in degisiklik algilamasi calistirmasina ihtiyaciniz varsa, bileseninize `ChangeDetectorRef` enjekte edebilir ve Angular'a bir degisiklik algilama planlamasi soyleyen `changeDetectorRef.markForCheck()` cagrisini yapabilirsiniz.
 - **Nesne referanslarini degistirme**. Bir girisin deger olarak degistirilebilir bir nesne aldigi ve nesneyi degistirip referansi korudugunuz durumda, Angular degisiklik algilamasi cagirmayacaktir. Bu beklenen davranistir cunku girisin onceki ve mevcut degeri ayni referansi gosterir.

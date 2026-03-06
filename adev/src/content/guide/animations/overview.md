@@ -1,36 +1,36 @@
-# Introduction to Angular animations
+# Angular Animasyonlarına Giriş
 
-IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
+IMPORTANT: `@angular/animations` paketi artık kullanım dışıdır (deprecated). Angular ekibi, tüm yeni kodlar için animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanızı önerir. Yeni giriş ve çıkış [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrıca uygulamalarınızda saf CSS animasyonlarına nasıl geçiş yapabileceğinizi öğrenmek için [Angular'ın Animasyon paketinden geçiş](guide/animations/migration) belgesine bakın.
 
-Animasyon, hareket yanilsamasi saglar: HTML elemanlari zaman icinde stil degistirir.
-Iyi tasarlanmis animasyonlar uygulamanizi daha eglenceli ve kullanimi kolay hale getirebilir, ancak sadece gorsel bir unsur degildir.
-Animasyonlar uygulamanizi ve kullanici deneyimini bircok sekilde iyilestirebilir:
+Animasyon, hareket yanılsaması sağlar: HTML elemanları zaman içinde stil değiştirir.
+İyi tasarlanmış animasyonlar uygulamanızı daha eğlenceli ve kullanımı kolay hale getirebilir, ancak sadece görsel bir unsur değildir.
+Animasyonlar uygulamanızı ve kullanıcı deneyimini birçok şekilde iyileştirebilir:
 
-- Animasyonlar olmadan, web sayfasi gecisleri ani ve rahatsiz edici gorunebilir
-- Hareket, kullanici deneyimini buyuk olcude gelistirir, bu nedenle animasyonlar kullanicilara uygulamanin eylemlerine verdigi yaniti algilama sansi tanir
-- Iyi animasyonlar, kullanicinin dikkatini sezgisel olarak ihtiyac duyulan yere cekar
+- Animasyonlar olmadan, web sayfası geçişleri ani ve rahatsız edici görünebilir
+- Hareket, kullanıcı deneyimini büyük ölçüde geliştirir, bu nedenle animasyonlar kullanıcılara uygulamanın eylemlerine verdiği yanıtı algılama şansı tanır
+- İyi animasyonlar, kullanıcının dikkatini sezgisel olarak ihtiyaç duyulan yere çeker
 
-Tipik olarak, animasyonlar zaman icinde birden fazla stil _donusumu_ icerir.
-Bir HTML elemani hareket edebilir, renk degistirebilir, buyuyup kuculebilir, solabilir veya sayfadan kayabilir.
-Bu degisiklikler esanli veya sirali olarak gerceklesebilir. Her donusumun zamanlamasini kontrol edebilirsiniz.
+Tipik olarak, animasyonlar zaman içinde birden fazla stil _dönüşümü_ içerir.
+Bir HTML elemanı hareket edebilir, renk değiştirebilir, büyüyüp küçülebilir, solabilir veya sayfadan kayabilir.
+Bu değişiklikler eşanlı veya sıralı olarak gerçekleşebilir. Her dönüşümün zamanlamasını kontrol edebilirsiniz.
 
-Angular'in animasyon sistemi CSS islevi uzerine kurulmustur, bu da tarayicinin animasyonlanabilir olarak kabul ettigi herhangi bir ozelligi animasyonlayabileceginiz anlamina gelir.
-Bu; konumlar, boyutlar, donusumler, renkler, kenarliklar ve daha fazlasini icerir.
-W3C, [CSS Transitions](https://www.w3.org/TR/css-transitions-1) sayfasinda animasyonlanabilir ozelliklerin bir listesini tutar.
+Angular'ın animasyon sistemi CSS işlevi üzerine kurulmuştur, bu da tarayıcının animasyonlanabilir olarak kabul ettiği herhangi bir özelliği animasyonlayabileceğiniz anlamına gelir.
+Bu; konumlar, boyutlar, dönüşümler, renkler, kenarlıklar ve daha fazlasını içerir.
+W3C, [CSS Transitions](https://www.w3.org/TR/css-transitions-1) sayfasında animasyonlanabilir özelliklerin bir listesini tutar.
 
-## About this guide
+## Bu rehber hakkında
 
-Bu rehber, projenize Angular animasyonlari eklemeye baslamaniz icin temel Angular animasyon ozelliklerini kapsar.
+Bu rehber, projenize Angular animasyonları eklemeye başlamanız için temel Angular animasyon özelliklerini kapsar.
 
-## Getting started
+## Başlarken
 
-Animasyonlar icin ana Angular modulleri `@angular/animations` ve `@angular/platform-browser`'dir.
+Animasyonlar için ana Angular modülleri `@angular/animations` ve `@angular/platform-browser`'dır.
 
-Projenize Angular animasyonlari eklemeye baslamak icin, standart Angular islevselligiyle birlikte animasyona ozel modulleri iceri aktarin.
+Projenize Angular animasyonları eklemeye başlamak için, standart Angular işlevselliğiyle birlikte animasyona özel modülleri içe aktarın.
 
 <docs-workflow>
 <docs-step title="Enabling the animations module">
-`@angular/platform-browser/animations/async`'den `provideAnimationsAsync`'i iceri aktarin ve `bootstrapApplication` fonksiyon cagrisindaki providers listesine ekleyin.
+`@angular/platform-browser/animations/async`'den `provideAnimationsAsync`'i içe aktarın ve `bootstrapApplication` fonksiyon çağrısındaki providers listesine ekleyin.
 
 ```ts {header: "Enabling Animations", linenums}
 bootstrapApplication(AppComponent, {
@@ -53,7 +53,7 @@ Bilesen dosyalarinda belirli animasyon fonksiyonlari kullanmayi planliyorsaniz, 
 
 <docs-code header="app.ts" path="adev/src/content/examples/animations/src/app/app.ts" region="imports"/>
 
-Bu rehberin sonundaki tum [kullanilabilir animasyon fonksiyonlarina](guide/legacy-animations#animations-api-summary) bakin.
+Bu rehberin sonundaki tum [kullanilabilir animasyon fonksiyonlarina](guide/legacy-animations#animasyonlar-api-özeti) bakin.
 
 </docs-step>
 <docs-step title="Adding the animation metadata property">
@@ -64,7 +64,7 @@ Bir animasyonu tanimlayan tetikleyiciyi `animations` metaveri ozelliginin icine 
 </docs-step>
 </docs-workflow>
 
-## Animating a transition
+## Bir geçişi animasyonlama
 
 Tek bir HTML elemanini bir durumdan digerine degistiren bir gecisi animasyonlayalim.
 Ornegin, bir butonun kullanicinin son eylemine gore **Open** veya **Closed** gosterdigini belirtebilirsiniz.
@@ -85,7 +85,7 @@ ng g component open-close
 
 Bu, bileseni `src/app/open-close.ts` konumunda olusturacaktir.
 
-### Animation state and styles
+### Animasyon durumu ve stilleri
 
 Her gecisin sonunda cagrilacak farkli durumlari tanimlamak icin Angular'in [`state()`](api/animations/state) fonksiyonunu kullanin.
 Bu fonksiyon iki arguman alir:
@@ -104,7 +104,7 @@ Asagidaki `closed` durumunda, butonun yuksekligi 100 piksel, opakligi 0.8 ve ark
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="state2"/>
 
-### Transitions and timing
+### Geçişler ve zamanlama
 
 Angular'da birden fazla stili animasyon olmadan ayarlayabilirsiniz.
 Ancak, daha fazla iyilestirme olmadan, buton aninda donusur; solma, kuculme veya bir degisikligin gerceklestigini gosteren baska gorunur bir gosterge olmadan.
@@ -117,7 +117,7 @@ Bir gecisin surecini, gecikmesini ve yumusakligini tanimlamak ve gecisler sirasi
 Cok adimli animasyonlar icin `keyframes()` fonksiyonunu tanimlamak icin `animate()` fonksiyonunu kullanin.
 Bu tanimlar, `animate()` fonksiyonunun ikinci argumani icine yerlestirilir.
 
-#### Animation metadata: duration, delay, and easing
+#### Animasyon meta verileri: süre, gecikme ve yumuşaklık
 
 `animate()` fonksiyonu \(gecis fonksiyonunun ikinci argumani\) `timings` ve `styles` girdi parametrelerini kabul eder.
 
@@ -191,7 +191,7 @@ HELPFUL: [`state`](api/animations/state) ve `transition` fonksiyonlari icinde st
   transition('on => off, off => void');
   ```
 
-### Triggering the animation
+### Animasyonu tetikleme
 
 Bir animasyonun ne zaman baslayacagini bilmesi icin bir _tetikleyiciye_ ihtiyaci vardir.
 `trigger()` fonksiyonu durumlari ve gecisleri toplar ve animasyona bir ad verir, boylece onu HTML sablonundaki tetikleyici elemana ekleyebilirsiniz.
@@ -206,7 +206,7 @@ Tetikleyici, acik ve kapali durumlari ve iki gecis icin zamanlamalari tanimlar.
 HELPFUL: Her `trigger()` fonksiyon cagrisi icinde, bir eleman herhangi bir anda yalnizca bir durumda olabilir.
 Ancak, ayni anda birden fazla tetikleyicinin aktif olmasi mumkundur.
 
-### Defining animations and attaching them to the HTML template
+### Animasyonları tanımlama ve HTML şablonuna ekleme
 
 Animasyonlar, animasyonlanacak HTML elemanini kontrol eden bilesenin metaverisinde tanimlanir.
 Animasyonlarinizi tanimlayan kodu `@Component()` dekoratoru icindeki `animations:` ozelliginin altina yerlestirin.
@@ -236,7 +236,7 @@ HELPFUL: Bilesen dosyasinda, animasyonlari tanimlayan tetikleyiciyi `@Component(
 
 HTML sablon dosyasinda, tanimlanmis animasyonlari animasyonlanacak HTML elemanina eklemek icin tetikleyici adini kullanin.
 
-### Code review
+### Kod incelemesi
 
 Gecis orneginde tartisilan kod dosyalari asagidadir.
 
@@ -246,13 +246,13 @@ Gecis orneginde tartisilan kod dosyalari asagidadir.
     <docs-code header="open-close.css" path="adev/src/content/examples/animations/src/app/open-close.css"/>
 </docs-code-multifile>
 
-### Summary
+### Özet
 
 Zamanlama icin `animate()` ile birlikte `style()` ve [`state()`](api/animations/state) kullanarak iki durum arasindaki gecise animasyon eklemeyi ogrendiniz.
 
 Animasyonlar bolumunde Angular animasyonlarinin daha gelismis ozellikleri hakkinda bilgi edinin; [gecis ve tetikleyiciler](guide/legacy-animations/transition-and-triggers) konusundaki ileri tekniklerle baslayarak.
 
-## Animations API summary
+## Animasyonlar API özeti
 
 `@angular/animations` modulu tarafindan saglanan fonksiyonel API, Angular uygulamalarinda animasyonlar olusturmak ve kontrol etmek icin alana ozgu bir dil \(DSL\) saglar.
 Temel fonksiyonlarin ve ilgili veri yapilarinin tam listesi ve sozdizimi ayrintilari icin [API referansina](api#animations) bakin.
@@ -275,7 +275,7 @@ Temel fonksiyonlarin ve ilgili veri yapilarinin tam listesi ve sozdizimi ayrinti
 
 </table>
 
-## More on Angular animations
+## Angular animasyonları hakkında daha fazlası
 
 HELPFUL: AngularConnect konferansinda Kasim 2017'de gosterilen bu [sunuma](https://www.youtube.com/watch?v=rnTK9meY5us) ve eslik eden [kaynak koduna](https://github.com/matsko/animationsftw.in) goz atin.
 

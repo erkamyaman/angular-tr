@@ -1,4 +1,4 @@
-# Creating an injectable service
+# Enjekte edilebilir bir service oluşturma
 
 Servis, bir uygulamanın ihtiyaç duyduğu herhangi bir değeri, fonksiyonu veya özelliği kapsayan geniş bir kategoridir.
 Bir servis tipik olarak dar ve iyi tanımlanmış bir amaca sahip bir sınıftır.
@@ -17,7 +17,7 @@ Farklı koşullarda uygun olduğu şekilde aynı tür servisin farklı sağlayı
 Angular bu ilkeleri zorunlu kılmaz.
 Angular, uygulama mantığınızı servislere ayırmanızı ve bu servisleri DI aracılığıyla bileşenlere sunmanızı kolaylaştırarak bu ilkeleri takip etmenize yardımcı olur.
 
-## Service examples
+## Service örnekleri
 
 İşte tarayıcı konsoluna günlük kaydı yapan bir servis sınıfı örneği:
 
@@ -49,16 +49,16 @@ export class HeroService {
   private logger = inject(Logger);
 
   async getHeroes() {
-    // Fetch
+    // Getir
     this.heroes = await this.backend.getAll(Hero);
-    // Log
+    // Günlükle
     this.logger.log(`Fetched ${this.heroes.length} heroes.`);
     return this.heroes;
   }
 }
 ```
 
-## Creating an injectable service with the CLI
+## CLI ile enjekte edilebilir bir service oluşturma
 
 Angular CLI, yeni bir servis oluşturmak için bir komut sağlar. Aşağıdaki örnekte, mevcut bir uygulamaya yeni bir servis eklersiniz.
 
@@ -91,8 +91,8 @@ import {Injectable} from '@angular/core';
 import {HEROES} from './mock-heroes';
 
 @Injectable({
-  // declares that this service should be created
-  // by the root application injector.
+  // bu service'in root uygulama injector'ı
+  // tarafından oluşturulması gerektiğini bildirir.
   providedIn: 'root',
 })
 export class HeroService {
@@ -104,7 +104,7 @@ export class HeroService {
 
 Netlik ve bakım kolaylığı açısından, bileşenleri ve servisleri ayrı dosyalarda tanımlamanız önerilir.
 
-## Injecting services
+## Service'leri enjekte etme
 
 Bir servisi bir bileşene bağımlılık olarak enjekte etmek için, bağımlılığı temsil eden bir sınıf alanı bildirebilir ve bunu başlatmak için Angular'ın [`inject`](/api/core/inject) fonksiyonunu kullanabilirsiniz.
 
@@ -127,7 +127,7 @@ Bir servisi bileşenin constructor'ı kullanarak da enjekte etmek mümkündür:
 
 [`inject`](/api/core/inject) yöntemi hem sınıflarda hem de fonksiyonlarda kullanılabilirken, constructor yöntemi doğal olarak yalnızca bir sınıf constructor'ında kullanılabilir. Ancak her iki durumda da bir bağımlılık yalnızca geçerli bir [enjeksiyon bağlamında](guide/di/dependency-injection-context), genellikle bir bileşenin oluşturulması veya başlatılması sırasında enjekte edilebilir.
 
-## Injecting services in other services
+## Diğer service'lerde service'leri enjekte etme
 
 Bir servis başka bir servise bağımlı olduğunda, bir bileşene enjekte etmeyle aynı deseni izleyin.
 Aşağıdaki örnekte, `HeroService` faaliyetlerini raporlamak için bir `Logger` servisine bağımlıdır:
@@ -152,9 +152,9 @@ export class HeroService {
 
 Bu örnekte, `getHeroes()` yöntemi kahramanları getirirken bir mesaj kaydederek `Logger` servisini kullanır.
 
-## What's next
+## Sırada ne var
 
 <docs-pill-row>
   <docs-pill href="guide/di/defining-dependency-providers" title="Configuring dependency providers"/>
-  <docs-pill href="guide/di/defining-dependency-providers#automatic-provision-for-non-class-dependencies" title="`InjectionTokens`"/>
+  <docs-pill href="guide/di/defining-dependency-providers#sınıf-dışı-bağımlılıklar-için-otomatik-sağlama" title="`InjectionTokens`"/>
 </docs-pill-row>

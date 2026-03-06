@@ -1,10 +1,10 @@
-# Reusable animations
+# Yeniden kullanılabilir animasyonlar
 
 IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
 
 Bu konu, yeniden kullanilabilir animasyonlarin nasil olusturulacagina dair bazi ornekler saglar.
 
-## Create reusable animations
+## Yeniden kullanılabilir animasyonlar oluşturma
 
 Yeniden kullanilabilir bir animasyon olusturmak icin, [`animation()`](api/animations/animation) fonksiyonunu kullanarak ayri bir `.ts` dosyasinda bir animasyon tanimlayin ve bu animasyon tanimini bir `const` dis aktarim degiskeni olarak bildirin.
 Daha sonra bu animasyonu [`useAnimation()`](api/animations/useAnimation) fonksiyonunu kullanarak uygulamanizin herhangi bir bileseninde iceri aktarabilir ve yeniden kullanabilirsiniz.
@@ -25,7 +25,7 @@ Ornegin, asagidaki kod parcasi `transitionAnimation` degiskenini iceri aktarir v
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.3.ts" region="reusable"/>
 
-## More on Angular animations
+## Angular animasyonları hakkında daha fazla bilgi
 
 Asagidakilerle de ilgilenebilirsiniz:
 

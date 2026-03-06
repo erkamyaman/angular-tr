@@ -1,14 +1,14 @@
-# Variables in templates
+# Şablonlarda değişkenler
 
-Angular'in sablonlarda iki tur degisken bildirimi vardir: yerel sablon degiskenleri ve sablon referans degiskenleri.
+Angular'ın şablonlarda iki tür değişken bildirimi vardır: yerel şablon değişkenleri ve şablon referans değişkenleri.
 
-## Local template variables with `@let`
+## `@let` ile yerel şablon değişkenleri
 
-Angular'in `@let` sozdizimi, JavaScript'in [`let` sozdizime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let) benzer sekilde yerel bir degisken tanimlmaniza ve sablon genelinde yeniden kullanmaniza olanak tanir.
+Angular'ın `@let` sözdizimi, JavaScript'in [`let` sözdizimine](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let) benzer şekilde yerel bir değişken tanımlamanıza ve şablon genelinde yeniden kullanmanıza olanak tanır.
 
-### Using `@let`
+### `@let` kullanma
 
-Degeri bir sablon ifadesinin sonucuna dayanan bir degisken bildirmek icin `@let` kullanin. Angular, degiskenin degerini verilen ifadeyle otomatik olarak guncel tutar, [baglamalara](/guide/templates/binding) benzer sekilde.
+Değeri bir şablon ifadesinin sonucuna dayanan bir değişken bildirmek için `@let` kullanın. Angular, değişkenin değerini verilen ifadeyle otomatik olarak güncel tutar, [bağlamalara](/guide/templates/binding) benzer şekilde.
 
 ```angular-html
 @let name = user.name;
@@ -22,11 +22,11 @@ Degeri bir sablon ifadesinin sonucuna dayanan bir degisken bildirmek icin `@let`
   'Ut enim ad minim veniam...';
 ```
 
-Her `@let` blogu tam olarak bir degisken bildirebilir. Ayni blokta virgul ile birden fazla degisken bildiremezsiniz.
+Her `@let` bloğu tam olarak bir değişken bildirebilir. Aynı blokta virgül ile birden fazla değişken bildiremezsiniz.
 
-### Referencing the value of `@let`
+### `@let` değerine referans verme
 
-`@let` ile bir degisken bildirdikten sonra, ayni sablonda yeniden kullanabilirsiniz:
+`@let` ile bir değişken bildirdikten sonra, aynı şablonda yeniden kullanabilirsiniz:
 
 ```angular-html
 @let user = user$ | async;
@@ -45,22 +45,22 @@ Her `@let` blogu tam olarak bir degisken bildirebilir. Ayni blokta virgul ile bi
 }
 ```
 
-### Assignability
+### Atanabilirlik
 
-`@let` ile JavaScript'in `let`'i arasindaki temel fark, `@let`'in bildirimden sonra yeniden atanamayacak olmasidir. Ancak Angular, degiskenin degerini verilen ifadeyle otomatik olarak guncel tutar.
+`@let` ile JavaScript'in `let`'i arasındaki temel fark, `@let`'in bildirimden sonra yeniden atanamayacak olmasıdır. Ancak Angular, değişkenin değerini verilen ifadeyle otomatik olarak güncel tutar.
 
 ```angular-html
 @let value = 1;
 
-<!-- Invalid - This does not work! -->
+<!-- Geçersiz - Bu çalışmaz! -->
 <button (click)="value = value + 1">Increment the value</button>
 ```
 
-### Variable scope
+### Değişken kapsamı
 
-`@let` bildirimleri mevcut gorunume ve alt gorunumlerine kapsamlidir. Angular, bilesen sinirlarinda ve kontrol akisi bloklari, `@defer` bloklari veya yapisal direktifler gibi dinamik icerik barindirabilecek her yerde yeni bir gorunum olusturur.
+`@let` bildirimleri mevcut görünüme ve alt görünümlerine kapsamlıdır. Angular, bileşen sınırlarında ve kontrol akışı blokları, `@defer` blokları veya yapısal direktifler gibi dinamik içerik barındırabilecek her yerde yeni bir görünüm oluşturur.
 
-`@let` bildirimleri yukari cekilmez (hoisted), bu nedenle ust gorunumler veya kardesler tarafindan **erisilemez**:
+`@let` bildirimleri yukarı çekilmez (hoisted), bu nedenle üst görünümler veya kardeşler tarafından **erişilemez**:
 
 ```angular-html
 @let topLevel = value;
@@ -69,89 +69,89 @@ Her `@let` blogu tam olarak bir degisken bildirebilir. Ayni blokta virgul ile bi
   @let insideDiv = value;
 </div>
 
-<!-- Valid -->
+<!-- Geçerli -->
 {{ topLevel }}
-<!-- Valid -->
+<!-- Geçerli -->
 {{ insideDiv }}
 
 @if (condition) {
-  <!-- Valid -->
+  <!-- Geçerli -->
   {{ topLevel + insideDiv }}
 
   @let nested = value;
 
   @if (condition) {
-    <!-- Valid -->
+    <!-- Geçerli -->
     {{ topLevel + insideDiv + nested }}
   }
 }
 
-<!-- Error, not hoisted from @if -->
+<!-- Hata, @if'ten yukarı çekilmez -->
 {{ nested }}
 ```
 
-### Full syntax
+### Tam sözdizimi
 
-`@let` sozdizimi resmi olarak su sekilde tanimlanir:
+`@let` sözdizimi resmi olarak şu şekilde tanımlanır:
 
-- `@let` anahtar sozcugu.
-- Ardindan yeni satirlar icermeyen bir veya daha fazla bosluk.
-- Ardindan gecerli bir JavaScript adi ve sifir veya daha fazla bosluk.
-- Ardindan `=` simgesi ve sifir veya daha fazla bosluk.
-- Ardindan cok satirli olabilen bir Angular ifadesi.
-- `;` simgesi ile sonlandirilir.
+- `@let` anahtar sözcüğü.
+- Ardından yeni satırlar içermeyen bir veya daha fazla boşluk.
+- Ardından geçerli bir JavaScript adı ve sıfır veya daha fazla boşluk.
+- Ardından `=` simgesi ve sıfır veya daha fazla boşluk.
+- Ardından çok satırlı olabilen bir Angular ifadesi.
+- `;` simgesi ile sonlandırılır.
 
-## Template reference variables
+## Şablon referans değişkenleri
 
-Sablon referans degiskenleri, sablonunuzdaki bir elemandan bir degere referans veren bir degisken bildirmenin bir yolunu saglar.
+Şablon referans değişkenleri, şablonunuzdaki bir elemandan bir değere referans veren bir değişken bildirmenin bir yolunu sağlar.
 
-Bir sablon referans degiskeni asagidakilere referans verebilir:
+Bir şablon referans değişkeni aşağıdakilere referans verebilir:
 
-- sablon icindeki bir DOM elemani ([ozel elemanlar](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) dahil)
-- bir Angular bileseni veya direktifi
+- şablon içindeki bir DOM elemanı ([özel elemanlar](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) dahil)
+- bir Angular bileşeni veya direktifi
 - bir [ng-template](/api/core/ng-template)'den bir [TemplateRef](/api/core/TemplateRef)
 
-Sablon referans degiskenlerini, sablonun bir bolumundeki bilgiyi ayni sablonun baska bir bolumunde okumak icin kullanabilirsiniz.
+Şablon referans değişkenlerini, şablonun bir bölümündeki bilgiyi aynı şablonun başka bir bölümünde okumak için kullanabilirsiniz.
 
-### Declaring a template reference variable
+### Şablon referans değişkeni bildirme
 
-Sablondaki bir eleman uzerinde, diyez (`#`) karakteri ile baslayan ve ardindan degisken adinin geldigi bir nitelik ekleyerek bir degisken bildirebilirsiniz.
+Şablondaki bir eleman üzerinde, diyez (`#`) karakteri ile başlayan ve ardından değişken adının geldiği bir nitelik ekleyerek bir değişken bildirebilirsiniz.
 
 ```angular-html
-<!-- Create a template reference variable named "taskInput", referring to the HTMLInputElement. -->
+<!-- HTMLInputElement'e referans veren "taskInput" adında bir şablon referans değişkeni oluştur. -->
 <input #taskInput placeholder="Enter task name" />
 ```
 
-### Assigning values to template reference variables
+### Şablon referans değişkenlerine değer atama
 
-Angular, degiskenin bildirildigi elemana gore sablon degiskenlerine bir deger atar.
+Angular, değişkenin bildirildiği elemana göre şablon değişkenlerine bir değer atar.
 
-Degiskeni bir Angular bileseni uzerinde bildirirseniz, degisken bilesen ornegine referans verir.
+Değişkeni bir Angular bileşeni üzerinde bildirirseniz, değişken bileşen örneğine referans verir.
 
 ```angular-html
-<!-- The `startDate` variable is assigned the instance of `MyDatepicker`. -->
+<!-- `startDate` değişkeni `MyDatepicker` örneğine atanır. -->
 <my-datepicker #startDate />
 ```
 
-Degiskeni bir `<ng-template>` elemani uzerinde bildirirseniz, degisken sablonu temsil eden bir TemplateRef ornegine referans verir. Daha fazla bilgi icin [Angular yildiz isareti \* sozdizimini nasil kullanir](/guide/directives/structural-directives#structural-directive-shorthand) bolumune [Yapisal Direktifler](/guide/directives/structural-directives) icinde bakin.
+Değişkeni bir `<ng-template>` elemanı üzerinde bildirirseniz, değişken şablonu temsil eden bir TemplateRef örneğine referans verir. Daha fazla bilgi için [Angular yıldız işareti \* sözdizimini nasıl kullanır](/guide/directives/structural-directives#yapısal-direktif-kısaltılmış-sözdizimi) bölümüne [Yapısal Direktifler](/guide/directives/structural-directives) içinde bakın.
 
 ```angular-html
-<!-- The `myFragment` variable is assigned the `TemplateRef` instance corresponding to this template fragment. -->
+<!-- `myFragment` değişkeni bu şablon parçasına karşılık gelen `TemplateRef` örneğine atanır. -->
 <ng-template #myFragment>
   <p>This is a template fragment</p>
 </ng-template>
 ```
 
-Degiskeni goruntulenin baska herhangi bir eleman uzerinde bildirirseniz, degisken `HTMLElement` ornegine referans verir.
+Değişkeni görünümün başka herhangi bir eleman üzerinde bildirirseniz, değişken `HTMLElement` örneğine referans verir.
 
 ```angular-html
-<!-- The "taskInput" variable refers to the HTMLInputElement instance. -->
+<!-- "taskInput" değişkeni HTMLInputElement örneğine referans verir. -->
 <input #taskInput placeholder="Enter task name" />
 ```
 
-#### Assigning a reference to an Angular directive
+#### Angular direktifine referans atama
 
-Angular direktifleri, direktifin sablonda referans verilebilecegi bir ad tanimlayan `exportAs` ozelligine sahip olabilir:
+Angular direktifleri, direktifin şablonda referans verilebileceği bir ad tanımlayan `exportAs` özelliğine sahip olabilir:
 
 ```angular-ts
 @Directive({
@@ -163,20 +163,20 @@ export class DropZone {
 }
 ```
 
-Bir eleman uzerinde sablon degiskeni bildirdiginizde, bu `exportAs` adini belirterek degiskene bir direktif ornegi atayabilirsiniz:
+Bir eleman üzerinde şablon değişkeni bildirdiğinizde, bu `exportAs` adını belirterek değişkene bir direktif örneği atayabilirsiniz:
 
 ```angular-html
-<!-- The `firstZone` variable refers to the `DropZone` directive instance. -->
+<!-- `firstZone` değişkeni `DropZone` direktif örneğine referans verir. -->
 <section dropZone #firstZone="dropZone">...</section>
 ```
 
-`exportAs` adi belirtmeyen bir direktife referans veremezsiniz.
+`exportAs` adı belirtmeyen bir direktife referans veremezsiniz.
 
-### Using template reference variables with queries
+### Sorgularla şablon referans değişkenlerini kullanma
 
-Sablon degiskenlerini ayni sablonun baska bir bolumundeki degerleri okumak icin kullanmanin yani sira, bu degisken bildirim stilini [bilesen ve direktif sorgulari](/guide/components/queries) icin bir elemani "isaretlemek" amaciyla da kullanabilirsiniz.
+Şablon değişkenlerini aynı şablonun başka bir bölümündeki değerleri okumak için kullanmanın yanı sıra, bu değişken bildirim stilini [bileşen ve direktif sorguları](/guide/components/queries) için bir elemanı "işaretlemek" amacıyla da kullanabilirsiniz.
 
-Bir sablonda belirli bir elemani sorgulamak istediginizde, o eleman uzerinde bir sablon degiskeni bildirebilir ve ardndan degisken adina gore elemani sorgulayabilirsiniz.
+Bir şablonda belirli bir elemanı sorgulamak istediğinizde, o eleman üzerinde bir şablon değişkeni bildirebilir ve ardından değişken adına göre elemanı sorgulayabilirsiniz.
 
 ```angular-html
 <input #description value="Original description" />
@@ -188,9 +188,9 @@ Bir sablonda belirli bir elemani sorgulamak istediginizde, o eleman uzerinde bir
   template: `<input #description value="Original description">`,
 })
 export class AppComponent {
-  // Query for the input element based on the template variable name.
+  // Şablon değişken adına göre input elemanını sorgula.
   @ViewChild('description') input: ElementRef | undefined;
 }
 ```
 
-Sorgular hakkinda daha fazla bilgi icin [Sorgularla alt elemanlara referans verme](/guide/components/queries) bolumune bakin.
+Sorgular hakkında daha fazla bilgi için [Sorgularla alt elemanlara referans verme](/guide/components/queries) bölümüne bakın.

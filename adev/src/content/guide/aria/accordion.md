@@ -6,9 +6,9 @@
   <docs-pill href="/api?query=accordion#angular_aria_accordion" title="Accordion API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-Bir akordeon, ilgili icerigi genisletilebilir ve daraltilabilir bolumlere duzenleyerek sayfa kaydirmayi azaltir ve kullanicilarin ilgili bilgilere odaklanmasina yardimci olur. Her bolumun bir tetikleyici butonu ve bir icerik paneli vardir. Bir tetikleyiciye tiklamak, iliskili panelin gorunurluğunu degistirir.
+Bir akordeon, ilgili içeriği genişletilebilir ve daraltılabilir bölümlere düzenleyerek sayfa kaydırmayı azaltır ve kullanıcıların ilgili bilgilere odaklanmasına yardımcı olur. Her bölümün bir tetikleyici butonu ve bir içerik paneli vardır. Bir tetikleyiciye tıklamak, ilişkili panelin görünürlüğünü değiştirir.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts"/>
@@ -16,39 +16,39 @@ Bir akordeon, ilgili icerigi genisletilebilir ve daraltilabilir bolumlere duzenl
   <docs-code header="CSS" path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.css"/>
 </docs-code-multifile>
 
-## Usage
+## Kullanım
 
-Akordeonlar, kullanicilarin genellikle ayni anda bir bolumu goruntulemeye ihtiyac duyduklari mantiksal gruplara icerik duzenleme icin iyi calisir.
+Akordeonlar, kullanıcıların genellikle aynı anda bir bölümü görüntülemeye ihtiyaç duydukları mantıksal gruplara içerik düzenleme için iyi çalışır.
 
 **Akordeon kullanin:**
 
-- Birden fazla soru ve yanit iceren SSS gosterimi
-- Uzun formlari yonetilebilir bolumlere duzenleme
-- Icerik agirlikli sayfalarda kaydirmayi azaltma
-- Ilgili bilgileri kademeli olarak aciklama
+- Birden fazla soru ve yanıt içeren SSS gösterimi
+- Uzun formları yönetilebilir bölümlere düzenleme
+- İçerik ağırlıklı sayfalarda kaydırmayı azaltma
+- İlgili bilgileri kademeli olarak açıklama
 
 **Akordeondan kacinin:**
 
-- Navigasyon menuleri olustururken (bunun yerine [Menu](guide/aria/menu) bilesenini kullanin)
-- Sekmeli arayuzler olustururken (bunun yerine [Tabs](guide/aria/tabs) bilesenini kullanin)
-- Tek bir daraltilabilir bolum gosterirken (bunun yerine bir aciklama kalibi kullanin)
-- Kullanicilarin ayni anda birden fazla bolumu gormesi gerektiginde (farkli bir yerlesim dusunun)
+- Navigasyon menüleri oluştururken (bunun yerine [Menu](guide/aria/menu) bileşenini kullanın)
+- Sekmeli arayüzler oluştururken (bunun yerine [Tabs](guide/aria/tabs) bileşenini kullanın)
+- Tek bir daraltılabilir bölüm gösterirken (bunun yerine bir açıklama kalıbı kullanın)
+- Kullanıcıların aynı anda birden fazla bölümü görmesi gerektiğinde (farklı bir yerleşim düşünün)
 
-## Features
+## Özellikler
 
-- **Genisleme modlari** - Ayni anda bir veya birden fazla panelin acik olup olmayacagini kontrol edin
-- **Klavye navigasyonu** - Ok tuslari, Home ve End ile tetikleyiciler arasinda gezinin
-- **Tembel render** - Icerik yalnizca bir panel ilk kez genisletildiginde olusturulur, ilk yukleme performansini iyilestirir
-- **Devre disi durumlar** - Tum grubu veya bireysel tetikleyicileri devre disi birakin
-- **Odak yonetimi** - Devre disi birakilan ogelerin klavye odagi alip alamayacagini kontrol edin
-- **Programatik kontrol** - Bilesen kodunuzdan panelleri genisletin, daraltın veya degistirin
-- **RTL destegi** - Sagdan sola diller icin otomatik destek
+- **Genişleme modları** - Aynı anda bir veya birden fazla panelin açık olup olmayacağını kontrol edin
+- **Klavye navigasyonu** - Ok tuşları, Home ve End ile tetikleyiciler arasında gezinin
+- **Tembel render** - İçerik yalnızca bir panel ilk kez genişletildiğinde oluşturulur, ilk yükleme performansını iyileştirir
+- **Devre dışı durumlar** - Tüm grubu veya bireysel tetikleyicileri devre dışı bırakın
+- **Odak yönetimi** - Devre dışı bırakılan öğelerin klavye odağı alıp alamayacağını kontrol edin
+- **Programatik kontrol** - Bileşen kodunuzdan panelleri genişletin, daraltın veya değiştirin
+- **RTL desteği** - Sağdan sola diller için otomatik destek
 
-## Examples
+## Örnekler
 
-### Single expansion mode
+### Tekli genişleme modu
 
-Ayni anda yalnizca bir panelin acik olmasina izin vermek icin `[multiExpandable]="false"` ayarlayin. Yeni bir panel acmak, daha once acik olan paneli otomatik olarak kapatir.
+Aynı anda yalnızca bir panelin açık olmasına izin vermek için `[multiExpandable]="false"` ayarlayın. Yeni bir panel açmak, daha önce açık olan paneli otomatik olarak kapatır.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -74,11 +74,11 @@ Ayni anda yalnizca bir panelin acik olmasina izin vermek icin `[multiExpandable]
   </docs-tab>
 </docs-tab-group>
 
-Bu mod, SSS'ler veya kullanicilarin ayni anda bir yanita odaklanmasini istediginiz durumlar icin iyi calisir.
+Bu mod, SSS'ler veya kullanıcıların aynı anda bir yanıta odaklanmasını istediğiniz durumlar için iyi çalışır.
 
-### Multiple expansion mode
+### Çoklu genişleme modu
 
-Birden fazla panelin ayni anda acik olmasina izin vermek icin `[multiExpandable]="true"` ayarlayin. Kullanicilar digerlerini kapatmadan ihtiyac duydugu kadar panel genisletebilir.
+Birden fazla panelin aynı anda açık olmasına izin vermek için `[multiExpandable]="true"` ayarlayın. Kullanıcılar diğerlerini kapatmadan ihtiyaç duyduğu kadar panel genişletebilir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -104,13 +104,13 @@ Birden fazla panelin ayni anda acik olmasina izin vermek icin `[multiExpandable]
   </docs-tab>
 </docs-tab-group>
 
-Bu mod, form bolumleri veya kullanicilarin birden fazla panel arasinda icerigi karsilastirmasi gerektiginde kullanislidir.
+Bu mod, form bölümleri veya kullanıcıların birden fazla panel arasında içeriği karşılaştırması gerektiğinde kullanışlıdır.
 
-NOTE: `multiExpandable` girisi varsayilan olarak `true`'dur. Tek genisleme davranisi istiyorsaniz acikca `false` olarak ayarlayin.
+NOTE: `multiExpandable` girdisi varsayılan olarak `true`'dur. Tek genişleme davranışı istiyorsanız açıkça `false` olarak ayarlayın.
 
-### Disabled accordion items
+### Devre dışı akordeon öğeleri
 
-`disabled` girisini kullanarak belirli tetikleyicileri devre disi birakin. Devre disi birakilan ogelerin klavye navigasyonu sirasindaki davranisini akordeon grubundaki `softDisabled` girisi ile kontrol edin.
+`disabled` girdisini kullanarak belirli tetikleyicileri devre dışı bırakın. Devre dışı bırakılan öğelerin klavye navigasyonu sırasındaki davranışını akordeon grubundaki `softDisabled` girdisi ile kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -136,11 +136,11 @@ NOTE: `multiExpandable` girisi varsayilan olarak `true`'dur. Tek genisleme davra
   </docs-tab>
 </docs-tab-group>
 
-`[softDisabled]="true"` oldugunda (varsayilan), devre disi birakilan ogeler odak alabilir ancak etkinlestirilemez. `[softDisabled]="false"` oldugunda, devre disi birakilan ogeler klavye navigasyonu sirasinda tamamen atlanir.
+`[softDisabled]="true"` olduğunda (varsayılan), devre dışı bırakılan öğeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı bırakılan öğeler klavye navigasyonu sırasında tamamen atlanır.
 
-### Lazy content rendering
+### Tembel içerik render etme
 
-Panel ilk kez genisletilene kadar icerik render etmeyi ertelemek icin bir `ng-template` uzerinde `ngAccordionContent` yonergesini kullanin. Bu, resimler, grafikler veya karmasik bilesenler gibi agir icerikli akordeonlar icin performansi iyilestirir.
+Panel ilk kez genişletilene kadar içerik render etmeyi ertelemek için bir `ng-template` üzerinde `ngAccordionContent` yönergesini kullanın. Bu, resimler, grafikler veya karmaşık bileşenler gibi ağır içerikli akordeonlar için performansı iyileştirir.
 
 ```angular-html
 <div ngAccordionGroup>
@@ -148,7 +148,7 @@ Panel ilk kez genisletilene kadar icerik render etmeyi ertelemek icin bir `ng-te
     <button ngAccordionTrigger panelId="item-1">Trigger Text</button>
     <div ngAccordionPanel panelId="item-1">
       <ng-template ngAccordionContent>
-        <!-- This content only renders when the panel first opens -->
+        <!-- Bu içerik yalnızca panel ilk açıldığında render edilir -->
         <img src="large-image.jpg" alt="Description" />
         <app-expensive-component />
       </ng-template>
@@ -157,93 +157,93 @@ Panel ilk kez genisletilene kadar icerik render etmeyi ertelemek icin bir `ng-te
 </div>
 ```
 
-Varsayilan olarak, panel daraltildiktan sonra icerik DOM'da kalir. Panel kapatildiginda icerigi DOM'dan kaldirmak icin `[preserveContent]="false"` ayarlayin.
+Varsayılan olarak, panel daraltıldıktan sonra içerik DOM'da kalır. Panel kapatıldığında içeriği DOM'dan kaldırmak için `[preserveContent]="false"` ayarlayın.
 
-## APIs
+## API'ler
 
 ### AccordionGroup
 
-Bir grup akordeon ogesi icin klavye navigasyonunu ve genisleme davranisini yoneten kapsayici yonerge.
+Bir grup akordeon öğesi için klavye navigasyonunu ve genişleme davranışını yöneten kapsayıcı yönerge.
 
-#### Inputs
+#### Girdiler
 
 | Property          | Type      | Default | Description                                                                     |
 | ----------------- | --------- | ------- | ------------------------------------------------------------------------------- |
-| `disabled`        | `boolean` | `false` | Gruptaki tum tetikleyicileri devre disi birakir                                 |
-| `multiExpandable` | `boolean` | `true`  | Birden fazla panelin ayni anda genisletilip genisletilemeyecegi                 |
-| `softDisabled`    | `boolean` | `true`  | `true` oldugunda, devre disi ogelere odaklanilabilir. `false` oldugunda atlanir |
-| `wrap`            | `boolean` | `false` | Klavye navigasyonunun son ogeden ilk ogeye ve tam tersi donup donmeyecegi       |
+| `disabled`        | `boolean` | `false` | Gruptaki tüm tetikleyicileri devre dışı bırakır                                 |
+| `multiExpandable` | `boolean` | `true`  | Birden fazla panelin aynı anda genişletilip genişletilemeyeceği                 |
+| `softDisabled`    | `boolean` | `true`  | `true` olduğunda, devre dışı öğelere odaklanılabilir. `false` olduğunda atlanır |
+| `wrap`            | `boolean` | `false` | Klavye navigasyonunun son öğeden ilk öğeye ve tam tersi dönüp dönmeyeceği       |
 
-#### Methods
+#### Yöntemler
 
 | Method        | Parameters | Description                                                                    |
 | ------------- | ---------- | ------------------------------------------------------------------------------ |
-| `expandAll`   | none       | Tum panelleri genisletir (yalnizca `multiExpandable` `true` oldugunda calisir) |
-| `collapseAll` | none       | Tum panelleri daraltir                                                         |
+| `expandAll`   | none       | Tüm panelleri genişletir (yalnızca `multiExpandable` `true` olduğunda çalışır) |
+| `collapseAll` | none       | Tüm panelleri daraltır                                                         |
 
 ### AccordionTrigger
 
-Panel gorunurluğunu degistiren buton elemanina uygulanan yonerge.
+Panel görünürlüğünü değiştiren buton elemanına uygulanan yönerge.
 
-#### Inputs
+#### Girdiler
 
 | Property   | Type      | Default | Description                                                       |
 | ---------- | --------- | ------- | ----------------------------------------------------------------- |
-| `id`       | `string`  | auto    | Tetikleyici icin benzersiz tanimlayici                            |
-| `panelId`  | `string`  | —       | **Zorunlu.** Iliskili panelin `panelId`'si ile eslesmelidir       |
-| `disabled` | `boolean` | `false` | Bu tetikleyiciyi devre disi birakir                               |
-| `expanded` | `boolean` | `false` | Panelin genisletilmis olup olmadigi (iki yonlu baglama destekler) |
+| `id`       | `string`  | auto    | Tetikleyici için benzersiz tanımlayıcı                            |
+| `panelId`  | `string`  | —       | **Zorunlu.** İlişkili panelin `panelId`'si ile eşleşmelidir       |
+| `disabled` | `boolean` | `false` | Bu tetikleyiciyi devre dışı bırakır                               |
+| `expanded` | `boolean` | `false` | Panelin genişletilmiş olup olmadığı (iki yönlü bağlama destekler) |
 
-#### Signals
+#### Sinyaller
 
 | Property | Type              | Description                                 |
 | -------- | ----------------- | ------------------------------------------- |
-| `active` | `Signal<boolean>` | Tetikleyicinin su anda odakta olup olmadigi |
+| `active` | `Signal<boolean>` | Tetikleyicinin şu anda odakta olup olmadığı |
 
-#### Methods
+#### Yöntemler
 
 | Method     | Parameters | Description                         |
 | ---------- | ---------- | ----------------------------------- |
-| `expand`   | none       | Iliskili paneli genisletir          |
-| `collapse` | none       | Iliskili paneli daraltir            |
-| `toggle`   | none       | Panel genisleme durumunu degistirir |
+| `expand`   | none       | İlişkili paneli genişletir          |
+| `collapse` | none       | İlişkili paneli daraltır            |
+| `toggle`   | none       | Panel genişleme durumunu değiştirir |
 
 ### AccordionPanel
 
-Daraltilabilir icerigi iceren elemana uygulanan yonerge.
+Daraltılabilir içeriği içeren elemana uygulanan yönerge.
 
-#### Inputs
+#### Girdiler
 
 | Property          | Type      | Default | Description                                                        |
 | ----------------- | --------- | ------- | ------------------------------------------------------------------ |
-| `id`              | `string`  | auto    | Panel icin benzersiz tanimlayici                                   |
-| `panelId`         | `string`  | —       | **Zorunlu.** Iliskili tetikleyicinin `panelId`'si ile eslesmelidir |
-| `preserveContent` | `boolean` | `true`  | Panel daraltildiktan sonra icerigin DOM'da tutulup tutulmayacagi   |
+| `id`              | `string`  | auto    | Panel için benzersiz tanımlayıcı                                   |
+| `panelId`         | `string`  | —       | **Zorunlu.** İlişkili tetikleyicinin `panelId`'si ile eşleşmelidir |
+| `preserveContent` | `boolean` | `true`  | Panel daraltıldıktan sonra içeriğin DOM'da tutulup tutulmayacağı   |
 
-#### Signals
+#### Sinyaller
 
 | Property  | Type              | Description                                 |
 | --------- | ----------------- | ------------------------------------------- |
-| `visible` | `Signal<boolean>` | Panelin su anda genisletilmis olup olmadigi |
+| `visible` | `Signal<boolean>` | Panelin şu anda genişletilmiş olup olmadığı |
 
-#### Methods
+#### Yöntemler
 
 | Method     | Parameters | Description                   |
 | ---------- | ---------- | ----------------------------- |
-| `expand`   | none       | Bu paneli genisletir          |
-| `collapse` | none       | Bu paneli daraltir            |
-| `toggle`   | none       | Genisleme durumunu degistirir |
+| `expand`   | none       | Bu paneli genişletir          |
+| `collapse` | none       | Bu paneli daraltır            |
+| `toggle`   | none       | Genişleme durumunu değiştirir |
 
 ### AccordionContent
 
-Tembel render etmeyi etkinlestirmek icin akordeon paneli icindeki `ng-template`'e uygulanan yapisal yonerge.
+Tembel render etmeyi etkinleştirmek için akordeon paneli içindeki `ng-template`'e uygulanan yapısal yönerge.
 
-Bu yonergenin girisi, ciktisi veya yontemi yoktur. Bir `ng-template` elemanina uygulayin:
+Bu yönergenin girdisi, çıktısı veya yöntemi yoktur. Bir `ng-template` elemanına uygulayın:
 
 ```angular-html
 <div ngAccordionPanel panelId="item-1">
   <ng-template ngAccordionContent>
-    <!-- Content here is lazily rendered -->
+    <!-- Buradaki içerik tembel olarak render edilir -->
   </ng-template>
 </div>
 ```

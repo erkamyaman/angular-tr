@@ -1,4 +1,4 @@
-# Convert CommonModule usage to standalone imports
+# CommonModule kullanımını standalone import'lara dönüştürme
 
 Bu geçiş, bileşenlerin içindeki `CommonModule` içe aktarmalarını kaldırarak her şablonun gerektirdiği minimum direktif ve pipe içe aktarma setini (örneğin `NgIf`, `NgFor`, `AsyncPipe` vb.) ekleyerek projelere yardımcı olur.
 
@@ -8,15 +8,15 @@ Bu geçiş, bileşenlerin içindeki `CommonModule` içe aktarmalarını kaldıra
 ng generate @angular/core:common-to-standalone
 ```
 
-## Options
+## Seçenekler
 
 | Seçenek | Ayrıntılar                                                                                                                                  |
 | :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | `path`  | Geçirilecek yol (proje köküne göreceli). Varsayılan değer `./`'dir. Projenizin bir alt kümesini aşamalı olarak geçirmek için bunu kullanın. |
 
-## Example
+## Örnek
 
-Before:
+Önce:
 
 ```angular-ts
 import {Component} from '@angular/core';

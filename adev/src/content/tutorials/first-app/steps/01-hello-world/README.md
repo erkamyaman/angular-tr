@@ -8,18 +8,18 @@ Bu ilk ders, bu eğitimdeki her dersin eksiksiz bir Angular uygulaması oluştur
 
 Uygulamanız tarayıcıda başarıyla çalışıyorsa ve yürütülen içeriği hatasız görüntülüyorsa, geliştirme ortamınızın ve IDE'nizin bir Angular uygulaması oluşturmaya başlamak için doğru şekilde kurulduğunu doğrular.
 
-NOTE: Gömülü editörle çalışıyorsanız, [dördüncü adıma](#create-hello-world) atlayın.
+NOTE: Gömülü editörle çalışıyorsanız, [dördüncü adıma](#hello-world-oluşturun) atlayın.
 Tarayıcı oyun alanında çalışırken, uygulamayı çalıştırmak için `ng serve` komutunu kullanmanıza gerek yoktur. `ng generate` gibi diğer komutlar sağınızdaki konsol penceresinde çalıştırılabilir.
 
 <docs-workflow>
 
-<docs-step title="Download the default app">
+<docs-step title="Varsayılan uygulamayı indirin">
 Kod editörünün sağ üst köşesindeki "İndir" simgesine tıklayarak başlayın. Bu, bu eğitimin kaynak kodunu içeren bir `.zip` dosyası indirecektir. Bunu yerel Terminal ve IDE'nizde açın, ardından varsayılan uygulamayı test etmeye geçin.
 
 Eğitimin herhangi bir adımında, o adımın kaynak kodunu indirmek ve oradan başlamak için bu simgeye tıklayabilirsiniz.
 </docs-step>
 
-<docs-step title="Test the default app">
+<docs-step title="Varsayılan uygulamayı test edin">
 Bu adımda, varsayılan başlangıç uygulamasını indirdikten sonra, varsayılan Angular uygulamasını derlersiniz.
 Bu, geliştirme ortamınızın eğitime devam etmek için ihtiyacınız olan her şeye sahip olduğunu doğrular.
 
@@ -45,7 +45,7 @@ IDE'nizin **Terminal** bölmesinde:
 1. Sonraki adımları tamamlarken `ng serve` komutunu çalışır durumda bırakabilirsiniz.
    </docs-step>
 
-<docs-step title="Review the files in the project">
+<docs-step title="Projedeki dosyaları inceleyin">
 Bu adımda, varsayılan bir Angular uygulamasını oluşturan dosyaları tanıyacaksınız.
 
 IDE'nizin **Explorer** bölmesinde:
@@ -79,7 +79,7 @@ IDE'nizin **Explorer** bölmesinde:
 Bir Angular uygulama projesini oluşturan dosyaları inceledikten sonra, bir sonraki adıma geçin.
 </docs-step>
 
-<docs-step title="Create `Hello World`">
+<docs-step title="`Hello World` oluşturun">
 Bu adımda, görüntülenen içeriği değiştirmek için Angular proje dosyalarını güncellersiniz.
 
 IDE'nizde:

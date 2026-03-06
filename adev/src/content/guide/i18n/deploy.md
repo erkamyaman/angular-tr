@@ -1,4 +1,4 @@
-# Deploy multiple locales
+# Birden fazla yerel ayarı dağıtma
 
 `myapp` projenizin dağıtılabilir dosyalarını içeren dizinse, genellikle farklı yerel ayarlar için farklı sürümleri yerel ayar dizinlerinde kullanılabilir hale getirirsiniz.
 Örneğin, Fransızca sürümünüz `myapp/fr` dizininde ve İspanyolca sürümünüz `myapp/es` dizininde bulunur.
@@ -11,7 +11,7 @@ Aşağıdaki örnek, boş bir dizeye ayarlanmış `"subPath"`'i gösterir.
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="i18n-subPath"/>
 
-## Configure a server
+## Sunucu yapılandırma
 
 Birden fazla dilin tipik dağıtımı, her dili farklı bir alt dizinden sunar.
 Kullanıcılar, `Accept-Language` HTTP başlığı kullanılarak tarayıcıda tanımlanan tercih edilen dile yönlendirilir.
@@ -23,13 +23,13 @@ Uygulamaları uzak bir sunucuya nasıl dağıtacağınız hakkında daha fazla b
 
 IMPORTANT: [Sunucu tarafı oluşturma](guide/ssr) ile `outputMode` `server` olarak ayarlanmışsa, Angular `Accept-Language` HTTP başlığına dayalı olarak yeniden yönlendirmeyi otomatik olarak dinamik şekilde yönetir. Bu, manuel sunucu veya yapılandırma ayarlamalarına olan ihtiyacı ortadan kaldırarak dağıtımı basitleştirir.
 
-### Nginx example
+### Nginx örneği
 
 Aşağıdaki örnek bir Nginx yapılandırmasını gösterir.
 
 <docs-code path="adev/src/content/examples/i18n/doc-files/nginx.conf" language="nginx"/>
 
-### Apache example
+### Apache örneği
 
 Aşağıdaki örnek bir Apache yapılandırmasını gösterir.
 

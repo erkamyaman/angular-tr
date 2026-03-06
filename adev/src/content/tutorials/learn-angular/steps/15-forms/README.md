@@ -12,7 +12,7 @@ Bu aktivitede, şablon odaklı yaklaşım kullanarak bir form oluşturmayı öğ
 
 <docs-workflow>
 
-<docs-step title="Create an input field">
+<docs-step title="Bir giriş alanı oluşturun">
 
 `user.ts` dosyasında, `id` değeri `framework` ve type değeri `text` olarak ayarlanmış bir metin giriş alanı ekleyerek şablonu güncelleyin.
 
@@ -25,7 +25,7 @@ Bu aktivitede, şablon odaklı yaklaşım kullanarak bir form oluşturmayı öğ
 
 </docs-step>
 
-<docs-step title="Import `FormsModule`">
+<docs-step title="`FormsModule`'ü içe aktarın">
 
 Bu formun, formlara veri bağlama özelliklerini etkinleştiren Angular özelliklerini kullanabilmesi için `FormsModule`'ü içe aktarmanız gerekir.
 
@@ -44,7 +44,7 @@ export class User {}
 
 </docs-step>
 
-<docs-step title="Add binding to the value of the input">
+<docs-step title="Girdi değerine bağlama ekleyin">
 
 `FormsModule`, giriş alanının değerini sınıfınızdaki bir özelliğe bağlayan `ngModel` adında bir direktife sahiptir.
 

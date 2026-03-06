@@ -1,4 +1,4 @@
-<docs-decorative-header title="Signals" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Sinyaller" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
 Dinamik veri oluşturun ve yönetin.
 </docs-decorative-header>
 
@@ -9,23 +9,23 @@ Yerel durumu tutmak üzere bir sinyal oluşturmak için `signal` fonksiyonunu ku
 ```typescript
 import {signal} from '@angular/core';
 
-// Create a signal with the `signal` function.
+// `signal` fonksiyonu ile bir sinyal oluşturun.
 const firstName = signal('Morgan');
 
-// Read a signal value by calling it— signals are functions.
+// Sinyal değerini çağırarak okuyun — sinyaller fonksiyondur.
 console.log(firstName());
 
-// Change the value of this signal by calling its `set` method with a new value.
+// Bu sinyalin değerini `set` metodunu yeni bir değerle çağırarak değiştirin.
 firstName.set('Jaime');
 
-// You can also use the `update` method to change the value
-// based on the previous value.
+// Değeri önceki değere göre değiştirmek için
+// `update` metodunu da kullanabilirsiniz.
 firstName.update((name) => name.toUpperCase());
 ```
 
 Angular, sinyallerin nerede okunduğunu ve ne zaman güncellendiğini takip eder. Çerçeve, DOM'u yeni durumla güncellemek gibi ek işlemler yapmak için bu bilgiyi kullanır. Değişen sinyal değerlerine zaman içinde tepki verebilme yeteneği _reaktivite_ olarak bilinir.
 
-## Computed expressions
+## Hesaplanmış İfadeler
 
 `computed`, değerini diğer sinyallere göre üreten bir sinyaldir.
 
@@ -51,7 +51,7 @@ firstName.set('Jaime');
 console.log(firstNameCapitalized()); // JAIME
 ```
 
-## Using signals in components
+## Bileşenlerde Sinyal Kullanımı
 
 Durum oluşturmak ve yönetmek için bileşenlerinizin içinde `signal` ve `computed` kullanın:
 
@@ -72,11 +72,11 @@ export class UserProfile {
 
 TIP: Angular Sinyalleri hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Sinyaller kılavuzuna](guide/signals) bakın.
 
-## Next Step
+## Sonraki Adım
 
 Dinamik verileri nasıl tanımlayacağınızı ve yöneteceğinizi öğrendiğinize göre, bu verileri şablonlar içinde nasıl kullanacağınızı öğrenmenin zamanı geldi.
 
 <docs-pill-row>
-  <docs-pill title="Dynamic interfaces with templates" href="essentials/templates" />
-  <docs-pill title="In-depth signals guide" href="guide/signals" />
+  <docs-pill title="Şablonlarla dinamik arayüzler" href="essentials/templates" />
+  <docs-pill title="Detaylı sinyaller kılavuzu" href="guide/signals" />
 </docs-pill-row>

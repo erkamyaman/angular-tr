@@ -1,16 +1,16 @@
-# Programmatically rendering components
+# Bileşenleri programatik olarak render etme
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Bir bileseni dogrudan sablonda kullanmanin yanisira, bilesenleri programatik olarak dinamik sekilde de render edebilirsiniz. Bu, bir bilesnenin baslangicta bilinmedigi (dolayisiyla sablonda dogrudan referans verilemez) ve bazi kosullara bagli oldugu durumlar icin yararlidir.
+Bir bileşeni doğrudan şablonda kullanmanın yanı sıra, bileşenleri programatik olarak dinamik şekilde de render edebilirsiniz. Bu, bir bileşenin başlangıçta bilinmediği (dolayısıyla şablonda doğrudan referans verilemez) ve bazı koşullara bağlı olduğu durumlar için yararlıdır.
 
-Bir bileseni programatik olarak render etmenin iki ana yolu vardir: sablonda `NgComponentOutlet` kullanarak veya TypeScript kodunuzda `ViewContainerRef` kullanarak.
+Bir bileşeni programatik olarak render etmenin iki ana yolu vardır: şablonda `NgComponentOutlet` kullanarak veya TypeScript kodunuzda `ViewContainerRef` kullanarak.
 
-HELPFUL: Tembel yukleme (lazy-loading) kullanim alanlari icin (ornegin agir bir bilesnenin yuklemesini geciktirmek istiyorsaniz), bunun yerine yerlesik [`@defer` ozelligini](/guide/templates/defer) kullanmayi dusunun. `@defer` ozelligi, `@defer` blogu icindeki tum bilesenlerin, direktiflerin ve pipe'larin kodunun otomatik olarak ayri JavaScript parcalarina cikarilmasina ve yalnizca gerektiginde, yapilandirilan tetikleyicilere gore yuklenmesine olanak tanir.
+HELPFUL: Tembel yükleme (lazy-loading) kullanım alanları için (örneğin ağır bir bileşenin yüklemesini geciktirmek istiyorsanız), bunun yerine yerleşik [`@defer` özelliğini](/guide/templates/defer) kullanmayı düşünün. `@defer` özelliği, `@defer` bloğu içindeki tüm bileşenlerin, direktiflerin ve pipe'ların kodunun otomatik olarak ayrı JavaScript parçalarına çıkarılmasına ve yalnızca gerektiğinde, yapılandırılan tetikleyicilere göre yüklenmesine olanak tanır.
 
-## Using NgComponentOutlet
+## NgComponentOutlet kullanımı
 
-`NgComponentOutlet`, bir sablonda verilen bileseni dinamik olarak render eden yapisal bir direktiftir.
+`NgComponentOutlet`, bir şablonda verilen bileşeni dinamik olarak render eden yapısal bir direktiftir.
 
 ```angular-ts
 @Component({/*...*/})
@@ -34,9 +34,9 @@ export class CustomDialog {
 }
 ```
 
-### Passing inputs to dynamically rendered components
+### Dinamik olarak render edilen bileşenlere girdi iletme
 
-Dinamik olarak render edilen bilesene `ngComponentOutletInputs` ozelligini kullanarak girdiler iletebilirsiniz. Bu ozellik, anahtarlarin girdi adlari ve degerlerin girdi degerleri oldugu bir nesne kabul eder.
+Dinamik olarak render edilen bileşene `ngComponentOutletInputs` özelliğini kullanarak girdiler iletebilirsiniz. Bu özellik, anahtarların girdi adları ve değerlerin girdi değerleri olduğu bir nesne kabul eder.
 
 ```angular-ts
 @Component({
@@ -64,11 +64,11 @@ export class ProfileView {
 }
 ```
 
-Girdiler, `greetingInputs` sinyali her degistiginde guncellenerek dinamik bileseni ustteki bilesnenin durumuyla senkronize tutar.
+Girdiler, `greetingInputs` sinyali her değiştiğinde güncellenerek dinamik bileşeni üstteki bileşenin durumuyla senkronize tutar.
 
-### Providing content projection
+### İçerik yansıtma sağlama
 
-Dinamik olarak render edilen bilesene yansitilmis icerik iletmek icin `ngComponentOutletContent` kullanin. Bu, dinamik bilesen icerigi goruntulmek icin `<ng-content>` kullandiginda kullanisildir.
+Dinamik olarak render edilen bileşene yansıtılmış içerik iletmek için `ngComponentOutletContent` kullanın. Bu, dinamik bileşen içeriği görüntülemek için `<ng-content>` kullandığında kullanışlıdır.
 
 ```angular-ts
 @Component({
@@ -101,18 +101,18 @@ export class DynamicCard {
   cardContent = computed(() => {
     const template = this.contentTemplate();
     if (!template) return [];
-    // Returns an array of projection slots. Each element represents one <ng-content> slot.
-    // CardWrapper has one <ng-content>, so we return an array with one element.
+    // Yansıtma slotlarının bir dizisini döndürür. Her eleman bir <ng-content> slotunu temsil eder.
+    // CardWrapper bir <ng-content>'e sahip, bu yüzden tek elemanlı bir dizi döndürüyoruz.
     return [this.vcr.createEmbeddedView(template).rootNodes];
   });
 }
 ```
 
-NOTE: Hidrasyon, yerel DOM API'leri ile olusturulmus DOM dugumlerinin yansitilmasini desteklemez. Bu bir [NG0503 hatasi](/errors/NG0503) olusturur. Yansitilmis icerik olusturmak icin Angular API'lerini kullanin veya bilesene `ngSkipHydration` ekleyin.
+NOTE: Hidrasyon, yerel DOM API'leri ile oluşturulmuş DOM düğümlerinin yansıtılmasını desteklemez. Bu bir [NG0503 hatası](/errors/NG0503) oluşturur. Yansıtılmış içerik oluşturmak için Angular API'lerini kullanın veya bileşene `ngSkipHydration` ekleyin.
 
-### Providing injectors
+### Injector'lar sağlama
 
-`ngComponentOutletInjector` kullanarak dinamik olarak olusturulan bilesene ozel bir injector saglayabilirsiniz. Bu, bilesene ozgu hizmetler veya yapilandirma saglamak icin kullanisildir.
+`ngComponentOutletInjector` kullanarak dinamik olarak oluşturulan bileşene özel bir injector sağlayabilirsiniz. Bu, bileşene özgü hizmetler veya yapılandırma sağlamak için kullanışlıdır.
 
 ```angular-ts
 export const THEME_DATA = new InjectionToken<string>('THEME_DATA', {
@@ -141,9 +141,9 @@ export class DynamicPanel {
 }
 ```
 
-### Accessing the component instance
+### Bileşen örneğine erişme
 
-Direktifin `exportAs` ozelligini kullanarak dinamik olarak olusturulan bilesnenin ornegine erisebilirsiniz:
+Direktifin `exportAs` özelliğini kullanarak dinamik olarak oluşturulan bileşenin örneğine erişebilirsiniz:
 
 ```angular-ts
 @Component({
@@ -170,15 +170,15 @@ export class CounterHost {
 }
 ```
 
-NOTE: `componentInstance` ozelligi, bilesen render edilmeden once `null` degerindedir.
+NOTE: `componentInstance` özelliği, bileşen render edilmeden önce `null` değerindedir.
 
-Direktifin yetenekleri hakkinda daha fazla bilgi icin [NgComponentOutlet API referansi](api/common/NgComponentOutlet)'na bakin.
+Direktifin yetenekleri hakkında daha fazla bilgi için [NgComponentOutlet API referansı](api/common/NgComponentOutlet)'na bakın.
 
-## Using ViewContainerRef
+## ViewContainerRef kullanımı
 
-**Gorunum kapsayicisi** (view container), Angular'in bilesen agacinda icerik barindirabilecek bir dugumudur. Herhangi bir bilesen veya direktif, o bilesen veya direktifin DOM'daki konumuna karsilik gelen bir gorunum kapsayicisina referans almak icin `ViewContainerRef` enjekte edebilir.
+**Görünüm kapsayıcısı** (view container), Angular'ın bileşen ağacında içerik barındırabilecek bir düğümdür. Herhangi bir bileşen veya direktif, o bileşen veya direktifin DOM'daki konumuna karşılık gelen bir görünüm kapsayıcısına referans almak için `ViewContainerRef` enjekte edebilir.
 
-Bir bileseni dinamik olarak olusturmak ve render etmek icin `ViewContainerRef` uzerindeki `createComponent` yontemini kullanabilirsiniz. `ViewContainerRef` ile yeni bir bilesen olusturdugunda, Angular onu `ViewContainerRef`'i enjekte eden bilesen veya direktifin bir sonraki kardesi olarak DOM'a ekler.
+Bir bileşeni dinamik olarak oluşturmak ve render etmek için `ViewContainerRef` üzerindeki `createComponent` yöntemini kullanabilirsiniz. `ViewContainerRef` ile yeni bir bileşen oluşturduğunuzda, Angular onu `ViewContainerRef`'i enjekte eden bileşen veya direktifin bir sonraki kardeşi olarak DOM'a ekler.
 
 ```angular-ts
 @Component({
@@ -210,7 +210,7 @@ export class InnerItem {
 }
 ```
 
-Yukaridaki ornekte, "Load content" butonuna tiklamak asagidaki DOM yapisini olusturur:
+Yukarıdaki örnekte, "Load content" butonuna tıklamak aşağıdaki DOM yapısını oluşturur:
 
 ```angular-html
 <outer-container>
@@ -223,11 +223,11 @@ Yukaridaki ornekte, "Load content" butonuna tiklamak asagidaki DOM yapisini olus
 </outer-container>
 ```
 
-## Lazy-loading components
+## Bileşenleri tembel yükleme
 
-HELPFUL: Bazi bilesenleri tembel yuklemek istiyorsaniz, bunun yerine yerlesik [`@defer` ozelligini](/guide/templates/defer) kullanmayi dusunebilirsiniz.
+HELPFUL: Bazı bileşenleri tembel yüklemek istiyorsanız, bunun yerine yerleşik [`@defer` özelliğini](/guide/templates/defer) kullanmayı düşünebilirsiniz.
 
-Kullanim alaniniz `@defer` ozelligi tarafindan karsilanmiyorsa, standart bir JavaScript [dinamik import](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/import) ile `NgComponentOutlet` veya `ViewContainerRef` kullanabilirsiniz.
+Kullanım alanınız `@defer` özelliği tarafından karşılanmıyorsa, standart bir JavaScript [dinamik import](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/import) ile `NgComponentOutlet` veya `ViewContainerRef` kullanabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -258,19 +258,19 @@ export class AdminSettings {
 }
 ```
 
-Yukaridaki ornek, bir buton tiklamasi uzerine `AdvancedSettings` bileseni yukler ve goruntler.
+Yukarıdaki örnek, bir buton tıklaması üzerine `AdvancedSettings` bileşeni yükler ve görüntüler.
 
-## Binding inputs, outputs and setting host directives at creation
+## Oluşturma sırasında girdi, çıktı bağlama ve host direktifleri ayarlama
 
-Bilesenleri dinamik olarak olustururken, girdileri manuel olarak ayarlamak ve ciktilara abone olmak hataya acik olabilir. Bilesen orneklendikten sonra baglamalari ayarlamak icin genellikle ek kod yazmaniz gerekir.
+Bileşenleri dinamik olarak oluştururken, girdileri manuel olarak ayarlamak ve çıktılara abone olmak hataya açık olabilir. Bileşen örneklendikten sonra bağlamaları ayarlamak için genellikle ek kod yazmanız gerekir.
 
-Bunu basitlestirmek icin, hem `createComponent` hem de `ViewContainerRef.createComponent`, girdileri ve ciktilari onceden yapilandirmak icin `inputBinding()`, `outputBinding()` ve `twoWayBinding()` gibi yardimci fonksiyonlarla birlikte bir `bindings` dizisi iletmeyi destekler. Ayrica herhangi bir host direktifi uygulamak icin bir `directives` dizisi de belirtebilirsiniz. Bu, bilesenleri sablon benzeri baglamalarla tek bir bildirimsel cagri ile programatik olarak olusturmaya olanak tanir.
+Bunu basitleştirmek için, hem `createComponent` hem de `ViewContainerRef.createComponent`, girdileri ve çıktıları önceden yapılandırmak için `inputBinding()`, `outputBinding()` ve `twoWayBinding()` gibi yardımcı fonksiyonlarla birlikte bir `bindings` dizisi iletmeyi destekler. Ayrıca herhangi bir host direktifi uygulamak için bir `directives` dizisi de belirtebilirsiniz. Bu, bileşenleri şablon benzeri bağlamalarla tek bir bildirimsel çağrı ile programatik olarak oluşturmaya olanak tanır.
 
-### Host view using `ViewContainerRef.createComponent`
+### `ViewContainerRef.createComponent` ile host görünümü
 
-`ViewContainerRef.createComponent` bir bilesen olusturur ve host gorunumunu ve host elemanini kapsayicinin gorunum hiyerarsisine, kapsayicinin konumunda otomatik olarak ekler. Dinamik bilesnenin kapsayicinin mantiksal ve gorsel yapisinin bir parcasi olmasi gerektiginde bunu kullanin (ornegin liste ogeleri veya satir ici UI ekleme).
+`ViewContainerRef.createComponent` bir bileşen oluşturur ve host görünümünü ve host elemanını kapsayıcının görünüm hiyerarşisine, kapsayıcının konumunda otomatik olarak ekler. Dinamik bileşenin kapsayıcının mantıksal ve görsel yapısının bir parçası olması gerektiğinde bunu kullanın (örneğin liste öğeleri veya satır içi UI ekleme).
 
-Buna karsin, bagimsiz `createComponent` API'si yeni bileseni mevcut hicbir gorunume veya DOM konumuna eklemez -- bir `ComponentRef` dondurur ve bilesnenin host elemanini nereye yerlestireceniz konusunda acik kontrol saglar.
+Buna karşın, bağımsız `createComponent` API'si yeni bileşeni mevcut hiçbir görünüme veya DOM konumuna eklemez -- bir `ComponentRef` döndürür ve bileşenin host elemanını nereye yerleştireceğiniz konusunda açık kontrol sağlar.
 
 ```angular-ts
 import {Component, input, model, output} from '@angular/core';
@@ -332,11 +332,11 @@ export class Host {
 }
 ```
 
-Yukaridaki ornekte, dinamik **AppWarning** bileseni, `canClose` girdisi reaktif bir sinyale bagli, `isExpanded` durumunda iki yonlu baglama ve `close` icin bir cikti dinleyicisi ile olusturulmustur. `FocusTrap` ve `ThemeDirective`, `directives` araciligiyla host elemanina eklenmistir.
+Yukarıdaki örnekte, dinamik **AppWarning** bileşeni, `canClose` girdisi reaktif bir sinyale bağlı, `isExpanded` durumunda iki yönlü bağlama ve `close` için bir çıktı dinleyicisi ile oluşturulmuştur. `FocusTrap` ve `ThemeDirective`, `directives` aracılığıyla host elemanına eklenmiştir.
 
-### Popup attached to `document.body` with `createComponent` + `hostElement`
+### `createComponent` + `hostElement` ile `document.body`'ye eklenmiş popup
 
-Mevcut gorunum hiyerarsisinin disinda render etme (ornegin katmanlar) icin bunu kullanin. Saglanan `hostElement` bilesnenin DOM'daki host'u olur, dolayisiyla Angular seciciyle eslesen yeni bir eleman olusturmaz. **Baglamalari** dogrudan yapilandirmaniza olanak tanir.
+Mevcut görünüm hiyerarşisinin dışında render etme (örneğin katmanlar) için bunu kullanın. Sağlanan `hostElement` bileşenin DOM'daki host'u olur, dolayısıyla Angular seçiciyle eşleşen yeni bir eleman oluşturmaz. **Bağlamaları** doğrudan yapılandırmanıza olanak tanır.
 
 ```ts
 import {
@@ -356,10 +356,10 @@ export class PopupService {
   private readonly appRef = inject(ApplicationRef);
 
   show(message: string) {
-    // Create a host element for the popup
+    // Popup için bir host elemanı oluşturun
     const host = document.createElement('popup-host');
 
-    // Create the component and bind in one call
+    // Bileşeni oluşturun ve tek bir çağrıda bağlayın
     const ref = createComponent(Popup, {
       environmentInjector: this.injector,
       hostElement: host,
@@ -373,10 +373,10 @@ export class PopupService {
       ],
     });
 
-    // Registers the component's view so it participates in change detection cycle.
+    // Bileşenin görünümünü kaydederek değişiklik algılama döngüsüne katılmasını sağlayın.
     this.appRef.attachView(ref.hostView);
-    // Inserts the provided host element into the DOM (outside the normal Angular view hierarchy).
-    // This is what makes the popup visible on screen, typically used for overlays or modals.
+    // Sağlanan host elemanını DOM'a ekleyin (normal Angular görünüm hiyerarşisinin dışında).
+    // Bu, popup'ı ekranda görünür kılan şeydir, tipik olarak katmanlar veya modal'lar için kullanılır.
     document.body.appendChild(host);
   }
 }

@@ -1,4 +1,4 @@
-# Runtime performance optimization
+# Çalışma zamanı performans optimizasyonu
 
 Hizli render Angular icin kritik oneme sahiptir ve performansli uygulamalar gelistirmenize yardimci olmak icin framework'u bircok optimizasyon dusunulerek olusturduk. Uygulamanizin performansini daha iyi anlamak icin [Angular DevTools](tools/devtools) ve profil cikarma icin Chrome DevTools'un nasil kullanilacagina dair bir [video kilavuzu](https://www.youtube.com/watch?v=FjyX_hkscII) sunuyoruz. Bu bolumde en yaygin performans optimizasyon tekniklerini ele aliyoruz.
 

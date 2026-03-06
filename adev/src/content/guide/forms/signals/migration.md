@@ -1,8 +1,8 @@
-# Migrating existing forms to Signal Forms
+# Mevcut form'ları Signal Form'lara taşıma
 
 Bu kılavuz, mevcut kod tabanlarını Signal Forms'a taşımak için stratejiler sunar ve mevcut Reactive Forms ile birlikte çalışabilirliğe odaklanır.
 
-## Top-down migration using `compatForm`
+## `compatForm` kullanarak yukarıdan aşağıya taşıma
 
 Bazen mevcut reaktif `FormControl` örneklerini bir Signal Form içinde kullanmak isteyebilirsiniz. Bu, aşağıdakileri içeren kontroller için kullanışlıdır:
 
@@ -10,7 +10,7 @@ Bazen mevcut reaktif `FormControl` örneklerini bir Signal Form içinde kullanma
 - Henüz taşınmamış karmaşık RxJS operatörleri.
 - Mevcut üçüncü taraf kütüphanelerle entegrasyon.
 
-### Integrating a `FormControl` into a signal form
+### Bir `FormControl`'ü signal form'a entegre etme
 
 Özelleştirilmiş bir `enterprisePasswordValidator` kullanan mevcut bir `passwordControl` düşünün. Doğrulayıcıyı yeniden yazmak yerine, kontrolü sinyal durumunuza köprüleyebilirsiniz.
 
@@ -21,28 +21,28 @@ import {signal} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {compatForm} from '@angular/forms/signals/compat';
 
-// 1. Existing control with a specialized validator
+// 1. Özel bir doğrulayıcı ile mevcut kontrol
 const passwordControl = new FormControl('', {
   validators: [Validators.required, enterprisePasswordValidator()],
   nonNullable: true,
 });
 
-// 2. Wrap it inside your form state signal
+// 2. Form durum sinyalinizin içine sarın
 const user = signal({
   email: '',
-  password: passwordControl, // Nest the existing control directly
+  password: passwordControl, // Mevcut kontrolü doğrudan iç içe yerleştirin
 });
 
-// 3. Create the form
+// 3. Formu oluşturun
 const f = compatForm(user);
 
-// Access values via the signal tree
-console.log(f.email().value()); // Current email value
-console.log(f.password().value()); // Current value of passwordControl
+// Sinyal ağacı üzerinden değerlere erişin
+console.log(f.email().value()); // Mevcut e-posta değeri
+console.log(f.password().value()); // passwordControl'ün mevcut değeri
 
-// Reactive state is proxied automatically
+// Reaktif durum otomatik olarak proxy yapılır
 const isPasswordValid = f.password().valid();
-const passwordErrors = f.password().errors(); // Returns CompatValidationError if the existing validator fails
+const passwordErrors = f.password().errors(); // Mevcut doğrulayıcı başarısız olursa CompatValidationError döndürür
 ```
 
 Şablonda, temel kontrolü bağlayarak standart reaktif sözdizimini kullanın:
@@ -78,7 +78,7 @@ const passwordErrors = f.password().errors(); // Returns CompatValidationError i
   <docs-code header="app.html" path="adev/src/content/examples/signal-forms/src/compat-form-control-integration/app/app.html"/>
 </docs-code-multifile>
 
-### Integrating a `FormGroup` into a signal form
+### Bir `FormGroup`'u signal form'a entegre etme
 
 Ayrıca bir `FormGroup`'un tamamını da sarmalayabilirsiniz. Bu, formun yeniden kullanılabilir bir alt bölümünün - örneğin bir **Adres Bloğu** - hâlâ mevcut Reactive Forms tarafından yönetildiği durumlarda yaygındır.
 
@@ -87,14 +87,14 @@ import {signal} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {compatForm} from '@angular/forms/signals/compat';
 
-// 1. An existing address group with its own validation logic
+// 1. Kendi doğrulama mantığına sahip mevcut bir adres grubu
 const addressGroup = new FormGroup({
   street: new FormControl('123 Angular Way', Validators.required),
   city: new FormControl('Mountain View', Validators.required),
   zip: new FormControl('94043', Validators.required),
 });
 
-// 2. Include it in the state like it's a value
+// 2. Bir değermiş gibi duruma dahil edin
 const checkoutModel = signal({
   customerName: 'Pirojok the Cat',
   shippingAddress: addressGroup,
@@ -174,7 +174,7 @@ const f = compatForm(checkoutModel, (p) => {
   <docs-code header="app.html" path="adev/src/content/examples/signal-forms/src/compat-form-group-integration/app/app.html"/>
 </docs-code-multifile>
 
-### Accessing values
+### Değerlere erişim
 
 `compatForm` değer erişimini `FormControl` düzeyinde proxy yaparken, tam form değeri kontrolü korur:
 
@@ -183,7 +183,7 @@ const passwordControl = new FormControl('password' /** ... */);
 
 const user = signal({
   email: '',
-  password: passwordControl, // Nest the existing control directly
+  password: passwordControl, // Mevcut kontrolü doğrudan iç içe yerleştirin
 });
 
 const form = compatForm(user);
@@ -200,9 +200,9 @@ const formValue = computed(() => ({
 })); // {email: '', password: ''}
 ```
 
-## Bottom-up migration
+## Aşağıdan yukarıya taşıma
 
-### Integrating a Signal Form into a `FormGroup`
+### Signal Form'u bir `FormGroup`'a entegre etme
 
 Sinyal tabanlı bir formu standart bir `FormControl` olarak dışa aktarmak için `SignalFormControl` kullanabilirsiniz. Bu, üst `FormGroup` yapısını korurken formun yaprak düğümlerini Sinyallere taşımak istediğinizde kullanışlıdır.
 
@@ -217,12 +217,12 @@ import {required} from '@angular/forms/signals';
   imports: [ReactiveFormsModule],
 })
 export class UserProfile {
-  // 1. Create a SignalFormControl, use signal form rules.
+  // 1. SignalFormControl oluşturun, signal form kurallarını kullanın.
   emailControl = new SignalFormControl('', (p) => {
     required(p, {message: 'Email is required'});
   });
 
-  // 2. Use it in an existing FormGroup
+  // 2. Mevcut bir FormGroup'ta kullanın
   form = new FormGroup({
     email: this.emailControl,
   });
@@ -337,7 +337,7 @@ export class UserProfile {
 
 ## Automatic status classes
 
-Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#track-control-states) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
+Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#kontrol-durumlarını-takip-etme) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
 
 Bu davranışı korumak istiyorsanız, `NG_STATUS_CLASSES` ön ayarını sağlayabilirsiniz:
 

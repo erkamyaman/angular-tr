@@ -1,4 +1,4 @@
-# Migration to signal queries
+# Sinyal sorgularına geçiş
 
 Angular, v19 itibarıyla üretime hazır kabul edilen sorgular için geliştirilmiş API'ler tanıttı.
 Sinyal sorguları ve faydaları hakkında daha fazla bilgi için [özel kılavuzu](guide/components/queries) okuyun.
@@ -13,9 +13,9 @@ ng generate @angular/core:signal-queries-migration
 
 Alternatif olarak, geçiş VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
 VSCode uzantısının en son sürümünü kurun ve örneğin bir `@ViewChild` alanına tıklayın.
-Daha fazla ayrıntı için [aşağıdaki](#vscode-extension) bölüme bakın.
+Daha fazla ayrıntı için [aşağıdaki](#vscode-eklentisi) bölüme bakın.
 
-## What does the migration change?
+## Geçiş ne değiştirir?
 
 1. `@ViewChild()`, `@ViewChildren`, `@ContentChild` ve `@ContentChildren` sınıf üyeleri
    sinyal eşdeğerlerine güncellenir.
@@ -61,7 +61,7 @@ export class MyComponent {
 }
 ```
 
-## Configuration options
+## Yapılandırma seçenekleri
 
 Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
@@ -97,7 +97,7 @@ böylece bir sorgu bildiriminin geçişinden etkilenen tüm referansları günce
 Bu seçenekle, analizi bir alt klasörle sınırlayabilirsiniz. Bu dizin dışındaki herhangi bir
 referansın sessizce atlanacağını ve potansiyel olarak derlemenizi bozabileceğini unutmayın.
 
-## VSCode extension
+## VSCode eklentisi
 
 ![Screenshot of the VSCode extension and clicking on an `@ViewChild` field](assets/images/migrations/signal-queries-vscode.png 'Screenshot of the VSCode extension and clicking on an `@ViewChild` field.')
 

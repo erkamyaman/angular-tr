@@ -27,11 +27,11 @@ Pekala, siz deneyin:
 
 <docs-workflow>
 
-<docs-step title="Add the `@Injectable` decorator">
+<docs-step title="`@Injectable` dekoratörünü ekleyin">
 `car.service.ts` dosyasındaki kodu `@Injectable` dekoratörünü ekleyerek güncelleyin.
 </docs-step>
 
-<docs-step title="Configure the decorator">
+<docs-step title="Dekoratörü yapılandırın">
 Dekoratöre aktarılan nesnedeki değerler, dekoratörün yapılandırması olarak kabul edilir.
 <br>
 `car.service.ts` dosyasındaki `@Injectable` dekoratörünü `providedIn: 'root'` yapılandırmasını içerecek şekilde güncelleyin.

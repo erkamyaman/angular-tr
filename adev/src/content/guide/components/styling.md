@@ -1,8 +1,8 @@
-# Styling components
+# Bileşenleri stillendirme
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Bilesenlere istege bagli olarak o bilesnenin DOM'una uygulanan CSS stilleri dahil edilebilir:
+Bileşenlere isteğe bağlı olarak o bileşenin DOM'una uygulanan CSS stilleri dahil edilebilir:
 
 ```angular-ts {highlight:[4]}
 @Component({
@@ -17,7 +17,7 @@ Bilesenlere istege bagli olarak o bilesnenin DOM'una uygulanan CSS stilleri dahi
 export class ProfilePhoto {}
 ```
 
-Stillerinizi ayri dosyalarda yazmayi da secebilirsiniz:
+Stillerinizi ayrı dosyalarda yazmayı da seçebilirsiniz:
 
 ```angular-ts {highlight:[4]}
 @Component({
@@ -28,14 +28,14 @@ Stillerinizi ayri dosyalarda yazmayi da secebilirsiniz:
 export class ProfilePhoto {}
 ```
 
-Angular bilesneninizi derlediginde, bu stiller bilesneninizin JavaScript ciktisiyla birlikte yayilir. Bu, bilesen stillerinin JavaScript modul sistemine katildigi anlamina gelir. Bir Angular bilesneni render ettiginizde, bir bileseni tembel yuklerken bile framework otomatik olarak iliskili stilleri dahil eder.
+Angular bileşeninizi derlediğinde, bu stiller bileşeninizin JavaScript çıktısıyla birlikte yayılır. Bu, bileşen stillerinin JavaScript modül sistemine katıldığı anlamına gelir. Bir Angular bileşeni render ettiğinizde, bir bileşeni tembel yüklerken bile framework otomatik olarak ilişkili stilleri dahil eder.
 
-Angular, CSS ciktisi ureten herhangi bir aracla calisir; bunlara [Sass](https://sass-lang.com), [less](https://lesscss.org) ve [stylus](https://stylus-lang.com) dahildir.
+Angular, CSS çıktısı üreten herhangi bir araçla çalışır; bunlara [Sass](https://sass-lang.com), [less](https://lesscss.org) ve [stylus](https://stylus-lang.com) dahildir.
 
-## Style scoping
+## Stil kapsamı
 
-Her bilesen, framework'un bilesnenin stillerini nasil kapsulleyecegini belirleyen bir **gorunum kapsullemesi** ayarina sahiptir. Dort gorunum kapsullemesi modu vardir: `Emulated`, `ShadowDom`, `ExperimentalIsolatedShadowDom` ve `None`.
-Modu `@Component` dekoratorunde belirtebilirsiniz:
+Her bileşen, framework'ün bileşenin stillerini nasıl kapsülleyeceğini belirleyen bir **görünüm kapsüllemesi** ayarına sahiptir. Dört görünüm kapsüllemesi modu vardır: `Emulated`, `ShadowDom`, `ExperimentalIsolatedShadowDom` ve `None`.
+Modu `@Component` dekoratöründe belirtebilirsiniz:
 
 ```angular-ts {highlight:[3]}
 @Component({
@@ -47,59 +47,59 @@ export class ProfilePhoto { }
 
 ### ViewEncapsulation.Emulated
 
-Varsayilan olarak Angular, bir bilesnenin stillerinin yalnizca o bilesnenin sablonunda tanimlanan elemanlara uygulanmasi icin emule edilmis kapsulleme kullanir. Bu modda framework, her bilesen ornegi icin benzersiz bir HTML niteligi olusturur, bu niteligi bilesnenin sablonundaki elemanlara ekler ve bu niteligi bileseninizin stillerinde tanimlanan CSS secicilerine ekler.
+Varsayılan olarak Angular, bir bileşenin stillerinin yalnızca o bileşenin şablonunda tanımlanan elemanlara uygulanması için emüle edilmiş kapsülleme kullanır. Bu modda framework, her bileşen örneği için benzersiz bir HTML niteliği oluşturur, bu niteliği bileşenin şablonundaki elemanlara ekler ve bu niteliği bileşeninizin stillerinde tanımlanan CSS seçicilerine ekler.
 
-Bu mod, bir bilesnenin stillerinin disari sizmasini ve diger bilesenleri etkilemesini onler. Ancak, bir bilesnenin disinda tanimlanan genel stiller, emule edilmis kapsullemeye sahip bir bilesnenin icerisindeki elemanlari yine de etkileyebilir.
+Bu mod, bir bileşenin stillerinin dışarı sızmasını ve diğer bileşenleri etkilemesini önler. Ancak, bir bileşenin dışında tanımlanan genel stiller, emüle edilmiş kapsüllemeye sahip bir bileşenin içerisindeki elemanları yine de etkileyebilir.
 
-Emule edilmis modda Angular, [`:host`](https://developer.mozilla.org/docs/Web/CSS/:host) sahte sinifini destekler. [`:host-context()`](https://developer.mozilla.org/docs/Web/CSS/:host-context) sahte sinifi modern tarayicilarda kullanimdan kaldirilmis olsa da, Angular'in derleyicisi buna tam destek saglar. Her iki sahte sinif da yerel [Shadow DOM](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'a bagli olmadan kullanilabilir. Derleme sirasinda framework, bu sahte siniflari niteliklere donusturur, dolayisiyla calisma zamaninda bu yerel sahte siniflarin kurallarina (ornegin tarayici uyumlulugu, ozgulluk) uymaz. Angular'in emule edilmis kapsulleme modu, `::shadow` veya `::part` gibi Shadow DOM ile ilgili diger sahte siniflari desteklemez.
+Emüle edilmiş modda Angular, [`:host`](https://developer.mozilla.org/docs/Web/CSS/:host) sahte sınıfını destekler. [`:host-context()`](https://developer.mozilla.org/docs/Web/CSS/:host-context) sahte sınıfı modern tarayıcılarda kullanımdan kaldırılmış olsa da, Angular'ın derleyicisi buna tam destek sağlar. Her iki sahte sınıf da yerel [Shadow DOM](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'a bağlı olmadan kullanılabilir. Derleme sırasında framework, bu sahte sınıfları niteliklere dönüştürür, dolayısıyla çalışma zamanında bu yerel sahte sınıfların kurallarına (örneğin tarayıcı uyumluluğu, özgüllük) uymaz. Angular'ın emüle edilmiş kapsülleme modu, `::shadow` veya `::part` gibi Shadow DOM ile ilgili diğer sahte sınıfları desteklemez.
 
 #### `::ng-deep`
 
-Angular'in emule edilmis kapsulleme modu ozel bir sahte sinif olan `::ng-deep`'i destekler.
-**Angular ekibi `::ng-deep`'in yeni kullanimini kesinlikle tavsiye etmez.** Bu API'ler yalnizca geriye donuk uyumluluk icin mevcuttur.
+Angular'ın emüle edilmiş kapsülleme modu özel bir sahte sınıf olan `::ng-deep`'i destekler.
+**Angular ekibi `::ng-deep`'in yeni kullanımını kesinlikle tavsiye etmez.** Bu API'ler yalnızca geriye dönük uyumluluk için mevcuttur.
 
-Bir secici `::ng-deep` icerdiginde, Angular secicideki o noktadan sonra gorunum kapsulleme sinirlarini uygulamayi durdurur. `::ng-deep`'i izleyen secicinin herhangi bir bolumu, bilesnenin sablonu disindaki elemanlarla eslesebilir.
+Bir seçici `::ng-deep` içerdiğinde, Angular seçicideki o noktadan sonra görünüm kapsülleme sınırlarını uygulamayı durdurur. `::ng-deep`'i izleyen seçicinin herhangi bir bölümü, bileşenin şablonu dışındaki elemanlarla eşleşebilir.
 
-Ornegin:
+Örneğin:
 
-- `p a` gibi bir CSS kural secicisi, emule edilmis kapsulleme ile, bilesnenin kendi sablonundaki bir `<p>` elemaninin alt elemanlari olan `<a>` elemanlarini eslestirir, her ikisi de bilesnenin kendi sablonu icerisindedir.
+- `p a` gibi bir CSS kural seçicisi, emüle edilmiş kapsülleme ile, bileşenin kendi şablonundaki bir `<p>` elemanının alt elemanları olan `<a>` elemanlarını eşleştirir, her ikisi de bileşenin kendi şablonu içerisindedir.
 
-- `::ng-deep p a` gibi bir secici, uygulamadaki herhangi bir yerdeki bir `<p>` elemaninin alt elemanlari olan `<a>` elemanlarini eslestirir.
+- `::ng-deep p a` gibi bir seçici, uygulamadaki herhangi bir yerdeki bir `<p>` elemanının alt elemanları olan `<a>` elemanlarını eşleştirir.
 
-  Bu, etkili bir sekilde genel bir stil gibi davranmasini saglar.
+  Bu, etkili bir şekilde genel bir stil gibi davranmasını sağlar.
 
-- `p ::ng-deep a` ifadesinde, Angular `<p>` elemaninin bilesnenin kendi sablonundan gelmesini gerektirir, ancak `<a>` elemani uygulamadaki herhangi bir yerde olabilir.
+- `p ::ng-deep a` ifadesinde, Angular `<p>` elemanının bileşenin kendi şablonundan gelmesini gerektirir, ancak `<a>` elemanı uygulamadaki herhangi bir yerde olabilir.
 
-  Dolayisiyla, `<a>` elemani bilesnenin sablonunda veya yansitilan ya da alt iceriginin herhangi birinde olabilir.
+  Dolayısıyla, `<a>` elemanı bileşenin şablonunda veya yansıtılan ya da alt içeriğinin herhangi birinde olabilir.
 
-- `:host ::ng-deep p a` ifadesinde, hem `<a>` hem de `<p>` elemanlari bilesnenin host elemaninin alt elemanlari olmalidir.
+- `:host ::ng-deep p a` ifadesinde, hem `<a>` hem de `<p>` elemanları bileşenin host elemanının alt elemanları olmalıdır.
 
-  Bilesnenin sablonundan veya alt bilesenlerinin gorunumlerinden gelebilirler, ancak uygulamanin baska bir yerinden gelemezler.
+  Bileşenin şablonundan veya alt bileşenlerinin görünümlerinden gelebilirler, ancak uygulamanın başka bir yerinden gelemezler.
 
 ### ViewEncapsulation.ShadowDom
 
-Bu mod, [web standardi Shadow DOM API](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'sini kullanarak bir bilesen icindeki stilleri kapsulller. Bu mod etkinlestirildiginde Angular, bilesnenin host elemanina bir golge koku (shadow root) ekler ve bilesnenin sablonunu ve stillerini karsilik gelen golge agacina render eder.
+Bu mod, [web standartı Shadow DOM API](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'sini kullanarak bir bileşen içindeki stilleri kapsüller. Bu mod etkinleştirildiğinde Angular, bileşenin host elemanına bir gölge kökü (shadow root) ekler ve bileşenin şablonunu ve stillerini karşılık gelen gölge ağacına render eder.
 
-Golge agacinin icindeki stiller, o golge agacinin disindaki elemanlari etkileyemez.
+Gölge ağacının içindeki stiller, o gölge ağacının dışındaki elemanları etkileyemez.
 
-Ancak `ShadowDom` kapsullemesini etkinlestirmek, stil kapsulemesinden daha fazlasini etkiler. Bileseni bir golge agacinda render etmek, olay yayilimini, [`<slot>` API](https://developer.mozilla.org/docs/Web/Web_Components/Using_templates_and_slots)'si ile etkilesimi ve tarayici gelistirici araclarinin elemanlari nasil gosterdigini etkiler. Uygulamanizda Shadow DOM kullanmanin tum sonuclarini her zaman anlayin ve bu secenegi etkinlestirmeden once bilin.
+Ancak `ShadowDom` kapsüllemesini etkinleştirmek, stil kapsülemesinden daha fazlasını etkiler. Bileşeni bir gölge ağacında render etmek, olay yayılımını, [`<slot>` API](https://developer.mozilla.org/docs/Web/Web_Components/Using_templates_and_slots)'si ile etkileşimi ve tarayıcı geliştirici araçlarının elemanları nasıl gösterdiğini etkiler. Uygulamanızda Shadow DOM kullanmanın tüm sonuçlarını her zaman anlayın ve bu seçeneği etkinleştirmeden önce bilin.
 
 ### ViewEncapsulation.ExperimentalIsolatedShadowDom
 
-Yukaridakiyle ayni sekilde davranir, ancak bu mod yalnizca o bilesnenin stillerinin bilesnenin sablonundaki elemanlara uygulanacagini kesinlikle garanti eder. Genel stiller golge agacindaki elemanlari etkileyemez ve golge agacinin icindeki stiller o golge agacinin disindaki elemanlari etkileyemez.
+Yukarıdakiyle aynı şekilde davranır, ancak bu mod yalnızca o bileşenin stillerinin bileşenin şablonundaki elemanlara uygulanacağını kesinlikle garanti eder. Genel stiller gölge ağacındaki elemanları etkileyemez ve gölge ağacının içindeki stiller o gölge ağacının dışındaki elemanları etkileyemez.
 
 ### ViewEncapsulation.None
 
-Bu mod, bilesen icin tum stil kapsullemesini devre disi birakir. Bilesne ile iliskili herhangi bir stil, genel stiller gibi davranir.
+Bu mod, bileşen için tüm stil kapsüllemesini devre dışı bırakır. Bileşen ile ilişkili herhangi bir stil, genel stiller gibi davranır.
 
-NOTE: `Emulated` ve `ShadowDom` modlarinda Angular, bilesnenizin stillerinin bilesnenin disindaki stilleri her zaman gecersiz kilacagini %100 garanti etmez. Cakisma durumunda bu stillerin bilesneninizin stilleriyle ayni ozgulluge sahip oldugu varsayilir.
+NOTE: `Emulated` ve `ShadowDom` modlarında Angular, bileşenizin stillerinin bileşenin dışındaki stilleri her zaman geçersiz kılacağını %100 garanti etmez. Çakışma durumunda bu stillerin bileşeninizin stilleriyle aynı özgüllüğe sahip olduğu varsayılır.
 
-## Defining styles in templates
+## Şablonlarda stil tanımlama
 
-Ek stiller tanimlamak icin bilesnenin sablonunda `<style>` elemanini kullanabilirsiniz. Bilesnenin gorunum kapsulleme modu, bu sekilde tanimlanan stillere de uygulanir.
+Ek stiller tanımlamak için bileşenin şablonunda `<style>` elemanını kullanabilirsiniz. Bileşenin görünüm kapsülleme modu, bu şekilde tanımlanan stillere de uygulanır.
 
-Angular, stil elemanlari icerisindeki baglamalari desteklemez.
+Angular, stil elemanları içerisindeki bağlamaları desteklemez.
 
-## Referencing external style files
+## Harici stil dosyalarına referans verme
 
-Bilesen sablonlari, CSS dosyalarina referans vermek icin [`<link>` elemani](https://developer.mozilla.org/docs/Web/HTML/Element/link)'ni kullanabilir. Ek olarak, CSS'iniz CSS dosyalarina referans vermek icin [`@import` at-kurali](https://developer.mozilla.org/docs/Web/CSS/@import)'ni kullanabilir. Angular bu referanslari _harici_ stiller olarak degerlendirir. Harici stiller, emule edilmis gorunum kapsullemesinden etkilenmez.
+Bileşen şablonları, CSS dosyalarına referans vermek için [`<link>` elemanı](https://developer.mozilla.org/docs/Web/HTML/Element/link)'nı kullanabilir. Ek olarak, CSS'iniz CSS dosyalarına referans vermek için [`@import` at-kuralı](https://developer.mozilla.org/docs/Web/CSS/@import)'nı kullanabilir. Angular bu referansları _harici_ stiller olarak değerlendirir. Harici stiller, emüle edilmiş görünüm kapsüllemesinden etkilenmez.

@@ -33,11 +33,11 @@ Karmasik animasyonlarin cogu, alt elemanlari bulmak ve onlara animasyon uygulama
 | `@*` <br /> `@triggerName` | Herhangi bir veya belirli bir tetikleyiciye sahip elemanlar icin. |
 | `:self`                    | Animasyonlu elemanin kendisi.                                     |
 
-<docs-callout title="Entering and Leaving Elements">
+<docs-callout title="Giren ve Çıkan Elemanlar">
 
 Tum alt elemanlar aslinda giren/ayrilan olarak kabul edilmez; bu bazen karsi-sezgisel ve kafa karistirici olabilir. Daha fazla bilgi icin lutfen [query api belgelerine](api/animations/query#entering-and-leaving-elements) bakin.
 
-Ayrica bunu animasyonlar orneginde \(animasyonlar [giris bolumunde](guide/legacy-animations#about-this-guide) tanitilan\) Sorgulama sekmesi altinda gorebilirsiniz.
+Ayrica bunu animasyonlar orneginde \(animasyonlar [giris bolumunde](guide/legacy-animations#bu-rehber-hakkında) tanitilan\) Sorgulama sekmesi altinda gorebilirsiniz.
 
 </docs-callout>
 
@@ -121,7 +121,7 @@ IMPORTANT: Bir `*ngFor` listesinin ogelerini animasyonlamaniz gerekiyorsa ve bu 
 
 ## Animations and Component View Encapsulation
 
-Angular animasyonlari, bilesenlerin DOM yapisina dayanir ve [Gorünum Kapsullemeyi](guide/components/styling#style-scoping) dogrudan dikkate almaz; bu, `ViewEncapsulation.Emulated` kullanan bilesenlerin, `ViewEncapsulation.None` kullaniyorlarmis gibi davrandiklari anlamina gelir (`ViewEncapsulation.ShadowDom` ve `ViewEncapsulation.ExperimentalIsolatedShadowDom` kisaca tartisacagimiz gibi farkli davranir).
+Angular animasyonlari, bilesenlerin DOM yapisina dayanir ve [Gorünum Kapsullemeyi](guide/components/styling#stil-kapsamı) dogrudan dikkate almaz; bu, `ViewEncapsulation.Emulated` kullanan bilesenlerin, `ViewEncapsulation.None` kullaniyorlarmis gibi davrandiklari anlamina gelir (`ViewEncapsulation.ShadowDom` ve `ViewEncapsulation.ExperimentalIsolatedShadowDom` kisaca tartisacagimiz gibi farkli davranir).
 
 Ornegin, `query()` fonksiyonu (Animasyonlar rehberinin geri kalaninda daha fazlasini goreceksiniz) emule edilmis gorünum kapsullemesi kullanan bir bilesen agacinin en ustune uygulanirsa, boyle bir sorgu agacin herhangi bir derinligindeki DOM elemanlarini tanimlayabilir (ve dolayisiyla animasyonlayabilir).
 

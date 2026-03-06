@@ -1,10 +1,10 @@
-<docs-decorative-header title="Components" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Bileşenler" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
 Angular'da uygulama oluşturmanın temel yapı taşı.
 </docs-decorative-header>
 
 Bileşenler, Angular uygulamalarının ana yapı taşlarıdır. Her bileşen, daha büyük bir web sayfasının bir parçasını temsil eder. Bir uygulamayı bileşenlere göre düzenlemek, projenize yapı kazandırmaya yardımcı olarak kodu bakımı kolay ve zamanla büyüyebilen belirli parçalara net bir şekilde ayırır.
 
-## Defining a component
+## Bir Bileşen Tanımlama
 
 Her bileşenin birkaç ana parçası vardır:
 
@@ -25,7 +25,7 @@ Her bileşenin birkaç ana parçası vardır:
   `,
 })
 export class UserProfile {
-  /* Your component code goes here */
+  /* Bileşen kodunuz buraya gelecek */
 }
 ```
 
@@ -46,11 +46,11 @@ export class UserProfile {
   `,
 })
 export class UserProfile {
-  /* Your component code goes here */
+  /* Bileşen kodunuz buraya gelecek */
 }
 ```
 
-### Separating HTML and CSS into separate files
+### HTML ve CSS'i Ayrı Dosyalara Ayırma
 
 Bir bileşenin HTML ve CSS'ini `templateUrl` ve `styleUrl` kullanarak ayrı dosyalarda tanımlayabilirsiniz:
 
@@ -62,7 +62,7 @@ Bir bileşenin HTML ve CSS'ini `templateUrl` ve `styleUrl` kullanarak ayrı dosy
   styleUrl: 'user-profile.css',
 })
 export class UserProfile {
-  // Component behavior is defined in here
+  // Bileşen davranışı burada tanımlanır
 }
 ```
 
@@ -79,7 +79,7 @@ h1 {
 }
 ```
 
-## Using components
+## Bileşenleri Kullanma
 
 Birden fazla bileşeni bir araya getirerek bir uygulama oluşturursunuz. Örneğin, bir kullanıcı profili sayfası oluşturuyorsanız, sayfayı şu şekilde birkaç bileşene ayırabilirsiniz:
 
@@ -116,17 +116,17 @@ import {ProfilePhoto} from 'profile-photo.ts';
   `,
 })
 export class UserProfile {
-  // Component behavior is defined in here
+  // Bileşen davranışı burada tanımlanır
 }
 ```
 
 TIP: Angular bileşenleri hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Bileşenler kılavuzuna](guide/components) bakın.
 
-## Next Step
+## Sonraki Adım
 
 Angular'da bileşenlerin nasıl çalıştığını öğrendiğinize göre, uygulamamızda dinamik verileri nasıl ekleyip yöneteceğimizi öğrenmenin zamanı geldi.
 
 <docs-pill-row>
-  <docs-pill title="Reactivity with signals" href="essentials/signals" />
-  <docs-pill title="In-depth components guide" href="guide/components" />
+  <docs-pill title="Sinyallerle reaktivite" href="essentials/signals" />
+  <docs-pill title="Detaylı bileşenler kılavuzu" href="guide/components" />
 </docs-pill-row>

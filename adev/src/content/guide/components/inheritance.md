@@ -1,10 +1,10 @@
-# Inheritance
+# Kalıtım
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Angular bilesenleri TypeScript siniflaridir ve standart JavaScript kalitim semantiklerine katilir.
+Angular bileşenleri TypeScript sınıflarıdır ve standart JavaScript kalıtım semantiklerine katılır.
 
-Bir bilesen herhangi bir temel sinifi genisletebilir:
+Bir bileşen herhangi bir temel sınıfı genişletebilir:
 
 ```ts
 export class ListboxBase {
@@ -15,13 +15,13 @@ export class ListboxBase {
   /*...*/
 })
 export class CustomListbox extends ListboxBase {
-  // CustomListbox inherits the `value` property.
+  // CustomListbox `value` özelliğini miras alır.
 }
 ```
 
-## Extending other components and directives
+## Diğer bileşen ve direktifleri genişletme
 
-Bir bilesen baska bir bileseni veya bir direktifi genislettiginde, temel sinifin dekoratorunde tanimlanan bazi meta verileri ve temel sinifin dekore edilmis uyelerini miras alir. Bu; host baglamalarini, girdileri, ciktilari ve yasam dongusu yontemlerini icerir.
+Bir bileşen başka bir bileşeni veya bir direktifi genişlettiğinde, temel sınıfın dekoratöründe tanımlanan bazı meta verileri ve temel sınıfın dekore edilmiş üyelerini miras alır. Bu; host bağlamalarını, girdileri, çıktıları ve yaşam döngüsü yöntemlerini içerir.
 
 ```angular-ts
 @Component({
@@ -53,13 +53,13 @@ export class CustomListbox extends ListboxBase {
 }
 ```
 
-Yukaridaki ornekte, `CustomListbox` ile iliskili tum bilgileri `ListboxBase`'den miras alir ve secici ile sablonu kendi degerleriyle gecersiz kilar. `CustomListbox` iki girdiye (`value` ve `disabled`) ve iki olay dinleyicisine (`keydown` ve `click`) sahiptir.
+Yukarıdaki örnekte, `CustomListbox` ile ilişkili tüm bilgileri `ListboxBase`'den miras alır ve seçici ile şablonu kendi değerleriyle geçersiz kılar. `CustomListbox` iki girdiye (`value` ve `disabled`) ve iki olay dinleyicisine (`keydown` ve `click`) sahiptir.
 
-Alt siniflar, tum atalarinin girdilerinin, ciktilarinin ve host baglamalarinin _birlesimiyle_ ve kendi girdileri, ciktilari ve host baglamalariyla sonuclanir.
+Alt sınıflar, tüm atalarının girdilerinin, çıktılarının ve host bağlamalarının _birleşimiyle_ ve kendi girdileri, çıktıları ve host bağlamalarıyla sonuçlanır.
 
-### Forwarding injected dependencies
+### Enjekte edilen bağımlılıkları iletme
 
-Bir temel sinif, constructor parametreleri olarak bagimliliklari enjekte ediyorsa, alt sinifin bu bagimliliklari acikca `super`'a iletmesi gerekir.
+Bir temel sınıf, constructor parametreleri olarak bağımlılıkları enjekte ediyorsa, alt sınıfın bu bağımlılıkları açıkça `super`'a iletmesi gerekir.
 
 ```ts
 @Component({
@@ -79,9 +79,9 @@ export class CustomListbox extends ListboxBase {
 }
 ```
 
-### Overriding lifecycle methods
+### Yaşam döngüsü yöntemlerini geçersiz kılma
 
-Bir temel sinif `ngOnInit` gibi bir yasam dongusu yontemi tanimliyorsa, ayrica `ngOnInit` uygulayan bir alt sinif temel sinifin uygulamasini _gecersiz kilar_. Temel sinifin yasam dongusu yontemini korumak istiyorsaniz, `super` ile yontemi acikca cagirin:
+Bir temel sınıf `ngOnInit` gibi bir yaşam döngüsü yöntemi tanımlıyorsa, ayrıca `ngOnInit` uygulayan bir alt sınıf temel sınıfın uygulamasını _geçersiz kılar_. Temel sınıfın yaşam döngüsü yöntemini korumak istiyorsanız, `super` ile yöntemi açıkça çağırın:
 
 ```ts
 @Component({

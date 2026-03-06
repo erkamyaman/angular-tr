@@ -1,9 +1,9 @@
 <docs-decorative-header title="Multiselect">
 </docs-decorative-header>
 
-## Overview
+## Genel Bakış
 
-Klavye navigasyonu ve ekran okuyucu destegi ile coklu secimli acilir menuler olusturmak icin salt okunur combobox'i coklu etkin listbox ile birlestiren bir kalip.
+Klavye navigasyonu ve ekran okuyucu desteği ile çoklu seçimli açılır menüler oluşturmak için salt okunur combobox'ı çoklu etkin listbox ile birleştiren bir kalıp.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -31,41 +31,41 @@ Klavye navigasyonu ve ekran okuyucu destegi ile coklu secimli acilir menuler olu
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım
 
-Coklu secim kalibi, kullanicilarin bilinen bir secenek kumesinden birden fazla iliskili oge secmesi gerektiginde en iyi calisir.
+Çoklu seçim kalıbı, kullanıcıların bilinen bir seçenek kümesinden birden fazla ilişkili öğe seçmesi gerektiğinde en iyi çalışır.
 
-Su durumlarda bu kalibi kullanmayi dusunun:
+Şu durumlarda bu kalıbı kullanmayı düşünün:
 
-- **Kullanicilarin birden fazla secime ihtiyaci var** - Birden fazla secimin gecerli oldugu etiketler, kategoriler, filtreler veya etiketler
-- **Secenek listesi sabit** (20'den az oge) - Kullanicilar arama yapmadan secenekleri tarayabilir
-- **Icerik filtreleme** - Ayni anda birden fazla kriter aktif olabilir
-- **Ozellik atama** - Birden fazla degerin anlamli oldugu etiketler, izinler veya ozellikler
-- **Iliskili secimler** - Mantiksal olarak birlikte calisan secenekler (birden fazla takim uyesi secmek gibi)
+- **Kullanıcıların birden fazla seçime ihtiyacı var** - Birden fazla seçimin geçerli olduğu etiketler, kategoriler, filtreler veya etiketler
+- **Seçenek listesi sabit** (20'den az öğe) - Kullanıcılar arama yapmadan seçenekleri tarayabilir
+- **İçerik filtreleme** - Aynı anda birden fazla kriter aktif olabilir
+- **Özellik atama** - Birden fazla değerin anlamlı olduğu etiketler, izinler veya özellikler
+- **İlişkili seçimler** - Mantıksal olarak birlikte çalışan seçenekler (birden fazla takım üyesi seçmek gibi)
 
-Su durumlarda bu kaliptan kacinin:
+Şu durumlarda bu kalıptan kaçının:
 
-- **Yalnizca tek secim gerekli** - Daha basit tek secimli acilir menuler icin [Select kalibini](guide/aria/select) kullanin
-- **Liste 20'den fazla oge ve arama gerekli** - Coklu secim yetenegine sahip [Autocomplete kalibini](guide/aria/autocomplete) kullanin
-- **Cogu veya tum secenekler secilecek** - Bir kontrol listesi kalibi daha iyi gorunurluk saglar
-- **Secimler bagimsiz ikili secenekler** - Bireysel onay kutulari secimleri daha acik iletir
+- **Yalnızca tek seçim gerekli** - Daha basit tek seçimli açılır menüler için [Select kalıbını](guide/aria/select) kullanın
+- **Liste 20'den fazla öğe ve arama gerekli** - Çoklu seçim yeteneğine sahip [Autocomplete kalıbını](guide/aria/autocomplete) kullanın
+- **Çoğu veya tüm seçenekler seçilecek** - Bir kontrol listesi kalıbı daha iyi görünürlük sağlar
+- **Seçimler bağımsız ikili seçenekler** - Bireysel onay kutuları seçimleri daha açık iletir
 
-## Features
+## Özellikler
 
-Coklu secim kalibi, tam erisilebilir bir acilir menu saglamak icin [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yonergelerini birlestirir:
+Çoklu seçim kalıbı, tam erişilebilir bir açılır menü sağlamak için [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yönergelerini birleştirir:
 
-- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Bosluk ile degistirin, Escape ile kapatin
-- **Ekran Okuyucu Destegi** - aria-multiselectable dahil yerlesik ARIA nitelikleri
-- **Secim Sayisi Gorunumu** - Birden fazla secim icin kompakt "Oge + 2 daha" kalibi gosterir
-- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
-- **Akilli Konumlandirma** - CDK Overlay gorunum alani kenarlarini ve kaydirmayi yonetir
-- **Kalici Secim** - Secili secenekler, secimden sonra onay isaretleriyle gorunur kalir
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Boşluk ile değiştirin, Escape ile kapatın
+- **Ekran Okuyucu Desteği** - aria-multiselectable dahil yerleşik ARIA nitelikleri
+- **Seçim Sayısı Görünümü** - Birden fazla seçim için kompakt "Öğe + 2 daha" kalıbı gösterir
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+- **Akıllı Konumlandırma** - CDK Overlay görünüm alanı kenarlarını ve kaydırmayı yönetir
+- **Kalıcı Seçim** - Seçili seçenekler, seçimden sonra onay işaretleriyle görünür kalır
 
-## Examples
+## Örnekler
 
-### Basic multiselect
+### Temel çoklu seçim
 
-Kullanicilarin bir secenek listesinden birden fazla oge secmesi gerekir. Salt okunur combobox, coklu etkin listbox ile eslestirildiginde, tam erisilebilirlik destegi ile tanidik coklu secim islevi saglar.
+Kullanıcıların bir seçenek listesinden birden fazla öğe seçmesi gerekir. Salt okunur combobox, çoklu etkin listbox ile eşleştirildiğinde, tam erişilebilirlik desteği ile tanıdık çoklu seçim işlevi sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -93,11 +93,11 @@ Kullanicilarin bir secenek listesinden birden fazla oge secmesi gerekir. Salt ok
   </docs-tab>
 </docs-tab-group>
 
-`ngListbox` uzerindeki `multi` niteligi coklu secimi etkinlestirir. Secenekleri degistirmek icin Bosluk'a basin ve acilir pencere ek secimler icin acik kalir. Gosterim, ilk secili ogeyi ardindan kalan secimlerin sayisini gosterir.
+`ngListbox` üzerindeki `multi` niteliği çoklu seçimi etkinleştirir. Seçenekleri değiştirmek için Boşluk'a basın ve açılır pencere ek seçimler için açık kalır. Gösterim, ilk seçili öğeyi ardından kalan seçimlerin sayısını gösterir.
 
-### Multiselect with custom display
+### Özel görünümlü çoklu seçim
 
-Seceneklerin genellikle kullanicilarin secimleri tanimasina yardimci olacak simgeler veya renkler gibi gorsel gostergelere ihtiyaci vardir. Secenekler icindeki ozel sablonlar, gorunum degeri kompakt bir ozet gosterirken zengin bicimlendirme saglar.
+Seçeneklerin genellikle kullanıcıların seçimleri tanımasına yardımcı olacak simgeler veya renkler gibi görsel göstergelere ihtiyacı vardır. Seçenekler içindeki özel şablonlar, görünüm değeri kompakt bir özet gösterirken zengin biçimlendirme sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -125,11 +125,11 @@ Seceneklerin genellikle kullanicilarin secimleri tanimasina yardimci olacak simg
   </docs-tab>
 </docs-tab-group>
 
-Her secenek etiketinin yaninda bir simge gosterir. Gorunum degeri, secilen secenegin simgesini ve metnini, ardindan ek secimlerin sayisini gostermek uzere guncellenir. Secili secenekler net gorsel geri bildirim icin bir onay isareti gosterir.
+Her seçenek etiketinin yanında bir simge gösterir. Görünüm değeri, seçilen seçeneğin simgesini ve metnini, ardından ek seçimlerin sayısını göstermek üzere güncellenir. Seçili seçenekler net görsel geri bildirim için bir onay işareti gösterir.
 
-### Controlled selection
+### Kontrollü seçim
 
-Formlar bazen secim sayisini sinirlamak veya kullanici secimlerini dogrulamak gerektirir. Secim uzerinde programatik kontrol, erisilebilirligi korurken bu kisitlamalari saglar.
+Formlar bazen seçim sayısını sınırlamak veya kullanıcı seçimlerini doğrulamak gerektirir. Seçim üzerinde programatik kontrol, erişilebilirliği korurken bu kısıtlamaları sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -157,45 +157,45 @@ Formlar bazen secim sayisini sinirlamak veya kullanici secimlerini dogrulamak ge
   </docs-tab>
 </docs-tab-group>
 
-Bu ornek secimleri uc ogeyle sinirlar. Sinira ulasildiginda, secilmemis secenekler devre disi olur ve ek secimleri engeller. Bir mesaj kullanicilari kisitlama hakkinda bilgilendirir.
+Bu örnek seçimleri üç öğeyle sınırlar. Sınıra ulaşıldığında, seçilmemiş seçenekler devre dışı olur ve ek seçimleri engeller. Bir mesaj kullanıcıları kısıtlama hakkında bilgilendirir.
 
-## APIs
+## API'ler
 
-Coklu secim kalibi, Angular'in Aria kutuphanesindeki asagidaki yonergeleri kullanir. Baglantili rehberlerdeki tam API dokumantasyonuna bakin.
+Çoklu seçim kalıbı, Angular'ın Aria kütüphanesindeki aşağıdaki yönergeleri kullanır. Bağlantılı rehberlerdeki tam API dokümantasyonuna bakın.
 
-### Combobox Directives
+### Combobox Yönergeleri
 
-Coklu secim kalibi, klavye navigasyonunu korurken metin girisini engellemek icin `readonly` niteligi ile `ngCombobox` kullanir.
+Çoklu seçim kalıbı, klavye navigasyonunu korurken metin girişini engellemek için `readonly` niteliği ile `ngCombobox` kullanır.
 
-#### Inputs
+#### Girişler
 
 | Property   | Type      | Default | Description                                                   |
 | ---------- | --------- | ------- | ------------------------------------------------------------- |
-| `readonly` | `boolean` | `false` | Acilir menu davranisi olusturmak icin `true` olarak ayarlayin |
-| `disabled` | `boolean` | `false` | Tum coklu secimi devre disi birakir                           |
+| `readonly` | `boolean` | `false` | Açılır menü davranışı oluşturmak için `true` olarak ayarlayın |
+| `disabled` | `boolean` | `false` | Tüm çoklu seçimi devre dışı bırakır                           |
 
-Mevcut tum girisler ve sinyaller hakkinda eksiksiz bilgi icin [Combobox API dokumantasyonuna](guide/aria/combobox#apis) bakin.
+Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Combobox API dokümantasyonuna](guide/aria/combobox#apiler) bakın.
 
-### Listbox Directives
+### Listbox Yönergeleri
 
-Coklu secim kalibi, coklu secim icin `multi` niteligi ile `ngListbox` ve her secilebilir oge icin `ngOption` kullanir.
+Çoklu seçim kalıbı, çoklu seçim için `multi` niteliği ile `ngListbox` ve her seçilebilir öğe için `ngOption` kullanır.
 
-#### Inputs
+#### Girişler
 
 | Property | Type      | Default | Description                                              |
 | -------- | --------- | ------- | -------------------------------------------------------- |
-| `multi`  | `boolean` | `false` | Coklu secimi etkinlestirmek icin `true` olarak ayarlayin |
+| `multi`  | `boolean` | `false` | Çoklu seçimi etkinleştirmek için `true` olarak ayarlayın |
 
 #### Model
 
 | Property | Type    | Description                                     |
 | -------- | ------- | ----------------------------------------------- |
-| `values` | `any[]` | Secili degerlerin iki yonlu baglanabilir dizisi |
+| `values` | `any[]` | Seçili değerlerin iki yönlü bağlanabilir dizisi |
 
-`multi` true oldugunda, kullanicilar secimi degistirmek icin Bosluk kullanarak birden fazla secenek secebilir. Acilir pencere secimden sonra acik kalir ve ek secimlere izin verir.
+`multi` true olduğunda, kullanıcılar seçimi değiştirmek için Boşluk kullanarak birden fazla seçenek seçebilir. Açılır pencere seçimden sonra açık kalır ve ek seçimlere izin verir.
 
-Listbox yapilandirmasi, secim modlari ve secenek ozellikleri hakkinda eksiksiz bilgi icin [Listbox API dokumantasyonuna](guide/aria/listbox#apis) bakin.
+Listbox yapılandırması, seçim modları ve seçenek özellikleri hakkında eksiksiz bilgi için [Listbox API dokümantasyonuna](guide/aria/listbox#apiler) bakın.
 
-### Positioning
+### Konumlandırma
 
-Coklu secim kalibi, akilli konumlandirma icin [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Gorunum alani kenarlarini ve kaydirmayi otomatik olarak yonetmek icin `cdkConnectedOverlay` kullanin.
+Çoklu seçim kalıbı, akıllı konumlandırma için [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak yönetmek için `cdkConnectedOverlay` kullanın.

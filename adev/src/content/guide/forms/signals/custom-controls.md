@@ -1,4 +1,4 @@
-# Custom Controls
+# Özel Kontroller
 
 NOTE: Bu kılavuz, [Signal Forms temelleri](essentials/signal-forms) konusuna aşinalık olduğunu varsayar.
 
@@ -6,11 +6,11 @@ Tarayıcının yerleşik form kontrolleri (input, select, textarea gibi) yaygın
 
 Signal Forms, belirli arayüzleri uygulayan herhangi bir bileşenle çalışır. Bir **kontrol arayüzü**, bileşeninizin form sistemiyle iletişim kurmasını sağlayan özellikleri ve sinyalleri tanımlar. Bileşeniniz bu arayüzlerden birini uyguladığında, `[formField]` direktifi kontrolünüzü otomatik olarak form durumu, doğrulama ve veri bağlamaya bağlar.
 
-## Creating a basic custom control
+## Temel bir özel kontrol oluşturma
 
 Minimal bir uygulama ile başlayalım ve ihtiyaç duydukça özellikler ekleyelim.
 
-### Minimal input control
+### Minimal girdi kontrolü
 
 Temel bir özel girdi yalnızca `FormValueControl` arayüzünü uygulamak ve gerekli `value` model sinyalini tanımlamak zorundadır.
 
@@ -32,12 +32,12 @@ import {FormValueControl} from '@angular/forms/signals';
   `,
 })
 export class BasicInput implements FormValueControl<string> {
-  /** The current input value */
+  /** Geçerli girdi değeri */
   value = model('');
 }
 ```
 
-### Minimal checkbox control
+### Minimal onay kutusu kontrolü
 
 Bir onay kutusu tarzı kontrol iki şeye ihtiyaç duyar:
 
@@ -58,7 +58,7 @@ import {FormCheckboxControl} from '@angular/forms/signals';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicToggle implements FormCheckboxControl {
-  /** Whether the toggle is checked */
+  /** Geçiş düğmesinin işaretli olup olmadığı */
   checked = model<boolean>(false);
 
   toggle() {
@@ -67,7 +67,7 @@ export class BasicToggle implements FormCheckboxControl {
 }
 ```
 
-### Using your custom control
+### Özel kontrolünüzü kullanma
 
 Bir kontrol oluşturduktan sonra, `FormField` direktifini ekleyerek yerleşik bir girdi kullanacağınız her yerde kullanabilirsiniz:
 
@@ -113,11 +113,11 @@ NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`), formunuzd
 
 `[formField]` direktifi, özel kontroller ve yerleşik girdiler için aynı şekilde çalışır. Signal Forms bunlara aynı şekilde davranır - doğrulama çalışır, durum güncellenir ve veri bağlama otomatik olarak gerçekleşir.
 
-## Understanding control interfaces
+## Kontrol arayüzlerini anlama
 
 Özel kontrolleri çalışırken gördüğünüze göre, şimdi Signal Forms ile nasıl entegre olduklarını inceleyelim.
 
-### Control interfaces
+### Kontrol arayüzleri
 
 Oluşturduğunuz `BasicInput` ve `BasicToggle` bileşenleri, Signal Forms'a onlarla nasıl etkileşim kuracağını söyleyen belirli kontrol arayüzlerini uygular.
 
@@ -139,13 +139,13 @@ IMPORTANT: `FormValueControl` uygulayan kontrollerde `checked` özelliği bulunm
 
 IMPORTANT: `FormCheckboxControl` uygulayan kontrollerde `value` özelliği bulunmamalıdır
 
-### Optional state properties
+### İsteğe bağlı durum özellikleri
 
 Hem `FormValueControl` hem de `FormCheckboxControl`, form durumuyla entegrasyon için isteğe bağlı özellikler sağlayan temel arayüz `FormUiControl`'ü genişletir.
 
 Tüm özellikler isteğe bağlıdır. Yalnızca kontrolünüzün ihtiyaç duyduklarını uygulayın.
 
-#### Interaction state
+#### Etkileşim durumu
 
 Kullanıcıların kontrolünüzle ne zaman etkileşim kurduğunu takip edin:
 
@@ -154,7 +154,7 @@ Kullanıcıların kontrolünüzle ne zaman etkileşim kurduğunu takip edin:
 | `touched` | Kullanıcının alanla etkileşim kurup kurmadığı     |
 | `dirty`   | Değerin başlangıç durumundan farklı olup olmadığı |
 
-#### Validation state
+#### Doğrulama durumu
 
 Kullanıcılara doğrulama geri bildirimi gösterin:
 
@@ -165,7 +165,7 @@ Kullanıcılara doğrulama geri bildirimi gösterin:
 | `invalid` | Alanın doğrulama hataları olup olmadığı   |
 | `pending` | Asenkron doğrulamanın devam edip etmediği |
 
-#### Availability state
+#### Kullanılabilirlik durumu
 
 Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
 
@@ -178,7 +178,7 @@ Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
 
 NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `field` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
 
-#### Validation constraints
+#### Doğrulama kısıtlamaları
 
 Formdan doğrulama kısıtlama değerlerini alın:
 
@@ -191,15 +191,15 @@ Formdan doğrulama kısıtlama değerlerini alın:
 | `maxLength` | Maksimum dize uzunluğu (kısıtlama yoksa undefined)   |
 | `pattern`   | Eşleştirilecek düzenli ifade kalıpları dizisi        |
 
-#### Field metadata
+#### Alan metadata'sı
 
 | Property | Purpose                                                              |
 | -------- | -------------------------------------------------------------------- |
 | `name`   | Alanın name niteliği (formlar ve uygulamalar genelinde benzersizdir) |
 
-Aşağıdaki "[Adding state signals](#adding-state-signals)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
+Aşağıdaki "[Adding state signals](#durum-sinyalleri-ekleme)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
 
-### How the FormField directive works
+### FormField direktifi nasıl çalışır
 
 `[formField]` direktifi, kontrolünüzün hangi arayüzü uyguladığını algılar ve uygun sinyalleri otomatik olarak bağlar:
 
@@ -241,7 +241,7 @@ TIP: Form modellerini oluşturma ve yönetme konusunda kapsamlı bilgi için [Fo
 3. Form durum sinyallerini (`disabled()`, `errors()`, vb.) kontrolünüzün isteğe bağlı girdi sinyallerine bağlar
 4. Güncellemeler sinyal reaktivitesi aracılığıyla otomatik olarak gerçekleşir
 
-## Adding state signals
+## Durum sinyalleri ekleme
 
 Yukarıda gösterilen minimal kontroller çalışır, ancak form durumuna tepki vermezler. Kontrollerinizin devre dışı durumuna tepki vermesi, doğrulama hatalarını göstermesi ve kullanıcı etkileşimini izlemesi için isteğe bağlı girdi sinyalleri ekleyebilirsiniz.
 
@@ -293,13 +293,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatefulInput implements FormValueControl<string> {
-  // Required
+  // Gerekli
   value = model<string>('');
 
-  // Writable interaction state - control updates these
+  // Yazılabilir etkileşim durumu - kontrol bunları günceller
   touched = model<boolean>(false);
 
-  // Read-only state - form system manages these
+  // Salt okunur durum - form sistemi bunları yönetir
   disabled = input<boolean>(false);
   disabledReasons = input<readonly DisabledReason[]>([]);
   readonly = input<boolean>(false);
@@ -340,11 +340,11 @@ export class Login {
 
 Kullanıcı geçersiz bir e-posta yazdığında, FormField direktifi `invalid()` ve `errors()` değerlerini otomatik olarak günceller. Kontrolünüz doğrulama geri bildirimini gösterebilir.
 
-### Signal types for state properties
+### Durum özellikleri için sinyal türleri
 
 Çoğu durum özelliği `input()` (formdan salt okunur) kullanır. Kontrolünüz kullanıcı etkileşiminde güncellediğinde `touched` için `model()` kullanın. `touched` özelliği, ihtiyaçlarınıza bağlı olarak benzersiz bir şekilde `model()`, `input()` veya `OutputRef` desteği sunar.
 
-## Value transformation
+## Değer dönüşümü
 
 Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
 
@@ -368,25 +368,25 @@ import {FormValueControl} from '@angular/forms/signals';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CurrencyInput implements FormValueControl<number> {
-  // Stores numeric value (1234.56)
+  // Sayısal değeri saklar (1234.56)
   readonly value = model.required<number>();
 
-  // Stores display value ("1,234.56")
+  // Görüntüleme değerini saklar ("1,234.56")
   readonly displayValue = linkedSignal(() => formatCurrency(this.value(), 'en', 'USD'));
 
-  // Update the model from the display value.
+  // Görüntüleme değerinden modeli güncelle.
   updateModel() {
     this.value.set(parseCurrency(this.displayValue()));
   }
 }
 
-// Converts a currency string to a number (e.g. "USD1,234.56" -> 1234.56).
+// Bir para birimi dizesini sayıya dönüştürür (ör. "USD1,234.56" -> 1234.56).
 function parseCurrency(value: string): number {
   return parseFloat(value.replace(/^[^\d-]+/, '').replace(/,/g, ''));
 }
 ```
 
-## Validation integration
+## Doğrulama entegrasyonu
 
 Kontroller doğrulama durumunu görüntüler ancak doğrulama gerçekleştirmez. Doğrulama form şemasında gerçekleşir - kontrolünüz FormField direktifinden `invalid()` ve `errors()` sinyallerini alır ve bunları görüntüler (yukarıdaki StatefulInput örneğinde gösterildiği gibi).
 
@@ -396,7 +396,7 @@ FormField direktifi ayrıca `required`, `min`, `max`, `minLength`, `maxLength` v
 export class NumberInput implements FormValueControl<number> {
   value = model<number>(0);
 
-  // Constraint values from schema validation rules
+  // Şema doğrulama kurallarından kısıtlama değerleri
   required = input<boolean>(false);
   min = input<number | undefined>(undefined);
   max = input<number | undefined>(undefined);
@@ -408,23 +408,23 @@ export class NumberInput implements FormValueControl<number> {
 IMPORTANT: Kontrolünüzde doğrulama mantığı uygulamayın. Doğrulama kurallarını form şemasında tanımlayın ve kontrolünüzün sonuçları göstermesini sağlayın:
 
 ```ts {avoid}
-// Avoid: Validation in control
+// Kaçının: Kontrolde doğrulama
 export class BadControl implements FormValueControl<string> {
   value = model<string>('');
   isValid() {
     return this.value().length >= 8;
-  } // Don't do this!
+  } // Bunu yapmayın!
 }
 ```
 
 ```ts {prefer}
-// Good: Validation in schema, control displays results
+// İyi: Şemada doğrulama, kontrol sonuçları gösterir
 accountForm = form(this.accountModel, (schemaPath) => {
   minLength(schemaPath.password, 8, {message: 'Password must be at least 8 characters'});
 });
 ```
 
-## Next steps
+## Sonraki adımlar
 
 Bu kılavuz, Signal Forms ile entegre olan özel kontroller oluşturmayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 

@@ -1,15 +1,15 @@
-# Animation transitions and triggers
+# Animasyon geçişleri ve tetikleyiciler
 
 IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
 
 Bu rehber, `*` joker karakteri ve `void` gibi ozel gecis durumlarina derinlemesine girer. Bu ozel durumlarin bir gorünume giren ve gorünumden ayrilan elemanlar icin nasil kullanildigini gosterir.
 Bu bolum ayrica birden fazla animasyon tetikleyicisini, animasyon geri cagirmalarini ve anahtar kareler kullanan sira tabanli animasyonu inceler.
 
-## Predefined states and wildcard matching
+## Önceden tanımlanmış durumlar ve joker karakter eşleştirme
 
 Angular'da, gecis durumlari [`state()`](api/animations/state) fonksiyonu araciligiyla acikca tanimlanabilir veya onceden tanimlanmis `*` joker karakteri ve `void` durumlari kullanilarak tanimlanabilir.
 
-### Wildcard state
+### Joker karakter durumu
 
 Bir yildiz isareti `*` veya _joker karakter_ herhangi bir animasyon durumuyla eslesir.
 Bu, HTML elemaninin baslangic veya bitis durumundan bagimsiz olarak gecerli olan gecisleri tanimlamak icin kullanislidir.
@@ -29,7 +29,7 @@ Her iki yonde durumdan duruma gecisleri belirtmek icin cift ok sozdizimini kulla
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="trigger-wildcard2"/>
 
-### Use wildcard state with multiple transition states
+### Birden fazla geçiş durumu ile joker karakter durumu kullanma
 
 Iki durumlu buton orneginde, yalnizca iki olasi durum, `open` ve `closed` oldugu icin joker karakter cok yararli degildir.
 Genel olarak, bir elemanin degisebilecegi birden fazla potansiyel durumu oldugunda joker karakter durumlarini kullanin.
@@ -47,19 +47,19 @@ Ornegin, yalnizca `open => closed` icin gecerli olacak stil degisiklikleri veya 
 
 Bunu yapmak icin, daha spesifik gecisleri `* => *`'dan _once_ listeleyin.
 
-### Use wildcards with styles
+### Stillerle joker karakter kullanma
 
 Animasyona mevcut stil degerinin ne olursa olsun onu kullanmasini ve bununla animasyon yapmasini soylemek icin `*` joker karakterini bir stille kullanin.
 Joker karakter, animasyonu yapilan durum tetikleyici icinde bildirılmemisse kullanilan bir geri donus degeridir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="transition4"/>
 
-### Void state
+### Void durumu
 
 Sayfaya giren veya sayfadan ayrilan bir eleman icin gecisleri yapilandirmak icin `void` durumunu kullanin.
-[Gorünume girme ve gorünumden ayrilma animasyonlari](guide/legacy-animations/transition-and-triggers#aliases-enter-and-leave) konusuna bakin.
+[Gorünume girme ve gorünumden ayrilma animasyonlari](guide/legacy-animations/transition-and-triggers#enter-ve-leave-takma-adları) konusuna bakin.
 
-### Combine wildcard and void states
+### Joker karakter ve void durumlarını birleştirme
 
 Sayfaya giren ve sayfadan ayrilan animasyonlari tetiklemek icin bir geciste joker karakter ve void durumlarini birlestirin:
 
@@ -67,7 +67,7 @@ Sayfaya giren ve sayfadan ayrilan animasyonlari tetiklemek icin bir geciste joke
 - `void => *` gecisi, elemanin giriste aldigi durumdan bagimsiz olarak gorünume girdiginde gecerlidir
 - `*` joker karakter durumu, `void` dahil _herhangi bir_ durumla eslesir
 
-## Animate entering and leaving a view
+## Görünüme giriş ve çıkış animasyonu
 
 Bu bolum, sayfaya giren veya sayfadan ayrilan elemanlarin nasil animasyonlanacagini gosterir.
 
@@ -80,22 +80,22 @@ Yeni bir davranis ekleyin:
 
 Onceki kodda, HTML elemani bir gorünume baglanmadiginda `void` durumunu uyguladiniz.
 
-## Aliases :enter and :leave
+## :enter ve :leave takma adları
 
 `:enter` ve `:leave`, `void => *` ve `* => void` gecisleri icin takma adlardir.
 Bu takma adlar bircok animasyon fonksiyonu tarafindan kullanilir.
 
 ```ts {hideCopy}
 
-transition ( ':enter', [ … ] ); // void => _ icin takma ad
-transition ( ':leave', [ … ] ); // _ => void icin takma ad
+transition ( ':enter', [ … ] ); // void => _ için takma ad
+transition ( ':leave', [ … ] ); // _ => void için takma ad
 
 ```
 
 Gorünume giren bir elemani hedeflemek daha zordur cunku henuz DOM'da degildir.
 DOM'a eklenen veya DOM'dan kaldirilan HTML elemanlarini hedeflemek icin `:enter` ve `:leave` takma adlarini kullanin.
 
-### Use `*ngIf` and `*ngFor` with :enter and :leave
+### :enter ve :leave ile `*ngIf` ve `*ngFor` kullanma
 
 `:enter` gecisi, herhangi bir `*ngIf` veya `*ngFor` gorünumu sayfaya yerlestirildiginde calisir ve `:leave` bu gorünumler sayfadan kaldirildiginda calisir.
 
@@ -113,7 +113,7 @@ Bilesen dosyasinda, `:enter` gecisi 0 baslangic opakligini ayarlar. Ardindan, el
 
 Bu ornegin [`state()`](api/animations/state) kullanmasina gerek olmadigini unutmayin.
 
-## Transition :increment and :decrement
+## :increment ve :decrement geçişleri
 
 `transition()` fonksiyonu diger seçici degerleri, `:increment` ve `:decrement` kabul eder.
 Sayisal bir deger arttiginda veya azaldiginda bir gecisi baslatmak icin bunlari kullanin.
@@ -123,7 +123,7 @@ Bu yontemler hakkinda daha fazla bilgi icin [karmasik siralar](guide/legacy-anim
 
 <docs-code header="hero-list-page.ts" path="adev/src/content/examples/animations/src/app/hero-list-page.ts" region="increment"/>
 
-## Boolean values in transitions
+## Geçişlerde Boolean değerler
 
 Bir tetikleyici baglama degeri olarak bir Boolean degeri iceriyorsa, bu deger `true` ve `false` veya `1` ve `0` karsilastiran bir `transition()` ifadesi kullanilarak eslestirilebilir.
 
@@ -138,17 +138,17 @@ Eleman `closed` oldugunda, eleman 0 yukseklige animasyonlanir, bu da onu gorunme
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.2.ts" region="trigger-boolean"/>
 
-## Multiple animation triggers
+## Birden fazla animasyon tetikleyicisi
 
 Bir bilesen icin birden fazla animasyon tetikleyicisi tanimlanabilir.
 Animasyon tetikleyicilerini farkli elemanlara ekleyin ve elemanlar arasindaki ust-alt iliskiler animasyonlarin nasil ve ne zaman calisacagini etkiler.
 
-### Parent-child animations
+### Üst-alt animasyonlar
 
 Angular'da bir animasyon her tetiklendiginde, ust animasyon her zaman oncelik alir ve alt animasyonlar engellenir.
 Bir alt animasyonun calismasi icin, ust animasyonun alt animasyonlar iceren her elemani sorgulamasi gerekir. Ardindan [`animateChild()`](api/animations/animateChild) fonksiyonunu kullanarak animasyonlarin calismesina izin verir.
 
-#### Disable an animation on an HTML element
+#### Bir HTML elemanında animasyonu devre dışı bırakma
 
 Bir HTML elemaninda ve ic ice gecmis tum elemanlarda animasyonlari kapatmak icin `@.disabled` adinda ozel bir animasyon kontrol baglamasi yerlestirilir.
 Dogru oldugunda, `@.disabled` baglamasi tum animasyonlarin islenmesini engeller.
@@ -173,7 +173,7 @@ Bu elemanlar hala animasyonlanabilir.
 
 - Bir alt animasyon bir ust tarafindan sorgulanabilir ve daha sonra `animateChild()` fonksiyonuyla animasyonlanabilir
 
-#### Disable all animations
+#### Tüm animasyonları devre dışı bırakma
 
 Bir Angular uygulamasi icin tum animasyonlari kapatmak icin, en ust Angular bilesenine `@.disabled` ana baglamasini yerlestirin.
 
@@ -181,7 +181,7 @@ Bir Angular uygulamasi icin tum animasyonlari kapatmak icin, en ust Angular bile
 
 HELPFUL: Animasyonlari uygulama capinda devre disi birakmak, uctan uca \(E2E\) testleri sirasinda faydalidir.
 
-## Animation callbacks
+## Animasyon geri çağırmaları
 
 Animasyon `trigger()` fonksiyonu basladiginda ve bittiginde _geri cagirmalar_ yapar.
 Asagidaki ornek, `openClose` tetikleyicisi iceren bir bileseni gostermektedir.
@@ -206,7 +206,7 @@ Asagidaki kod parcasi, `open` ve `closed` iki durumlu bir buton olan orijinal or
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="events"/>
 
-## Keyframes
+## Anahtar kareler
 
 Birden fazla adimla sirali olarak calisan bir animasyon olusturmak icin _anahtar kareler_ kullanin.
 
@@ -219,7 +219,7 @@ Bu renk degisikligi icin kod su sekilde gorunebilir.
 
 <docs-code header="status-slider.ts" path="adev/src/content/examples/animations/src/app/status-slider.ts" region="keyframes"/>
 
-### Offset
+### Ofset
 
 Anahtar kareler, animasyonda her stil degisikliginin gerceklestigi noktayi tanimlayan bir `offset` icerir.
 Offsetler, animasyonun baslangicini ve sonunu isaretleyen sifirdan bire kadar goreceli olcumlerdir. En az bir kez kullanilirsa anahtar kare adimlarinin her birine uygulanmalidir.
@@ -237,7 +237,7 @@ Offsetleri belirtilmis kod su sekilde olur.
 
 Tek bir animasyon icinde anahtar kareleri `duration`, `delay` ve `easing` ile birlestirebilirsiniz.
 
-### Keyframes with a pulsation
+### Nabız efektli anahtar kareler
 
 Animasyon boyunca belirli offsetlerde stiller tanimlayarak animasyonlarinizda bir nabiz efekti olusturmak icin anahtar kareleri kullanin.
 
@@ -252,7 +252,7 @@ Bu animasyon icin kod parcasi su sekilde gorunebilir.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.1.ts" region="trigger"/>
 
-### Animatable properties and units
+### Animasyonlanabilir özellikler ve birimler
 
 Angular animasyon destegi web animasyonlari uzerine kurulmustur, bu nedenle tarayicinin animasyonlanabilir olarak kabul ettigi herhangi bir ozelligi animasyonlayabilirsiniz.
 Bu; konumlar, boyutlar, donusumler, renkler, kenarliklar ve daha fazlasini icerir.
@@ -274,7 +274,7 @@ Degeri bir sayi olarak da saglayabilirsiniz. Bu gibi durumlarda Angular varsayil
 
 HELPFUL: `"50"` dizesi ise gecerli olarak kabul edilmez\).
 
-### Automatic property calculation with wildcards
+### Joker karakterlerle otomatik özellik hesaplama
 
 Bazen bir boyutsal stil ozelliginin degeri calisma zamanina kadar bilinmez.
 Ornegin, elemanlarin genislikleri ve yukseklikleri genellikle iceriklerine veya ekran boyutuna baglidir.
@@ -287,11 +287,11 @@ Animasyon, elemanin ayrilmadan once sahip oldugu yuksekligi alir ve o yukseklikt
 
 <docs-code header="hero-list-auto.ts" path="adev/src/content/examples/animations/src/app/hero-list-auto.ts" region="auto-calc"/>
 
-### Keyframes summary
+### Anahtar kareler özeti
 
 Angular'daki `keyframes()` fonksiyonu, tek bir gecis icinde birden fazla ara stil belirtmenize olanak tanir. Her stil degisikliginin animasyonda nerede gerceklesmesi gerektigini tanimlamak icin istege bagli bir `offset` kullanilabilir.
 
-## More on Angular animations
+## Angular animasyonları hakkında daha fazla bilgi
 
 Asagidakilerle de ilgilenebilirsiniz:
 

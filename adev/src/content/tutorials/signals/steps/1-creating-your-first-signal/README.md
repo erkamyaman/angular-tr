@@ -14,7 +14,7 @@ Sinyallerle etkileşimli bir kullanıcı durum sistemi oluşturalım!
 
 <docs-workflow>
 
-<docs-step title="Import the signal function">
+<docs-step title="Signal fonksiyonunu içe aktarın">
 Bileşen dosyanızın en üstüne `@angular/core` paketinden `signal` fonksiyonunu içe aktarın.
 
 ```ts
@@ -23,7 +23,7 @@ import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
 
 </docs-step>
 
-<docs-step title="Create a signal in your component">
+<docs-step title="Bileşeninizde bir sinyal oluşturun">
 Bileşen sınıfınıza `'offline'` değeriyle başlatılan bir `userStatus` sinyali ekleyin.
 
 ```ts
@@ -37,7 +37,7 @@ export class App {
 
 </docs-step>
 
-<docs-step title="Display the signal value in the template">
+<docs-step title="Sinyal değerini şablonda görüntüleyin">
 Durum göstergesini, mevcut kullanıcı durumunu görüntüleyecek şekilde güncelleyin:
 1. Sinyali class niteliğine `[class]="userStatus()"` ile bağlama
 2. `???` yerine `{{ userStatus() }}` koyarak durum metnini görüntüleme
@@ -59,7 +59,7 @@ Durum göstergesini, mevcut kullanıcı durumunu görüntüleyecek şekilde gün
 Sinyalin değerini okumak için `userStatus()` şeklinde parantezlerle çağırdığımıza dikkat edin.
 </docs-step>
 
-<docs-step title="Add methods to update the signal">
+<docs-step title="Sinyali güncellemek için metotlar ekleyin">
 `set()` metodunu kullanarak kullanıcı durumunu değiştiren metotları bileşeninize ekleyin.
 
 ```ts
@@ -76,7 +76,7 @@ goOffline() {
 
 </docs-step>
 
-<docs-step title="Wire up the control buttons">
+<docs-step title="Kontrol düğmelerini bağlayın">
 Düğmeler zaten şablonda mevcut. Şimdi aşağıdakileri ekleyerek onları metotlarınıza bağlayın:
 1. `(click)` ile tıklama işleyicileri
 2. Zaten o durumda olunduğunda `[disabled]` ile devre dışı durumlar
@@ -89,7 +89,7 @@ Düğmeler zaten şablonda mevcut. Şimdi aşağıdakileri ekleyerek onları met
 
 </docs-step>
 
-<docs-step title="Add a toggle method using update()">
+<docs-step title="update() kullanarak bir geçiş metodu ekleyin">
 `update()` metodunu kullanarak çevrimiçi ve çevrimdışı arasında geçiş yapan bir `toggleStatus()` metodu ekleyin.
 
 ```ts
@@ -102,7 +102,7 @@ toggleStatus() {
 
 </docs-step>
 
-<docs-step title="Add the toggle button handler">
+<docs-step title="Geçiş düğmesi işleyicisini ekleyin">
 Geçiş düğmesi zaten şablonda mevcut. Onu `toggleStatus()` metodunuza bağlayın:
 
 ```html

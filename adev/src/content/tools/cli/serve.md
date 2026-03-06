@@ -1,4 +1,4 @@
-# Serving Angular apps for development
+# Geliştirme için Angular uygulamalarını sunma
 
 Angular CLI uygulamanızı `ng serve` komutuyla sunabilirsiniz.
 Bu, uygulamanızı derler, gereksiz optimizasyonları atlar, bir geliştirme sunucusu başlatır ve sonraki değişiklikleri otomatik olarak yeniden derler ve canlı yeniden yükler.
@@ -13,7 +13,7 @@ Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `serve
   "projects": {
     "my-app": {
       "architect": {
-        // `ng serve` invokes the Architect target named `serve`.
+        // `ng serve`, `serve` adlı Architect hedefini çalıştırır.
         "serve": {
           "builder": "@angular/build:dev-server"
           // ...
@@ -30,7 +30,7 @@ Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `serve
 }
 ```
 
-## Proxying to a backend server
+## Arka uç sunucusuna proxy ile yönlendirme
 
 Belirli URL'leri bir arka uç sunucusuna yönlendirmek için [proxy desteğini](https://vite.dev/config/server-options#server-proxy) kullanın; bunun için `--proxy-config` derleme seçeneğine bir dosya geçirin.
 Örneğin, `http://localhost:4200/api` için yapılan tüm çağrıları `http://localhost:3000/api` üzerinde çalışan bir sunucuya yönlendirmek için aşağıdaki adımları izleyin.
@@ -70,7 +70,7 @@ Belirli URL'leri bir arka uç sunucusuna yönlendirmek için [proxy desteğini](
 
 NOTE: Proxy yapılandırma dosyanızda yapılan değişiklikleri uygulamak için `ng serve` sürecini yeniden başlatmanız gerekir.
 
-### Path matching behavior depends on the builder
+### Yol eşleme davranışı builder'a bağlıdır
 
 **`@angular/build:dev-server`** ([Vite](https://vite.dev/config/server-options#server-proxy) tabanlı)
 

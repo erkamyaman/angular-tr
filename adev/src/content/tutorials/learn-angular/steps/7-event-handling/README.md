@@ -2,7 +2,7 @@
 
 Olay yönetimi, web uygulamalarında etkileşimli özellikleri mümkün kılar. Geliştirici olarak buton tıklamaları, form gönderimleri ve daha fazlası gibi kullanıcı eylemlerine yanıt verme imkanı sağlar.
 
-NOTE: [Temel bilgiler kılavuzundaki kullanıcı etkileşimini yönetme](/essentials/templates#handling-user-interaction) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kullanıcı etkileşimini yönetme](/essentials/templates#kullanıcı-etkileşimini-yönetme) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, bir olay yöneticisi eklemeyi öğreneceksiniz.
 
@@ -28,7 +28,7 @@ Pekala, şimdi sıra sizde:
 
 <docs-workflow>
 
-<docs-step title="Add an event handler">
+<docs-step title="Bir olay yöneticisi ekleyin">
 `App` sınıfına `showSecretMessage()` olay yöneticisi fonksiyonunu ekleyin. Uygulama olarak aşağıdaki kodu kullanın:
 
 ```ts
@@ -39,7 +39,7 @@ showSecretMessage() {
 
 </docs-step>
 
-<docs-step title="Bind to the template event">
+<docs-step title="Şablon olayına bağlayın">
 `app.ts` dosyasındaki şablon kodunu, `section` öğesinin `mouseover` olayına bağlanacak şekilde güncelleyin.
 
 <!-- prettier-ignore -->

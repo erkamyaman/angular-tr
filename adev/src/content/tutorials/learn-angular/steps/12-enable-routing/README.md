@@ -10,7 +10,7 @@ Bu aktivitede, uygulamanızı Angular Router kullanacak şekilde nasıl kuracağ
 
 <docs-workflow>
 
-<docs-step title="Create an app.routes.ts file">
+<docs-step title="Bir app.routes.ts dosyası oluşturun">
 
 `app.routes.ts` dosyasının içinde aşağıdaki değişiklikleri yapın:
 
@@ -25,7 +25,7 @@ export const routes: Routes = [];
 
 </docs-step>
 
-<docs-step title="Add routing to provider">
+<docs-step title="Sağlayıcıya yönlendirme ekleyin">
 
 `app.config.ts` dosyasında, uygulamayı aşağıdaki adımlarla Angular Router için yapılandırın:
 
@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
 
 </docs-step>
 
-<docs-step title="Import `RouterOutlet` in the component">
+<docs-step title="Bileşende `RouterOutlet`'i içe aktarın">
 
 Son olarak, uygulamanızın Angular Router'ı kullanmaya hazır olduğundan emin olmak için, uygulamaya yönlendiricinin istenen içeriği nerede göstermesini beklediğinizi söylemeniz gerekir. Bunu, `@angular/router`'dan `RouterOutlet` direktifini kullanarak gerçekleştirin.
 

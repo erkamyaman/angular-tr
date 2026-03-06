@@ -1,8 +1,8 @@
-# Testing routing and navigation
+# Yönlendirme ve Navigasyonu Test Etme
 
 Yönlendirme ve navigasyonu test etmek, kullanıcılar farklı rotalar arasında gezindiğinde uygulamanızın doğru şekilde davrandığından emin olmak için gereklidir. Bu kılavuz, Angular uygulamalarında yönlendirme işlevselliğini test etmek için çeşitli stratejileri kapsar.
 
-## Prerequisites
+## Ön Koşullar
 
 Bu kılavuz, aşağıdaki araçlar ve kütüphanelerle tanıdık olduğunuzu varsayar:
 
@@ -10,9 +10,9 @@ Bu kılavuz, aşağıdaki araçlar ve kütüphanelerle tanıdık olduğunuzu var
 - **[Angular Testing Utilities](guide/testing)** - Angular'ın yerleşik test araçları ([`TestBed`](api/core/testing/TestBed), [`ComponentFixture`](api/core/testing/ComponentFixture))
 - **[`RouterTestingHarness`](api/router/testing/RouterTestingHarness)** - Yerleşik navigasyon ve bileşen test yetenekleriyle yönlendirilen bileşenleri test etmek için test aracı
 
-## Testing scenarios
+## Test Senaryoları
 
-### Route parameters
+### Route Parametreleri
 
 Bileşenler genellikle veri çekmek için URL'deki rota parametrelerine bağımlıdır, örneğin profil sayfası için bir kullanıcı kimliği.
 
@@ -53,7 +53,7 @@ export class UserProfile {
 }
 ```
 
-### Route guards
+### Route Guard'ları
 
 Rota koruyucuları, kimlik doğrulama veya izinler gibi koşullara göre rotalara erişimi kontrol eder. Koruyucuları test ederken, bağımlılıkları taklit etmeye ve navigasyon sonuçlarını doğrulamaya odaklanın.
 
@@ -97,7 +97,7 @@ describe('authGuard', () => {
   it('allows navigation when user is authenticated', async () => {
     await setup(true);
     await harness.navigateByUrl('/protected', Protected);
-    // The protected component should render when authenticated
+    // Kimliği doğrulanmış olduğunda korumalı bileşen render edilmelidir
     expect(harness.routeNativeElement?.textContent).toContain('Protected Page');
   });
 
@@ -122,7 +122,7 @@ export const authGuard: CanActivateFn = () => {
 };
 ```
 
-### Router outlets
+### Router Outlet'leri
 
 Router outlet testleri, esasen [`Router`](api/router/Router), outlet ve görüntülenen bileşenler arasındaki entegrasyonu test ettiğiniz için daha çok bir entegrasyon testidir.
 
@@ -193,7 +193,7 @@ import {RouterOutlet, RouterLink} from '@angular/router';
 export class App {}
 ```
 
-### Nested routes
+### İç İçe Route'lar
 
 İç içe rotaları test etmek, iç içe URL'lere navigasyon yapıldığında hem üst hem de alt bileşenlerin doğru şekilde render edilmesini sağlar. Bu, iç içe rotalar birden fazla katman içerdiği için önemlidir.
 
@@ -259,7 +259,7 @@ export class Parent {}
 export class Child {}
 ```
 
-### Query parameters and fragments
+### Sorgu Parametreleri ve Fragment'lar
 
 Sorgu parametreleri (`?search=angular&category=web` gibi) ve URL fragment'ları (`#section1` gibi), hangi bileşenin yükleneceğini etkilemeyen ancak bileşenin nasıl davranacağını etkileyen URL aracılığıyla ek veri sağlar. [`ActivatedRoute.queryParams`](api/router/ActivatedRoute#queryParams) aracılığıyla sorgu parametrelerini okuyan bileşenlerin, farklı parametre senaryolarını doğru şekilde yönettiğinden emin olmak için test edilmeleri gerekir.
 
@@ -310,7 +310,7 @@ export class Search {
 }
 ```
 
-## Best practices for router testing
+## Router Testi İçin En İyi Uygulamalar
 
 1. **RouterTestingHarness kullanın** - Yönlendirilen bileşenleri test etmek için, daha temiz bir API sağlayan ve test host bileşenleri ihtiyacını ortadan kaldıran [`RouterTestingHarness`](api/router/testing/RouterTestingHarness) kullanın. Doğrudan bileşen erişimi, yerleşik navigasyon ve daha iyi tür güvenliği sunar. Ancak, adlandırılmış outlet'leri test etme gibi bazı senaryolar için uygun olmayabilir ve özel host bileşenleri oluşturmanız gerekebilir.
 2. **Harici bağımlılıkları özenle yönetin** - Daha gerçekçi testler için mümkünse gerçek uygulamaları tercih edin. Gerçek uygulamalar mümkün değilse (örn. harici API'ler), gerçek davranışa yaklaşan sahte nesneler kullanın. Mock veya stub'ları yalnızca son çare olarak kullanın, çünkü testleri kırılgan ve daha az güvenilir yapabilirler.

@@ -1,4 +1,4 @@
-# Migration from NgStyle to style bindings
+# NgStyle'dan stil bağlamalarına geçiş
 
 Bu şematik, uygulamanızdaki NgStyle direktifi kullanımlarını stil bağlamalarına geçirir.
 Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
@@ -9,19 +9,19 @@ Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
 ng generate @angular/core:ngstyle-to-style
 ```
 
-#### Before
+#### Önce
 
 ```html
 <div [ngStyle]="{'background-color': 'red'}"></div>
 ```
 
-#### After
+#### Sonra
 
 ```html
 <div [style]="{'background-color': 'red'}"></div>
 ```
 
-## Configuration options
+## Yapılandırma seçenekleri
 
 Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 

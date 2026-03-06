@@ -8,7 +8,7 @@ Bu aktivitede, verileri asenkron olarak yüklemek için `resource()` fonksiyonun
 
 <docs-workflow>
 
-<docs-step title="Import resource function and API">
+<docs-step title="resource fonksiyonunu ve API'yi içe aktarın">
 Mevcut içe aktarmalarınıza `resource` ekleyin ve sahte API fonksiyonunu içe aktarın.
 
 ```ts
@@ -20,7 +20,7 @@ import {getUserData} from './user-api';
 
 </docs-step>
 
-<docs-step title="Create a resource for user data">
+<docs-step title="Kullanıcı verileri için bir resource oluşturun">
 Bileşen sınıfında, bir kullanıcı kimliği sinyaline dayalı olarak kullanıcı verilerini yükleyen bir resource oluşturan bir özellik ekleyin.
 
 ```ts
@@ -34,7 +34,7 @@ userResource = resource({
 
 </docs-step>
 
-<docs-step title="Add methods to interact with the resource">
+<docs-step title="Resource ile etkileşim kurmak için metotlar ekleyin">
 Kullanıcı kimliğini değiştirmek ve resource'u yeniden yüklemek için metotlar ekleyin.
 
 ```ts
@@ -50,7 +50,7 @@ reloadUser() {
 Params sinyalini değiştirmek otomatik olarak yeniden yüklemeyi tetikler veya `reload()` ile manuel olarak yeniden yükleyebilirsiniz.
 </docs-step>
 
-<docs-step title="Create computed signals for resource states">
+<docs-step title="Resource durumları için computed sinyaller oluşturun">
 Resource'un farklı durumlarına erişmek için computed sinyaller ekleyin.
 
 ```ts
@@ -61,7 +61,7 @@ hasError = computed(() => this.userResource.status() === 'error');
 Resource'lar; 'loading', 'success' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar.
 </docs-step>
 
-<docs-step title="Wire up the buttons and display resource states">
+<docs-step title="Düğmeleri bağlayın ve resource durumlarını görüntüleyin">
 Şablon yapısı zaten sağlanmış. Şimdi her şeyi bağlayın:
 
 Bölüm 1. **Düğmelere tıklama işleyicileri ekleyin:**

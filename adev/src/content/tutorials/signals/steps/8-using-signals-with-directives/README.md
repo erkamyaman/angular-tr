@@ -8,7 +8,7 @@ Bu aktivitede, sinyallerin direktiflerde nasıl reaktif davranış oluşturduğu
 
 <docs-workflow>
 
-<docs-step title="Set up signals just like in a component">
+<docs-step title="Sinyalleri tıpkı bir bileşendeki gibi kurun">
 Sinyal fonksiyonlarını içe aktarın ve reaktif durumunuzu oluşturun. Bu, bileşenlerdeki ile tamamen aynı şekilde çalışır:
 
 ```ts
@@ -45,7 +45,7 @@ export class HighlightDirective {
 Bunun bileşen kalıplarıyla aynı olduğuna dikkat edin - tek fark `@Component` yerine `@Directive` içinde olmamızdır.
 </docs-step>
 
-<docs-step title="Use signals in host bindings">
+<docs-step title="Sinyalleri host bağlamalarında kullanın">
 Direktiflerin şablonları olmadığı için, sinyalleri ana elemanı reaktif olarak güncellemek için **host bağlamalarında** kullanacaksınız. `host` yapılandırmasını ve olay işleyicilerini ekleyin:
 
 ```ts
@@ -73,7 +73,7 @@ export class HighlightDirective {
 Host bağlamaları, sinyaller değiştiğinde otomatik olarak yeniden değerlendirilir - tıpkı bileşenlerdeki şablon bağlamaları gibi! `isHovered` değiştiğinde, `backgroundStyle` computed sinyali yeniden hesaplanır ve host bağlaması elemanın stilini günceller.
 </docs-step>
 
-<docs-step title="Use the directive in your template">
+<docs-step title="Direktifi şablonunuzda kullanın">
 Reaktif direktifi göstermek için uygulama şablonunu güncelleyin:
 
 ```angular-html

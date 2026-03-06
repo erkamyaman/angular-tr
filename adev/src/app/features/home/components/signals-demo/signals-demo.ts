@@ -33,8 +33,8 @@ export class SignalsDemo {
   ]);
   searchTerm = signal('');
 
-  // A computed signal that derives the filtered list.
-  // It automatically re-runs when a dependency changes.
+  // Filtrelenmiş listeyi türeten bir computed sinyal.
+  // Bir bağımlılık değiştiğinde otomatik olarak yeniden çalışır.
   filteredItems = computed(() => {
     const lowerCaseSearchTerm = this.searchTerm().toLowerCase();
     return this.items().filter((item) => item.toLowerCase().includes(lowerCaseSearchTerm));
@@ -46,11 +46,11 @@ export class SignalsDemo {
 }
 
 const tsExample = `
-// Source signals for state.
+// Durum için kaynak sinyalleri.
 items = signal(['Apple', 'Banana', /*...*/ ]);
 searchTerm = signal('');
-// A computed signal that derives the filtered list.
-// It automatically re-runs when a dependency changes.
+// Filtrelenmiş listeyi türeten bir computed sinyal.
+// Bir bağımlılık değiştiğinde otomatik olarak yeniden çalışır.
 filteredItems = computed(() => {
   const lowerCaseSearchTerm = this.searchTerm().toLowerCase();
   return this.items().filter(item =>

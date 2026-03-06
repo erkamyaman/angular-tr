@@ -8,7 +8,7 @@ Bu aktivitede, bir ürün kartı bileşenine sinyal input'ları ekleyecek ve üs
 
 <docs-workflow>
 
-<docs-step title="Add signal inputs to ProductCard">
+<docs-step title="ProductCard'a sinyal input'ları ekleyin">
 `product-card` bileşeninde veri almak için sinyal `input()` fonksiyonları ekleyin.
 
 ```ts
@@ -24,7 +24,7 @@ available = input<boolean>(true);
 `input.required()` fonksiyonunun sağlanması zorunlu bir input oluşturduğuna, `input()` fonksiyonunun varsayılan değerle isteğe bağlı olduğuna dikkat edin.
 </docs-step>
 
-<docs-step title="Connect inputs to the template">
+<docs-step title="Input'ları şablona bağlayın">
 Sinyal input değerlerini görüntülemek için `product-card` içindeki şablonu güncelleyin.
 
 ```angular-html
@@ -45,7 +45,7 @@ Sinyal input değerlerini görüntülemek için `product-card` içindeki şablon
 Input sinyalleri, şablonlarda normal sinyaller gibi çalışır - değerlerine erişmek için fonksiyon olarak çağırın.
 </docs-step>
 
-<docs-step title="Connect parent signals to child inputs">
+<docs-step title="Üst bileşen sinyallerini alt bileşen input'larına bağlayın">
 `app.ts` dosyasındaki `product-card` kullanımını, statik değerler yerine dinamik sinyal değerleri geçirecek şekilde güncelleyin.
 
 ```html
@@ -59,7 +59,7 @@ Input sinyalleri, şablonlarda normal sinyaller gibi çalışır - değerlerine 
 Köşeli parantezler `[]`, mevcut sinyal değerlerini alt bileşene aktaran özellik bağlamaları oluşturur.
 </docs-step>
 
-<docs-step title="Test reactive updates">
+<docs-step title="Reaktif güncellemeleri test edin">
 Üst sinyalleri güncellemek ve alt bileşenin otomatik olarak nasıl tepki verdiğini görmek için `app.ts` dosyasına metotlar ekleyin.
 
 ```ts

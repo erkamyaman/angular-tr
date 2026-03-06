@@ -15,7 +15,7 @@ IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriy
 
 <docs-workflow>
 
-<docs-step title="Update the home component properties">
+<docs-step title="Home bileşeninin özelliklerini güncelleyin">
 Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri depolamak üzere `Home` sınıfını güncelleyeceksiniz.
 
 1. `src/app/home/home.ts` dosyasında, sınıfa `filteredLocationList` adında yeni bir özellik ekleyin.
@@ -30,7 +30,7 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 </docs-step>
 
-<docs-step title="Update the home component template">
+<docs-step title="Home bileşeninin şablonunu güncelleyin">
 `Home` bileşeninde, kullanıcıdan girdi almak için kullanacağınız bir girdi alanı zaten var. Bu dize metin, sonuçları filtrelemek için kullanılacaktır.
 
 1. `Home` şablonunu, `input` öğesinde `#filter` adında bir şablon değişkeni içerecek şekilde güncelleyin.
@@ -50,7 +50,7 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 </docs-step>
 
-<docs-step title="Implement the event handler function">
+<docs-step title="Olay işleyici fonksiyonunu uygulayın">
 Şablon, `filterResults` fonksiyonunu `click` olayına bağlamak için güncellendi. Sıradaki göreviniz, `Home` sınıfında `filterResults` fonksiyonunu uygulamaktır.
 
 1.  `Home` sınıfını `filterResults` fonksiyonunun uygulamasını içerecek şekilde güncelleyin.

@@ -1,14 +1,14 @@
-# Expression Syntax
+# İfade Sözdizimi
 
-Angular ifadeleri JavaScript'e dayalidir, ancak bazi onemli yonlerden farklilik gosterir. Bu rehber, Angular ifadeleri ile standart JavaScript arasindaki benzerlikleri ve farkliliklari aciklar.
+Angular ifadeleri JavaScript'e dayalıdır, ancak bazı önemli yönlerden farklılık gösterir. Bu rehber, Angular ifadeleri ile standart JavaScript arasındaki benzerlikleri ve farklılıkları açıklar.
 
-## Value literals
+## Değer literalleri
 
-Angular, JavaScript'ten bir [literal deger](https://developer.mozilla.org/en-US/docs/Glossary/Literal) alt kumesini destekler.
+Angular, JavaScript'ten bir [literal değer](https://developer.mozilla.org/en-US/docs/Glossary/Literal) alt kümesini destekler.
 
-### Supported value literals
+### Desteklenen değer literalleri
 
-| Literal turu           | Ornek degerler                  |
+| Literal türü           | Örnek değerler                  |
 | ---------------------- | ------------------------------- |
 | String                 | `'Hello'`, `"World"`            |
 | Boolean                | `true`, `false`                 |
@@ -20,34 +20,34 @@ Angular, JavaScript'ten bir [literal deger](https://developer.mozilla.org/en-US/
 | Template string        | `` `Hello ${name}` ``           |
 | Tagged template string | `` tag`Hello ${name}` ``        |
 
-### Unsupported value literals
+### Desteklenmeyen değer literalleri
 
-| Literal turu | Ornek degerler |
+| Literal türü | Örnek değerler |
 | ------------ | -------------- |
 | BigInt       | `1n`           |
 
-## Globals
+## Global değişkenler
 
-Angular ifadeleri asagidaki [global degiskenleri](https://developer.mozilla.org/en-US/docs/Glossary/Global_object) destekler:
+Angular ifadeleri aşağıdaki [global değişkenleri](https://developer.mozilla.org/en-US/docs/Glossary/Global_object) destekler:
 
 - [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 - [$any](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
 
-Baska hicbir JavaScript global degiskeni desteklenmez. Yaygin JavaScript global degiskenleri arasinda `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt` ve daha fazlasi bulunur.
+Başka hiçbir JavaScript global değişkeni desteklenmez. Yaygın JavaScript global değişkenleri arasında `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt` ve daha fazlası bulunur.
 
-## Local variables
+## Yerel değişkenler
 
-Angular, belirli baglamlarda ifadelerde kullanilmak uzere ozel yerel degiskenleri otomatik olarak kullanilabilir hale getirir. Bu ozel degiskenler her zaman dolar isareti karakteri (`$`) ile baslar.
+Angular, belirli bağlamlarda ifadelerde kullanılmak üzere özel yerel değişkenleri otomatik olarak kullanılabilir hale getirir. Bu özel değişkenler her zaman dolar işareti karakteri (`$`) ile başlar.
 
-Ornegin, `@for` bloklari dongu hakkinda bilgi iceren `$index` gibi birkac yerel degisken saglar.
+Örneğin, `@for` blokları döngü hakkında bilgi içeren `$index` gibi birkaç yerel değişken sağlar.
 
-## What operators are supported?
+## Hangi operatörler desteklenir?
 
-### Supported operators
+### Desteklenen operatörler
 
-Angular, standart JavaScript'ten asagidaki operatorleri destekler.
+Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 
-| Operator                      | Ornek(ler)                                     |
+| Operatör                      | Örnek(ler)                                     |
 | ----------------------------- | ---------------------------------------------- |
 | Add / Concatenate             | `1 + 2`                                        |
 | Subtract                      | `52 - 3`                                       |
@@ -83,19 +83,19 @@ Angular, standart JavaScript'ten asagidaki operatorleri destekler.
 | Spread in array literals      | `[...arr, 1, 2, 3]`                            |
 | Rest in function calls        | `fn(...args)`                                  |
 
-Angular ifadeleri ayrica asagidaki standart disi operatorleri de destekler:
+Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekler:
 
-| Operator                        | Ornek(ler)                     |
+| Operatör                        | Örnek(ler)                     |
 | ------------------------------- | ------------------------------ |
 | [Pipe](/guide/templates/pipes)  | `{{ total \| currency }}`      |
 | Optional chaining\*             | `someObj.someProp?.nestedProp` |
 | Non-null assertion (TypeScript) | `someObj!.someProp`            |
 
-NOTE: Optional chaining, standart JavaScript surumunden farkli davranir; Angular'in optional chaining operatorunun sol tarafi `null` veya `undefined` ise, `undefined` yerine `null` dondurur.
+NOTE: Optional chaining, standart JavaScript sürümünden farklı davranır; Angular'ın optional chaining operatörünün sol tarafı `null` veya `undefined` ise, `undefined` yerine `null` döndürür.
 
-### Unsupported operators
+### Desteklenmeyen operatörler
 
-| Operator              | Ornek(ler)                        |
+| Operatör              | Örnek(ler)                        |
 | --------------------- | --------------------------------- |
 | All bitwise operators | `&`, `&=`, `~`, `\|=`, `^=`, etc. |
 | Object destructuring  | `const { name } = person`         |
@@ -103,26 +103,26 @@ NOTE: Optional chaining, standart JavaScript surumunden farkli davranir; Angular
 | Comma operator        | `x = (x++, x)`                    |
 | new                   | `new Car()`                       |
 
-## Lexical context for expressions
+## İfadeler için sözcüksel bağlam
 
-Angular ifadeleri, bilesen sinifinin baglami icinde ve ayrica ilgili [sablon degiskenleri](/guide/templates/variables), yerel degiskenler ve global degiskenler icinde degerlendirilir.
+Angular ifadeleri, bileşen sınıfının bağlamı içinde ve ayrıca ilgili [şablon değişkenleri](/guide/templates/variables), yerel değişkenler ve global değişkenler içinde değerlendirilir.
 
-Bilesen sinif uyelerine referans verirken `this` her zaman ima edilir. Ancak, bir sablon ayni adla bir [sablon degiskeni](guide/templates/variables) bildirirse, degisken o uyeyi golgelar. Bu tur bir sinif uyesine belirsizlik olmadan referans vermek icin acikca `this.` kullanabilirsiniz. Bu, bir sinif uyesini golgeleyen bir `@let` bildirimi olustururken, ornegin signal daraltma amaclari icin faydali olabilir.
+Bileşen sınıf üyelerine referans verirken `this` her zaman ima edilir. Ancak, bir şablon aynı adla bir [şablon değişkeni](guide/templates/variables) bildirirse, değişken o üyeyi gölgeler. Bu tür bir sınıf üyesine belirsizlik olmadan referans vermek için açıkça `this.` kullanabilirsiniz. Bu, bir sınıf üyesini gölgeleyen bir `@let` bildirimi oluştururken, örneğin signal daraltma amaçları için faydalı olabilir.
 
-## Declarations
+## Bildirimler
 
-Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasinda su durumlar yer alir ancak bunlarla sinirli degildir:
+Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasında şu durumlar yer alır ancak bunlarla sınırlı değildir:
 
-| Bildirimler     | Ornek(ler)                                  |
+| Bildirimler     | Örnek(ler)                                  |
 | --------------- | ------------------------------------------- |
 | Variables       | `let label = 'abc'`, `const item = 'apple'` |
 | Functions       | `function myCustomFunction() { }`           |
 | Arrow Functions | `() => { }`                                 |
 | Classes         | `class Rectangle { }`                       |
 
-# Event listener statements
+# Olay dinleyici ifadeleri
 
-Olay isleyicileri ifadeler degil **ifadeler (statements)** dir. Angular ifadelerinin tum sozdizimini desteklemelerine ragmen, iki temel fark vardir:
+Olay işleyicileri ifadeler değil **ifadeler (statements)** dir. Angular ifadelerinin tüm sözdizimini desteklemelerine rağmen, iki temel fark vardır:
 
-1. Ifadeler atama operatorlerini **destekler** (ancak yapisal atama islemlerini desteklemez)
-1. Ifadeler pipe'lari **desteklemez**
+1. İfadeler atama operatörlerini **destekler** (ancak yapısal atama işlemlerini desteklemez)
+1. İfadeler pipe'ları **desteklemez**

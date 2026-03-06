@@ -2,7 +2,7 @@
 
 Web uygulamaları geliştirirken sıklıkla belirli bir kodu belirli sayıda tekrarlamanız gerekir - örneğin, bir isim dizisi verildiğinde her ismi bir `<p>` etiketinde göstermek isteyebilirsiniz.
 
-NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#control-flow-with-if-and-for) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#if-ve-for-ile-kontrol-akışı) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, bir şablonda öğeleri tekrarlamak için `@for` kullanmayı öğreneceksiniz.
 
@@ -33,7 +33,7 @@ Dikkat edilmesi gereken iki nokta:
 
 <docs-workflow>
 
-<docs-step title="Add the `users` property">
+<docs-step title="`users` özelliğini ekleyin">
 `App` sınıfında, kullanıcıları ve isimlerini içeren `users` adında bir özellik ekleyin.
 
 ```ts
@@ -48,7 +48,7 @@ Dikkat edilmesi gereken iki nokta:
 
 </docs-step>
 
-<docs-step title="Update the template">
+<docs-step title="Şablonu güncelleyin">
 `@for` şablon sözdizimini kullanarak her kullanıcı adını bir `p` öğesinde göstermek için şablonu güncelleyin.
 
 ```angular-html

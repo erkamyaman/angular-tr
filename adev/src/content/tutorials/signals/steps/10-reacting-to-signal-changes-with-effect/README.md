@@ -12,7 +12,7 @@ Sinyalleri zaten kurulmuş bir tema yöneticisi uygulamanız var. Şimdi sinyal 
 
 <docs-workflow>
 
-<docs-step title="Import effect function">
+<docs-step title="effect fonksiyonunu içe aktarın">
 Mevcut içe aktarmalarınıza `effect` ekleyin.
 
 ```ts
@@ -23,7 +23,7 @@ import {Component, signal, computed, effect, ChangeDetectionStrategy} from '@ang
 `effect` fonksiyonu, okuduğu sinyallerden herhangi biri değiştiğinde otomatik olarak çalışan reaktif bir yan etki oluşturur.
 </docs-step>
 
-<docs-step title="Create an effect for local storage">
+<docs-step title="Yerel depolama için bir efekt oluşturun">
 Tema değiştiğinde otomatik olarak yerel depolamaya kaydeden bir efekt ekleyin.
 
 ```ts
@@ -39,7 +39,7 @@ constructor() {
 Bu efekt, tema sinyali her değiştiğinde çalışarak kullanıcının tercihini otomatik olarak kalıcı hale getirir.
 </docs-step>
 
-<docs-step title="Create an effect for logging user activity">
+<docs-step title="Kullanıcı aktivitesini loglamak için bir efekt oluşturun">
 Kullanıcı giriş veya çıkış yaptığında loglayan bir efekt ekleyin.
 
 ```ts
@@ -58,7 +58,7 @@ constructor() {
 Bu efekt, efektlerin birden fazla sinyali nasıl okuyabildiğini ve herhangi birindeki değişikliklere nasıl tepki verdiğini gösterir.
 </docs-step>
 
-<docs-step title="Create an effect with cleanup">
+<docs-step title="Temizleme ile bir efekt oluşturun">
 Bir zamanlayıcı kuran ve bileşen yok edildiğinde temizlenen bir efekt ekleyin.
 
 ```ts
@@ -83,7 +83,7 @@ constructor() {
 Bu efekt, efektler yok edildiğinde veya yeniden çalıştırıldığında kaynakların nasıl temizlendiğini gösterir.
 </docs-step>
 
-<docs-step title="Test the effects">
+<docs-step title="Efektleri test edin">
 Tarayıcı konsolunu açın ve uygulama ile etkileşime geçin:
 
 - **Tema Değiştir** - localStorage kayıtlarını ve zamanlayıcı loglarını görün

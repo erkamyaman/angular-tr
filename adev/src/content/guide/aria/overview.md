@@ -1,21 +1,21 @@
 <docs-decorative-header title="Angular Aria">
 </docs-decorative-header>
 
-## What is Angular Aria?
+## Angular Aria Nedir?
 
-Erisilebilir bilesenler olusturmak basit gorunse de, bunlari W3C Erisilebilirlik Yonergelerine gore uygulamak onemli caba ve erisilebilirlik uzmanligi gerektirir.
+Erişilebilir bileşenler oluşturmak basit görünse de, bunları W3C Erişilebilirlik Yönergelerine göre uygulamak önemli çaba ve erişilebilirlik uzmanlığı gerektirir.
 
-Angular Aria, yaygin WAI-ARIA kaliplarini uygulayan basliklsiz (headless), erisilebilir yonergeler koleksiyonudur. Yonergeler klavye etkilesimlerini, ARIA niteliklerini, odak yonetimini ve ekran okuyucu destegini ele alir. Tek yapmaniz gereken HTML yapisini, CSS stilini ve is mantigini saglamaktir!
+Angular Aria, yaygın WAI-ARIA kalıplarını uygulayan başlıksız (headless), erişilebilir yönergeler koleksiyonudur. Yönergeler klavye etkileşimlerini, ARIA niteliklerini, odak yönetimini ve ekran okuyucu desteğini ele alır. Tek yapmanız gereken HTML yapısını, CSS stilini ve iş mantığını sağlamaktır!
 
-## Installation
+## Kurulum
 
 ```shell
 npm install @angular/aria
 ```
 
-## Showcase
+## Vitrin
 
-Ornegin, bir arac cubugu menusunu ele alalim. Belirli bir mantikla baglanmis "basit" bir buton satiri gibi gorunse de, klavye navigasyonu ve ekran okuyuculari, erisilebilirlige asina olmayanlar icin bircok beklenmedik karmasiklik ekler.
+Örneğin, bir araç çubuğu menüsünü ele alalım. Belirli bir mantıkla bağlanmış "basit" bir buton satırı gibi görünse de, klavye navigasyonu ve ekran okuyucuları, erişilebilirliğe aşina olmayanlar için birçok beklenmedik karmaşıklık ekler.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -43,60 +43,60 @@ Ornegin, bir arac cubugu menusunu ele alalim. Belirli bir mantikla baglanmis "ba
   </docs-tab>
 </docs-tab-group>
 
-Bu tek senaryoda gelisitiricilerin dikkate almasi gerekenler:
+Bu tek senaryoda geliştiricilerin dikkate alması gerekenler:
 
-- **Klavye navigasyonu**. Kullanicilarin menuyu Enter veya Bosluk ile acmasi, secenekler arasinda ok tuslariyla gezinmesi, Enter ile secmesi ve Escape ile kapatmasi gerekir.
-- **Ekran okuyucularin** menunun durumunu, secenek sayisini ve hangi secenegin odakta oldugunu duyurmasi gerekir.
-- **Odak yonetimi** tetikleyici ve menu ogeleri arasinda mantiksal olarak hareket etmelidir.
-- **Sagdan sola diller** ters yonde gezinme yetenegini gerektirir.
+- **Klavye navigasyonu**. Kullanıcıların menüyü Enter veya Boşluk ile açması, seçenekler arasında ok tuşlarıyla gezinmesi, Enter ile seçmesi ve Escape ile kapatması gerekir.
+- **Ekran okuyucuların** menünün durumunu, seçenek sayısını ve hangi seçeneğin odakta olduğunu duyurması gerekir.
+- **Odak yönetimi** tetikleyici ve menü öğeleri arasında mantıksal olarak hareket etmelidir.
+- **Sağdan sola diller** ters yönde gezinme yeteneğini gerektirir.
 
-## What's included?
+## Neler dahil?
 
-Angular Aria, yaygin etkilesimli kalipler icin kapsamli dokumantasyon, calisan ornekler ve API referanslari ile yonergeler icerir:
+Angular Aria, yaygın etkileşimli kalıplar için kapsamlı dokümantasyon, çalışan örnekler ve API referansları ile yönergeler içerir:
 
-### Search and selection
+### Arama ve seçim
 
 | Component                               | Description                                                           |
 | --------------------------------------- | --------------------------------------------------------------------- |
-| [Autocomplete](guide/aria/autocomplete) | Kullanicilar yazarken filtrelenmis onerilerin gorundugu metin girisi  |
-| [Listbox](guide/aria/listbox)           | Klavye navigasyonu ile tekli veya coklu secim secenek listeleri       |
-| [Select](guide/aria/select)             | Klavye navigasyonu ile tek secimli acilir menu kalıbi                 |
-| [Multiselect](guide/aria/multiselect)   | Kompakt goruntuyle coklu secimli acilir menu kalibi                   |
-| [Combobox](guide/aria/combobox)         | Bir metin girisi ile bir acilir pencereyi koordine eden temel yonerge |
+| [Autocomplete](guide/aria/autocomplete) | Kullanıcılar yazarken filtrelenmiş önerilerin göründüğü metin girişi  |
+| [Listbox](guide/aria/listbox)           | Klavye navigasyonu ile tekli veya çoklu seçim seçenek listeleri       |
+| [Select](guide/aria/select)             | Klavye navigasyonu ile tek seçimli açılır menü kalıbı                 |
+| [Multiselect](guide/aria/multiselect)   | Kompakt görüntüyle çoklu seçimli açılır menü kalıbı                   |
+| [Combobox](guide/aria/combobox)         | Bir metin girişi ile bir açılır pencereyi koordine eden temel yönerge |
 
-### Navigation and call to actions
+### Navigasyon ve eylem çağrıları
 
 | Component                     | Description                                                       |
 | ----------------------------- | ----------------------------------------------------------------- |
-| [Menu](guide/aria/menu)       | Ic ice alt menuler ve klavye kisayollari ile acilir menuler       |
-| [Menubar](guide/aria/menubar) | Kalici uygulama menuleri icin yatay navigasyon cubugu             |
-| [Toolbar](guide/aria/toolbar) | Mantiksal klavye navigasyonu ile gruplandirılmis kontrol kumeleri |
+| [Menu](guide/aria/menu)       | İç içe alt menüler ve klavye kısayolları ile açılır menüler       |
+| [Menubar](guide/aria/menubar) | Kalıcı uygulama menüleri için yatay navigasyon çubuğu             |
+| [Toolbar](guide/aria/toolbar) | Mantıksal klavye navigasyonu ile gruplandırılmış kontrol kümeleri |
 
-### Content organization
+### İçerik düzenleme
 
 | Component                         | Description                                                             |
 | --------------------------------- | ----------------------------------------------------------------------- |
-| [Accordion](guide/aria/accordion) | Tek tek veya ozel olarak genisleyebilen daraltilabilir icerik panelleri |
-| [Tabs](guide/aria/tabs)           | Otomatik veya manuel etkinlestirme modlariyla sekmeli arayuzler         |
-| [Tree](guide/aria/tree)           | Genisletme/daraltma islevi ile hiyerarsik listeler                      |
-| [Grid](guide/aria/grid)           | Hucre hucre klavye navigasyonu ile iki boyutlu veri gosterimi           |
+| [Accordion](guide/aria/accordion) | Tek tek veya özel olarak genişleyebilen daraltılabilir içerik panelleri |
+| [Tabs](guide/aria/tabs)           | Otomatik veya manuel etkinleştirme modlarıyla sekmeli arayüzler         |
+| [Tree](guide/aria/tree)           | Genişletme/daraltma işlevi ile hiyerarşik listeler                      |
+| [Grid](guide/aria/grid)           | Hücre hücre klavye navigasyonu ile iki boyutlu veri gösterimi           |
 
-## When to use Angular Aria
+## Angular Aria ne zaman kullanılır
 
-Angular Aria, ozel stilleme ile WCAG uyumlu erisilebilir etkilesimli bilesenllere ihtiyac duydugunuzda iyi calisir. Ornekler:
+Angular Aria, özel stilleme ile WCAG uyumlu erişilebilir etkileşimli bileşenlere ihtiyaç duyduğunuzda iyi çalışır. Örnekler:
 
-- **Bir tasarim sistemi olusturmak** - Ekibiniz, erisilebilir uygulamalara ihtiyac duyan belirli gorsel standartlara sahip bir bilesen kutuphanesi yonetiyorsa
-- **Kurumsal bilesen kutuphaneleri** - Bir organizasyon icindeki birden fazla uygulama icin yeniden kullanilabilir bilesenler olusturuyorsaniz
-- **Ozel marka gereksinimleri** - Arayuzun, onceden stillendirilmis bilesen kutuphanelerinin kolayca karsilayamayacagi hassas tasarim ozelliklerine uymasi gerekiyorsa
+- **Bir tasarım sistemi oluşturmak** - Ekibiniz, erişilebilir uygulamalara ihtiyaç duyan belirli görsel standartlara sahip bir bileşen kütüphanesi yönetiyorsa
+- **Kurumsal bileşen kütüphaneleri** - Bir organizasyon içindeki birden fazla uygulama için yeniden kullanılabilir bileşenler oluşturuyorsanız
+- **Özel marka gereksinimleri** - Arayüzün, önceden stillendirilmiş bileşen kütüphanelerinin kolayca karşılayamayacağı hassas tasarım özelliklerine uyması gerekiyorsa
 
-## When not to use Angular Aria
+## Angular Aria ne zaman kullanılmaz
 
 Angular Aria her senaryoya uymayabilir:
 
-- **Onceden stillendirilmis bilesenler** - Ozel stilleme olmadan eksiksiz gorunen bilesenlere ihtiyaciniz varsa, bunun yerine Angular Material kullanin
-- **Basit formlar** - `<button>` ve `<input type="radio">` gibi yerel HTML form kontrolleri basit kullanim durumlari icin yerlesik erisilebilirlik saglar
-- **Hizli prototipleme** - Kavramlari hizla dogrularken, onceden stillendirilmis bilesen kutuphaneleri ilk gelistirme suresini azaltir
+- **Önceden stillendirilmiş bileşenler** - Özel stilleme olmadan eksiksiz görünen bileşenlere ihtiyacınız varsa, bunun yerine Angular Material kullanın
+- **Basit formlar** - `<button>` ve `<input type="radio">` gibi yerel HTML form kontrolleri basit kullanım durumları için yerleşik erişilebilirlik sağlar
+- **Hızlı prototipleme** - Kavramları hızla doğrularken, önceden stillendirilmiş bileşen kütüphaneleri ilk geliştirme süresini azaltır
 
-## Next steps
+## Sonraki adımlar
 
-Yan navigasyondan veya [yukaridaki listeden](#whats-included) bir bilesene goz atin veya Angular Aria yonergelerinin nasil calistiginın tam bir ornegini gormek icin [Toolbar](guide/aria/toolbar) ile baslayin!
+Yan navigasyondan veya [yukarıdaki listeden](#neler-dahil) bir bileşene göz atın veya Angular Aria yönergelerinin nasıl çalıştığının tam bir örneğini görmek için [Toolbar](guide/aria/toolbar) ile başlayın!

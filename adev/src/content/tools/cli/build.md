@@ -1,4 +1,4 @@
-# Building Angular apps
+# Angular uygulamalarını derleme
 
 Angular CLI uygulamanızı veya kütüphanenizi `ng build` komutuyla derleyebilirsiniz.
 Bu, TypeScript kodunuzu JavaScript'e derler ve çıktıyı uygun şekilde optimize eder, paketler ve küçültür.
@@ -6,12 +6,12 @@ Bu, TypeScript kodunuzu JavaScript'e derler ve çıktıyı uygun şekilde optimi
 `ng build` yalnızca `angular.json` içinde belirtilen varsayılan projedeki `build` hedefi için builder'ı çalıştırır.
 Angular CLI, genellikle `build` hedefleri olarak kullanılan dört builder içerir:
 
-| Builder                                         | Amaç                                                                                                                                                                                                                                                  |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@angular-devkit/build-angular:application`     | [esbuild](https://esbuild.github.io/) ile istemci tarafı paketi, bir Node sunucusu ve derleme zamanı önceden işlenmiş rotalar içeren bir uygulama derler.                                                                                             |
-| `@angular-devkit/build-angular:browser-esbuild` | [esbuild](https://esbuild.github.io/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler. Daha fazla bilgi için [`browser-esbuild` belgelerine](tools/cli/build-system-migration#manual-migration-to-the-compatibility-builder) bakın. |
-| `@angular-devkit/build-angular:browser`         | [webpack](https://webpack.js.org/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler.                                                                                                                                                 |
-| `@angular-devkit/build-angular:ng-packagr`      | [Angular Paket Formatı](tools/libraries/angular-package-format)'na uygun bir Angular kütüphanesi derler.                                                                                                                                              |
+| Builder                                         | Amaç                                                                                                                                                                                                                                      |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@angular-devkit/build-angular:application`     | [esbuild](https://esbuild.github.io/) ile istemci tarafı paketi, bir Node sunucusu ve derleme zamanı önceden işlenmiş rotalar içeren bir uygulama derler.                                                                                 |
+| `@angular-devkit/build-angular:browser-esbuild` | [esbuild](https://esbuild.github.io/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler. Daha fazla bilgi için [`browser-esbuild` belgelerine](tools/cli/build-system-migration#uyumluluk-builderına-manuel-geçiş) bakın. |
+| `@angular-devkit/build-angular:browser`         | [webpack](https://webpack.js.org/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler.                                                                                                                                     |
+| `@angular-devkit/build-angular:ng-packagr`      | [Angular Paket Formatı](tools/libraries/angular-package-format)'na uygun bir Angular kütüphanesi derler.                                                                                                                                  |
 
 `ng new` tarafından oluşturulan uygulamalar varsayılan olarak `@angular-devkit/build-angular:application` kullanır.
 `ng generate library` tarafından oluşturulan kütüphaneler varsayılan olarak `@angular-devkit/build-angular:ng-packagr` kullanır.
@@ -23,7 +23,7 @@ Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `build
   "projects": {
     "my-app": {
       "architect": {
-        // `ng build` invokes the Architect target named `build`.
+        // `ng build`, `build` adlı Architect hedefini çağırır.
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           …
@@ -39,11 +39,11 @@ Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `build
 
 Bu sayfa `@angular-devkit/build-angular:application` kullanımını ve seçeneklerini tartışır.
 
-## Output directory
+## Çıktı dizini
 
 Bu derleme sürecinin sonucu varsayılan olarak bir dizine (`dist/${PROJECT_NAME}`) çıktılanır.
 
-## Configuring size budgets
+## Boyut bütçelerini yapılandırma
 
 Uygulamalar işlevsellik açısından büyüdükçe boyut olarak da büyürler.
 CLI, yapılandırmanızda boyut eşikleri belirlemenize olanak tanır, böylece uygulamanızın parçalarının tanımladığınız boyut sınırları içinde kalmasını sağlayabilirsiniz.
@@ -95,7 +95,7 @@ Her bütçe girişi aşağıdaki özelliklere sahip bir JSON nesnesidir:
 | warning        | Temel değere göre uyarı eşiği (min ve maks).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | error          | Temel değere göre hata eşiği (min ve maks).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
-## Configuring CommonJS dependencies
+## CommonJS bağımlılıklarını yapılandırma
 
 Uygulamanız ve bağımlılıkları boyunca her zaman yerel [ECMAScript modüllerini](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import) (ESM) tercih edin.
 ESM, güçlü statik analiz desteğine sahip, tam olarak belirlenmiş bir web standardı ve JavaScript dil özelliğidir. Bu, paket optimizasyonlarını diğer modül formatlarından daha güçlü hale getirir.
@@ -121,12 +121,12 @@ En iyi seçenek bir CommonJS bağımlılığı kullanmaksa, `angular.json` için
 },
 ```
 
-## Configuring browser compatibility
+## Tarayıcı uyumluluğunu yapılandırma
 
 Angular CLI, farklı tarayıcı sürümleriyle uyumluluk sağlamak için [Browserslist](https://github.com/browserslist/browserslist) kullanır.
 Desteklenen tarayıcılara bağlı olarak, Angular belirli JavaScript ve CSS özelliklerini otomatik olarak dönüştürerek derlenen uygulamanın desteklenen bir tarayıcı tarafından uygulanmamış bir özellik kullanmamasını sağlar. Ancak Angular CLI, eksik Web API'lerini tamamlamak için otomatik olarak polyfill eklemez. Polyfill eklemek için `angular.json` içindeki `polyfills` seçeneğini kullanın.
 
-Varsayılan olarak, Angular CLI mevcut ana sürüm için [Angular tarafından desteklenen tarayıcılarla eşleşen](reference/versions#browser-support) bir `browserslist` yapılandırması kullanır.
+Varsayılan olarak, Angular CLI mevcut ana sürüm için [Angular tarafından desteklenen tarayıcılarla eşleşen](reference/versions#tarayıcı-desteği) bir `browserslist` yapılandırması kullanır.
 
 Dahili yapılandırmayı geçersiz kılmak için, Angular'ın desteklenen tarayıcılarıyla eşleşen bir `.browserslistrc` yapılandırma dosyası oluşturan [`ng generate config browserslist`](cli/generate/config) komutunu çalıştırın.
 
@@ -136,15 +136,15 @@ Bu listedeki tarayıcı veya sürüm setini yalnızca _azaltmalısınız_.
 
 HELPFUL: Bir `browserslist` sorgusu için uyumlu tarayıcıları görüntülemek üzere [browsersl.ist](https://browsersl.ist) kullanın.
 
-## Configuring Tailwind
+## Tailwind yapılandırma
 
 Angular, yardımcı program öncelikli bir CSS çerçevesi olan [Tailwind CSS](https://tailwindcss.com/)'i destekler.
 
 Tailwind CSS'i Angular CLI ile entegre etmek için [Angular ile Tailwind CSS kullanma](guide/tailwind) belgesine bakın.
 
-## Critical CSS inlining
+## Kritik CSS satır içi yerleştirme
 
 Angular, [First Contentful Paint (FCP)](https://web.dev/first-contentful-paint) performansını artırmak için uygulamanızın kritik CSS tanımlarını satır içine alabilir.
-Bu seçenek varsayılan olarak etkindir. Bu satır içi yerleştirmeyi [`styles` özelleştirme seçeneklerinde](reference/configs/workspace-config#styles-optimization-options) devre dışı bırakabilirsiniz.
+Bu seçenek varsayılan olarak etkindir. Bu satır içi yerleştirmeyi [`styles` özelleştirme seçeneklerinde](reference/configs/workspace-config#stil-optimizasyon-seçenekleri) devre dışı bırakabilirsiniz.
 
 Bu optimizasyon, başlangıç görünüm alanını oluşturmak için gereken CSS'i çıkarır ve doğrudan oluşturulan HTML'ye satır içi olarak yerleştirir, böylece tarayıcının tam stil sayfalarının yüklenmesini beklemeden içeriği daha hızlı görüntülemesini sağlar. Kalan CSS daha sonra arka planda asenkron olarak yüklenir. Angular CLI, uygulamanızın HTML ve stillerini analiz etmek için [Beasties](https://github.com/danielroe/beasties) kullanır.

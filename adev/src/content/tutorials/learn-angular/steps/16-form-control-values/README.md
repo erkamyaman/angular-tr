@@ -2,7 +2,7 @@
 
 Formlarınız Angular ile kurulduğuna göre, bir sonraki adım form kontrollerindeki değerlere erişmektir.
 
-NOTE: [Detaylı kılavuzda temel form kontrolü ekleme](/guide/forms/reactive-forms#adding-a-basic-form-control) hakkında daha fazla bilgi edinin.
+NOTE: [Detaylı kılavuzda temel form kontrolü ekleme](/guide/forms/reactive-forms#temel-bir-form-kontrolü-ekleme) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, form giriş alanınızdan değeri nasıl alacağınızı öğreneceksiniz.
 
@@ -10,7 +10,7 @@ Bu aktivitede, form giriş alanınızdan değeri nasıl alacağınızı öğrene
 
 <docs-workflow>
 
-<docs-step title="Show the value of the input field in the template">
+<docs-step title="Giriş alanının değerini şablonda gösterin">
 
 Giriş değerini bir şablonda görüntülemek için, bileşenin herhangi bir sınıf özelliğinde olduğu gibi `{{}}` interpolasyon sözdizimini kullanabilirsiniz:
 
@@ -33,7 +33,7 @@ export class User {
 
 </docs-step>
 
-<docs-step title="Retrieve the value of an input field">
+<docs-step title="Bir giriş alanının değerini alın">
 
 Bileşen sınıfında giriş alanı değerine referans vermeniz gerektiğinde, bunu `this` sözdizimi ile sınıf özelliğine erişerek yapabilirsiniz.
 

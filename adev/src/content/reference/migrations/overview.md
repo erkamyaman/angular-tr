@@ -1,4 +1,4 @@
-# Migrations
+# Geçişler
 
 Mevcut Angular projenizi en son özelliklere nasıl aşamalı olarak geçirebileceğinizi öğrenin.
 

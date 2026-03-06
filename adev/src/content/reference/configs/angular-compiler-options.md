@@ -1,4 +1,4 @@
-# Angular compiler options
+# Angular derleyici seçenekleri
 
 [Önceden derleme (AOT)](tools/cli/aot-compiler) kullandığınızda, [TypeScript yapılandırma dosyasında](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) Angular derleyici seçeneklerini belirterek uygulamanızın nasıl derleneceğini kontrol edebilirsiniz.
 
@@ -6,7 +6,7 @@ Angular seçenekler nesnesi `angularCompilerOptions`, TypeScript derleyicisine s
 
 <docs-code header="tsconfig.json" path="adev/src/content/examples/angular-compiler-options/tsconfig.json" region="angular-compiler-options"/>
 
-## Configuration inheritance with `extends`
+## `extends` ile yapılandırma devralma
 
 TypeScript derleyicisi gibi, Angular AOT derleyicisi de TypeScript yapılandırma dosyasının `angularCompilerOptions` bölümünde `extends` özelliğini destekler.
 `extends` özelliği, `compilerOptions` ve `angularCompilerOptions` ile paralel olarak en üst düzeyde bulunur.
@@ -20,7 +20,7 @@ Temel dosyadaki yapılandırma seçenekleri önce yüklenir, ardından devralan 
 
 Daha fazla bilgi için [TypeScript El Kitabı](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)'na bakın.
 
-## Template options
+## Şablon seçenekleri
 
 Aşağıdaki seçenekler Angular AOT derleyicisini yapılandırmak için kullanılabilir.
 
@@ -151,7 +151,7 @@ Fabrika özetleri kullanırken bunu yapın.
 `false` olduğunda (varsayılan), derlenmiş şablonlardan boş metin düğümlerini kaldırır, bu da daha küçük yayılan şablon fabrika modülleriyle sonuçlanır.
 Boş metin düğümlerini korumak için `true` olarak ayarlayın.
 
-HELPFUL: Hidrasyon kullanırken, varsayılan değer olan `preserveWhitespaces: false` kullanmanız önerilir. Boşlukları korumayı `preserveWhitespaces: true` ekleyerek etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir. Bunun sunucu ve istemci tsconfig dosyaları arasında tutarlı bir şekilde ayarlandığından emin olun. Daha fazla ayrıntı için [hidrasyon kılavuzuna](guide/hydration#preserve-whitespaces-configuration) bakın.
+HELPFUL: Hidrasyon kullanırken, varsayılan değer olan `preserveWhitespaces: false` kullanmanız önerilir. Boşlukları korumayı `preserveWhitespaces: true` ekleyerek etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir. Bunun sunucu ve istemci tsconfig dosyaları arasında tutarlı bir şekilde ayarlandığından emin olun. Daha fazla ayrıntı için [hidrasyon kılavuzuna](guide/hydration#boşlukları-koruma-yapılandırması) bakın.
 
 ### `skipMetadataEmit`
 
@@ -206,10 +206,10 @@ Angular CLI komutu `ng new --strict` kullandığınızda, oluşturulan projenin 
 
 ### `strictTemplates`
 
-`true` olduğunda, [katı şablon tür denetimini](tools/cli/template-typecheck#strict-mode) etkinleştirir.
+`true` olduğunda, [katı şablon tür denetimini](tools/cli/template-typecheck#katı-mod) etkinleştirir.
 
 Bu seçeneğin etkinleştirdiği katılık bayrakları, belirli katı şablon tür denetimi türlerini açıp kapatmanıza olanak tanır.
-[Şablon hatalarını giderme](tools/cli/template-typecheck#troubleshooting-template-errors) bölümüne bakın.
+[Şablon hatalarını giderme](tools/cli/template-typecheck#şablon-hatalarını-giderme) bölümüne bakın.
 
 Angular CLI komutu `ng new --strict` kullandığınızda, yeni projenin yapılandırmasında `true` olarak ayarlanır.
 
@@ -222,7 +222,7 @@ Angular CLI komutu `ng new --strict` kullandığınızda, yeni projenin yapılan
 `true` olduğunda, şablonlar derlenirken ekstra bilgi yazdırır.
 Varsayılan değer `false`'tur.
 
-## Command line options
+## Komut satırı seçenekleri
 
 Çoğu zaman, Angular Derleyicisi ile dolaylı olarak [Angular CLI](reference/configs/angular-compiler-options) kullanarak etkileşimde bulunursunuz. Belirli sorunları hata ayıklarken, Angular Derleyicisini doğrudan çağırmayı faydalı bulabilirsiniz.
 `@angular/compiler-cli` npm paketi tarafından sağlanan `ngc` komutunu kullanarak derleyiciyi komut satırından çağırabilirsiniz.
@@ -231,4 +231,4 @@ Varsayılan değer `false`'tur.
 
 Yapılandırma dosyasının yanı sıra, `ngc`'yi yapılandırmak için [`tsc` komut satırı seçeneklerini](https://www.typescriptlang.org/docs/handbook/compiler-options.html) de kullanabilirsiniz.
 
-[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'
+[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#bileşen-şablonunda-metni-işaretleme 'Mark text in component template - Prepare component for translation | Angular'

@@ -1,8 +1,8 @@
-# Other common Routing Tasks
+# Diğer Yaygın Yönlendirme Görevleri
 
 Bu kılavuz, uygulamanızda Angular yönlendirici kullanımıyla ilişkili diğer bazı yaygın görevleri kapsar.
 
-## Getting route information
+## Rota bilgisi alma
 
 Genellikle, bir kullanıcı uygulamanızda gezinirken bir bileşenden diğerine bilgi aktarmak istersiniz.
 Örneğin, market ürünlerinin bir alışveriş listesini görüntüleyen bir uygulama düşünün.
@@ -48,7 +48,7 @@ Girişte `transform` seçeneğini kullanarak veya `linkedSignal` ile yerel bir d
 id = input.required({
   transform: (maybeUndefined: string | undefined) => maybeUndefined ?? '0',
 });
-// or
+// veya
 id = input<string | undefined>();
 internalId = linkedSignal(() => this.id() ?? getDefaultId());
 ```
@@ -58,24 +58,24 @@ internalId = linkedSignal(() => this.id() ?? getDefaultId());
 
 NOTE: Anahtar, değer çiftleri ile tüm rota verilerini bileşen girişlerine bağlayabilirsiniz: statik veya çözümlenmiş rota verileri, yol parametreleri, matris parametreleri ve sorgu parametreleri.
 Üst bileşenlerin rota bilgilerini kullanmak istiyorsanız, yönlendirici `paramsInheritanceStrategy` seçeneğini ayarlamanız gerekir:
-`withRouterConfig({paramsInheritanceStrategy: 'always'})`. Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma seçeneklerine](guide/routing/customizing-route-behavior#router-configuration-options) bakın.
+`withRouterConfig({paramsInheritanceStrategy: 'always'})`. Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma seçeneklerine](guide/routing/customizing-route-behavior#router-yapılandırma-seçenekleri) bakın.
 
-## Displaying a 404 page
+## 404 sayfası görüntüleme
 
-404 sayfası görüntülemek için, `component` özelliğini 404 sayfanız için kullanmak istediğiniz bileşene ayarlayarak bir [joker rota](guide/routing/define-routes#wildcards) kurun:
+404 sayfası görüntülemek için, `component` özelliğini 404 sayfanız için kullanmak istediğiniz bileşene ayarlayarak bir [joker rota](guide/routing/define-routes#joker-karakterler) kurun:
 
 ```ts
 const routes: Routes = [
   {path: 'first-component', component: First},
   {path: 'second-component', component: Second},
-  {path: '**', component: PageNotFound}, // Wildcard route for a 404 page
+  {path: '**', component: PageNotFound}, // 404 sayfası için joker rota
 ];
 ```
 
 `**` `path`'ine sahip son rota bir joker rotadır.
 İstenen URL, listedeki daha önceki yollardan hiçbiriyle eşleşmezse yönlendirici bu rotayı seçer ve kullanıcıyı `PageNotFound`'a yönlendirir.
 
-## Link parameters array
+## Bağlantı parametreleri dizisi
 
 Bir bağlantı parametreleri dizisi, yönlendirici navigasyonu için aşağıdaki bileşenleri içerir:
 
@@ -103,7 +103,7 @@ Bir rota parametresi belirtilirken aşağıdaki iki elemanlı bir dizidir:
 <a [routerLink]="['/crisis-center', {foo: 'foo'}]">Crisis Center</a>
 ```
 
-Bu söz dizimi, belirli bir URL segmentiyle ilişkili isteğe bağlı parametreler olan matris parametrelerini aktarır. [Matris parametreleri](/guide/routing/read-route-state#matrix-parameters) hakkında daha fazla bilgi edinin.
+Bu söz dizimi, belirli bir URL segmentiyle ilişkili isteğe bağlı parametreler olan matris parametrelerini aktarır. [Matris parametreleri](/guide/routing/read-route-state#matris-parametreleri) hakkında daha fazla bilgi edinin.
 
 Bu üç örnek, tek seviyeli yönlendirmeye sahip bir uygulamanın ihtiyaçlarını karşılar.
 Ancak, kriz merkezi gibi bir alt yönlendirici ile yeni bağlantı dizisi olasılıkları oluşturursunuz.
@@ -154,7 +154,7 @@ export class App {}
 Özetle, bir, iki veya daha fazla yönlendirme derinliğine sahip uygulamalar yazabilirsiniz.
 Bağlantı parametreleri dizisi, herhangi bir yönlendirme derinliğini ve herhangi bir geçerli rota yolları, \(zorunlu\) yönlendirici parametreleri ve \(isteğe bağlı\) rota parametre nesneleri dizisini temsil etme esnekliği sağlar.
 
-## `LocationStrategy` and browser URL styles
+## `LocationStrategy` ve tarayıcı URL stilleri
 
 Yönlendirici yeni bir bileşen görünümüne navigasyon yaptığında, tarayıcının konumunu ve geçmişini o görünüm için bir URL ile günceller.
 

@@ -1,21 +1,21 @@
-# Service worker devops
+# Service worker DevOps
 
 Bu sayfa, Angular service worker'ı kullanan üretim uygulamalarını dağıtmak ve desteklemek için bir referanstır.
 Angular service worker'ın daha geniş üretim ortamına nasıl uyduğunu, çeşitli koşullar altında service worker'ın davranışını ve mevcut kaynakları ve güvenlik önlemlerini açıklar.
 
-## Service worker and caching of application resources
+## Service worker ve uygulama kaynaklarının önbelleklenmesi
 
 Angular service worker'ını, son kullanıcının web tarayıcısına yüklenmiş bir ileri önbellek veya bir İçerik Dağıtım Ağı (CDN) kenarı olarak düşünün.
 Service worker, ağı beklemeye gerek kalmadan Angular uygulamasının yerel bir önbellekten kaynak veya veri isteklerine yanıt verir.
 Herhangi bir önbellek gibi, içeriğin nasıl süresinin dolduğu ve güncellendiği konusunda kuralları vardır.
 
-### Application versions
+### Uygulama sürümleri
 
 Angular service worker bağlamında, bir "sürüm", Angular uygulamasının belirli bir derlemesini temsil eden bir kaynak koleksiyonudur.
 Uygulamanın yeni bir derlemesi dağıtıldığında, service worker bu derlemeyi uygulamanın yeni bir sürümü olarak ele alır.
 Bu, yalnızca tek bir dosya güncellense bile geçerlidir.
 Herhangi bir zamanda, service worker önbelleğinde uygulamanın birden fazla sürümü olabilir ve bunları aynı anda sunuyor olabilir.
-Daha fazla bilgi için [Uygulama sekmeleri](#application-tabs) bölümüne bakın.
+Daha fazla bilgi için [Uygulama sekmeleri](#uygulama-sekmeleri) bölümüne bakın.
 
 Uygulama bütünlüğünü korumak için Angular service worker, tüm dosyaları bir sürümde birlikte gruplar.
 Bir sürümde gruplanan dosyalar genellikle HTML, JS ve CSS dosyalarını içerir.
@@ -35,21 +35,21 @@ Pratikte, sürüm, bilinen tüm içerik için hash'ler içeren `ngsw.json` dosya
 
 HELPFUL: Derleme süreci, `ngsw-config.json`'dan gelen bilgileri kullanarak manifest dosyası `ngsw.json`'u oluşturur.
 
-Angular service worker'ın sürümleme davranışıyla, bir uygulama sunucusu Angular uygulamasının her zaman tutarlı bir dosya setine sahip olmasını sağlayabilir.
+Angular service worker'ın versiyonlama davranışıyla, bir uygulama sunucusu Angular uygulamasının her zaman tutarlı bir dosya setine sahip olmasını sağlayabilir.
 
-#### Update checks
+#### Güncelleme kontrolleri
 
 Kullanıcı uygulamayı her açtığında veya yenilediğinde, Angular service worker `ngsw.json` manifestinde güncellemeleri arayarak uygulamaya yönelik güncellemeleri kontrol eder.
 Bir güncelleme bulunursa, otomatik olarak indirilip önbelleğe alınır ve uygulama bir sonraki yüklendiğinde sunulur.
 
-### Resource integrity
+### Kaynak bütünlüğü
 
 Uzun süre önbelleklemenin potansiyel yan etkilerinden biri, geçerli olmayan bir kaynağın yanlışlıkla önbelleğe alınmasıdır.
 Normal bir HTTP önbelleğinde, zorla yenileme veya önbellek süresinin dolması, geçerli olmayan bir dosyayı önbelleğe almanın olumsuz etkilerini sınırlar.
 Bir service worker bu tür kısıtlamaları yok sayar ve etkili bir şekilde tüm uygulamayı uzun süre önbelleğe alır.
 Service worker'ın doğru içeriği alması önemlidir, bu nedenle kaynakların bütünlüğünü korumak için hash'leri saklar.
 
-#### Hashed content
+#### Hash'lenmiş içerik
 
 Kaynak bütünlüğünü sağlamak için Angular service worker, hash'i olan tüm kaynakların hash'lerini doğrular.
 [Angular CLI](tools/cli) ile oluşturulan bir uygulama için bu, kullanıcının `src/ngsw-config.json` yapılandırması tarafından kapsanan `dist` dizinindeki her şeydir.
@@ -65,7 +65,7 @@ Hash uyumsuzlukları çeşitli nedenlerle oluşabilir:
 - Derleme süreci sırasında oluşan hatalar, `ngsw.json` güncellenmeden kaynakların güncellenmesine neden olabilir.
   Bunun tersi de olabilir ve güncellenmiş kaynaklar olmadan güncellenmiş bir `ngsw.json` elde edilebilir.
 
-#### Unhashed content
+#### Hash'lenmemiş içerik
 
 `ngsw.json` manifestinde hash'e sahip tek kaynaklar, manifest oluşturulduğu sırada `dist` dizininde mevcut olan kaynaklardır.
 CDN'lerden yüklenen kaynaklar gibi diğer kaynaklar, derleme zamanında bilinmeyen içeriğe sahiptir veya uygulamanın dağıtılmasından daha sık güncellenir.
@@ -74,10 +74,10 @@ Angular service worker, bir kaynağın geçerli olduğunu doğrulamak için bir 
 Angular service worker, HTTP önbellekleme başlıkları artık geçerli olmadığını belirtse bile bir kaynağı sunmaya devam eder. Aynı zamanda, süresi dolmuş kaynağı arka planda yenilemeye çalışır.
 Bu sayede bozuk hash'siz kaynaklar, yapılandırılmış yaşam sürelerinin ötesinde önbellekte kalmaz.
 
-### Application tabs
+### Uygulama sekmeleri
 
 Aldığı kaynakların sürümü aniden veya uyarı olmadan değişirse bir uygulama için sorunlu olabilir.
-Bu tür sorunların bir açıklaması için [Uygulama sürümleri](#application-versions) bölümüne bakın.
+Bu tür sorunların bir açıklaması için [Uygulama sürümleri](#uygulama-sürümleri) bölümüne bakın.
 
 Angular service worker bir garanti sağlar: çalışan bir uygulama, uygulamanın aynı sürümünü çalıştırmaya devam eder.
 Uygulamanın başka bir örneği yeni bir web tarayıcısı sekmesinde açılırsa, uygulamanın en güncel sürümü sunulur.
@@ -97,7 +97,7 @@ Angular service worker'ın çalışan bir uygulamanın sürümünü değiştireb
 - Sayfa yeniden yüklenir/yenilenir.
 - Sayfa, `SwUpdate` servisi kullanılarak bir güncellemenin hemen etkinleştirilmesini ister.
 
-### Service worker updates
+### Service worker güncellemeleri
 
 Angular service worker, web tarayıcılarında çalışan küçük bir betiktir.
 Zaman zaman, hata düzeltmeleri ve özellik iyileştirmeleriyle service worker güncellenir.
@@ -109,7 +109,7 @@ Angular service worker'a yapılan güncellemelerin çoğu uygulama için şeffaf
 Nadiren, Angular service worker'daki bir hata düzeltmesi veya özellik, eski önbelleklerin geçersiz kılınmasını gerektirebilir.
 Bu durumda, service worker uygulamayı şeffaf bir şekilde ağdan yeniler.
 
-### Bypassing the service worker
+### Service worker'ı atlama
 
 Bazı durumlarda, service worker'ı tamamen atlamak ve tarayıcının isteği işlemesine izin vermek isteyebilirsiniz.
 Bir örnek, [yüklenen dosyalar üzerinde ilerleme raporlama](https://github.com/w3c/ServiceWorker/issues/1141) gibi service worker'larda şu anda desteklenmeyen bir özelliğe güvenmenizdir.
@@ -117,21 +117,21 @@ Bir örnek, [yüklenen dosyalar üzerinde ilerleme raporlama](https://github.com
 Service worker'ı atlamak için `ngsw-bypass`'ı bir istek başlığı veya sorgu parametresi olarak ayarlayın.
 Başlık veya sorgu parametresinin değeri yok sayılır ve boş olabilir veya atlanabilir.
 
-### Service worker requests when the server can't be reached
+### Sunucuya ulaşılamadığında service worker istekleri
 
-Service worker, [service worker açıkça atlanmadıkça](#bypassing-the-service-worker) tüm istekleri işler.
+Service worker, [service worker açıkça atlanmadıkça](#service-workerı-atlama) tüm istekleri işler.
 Service worker, önbelleğin durumuna ve yapılandırmasına bağlı olarak önbelleğe alınmış bir yanıt döndürür veya isteği sunucuya gönderir.
 Service worker yalnızca `GET` ve `HEAD` gibi değiştirici olmayan isteklere verilen yanıtları önbelleğe alır.
 
 Service worker, sunucudan bir hata alırsa veya yanıt alamazsa, çağrının sonucunu gösteren bir hata durumu döndürür.
 Örneğin, service worker yanıt alamazsa, döndürmek üzere bir [504 Gateway Timeout](https://developer.mozilla.org/docs/Web/HTTP/Status/504) durumu oluşturur. Bu örnekteki `504` durumu, sunucunun çevrimdışı olması veya istemcinin bağlantısının kesilmiş olması nedeniyle döndürülebilir.
 
-## Debugging the Angular service worker
+## Angular service worker hatalarını ayıklama
 
 Zaman zaman, sorunları araştırmak veya tasarlandığı gibi çalışıp çalışmadığını kontrol etmek için Angular service worker'ı çalışan durumda incelemek gerekebilir.
 Tarayıcılar, service worker'ların hatalarını ayıklamak için yerleşik araçlar sağlar ve Angular service worker'ın kendisi de yararlı hata ayıklama özellikleri içerir.
 
-### Locating and analyzing debugging information
+### Hata ayıklama bilgilerini bulma ve analiz etme
 
 Angular service worker, `ngsw/` sanal dizini altında hata ayıklama bilgilerini açığa çıkarır.
 Şu anda açığa çıkan tek URL `ngsw/state`'tir.
@@ -161,7 +161,7 @@ Debug log:
 
 ```
 
-#### Driver state
+#### Sürücü durumu
 
 İlk satır sürücü durumunu gösterir:
 
@@ -186,7 +186,7 @@ Her iki durum da geçicidir; yalnızca [ServiceWorker örneğinin](https://devel
 Tarayıcı bazen bellek ve işlemci gücünden tasarruf etmek için boş bir service worker'ı sonlandırır ve ağ olaylarına yanıt olarak yeni bir service worker örneği oluşturur.
 Yeni örnek, önceki örneğin durumuna bakılmaksızın `NORMAL` modda başlar.
 
-#### Latest manifest hash
+#### En son manifest hash'i
 
 ```shell {hideCopy}
 
@@ -196,7 +196,7 @@ Latest manifest hash: eea7f5f464f90789b621170af5a569d6be077e5c
 
 Bu, service worker'ın bildiği uygulamanın en güncel sürümünün SHA1 hash'idir.
 
-#### Last update check
+#### Son güncelleme kontrolü
 
 ```shell {hideCopy}
 
@@ -209,7 +209,7 @@ Bu, service worker'ın uygulamanın yeni bir sürümünü veya güncellemesini e
 
 Bu örnek hata ayıklama dosyasında, güncelleme kontrolü şu anda planlanmıştır; bu, bir sonraki bölümde açıklanmaktadır.
 
-#### Version
+#### Sürüm
 
 ```shell {hideCopy}
 
@@ -223,7 +223,7 @@ Bu örnekte, service worker uygulamanın önbelleğe alınmış bir sürümüne 
 
 HELPFUL: Bu sürüm hash'i, yukarıda listelenen "en son manifest hash"tir. Her iki istemci de en son sürümdedir. Her istemci, tarayıcıdaki `Clients` API'sinden kimliğiyle listelenir.
 
-#### Idle task queue
+#### Boş görev kuyruğu
 
 ```shell {hideCopy}
 
@@ -244,7 +244,7 @@ Son güncelleme onay/çalıştırma sayaçları, boş kuyrukla ilgili belirli ol
 "Last update run" sayacı, boş görevlerin en son ne zaman gerçekten çalıştırıldığını gösterir.
 "Last update tick", kuyruğun işlenebileceği son olaydan bu yana geçen süreyi gösterir.
 
-#### Debug log
+#### Hata ayıklama günlüğü
 
 ```shell {hideCopy}
 
@@ -254,7 +254,7 @@ Debug log:
 
 Service worker içinde oluşan hatalar burada günlüğe kaydedilir.
 
-### Developer tools
+### Geliştirici araçları
 
 Chrome gibi tarayıcılar, service worker'larla etkileşim için geliştirici araçları sağlar.
 Bu tür araçlar düzgün kullanıldığında güçlü olabilir, ancak akılda tutulması gereken birkaç şey vardır.
@@ -267,17 +267,17 @@ Bu tür araçlar düzgün kullanıldığında güçlü olabilir, ancak akılda t
 
 - Service Worker panelinde service worker'ı durdurup başlatmak güncellemeleri kontrol eder
 
-## Service worker safety
+## Service worker güvenliği
 
 Hatalar veya bozuk yapılandırmalar Angular service worker'ın beklenmedik şekillerde davranmasına neden olabilir.
 Bu durumda, bir yöneticinin service worker'ı hızla devre dışı bırakması gerekirse, Angular service worker birkaç güvenlik mekanizması içerir.
 
-### Fail-safe
+### Güvenli mod
 
 Service worker'ı devre dışı bırakmak için `ngsw.json` dosyasını yeniden adlandırın veya silin.
 Service worker'ın `ngsw.json` isteği `404` döndürdüğünde, service worker tüm önbelleklerini kaldırır ve kendisini kayıttan çıkarır, esasen kendini yok eder.
 
-### Safety worker
+### Güvenlik worker'ı
 
 <!-- vale Angular.Google_Acronyms = NO -->
 
@@ -293,7 +293,7 @@ Bunun yerine, `safety-worker.js`'nin içeriğini, kayıttan çıkarmaya çalış
 Çoğu site için bu, güvenlik worker'ını eski Service Worker URL'sinde sonsuza kadar sunmanız gerektiği anlamına gelir.
 Bu betik, `@angular/service-worker`'ı devre dışı bırakmak ve ilgili önbellekleri kaldırmak için kullanılabilir. Ayrıca, sitenizde geçmişte sunulmuş olabilecek diğer Service Worker'ları da kaldırır.
 
-### Changing your application's location
+### Uygulamanızın konumunu değiştirme
 
 IMPORTANT: Service worker'lar yönlendirmenin arkasında çalışmaz.
 `The script resource is behind a redirect, which is disallowed` hatasıyla zaten karşılaşmış olabilirsiniz.
@@ -303,9 +303,9 @@ Eski konumdan, bu örnekte `example.com`'dan yeni konuma `www.example.com`'a bir
 Ayrıca, siteyi tamamen Service Worker'dan yükleyen kullanıcılar için yönlendirme tetiklenmez bile.
 `example.com`'da kayıtlı olan eski worker, güncelleme yapmaya çalışır ve eski konum `example.com`'a bir istek gönderir. Bu istek yeni konum `www.example.com`'a yönlendirilir ve hatayı oluşturur: `The script resource is behind a redirect, which is disallowed`.
 
-Bunu düzeltmek için, önceki tekniklerden birini kullanarak eski worker'ı devre dışı bırakmanız gerekebilir: [Fail-safe](#fail-safe) veya [Safety Worker](#safety-worker).
+Bunu düzeltmek için, önceki tekniklerden birini kullanarak eski worker'ı devre dışı bırakmanız gerekebilir: [Fail-safe](#güvenli-mod) veya [Safety Worker](#güvenlik-workerı).
 
-## More on Angular service workers
+## Angular service worker'lar hakkında daha fazlası
 
 Aşağıdakiler de ilginizi çekebilir:
 

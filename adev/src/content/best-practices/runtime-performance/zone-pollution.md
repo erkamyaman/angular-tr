@@ -1,27 +1,27 @@
-# Resolving zone pollution
+# Zone kirliliğini çözme
 
-**Zone.js**, Angular'in uygulama durumunun degismis olabilecegini algilamak icin kullandigi bir sinyal mekanizmasidir. `setTimeout`, ag istekleri ve olay dinleyicileri gibi asenkron islemleri yakalar. Angular, Zone.js'den gelen sinyallere dayali olarak degisiklik algilamasini planlar.
+**Zone.js**, Angular'ın uygulama durumunun değişmiş olabileceğini algılamak için kullandığı bir sinyal mekanizmasıdır. `setTimeout`, ağ istekleri ve olay dinleyicileri gibi asenkron işlemleri yakalar. Angular, Zone.js'den gelen sinyallere dayalı olarak değişiklik algılamasını planlar.
 
-Bazi durumlarda planlanan [gorevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks) veya [mikro gorevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#microtasks) veri modelinde herhangi bir degisiklik yapmaz, bu da degisiklik algilamasi calistirmayi gereksiz kilar. Yaygin ornekler sunlardir:
+Bazı durumlarda planlanan [görevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks) veya [mikro görevler](https://developer.mozilla.org/docs/Web/API/HTML_DOM_API/Microtask_guide#microtasks) veri modelinde herhangi bir değişiklik yapmaz, bu da değişiklik algılaması çalıştırmayı gereksiz kılar. Yaygın örnekler şunlardır:
 
 - `requestAnimationFrame`, `setTimeout` veya `setInterval`
-- Ucuncu taraf kutuphaneleri tarafindan gorev veya mikro gorev planlamasi
+- Üçüncü taraf kütüphaneleri tarafından görev veya mikro görev planlaması
 
-Bu bolum, bu tur kosullarin nasil belirlenegini ve gereksiz degisiklik algilama cagrilarindan kacinmak icin kodun Angular zone'unun disinda nasil calistirilacagini kapsamaktadir.
+Bu bölüm, bu tür koşulların nasıl belirleneceğini ve gereksiz değişiklik algılama çağrılarından kaçınmak için kodun Angular zone'unun dışında nasıl çalıştırılacağını kapsamaktadır.
 
-## Identifying unnecessary change detection calls
+## Gereksiz değişiklik algılama çağrılarını belirleme
 
-Gereksiz degisiklik algilama cagrilarini Angular DevTools ile tespit edebilirsiniz. Genellikle profil cikaricinin zaman cizelgesinde `setTimeout`, `setInterval`, `requestAnimationFrame` veya bir olay isleyicisi kaynakli ardisik cubuklar olarak gorunurler. Bu API'lerin uygulamaniz icinde sinirli cagrilari oldugunda, degisiklik algilama cagrisi genellikle bir ucuncu taraf kutuphanesi tarafindan neden olur.
+Gereksiz değişiklik algılama çağrılarını Angular DevTools ile tespit edebilirsiniz. Genellikle profil çıkarıcının zaman çizelgesinde `setTimeout`, `setInterval`, `requestAnimationFrame` veya bir olay işleyicisi kaynaklı ardışık çubuklar olarak görünürler. Bu API'lerin uygulamanız içinde sınırlı çağrıları olduğunda, değişiklik algılama çağrısı genellikle bir üçüncü taraf kütüphanesi tarafından neden olur.
 
 <img alt="Angular DevTools profiler preview showing Zone pollution" src="assets/images/best-practices/runtime-performance/zone-pollution.png">
 
-Yukaridaki goruntude, bir elemanla iliskili olay isleyicileri tarafindan tetiklenen bir dizi degisiklik algilama cagrisi vardir. Bu, `NgZone`'un varsayilan davranisini degistirmeyen ucuncu taraf, yerel olmayan Angular bilesenleri kullanirken yaygin bir zorluktur.
+Yukarıdaki görüntüde, bir elemanla ilişkili olay işleyicileri tarafından tetiklenen bir dizi değişiklik algılama çağrısı vardır. Bu, `NgZone`'un varsayılan davranışını değiştirmeyen üçüncü taraf, yerel olmayan Angular bileşenleri kullanırken yaygın bir zorluktur.
 
-## Run tasks outside `NgZone`
+## Görevleri `NgZone` dışında çalıştırma
 
-Bu tur durumlarda, [NgZone](/api/core/NgZone) kullanarak Angular'a belirli bir kod parcasi tarafindan planlanan gorevler icin degisiklik algilamasi cagirmamasinni talimat verebilirsiniz.
+Bu tür durumlarda, [NgZone](/api/core/NgZone) kullanarak Angular'a belirli bir kod parçası tarafından planlanan görevler için değişiklik algılaması çağırmamasını talimat verebilirsiniz.
 
-```ts {header:"Run outside of the Zone" , linenums}
+```ts {header:"Zone dışında çalıştırma" , linenums}
 import { Component, NgZone, OnInit, inject } from '@angular/core';
 
 @Component(...)
@@ -34,11 +34,11 @@ class AppComponent implements OnInit {
 }
 ```
 
-Onceki kod parcasi, Angular'a `setInterval`'i Angular Zone'unun disinda cagirmasini ve `pollForUpdates` calistiktan sonra degisiklik algilamasi calistirmayi atlamasini talimat verir.
+Önceki kod parçası, Angular'a `setInterval`'i Angular Zone'unun dışında çağırmasını ve `pollForUpdates` çalıştıktan sonra değişiklik algılaması çalıştırmayı atlamasını talimat verir.
 
-Ucuncu taraf kutuphaneleri, API'leri Angular zone'u icinde cagrildiginda genellikle gereksiz degisiklik algilama dongulerine neden olur. Bu olgu ozellikle olay dinleyicileri ayarlayan veya diger gorevler (zamanlayicilar, XHR istekleri vb.) baslatan kutuphaneleri etkiler. Kutuphane API'lerini Angular zone'unun disinda cagirarak bu ekstra dongulerrden kacinin:
+Üçüncü taraf kütüphaneleri, API'leri Angular zone'u içinde çağrıldığında genellikle gereksiz değişiklik algılama döngülerine neden olur. Bu olgu özellikle olay dinleyicileri ayarlayan veya diğer görevler (zamanlayıcılar, XHR istekleri vb.) başlatan kütüphaneleri etkiler. Kütüphane API'lerini Angular zone'unun dışında çağırarak bu ekstra döngülerden kaçının:
 
-```ts {header:"Move the plot initialization outside of the Zone" , linenums}
+```ts {header:"Grafik başlatmayı Zone dışına taşıma" , linenums}
 import { Component, NgZone, OnInit, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
@@ -54,13 +54,13 @@ class AppComponent implements OnInit {
 }
 ```
 
-`Plotly.newPlot('chart', data);`'yi `runOutsideAngular` icinde calistirmak, framework'a baslatma mantigi tarafindan planlanan gorevlerin calistirlimasindan sonra degisiklik algilamasi calistirmamasi gerektigini bildirir.
+`Plotly.newPlot('chart', data);`'yi `runOutsideAngular` içinde çalıştırmak, framework'a başlatma mantığı tarafından planlanan görevlerin çalıştırılmasından sonra değişiklik algılaması çalıştırmaması gerektiğini bildirir.
 
-Ornegin, `Plotly.newPlot('chart', data)` bir DOM elemanina olay dinleyicileri eklerse, Angular onlarin isleyicilerinin calistirlimasindan sonra degisiklik algilamasi calistirmaz.
+Örneğin, `Plotly.newPlot('chart', data)` bir DOM elemanına olay dinleyicileri eklerse, Angular onların işleyicilerinin çalıştırılmasından sonra değişiklik algılaması çalıştırmaz.
 
-Ancak bazen ucuncu taraf API'leri tarafindan gonderilen olaylari dinlemeniz gerekebilir. Bu tur durumlarda, baslatma mantigi orada yapildiysa bu olay dinleyicilerinin de Angular zone'unun disinda calisacagini hatirlamak onemlidir:
+Ancak bazen üçüncü taraf API'leri tarafından gönderilen olayları dinlemeniz gerekebilir. Bu tür durumlarda, başlatma mantığı orada yapıldıysa bu olay dinleyicilerinin de Angular zone'unun dışında çalışacağını hatırlamak önemlidir:
 
-```ts {header:"Check whether the handler is called outside of the Zone" , linenums}
+```ts {header:"İşleyicinin Zone dışında çağrılıp çağrılmadığını kontrol etme" , linenums}
 import { Component, NgZone, OnInit, output, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
@@ -80,9 +80,9 @@ class AppComponent implements OnInit {
     const plotly = await Plotly.newPlot('chart', data);
 
     plotly.on('plotly_click', (event: Plotly.PlotMouseEvent) => {
-      // This handler will be called outside of the Angular zone because
-      // the initialization logic is also called outside of the zone. To check
-      // whether we're in the Angular zone, we can call the following:
+      // Bu işleyici Angular zone'unun dışında çağrılacaktır çünkü
+      // başlatma mantığı da zone'un dışında çağrılmıştır. Angular
+      // zone'unda olup olmadığımızı kontrol etmek için aşağıdakini çağırabiliriz:
       console.log(NgZone.isInAngularZone());
       this.plotlyClick.emit(event);
     });
@@ -90,9 +90,9 @@ class AppComponent implements OnInit {
 }
 ```
 
-Ust bilesenlere olay gondermaniz ve belirli gorunum guncelleme mantigi calistirmaniz gerekiyorsa, framework'a degisiklik algilamasi calistirmasini talimat vermek icin Angular zone'una yeniden girmeyi veya degisiklik algilamasini manuel olarak calistirmayi dusunmelisiniz:
+Üst bileşenlere olay göndermeniz ve belirli görünüm güncelleme mantığı çalıştırmanız gerekiyorsa, framework'a değişiklik algılaması çalıştırmasını talimat vermek için Angular zone'una yeniden girmeyi veya değişiklik algılamasını manuel olarak çalıştırmayı düşünmelisiniz:
 
-```ts {header:"Re-enter the Angular zone when dispatching event" , linenums}
+```ts {header:"Olay gönderirken Angular zone'una yeniden girme" , linenums}
 import { Component, NgZone, OnInit, output, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
@@ -120,4 +120,4 @@ class AppComponent implements OnInit {
 }
 ```
 
-Angular zone'unun disinda olay gonderme senaryosu da ortaya cikabilir. Degisiklik algilamasini tetiklemenin (ornegin, manuel olarak) Angular zone'unun disinda gorunumlerin olusturulmasina/guncellenmesine yol acabileceginii hatirlamak onemlidir.
+Angular zone'unun dışında olay gönderme senaryosu da ortaya çıkabilir. Değişiklik algılamasını tetiklemenin (örneğin, manuel olarak) Angular zone'unun dışında görünümlerin oluşturulmasına/güncellenmesine yol açabileceğini hatırlamak önemlidir.

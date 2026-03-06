@@ -1,10 +1,10 @@
-# Comparison with other form approaches
+# Diğer form yaklaşımlarıyla karşılaştırma
 
 Angular, form oluşturmak için üç yaklaşım sunar: Signal Forms, Reactive Forms ve Template-driven Forms. Her birinin durum yönetimi, doğrulama ve veri akışı için farklı kalıpları vardır. Bu kılavuz, farklılıkları anlamanıza ve projeniz için doğru yaklaşımı seçmenize yardımcı olur.
 
-NOTE: Signal Forms, Angular v21 itibarıyla [deneyseldir](reference/releases#experimental). API, kararlı hale gelmeden önce değişebilir.
+NOTE: Signal Forms, Angular v21 itibarıyla [deneyseldir](reference/releases#deneysel). API, kararlı hale gelmeden önce değişebilir.
 
-## Quick comparison
+## Hızlı karşılaştırma
 
 | Feature          | Signal Forms                                | Reactive Forms                           | Template-driven Forms        |
 | ---------------- | ------------------------------------------- | ---------------------------------------- | ---------------------------- |
@@ -17,7 +17,7 @@ NOTE: Signal Forms, Angular v21 itibarıyla [deneyseldir](reference/releases#exp
 | Learning curve   | Orta                                        | Orta-Yüksek                              | Düşük                        |
 | Status           | Deneysel (v21+)                             | Kararlı                                  | Kararlı                      |
 
-## By example: Login form
+## Örnekle: Giriş formu
 
 Farklılıkları anlamanın en iyi yolu, aynı formun her üç yaklaşımda uygulandığını görmektir.
 
@@ -27,11 +27,11 @@ Farklılıkları anlamanın en iyi yolu, aynı formun her üç yaklaşımda uygu
   <docs-code header="Template-driven forms" path="adev/src/content/examples/signal-forms/src/comparison/app/template-driven-forms.ts"/>
 </docs-code-multifile>
 
-## Understanding the differences
+## Farklılıkları anlama
 
 Üç yaklaşım, formlarınızı nasıl yazdığınızı ve sürdürdüğünüzü etkileyen farklı tasarım tercihleri yapar. Bu farklılıklar, her yaklaşımın form durumunu nerede sakladığından ve doğrulamayı nasıl yönettiğinden kaynaklanır.
 
-### Where your form data lives
+### Form verileriniz nerede bulunur
 
 En temel fark, her yaklaşımın form değerleri için "doğruluk kaynağı"nı nerede gördüğüdür.
 
@@ -59,7 +59,7 @@ const credentials = {email: this.email, password: this.password};
 
 Bu en doğrudan yaklaşımdır ancak ihtiyaç duyduğunuzda değerleri manuel olarak bir araya getirmenizi gerektirir. Angular, form durumunu şablondaki direktifler aracılığıyla yönetir.
 
-### How validation works
+### Doğrulama nasıl çalışır
 
 Her yaklaşım doğrulama kurallarını farklı şekilde tanımlar; bu, doğrulama mantığınızın nerede yaşadığını ve nasıl sürdürdüğünüzü etkiler.
 
@@ -92,7 +92,7 @@ Template-driven Forms, şablonda direktif niteliklerini kullanır:
 
 Doğrulama kuralları, HTML'nin yanında şablonunuzda bulunur. Bu, doğrulamayı kullanıcı arayüzüne yakın tutar ancak mantığı şablon ve bileşen arasında yayar.
 
-### Type safety and autocomplete
+### Tür güvenliği ve otomatik tamamlama
 
 TypeScript entegrasyonu yaklaşımlar arasında önemli ölçüde farklılık gösterir ve derleyicinin hataları önlemenize ne kadar yardımcı olduğunu etkiler.
 
@@ -101,7 +101,7 @@ Signal Forms türleri model yapınızdan çıkarır:
 ```ts
 const loginModel = signal({email: '', password: ''});
 const loginForm = form(loginModel);
-// TypeScript knows: loginForm.email exists and returns FieldState<string>
+// TypeScript bilir: loginForm.email mevcuttur ve FieldState<string> döndürür
 ```
 
 Veri şeklinizi sinyalde bir kez tanımlarsınız ve TypeScript otomatik olarak hangi alanların var olduğunu ve türlerini bilir. `loginForm.username`'e (mevcut olmayan) erişmek bir tür hatası üretir.
@@ -113,7 +113,7 @@ const loginForm = new FormGroup({
   email: new FormControl<string>(''),
   password: new FormControl<string>(''),
 });
-// TypeScript knows: loginForm.controls.email is FormControl<string>
+// TypeScript bilir: loginForm.controls.email bir FormControl<string>'dir
 ```
 
 Her kontrol için türleri ayrı ayrı belirtirsiniz. TypeScript form yapınızı doğrular, ancak tür bilgisini veri modelinizden ayrı olarak sürdürürsünüz.
@@ -123,14 +123,14 @@ Template-driven Forms minimum düzeyde tür güvenliği sunar:
 ```ts
 email = '';
 password = '';
-// TypeScript only knows these are strings, no form-level typing
+// TypeScript yalnızca bunların string olduğunu bilir, form düzeyinde tür bilgisi yoktur
 ```
 
 TypeScript bileşen özelliklerinizi anlar ancak form yapısı veya doğrulama hakkında bilgisi yoktur. Form işlemleri için derleme zamanı kontrolünü kaybedersiniz.
 
-## Choose your approach
+## Yaklaşımınızı seçin
 
-### Use Signal Forms if:
+### Şu durumlarda Signal Forms kullanın:
 
 - Yeni sinyal tabanlı uygulamalar geliştiriyorsanız (Angular v21+)
 - Model yapınızdan çıkarılan tür güvenliği istiyorsanız
@@ -138,7 +138,7 @@ TypeScript bileşen özelliklerinizi anlar ancak form yapısı veya doğrulama h
 - Şema tabanlı doğrulama size çekici geliyorsa
 - Ekibiniz sinyallere aşinaysa
 
-### Use Reactive Forms if:
+### Şu durumlarda Reactive Forms kullanın:
 
 - Üretime hazır kararlılığa ihtiyaç duyuyorsanız
 - Karmaşık, dinamik formlar oluşturuyorsanız
@@ -146,7 +146,7 @@ TypeScript bileşen özelliklerinizi anlar ancak form yapısı veya doğrulama h
 - Form durumu üzerinde ayrıntılı kontrol istiyorsanız
 - Mevcut bir reactive forms kod tabanı üzerinde çalışıyorsanız
 
-### Use Template-driven Forms if:
+### Şu durumlarda Template-driven Forms kullanın:
 
 - Basit formlar oluşturuyorsanız (giriş, iletişim, arama)
 - Hızlı prototipleme yapıyorsanız
@@ -154,7 +154,7 @@ TypeScript bileşen özelliklerinizi anlar ancak form yapısı veya doğrulama h
 - Form mantığını şablonlarda tutmayı tercih ediyorsanız
 - Mevcut bir template-driven kod tabanı üzerinde çalışıyorsanız
 
-## Next steps
+## Sonraki adımlar
 
 Her yaklaşım hakkında daha fazla bilgi edinmek için:
 

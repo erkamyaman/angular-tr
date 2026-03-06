@@ -1,8 +1,8 @@
-# Router reference
+# Router Referansı
 
 Aşağıdaki bölümler bazı temel yönlendirici kavramlarını ve terminolojisini vurgular.
 
-## Router events
+## Router Olayları
 
 Her navigasyon sırasında `Router`, `Router.events` özelliği aracılığıyla navigasyon olayları yayınlar.
 Bu olaylar aşağıdaki tabloda gösterilmektedir.
@@ -28,7 +28,7 @@ Bu olaylar aşağıdaki tabloda gösterilmektedir.
 
 `withDebugTracing` özelliğini etkinleştirdiğinizde, Angular bu olayları konsola kaydeder.
 
-## Router terminology
+## Router Terminolojisi
 
 İşte temel `Router` terimleri ve anlamları:
 
@@ -56,7 +56,7 @@ Uygulama içi URL'ler sunucu URL'lerinden ayırt edilemez olabilir.
 Modern HTML5 tarayıcıları `pushState`'i destekleyen ilk tarayıcılardı, bu yüzden birçok kişi bu URL'lere "HTML5 stili" URL'ler der.
 
 HELPFUL: HTML5 stili navigasyon, yönlendiricinin varsayılanıdır.
-[LocationStrategy ve tarayıcı URL stilleri](guide/routing/common-router-tasks#locationstrategy-and-browser-url-styles) bölümünde, HTML5 stilinin neden tercih edildiğini, davranışının nasıl ayarlanacağını ve gerekirse eski hash \(`#`\) stiline nasıl geçileceğini öğrenin.
+[LocationStrategy ve tarayıcı URL stilleri](guide/routing/common-router-tasks#locationstrategy-ve-tarayıcı-url-stilleri) bölümünde, HTML5 stilinin neden tercih edildiğini, davranışının nasıl ayarlanacağını ve gerekirse eski hash \(`#`\) stiline nasıl geçileceğini öğrenin.
 
 `pushState` yönlendirmesinin çalışması için uygulamanızın `index.html` dosyasına bir [`<base href>` öğesi](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') eklemeniz gerekir.
 Tarayıcı, CSS dosyalarına, betiklere ve resimlere referans verirken göreceli URL'leri öneklemek için `<base href>` değerini kullanır.
@@ -68,7 +68,7 @@ Bu uygulama için olduğu gibi `app` klasörü uygulama kökü ise, `index.html`
 <base href="/" />
 ```
 
-### HTML5 URLs and the `<base href>`
+### HTML5 URL'leri ve `<base href>`
 
 Aşağıdaki yönergeler bir URL'nin farklı bölümlerine atıfta bulunacaktır.
 Bu şema, bu bölümlerin neye atıfta bulunduğunu gösterir:

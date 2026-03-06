@@ -1,8 +1,8 @@
-# Render templates from a parent component with `ng-content`
+# Üst bileşenden şablonları `ng-content` ile işleme
 
-`<ng-content>`, isaret dili veya sablon parcasi kabul eden ve bilesenlerin icerigi nasil isledigini kontrol eden ozel bir elemandir. DOM'da gercek bir eleman islemez.
+`<ng-content>`, işaret dili veya şablon parçası kabul eden ve bileşenlerin içeriği nasıl işlediğini kontrol eden özel bir elemandır. DOM'da gerçek bir eleman işlemez.
 
-Iste ust bileseninden herhangi bir isaret dili kabul eden bir `BaseButton` bileseni ornegi.
+İşte üst bileşeninden herhangi bir işaret dili kabul eden bir `BaseButton` bileşeni örneği.
 
 ```angular-ts
 // ./base-button/base-button.ts
@@ -28,4 +28,4 @@ import {BaseButton} from './base-button';
 export class App {}
 ```
 
-Daha fazla bilgi icin, bu kaliptan baska sekillerde nasil yararlanabileceginizi ogrenmek uzere [`<ng-content>` derinlemesine rehberine](/guide/components/content-projection) goz atin.
+Daha fazla bilgi için, bu kalıptan başka şekillerde nasıl yararlanabileceğinizi öğrenmek üzere [`<ng-content>` derinlemesine rehberine](/guide/components/content-projection) göz atın.

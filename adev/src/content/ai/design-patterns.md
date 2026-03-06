@@ -12,7 +12,7 @@ Kullanıcı tarafından sağlanan promptlarla çalışırken yaygın bir desen, 
 
 Bu kurulum, resource'un **`loader`** fonksiyonunun her tuş vuruşunda değil, yalnızca kullanıcı promptunu açıkça gönderdiğinde çalışmasını sağlar. `loader` alanında `sessionId` veya `userId` gibi ek sinyal parametreleri kullanabilirsiniz (bunlar kalıcı LLM oturumları oluşturmak için yararlı olabilir). Bu şekilde, istek her zaman bu parametrelerin güncel değerlerini kullanır ve `loader` alanında tanımlanan asenkron fonksiyonu yeniden tetiklemez.
 
-Birçok yapay zeka SDK'sı, API çağrıları yapmak için yardımcı yöntemler sağlar. Örneğin, Genkit istemci kütüphanesi, Genkit flow'larını çağırmak için bir `runFlow` yöntemi sunar ve bunu bir resource'un `loader`'ından çağırabilirsiniz. Diğer API'ler için [`httpResource`](guide/signals/resource#reactive-data-fetching-with-httpresource) kullanabilirsiniz.
+Birçok yapay zeka SDK'sı, API çağrıları yapmak için yardımcı yöntemler sağlar. Örneğin, Genkit istemci kütüphanesi, Genkit flow'larını çağırmak için bir `runFlow` yöntemi sunar ve bunu bir resource'un `loader`'ından çağırabilirsiniz. Diğer API'ler için [`httpResource`](guide/signals/resource#httpresource-ile-reaktif-veri-çekme) kullanabilirsiniz.
 
 Aşağıdaki örnek, yapay zeka tarafından üretilen bir hikayenin bölümlerini getiren bir `resource` gösterir. `loader`, yalnızca `storyInput` sinyali değiştiğinde tetiklenir.
 
@@ -69,8 +69,8 @@ LLM API'leri, geleneksel, daha deterministik API'lere göre daha yavaş ve hatay
 
 - **Kapsamlı Yükleme:** `resource`'u doğrudan verileri kullanan bileşene yerleştirin. Bu, değişiklik algılama döngülerini sınırlamaya yardımcı olur (özellikle zone'suz uygulamalarda) ve uygulamanızın diğer bölümlerini engellemez. Verilerin birden fazla bileşen arasında paylaşılması gerekiyorsa, `resource`'u bir servisten sağlayın.
 - **SSR ve Hidrasyon:** İlk sayfa içeriğini hızlı bir şekilde render etmek için Sunucu Tarafı Render (SSR) ile artımlı hidrasyon kullanın. Yapay zeka tarafından üretilen içerik için bir yer tutucu gösterebilir ve bileşen istemcide hidrate olana kadar veri getirmeyi erteleyebilirsiniz.
-- **Yükleme Durumu:** İstek devam ederken bir gösterge (örneğin bir döndürücü) göstermek için `resource` `LOADING` [durumunu](guide/signals/resource#resource-status) kullanın. Bu durum hem ilk yüklemeleri hem de yeniden yüklemeleri kapsar.
-- **Hata Yönetimi ve Yeniden Denemeler:** Kullanıcıların başarısız istekleri yeniden denemesi için basit bir yol olarak `resource` [**`reload()`**](guide/signals/resource#reloading) yöntemini kullanın; yapay zeka tarafından üretilen içeriğe güvenirken bu daha yaygın olabilir.
+- **Yükleme Durumu:** İstek devam ederken bir gösterge (örneğin bir döndürücü) göstermek için `resource` `LOADING` [durumunu](guide/signals/resource#resource-durumu) kullanın. Bu durum hem ilk yüklemeleri hem de yeniden yüklemeleri kapsar.
+- **Hata Yönetimi ve Yeniden Denemeler:** Kullanıcıların başarısız istekleri yeniden denemesi için basit bir yol olarak `resource` [**`reload()`**](guide/signals/resource#yeniden-yükleme) yöntemini kullanın; yapay zeka tarafından üretilen içeriğe güvenirken bu daha yaygın olabilir.
 
 Aşağıdaki örnek, yükleme ve yeniden deneme işlevselliği ile yapay zeka tarafından üretilen bir görüntüyü dinamik olarak görüntülemek için duyarlı bir kullanıcı arayüzünün nasıl oluşturulacağını gösterir.
 

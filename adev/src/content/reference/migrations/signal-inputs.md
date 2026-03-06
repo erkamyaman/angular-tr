@@ -1,4 +1,4 @@
-# Migration to signal inputs
+# Sinyal input'larına geçiş
 
 Angular, v19 itibarıyla üretime hazır kabul edilen girdiler için geliştirilmiş bir API tanıttı.
 Sinyal girdileri ve faydaları hakkında daha fazla bilgi için [özel kılavuzu](guide/components/inputs) okuyun.
@@ -13,9 +13,9 @@ ng generate @angular/core:signal-input-migration
 
 Alternatif olarak, geçiş VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
 VSCode uzantısının en son sürümünü kurun ve bir `@Input` alanına tıklayın.
-Daha fazla ayrıntı için [aşağıdaki](#vscode-extension) bölüme bakın.
+Daha fazla ayrıntı için [aşağıdaki](#vscode-eklentisi) bölüme bakın.
 
-## What does the migration change?
+## Geçiş ne değiştirir?
 
 1. `@Input()` sınıf üyeleri, sinyal `input()` eşdeğerlerine güncellenir.
 2. Geçirilen girdilere yapılan referanslar, sinyali çağıracak şekilde güncellenir.
@@ -62,7 +62,7 @@ export class MyComponent {
 }
 ```
 
-## Configuration options
+## Yapılandırma seçenekleri
 
 Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
@@ -98,7 +98,7 @@ böylece bir `@Input()` geçişinden etkilenen tüm referansları günceller.
 Bu seçenekle, analizi bir alt klasörle sınırlayabilirsiniz. Bu dizin dışındaki herhangi bir
 referansın sessizce atlanacağını ve potansiyel olarak derlemenizi bozabileceğini unutmayın.
 
-## VSCode extension
+## VSCode eklentisi
 
 ![Screenshot of the VSCode extension and clicking on an `@Input` field](assets/images/migrations/signal-inputs-vscode.png 'Screenshot of the VSCode extension and clicking on an `@Input` field.')
 

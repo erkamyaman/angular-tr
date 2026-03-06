@@ -1,10 +1,10 @@
-# Adding event listeners
+# Olay dinleyicileri ekleme
 
-Angular, sablonunuzdaki bir elemanda olay dinleyicileri tanimlamayi destekler; bunun icin olay adi parantez icinde belirtilir ve olay her gerceklestiginde calisan bir ifade yazilir.
+Angular, şablonunuzdaki bir elemanda olay dinleyicileri tanımlamayı destekler; bunun için olay adı parantez içinde belirtilir ve olay her gerçekleştiğinde çalışan bir ifade yazılır.
 
-## Listening to native events
+## Yerel olayları dinleme
 
-Bir HTML elemanina olay dinleyicileri eklemek istediginizde, olayi parantezlerle (`()`) sararssiniz ve bir dinleyici ifadesi belirtirsiniz.
+Bir HTML elemanına olay dinleyicileri eklemek istediğinizde, olayı parantezlerle (`()`) sararsınız ve bir dinleyici ifadesi belirtirsiniz.
 
 ```angular-ts
 @Component({
@@ -20,13 +20,13 @@ export class App{
 }
 ```
 
-Bu ornekte, `<input>` elemani her `keyup` olayi yayinladiginda Angular `updateField`'i cagirir.
+Bu örnekte, `<input>` elemanı her `keyup` olayı yayınladığında Angular `updateField`'ı çağırır.
 
-`click`, `keydown`, `mouseover` gibi herhangi bir yerel olay icin dinleyici ekleyebilirsiniz. Daha fazla bilgi icin [MDN'deki elemanlar uzerindeki tum mevcut olaylara](https://developer.mozilla.org/en-US/docs/Web/API/Element#events) goz atin.
+`click`, `keydown`, `mouseover` gibi herhangi bir yerel olay için dinleyici ekleyebilirsiniz. Daha fazla bilgi için [MDN'deki elemanlar üzerindeki tüm mevcut olaylara](https://developer.mozilla.org/en-US/docs/Web/API/Element#events) göz atın.
 
-## Accessing the event argument
+## Olay argümanına erişme
 
-Her sablon olay dinleyicisinde, Angular olay nesnesine referans iceren `$event` adinda bir degisken saglar.
+Her şablon olay dinleyicisinde, Angular olay nesnesine referans içeren `$event` adında bir değişken sağlar.
 
 ```angular-ts
 @Component({
@@ -42,9 +42,9 @@ export class App {
 }
 ```
 
-## Using key modifiers
+## Tuş değiştiricilerini kullanma
 
-Belirli bir tus icin belirli klavye olaylarini yakalamak istediginizde, asagidakine benzer bir kod yazabilirsiniz:
+Belirli bir tuş için belirli klavye olaylarını yakalamak istediğinizde, aşağıdakine benzer bir kod yazabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -62,7 +62,7 @@ export class App {
 }
 ```
 
-Ancak bu yaygin bir senaryo oldugu icin, Angular nokta (`.`) karakterini kullanarak belirli bir tus belirtmenize olanak taniyarak olaylari filtrelemenizi saglar. Boylece kod su sekilde basitlestirilebilir:
+Ancak bu yaygın bir senaryo olduğu için, Angular nokta (`.`) karakterini kullanarak belirli bir tuş belirtmenize olanak tanıyarak olayları filtrelemenizi sağlar. Böylece kod şu şekilde basitleştirilebilir:
 
 ```angular-ts
 @Component({
@@ -78,29 +78,29 @@ export class App{
 }
 ```
 
-Ek tus degistiricileri de ekleyebilirsiniz:
+Ek tuş değiştiricileri de ekleyebilirsiniz:
 
 ```angular-html
-<!-- Matches shift and enter -->
+<!-- Shift ve enter'a eşleşir -->
 <input type="text" (keyup.shift.enter)="updateField($event)" />
 ```
 
-Angular `alt`, `control`, `meta` ve `shift` degistiricilerini destekler.
+Angular `alt`, `control`, `meta` ve `shift` değiştiricilerini destekler.
 
-Klavye olaylarina baglamak istediginiz tusu veya kodu belirtebilirsiniz. Tus ve kod alanlari, tarayicinin yerel klavye olay nesnesinin bir parcasidir. Varsayilan olarak, olay baglamasi [klavye olaylari icin Tus degerlerini](https://developer.mozilla.org/docs/Web/API/UI_Events/Keyboard_event_key_values) kullandiginizi varsayar.
+Klavye olaylarına bağlamak istediğiniz tuşu veya kodu belirtebilirsiniz. Tuş ve kod alanları, tarayıcının yerel klavye olay nesnesinin bir parçasıdır. Varsayılan olarak, olay bağlaması [klavye olayları için Tuş değerlerini](https://developer.mozilla.org/docs/Web/API/UI_Events/Keyboard_event_key_values) kullandığınızı varsayar.
 
-Angular ayrica yerlesik bir `code` soneki saglayarak [klavye olaylari icin Kod degerlerini](https://developer.mozilla.org/docs/Web/API/UI_Events/Keyboard_event_code_values) belirtmenize de olanak tanir.
+Angular ayrıca yerleşik bir `code` soneki sağlayarak [klavye olayları için Kod değerlerini](https://developer.mozilla.org/docs/Web/API/UI_Events/Keyboard_event_code_values) belirtmenize de olanak tanır.
 
 ```angular-html
-<!-- Matches alt and left shift -->
+<!-- Alt ve sol shift'e eşleşir -->
 <input type="text" (keydown.code.alt.shiftleft)="updateField($event)" />
 ```
 
-Bu, farkli isletim sistemlerinde klavye olaylarini tutarli bir sekilde islemek icin faydali olabilir. Ornegin, MacOS cihazlarinda Alt tusunu kullanirken, `key` ozelligi tusu zaten Alt tusu tarafindan degistirilmis karaktere gore bildirir. Bu, Alt + S gibi bir kombinasyonun `'ß'` `key` degerini bildirmesi anlamina gelir. Ancak `code` ozelligi, uretilen karakter yerine basilan fiziksel veya sanal butona karsilik gelir.
+Bu, farklı işletim sistemlerinde klavye olaylarını tutarlı bir şekilde işlemek için faydalı olabilir. Örneğin, MacOS cihazlarında Alt tuşunu kullanırken, `key` özelliği tuşu zaten Alt tuşu tarafından değiştirilmiş karaktere göre bildirir. Bu, Alt + S gibi bir kombinasyonun `'ß'` `key` değerini bildirmesi anlamına gelir. Ancak `code` özelliği, üretilen karakter yerine basılan fiziksel veya sanal butona karşılık gelir.
 
-## Listening on global targets
+## Global hedefleri dinleme
 
-Global hedef adlari bir olaya onek olarak kullanilabilir. Desteklenen 3 global hedef `window`, `document` ve `body`'dir.
+Global hedef adları bir olaya önek olarak kullanılabilir. Desteklenen 3 global hedef `window`, `document` ve `body`'dir.
 
 ```angular-ts
 @Component({
@@ -114,9 +114,9 @@ Global hedef adlari bir olaya onek olarak kullanilabilir. Desteklenen 3 global h
 export class MyView {}
 ```
 
-## Preventing event default behavior
+## Olayın varsayılan davranışını engelleme
 
-Olay isleyiciniz yerel tarayici davranisini degistirmesi gerekiyorsa, olay nesnesinin [`preventDefault` yontemini](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault) kullanabilirsiniz:
+Olay işleyiciniz yerel tarayıcı davranışını değiştirmesi gerekiyorsa, olay nesnesinin [`preventDefault` yöntemini](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault) kullanabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -133,15 +133,15 @@ export class App{
 }
 ```
 
-Olay isleyicisi ifadesi `false` olarak degerlendirilirse, Angular [yerel olay isleyici niteliklerine](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes#event_handler_attributes) benzer sekilde otomatik olarak `preventDefault()` cagirir. _Her zaman acikca `preventDefault` cagirmayi tercih edin_, cunku bu yaklasim kodun amacini belirgin kilar.
+Olay işleyicisi ifadesi `false` olarak değerlendirilirse, Angular [yerel olay işleyici niteliklerine](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes#event_handler_attributes) benzer şekilde otomatik olarak `preventDefault()` çağırır. _Her zaman açıkça `preventDefault` çağırmayı tercih edin_, çünkü bu yaklaşım kodun amacını belirgin kılar.
 
-## Extend event handling
+## Olay işlemeyi genişletme
 
-Angular'in olay sistemi, `EVENT_MANAGER_PLUGINS` enjeksiyon belirteci ile kaydedilen ozel olay eklentileri araciligiyla genisletilebilir.
+Angular'ın olay sistemi, `EVENT_MANAGER_PLUGINS` enjeksiyon belirteci ile kaydedilen özel olay eklentileri aracılığıyla genişletilebilir.
 
-### Implementing Event Plugin
+### Olay Eklentisi Uygulama
 
-Ozel bir olay eklentisi olusturmak icin `EventManagerPlugin` sinifini genisletin ve gerekli yontemleri uygulayin.
+Özel bir olay eklentisi oluşturmak için `EventManagerPlugin` sınıfını genişletin ve gerekli yöntemleri uygulayın.
 
 ```ts
 import {Injectable} from '@angular/core';
@@ -153,14 +153,14 @@ export class DebounceEventPlugin extends EventManagerPlugin {
     super(document);
   }
 
-  // Define which events this plugin supports
+  // Bu eklentinin hangi olayları desteklediğini tanımla
   override supports(eventName: string) {
     return /debounce/.test(eventName);
   }
 
-  // Handle the event registration
+  // Olay kaydını işle
   override addEventListener(element: HTMLElement, eventName: string, handler: Function) {
-    // Parse the event: e.g., "click.debounce.500"
+    // Olayı ayrıştır: örn. "click.debounce.500"
     // event: "click", delay: 500
     const [event, method, delay = 300] = eventName.split('.');
 
@@ -175,7 +175,7 @@ export class DebounceEventPlugin extends EventManagerPlugin {
 
     element.addEventListener(event, listener);
 
-    // Return cleanup function
+    // Temizleme fonksiyonunu döndür
     return () => {
       clearTimeout(timeoutId);
       element.removeEventListener(event, listener);
@@ -184,7 +184,7 @@ export class DebounceEventPlugin extends EventManagerPlugin {
 }
 ```
 
-Ozel eklentinizi uygulamanizin saglayicilarina `EVENT_MANAGER_PLUGINS` belirtecini kullanarak kaydedin:
+Özel eklentinizi uygulamanızın sağlayıcılarına `EVENT_MANAGER_PLUGINS` belirtecini kullanarak kaydedin:
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -203,7 +203,7 @@ bootstrapApplication(App, {
 });
 ```
 
-Kayit tamamlandiktan sonra, ozel olay sozdizimini sablonlarda ve ayrica `host` ozelligi ile kullanabilirsiniz:
+Kayıt tamamlandıktan sonra, özel olay sözdizimini şablonlarda ve ayrıca `host` özelliği ile kullanabilirsiniz:
 
 ```angular-ts
 @Component({

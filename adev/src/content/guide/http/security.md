@@ -1,10 +1,10 @@
-# `HttpClient` security
+# `HttpClient` Güvenliği
 
 `HttpClient`, iki yaygın HTTP güvenlik mekanizması için yerleşik destek içerir: XSSI koruması ve XSRF/CSRF koruması.
 
 TIP: API'leriniz için bir [İçerik Güvenliği Politikası](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Security-Policy) benimsemeyi de düşünün.
 
-## XSSI protection
+## XSSI Koruması
 
 Siteler Arası Betik Dahil Etme (XSSI), bir saldırganın API uç noktalarınızdan JSON verilerini kontrol ettikleri bir sayfada `<script>` olarak yüklediği bir [Siteler Arası Betik Çalıştırma](https://en.wikipedia.org/wiki/Cross-site_scripting) saldırısı biçimidir. Bu verilere erişmek için farklı JavaScript teknikleri kullanılabilir.
 
@@ -12,7 +12,7 @@ XSSI'yi önlemek için yaygın bir teknik, JSON yanıtlarını yaygın olarak `)
 
 `HttpClient`, bir yanıttan JSON ayrıştırırken bu XSSI önekini (varsa) otomatik olarak kaldırır.
 
-## XSRF/CSRF protection
+## XSRF/CSRF Koruması
 
 [Siteler Arası İstek Sahteciliği (XSRF veya CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery), bir saldırganın kimliği doğrulanmış bir kullanıcıyı bilmeden web sitenizde eylemler gerçekleştirmeye kandırabildiği bir saldırı tekniğidir.
 
@@ -32,7 +32,7 @@ Birden fazla Angular uygulamasının aynı alan adını veya alt alan adını pa
   Arka uç hizmetiniz sayfanız için çerezi ayarlayacak ve tüm uygun isteklerde başlığın mevcut olduğunu doğrulayacak şekilde yapılandırılmalıdır. Bunu yapmamak Angular'ın varsayılan korumasını etkisiz kılar.
 </docs-callout>
 
-### Configure custom cookie/header names
+### Özel Cookie/Header Adlarını Yapılandırma
 
 Arka uç hizmetiniz XSRF belirteç çerezi veya başlığı için farklı adlar kullanıyorsa, varsayılanları geçersiz kılmak için `withXsrfConfiguration` kullanın.
 
@@ -51,7 +51,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-### Disabling XSRF protection
+### XSRF Korumasını Devre Dışı Bırakma
 
 Yerleşik XSRF koruma mekanizması uygulamanız için çalışmıyorsa, `withNoXsrfProtection` özelliğini kullanarak devre dışı bırakabilirsiniz:
 

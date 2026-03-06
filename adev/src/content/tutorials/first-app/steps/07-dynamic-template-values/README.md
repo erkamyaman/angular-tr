@@ -15,11 +15,11 @@ Bu adımda, interpolasyon kullanarak `input` özelliklerinden okunan değerleri 
 
 Angular şablonlarında `{{ expression }}` kullanarak, özelliklerden, `input`'lardan ve geçerli JavaScript ifadelerinden değerleri işleyebilirsiniz.
 
-Daha ayrıntılı bir açıklama için lütfen [İnterpolasyon ile değerleri görüntüleme](guide/templates/binding#render-dynamic-text-with-text-interpolation) kılavuzuna bakın.
+Daha ayrıntılı bir açıklama için lütfen [İnterpolasyon ile değerleri görüntüleme](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) kılavuzuna bakın.
 
 <docs-workflow>
 
-<docs-step title="Update `HousingLocation` template to include interpolated values">
+<docs-step title="İnterpolasyon değerlerini içerecek şekilde `HousingLocation` şablonunu güncelleyin">
 Bu adım, `HousingLocation` şablonuna yeni HTML yapısı ve interpolasyon değerleri ekler.
 
 Kod editöründe:
@@ -35,7 +35,7 @@ Bu güncellenmiş şablon kodunda, `housingLocation.photo` değerini `src` nitel
 
 </docs-step>
 
-<docs-step title="Confirm the changes render in the browser">
+<docs-step title="Değişikliklerin tarayıcıda görüntülendiğini doğrulayın">
 1.  Tüm değişiklikleri kaydedin.
 1.  Tarayıcıyı açın ve uygulamanın fotoğrafı, şehri ve eyalet örnek verisini işlediğini doğrulayın.
     <img alt="browser frame of homes-app displaying logo, filter text input box, search button and the same housing location UI card" src="assets/images/tutorials/first-app/homes-app-lesson-07-step-2.png">
@@ -56,5 +56,5 @@ Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates" title="Template syntax"/>
-  <docs-pill href="guide/templates/binding#render-dynamic-text-with-text-interpolation" title="Displaying values with interpolation"/>
+  <docs-pill href="guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme" title="Displaying values with interpolation"/>
 </docs-pill-row>

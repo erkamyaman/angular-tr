@@ -1,4 +1,4 @@
-# RouterTestingModule migration
+# RouterTestingModule geçişi
 
 Bu şematik, testlerdeki `RouterTestingModule` kullanımlarını `RouterModule`'e geçirir.
 
@@ -10,17 +10,17 @@ Bir test `@angular/common/testing`'den `SpyLocation`'ı içe aktarıyorsa ve `ur
 ng generate @angular/core:router-testing-module-migration
 ```
 
-## Options
+## Seçenekler
 
 | Seçenek | Ayrıntılar                                                                                                                                  |
 | :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | `path`  | Geçirilecek yol (proje köküne göreceli). Varsayılan değer `./`'dir. Projenizin bir alt kümesini aşamalı olarak geçirmek için bunu kullanın. |
 
-## Examples
+## Örnekler
 
-### Preserve router options
+### Router seçeneklerini koruma
 
-Before:
+Önce:
 
 ```ts
 import {RouterTestingModule} from '@angular/router/testing';
@@ -35,7 +35,7 @@ describe('test', () => {
 });
 ```
 
-After:
+Sonra:
 
 ```ts
 import {RouterModule} from '@angular/router';
@@ -50,9 +50,9 @@ describe('test', () => {
 });
 ```
 
-### Add provideLocationMocks when `SpyLocation` is imported and `urlChanges` is used
+### `SpyLocation` import edildiğinde ve `urlChanges` kullanıldığında provideLocationMocks ekleme
 
-Before:
+Önce:
 
 ```ts
 import {RouterTestingModule} from '@angular/router/testing';
@@ -74,7 +74,7 @@ describe('test', () => {
 });
 ```
 
-After:
+Sonra:
 
 ```ts
 import {RouterModule} from '@angular/router';

@@ -1,8 +1,8 @@
-# Setting up `HttpClient`
+# `HttpClient` Kurulumu
 
 Uygulamanızda `HttpClient` kullanabilmeniz için önce onu [bağımlılık enjeksiyonu](guide/di) ile yapılandırmanız gerekir.
 
-## Providing `HttpClient` through dependency injection
+## Bağımlılık Enjeksiyonu ile `HttpClient` Sağlama
 
 `HttpClient`, çoğu uygulamanın `app.config.ts` dosyasındaki uygulama `providers` içine dahil ettiği `provideHttpClient` yardımcı fonksiyonu kullanılarak sağlanır.
 
@@ -17,7 +17,7 @@ Uygulamanız bunun yerine NgModule tabanlı önyükleme kullanıyorsa, `provideH
 ```ts
 @NgModule({
   providers: [provideHttpClient()],
-  // ... other application configuration
+  // ... diğer uygulama yapılandırması
 })
 export class AppModule {}
 ```
@@ -28,11 +28,11 @@ Ardından `HttpClient` hizmetini bileşenlerinizin, servislerinizin veya diğer 
 @Injectable({providedIn: 'root'})
 export class ConfigService {
   private http = inject(HttpClient);
-  // This service can now make HTTP requests via `this.http`.
+  // Bu servis artık `this.http` aracılığıyla HTTP istekleri yapabilir.
 }
 ```
 
-## Configuring features of `HttpClient`
+## `HttpClient` Özelliklerini Yapılandırma
 
 `provideHttpClient`, istemcinin farklı yönlerinin davranışını etkinleştirmek veya yapılandırmak için isteğe bağlı özellik yapılandırmalarının bir listesini kabul eder. Bu bölüm isteğe bağlı özellikleri ve kullanımlarını açıklar.
 
@@ -80,7 +80,7 @@ Bu seçeneği dahil etmek, `HttpClient`'ın yerleşik XSRF güvenlik işlevselli
 
 Bu seçeneği dahil etmek, `HttpClient`'ın yerleşik XSRF güvenlik işlevselliğini devre dışı bırakır. Daha fazla bilgi için [güvenlik kılavuzuna](best-practices/security) bakın.
 
-## `HttpClientModule`-based configuration
+## `HttpClientModule` Tabanlı Yapılandırma
 
 Bazı uygulamalar `HttpClient`'ı NgModule'lere dayalı eski API kullanarak yapılandırabilir.
 

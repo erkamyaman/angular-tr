@@ -29,7 +29,7 @@ Angular'da bileşenler, özelliklerini tanımlayan meta verilere sahiptir.
 
 <docs-workflow>
 
-<docs-step title="Create the `Home`">
+<docs-step title="`Home` bileşenini oluşturun">
 Bu adımda, uygulamanız için yeni bir bileşen oluşturursunuz.
 
 IDE'nizin **Terminal** bölmesinde:
@@ -58,7 +58,7 @@ IDE'nizin **Terminal** bölmesinde:
 1. Sonraki adımları tamamlarken `ng serve` komutunu çalışır durumda bırakın.
    </docs-step>
 
-<docs-step title="Add the new component to your app's layout">
+<docs-step title="Yeni bileşeni uygulamanızın düzenine ekleyin">
 Bu adımda, yeni bileşen `Home`'u, uygulamanızın kök bileşeni `App`'e eklersiniz, böylece uygulamanızın düzeninde görüntülenir.
 
 IDE'nizin **Edit** bölmesinde:
@@ -86,7 +86,7 @@ IDE'nizin **Edit** bölmesinde:
 
 </docs-step>
 
-<docs-step title="Add features to `Home`">
+<docs-step title="`Home` bileşenine özellikler ekleyin">
 
 Bu adımda `Home`'a özellikler eklersiniz.
 

@@ -1,4 +1,4 @@
-# Angular service worker overview
+# Angular service worker'a genel bakış
 
 IMPORTANT: Angular Service Worker, sınırlı bir özellik kümesiyle basit çevrimdışı destek için temel bir önbellekleme aracıdır. Güvenlik düzeltmeleri dışında yeni özellik kabul etmeyeceğiz. Daha gelişmiş önbellekleme ve çevrimdışı yetenekler için doğrudan yerel tarayıcı API'lerini incelemenizi öneririz.
 
@@ -20,7 +20,7 @@ Service worker bunu yapacak şekilde tasarlanmışsa, _ağa ihtiyaç duymadan uy
 Hızlı ve güvenilir bir ağda bile, gidiş-dönüş gecikmeleri uygulamayı yüklerken önemli gecikme süreleri oluşturabilir.
 Ağa bağımlılığı azaltmak için bir service worker kullanmak, kullanıcı deneyimini önemli ölçüde iyileştirebilir.
 
-## Service workers in Angular
+## Angular'da service worker'lar
 
 Angular uygulamaları, tek sayfa uygulamaları olarak, service worker'ların avantajlarından yararlanmak için birinci sınıf bir konumdadır. Angular, bir service worker uygulamasıyla birlikte gelir. Angular geliştiricileri bu service worker'dan yararlanabilir ve düşük seviyeli API'lere karşı kod yazmaya gerek kalmadan sağladığı artırılmış güvenilirlik ve performanstan faydalanabilir.
 
@@ -48,11 +48,11 @@ Bu davranışları desteklemek için Angular service worker sunucudan bir _manif
 Uygulamaya bir güncelleme dağıtıldığında, manifestin içeriği değişir ve service worker'a uygulamanın yeni bir sürümünün indirilip önbelleğe alınması gerektiğini bildirir.
 Bu manifest, `ngsw-config.json` adlı CLI tarafından oluşturulan bir yapılandırma dosyasından üretilir.
 
-Angular service worker'ı yüklemek, [bir Angular CLI komutu çalıştırmak](ecosystem/service-workers/getting-started#adding-a-service-worker-to-your-project) kadar basittir.
+Angular service worker'ı yüklemek, [bir Angular CLI komutu çalıştırmak](ecosystem/service-workers/getting-started#projenize-service-worker-ekleme) kadar basittir.
 Tarayıcıya Angular service worker'ı kaydetmenin yanı sıra, bu işlem aynı zamanda service worker ile etkileşime giren ve onu kontrol etmek için kullanılabilecek birkaç servisi enjeksiyon için kullanılabilir hale getirir.
 Örneğin, bir uygulama yeni bir güncelleme mevcut olduğunda bildirilmeyi isteyebilir veya uygulama, service worker'dan sunucuda mevcut güncellemeleri kontrol etmesini isteyebilir.
 
-## Before you start
+## Başlamadan önce
 
 Angular service worker'larının tüm özelliklerinden yararlanmak için Angular ve [Angular CLI](tools/cli)'nin en son sürümlerini kullanın.
 
@@ -62,7 +62,7 @@ Bunun nedeni, service worker'ların oldukça güçlü olması ve service worker 
 
 Bu kuralın bir istisnası vardır: yerel geliştirmeyi daha basit hale getirmek için tarayıcılar, `localhost` üzerinden bir uygulamaya erişirken güvenli bağlantı _gerektirmez_.
 
-### Browser support
+### Tarayıcı desteği
 
 Angular service worker'ından yararlanmak için uygulamanızın genel olarak service worker'ları destekleyen bir web tarayıcısında çalışması gerekir.
 Şu anda service worker'lar Chrome, Firefox, Edge, Safari, Opera, UC Browser (Android sürümü) ve Samsung Internet'in en son sürümlerinde desteklenmektedir.
@@ -82,7 +82,7 @@ Böyle bir hatadan kaçınmak için `SwUpdate.isEnabled` kullanarak Angular serv
 
 Service worker'a hazır diğer tarayıcılar hakkında daha fazla bilgi edinmek için [Can I Use](https://caniuse.com/#feat=serviceworkers) sayfasına ve [MDN belgelerine](https://developer.mozilla.org/docs/Web/API/Service_Worker_API) bakın.
 
-## Related resources
+## İlgili kaynaklar
 
 Bu bölümdeki diğer makaleler, service worker'ların Angular uygulamasını özellikle ele alır.
 
@@ -105,6 +105,6 @@ Ek öneriler ve örnekler için bakınız:
   <docs-pill href="https://web.dev/creating-pwa-with-angular-cli" title="Creating a PWA with Angular CLI"/>
 </docs-pill-row>
 
-## Next step
+## Sonraki adım
 
 Angular service worker'larını kullanmaya başlamak için [Service worker'lara başlarken](ecosystem/service-workers/getting-started) bölümüne bakın.

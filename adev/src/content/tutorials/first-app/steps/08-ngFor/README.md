@@ -17,11 +17,11 @@ Angular'da `@for`, bir şablonda verileri dinamik olarak tekrarlamak için kulla
 
 `@for` kullanarak diziler ve hatta asenkron değerler üzerinde yineleme yapabilirsiniz. Bu derste, üzerinde yineleme yapılacak yeni bir veri dizisi ekleyeceksiniz.
 
-Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/templates/control-flow#repeat-content-with-the-for-block) kılavuzuna bakın.
+Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama) kılavuzuna bakın.
 
 <docs-workflow>
 
-<docs-step title="Add housing data to the `Home`">
+<docs-step title="`Home` bileşenine konut verilerini ekleyin">
 
 `Home` bileşeninde yalnızca tek bir konut konumu var. Bu adımda, bir `HousingLocation` girişleri dizisi ekleyeceksiniz.
 
@@ -33,7 +33,7 @@ Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/template
 
 </docs-step>
 
-<docs-step title="Update the `Home` template to use `@for`">
+<docs-step title="`@for` kullanmak için `Home` şablonunu güncelleyin">
 Artık uygulamanın tarayıcıdaki girişleri `@for` bloğunu kullanarak görüntülemek için kullanabileceği bir veri seti var.
 
 1. Şablon kodundaki `<app-housing-location>` etiketini şu şekilde güncelleyin:
@@ -61,6 +61,6 @@ Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates/control-flow" title="Control flow blocks"/>
-  <docs-pill href="guide/templates/control-flow#repeat-content-with-the-for-block" title="@for guide"/>
+  <docs-pill href="guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama" title="@for guide"/>
   <docs-pill href="/api/core/@for" title="@for"/>
 </docs-pill-row>

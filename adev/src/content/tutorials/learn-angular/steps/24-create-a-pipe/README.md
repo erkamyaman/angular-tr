@@ -2,7 +2,7 @@
 
 Veri dönüştürme ihtiyaçlarınıza uygun özel pipe'lar oluşturabilirsiniz.
 
-NOTE: [Detaylı kılavuzda özel pipe oluşturma](/guide/templates/pipes#creating-custom-pipes) hakkında daha fazla bilgi edinin.
+NOTE: [Detaylı kılavuzda özel pipe oluşturma](/guide/templates/pipes#özel-pipelar-oluşturma) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, özel bir pipe oluşturacak ve şablonunuzda kullanacaksınız.
 
@@ -32,7 +32,7 @@ Pekala, deneme sırası sizde - `ReversePipe`'ı oluşturacaksınız:
 
 <docs-workflow>
 
-<docs-step title="Create the `ReversePipe`">
+<docs-step title="`ReversePipe`'ı oluşturun">
 
 `reverse.pipe.ts` dosyasında `ReversePipe` sınıfına `@Pipe` dekoratörünü ekleyin ve aşağıdaki yapılandırmayı sağlayın:
 
@@ -44,7 +44,7 @@ Pekala, deneme sırası sizde - `ReversePipe`'ı oluşturacaksınız:
 
 </docs-step>
 
-<docs-step title="Implement the `transform` function">
+<docs-step title="`transform` fonksiyonunu uygulayın">
 
 Artık `ReversePipe` sınıfı bir pipe. Ters çevirme mantığını eklemek için `transform` fonksiyonunu güncelleyin:
 
@@ -64,7 +64,7 @@ export class ReversePipe implements PipeTransform {
 
 </docs-step>
 
-<docs-step title="Use the `ReversePipe` in the template"></docs-step>
+<docs-step title="Şablonda `ReversePipe`'ı kullanın"></docs-step>
 Pipe mantığı uygulandığına göre, son adım onu şablonda kullanmaktır. `app.ts` dosyasında pipe'ı şablona dahil edin ve bileşen imports dizisine ekleyin:
 
 ```angular-ts {highlight:[3,4]}

@@ -113,17 +113,17 @@ Constructor parametre enjeksiyonu yerine [`inject`](/api/core/inject) fonksiyonu
 ### Bileşen seçicilerini seçme
 
 Bileşen seçimleri hakkında ayrıntılar için
-[Bileşenler kılavuzuna](guide/components/selectors#choosing-a-selector) bakın.
+[Bileşenler kılavuzuna](guide/components/selectors#seçici-seçme) bakın.
 
 ### Bileşen ve direktif üyelerini adlandırma
 
 Bileşenler kılavuzunda
-[giriş özelliklerini adlandırma](guide/components/inputs#choosing-input-names)
-ve [çıkış özelliklerini adlandırma](guide/components/outputs#choosing-event-names) hakkında ayrıntılar için bakın.
+[giriş özelliklerini adlandırma](guide/components/inputs#girdi-adlarını-seçme)
+ve [çıkış özelliklerini adlandırma](guide/components/outputs#olay-adlarını-seçme) hakkında ayrıntılar için bakın.
 
 ### Direktif seçicilerini seçme
 
-Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#selector-prefixes) kullanmalıdır.
+Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#seçici-önekleri) kullanmalıdır.
 
 Bir direktif için özellik seçici kullanırken camelCase özellik adı kullanın. Örneğin,
 uygulamanız "MovieReel" olarak adlandırılıyorsa ve bir elemana araç ipucu ekleyen bir direktif oluşturuyorsanız, `[mrTooltip]` seçicisini kullanabilirsiniz.
@@ -219,7 +219,7 @@ Hem `class` hem de `style` bağlamaları, standart HTML özelliklerine yakından
 
 Ek olarak, `NgClass` ve `NgStyle` direktifleri, yerleşik `class` ve `style` bağlama sözdizimine kıyasla ek bir performans maliyeti getirir.
 
-Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-class-and-style-property-bindings) bakın.
+Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) bakın.
 
 ### Olay işleyicilerini tetikleyen olay için değil, yaptıkları eylem için adlandırın
 

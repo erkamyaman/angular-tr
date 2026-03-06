@@ -19,7 +19,7 @@ class PetCareDashboard {
 
 <docs-workflow>
 
-<docs-step title="Inject the `CarService`">
+<docs-step title="`CarService`'i enjekte edin">
 
 `app.ts` dosyasında, `inject()` fonksiyonunu kullanarak `CarService`'i enjekte edin ve `carService` adında bir özelliğe atayın.
 
@@ -27,7 +27,7 @@ NOTE: `carService` özelliği ile `CarService` sınıfı arasındaki farka dikka
 
 </docs-step>
 
-<docs-step title="Use the `carService` instance">
+<docs-step title="`carService` örneğini kullanın">
 
 `inject(CarService)` çağrısı, uygulamanızda kullanabileceğiniz bir `CarService` örneği verdi ve bu `carService` özelliğinde saklandı.
 
@@ -39,7 +39,7 @@ display = this.carService.getCars().join(' ⭐️ ');
 
 </docs-step>
 
-<docs-step title="Update the `App` template">
+<docs-step title="`App` şablonunu güncelleyin">
 
 `app.ts` dosyasındaki bileşen şablonunu aşağıdaki kodla güncelleyin:
 

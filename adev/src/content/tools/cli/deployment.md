@@ -1,8 +1,8 @@
-# Deployment
+# Dağıtım
 
 Angular uygulamanızı uzak bir sunucuya dağıtmaya hazır olduğunuzda, çeşitli seçenekleriniz vardır.
 
-## Automatic deployment with the CLI
+## CLI ile Otomatik Dağıtım
 
 Angular CLI komutu `ng deploy`, projenizle ilişkili `deploy` [CLI builder'ını](tools/cli/cli-builder) çalıştırır.
 Birçok üçüncü taraf builder, farklı platformlara dağıtım yetenekleri uygular.
@@ -38,22 +38,22 @@ Aşağıdaki paket adlarıyla ilişkili bağlantıları takip ederek daha fazla 
 
 Kendi yönettiğiniz bir sunucuya dağıtıyorsanız veya favori bulut platformunuz için bir builder yoksa, `ng deploy` komutunu kullanmanıza olanak tanıyan [bir builder oluşturabilir](tools/cli/cli-builder) veya uygulamanızı manuel olarak nasıl dağıtacağınızı öğrenmek için bu kılavuzu okuyabilirsiniz.
 
-## Manual deployment to a remote server
+## Uzak Sunucuya Manuel Dağıtım
 
 Uygulamanızı manuel olarak dağıtmak için bir üretim derlemesi oluşturun ve çıktı dizinini bir web sunucusuna veya içerik dağıtım ağına (CDN) kopyalayın.
 Varsayılan olarak, `ng build` `production` yapılandırmasını kullanır.
-Derleme yapılandırmalarınızı özelleştirdiyseniz, dağıtımdan önce [üretim optimizasyonlarının](tools/cli/deployment#production-optimizations) uygulandığını doğrulamak isteyebilirsiniz.
+Derleme yapılandırmalarınızı özelleştirdiyseniz, dağıtımdan önce [üretim optimizasyonlarının](tools/cli/deployment#üretim-optimizasyonları) uygulandığını doğrulamak isteyebilirsiniz.
 
 `ng build` derlenen yapıtları varsayılan olarak `dist/my-app/` dizinine çıktılar, ancak bu yol `@angular-devkit/build-angular:browser` builder'ındaki `outputPath` seçeneğiyle yapılandırılabilir.
 Bu dizini sunucuya kopyalayın ve dizini sunacak şekilde yapılandırın.
 
 Bu minimal bir dağıtım çözümü olsa da, sunucunun Angular uygulamanızı doğru şekilde sunması için birkaç gereksinim vardır.
 
-## Server configuration
+## Sunucu Yapılandırması
 
 Bu bölüm, Angular uygulamanızı çalıştırmak için sunucuda yapmanız gerekebilecek değişiklikleri kapsar.
 
-### Routed apps must fall back to `index.html`
+### Yönlendirmeli Uygulamalar `index.html`'e Geri Dönmelidir
 
 İstemci tarafında oluşturulan Angular uygulamaları, tüm içerik statik olduğundan ve derleme zamanında oluşturulduğundan, statik bir HTML sunucusuyla sunulması için mükemmel adaylardır.
 
@@ -77,9 +77,9 @@ Bazı sunucular bu yedek davranışı "Tek Sayfa Uygulaması" (SPA) modu olarak 
 Tarayıcı uygulamayı yüklediğinde, Angular yönlendirici hangi sayfada olduğunu belirlemek için URL'yi okuyacak ve `/users/42` sayfasını doğru şekilde görüntüleyecektir.
 
 `http://my-app.test/does-not-exist` gibi "gerçek" 404 sayfaları için sunucunun ek yapılandırma gerektirmez.
-[Angular yönlendiricide uygulanan 404 sayfaları](guide/routing/common-router-tasks#displaying-a-404-page) doğru şekilde görüntülenecektir.
+[Angular yönlendiricide uygulanan 404 sayfaları](guide/routing/common-router-tasks#404-sayfası-görüntüleme) doğru şekilde görüntülenecektir.
 
-### Requesting data from a different server (CORS)
+### Farklı Bir Sunucudan Veri İsteme (CORS)
 
 Web geliştiricileri, uygulamanın kendi ana sunucusu dışında bir sunucuya ağ isteği yaparken [_çapraz kaynak kaynak paylaşımı_](https://developer.mozilla.org/docs/Web/HTTP/CORS 'Cross-origin resource sharing') hatasıyla karşılaşabilir.
 Tarayıcılar, sunucu açıkça izin vermedikçe bu tür istekleri engeller.
@@ -88,22 +88,22 @@ Angular veya istemci uygulamasının bu hatalar hakkında yapabileceği bir şey
 _Sunucu_, uygulamanın isteklerini kabul edecek şekilde yapılandırılmalıdır.
 Belirli sunucular için CORS'u nasıl etkinleştireceğinizi öğrenmek için [enable-cors.org](https://enable-cors.org/server.html 'Enabling CORS server') adresine bakın.
 
-## Production optimizations
+## Üretim Optimizasyonları
 
 `ng build`, aksi yapılandırılmadıkça `production` yapılandırmasını kullanır. Bu yapılandırma aşağıdaki derleme optimizasyon özelliklerini etkinleştirir.
 
-| Özellikler                                                    | Ayrıntılar                                                                                                         |
-| :------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
-| [Ahead-of-Time (AOT) Derleme](tools/cli/aot-compiler)         | Angular bileşen şablonlarını önceden derler.                                                                       |
-| [Üretim modu](tools/cli/deployment#development-only-features) | En iyi çalışma zamanı performansı için uygulamayı optimize eder                                                    |
-| Paketleme                                                     | Birçok uygulama ve kütüphane dosyanızı minimum sayıda dağıtım dosyasına birleştirir.                               |
-| Küçültme                                                      | Fazla boşlukları, yorumları ve isteğe bağlı belirteçleri kaldırır.                                                 |
-| Karıştırma                                                    | Fonksiyonları, sınıfları ve değişkenleri daha kısa, rastgele tanımlayıcılar kullanacak şekilde yeniden adlandırır. |
-| Ölü kod eliminasyonu                                          | Referans verilmeyen modülleri ve kullanılmayan kodu kaldırır.                                                      |
+| Özellikler                                                                | Ayrıntılar                                                                                                         |
+| :------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
+| [Ahead-of-Time (AOT) Derleme](tools/cli/aot-compiler)                     | Angular bileşen şablonlarını önceden derler.                                                                       |
+| [Üretim modu](tools/cli/deployment#yalnızca-geliştirmeye-özgü-özellikler) | En iyi çalışma zamanı performansı için uygulamayı optimize eder                                                    |
+| Paketleme                                                                 | Birçok uygulama ve kütüphane dosyanızı minimum sayıda dağıtım dosyasına birleştirir.                               |
+| Küçültme                                                                  | Fazla boşlukları, yorumları ve isteğe bağlı belirteçleri kaldırır.                                                 |
+| Karıştırma                                                                | Fonksiyonları, sınıfları ve değişkenleri daha kısa, rastgele tanımlayıcılar kullanacak şekilde yeniden adlandırır. |
+| Ölü kod eliminasyonu                                                      | Referans verilmeyen modülleri ve kullanılmayan kodu kaldırır.                                                      |
 
 CLI derleme seçenekleri ve etkileri hakkında daha fazla bilgi için [`ng build`](cli/build) belgesine bakın.
 
-### Development-only features
+### Yalnızca Geliştirmeye Özgü Özellikler
 
 Bir uygulamayı `ng serve` ile yerel olarak çalıştırdığınızda, Angular çalışma zamanında şunları etkinleştiren geliştirme yapılandırmasını kullanır:
 

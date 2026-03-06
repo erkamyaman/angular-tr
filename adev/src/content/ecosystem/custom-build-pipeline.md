@@ -1,10 +1,10 @@
-# Custom build pipeline
+# Özel Derleme Hattı
 
 Bir Angular uygulaması oluştururken, yapıya bağlı güncelleme işlevselliğinden ve derleme sistemi soyutlamasından yararlanmak için Angular CLI kullanmanızı şiddetle tavsiye ediyoruz. Bu sayede projeleriniz en son güvenlik, performans ve API iyileştirmelerinden ve şeffaf derleme iyileştirmelerinden faydalanır.
 
 Bu sayfa, Angular CLI kullanmayan özel bir derleme hattına ihtiyaç duyduğunuz **nadir kullanım durumlarını** incelemektedir. Aşağıda listelenen tüm araçlar, Angular topluluğu üyeleri tarafından bakımı yapılan açık kaynaklı derleme eklentileridir. Destek modeli ve bakım durumu hakkında daha fazla bilgi edinmek için belgelerine ve GitHub deposu URL'lerine bakın.
 
-## When should you use a custom build pipeline?
+## Ne zaman özel bir derleme hattı kullanmalısınız?
 
 Özel bir derleme hattı kullanmak isteyebileceğiniz bazı niş kullanım durumları vardır. Örneğin:
 
@@ -12,7 +12,7 @@ Bu sayfa, Angular CLI kullanmayan özel bir derleme hattına ihtiyaç duyduğunu
 - [module federation](https://module-federation.io/) ile güçlü bir bağımlılığınız var ve paketleyiciden bağımsız [native federation](https://www.npmjs.com/package/@angular-architects/native-federation) kullanmaya geçemiyorsunuz
 - Favori derleme aracınızı kullanarak kısa süreli bir deney oluşturmak istiyorsunuz
 
-## What are the options?
+## Seçenekler nelerdir?
 
 Şu anda, bir [Vite eklentisi](https://www.npmjs.com/package/@analogjs/vite-plugin-angular) ve [Rspack eklentisi](https://www.npmjs.com/package/@nx/angular-rspack) ile özel bir derleme hattı oluşturmanızı sağlayan iyi desteklenen iki topluluk aracı bulunmaktadır. Her ikisi de Angular CLI'yi destekleyen temel soyutlamaları kullanır. Esnek bir derleme hattı oluşturmanıza olanak tanır ve manuel bakım gerektirir, otomatik güncelleme deneyimi sunmaz.
 

@@ -1,4 +1,4 @@
-# Migration to Control Flow syntax
+# Kontrol Akışı sözdizimine geçiş
 
 [Kontrol akışı sözdizimi](guide/templates/control-flow) Angular v17'den itibaren mevcuttur. Yeni sözdizimi şablona entegre edilmiştir, bu nedenle artık `CommonModule`'ü içe aktarmanız gerekmez.
 
@@ -10,9 +10,9 @@ Bu şematik, uygulamanızdaki tüm mevcut kodu yeni Kontrol Akışı Sözdizimin
 ng generate @angular/core:control-flow
 ```
 
-## Breaking changes
+## Kırıcı değişiklikler
 
-### `@for` view reuse
+### `@for` görünüm yeniden kullanımı
 
 `@for` bloğu kullanıldığında, `track` ifadesinde kullanılan bir özellik değişirse ancak nesne referansı aynı kalırsa (yerinde değiştirme), Angular öğeyi yok edip yeniden oluşturmak yerine görünümün bağlamalarını (bileşen girdileri dahil) günceller.
 

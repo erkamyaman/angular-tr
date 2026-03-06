@@ -1,8 +1,8 @@
-# Define routes
+# Route'ları Tanımlama
 
 Rotalar, bir Angular uygulamasında navigasyonun temel yapı taşlarıdır.
 
-## What are routes?
+## Route'lar nedir?
 
 Angular'da bir **rota**, belirli bir URL yolu veya kalıbı için hangi bileşenin render edileceğini ve kullanıcı o URL'ye gittiğinde ne olacağına dair ek yapılandırma seçeneklerini tanımlayan bir nesnedir.
 
@@ -19,7 +19,7 @@ const adminPage = {
 
 Bu rota için, kullanıcı `/admin` yolunu ziyaret ettiğinde uygulama `AdminPage` bileşenini görüntüler.
 
-### Managing routes in your application
+### Uygulamanızda route'ları yönetme
 
 Çoğu proje, rotaları dosya adında `routes` içeren ayrı bir dosyada tanımlar.
 
@@ -44,7 +44,7 @@ export const routes: Routes = [
 
 Tip: Angular CLI ile bir proje oluşturduysanız, rotalarınız `src/app/app.routes.ts` dosyasında tanımlanmıştır.
 
-### Adding the router to your application
+### Uygulamanıza Router ekleme
 
 Angular CLI olmadan bir Angular uygulamasını başlatırken, `providers` dizisi içeren bir yapılandırma nesnesi geçirebilirsiniz.
 
@@ -64,9 +64,9 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## Route URL Paths
+## Route URL Yolları
 
-### Static URL Paths
+### Statik URL Yolları
 
 Statik URL Yolları, dinamik parametrelere göre değişmeyen önceden tanımlanmış yollara sahip rotaları ifade eder. Bunlar, bir `path` dizesiyle tam olarak eşleşen ve sabit bir sonucu olan rotalardır.
 
@@ -76,14 +76,14 @@ Bunlara örnek olarak şunlar verilebilir:
 - "/blog"
 - "/settings/account"
 
-### Define URL Paths with Route Parameters
+### Route Parametreleri ile URL Yolları Tanımlama
 
 Parametreli URL'ler, aynı bileşene birden fazla URL'nin erişmesine izin verirken URL'deki parametrelere göre dinamik olarak veri görüntüleyen dinamik yollar tanımlamanıza olanak tanır.
 
 Bu tür bir kalıbı, rotanızın `path` dizesine parametreler ekleyerek ve her parametreyi iki nokta üst üste (`:`) karakteriyle ön eklendirerek tanımlayabilirsiniz.
 
 IMPORTANT: Parametreler, URL'nin [sorgu dizesindeki](https://en.wikipedia.org/wiki/Query_string) bilgilerden farklıdır.
-[Bu kılavuzda Angular'daki sorgu parametreleri](/guide/routing/read-route-state#query-parameters) hakkında daha fazla bilgi edinin.
+[Bu kılavuzda Angular'daki sorgu parametreleri](/guide/routing/read-route-state#sorgu-parametreleri) hakkında daha fazla bilgi edinin.
 
 Aşağıdaki örnek, URL aracılığıyla geçirilen kullanıcı kimliğine göre bir kullanıcı profili bileşeni görüntüler.
 
@@ -120,7 +120,7 @@ Bu yeni yol ile kullanıcılar `/user/leeroy/youtube` ve `/user/leeroy/bluesky` 
 
 Rota parametrelerini okuma hakkında ayrıntılar için [Rota durumunu okuma](/guide/routing/read-route-state) bölümüne bakın.
 
-### Wildcards
+### Joker Karakterler
 
 Belirli bir yol için tüm rotaları yakalamanız gerektiğinde, çözüm çift yıldız (`**`) ile tanımlanan joker rotalardır.
 
@@ -142,7 +142,7 @@ Bu rota dizisinde, kullanıcı `home` ve `user/:id` dışında herhangi bir yolu
 
 Tip: Joker rotalar genellikle rota dizisinin sonuna yerleştirilir.
 
-## How Angular matches URLs
+## Angular URL'leri nasıl eşleştirir
 
 Rotaları tanımlarken sıra önemlidir çünkü Angular ilk eşleşme kazanır stratejisi kullanır. Bu, Angular bir URL'yi bir rota `path` ile eşleştirdiğinde, daha fazla rotayı kontrol etmeyi bıraktığı anlamına gelir. Sonuç olarak, daha spesifik rotaları her zaman daha az spesifik rotalardan önce koyun.
 
@@ -150,11 +150,11 @@ Aşağıdaki örnek, en spesifikten en az spesifike doğru tanımlanmış rotala
 
 ```ts
 const routes: Routes = [
-  {path: '', component: Home}, // Empty path
-  {path: 'users/new', component: NewUser}, // Static, most specific
-  {path: 'users/:id', component: UserDetail}, // Dynamic
-  {path: 'users', component: Users}, // Static, less specific
-  {path: '**', component: NotFound}, // Wildcard - always last
+  {path: '', component: Home}, // Boş yol
+  {path: 'users/new', component: NewUser}, // Statik, en spesifik
+  {path: 'users/:id', component: UserDetail}, // Dinamik
+  {path: 'users', component: Users}, // Statik, daha az spesifik
+  {path: '**', component: NotFound}, // Joker karakter - her zaman en sonda
 ];
 ```
 
@@ -166,7 +166,7 @@ Bir kullanıcı `/users/new` adresini ziyaret ederse, Angular yönlendirici aşa
 1. `users`'a hiçbir zaman ulaşılmaz
 1. `**`'a hiçbir zaman ulaşılmaz
 
-## Redirects
+## Redirect'ler
 
 Bir bileşen render etmek yerine başka bir rotaya yönlendiren bir rota tanımlayabilirsiniz:
 
@@ -187,7 +187,7 @@ const routes: Routes = [
 
 Bir rotayı değiştirir veya kaldırırsanız, bazı kullanıcılar hâlâ o rotaya ait eski bağlantılara veya yer imlerine tıklayabilir. "Bulunamadı" sayfası yerine bu kullanıcıları uygun bir alternatif rotaya yönlendirmek için bir yeniden yönlendirme ekleyebilirsiniz.
 
-## Page titles
+## Sayfa başlıkları
 
 Her rota ile bir **başlık** ilişkilendirebilirsiniz. Angular, bir rota etkinleştirildiğinde [sayfa başlığını](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title) otomatik olarak günceller. Erişilebilir bir deneyim oluşturmak için gerekli olan uygun sayfa başlıklarını uygulamanız için her zaman tanımlayın.
 
@@ -226,7 +226,7 @@ const routes: Routes = [
 
 Rota başlıkları, [`TitleStrategy`](/api/router/TitleStrategy) soyut sınıfını genişleten bir servis aracılığıyla da ayarlanabilir. Varsayılan olarak Angular, [`DefaultTitleStrategy`](/api/router/DefaultTitleStrategy) kullanır.
 
-### Using TitleStrategy for page titles
+### Sayfa başlıkları için TitleStrategy kullanma
 
 Belge başlığının nasıl oluşturulduğu üzerinde merkezi kontrol gerektiren gelişmiş senaryolarda, bir `TitleStrategy` uygulayın.
 
@@ -242,8 +242,8 @@ export class AppTitleStrategy extends TitleStrategy {
   private readonly title = inject(Title);
 
   updateTitle(snapshot: RouterStateSnapshot): void {
-    // PageTitle is equal to the "Title" of a route if it's set
-    // If its not set it will use the "title" given in index.html
+    // PageTitle, ayarlanmışsa rotanın "Title" değerine eşittir
+    // Ayarlanmamışsa index.html'deki "title" kullanılır
     const pageTitle = this.buildTitle(snapshot) || this.title.getTitle();
     this.title.setTitle(`MyAwesomeApp - ${pageTitle}`);
   }
@@ -261,7 +261,7 @@ export const appConfig = {
 };
 ```
 
-## Route-level providers for dependency injection
+## Bağımlılık enjeksiyonu için rota düzeyinde sağlayıcılar
 
 Her rotanın, [bağımlılık enjeksiyonu](/guide/di) aracılığıyla o rotanın içeriğine bağımlılıklar sağlamanıza olanak tanıyan bir `providers` özelliği vardır.
 
@@ -277,8 +277,8 @@ export const ROUTES: Route[] = [
       {path: 'teams', component: AdminTeams},
     ],
   },
-  // ... other application routes that don't
-  //     have access to ADMIN_API_KEY or AdminService.
+  // ... ADMIN_API_KEY veya AdminService'e erişimi olmayan
+  //     diğer uygulama route'ları.
 ];
 ```
 
@@ -286,13 +286,13 @@ Bu kod örneğinde, `admin` yolu yalnızca kendi bölümündeki alt rotalara sun
 
 Sağlayıcılar ve Angular'da enjeksiyon hakkında daha fazla bilgi için [Bağımlılık enjeksiyonu kılavuzuna](/guide/di) bakın.
 
-## Associating data with routes
+## Route'larla veri ilişkilendirme
 
 Rota verileri, rotalara ek bilgi eklemenizi sağlar. Bu verilere göre bileşenlerin nasıl davranacağını yapılandırabilirsiniz.
 
 Rota verileriyle çalışmanın iki yolu vardır: sabit kalan statik veriler ve çalışma zamanı koşullarına göre değişebilen dinamik veriler.
 
-### Static data
+### Statik veri
 
 Rota bazlı meta verileri (örneğin analitik izleme, izinler vb.) merkezileştirmek amacıyla `data` özelliği aracılığıyla bir rotayla rastgele statik veriler ilişkilendirebilirsiniz:
 
@@ -320,11 +320,11 @@ Bu kod örneğinde, ana sayfa ve hakkında sayfası, ilgili bileşenlerinde sayf
 
 Bu statik verileri `ActivatedRoute` enjekte ederek okuyabilirsiniz. Ayrıntılar için [Rota durumunu okuma](/guide/routing/read-route-state) bölümüne bakın.
 
-### Dynamic data with data resolvers
+### Veri çözücüler ile dinamik veri
 
 Bir rotaya dinamik veri sağlamanız gerektiğinde, [rota veri çözücüleri kılavuzuna](/guide/routing/data-resolvers) göz atın.
 
-## Nested Routes
+## İç İçe Route'lar
 
 İç içe rotalar, alt rotalar olarak da bilinir ve URL'ye göre değişen bir alt görünüme sahip bir bileşen için daha karmaşık navigasyon rotalarını yönetmek için kullanılan yaygın bir tekniktir.
 
@@ -367,7 +367,7 @@ Alt rotaları görüntülemek için üst bileşen (yukarıdaki örnekte `Product
 
 Yapılandırmaya alt rotalar ekledikten ve bileşene bir `<router-outlet>` ekledikten sonra, alt rotalarla eşleşen URL'ler arasında navigasyon yalnızca iç içe outlet'i günceller.
 
-## Next steps
+## Sonraki adımlar
 
 <docs-pill-row>
   <docs-pill href="/guide/routing/loading-strategies" title="Route Loading Strategies"/>

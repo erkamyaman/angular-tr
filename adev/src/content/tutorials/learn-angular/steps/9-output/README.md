@@ -38,11 +38,11 @@ Pekala, şimdi sıra sizde. Aşağıdaki görevleri takip ederek kodu tamamlayı
 
 <docs-workflow>
 
-<docs-step title="Add an `output()` property">
+<docs-step title="Bir `output()` özelliği ekleyin">
 `child.ts` dosyasını, `addItemEvent` adında bir output özelliği ekleyerek güncelleyin ve output türünü `string` olarak ayarladığınızdan emin olun.
 </docs-step>
 
-<docs-step title="Complete `addItem` method">
+<docs-step title="`addItem` metodunu tamamlayın">
 `child.ts` dosyasında `addItem` metodunu güncelleyin; mantık olarak aşağıdaki kodu kullanın:
 
 ```ts {header:"child.ts", highlight:[2]}
@@ -53,7 +53,7 @@ addItem() {
 
 </docs-step>
 
-<docs-step title="Update the `App` template">
+<docs-step title="`App` şablonunu güncelleyin">
 `app.ts` dosyasında, yayılan olayı dinlemek için aşağıdaki kodu ekleyerek şablonu güncelleyin:
 
 ```angular-html

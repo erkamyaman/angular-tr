@@ -1,4 +1,4 @@
-<docs-decorative-header title="Dependency injection in Angular" imgSrc="adev/src/assets/images/dependency_injection.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Angular'da bağımlılık enjeksiyonu" imgSrc="adev/src/assets/images/dependency_injection.svg"> <!-- markdownlint-disable-line -->
 
 Bağımlılık Enjeksiyonu (DI), bir uygulama genelinde kodu düzenlemek ve paylaşmak için kullanılan bir tasarım desenidir.
 </docs-decorative-header>
@@ -13,7 +13,7 @@ Bağımlılık enjeksiyonu, geliştiricilerin yaygın zorlukları ele almasına 
 - **Ölçeklenebilirlik**: Modüler işlevsellik birden fazla bağlamda yeniden kullanılabilir ve daha kolay ölçeklendirme sağlar.
 - **Daha iyi test edilebilirlik**: DI, birim testlerinin gerçek bir uygulamayı kullanmanın pratik olmadığı durumlar için kolayca [test dublörlerini](https://en.wikipedia.org/wiki/Test_double) kullanmasına olanak tanır.
 
-## How does dependency injection work in Angular?
+## Angular'da dependency injection nasıl çalışır?
 
 Bağımlılık, bir sınıfın çalışması için ihtiyaç duyduğu ancak kendisinin oluşturmadığı herhangi bir nesne, değer, fonksiyon veya servistir. Başka bir deyişle, uygulamanızın farklı bölümleri arasında bir ilişki oluşturur çünkü bağımlılık olmadan çalışmaz.
 
@@ -30,7 +30,7 @@ Bu bağlamda "değerler", nesneler ve fonksiyonlar dahil herhangi bir JavaScript
 
 Angular bileşenleri ve direktifleri otomatik olarak DI'ye katılır; bu, bağımlılıkları enjekte edebilecekleri _ve_ enjekte edilmeye uygun oldukları anlamına gelir.
 
-## What are services?
+## Service'ler nedir?
 
 Angular _servisi_, bir örneğini bağımlılık olarak enjekte edilmeye uygun hale getiren `@Injectable` ile dekore edilmiş bir TypeScript sınıfıdır. Servisler, bir uygulama genelinde veri ve işlevsellik paylaşmanın en yaygın yoludur.
 
@@ -62,7 +62,7 @@ export class AnalyticsLogger {
 
 NOTE: `providedIn: 'root'` seçeneği, bu servisi tüm uygulamanız boyunca tekil (singleton) olarak kullanılabilir hale getirir. Bu, çoğu servis için önerilen yaklaşımdır.
 
-## Injecting dependencies with `inject()`
+## `inject()` ile bağımlılıkları enjekte etme
 
 Angular'ın `inject()` fonksiyonunu kullanarak bağımlılıkları enjekte edebilirsiniz.
 
@@ -89,7 +89,7 @@ export class Navbar {
 }
 ```
 
-### Where can `inject()` be used?
+### `inject()` nerede kullanılabilir?
 
 Bir bileşen, direktif veya servisin oluşturulması sırasında bağımlılıkları enjekte edebilirsiniz. [`inject`](/api/core/inject) çağrısı `constructor` içinde veya alan başlatıcıda görünebilir. İşte bazı yaygın örnekler:
 
@@ -98,10 +98,10 @@ Bir bileşen, direktif veya servisin oluşturulması sırasında bağımlılıkl
   /*...*/
 })
 export class MyComponent {
-  // ✅ In class field initializer
+  // ✅ Sınıf alan başlatıcısında
   private service = inject(MyService);
 
-  // ✅ In constructor body
+  // ✅ Constructor gövdesinde
   private anotherService: MyService;
 
   constructor() {
@@ -113,7 +113,7 @@ export class MyComponent {
 ```ts
 @Directive({...})
 export class MyDirective {
-  // ✅ In class field initializer
+  // ✅ Sınıf alan başlatıcısında
   private element = inject(ElementRef);
 }
 ```
@@ -124,14 +124,14 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class MyService {
-  // ✅ In a service
+  // ✅ Bir service içinde
   private http = inject(HttpClient);
 }
 ```
 
 ```ts
 export const authGuard = () => {
-  // ✅ In a route guard
+  // ✅ Bir route guard içinde
   const auth = inject(AuthService);
   return auth.isAuthenticated();
 };
@@ -141,7 +141,7 @@ Angular, kodunuzda [`inject`](/api/core/inject) çağırabildiğiniz herhangi bi
 
 Daha fazla bilgi için [inject API belgelerine](api/core/inject#usage-notes) bakın.
 
-## Next steps
+## Sonraki adımlar
 
 Artık Angular'da bağımlılık enjeksiyonunun temellerini anladığınıza göre, kendi servislerinizi nasıl oluşturacağınızı öğrenmeye hazırsınız.
 

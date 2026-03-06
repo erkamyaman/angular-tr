@@ -1,14 +1,14 @@
-<docs-decorative-header title="Forms with signals" imgSrc="adev/src/assets/images/signals.svg"> </docs-decorative-header>
+<docs-decorative-header title="Sinyallerle formlar" imgSrc="adev/src/assets/images/signals.svg"> </docs-decorative-header>
 
-IMPORTANT: Signal Forms [deneyseldir](/reference/releases#experimental). API, gelecek sürümlerde değişebilir. Riskleri anlamadan deneysel API'leri üretim uygulamalarında kullanmaktan kaçının.
+IMPORTANT: Signal Forms [deneyseldir](/reference/releases#deneysel). API, gelecek sürümlerde değişebilir. Riskleri anlamadan deneysel API'leri üretim uygulamalarında kullanmaktan kaçının.
 
 Signal Forms, Angular Sinyalleri ile veri modeliniz ve kullanıcı arayüzü arasında otomatik senkronizasyon sağlamak için Angular sinyallerini kullanarak form durumunu yönetir.
 
 Bu kılavuz, Signal Forms ile form oluşturmanın temel kavramlarında size yol gösterir. İşte nasıl çalıştığı:
 
-## Creating your first form
+## İlk Formunuzu Oluşturma
 
-### 1. Create a form model with `signal()`
+### 1. `signal()` ile Bir Form Modeli Oluşturun
 
 Her form, formunuzun veri modelini tutan bir sinyal oluşturarak başlar:
 
@@ -24,19 +24,19 @@ const loginModel = signal<LoginData>({
 });
 ```
 
-### 2. Pass the form model to `form()` to create a `FieldTree`
+### 2. Bir `FieldTree` Oluşturmak İçin Form Modelini `form()` Fonksiyonuna Geçirin
 
 Ardından, form modelinizi `form()` fonksiyonuna geçirerek bir **alan ağacı (field tree)** oluşturursunuz - modelinizin yapısını yansıtan ve nokta notasyonuyla alanlara erişmenizi sağlayan bir nesne yapısı:
 
 ```ts
 const loginForm = form(loginModel);
 
-// Access fields directly by property name
+// Alanlara doğrudan özellik adıyla erişin
 loginForm.email;
 loginForm.password;
 ```
 
-### 3. Bind HTML inputs with `[formField]` directive
+### 3. HTML Girdilerini `[formField]` Direktifi ile Bağlayın
 
 Ardından, HTML girdilerinizi `[formField]` direktifi kullanarak forma bağlarsınız; bu, aralarında iki yönlü bağlama oluşturur:
 
@@ -49,7 +49,7 @@ Sonuç olarak, kullanıcı değişiklikleri (alana yazma gibi) formu otomatik ol
 
 NOTE: `[formField]` direktifi ayrıca uygun olduğunda `required`, `disabled` ve `readonly` gibi öznitelikler için alan durumunu da senkronize eder.
 
-### 4. Read field values with `value()`
+### 4. `value()` ile Alan Değerlerini Okuyun
 
 Alanı bir fonksiyon olarak çağırarak alan durumuna erişebilirsiniz. Bu, alanın değeri, doğrulama durumu ve etkileşim durumu için reaktif sinyaller içeren bir `FieldState` nesnesi döndürür:
 
@@ -60,28 +60,28 @@ loginForm.email(); // Returns FieldState with value(), valid(), touched(), etc.
 Alanın mevcut değerini okumak için `value()` sinyaline erişin:
 
 ```html
-<!-- Render form value that updates automatically as user types -->
+<!-- Kullanıcı yazarken otomatik olarak güncellenen form değerini render et -->
 <p>Email: {{ loginForm.email().value() }}</p>
 ```
 
 ```ts
-// Get the current value
+// Mevcut değeri al
 const currentEmail = loginForm.email().value();
 ```
 
-### 5. Update field values with `set()`
+### 5. `set()` ile Alan Değerlerini Güncelleyin
 
 Bir alanın değerini `value.set()` metodunu kullanarak programatik olarak güncelleyebilirsiniz. Bu, hem alanı hem de alttaki model sinyalini günceller:
 
 ```ts
-// Update the value programmatically
+// Değeri programatik olarak güncelle
 loginForm.email().value.set('alice@wonderland.com');
 ```
 
 Sonuç olarak, hem alan değeri hem de model sinyali otomatik olarak güncellenir:
 
 ```ts
-// The model signal is also updated
+// Model sinyali de güncellenir
 console.log(loginModel().email); // 'alice@wonderland.com'
 ```
 
@@ -93,35 +93,35 @@ console.log(loginModel().email); // 'alice@wonderland.com'
   <docs-code header="app.css" path="adev/src/content/examples/signal-forms/src/login-simple/app/app.css"/>
 </docs-code-multifile>
 
-## Basic usage
+## Temel Kullanım
 
 `[formField]` direktifi tüm standart HTML girdi türleriyle çalışır. İşte en yaygın kullanım kalıpları:
 
-### Text inputs
+### Metin Girdileri
 
 Metin girdileri çeşitli `type` öznitelikleri ve textarea'larla çalışır:
 
 ```html
-<!-- Text and email -->
+<!-- Metin ve e-posta -->
 <input type="text" [formField]="form.name" />
 <input type="email" [formField]="form.email" />
 ```
 
-#### Numbers
+#### Sayılar
 
 Sayı girdileri, dizeler ve sayılar arasında otomatik olarak dönüşüm yapar:
 
 ```html
-<!-- Number - automatically converts to number type -->
+<!-- Sayı - otomatik olarak sayı türüne dönüştürür -->
 <input type="number" [formField]="form.age" />
 ```
 
-#### Date and time
+#### Tarih ve Saat
 
 Tarih girdileri değerleri `YYYY-MM-DD` dizesi olarak saklar ve zaman girdileri `HH:mm` biçimini kullanır:
 
 ```html
-<!-- Date and time - stores as ISO format strings -->
+<!-- Tarih ve saat - ISO biçiminde dize olarak saklar -->
 <input type="date" [formField]="form.eventDate" />
 <input type="time" [formField]="form.eventTime" />
 ```
@@ -132,28 +132,28 @@ Tarih dizelerini Date nesnelerine dönüştürmeniz gerekiyorsa, alan değerini 
 const dateObject = new Date(form.eventDate().value());
 ```
 
-#### Multiline text
+#### Çok Satırlı Metin
 
 Textarea'lar metin girdileriyle aynı şekilde çalışır:
 
 ```html
-<!-- Textarea -->
+<!-- Metin alanı -->
 <textarea [formField]="form.message" rows="4"></textarea>
 ```
 
-### Checkboxes
+### Onay Kutuları
 
 Onay kutuları boolean değerlere bağlanır:
 
 ```html
-<!-- Single checkbox -->
+<!-- Tekli onay kutusu -->
 <label>
   <input type="checkbox" [formField]="form.agreeToTerms" />
   I agree to the terms
 </label>
 ```
 
-#### Multiple checkboxes
+#### Çoklu Onay Kutuları
 
 Birden fazla seçenek için her biri için ayrı bir boolean `formField` oluşturun:
 
@@ -168,7 +168,7 @@ Birden fazla seçenek için her biri için ayrı bir boolean `formField` oluştu
 </label>
 ```
 
-### Radio buttons
+### Radyo Düğmeleri
 
 Radyo düğmeleri onay kutularına benzer şekilde çalışır. Radyo düğmeleri aynı `[formField]` değerini kullandığı sürece, Signal Forms otomatik olarak hepsine aynı `name` özniteliğini bağlar:
 
@@ -185,19 +185,19 @@ Radyo düğmeleri onay kutularına benzer şekilde çalışır. Radyo düğmeler
 
 Kullanıcı bir radyo düğmesi seçtiğinde, form `formField` o radyo düğmesinin `value` özniteliğindeki değeri saklar. Örneğin, "Premium" seçildiğinde `form.plan().value()` `"premium"` olarak ayarlanır.
 
-### Select dropdowns
+### Select Açılır Menüler
 
 Select elementleri hem statik hem de dinamik seçeneklerle çalışır:
 
 ```angular-html
-<!-- Static options -->
+<!-- Statik seçenekler -->
 <select [formField]="form.country">
   <option value="">Select a country</option>
   <option value="us">United States</option>
   <option value="ca">Canada</option>
 </select>
 
-<!-- Dynamic options with @for -->
+<!-- @for ile dinamik seçenekler -->
 <select [formField]="form.productId">
   <option value="">Select a product</option>
   @for (product of products; track product.id) {
@@ -208,7 +208,7 @@ Select elementleri hem statik hem de dinamik seçeneklerle çalışır:
 
 NOTE: Çoklu seçim (`<select multiple>`) şu anda `[formField]` direktifi tarafından desteklenmemektedir.
 
-## Validation and state
+## Doğrulama ve Durum
 
 Signal Forms, form alanlarınıza uygulayabileceğiniz yerleşik doğrulayıcılar sağlar. Doğrulama eklemek için `form()` fonksiyonuna ikinci argüman olarak bir şema fonksiyonu geçirin:
 
@@ -247,7 +247,7 @@ Her form alanı, doğrulama durumunu sinyaller aracılığıyla sunar. Örneğin
   <docs-code header="app.css" path="adev/src/content/examples/signal-forms/src/login-validation/app/app.css"/>
 </docs-code-multifile>
 
-### Field State Signals
+### Alan Durumu Sinyalleri
 
 Her `field()` şu durum sinyallerini sağlar:
 
@@ -261,7 +261,7 @@ Her `field()` şu durum sinyallerini sağlar:
 | `pending()`  | Asenkron doğrulama devam ediyorsa `true` döndürür                                   |
 | `errors()`   | `kind` ve `message` özelliklerine sahip doğrulama hatalarının bir dizisini döndürür |
 
-## Next steps
+## Sonraki Adımlar
 
 Signal Forms ve nasıl çalıştığı hakkında daha fazla bilgi edinmek için detaylı kılavuzlara göz atın:
 

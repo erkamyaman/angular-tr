@@ -1,8 +1,8 @@
-# Deferred loading with `@defer`
+# `@defer` ile ertelenmiş yükleme
 
-Ertelenebilir gorunumler, `@defer` bloklari olarak da bilinir, bir sayfanin ilk islemesi icin kesinlikle gerekli olmayan kodun yuklenmesini erteleyerek uygulamanizin ilk paket boyutunu azaltir. Bu genellikle daha hizli bir ilk yukleme ve Core Web Vitals (CWV) iyilestirmesiyle sonuclanir; ozellikle Largest Contentful Paint (LCP) ve Time to First Byte (TTFB).
+Ertelenebilir görünümler, `@defer` blokları olarak da bilinir, bir sayfanın ilk işlemesi için kesinlikle gerekli olmayan kodun yüklenmesini erteleyerek uygulamanızın ilk paket boyutunu azaltır. Bu genellikle daha hızlı bir ilk yükleme ve Core Web Vitals (CWV) iyileştirmesiyle sonuçlanır; özellikle Largest Contentful Paint (LCP) ve Time to First Byte (TTFB).
 
-Bu ozelligi kullanmak icin sablonunuzun bir bolumunu bildirimsel olarak bir @defer blogu ile sarmalayabilirsiniz:
+Bu özelliği kullanmak için şablonunuzun bir bölümünü bildirimsel olarak bir @defer bloğu ile sarmalayabilirsiniz:
 
 ```angular-html
 @defer {
@@ -10,32 +10,32 @@ Bu ozelligi kullanmak icin sablonunuzun bir bolumunu bildirimsel olarak bir @def
 }
 ```
 
-`@defer` blogunun icindeki tum bilesenler, direktifler ve pipe'lar icin kod ayri bir JavaScript dosyasina ayrilir ve yalnizca gerekli oldugunda, sablonun geri kalani islendikten sonra yuklenir.
+`@defer` bloğunun içindeki tüm bileşenler, direktifler ve pipe'lar için kod ayrı bir JavaScript dosyasına ayrılır ve yalnızca gerekli olduğunda, şablonun geri kalanı işlendikten sonra yüklenir.
 
-Ertelenebilir gorunumler; cesitli tetikleyicileri, on-yukleme seceneklerini ve yer tutucu, yukleme ve hata durumu yonetimi icin alt bloklari destekler.
+Ertelenebilir görünümler; çeşitli tetikleyicileri, ön-yükleme seçeneklerini ve yer tutucu, yükleme ve hata durumu yönetimi için alt blokları destekler.
 
-## Which dependencies are deferred?
+## Hangi bağımlılıklar ertelenir?
 
-Bilesenler, direktifler, pipe'lar ve tum bilesen CSS stilleri bir uygulama yuklenirken ertelenebilir.
+Bileşenler, direktifler, pipe'lar ve tüm bileşen CSS stilleri bir uygulama yüklenirken ertelenebilir.
 
-Bir `@defer` blogu icindeki bagimliliklarin ertelenmesi icin iki kosulu karsilamalari gerekir:
+Bir `@defer` bloğu içindeki bağımlılıkların ertelenmesi için iki koşulu karşılamaları gerekir:
 
-1. **Bagimsiz (standalone) olmalidilar.** Bagimsiz olmayan bagimliliklar ertelenemez ve `@defer` bloklari icinde olsalar bile istekli (eagerly) olarak yuklenirler.
-1. **Ayni dosya icinde `@defer` bloklari disinda referans verilmemelidir.** `@defer` blogu disinda veya ViewChild sorgularinda referans verilirse, bagimliliklar istekli olarak yuklenecektir.
+1. **Bağımsız (standalone) olmalıdırlar.** Bağımsız olmayan bağımlılıklar ertelenemez ve `@defer` blokları içinde olsalar bile istekli (eagerly) olarak yüklenirler.
+1. **Aynı dosya içinde `@defer` blokları dışında referans verilmemelidir.** `@defer` bloğu dışında veya ViewChild sorgularında referans verilirse, bağımlılıklar istekli olarak yüklenecektir.
 
-`@defer` blogunda kullanilan bilesenler, direktifler ve pipe'larin _gecisli_ bagimliliklari kesinlikle bagimsiz olmak zorunda degildir; gecisli bagimliliklar hala bir `NgModule`'da bildirilebilir ve ertelenmiis yuklemeye katilabilir.
+`@defer` bloğunda kullanılan bileşenler, direktifler ve pipe'ların _geçişli_ bağımlılıkları kesinlikle bağımsız olmak zorunda değildir; geçişli bağımlılıklar hâlâ bir `NgModule`'da bildirilebilir ve ertelenmiş yüklemeye katılabilir.
 
-Angular'in derleyicisi, `@defer` blogunda kullanilan her bilesen, direktif ve pipe icin bir [dinamik import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) ifadesi uretir. Blogun ana icerigi tum import'lar cozuldukten sonra islenir. Angular bu import'lar icin belirli bir sira garanti etmez.
+Angular'ın derleyicisi, `@defer` bloğunda kullanılan her bileşen, direktif ve pipe için bir [dinamik import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) ifadesi üretir. Bloğun ana içeriği tüm import'lar çözüldükten sonra işlenir. Angular bu import'lar için belirli bir sıra garanti etmez.
 
-## How to manage different stages of deferred loading
+## Ertelenmiş yüklemenin farklı aşamaları nasıl yönetilir
 
-`@defer` bloklari, ertelenmmis yukleme surecinin farkli asamalarini zarifce yonetmenize olanak taniyan birkaC alt bloga sahiptir.
+`@defer` blokları, ertelenmiş yükleme sürecinin farklı aşamalarını zarifçe yönetmenize olanak tanıyan birkaç alt bloğa sahiptir.
 
 ### `@defer`
 
-Bu, tembel olarak yuklenen icerik bolumunu tanimlayan birincil bloktur. Baslangicta islenmez - ertelenmis icerik, belirtilen [tetikleyici](#controlling-deferred-content-loading-with-triggers) olustudigunda veya `when` kosulu karsilandiginda yuklenir ve islenir.
+Bu, tembel olarak yüklenen içerik bölümünü tanımlayan birincil bloktur. Başlangıçta işlenmez - ertelenmiş içerik, belirtilen [tetikleyici](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) oluştuğunda veya `when` koşulu karşılandığında yüklenir ve işlenir.
 
-Varsayilan olarak, bir `@defer` blogu tarayici durumu [bosta](/guide/templates/defer#idle) oldugunda tetiklenir.
+Varsayılan olarak, bir `@defer` bloğu tarayıcı durumu [boşta](/guide/templates/defer#idle) olduğunda tetiklenir.
 
 ```angular-html
 @defer {
@@ -43,11 +43,11 @@ Varsayilan olarak, bir `@defer` blogu tarayici durumu [bosta](/guide/templates/d
 }
 ```
 
-### Show placeholder content with `@placeholder`
+### `@placeholder` ile yer tutucu içerik gösterme
 
-Varsayilan olarak, defer bloklari tetiklenmeden once herhangi bir icerik islemez.
+Varsayılan olarak, defer blokları tetiklenmeden önce herhangi bir içerik işlemez.
 
-`@placeholder`, `@defer` blogu tetiklenmeden once gosterilecek icerigi bildiren istege bagli bir bloktur.
+`@placeholder`, `@defer` bloğu tetiklenmeden önce gösterilecek içeriği bildiren isteğe bağlı bir bloktur.
 
 ```angular-html
 @defer {
@@ -57,11 +57,11 @@ Varsayilan olarak, defer bloklari tetiklenmeden once herhangi bir icerik islemez
 }
 ```
 
-Istege bagli olsa da, belirli tetikleyiciler calisabilmek icin bir `@placeholder` veya bir [sablon referans degiskeni](/guide/templates/variables#template-reference-variables) bulunmasini gerektirebilir. Daha fazla bilgi icin [Tetikleyiciler](#controlling-deferred-content-loading-with-triggers) bolumune bakin.
+İsteğe bağlı olsa da, belirli tetikleyiciler çalışabilmek için bir `@placeholder` veya bir [şablon referans değişkeni](/guide/templates/variables#şablon-referans-değişkenleri) bulunmasını gerektirebilir. Daha fazla bilgi için [Tetikleyiciler](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) bölümüne bakın.
 
-Angular, yukleme tamamlandiginda yer tutucu icerigi ana icerikle degistirir. Yer tutucu bolumunde duz HTML, bilesenler, direktifler ve pipe'lar dahil herhangi bir icerik kullanabilirsiniz. _Yer tutucu blogunun bagimliliklarin istekli olarak yuklendigini_ unutmayin.
+Angular, yükleme tamamlandığında yer tutucu içeriği ana içerikle değiştirir. Yer tutucu bölümünde düz HTML, bileşenler, direktifler ve pipe'lar dahil herhangi bir içerik kullanabilirsiniz. _Yer tutucu bloğunun bağımlılıkların istekli olarak yüklendiğini_ unutmayın.
 
-`@placeholder` blogu, yer tutucu icerigi ilk islendikten sonra bu yer tutucunun gosterilecegi `minimum` sure miktarini belirtmek icin istege bagli bir parametre kabul eder.
+`@placeholder` bloğu, yer tutucu içeriği ilk işlendikten sonra bu yer tutucunun gösterileceği `minimum` süre miktarını belirtmek için isteğe bağlı bir parametre kabul eder.
 
 ```angular-html
 @defer {
@@ -71,11 +71,11 @@ Angular, yukleme tamamlandiginda yer tutucu icerigi ana icerikle degistirir. Yer
 }
 ```
 
-Bu `minimum` parametresi milisaniye (ms) veya saniye (s) cinsinden zaman artimlariyla belirtilir. Ertelenms bagimliliklar hizla getirildiginde yer tutucu iceriginin hizli titresmesini onlemek icin bu parametreyi kullanabilirsiniz.
+Bu `minimum` parametresi milisaniye (ms) veya saniye (s) cinsinden zaman artımlarıyla belirtilir. Ertelenmiş bağımlılıklar hızla getirildiğinde yer tutucu içeriğinin hızlı titremesini önlemek için bu parametreyi kullanabilirsiniz.
 
-### Show loading content with `@loading`
+### `@loading` ile yükleme içeriği gösterme
 
-`@loading` blogu, ertelenmis bagimliliklar yuklenirken gosterilecek icerigi bildirmenize olanak taniyan istege bagli bir bloktur. Yukleme tetiklendiginde `@placeholder` blogunun yerini alir.
+`@loading` bloğu, ertelenmiş bağımlılıklar yüklenirken gösterilecek içeriği bildirmenize olanak tanıyan isteğe bağlı bir bloktur. Yükleme tetiklendiğinde `@placeholder` bloğunun yerini alır.
 
 ```angular-html
 @defer {
@@ -87,12 +87,12 @@ Bu `minimum` parametresi milisaniye (ms) veya saniye (s) cinsinden zaman artimla
 }
 ```
 
-Bagimliliklari (`@placeholder`'a benzer sekilde) istekli olarak yuklenir.
+Bağımlılıkları (`@placeholder`'a benzer şekilde) istekli olarak yüklenir.
 
-`@loading` blogu, ertelenmis bagimliliklar hizla getirildiginde olusabilecek icerik titremesini onlemeye yardimci olmak icin iki istege bagli parametre kabul eder:
+`@loading` bloğu, ertelenmiş bağımlılıklar hızla getirildiğinde oluşabilecek içerik titremesini önlemeye yardımcı olmak için iki isteğe bağlı parametre kabul eder:
 
-- `minimum` - bu yer tutucunun gosterilecegi minimum sure miktari
-- `after` - yukleme sablonunu gostermeden once yukleme basladiktan sonra bekleme suresi
+- `minimum` - bu yer tutucunun gösterileceği minimum süre miktarı
+- `after` - yükleme şablonunu göstermeden önce yükleme başladıktan sonra bekleme süresi
 
 ```angular-html
 @defer {
@@ -102,11 +102,11 @@ Bagimliliklari (`@placeholder`'a benzer sekilde) istekli olarak yuklenir.
 }
 ```
 
-Her iki parametre de milisaniye (ms) veya saniye (s) cinsinden zaman artimlariyla belirtilir. Ayrica, her iki parametrenin zamanlayicilari yukleme tetiklendikten hemen sonra baslar.
+Her iki parametre de milisaniye (ms) veya saniye (s) cinsinden zaman artımlarıyla belirtilir. Ayrıca, her iki parametrenin zamanlayıcıları yükleme tetiklendikten hemen sonra başlar.
 
-### Show error state when deferred loading fails with `@error`
+### Ertelenmiş yükleme başarısız olduğunda `@error` ile hata durumu gösterme
 
-`@error` blogu, ertelenmis yukleme basarisiz olursa goruntulenen istege bagli bir bloktur. `@placeholder` ve `@loading`'e benzer sekilde, @error blogunun bagimliliklari istekli olarak yuklenir.
+`@error` bloğu, ertelenmiş yükleme başarısız olursa görüntülenen isteğe bağlı bir bloktur. `@placeholder` ve `@loading`'e benzer şekilde, @error bloğunun bağımlılıkları istekli olarak yüklenir.
 
 ```angular-html
 @defer {
@@ -116,34 +116,34 @@ Her iki parametre de milisaniye (ms) veya saniye (s) cinsinden zaman artimlariyl
 }
 ```
 
-## Controlling deferred content loading with triggers
+## Tetikleyicilerle ertelenmiş içerik yüklemeyi kontrol etme
 
-Angular'in ertelenmis icerigi ne zaman yukleyip goruntuleyecegini kontrol eden **tetikleyiciler** belirtebilirsiniz.
+Angular'ın ertelenmiş içeriği ne zaman yükleyip görüntüleyeceğini kontrol eden **tetikleyiciler** belirtebilirsiniz.
 
-Bir `@defer` blogu tetiklendiginde, yer tutucu icerigi tembel olarak yuklenen icerikle degistirir.
+Bir `@defer` bloğu tetiklendiğinde, yer tutucu içeriği tembel olarak yüklenen içerikle değiştirir.
 
-Birden fazla olay tetikleyicisi noktali virgul (`;`) ile ayrilarak tanimlanabilir ve VEYA kosullari olarak degerlendirilir.
+Birden fazla olay tetikleyicisi noktalı virgül (`;`) ile ayrılarak tanımlanabilir ve VEYA koşulları olarak değerlendirilir.
 
-Iki tur tetikleyici vardir: `on` ve `when`.
+İki tür tetikleyici vardır: `on` ve `when`.
 
 ### `on`
 
-`on`, `@defer` blogunun ne zaman tetiklenecegine dair bir kosul belirtir.
+`on`, `@defer` bloğunun ne zaman tetikleneceğine dair bir koşul belirtir.
 
-Kullanilabilir tetikleyiciler asagidaki gibidir:
+Kullanılabilir tetikleyiciler aşağıdaki gibidir:
 
-| Tetikleyici                   | Aciklama                                                        |
+| Tetikleyici                   | Açıklama                                                        |
 | ----------------------------- | --------------------------------------------------------------- |
-| [`idle`](#idle)               | Tarayici bosta oldugunda tetiklenir.                            |
-| [`viewport`](#viewport)       | Belirtilen icerik gorunum alanina girdiginde tetiklenir         |
-| [`interaction`](#interaction) | Kullanici belirtilen elemanla etkilesime gectiginde tetiklenir  |
-| [`hover`](#hover)             | Fare belirtilen alanin uzerine geldiginde tetiklenir            |
-| [`immediate`](#immediate)     | Ertelenmemis icerik islemeyi bitirdikten hemen sonra tetiklenir |
-| [`timer`](#timer)             | Belirli bir sureden sonra tetiklenir                            |
+| [`idle`](#idle)               | Tarayıcı boşta olduğunda tetiklenir.                            |
+| [`viewport`](#viewport)       | Belirtilen içerik görünüm alanına girdiğinde tetiklenir         |
+| [`interaction`](#interaction) | Kullanıcı belirtilen elemanla etkileşime geçtiğinde tetiklenir  |
+| [`hover`](#hover)             | Fare belirtilen alanın üzerine geldiğinde tetiklenir            |
+| [`immediate`](#immediate)     | Ertelenmemiş içerik işlemeyi bitirdikten hemen sonra tetiklenir |
+| [`timer`](#timer)             | Belirli bir süreden sonra tetiklenir                            |
 
 #### `idle`
 
-`idle` tetikleyicisi, tarayici requestIdleCallback'e dayali olarak bosta durumuna ulastiginda ertelenmis icerigi yukler. Bu, bir defer blogunun varsayilan davranisidir.
+`idle` tetikleyicisi, tarayıcı requestIdleCallback'e dayalı olarak boşta durumuna ulaştığında ertelenmiş içeriği yükler. Bu, bir defer bloğunun varsayılan davranışıdır.
 
 ```angular-html
 <!-- @defer (on idle) -->
@@ -156,9 +156,9 @@ Kullanilabilir tetikleyiciler asagidaki gibidir:
 
 #### `viewport`
 
-`viewport` tetikleyicisi, belirtilen icerik [Intersection Observer API](https://developer.mozilla.org/docs/Web/API/Intersection_Observer_API) kullanilarak gorunum alanina girdiginde ertelenmis icerigi yukler. Gozlemlenen icerik `@placeholder` icerigi veya acik bir eleman referansi olabilir.
+`viewport` tetikleyicisi, belirtilen içerik [Intersection Observer API](https://developer.mozilla.org/docs/Web/API/Intersection_Observer_API) kullanılarak görünüm alanına girdiğinde ertelenmiş içeriği yükler. Gözlemlenen içerik `@placeholder` içeriği veya açık bir eleman referansı olabilir.
 
-Varsayilan olarak, `@defer` yer tutucunun gorunum alanina girip girmedigini izler. Bu sekilde kullanilan yer tutucularin tek bir kok elemani olmalidir.
+Varsayılan olarak, `@defer` yer tutucunun görünüm alanına girip girmediğini izler. Bu şekilde kullanılan yer tutucuların tek bir kök elemanı olmalıdır.
 
 ```angular-html
 @defer (on viewport) {
@@ -168,7 +168,7 @@ Varsayilan olarak, `@defer` yer tutucunun gorunum alanina girip girmedigini izle
 }
 ```
 
-Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degiskeni](/guide/templates/variables) belirterek gorunum alanina giris icin izlenen eleman olarak kullanabilirsiniz. Bu degisken, viewport tetikleyicisine parametre olarak gecirilir.
+Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek görünüm alanına giriş için izlenen eleman olarak kullanabilirsiniz. Bu değişken, viewport tetikleyicisine parametre olarak geçirilir.
 
 ```angular-html
 <div #greeting>Hello!</div>
@@ -177,17 +177,17 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 }
 ```
 
-`IntersectionObserver` seceneklerini ozellestirmek istiyorsaniz, `viewport` tetikleyicisi bir nesne literali gecirmeyi destekler. Literal, `root` haric `IntersectionObserver`'in ikinci parametresinden tum ozellikleri destekler. Nesne literali notasyonunu kullanirken, tetikleyicinizi `trigger` ozelligini kullanarak gecirmeniz gerekir.
+`IntersectionObserver` seçeneklerini özelleştirmek istiyorsanız, `viewport` tetikleyicisi bir nesne literali geçirmeyi destekler. Literal, `root` hariç `IntersectionObserver`'ın ikinci parametresinden tüm özellikleri destekler. Nesne literali notasyonunu kullanırken, tetikleyicinizi `trigger` özelliğini kullanarak geçirmeniz gerekir.
 
 ```angular-html
 <div #greeting>Hello!</div>
 
-<!-- With options and a trigger -->
+<!-- Seçenekler ve bir tetikleyici ile -->
 @defer (on viewport({trigger: greeting, rootMargin: '100px', threshold: 0.5})) {
   <greetings-cmp />
 }
 
-<!-- With options and an implied trigger -->
+<!-- Seçenekler ve örtük bir tetikleyici ile -->
 @defer (on viewport({rootMargin: '100px', threshold: 0.5})) {
   <greetings-cmp />
 } @placeholder {
@@ -197,9 +197,9 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 
 #### `interaction`
 
-`interaction` tetikleyicisi, kullanici belirtilen elemanla `click` veya `keydown` olaylari araciligiyla etkilesime gectiginde ertelenmis icerigi yukler.
+`interaction` tetikleyicisi, kullanıcı belirtilen elemanla `click` veya `keydown` olayları aracılığıyla etkileşime geçtiğinde ertelenmiş içeriği yükler.
 
-Varsayilan olarak, yer tutucu etkilesim elemani olarak hareket eder. Bu sekilde kullanilan yer tutucularin tek bir kok elemani olmalidir.
+Varsayılan olarak, yer tutucu etkileşim elemanı olarak hareket eder. Bu şekilde kullanılan yer tutucuların tek bir kök elemanı olmalıdır.
 
 ```angular-html
 @defer (on interaction) {
@@ -209,7 +209,7 @@ Varsayilan olarak, yer tutucu etkilesim elemani olarak hareket eder. Bu sekilde 
 }
 ```
 
-Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degiskeni](/guide/templates/variables) belirterek etkilesimler icin izlenen eleman olarak kullanabilirsiniz. Bu degisken, viewport tetikleyicisine parametre olarak gecirilir.
+Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek etkileşimler için izlenen eleman olarak kullanabilirsiniz. Bu değişken, viewport tetikleyicisine parametre olarak geçirilir.
 
 ```angular-html
 <div #greeting>Hello!</div>
@@ -220,9 +220,9 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 
 #### `hover`
 
-`hover` tetikleyicisi, fare `mouseover` ve `focusin` olaylari araciligiyla tetiklenen alanin uzerine geldiginde ertelenmis icerigi yukler.
+`hover` tetikleyicisi, fare `mouseover` ve `focusin` olayları aracılığıyla tetiklenen alanın üzerine geldiğinde ertelenmiş içeriği yükler.
 
-Varsayilan olarak, yer tutucu etkilesim elemani olarak hareket eder. Bu sekilde kullanilan yer tutucularin tek bir kok elemani olmalidir.
+Varsayılan olarak, yer tutucu etkileşim elemanı olarak hareket eder. Bu şekilde kullanılan yer tutucuların tek bir kök elemanı olmalıdır.
 
 ```angular-html
 @defer (on hover) {
@@ -232,7 +232,7 @@ Varsayilan olarak, yer tutucu etkilesim elemani olarak hareket eder. Bu sekilde 
 }
 ```
 
-Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degiskeni](/guide/templates/variables) belirterek gorunum alanina giris icin izlenen eleman olarak kullanabilirsiniz. Bu degisken, viewport tetikleyicisine parametre olarak gecirilir.
+Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek görünüm alanına giriş için izlenen eleman olarak kullanabilirsiniz. Bu değişken, viewport tetikleyicisine parametre olarak geçirilir.
 
 ```angular-html
 <div #greeting>Hello!</div>
@@ -243,7 +243,7 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 
 #### `immediate`
 
-`immediate` tetikleyicisi, ertelenmis icerigi hemen yukler. Bu, ertelenmis blogun diger tum ertelenmemis icerik islenmeyi bitirdiginde yuklendigi anlamina gelir.
+`immediate` tetikleyicisi, ertelenmiş içeriği hemen yükler. Bu, ertelenmiş bloğun diğer tüm ertelenmemiş içerik işlemeyi bitirdiğinde yüklendiği anlamına gelir.
 
 ```angular-html
 @defer (on immediate) {
@@ -255,7 +255,7 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 
 #### `timer`
 
-`timer` tetikleyicisi, belirtilen bir sureden sonra ertelenmis icerigi yukler.
+`timer` tetikleyicisi, belirtilen bir süreden sonra ertelenmiş içeriği yükler.
 
 ```angular-html
 @defer (on timer(500ms)) {
@@ -265,11 +265,11 @@ Alternatif olarak, `@defer` bloguyla ayni sablonda bir [sablon referans degisken
 }
 ```
 
-Sure parametresi milisaniye (`ms`) veya saniye (`s`) cinsinden belirtilmelidir.
+Süre parametresi milisaniye (`ms`) veya saniye (`s`) cinsinden belirtilmelidir.
 
 ### `when`
 
-`when` tetikleyicisi ozel bir kosul ifadesi kabul eder ve kosul truthy oldugunda ertelenmis icerigi yukler.
+`when` tetikleyicisi özel bir koşul ifadesi kabul eder ve koşul truthy olduğunda ertelenmiş içeriği yükler.
 
 ```angular-html
 @defer (when condition) {
@@ -279,17 +279,17 @@ Sure parametresi milisaniye (`ms`) veya saniye (`s`) cinsinden belirtilmelidir.
 }
 ```
 
-Bu tek seferlik bir islemdir - `@defer` blogu, kosul truthy olduktan sonra falsy bir degere donusse yer tutucuya geri donmez.
+Bu tek seferlik bir işlemdir - `@defer` bloğu, koşul truthy olduktan sonra falsy bir değere dönüşse yer tutucuya geri dönmez.
 
-## Prefetching data with `prefetch`
+## `prefetch` ile verileri ön-yükleme
 
-Ertelenmis icerigin ne zaman gosterilecegini belirleyen bir kosul belirtmenin yani sira, istege bagli olarak bir **on-yukleme tetikleyicisi** belirtebilirsiniz. Bu tetikleyici, ertelenmis icerik gosterilmeden once `@defer` bloguyla iliskili JavaScript'i yuklemenize olanak tanir.
+Ertelenmiş içeriğin ne zaman gösterileceğini belirleyen bir koşul belirtmenin yanı sıra, isteğe bağlı olarak bir **ön-yükleme tetikleyicisi** belirtebilirsiniz. Bu tetikleyici, ertelenmiş içerik gösterilmeden önce `@defer` bloğuyla ilişkili JavaScript'i yüklemenize olanak tanır.
 
-On-yukleme, bir kullanici bir defer blokunu henuz gormemis veya etkilesime gecmemis olsa bile, yakinda etkilesime gecebilecegi kaynaklari on-yuklemeye baslamaniz gibi daha gelismis davranislari etkinlestirir ve kaynaklari daha hizli kullanilabilir hale getirir.
+Ön-yükleme, bir kullanıcı bir defer bloğunu henüz görmemiş veya etkileşime geçmemiş olsa bile, yakında etkileşime geçebileceği kaynakları ön-yüklemeye başlamanız gibi daha gelişmiş davranışları etkinleştirir ve kaynakları daha hızlı kullanılabilir hale getirir.
 
-Bir on-yukleme tetikleyicisini, blogun ana tetikleyicisine benzer sekilde ancak `prefetch` anahtar sozcugu ile onekli olarak belirtebilirsiniz. Blogun ana tetikleyicisi ve on-yukleme tetikleyicisi noktali virgul (`;`) karakteriyle ayrilir.
+Bir ön-yükleme tetikleyicisini, bloğun ana tetikleyicisine benzer şekilde ancak `prefetch` anahtar sözcüğü ile önekli olarak belirtebilirsiniz. Bloğun ana tetikleyicisi ve ön-yükleme tetikleyicisi noktalı virgül (`;`) karakteriyle ayrılır.
 
-Asagidaki ornekte, tarayici bosta oldugunda on-yukleme baslar ve blogun icerigi yalnizca kullanici yer tutucu ile etkilesime gectiginde islenir.
+Aşağıdaki örnekte, tarayıcı boşta olduğunda ön-yükleme başlar ve bloğun içeriği yalnızca kullanıcı yer tutucu ile etkileşime geçtiğinde işlenir.
 
 ```angular-html
 @defer (on interaction; prefetch on idle) {
@@ -299,13 +299,13 @@ Asagidaki ornekte, tarayici bosta oldugunda on-yukleme baslar ve blogun icerigi 
 }
 ```
 
-## Testing `@defer` blocks
+## `@defer` bloklarını test etme
 
-Angular, `@defer` bloklarini test etme ve test sirasinda farkli durumlari tetikleme surecini basitlestirmek icin TestBed API'leri saglar. Varsayilan olarak, testlerdeki `@defer` bloklari gercek bir uygulamadaki defer blogunun davranacagi gibi oynatilir. Durumlari manuel olarak adimlamak istiyorsaniz, TestBed yapilandirmasinda defer blok davranisini `Manual` olarak degistirebilirsiniz.
+Angular, `@defer` bloklarını test etme ve test sırasında farklı durumları tetikleme sürecini basitleştirmek için TestBed API'leri sağlar. Varsayılan olarak, testlerdeki `@defer` blokları gerçek bir uygulamadaki defer bloğunun davranacağı gibi oynatılır. Durumları manuel olarak adımlamak istiyorsanız, TestBed yapılandırmasında defer blok davranışını `Manual` olarak değiştirebilirsiniz.
 
 ```angular-ts
 it('should render a defer block in different states', async () => {
-  // configures the defer block behavior to start in "paused" state for manual control.
+  // defer blok davranışını manuel kontrol için "duraklatılmış" durumda başlatacak şekilde yapılandırır.
   TestBed.configureTestingModule({deferBlockBehavior: DeferBlockBehavior.Manual});
   @Component({
     // ...
@@ -320,53 +320,53 @@ it('should render a defer block in different states', async () => {
     `,
   })
   class ExampleA {}
-  // Create component fixture.
+  // Bileşen fixture'ını oluştur.
   const componentFixture = TestBed.createComponent(ExampleA);
-  // Retrieve the list of all defer block fixtures and get the first block.
+  // Tüm defer blok fixture'larının listesini al ve ilk bloğu seç.
   const deferBlockFixture = (await componentFixture.getDeferBlocks())[0];
-  // Renders placeholder state by default.
+  // Varsayılan olarak yer tutucu durumunu işler.
   expect(componentFixture.nativeElement.innerHTML).toContain('Placeholder');
-  // Render loading state and verify rendered output.
+  // Yükleme durumunu işle ve işlenmiş çıktıyı doğrula.
   await deferBlockFixture.render(DeferBlockState.Loading);
   expect(componentFixture.nativeElement.innerHTML).toContain('Loading');
-  // Render final state and verify the output.
+  // Son durumu işle ve çıktıyı doğrula.
   await deferBlockFixture.render(DeferBlockState.Complete);
   expect(componentFixture.nativeElement.innerHTML).toContain('large works!');
 });
 ```
 
-## Does `@defer` work with `NgModule`?
+## `@defer` `NgModule` ile çalışır mı?
 
-`@defer` bloklari hem bagimsiz hem de NgModule tabanli bilesenler, direktifler ve pipe'larla uyumludur. Ancak, **yalnizca bagimsiz bilesenler, direktifler ve pipe'lar ertelenebilir**. NgModule tabanli bagimliliklar ertelenmez ve istekli olarak yuklenen pakete dahil edilir.
+`@defer` blokları hem bağımsız hem de NgModule tabanlı bileşenler, direktifler ve pipe'larla uyumludur. Ancak, **yalnızca bağımsız bileşenler, direktifler ve pipe'lar ertelenebilir**. NgModule tabanlı bağımlılıklar ertelenmez ve istekli olarak yüklenen pakete dahil edilir.
 
-## Compatibility between `@defer` blocks and Hot Module Reload (HMR)
+## `@defer` blokları ve Hot Module Reload (HMR) uyumluluğu
 
-Hot Module Replacement (HMR) aktif oldugunda, tum `@defer` blok parcalari, yapilandirilmis tetikleyicileri geersiz kilarak istekli bir sekilde getirilir. Standart tetikleyici davranisini geri yuklemek icin uygulamanizi `--no-hmr` bayragi ile sunarak HMR'i devre disi birakmaniz gerekir.
+Hot Module Replacement (HMR) aktif olduğunda, tüm `@defer` blok parçaları, yapılandırılmış tetikleyicileri geçersiz kılarak istekli bir şekilde getirilir. Standart tetikleyici davranışını geri yüklemek için uygulamanızı `--no-hmr` bayrağı ile sunarak HMR'ı devre dışı bırakmanız gerekir.
 
-## How does `@defer` work with server-side rendering (SSR) and static-site generation (SSG)?
+## `@defer` sunucu taraflı işleme (SSR) ve statik site oluşturma (SSG) ile nasıl çalışır?
 
-Varsayilan olarak, sunucuda bir uygulama islenirken (SSR veya SSG kullanilarak), defer bloklari her zaman `@placeholder`'larini isler (veya bir yer tutucu belirtilmemisse hicbir sey isler) ve tetikleyiciler calistrilmaz. Istemci tarafinda, `@placeholder`'in icerigi hidrate edilir ve tetikleyiciler aktive edilir.
+Varsayılan olarak, sunucuda bir uygulama işlenirken (SSR veya SSG kullanılarak), defer blokları her zaman `@placeholder`'larını işler (veya bir yer tutucu belirtilmemişse hiçbir şey işler) ve tetikleyiciler çalıştırılmaz. İstemci tarafında, `@placeholder`'ın içeriği hidrate edilir ve tetikleyiciler aktive edilir.
 
-`@defer` bloklarinin ana icerigini sunucuda (hem SSR hem de SSG) islemek icin, [Artimli Hidrasyon ozelligini](/guide/incremental-hydration) etkinlestirebilir ve gerekli bloklar icin `hydrate` tetikleyicilerini yapilandirabilirsiniz.
+`@defer` bloklarının ana içeriğini sunucuda (hem SSR hem de SSG) işlemek için, [Artımlı Hidrasyon özelliğini](/guide/incremental-hydration) etkinleştirebilir ve gerekli bloklar için `hydrate` tetikleyicilerini yapılandırabilirsiniz.
 
-## Best practices for deferring views
+## Görünümleri erteleme için en iyi uygulamalar
 
-### Avoid cascading loads with nested `@defer` blocks
+### İç içe `@defer` blokları ile art arda yüklemelerden kaçınma
 
-Ic ice `@defer` bloklariniz oldugunda, ayni anda yuklemeyi onlemek icin farkli tetikleyicilere sahip olmalidilar; aksi takdirde art arda isteklere neden olur ve sayfa yukleme performansini olumsuz etkileyebilir.
+İç içe `@defer` bloklarınız olduğunda, aynı anda yüklemeyi önlemek için farklı tetikleyicilere sahip olmalıdırlar; aksi takdirde art arda isteklere neden olur ve sayfa yükleme performansını olumsuz etkileyebilir.
 
-### Avoid layout shifts
+### Düzen kaymalarından kaçınma
 
-Ilk yuklemede kullanicinin gorunum alaninda gorunen bilesenleri ertelemekten kacinin. Bunu yapmak, toplam duzenleme kaymasinda (CLS) artisa neden olarak Core Web Vitals'i olumsuz etkileyebilir.
+İlk yüklemede kullanıcının görünüm alanında görünen bileşenleri ertelemekten kaçının. Bunu yapmak, toplam düzenleme kaymasında (CLS) artışa neden olarak Core Web Vitals'ı olumsuz etkileyebilir.
 
-Bunun gerekli olmasi durumunda, icerigin ilk sayfa islemesi sirasinda yuklenmesine neden olan `immediate`, `timer`, `viewport` ve ozel `when` tetikleyicilerinden kacinin.
+Bunun gerekli olması durumunda, içeriğin ilk sayfa işlemesi sırasında yüklenmesine neden olan `immediate`, `timer`, `viewport` ve özel `when` tetikleyicilerinden kaçının.
 
-### Keep accessibility in mind
+### Erişilebilirliği göz önünde bulundurma
 
-`@defer` bloklarini kullanirken, ekran okuyuculari gibi yardimci teknolojiler kullanan kullanicilar uzerindeki etkiyi goz onunde bulundurun.
-Ertelenmis bir bolume odaklanan ekran okuyuculari baslangicta yer tutucu veya yukleme icerigini okuyacak, ancak ertelenmis icerik yuklendiginde degisiklikleri duyuramayabilir.
+`@defer` bloklarını kullanırken, ekran okuyucuları gibi yardımcı teknolojiler kullanan kullanıcılar üzerindeki etkiyi göz önünde bulundurun.
+Ertelenmiş bir bölüme odaklanan ekran okuyucuları başlangıçta yer tutucu veya yükleme içeriğini okuyacak, ancak ertelenmiş içerik yüklendiğinde değişiklikleri duyuramayabilir.
 
-Ertelenmis icerik degisikliklerinin ekran okuyucularina duyurulmasini saglamak icin, `@defer` blogunuzu canli bolge iceren bir elemanla sarmalayabilirsiniz:
+Ertelenmiş içerik değişikliklerinin ekran okuyucularına duyurulmasını sağlamak için, `@defer` bloğunuzu canlı bölge içeren bir elemanla sarmalayabilirsiniz:
 
 ```angular-html
 <div aria-live="polite" aria-atomic="true">
@@ -382,4 +382,4 @@ Ertelenmis icerik degisikliklerinin ekran okuyucularina duyurulmasini saglamak i
 </div>
 ```
 
-Bu, gecisler (yer tutucu &rarr; yukleme &rarr; icerik/hata) meydana geldiginde kullaniciya degisikliklerin duyurulmasini saglar.
+Bu, geçişler (yer tutucu &rarr; yükleme &rarr; içerik/hata) meydana geldiğinde kullanıcıya değişikliklerin duyurulmasını sağlar.

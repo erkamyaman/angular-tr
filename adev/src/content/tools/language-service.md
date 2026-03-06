@@ -1,9 +1,9 @@
-# Angular Language Service
+# Angular Dil Servisi
 
 Angular Dil Servisi, kod editörlerine Angular şablonları içinde tamamlamalar, hatalar, ipuçları ve navigasyon elde etme imkanı sağlar.
 Ayrı HTML dosyalarındaki harici şablonlarla ve satır içi şablonlarla çalışır.
 
-## Configuring compiler options for the Angular Language Service
+## Angular Dil Servisi İçin Derleyici Seçeneklerini Yapılandırma
 
 En son Dil Servisi özelliklerini etkinleştirmek için, aşağıdaki örnekte gösterildiği gibi `tsconfig.json` dosyasında `strictTemplates` seçeneğini `true` olarak ayarlayın:
 
@@ -17,7 +17,7 @@ En son Dil Servisi özelliklerini etkinleştirmek için, aşağıdaki örnekte g
 
 Daha fazla bilgi için [Angular compiler options](reference/configs/angular-compiler-options) kılavuzuna bakın.
 
-## Features
+## Özellikler
 
 Editörünüz bir Angular dosyası açtığınızı otomatik olarak algılar.
 Ardından `tsconfig.json` dosyanızı okumak, uygulamanızdaki tüm şablonları bulmak ve açtığınız herhangi bir şablon için dil hizmetleri sağlamak üzere Angular Dil Servisi'ni kullanır.
@@ -29,7 +29,7 @@ Dil hizmetleri şunları içerir:
 - Hızlı bilgi
 - Tanıma git
 
-### Autocompletion
+### Otomatik Tamamlama
 
 Otomatik tamamlama, yazarken bağlamsal olasılıklar ve ipuçları sunarak geliştirme sürenizi hızlandırabilir.
 Bu örnek, bir enterpolasyondaki otomatik tamamlamayı göstermektedir.
@@ -40,21 +40,21 @@ Yazarken tamamlamak için sekme tuşuna basabilirsiniz.
 Öğeler içinde de tamamlamalar mevcuttur.
 Bileşen seçici olarak sahip olduğunuz tüm öğeler tamamlama listesinde görünür.
 
-### Error checking
+### Hata Kontrolü
 
 Angular Dil Servisi, kodunuzdaki hataları önceden size bildirebilir.
 Bu örnekte Angular, `orders`'ın ne olduğunu veya nereden geldiğini bilmiyor.
 
 <img alt="error checking" src="assets/images/guide/language-service/language-error.gif">
 
-### Quick info and navigation
+### Hızlı Bilgi ve Navigasyon
 
 Hızlı bilgi özelliği, bileşenlerin, direktiflerin ve modüllerin nereden geldiğini görmek için üzerine gelmenize olanak tanır.
 Ardından doğrudan tanıma gitmek için "Go to definition" seçeneğine tıklayabilir veya F12 tuşuna basabilirsiniz.
 
 <img alt="navigation" src="assets/images/guide/language-service/language-navigation.gif">
 
-## Angular Language Service in your editor
+## Editörünüzde Angular Dil Servisi
 
 Angular Dil Servisi şu anda [Visual Studio Code](https://code.visualstudio.com), [WebStorm](https://www.jetbrains.com/webstorm), [Sublime Text](https://www.sublimetext.com), [Zed](https://zed.dev), [Neovim](https://neovim.io) ve [Eclipse IDE](https://www.eclipse.org/eclipseide) için bir uzantı olarak mevcuttur.
 
@@ -127,7 +127,7 @@ Doğrudan Angular Language Server'ı içeren "Eclipse IDE for Web and JavaScript
 
 ### Neovim
 
-#### Conquer of Completion with Node.js
+#### Node.js ile Conquer of Completion
 
 Angular Dil Servisi, LSP spesifikasyonlarını tam olarak takip etmeyen tsserver'ı kullanır. Bu nedenle, JavaScript veya TypeScript veya Angular ile neovim veya vim kullanıyorsanız, [Conquer of Completion](https://github.com/neoclide/coc.nvim) (COC)'un Angular Dil Servisi ve tsserver'ın en kapsamlı uygulamasına sahip olduğunu görebilirsiniz. Bunun nedeni, COC'un tsserver'ın uygulamasını barındıran VSCode tsserver uygulamasını taşımasıdır.
 
@@ -160,7 +160,7 @@ Angular Dil Servisi, LSP spesifikasyonlarını tam olarak takip etmeyen tsserver
 
 HELPFUL: Yukarıdaki `/usr/local/lib/node_modules/typescript/lib` ve `/usr/local/lib/node_modules/@angular/language-server/bin` yolları, global node modüllerinizin konumuna işaret etmelidir ve bu konum farklı olabilir.
 
-#### Built In Neovim LSP
+#### Yerleşik Neovim LSP
 
 Angular Dil Servisi, [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) eklentisi kullanılarak Neovim ile birlikte kullanılabilir.
 
@@ -172,7 +172,7 @@ Angular Dil Servisi, [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 
 [Zed](https://zed.dev) içinde, uzantıyı [Extensions: Marketplace](https://zed.dev/extensions/angular)'ten yükleyin.
 
-## How the Language Service works
+## Dil Servisi Nasıl Çalışır
 
 Bir dil servisi olan bir editör kullandığınızda, editör ayrı bir dil servisi süreci başlatır ve [Language Server Protocol](https://microsoft.github.io/language-server-protocol) kullanarak bir [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) aracılığıyla onunla iletişim kurar.
 Editöre yazdığınızda, editör projenizin durumunu takip etmek için dil servisi sürecine bilgi gönderir.
@@ -187,7 +187,7 @@ HTML AST'si derleyiciye yalnızca "`{{data.---}}`" karakterlerine sahip bir meti
 İşte bu noktada şablon ayrıştırıcısı, şablon AST'si içinde bulunan bir ifade AST'si üretir.
 Angular Dil Servisleri daha sonra bağlamı içinde `data.---`'e bakar, TypeScript Dil Servisi'ne `data`'nın üyelerinin ne olduğunu sorar ve olasılıkların listesini döndürür.
 
-## More information
+## Daha Fazla Bilgi
 
 - Uygulama hakkında daha ayrıntılı bilgi için [Angular Language Service source](https://github.com/angular/angular/blob/main/packages/language-service/src) sayfasına bakın
 - Tasarım kararları ve niyetleri hakkında daha fazla bilgi için [design documentation here](https://github.com/angular/vscode-ng-language-service/wiki/Design) sayfasına bakın

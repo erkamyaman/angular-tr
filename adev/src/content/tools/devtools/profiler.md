@@ -1,4 +1,4 @@
-# Profile your application
+# Uygulamanızın Profilini Çıkarma
 
 **Profiler** sekmesi, Angular'ın değişiklik algılama (change detection) işleminin yürütülmesini görselleştirmenizi sağlar.
 Bu, değişiklik algılamanın uygulamanızın performansını ne zaman ve nasıl etkilediğini belirlemek için kullanışlıdır.
@@ -13,9 +13,9 @@ Değişiklik algılamayı tetiklemek ve Angular DevTools'un kullanabileceği ver
 Kaydı bitirmek için daireye tekrar tıklayarak **Stop recording** yapın.
 
 Mevcut bir kaydı da içe aktarabilirsiniz.
-Bu özellik hakkında daha fazla bilgi için [Import recording](tools/devtools/profiler#import-and-export-recordings) bölümünü okuyun.
+Bu özellik hakkında daha fazla bilgi için [Import recording](tools/devtools/profiler#kayıtları-içe-ve-dışa-aktarma) bölümünü okuyun.
 
-## Understand your application's execution
+## Uygulamanızın Çalışmasını Anlama
 
 Bir profil kaydettikten veya içe aktardıktan sonra Angular DevTools, değişiklik algılama döngülerinin bir görselleştirmesini gösterir.
 
@@ -31,7 +31,7 @@ Bir çubuğu seçtiğinizde DevTools, aşağıdakiler dahil olmak üzere hakkın
 
 <img src="assets/images/guide/devtools/profiler-selected-bar.png" alt="A screenshot of the 'Profiler' tab. A single bar has been selected by the user and a nearby dropdown menu displays 'Bar chart`, showing a second bar chart underneath it. The new chart has two bars which take up the majority of the space, one labeled `TodosComponent` and the other labeled `NgForOf`. The other bars are small enough to be negligible in comparison.">
 
-## Understand component execution
+## Bileşen Çalışmasını Anlama
 
 Bir değişiklik algılama döngüsüne tıkladıktan sonra gösterilen çubuk grafik, uygulamanızın söz konusu bileşen veya direktifte değişiklik algılama çalıştırmak için ne kadar zaman harcadığına dair ayrıntılı bir görünüm sunar.
 
@@ -39,7 +39,7 @@ Bu örnek, `NgForOf` direktifinin harcadığı toplam süreyi ve üzerinde hangi
 
 <img src="assets/images/guide/devtools/directive-details.png" alt="A screenshot of the 'Profiler' tab where the `NgForOf` bar is selected. A detailed view of `NgForOf` is visible to the right where it lists 'Total time spent: 1.76 ms'. It includes a with exactly one row, listing `NgForOf` as a directives with an `ngDoCheck` method which took 1.76 ms. It also includes a list labeled 'Parent Hierarchy' containing the parent components of this directive.">
 
-## Hierarchical views
+## Hiyerarşik Görünümler
 
 <img src="assets/images/guide/devtools/flame-graph-view.png" alt="A screenshot of the 'Profiler' tab. A single bar has been selected by the user and a nearby dropdown menu now displays 'Flame graph', showing a flame graph underneath it. The flame graph starts with a row called 'Entire application' and another row called 'AppComponent'. Beneath those, the rows start to break up into multiple items, starting with `[RouterOutlet]` and `DemoAppComponent` on the third row. A few layers deep, one cell is highlighted red.">
 
@@ -58,7 +58,7 @@ Angular DevTools, rengin yoğunluğunu, render işleminin en uzun sürdüğü ka
 Belirli bir karoya tıkladığınızda, sağdaki panelde hakkında ayrıntılar göreceksiniz.
 Karoya çift tıklamak, iç içe geçmiş alt öğelerini daha kolay görüntüleyebilmeniz için yakınlaştırır.
 
-## Debug change detection and `OnPush` components
+## Değişiklik Algılama ve `OnPush` Bileşenlerinde Hata Ayıklama
 
 Normalde grafik, herhangi bir değişiklik algılama karesi için bir uygulamayı _render etmek_ için geçen süreyi görselleştirir. Ancak `OnPush` bileşenleri gibi bazı bileşenler yalnızca input özellikleri değiştiğinde yeniden render edilir. Belirli kareler için bu bileşenler olmadan alev grafiğini görselleştirmek yararlı olabilir.
 
@@ -68,7 +68,7 @@ Bu görünüm, değişiklik algılamadan geçen tüm bileşenleri vurgular ve ye
 
 <img src="assets/images/guide/devtools/debugging-onpush.png" alt="A screenshot of the 'Profiler' tab displaying a flame chart visualization of a change detection cycle. A checkbox labeled 'Show only change detection' is now checked. The flame graph looks very similar to before, however the color of components has changed from orange to blue. Several tiles labeled `[RouterOutlet]` are no longer highlighted with any color.">
 
-## Import and export recordings
+## Kayıtları İçe ve Dışa Aktarma
 
 Dışa aktarmak için kaydedilmiş bir profilleme oturumunun sağ üst köşesindeki **Save Profile** düğmesine tıklayarak JSON dosyası olarak kaydedin.
 Daha sonra, profiler'ın başlangıç görünümünde **Choose file** girişine tıklayarak dosyayı içe aktarın.

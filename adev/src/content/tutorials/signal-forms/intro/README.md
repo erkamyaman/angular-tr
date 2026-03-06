@@ -2,7 +2,7 @@
 
 Bu etkileşimli öğretici, Angular'ın deneysel Signal Forms API'sini kullanarak reaktif formlar oluşturmayı size öğretecektir.
 
-IMPORTANT: Signal Forms şu anda [deneysel](reference/releases#experimental) aşamadadır. API, kararlı hale gelmeden önce değişebilir. En son güncellemeler için [resmi belgelere](guide/forms/signals/overview) göz atın.
+IMPORTANT: Signal Forms şu anda [deneysel](reference/releases#deneysel) aşamadadır. API, kararlı hale gelmeden önce değişebilir. En son güncellemeler için [resmi belgelere](guide/forms/signals/overview) göz atın.
 
 ## How to use this tutorial
 

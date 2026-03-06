@@ -1,4 +1,4 @@
-# Making HTTP requests
+# HTTP İstekleri Yapma
 
 `HttpClient`, hem veri yüklemek hem de sunucuda değişiklikler uygulamak için istek yapmak üzere kullanılan farklı HTTP fiillerine karşılık gelen yöntemlere sahiptir. Her yöntem, abone olunduğunda isteği gönderen ve ardından sunucu yanıt verdiğinde sonuçları yayınlayan bir [RxJS `Observable`](https://rxjs.dev/guide/observable) döndürür.
 
@@ -6,7 +6,7 @@ NOTE: `HttpClient` tarafından oluşturulan `Observable`'lara istenilen sayıda 
 
 İstek yöntemine iletilen bir seçenekler nesnesi aracılığıyla, isteğin çeşitli özellikleri ve döndürülen yanıt türü ayarlanabilir.
 
-## Fetching JSON data
+## JSON Verisi Alma
 
 Bir arka uçtan veri almak genellikle [`HttpClient.get()`](api/common/http/HttpClient#get) yöntemi kullanılarak bir GET isteği yapmayı gerektirir. Bu yöntem iki argüman alır: veri alınacak uç nokta URL'si olan bir string ve isteği yapılandırmak için _isteğe bağlı bir seçenekler_ nesnesi.
 
@@ -14,7 +14,7 @@ Bir arka uçtan veri almak genellikle [`HttpClient.get()`](api/common/http/HttpC
 
 ```ts
 http.get<Config>('/api/config').subscribe((config) => {
-  // process the configuration.
+  // yapılandırmayı işle.
 });
 ```
 
@@ -24,7 +24,7 @@ TIP: Belirsiz yapıya sahip verilerle ve potansiyel `undefined` veya `null` değ
 
 CRITICAL: İstek yöntemlerinin jenerik türü, sunucu tarafından döndürülen veriler hakkında bir tür **varsayımıdır**. `HttpClient` gerçek dönüş verilerinin bu türle eşleştiğini doğrulamaz.
 
-## Fetching other types of data
+## Diğer Veri Türlerini Alma
 
 Varsayılan olarak, `HttpClient` sunucuların JSON verisi döndüreceğini varsayar. JSON olmayan bir API ile etkileşim kurarken, istek yaparken `HttpClient`'a hangi yanıt türünü bekleyip döndüreceğini söyleyebilirsiniz. Bu, `responseType` seçeneği ile yapılır.
 
@@ -49,7 +49,7 @@ http.get('/images/dog.jpg', {responseType: 'arraybuffer'}).subscribe((buffer) =>
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `responseType: 'text' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
-## Mutating server state
+## Sunucu Durumunu Değiştirme
 
 Sunucu API'lerinde durum değişiklikleri yapan işlemler genellikle yeni durumu veya yapılacak değişikliği belirten bir istek gövdesi ile POST istekleri yapmayı gerektirir.
 
@@ -74,7 +74,7 @@ http.post<Config>('/api/config', newConfig).subscribe((config) => {
 
 IMPORTANT: İsteğin gerçekten gönderilmesi için değiştirici istek `Observable`'larına `.subscribe()` yapmayı unutmayın.
 
-## Setting URL parameters
+## URL Parametrelerini Ayarlama
 
 İstek URL'sine dahil edilmesi gereken istek parametrelerini `params` seçeneğini kullanarak belirtin.
 
@@ -108,7 +108,7 @@ http
 
 `HttpClient`'ın parametreleri URL'ye nasıl kodlayacağını belirleyen özel bir `HttpParameterCodec` ile `HttpParams`'ı örnekleyebilirsiniz.
 
-### Custom parameter encoding
+### Özel Parametre Kodlaması
 
 Varsayılan olarak, `HttpParams` parametre anahtarlarını ve değerlerini kodlamak ve çözmek için yerleşik [`HttpUrlEncodingCodec`](api/common/http/HttpUrlEncodingCodec) kullanır.
 
@@ -151,7 +151,7 @@ export class ApiService {
 }
 ```
 
-## Setting request headers
+## Request Header'larını Ayarlama
 
 İsteğe dahil edilmesi gereken istek başlıklarını `headers` seçeneğini kullanarak belirtin.
 
@@ -185,7 +185,7 @@ http
   });
 ```
 
-## Interacting with the server response events
+## Sunucu Response Olaylarıyla Etkileşim
 
 Kolaylık sağlamak için, `HttpClient` varsayılan olarak sunucu tarafından döndürülen verinin (yanıt gövdesi) bir `Observable`'ını döndürür. Bazen gerçek yanıtı incelemek istenebilir, örneğin belirli yanıt başlıklarını almak için.
 
@@ -204,7 +204,7 @@ http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'response' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
-## Receiving raw progress events
+## Ham İlerleme Olaylarını Alma
 
 Yanıt gövdesi veya yanıt nesnesine ek olarak, `HttpClient` istek yaşam döngüsündeki belirli anlara karşılık gelen ham _olaylar_ akışını da döndürebilir. Bu olaylar isteğin ne zaman gönderildiğini, yanıt başlığının ne zaman döndüğünü ve gövdenin ne zaman tamamlandığını içerir. Bu olaylar ayrıca büyük istek veya yanıt gövdeleri için yükleme ve indirme durumunu bildiren _ilerleme olaylarını_ da içerebilir.
 
@@ -249,7 +249,7 @@ Olay akışında bildirilen her `HttpEvent`, olayın neyi temsil ettiğini ayır
 | `HttpEventType.Response`         | The entire response has been received, including the response body                 |
 | `HttpEventType.User`             | A custom event from an Http interceptor.                                           |
 
-## Handling request failure
+## İstek Hatalarını Yönetme
 
 Bir HTTP isteğinin başarısız olmasının üç yolu vardır:
 
@@ -265,7 +265,7 @@ Bir hata yanıtını kullanıcı arayüzü için bir değere dönüştürmek üz
 
 Bazen ağ kesintileri gibi geçici hatalar bir isteğin beklenmedik şekilde başarısız olmasına neden olabilir ve isteği basitçe yeniden denemek başarılı olmasını sağlayabilir. RxJS, başarısız bir `Observable`'a belirli koşullar altında otomatik olarak yeniden abone olan çeşitli _yeniden deneme_ operatörleri sağlar. Örneğin, `retry()` operatörü otomatik olarak belirtilen sayıda yeniden abone olmayı deneyecektir.
 
-### Timeouts
+### Zaman Aşımları
 
 Bir istek için zaman aşımı ayarlamak üzere, diğer istek seçenekleriyle birlikte `timeout` seçeneğini milisaniye cinsinden bir sayıya ayarlayabilirsiniz. Arka uç isteği belirtilen süre içinde tamamlanmazsa, istek iptal edilir ve bir hata yayınlanır.
 
@@ -281,20 +281,20 @@ http
       console.log('Config fetched successfully:', config);
     },
     error: (err) => {
-      // If the request times out, an error will have been emitted.
+      // İstek zaman aşımına uğrarsa, bir hata yayınlanmış olacaktır.
     },
   });
 ```
 
-## Advanced fetch options
+## Gelişmiş Fetch Seçenekleri
 
 `withFetch()` sağlayıcısı kullanıldığında, Angular'ın `HttpClient`'ı performansı ve kullanıcı deneyimini iyileştirebilecek gelişmiş fetch API seçeneklerine erişim sağlar. Bu seçenekler yalnızca fetch arka ucu kullanılırken mevcuttur.
 
-### Fetch options
+### Fetch Seçenekleri
 
 Aşağıdaki seçenekler, fetch arka ucu kullanılırken istek davranışı üzerinde ayrıntılı kontrol sağlar.
 
-#### Keep-alive connections
+#### Keep-alive Bağlantıları
 
 `keepalive` seçeneği, bir isteğin onu başlatan sayfadan daha uzun yaşamasına olanak tanır. Bu, özellikle kullanıcı sayfadan ayrılsa bile tamamlanması gereken analitik veya günlükleme istekleri için kullanışlıdır.
 
@@ -306,12 +306,12 @@ http
   .subscribe();
 ```
 
-#### HTTP caching control
+#### HTTP Önbellek Kontrolü
 
 `cache` seçeneği, isteğin tarayıcının HTTP önbelleği ile nasıl etkileşime gireceğini kontrol eder ve tekrarlanan istekler için performansı önemli ölçüde iyileştirebilir.
 
 ```ts
-//  Use cached response regardless of freshness
+// Tazeliğe bakılmaksızın önbelleğe alınmış yanıtı kullan
 http
   .get('/api/config', {
     cache: 'force-cache',
@@ -320,7 +320,7 @@ http
     // ...
   });
 
-// Always fetch from network, bypass cache
+// Her zaman ağdan al, önbelleği atla
 http
   .get('/api/live-data', {
     cache: 'no-cache',
@@ -329,7 +329,7 @@ http
     // ...
   });
 
-// Use cached response only, fail if not in cache
+// Yalnızca önbelleğe alınmış yanıtı kullan, önbellekte yoksa başarısız ol
 http
   .get('/api/static-data', {
     cache: 'only-if-cached',
@@ -339,12 +339,12 @@ http
   });
 ```
 
-#### Request priority for Core Web Vitals
+#### Core Web Vitals için İstek Önceliği
 
 `priority` seçeneği, bir isteğin göreli önemini belirtmenize olanak tanır ve tarayıcıların daha iyi Core Web Vitals puanları için kaynak yüklemesini optimize etmesine yardımcı olur.
 
 ```ts
-// High priority for critical resources
+// Kritik kaynaklar için yüksek öncelik
 http
   .get('/api/user-profile', {
     priority: 'high',
@@ -353,7 +353,7 @@ http
     // ...
   });
 
-// Low priority for non-critical resources
+// Kritik olmayan kaynaklar için düşük öncelik
 http
   .get('/api/recommendations', {
     priority: 'low',
@@ -362,7 +362,7 @@ http
     // ...
   });
 
-// Auto priority (default) lets the browser decide
+// Otomatik öncelik (varsayılan) tarayıcının karar vermesine izin verir
 http
   .get('/api/settings', {
     priority: 'auto',
@@ -380,12 +380,12 @@ Kullanılabilir `priority` değerleri:
 
 TIP: Largest Contentful Paint (LCP) etkileyen istekler için `priority: 'high'` ve ilk kullanıcı deneyimini etkilemeyen istekler için `priority: 'low'` kullanın.
 
-#### Request mode
+#### İstek Modu
 
 `mode` seçeneği, isteğin çapraz köken isteklerini nasıl ele aldığını kontrol eder ve yanıt türünü belirler.
 
 ```ts
-// Same-origin requests only
+// Yalnızca aynı kökenli istekler
 http
   .get('/api/local-data', {
     mode: 'same-origin',
@@ -394,7 +394,7 @@ http
     // ...
   });
 
-// CORS-enabled cross-origin requests
+// CORS etkin çapraz köken istekleri
 http
   .get('https://api.external.com/data', {
     mode: 'cors',
@@ -403,7 +403,7 @@ http
     // ...
   });
 
-// No-CORS mode for simple cross-origin requests
+// Basit çapraz köken istekleri için No-CORS modu
 http
   .get('https://external-api.com/public-data', {
     mode: 'no-cors',
@@ -421,12 +421,12 @@ Kullanılabilir `mode` değerleri:
 
 TIP: Hassas istekler için hiçbir zaman çapraz köken olmaması gereken durumlarda `mode: 'same-origin'` kullanın.
 
-#### Redirect handling
+#### Yönlendirme Yönetimi
 
 `redirect` seçeneği, sunucudan gelen yönlendirme yanıtlarının nasıl ele alınacağını belirtir.
 
 ```ts
-// Follow redirects automatically (default behavior)
+// Yönlendirmeleri otomatik olarak takip et (varsayılan davranış)
 http
   .get('/api/resource', {
     redirect: 'follow',
@@ -435,26 +435,26 @@ http
     // ...
   });
 
-// Prevent automatic redirects
+// Otomatik yönlendirmeleri engelle
 http
   .get('/api/resource', {
     redirect: 'manual',
   })
   .subscribe((response) => {
-    // Handle redirect manually
+    // Yönlendirmeyi manuel olarak yönet
   });
 
-// Treat redirects as errors
+// Yönlendirmeleri hata olarak ele al
 http
   .get('/api/resource', {
     redirect: 'error',
   })
   .subscribe({
     next: (data) => {
-      // Success response
+      // Başarılı yanıt
     },
     error: (err) => {
-      // Redirect responses will trigger this error handler
+      // Yönlendirme yanıtları bu hata işleyicisini tetikleyecektir
     },
   });
 ```
@@ -467,12 +467,12 @@ Kullanılabilir `redirect` değerleri:
 
 TIP: Yönlendirmeleri özel mantıkla ele almanız gerektiğinde `redirect: 'manual'` kullanın.
 
-#### Credentials handling
+#### Kimlik Bilgisi Yönetimi
 
 `credentials` seçeneği, çerezlerin, yetkilendirme başlıklarının ve diğer kimlik bilgilerinin çapraz köken istekleriyle gönderilip gönderilmeyeceğini kontrol eder. Bu, özellikle kimlik doğrulama senaryoları için önemlidir.
 
 ```ts
-// Include credentials for cross-origin requests
+// Çapraz köken istekler için kimlik bilgilerini dahil et
 http
   .get('https://api.example.com/protected-data', {
     credentials: 'include',
@@ -481,7 +481,7 @@ http
     // ...
   });
 
-// Never send credentials (default for cross-origin)
+// Asla kimlik bilgisi gönderme (çapraz köken için varsayılan)
 http
   .get('https://api.example.com/public-data', {
     credentials: 'omit',
@@ -490,7 +490,7 @@ http
     // ...
   });
 
-// Send credentials only for same-origin requests
+// Kimlik bilgilerini yalnızca aynı kökenli istekler için gönder
 http
   .get('/api/user-data', {
     credentials: 'same-origin',
@@ -499,23 +499,23 @@ http
     // ...
   });
 
-// withCredentials overrides credentials setting
+// withCredentials, credentials ayarını geçersiz kılar
 http
   .get('https://api.example.com/data', {
-    credentials: 'omit', // This will be ignored
-    withCredentials: true, // This forces credentials: 'include'
+    credentials: 'omit', // Bu göz ardı edilecek
+    withCredentials: true, // Bu credentials: 'include' olarak zorlar
   })
   .subscribe((data) => {
-    // Request will include credentials despite credentials: 'omit'
+    // İstek, credentials: 'omit' olmasına rağmen kimlik bilgilerini dahil edecek
   });
 
-// Legacy approach (still supported)
+// Eski yaklaşım (hâlâ destekleniyor)
 http
   .get('https://api.example.com/data', {
     withCredentials: true,
   })
   .subscribe((data) => {
-    // Equivalent to credentials: 'include'
+    // credentials: 'include' ile eşdeğer
   });
 ```
 
@@ -529,12 +529,12 @@ Kullanılabilir `credentials` değerleri:
 
 TIP: CORS'u destekleyen farklı bir alan adına kimlik doğrulama çerezleri veya başlıkları göndermeniz gerektiğinde `credentials: 'include'` kullanın. Karışıklığı önlemek için `credentials` ve `withCredentials` seçeneklerini birlikte kullanmaktan kaçının.
 
-#### Referrer
+#### Referrer (Yönlendiren)
 
 `referrer` seçeneği, istekle birlikte hangi yönlendiren bilgisinin gönderileceğini kontrol etmenize olanak tanır. Bu, gizlilik ve güvenlik açısından önemlidir.
 
 ```ts
-// Send a specific referrer URL
+// Belirli bir referrer URL'si gönder
 http
   .get('/api/data', {
     referrer: 'https://example.com/page',
@@ -543,7 +543,7 @@ http
     // ...
   });
 
-// Use the current page as referrer (default behavior)
+// Mevcut sayfayı referrer olarak kullan (varsayılan davranış)
 http
   .get('/api/analytics', {
     referrer: 'about:client',
@@ -561,19 +561,19 @@ http
 
 TIP: Yönlendiren sayfa URL'sini sızdırmak istemediğiniz hassas istekler için `referrer: ''` kullanın.
 
-#### Referrer policy
+#### Referrer Politikası
 
 `referrerPolicy` seçeneği, ne kadar yönlendiren bilgisinin (isteği yapan sayfanın URL'si) bir HTTP isteğiyle birlikte gönderileceğini kontrol eder. Bu ayar hem gizlilik hem de analitikleri etkiler ve veri görünürlüğü ile güvenlik değerlendirmeleri arasında denge kurmanıza olanak tanır.
 
 ```ts
-// Send no referrer information regardless of the current page
+// Mevcut sayfadan bağımsız olarak referrer bilgisi gönderme
 http
   .get('/api/data', {
     referrerPolicy: 'no-referrer',
   })
   .subscribe();
 
-// Send origin only (e.g. https://example.com)
+// Yalnızca kökeni gönder (örn. https://example.com)
 http
   .get('/api/analytics', {
     referrerPolicy: 'origin',
@@ -594,19 +594,19 @@ http
 
 TIP: Gizlilik açısından hassas istekler için `'no-referrer'`, `'origin'` veya `'strict-origin-when-cross-origin'` gibi muhafazakar değerleri tercih edin.
 
-#### Integrity
+#### Bütünlük (Integrity)
 
 `integrity` seçeneği, beklenen içeriğin kriptografik özetini sağlayarak yanıtın değiştirilmediğini doğrulamanıza olanak tanır. Bu, özellikle CDN'lerden betik veya diğer kaynakları yüklerken kullanışlıdır.
 
 ```ts
-// Verify response integrity with SHA-256 hash
+// SHA-256 özetiyle yanıt bütünlüğünü doğrula
 http
   .get('/api/script.js', {
     integrity: 'sha256-ABC123...',
     responseType: 'text',
   })
   .subscribe((script) => {
-    // Script content is verified against the hash
+    // Betik içeriği özete göre doğrulanır
   });
 ```
 
@@ -614,7 +614,7 @@ IMPORTANT: `integrity` seçeneği, yanıt içeriği ile sağlanan özet arasınd
 
 TIP: Değiştirilmediğinden emin olmak için harici kaynaklardan kritik kaynaklar yüklerken alt kaynak bütünlüğünü kullanın. Özetleri `openssl` gibi araçlar kullanarak oluşturun.
 
-## Http `Observable`s
+## Http `Observable`'lar
 
 `HttpClient` üzerindeki her istek yöntemi, istenen yanıt türünün bir `Observable`'ını oluşturur ve döndürür. `HttpClient` kullanırken bu `Observable`'ların nasıl çalıştığını anlamak önemlidir.
 
@@ -630,7 +630,7 @@ Otomatik tamamlama nedeniyle, `HttpClient` abonelikleri temizlenmezse genellikle
 
 TIP: `Observable`'lara abone olmak için `async` pipe veya `toSignal` işlemini kullanmak, aboneliklerin düzgün şekilde elden çıkarılmasını sağlar.
 
-## Best practices
+## En İyi Uygulamalar
 
 `HttpClient` doğrudan bileşenlerden enjekte edilip kullanılabilse de, genellikle veri erişim mantığını izole eden ve kapsülleyen yeniden kullanılabilir, enjekte edilebilir servisler oluşturmanızı öneririz. Örneğin, bu `UserService` bir kullanıcıyı id'sine göre veri isteme mantığını kapsüller:
 

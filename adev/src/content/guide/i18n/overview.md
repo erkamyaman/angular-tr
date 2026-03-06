@@ -1,4 +1,4 @@
-# Angular Internationalization (i18n)
+# Angular Uluslararasılaştırma (i18n)
 
 _Uluslararasılaştırma_, bazen i18n olarak da adlandırılır, projenizi dünya genelinde farklı yerel ayarlarda kullanım için tasarlama ve hazırlama sürecidir.
 _Yerelleştirme_, projenizin farklı yerel ayarlar için sürümlerini oluşturma sürecidir.
@@ -18,7 +18,7 @@ Yerelleştirme ve uluslararasılaştırmaya hızlı bir giriş için bu videoyu 
 
 <docs-video src="https://www.youtube.com/embed/KNTN-nsbV7M"/>
 
-## Learn about Angular internationalization
+## Angular uluslararasılaştırma hakkında bilgi edinin
 
 <docs-card-container>
   <docs-card title="Add the localize package" href="guide/i18n/add-package">

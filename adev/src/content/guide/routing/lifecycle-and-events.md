@@ -1,8 +1,8 @@
-# Router Lifecycle and Events
+# Router Yaşam Döngüsü ve Olaylar
 
 Angular Router, navigasyon değişikliklerine yanıt vermenize ve yönlendirme süreci sırasında özel mantık çalıştırmanıza olanak tanıyan kapsamlı bir yaşam döngüsü kancaları ve olaylar seti sağlar.
 
-## Common router events
+## Yaygın router olayları
 
 Angular Router, navigasyon yaşam döngüsünü izlemek için abone olabileceğiniz navigasyon olayları yayınlar. Bu olaylar `Router.events` observable'ı aracılığıyla kullanılabilir. Bu bölüm, navigasyon ve hata izleme için yaygın yönlendirme yaşam döngüsü olaylarını (kronolojik sırayla) kapsar.
 
@@ -24,14 +24,14 @@ Yaygın hata olayları şunlardır:
 | [`NavigationCancel`](api/router/NavigationCancel) | Yönlendirici navigasyonu iptal ettiğinde gerçekleşir. Genellikle bir koruyucunun false döndürmesinden kaynaklanır. |
 | [`NavigationError`](api/router/NavigationError)   | Navigasyon başarısız olduğunda gerçekleşir. Geçersiz rotalar veya çözücü hatalarından kaynaklanabilir.             |
 
-Tüm yaşam döngüsü olaylarının listesi için [bu kılavuzun tam tablosuna](#all-router-events) göz atın.
+Tüm yaşam döngüsü olaylarının listesi için [bu kılavuzun tam tablosuna](#tüm-router-olayları) göz atın.
 
-## How to subscribe to router events
+## Router olaylarına nasıl abone olunur
 
 Belirli navigasyon yaşam döngüsü olayları sırasında kod çalıştırmak istediğinizde, `router.events`'e abone olarak ve olayın örneğini kontrol ederek bunu yapabilirsiniz:
 
 ```ts
-// Example of subscribing to router events
+// Router olaylarına abone olma örneği
 import {Component, inject, signal, effect} from '@angular/core';
 import {Event, Router, NavigationStart, NavigationEnd} from '@angular/router';
 
@@ -42,14 +42,14 @@ export class RouterEvents {
   private readonly router = inject(Router);
 
   constructor() {
-    // Subscribe to router events and react to events
+    // Router olaylarına abone ol ve olaylara tepki ver
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
-        // Navigation starting
+        // Navigasyon başlıyor
         console.log('Navigation starting:', event.url);
       }
       if (event instanceof NavigationEnd) {
-        // Navigation completed
+        // Navigasyon tamamlandı
         console.log('Navigation completed:', event.url);
       }
     });
@@ -59,7 +59,7 @@ export class RouterEvents {
 
 NOTE: `@angular/router`'dan gelen [`Event`](api/router/Event) türü, normal global [`Event`](https://developer.mozilla.org/en-US/docs/Web/API/Event) türü ile aynı ada sahiptir, ancak [`RouterEvent`](api/router/RouterEvent) türünden farklıdır.
 
-## How to debug routing events
+## Yönlendirme olayları nasıl hata ayıklanır
 
 Yönlendirici navigasyon sorunlarını olay dizisi hakkında görünürlük olmadan hata ayıklamak zor olabilir. Angular, tüm yönlendirici olaylarını konsola kaydeden yerleşik bir hata ayıklama özelliği sağlar ve navigasyon akışını anlamanıza ve sorunların nerede oluştuğunu belirlemenize yardımcı olur.
 
@@ -76,11 +76,11 @@ bootstrapApplication(App, {
 
 Daha fazla bilgi için [`withDebugTracing`](api/router/withDebugTracing) resmi dokümanlarına göz atın.
 
-## Common use cases
+## Yaygın kullanım durumları
 
 Router olayları, gerçek dünya uygulamalarında birçok pratik özelliği mümkün kılar. Router olaylarıyla kullanılan bazı yaygın kalıplar şunlardır.
 
-### Loading indicators
+### Yükleme göstergeleri
 
 Navigasyon sırasında yükleme göstergeleri gösterme:
 
@@ -103,7 +103,7 @@ export class App {
 }
 ```
 
-### Analytics tracking
+### Analitik izleme
 
 Analitik için sayfa görüntülemelerini izleme:
 
@@ -119,9 +119,9 @@ export class AnalyticsService {
 
   startTracking() {
     this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event) => {
-      // Track page views when URL changes
+      // URL değiştiğinde sayfa görüntülemelerini izle
       if (event instanceof NavigationEnd) {
-        // Send page view to analytics
+        // Sayfa görüntülemesini analitik servisine gönder
         this.analytics.trackPageView(event.url);
       }
     });
@@ -135,7 +135,7 @@ export class AnalyticsService {
 }
 ```
 
-### Error handling
+### Hata yönetimi
 
 Navigasyon hatalarını nazikçe yönetme ve kullanıcı geri bildirimi sağlama:
 
@@ -187,7 +187,7 @@ export class ErrorHandler {
 }
 ```
 
-## All router events
+## Tüm router olayları
 
 Referans olarak, Angular'da bulunan tüm router olaylarının tam listesi burada verilmiştir. Bu olaylar kategoriye göre düzenlenmiş ve navigasyon sırasında tipik olarak oluşma sırasına göre listelenmiştir.
 

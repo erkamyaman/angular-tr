@@ -42,7 +42,7 @@ Bu eğitim için kullanmak istediğiniz bilgisayardaki komut satırı aracında 
 
 <docs-workflow>
 
-<docs-step title="Identify the version of `node.js` that Angular requires">
+<docs-step title="Angular'ın gerektirdiği `node.js` sürümünü belirleyin">
 Angular, aktif LTS veya bakım LTS sürümünde bir Node gerektirir. `node.js` sürümünüzü doğrulayalım. Belirli sürüm gereksinimleri hakkında bilgi için [package.json dosyasındaki](https://unpkg.com/browse/@angular/core@15.1.5/package.json) engines özelliğine bakın.
 
 Bir **Terminal** penceresinden:
@@ -51,17 +51,17 @@ Bir **Terminal** penceresinden:
 1. Görüntülenen sürüm numarasının gereksinimleri karşıladığını doğrulayın.
    </docs-step>
 
-<docs-step title="Install the correct version of `node.js` for Angular">
+<docs-step title="Angular için doğru `node.js` sürümünü yükleyin">
 Eğer `node.js` sürümü yüklü değilse, lütfen [nodejs.org üzerindeki kurulum talimatlarını](https://nodejs.org/en/download/) takip edin.
 </docs-step>
 
-<docs-step title="Install the latest version of Angular">
+<docs-step title="Angular'ın en son sürümünü yükleyin">
 `node.js` ve `npm` yüklendikten sonra, sıradaki adım etkili Angular geliştirmesi için araçlar sağlayan [Angular CLI](tools/cli)'yi yüklemektir.
 
 Bir **Terminal** penceresinden şu komutu çalıştırın: `npm install -g @angular/cli`.
 </docs-step>
 
-<docs-step title="Install integrated development environment (IDE)">
+<docs-step title="Entegre geliştirme ortamını (IDE) yükleyin">
 Angular ile uygulama geliştirmek için tercih ettiğiniz herhangi bir aracı kullanabilirsiniz. Aşağıdakileri öneriyoruz:
 
 1. [Visual Studio Code](https://code.visualstudio.com/)
@@ -69,7 +69,7 @@ Angular ile uygulama geliştirmek için tercih ettiğiniz herhangi bir aracı ku
 3. [WebStorm](https://www.jetbrains.com/webstorm/)
    </docs-step>
 
-<docs-step title="Optional: set-up your AI powered IDE">
+<docs-step title="İsteğe bağlı: Yapay zeka destekli IDE'nizi kurun">
 
 Bu eğitimi tercih ettiğiniz yapay zeka destekli IDE'de takip ediyorsanız, [Angular prompt kurallarına ve en iyi uygulamalarına göz atın](/ai/develop-with-ai).
 

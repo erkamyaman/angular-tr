@@ -1,4 +1,4 @@
-# Overview of Angular libraries
+# Angular kütüphanelerine genel bakış
 
 Birçok uygulamanın, birleşik bir kullanıcı arayüzü sunma, veri gösterme ve veri girişine izin verme gibi aynı genel sorunları çözmesi gerekir.
 Geliştiriciler, farklı uygulamalarda yeniden kullanım için uyarlanabilecek belirli alanlar için genel çözümler oluşturabilir.
@@ -17,7 +17,7 @@ Bkz. [Using Published Libraries](tools/libraries/using-libraries).
 
 HELPFUL: Kütüphaneler Angular uygulamaları tarafından kullanılmak üzere tasarlanmıştır. Angular olmayan web uygulamalarına Angular özellikleri eklemek için [Angular özel elemanlarını](guide/elements) kullanın.
 
-## Creating libraries
+## Kütüphane oluşturma
 
 Yeniden kullanıma uygun özellikler geliştirdiyseniz, kendi kütüphanelerinizi oluşturabilirsiniz.
 Bu kütüphaneler çalışma alanınızda yerel olarak kullanılabilir veya diğer projeler ya da diğer Angular geliştiricileriyle paylaşmak için [npm paketleri](reference/configs/npm-packages) olarak yayınlayabilirsiniz.

@@ -10,7 +10,7 @@ Bu aktivitede, uygulamanıza rotaları nasıl ekleyeceğinizi ve yapılandıraca
 
 <docs-workflow>
 
-<docs-step title="Define a route in `app.routes.ts`">
+<docs-step title="`app.routes.ts` dosyasında bir rota tanımlayın">
 
 Uygulamanızda gösterilecek iki sayfa vardır: (1) Ana Sayfa ve (2) Kullanıcı Sayfası.
 
@@ -37,7 +37,7 @@ Yukarıdaki kod, `Home`'un bir rota olarak nasıl eklenebileceğine dair bir ör
 
 </docs-step>
 
-<docs-step title="Add title to route definition">
+<docs-step title="Rota tanımına başlık ekleyin">
 
 Rotaları doğru şekilde tanımlamanın yanı sıra, Angular Router kullanıcılar navigasyon yaparken her rotaya `title` özelliği ekleyerek sayfa başlığını ayarlamanızı da sağlar.
 

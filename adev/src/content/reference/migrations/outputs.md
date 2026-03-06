@@ -1,4 +1,4 @@
-# Migration to output function
+# output fonksiyonuna geçiş
 
 Angular, v17.3'te çıktılar için geliştirilmiş bir API tanıttı ve bu API v19 itibarıyla üretime hazır kabul edilmektedir. Bu API, `input()` API'sini taklit eder ancak Signals'e dayalı değildir.
 Özel olaylar output fonksiyonu ve faydaları hakkında daha fazla bilgi için [özel kılavuzu](guide/components/outputs) okuyun.
@@ -11,13 +11,13 @@ Output fonksiyonunu kullanmak isteyen mevcut projeleri desteklemek için Angular
 ng generate @angular/core:output-migration
 ```
 
-## What does the migration change?
+## Geçiş neyi değiştirir?
 
 1. `@Output()` sınıf üyeleri `output()` eşdeğerlerine güncellenir.
 2. Bileşenlerin veya direktiflerin dosyasındaki TypeScript modül düzeyindeki içe aktarmalar da güncellenir.
 3. Kullanımı önerilmeyen `event.next()` gibi API fonksiyonlarını `event.emit()`'e geçirir ve `event.complete()` çağrılarını kaldırır.
 
-**Before**
+**Önce**
 
 ```typescript
 import {Component, Output, EventEmitter} from '@angular/core';
@@ -34,7 +34,7 @@ export class MyComponent {
 }
 ```
 
-**After**
+**Sonra**
 
 ```typescript
 import {Component, output} from '@angular/core';
@@ -51,7 +51,7 @@ export class MyComponent {
 }
 ```
 
-## Configuration options
+## Yapılandırma seçenekleri
 
 Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 
@@ -75,7 +75,7 @@ Bu seçenekleri aşağıda gösterildiği gibi kullanın:
 ng generate @angular/core:output-migration --path src/app/sub-folder
 ```
 
-## Exceptions
+## İstisnalar
 
 Bazı durumlarda, geçiş koda dokunmayacaktır.
 Bu istisnalardan biri, olayın `pipe()` yöntemiyle kullanıldığı durumdur.

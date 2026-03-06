@@ -2,7 +2,7 @@
 
 Uygulamanın mevcut durumunda, uygulama içinde var olan dahili bir bağlantıya tıkladığımızda tüm sayfa yenilenir. Küçük bir uygulamada bu önemsiz görünebilir, ancak daha fazla içeriğe sahip büyük sayfalarda kullanıcıların varlıkları yeniden indirmesi ve hesaplamaları tekrar çalıştırması gerektiğinden performans etkileri olabilir.
 
-NOTE: [Ayrıntılı kılavuzdaki uygulamanıza rota ekleme](/guide/routing/define-routes#adding-the-router-to-your-application) hakkında daha fazla bilgi edinin.
+NOTE: [Ayrıntılı kılavuzdaki uygulamanıza rota ekleme](/guide/routing/define-routes#uygulamanıza-router-ekleme) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, Angular Router'dan en iyi şekilde yararlanmak için `RouterLink` direktifini nasıl kullanacağınızı öğreneceksiniz.
 
@@ -10,7 +10,7 @@ Bu aktivitede, Angular Router'dan en iyi şekilde yararlanmak için `RouterLink`
 
 <docs-workflow>
 
-<docs-step title="Import `RouterLink` directive">
+<docs-step title="`RouterLink` direktifini içe aktarın">
 
 `app.ts` dosyasında, `@angular/router`'dan mevcut import ifadesine `RouterLink` direktif import'unu ekleyin ve bileşen dekoratörünüzün `imports` dizisine ekleyin.
 
@@ -26,7 +26,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 </docs-step>
 
-<docs-step title="Add a `routerLink` to template">
+<docs-step title="Şablona bir `routerLink` ekleyin">
 
 `RouterLink` direktifini kullanmak için `href` niteliklerini `routerLink` ile değiştirin. Şablonu bu değişiklikle güncelleyin.
 

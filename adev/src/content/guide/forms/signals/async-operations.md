@@ -1,8 +1,8 @@
-# Async operations
+# Asenkron İşlemler
 
 Bazı doğrulama işlemleri, backend API'leri veya üçüncü taraf hizmetler gibi harici kaynaklardan veri gerektirir. Signal Forms, asenkron doğrulama için iki fonksiyon sağlar: HTTP tabanlı doğrulama için `validateHttp()` ve özel kaynak tabanlı doğrulama için `validateAsync()`.
 
-## When to use async validation
+## Asenkron doğrulama ne zaman kullanılır
 
 Doğrulama mantığınız harici veri gerektirdiğinde asenkron doğrulama kullanın. Bazı yaygın örnekler şunlardır:
 
@@ -13,7 +13,7 @@ Doğrulama mantığınız harici veri gerektirdiğinde asenkron doğrulama kulla
 
 İstemcide senkron olarak gerçekleştirebileceğiniz kontroller için asenkron doğrulama kullanmayın. Format doğrulaması ve statik kurallar için `pattern()`, `email()` veya `validate()` gibi senkron doğrulama kurallarını kullanın.
 
-## How async validation works
+## Asenkron doğrulama nasıl çalışır
 
 Asenkron doğrulama, yalnızca tüm senkron doğrulama geçtikten sonra çalışır. Doğrulama yürütülürken, alanın `pending()` sinyali `true` döndürür. Doğrulama, hataları belirli alanlara hedefleyebilir ve bekleyen istekler alan değerleri değiştiğinde otomatik olarak iptal edilir.
 
@@ -82,11 +82,11 @@ Doğrulama akışı şu şekilde çalışır:
 5. İstek tamamlanır ve `pending()` `false` olur
 6. Hatalar yanıta göre güncellenir
 
-## HTTP validation with validateHttp()
+## validateHttp() ile HTTP doğrulama
 
 `validateHttp()` fonksiyonu, asenkron doğrulamanın en yaygın biçimini sağlar. Bir REST API veya herhangi bir HTTP uç noktasına karşı doğrulama yapmanız gerektiğinde kullanın.
 
-### Request function
+### İstek fonksiyonu
 
 `request` fonksiyonu bir URL dizesi veya bir `HttpResourceRequest` nesnesi döndürür. Doğrulamayı atlamak için `undefined` döndürün:
 
@@ -102,21 +102,21 @@ import {form, validateHttp, FormField} from '@angular/forms/signals';
 export class Registration {
   registrationModel = signal({username: ''});
 
-  // Cache usernames that passed validation
+  // Doğrulamayı geçen kullanıcı adlarını önbelleğe al
   private validatedUsernames = new Set<string>();
 
   registrationForm = form(this.registrationModel, (schemaPath) => {
     validateHttp(schemaPath.username, {
       request: ({value}) => {
         const username = value();
-        // Skip HTTP request if already validated
+        // Zaten doğrulanmışsa HTTP isteğini atla
         if (this.validatedUsernames.has(username)) return undefined;
 
         return `/api/users/check?username=${username}`;
       },
       onSuccess: (response, {value}) => {
         if (response.available) {
-          // Cache successful validations
+          // Başarılı doğrulamaları önbelleğe al
           this.validatedUsernames.add(value());
           return null;
         }
@@ -144,7 +144,7 @@ request: ({value}) => ({
 }) // prettier-ignore
 ```
 
-### Success and error handlers
+### Başarı ve hata işleyicileri
 
 `onSuccess` fonksiyonu HTTP yanıtını alır ve doğrulama hataları veya geçerli değerler için `undefined` döndürür:
 
@@ -192,7 +192,7 @@ onError: (error) => {
 } // prettier-ignore
 ```
 
-### HTTP options
+### HTTP seçenekleri
 
 HTTP isteğini `options` parametresiyle özelleştirin:
 
@@ -223,7 +223,7 @@ validateHttp(schemaPath.field, {
 
 TIP: Mevcut tüm seçenekler için [httpResource API dokümantasyonuna](api/common/http/httpResource) bakın.
 
-## Custom async validation with validateAsync()
+## validateAsync() ile özel asenkron doğrulama
 
 Çoğu uygulama asenkron doğrulama için `validateHttp()` kullanmalıdır. HTTP isteklerini minimum yapılandırmayla ele alır ve kullanım durumlarının büyük çoğunluğunu kapsar.
 
@@ -236,7 +236,7 @@ TIP: Mevcut tüm seçenekler için [httpResource API dokümantasyonuna](api/comm
 - **Karmaşık yeniden deneme mantığı** - Özel geri çekilme stratejileri veya koşullu yeniden denemeler
 - **Doğrudan kaynak erişimi** - Tam kaynak yaşam döngüsüne ihtiyaç duyduğunuzda
 
-### Creating a custom validation rule
+### Özel bir doğrulama kuralı oluşturma
 
 `validateAsync()` fonksiyonu dört özellik gerektirir: `params`, `factory`, `onSuccess` ve `onError`. `params` fonksiyonu kaynağınız için parametreleri döndürürken, `factory` kaynağı oluşturur:
 
@@ -256,21 +256,21 @@ export class Registration {
   private usernameValidator = inject(UsernameValidator);
   private cache = new Map<string, {available: boolean}>();
 
-  // Custom resource factory with caching
+  // Önbelleklemeli özel kaynak fabrikası
   createUsernameResource = (usernameSignal: Signal<string | undefined>) => {
     return resource({
       params: () => usernameSignal(),
       loader: async ({params: username}) => {
         if (!username) return undefined;
 
-        // Check cache first
+        // Önce önbelleği kontrol et
         const cached = this.cache.get(username);
         if (cached !== undefined) return cached;
 
-        // Use injected service for validation
+        // Doğrulama için enjekte edilen servisi kullan
         const result = await this.usernameValidator.checkAvailability(username);
 
-        // Cache result
+        // Sonucu önbelleğe al
         this.cache.set(username, result);
         return result;
       },
@@ -306,7 +306,7 @@ export class Registration {
 
 `params` fonksiyonu her değer değişikliğinde çalışır. Doğrulamayı atlamak için `undefined` döndürün. `factory` fonksiyonu kurulum sırasında bir kez çalışır ve parametreleri sinyal olarak alır. Kaynak, parametreler değiştiğinde otomatik olarak güncellenir.
 
-### Using Observable-based services
+### Observable tabanlı servisleri kullanma
 
 Uygulamanızda Observable döndüren mevcut hizmetler varsa, `@angular/core/rxjs-interop`'tan `rxResource` kullanın:
 
@@ -350,7 +350,7 @@ export class Registration {
 
 `rxResource` fonksiyonu doğrudan Observable'larla çalışır ve alan değeri değiştiğinde abonelik temizliğini otomatik olarak yönetir.
 
-## Understanding pending state
+## Bekleyen durumu anlama
 
 Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndürür. Bu süre zarfında:
 
@@ -389,7 +389,7 @@ Doğrulama beklemedeyken form gönderimini devre dışı bırakın:
 
 TIP: `pending()`, `valid()` ve `invalid()` sinyallerini kullanan daha fazla kalıp için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın.
 
-### Validation execution order
+### Doğrulama yürütme sırası
 
 Asenkron doğrulama yalnızca senkron doğrulama geçtikten sonra çalışır. Bu, geçersiz girdi için gereksiz sunucu isteklerini önler:
 
@@ -397,11 +397,11 @@ Asenkron doğrulama yalnızca senkron doğrulama geçtikten sonra çalışır. B
 import {form, required, minLength, validateHttp} from '@angular/forms/signals';
 
 form(model, (schemaPath) => {
-  // 1. These synchronous validation rules run first
+  // 1. Bu senkron doğrulama kuralları önce çalışır
   required(schemaPath.username);
   minLength(schemaPath.username, 3);
 
-  // 2. This async validation rule only runs if synchronous validation passes
+  // 2. Bu asenkron doğrulama kuralı yalnızca senkron doğrulama geçerse çalışır
   validateHttp(schemaPath.username, {
     request: ({value}) => `/api/check?username=${value()}`,
     onSuccess: (result) =>
@@ -421,13 +421,13 @@ form(model, (schemaPath) => {
 
 Bu yürütme sırası, sunucu yükünü azaltarak ve format hatalarını anında yakalayarak performansı artırır.
 
-### Request cancellation
+### İstek iptali
 
 Bir alan değeri değiştiğinde, Signal Forms o alan için bekleyen asenkron doğrulama isteğini otomatik olarak iptal eder. Bu, yarış koşullarını önler ve doğrulamanın her zaman mevcut değeri yansıtmasını sağlar. İptal mantığını kendiniz uygulamanız gerekmez.
 
-## Best practices
+## En iyi uygulamalar
 
-### Combine with synchronous validation
+### Senkron doğrulama ile birleştirme
 
 Asenkron istekler yapmadan önce her zaman formatı doğrulayın. Bu, hataları anında yakalar ve gereksiz sunucu isteklerini önler:
 
@@ -435,11 +435,11 @@ Asenkron istekler yapmadan önce her zaman formatı doğrulayın. Bu, hataları 
 import {form, required, email, validateHttp} from '@angular/forms/signals';
 
 form(model, (schemaPath) => {
-  // Validate format first
+  // Önce formatı doğrula
   required(schemaPath.email);
   email(schemaPath.email);
 
-  // Then check availability
+  // Sonra kullanılabilirliği kontrol et
   validateHttp(schemaPath.email, {
     request: ({value}) => `/api/emails/check?email=${value()}`,
     onSuccess: (result) =>
@@ -457,7 +457,7 @@ form(model, (schemaPath) => {
 });
 ```
 
-### Skip validation when appropriate
+### Uygun olduğunda doğrulamayı atlama
 
 Doğrulamayı atlamak için `request` fonksiyonundan `undefined` döndürün. Boş alanları veya minimum gereksinimleri karşılamayan değerleri doğrulamaktan kaçınmak için bunu kullanın:
 
@@ -467,7 +467,7 @@ import {validateHttp} from '@angular/forms/signals';
 validateHttp(schemaPath.username, {
   request: ({value}) => {
     const username = value();
-    // Skip validation for empty or short usernames
+    // Boş veya kısa kullanıcı adları için doğrulamayı atla
     if (!username || username.length < 3) return undefined;
 
     return `/api/users/check?username=${username}`;
@@ -486,7 +486,7 @@ validateHttp(schemaPath.username, {
 });
 ```
 
-### Handle errors gracefully
+### Hataları zarif bir şekilde yönetme
 
 Açık, kullanıcı dostu hata mesajları sağlayın. Hata ayıklama için teknik ayrıntıları günlüğe kaydedin ancak kullanıcılara basit mesajlar gösterin:
 
@@ -497,17 +497,17 @@ validateHttp(schemaPath.field, {
   request: ({value}) => `/api/validate?field=${value()}`,
   onSuccess: (result) => {
     if (result.valid) return null;
-    // Use server message when available
+    // Mevcut olduğunda sunucu mesajını kullan
     return {
       kind: 'serverError',
       message: result.message || 'Validation failed',
     };
   },
   onError: (error) => {
-    // Log for debugging
+    // Hata ayıklama için günlüğe kaydet
     console.error('Validation request failed:', error);
 
-    // Show user-friendly message
+    // Kullanıcı dostu mesaj göster
     return {
       kind: 'serverError',
       message: 'Unable to validate. Please try again later.',
@@ -516,7 +516,7 @@ validateHttp(schemaPath.field, {
 });
 ```
 
-### Show clear feedback
+### Açık geri bildirim gösterme
 
 Doğrulamanın ne zaman gerçekleştiğini göstermek için `pending()` sinyalini kullanın. Bu, kullanıcıların gecikmeleri anlamasına yardımcı olur ve daha iyi algılanan performans sağlar:
 
@@ -535,7 +535,7 @@ Doğrulamanın ne zaman gerçekleştiğini göstermek için `pending()` sinyalin
 }
 ```
 
-## Next steps
+## Sonraki adımlar
 
 Bu kılavuz `validateHttp()` ve `validateAsync()` ile asenkron doğrulamayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 

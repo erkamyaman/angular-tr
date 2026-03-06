@@ -1,8 +1,8 @@
-# Using Tailwind CSS with Angular
+# Angular ile Tailwind CSS Kullanımı
 
 [Tailwind CSS](https://tailwindcss.com/), HTML'inizden hiç ayrılmadan modern web siteleri oluşturmak için kullanılabilen yardımcı sınıf öncelikli bir CSS framework'üdür. Bu kılavuz, Angular projenizde Tailwind CSS'i kurma adımlarını açıklayacaktır.
 
-## Automated Setup with `ng add`
+## `ng add` ile Otomatik Kurulum
 
 Angular CLI, `ng add` komutunu kullanarak Tailwind CSS'i projenize entegre etmek için basitleştirilmiş bir yol sağlar. Bu komut, gerekli paketleri otomatik olarak yükler, Tailwind CSS'i yapılandırır ve projenizin derleme ayarlarını günceller.
 
@@ -20,11 +20,11 @@ Bu komut aşağıdaki işlemleri gerçekleştirir:
 
 `ng add tailwindcss` çalıştırdıktan sonra, bileşen şablonlarınızda Tailwind'in yardımcı sınıflarını hemen kullanmaya başlayabilirsiniz.
 
-## Manual Setup (Alternative Method)
+## Manuel Kurulum (Alternatif Yöntem)
 
 Tailwind CSS'i manuel olarak kurmayı tercih ediyorsanız şu adımları izleyin:
 
-### 1. Create an Angular project
+### 1. Angular projesi oluşturun
 
 Henüz kurulmuş bir projeniz yoksa ilk olarak yeni bir Angular projesi oluşturun.
 
@@ -33,7 +33,7 @@ ng new my-project
 cd my-project
 ```
 
-### 2. Install Tailwind CSS
+### 2. Tailwind CSS'i yükleyin
 
 Ardından, Angular projenizin kök dizininde bir terminal açın ve Tailwind CSS ile bağımlılıklarını yüklemek için aşağıdaki komutu çalıştırın:
 
@@ -52,7 +52,7 @@ Ardından, Angular projenizin kök dizininde bir terminal açın ve Tailwind CSS
   </docs-code>
 </docs-code-multifile>
 
-### 3. Configure PostCSS Plugins
+### 3. PostCSS eklentilerini yapılandırın
 
 Ardından, projenin dosya kökünde bir `.postcssrc.json` dosyası ekleyin.
 `@tailwindcss/postcss` eklentisini PostCSS yapılandırmanıza ekleyin.
@@ -65,7 +65,7 @@ Ardından, projenin dosya kökünde bir `.postcssrc.json` dosyası ekleyin.
 }
 ```
 
-### 4. Import Tailwind CSS
+### 4. Tailwind CSS'i içe aktarın
 
 Tailwind CSS'i içe aktaran bir `@import` ifadesini `./src/styles.css` dosyasına ekleyin.
 
@@ -79,7 +79,7 @@ SCSS kullanıyorsanız, `./src/styles.scss` dosyasına `@use` ekleyin.
 @use 'tailwindcss';
 ```
 
-### 5. Start using Tailwind in your project
+### 5. Projenizde Tailwind kullanmaya başlayın
 
 Artık uygulamanızı stilize etmek için bileşen şablonlarınızda Tailwind'in yardımcı sınıflarını kullanmaya başlayabilirsiniz. Derleme işleminizi `ng serve` ile çalıştırın ve stillendirilmiş başlığı görmelisiniz.
 
@@ -89,6 +89,6 @@ Artık uygulamanızı stilize etmek için bileşen şablonlarınızda Tailwind'i
 <h1 class="text-3xl font-bold underline">Hello world!</h1>
 ```
 
-## Additional Resources
+## Ek Kaynaklar
 
 - [Tailwind CSS Belgeleri](https://tailwindcss.com/docs)

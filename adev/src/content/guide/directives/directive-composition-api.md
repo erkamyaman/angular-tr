@@ -1,10 +1,10 @@
-# Directive composition API
+# Direktif bileşim API'si
 
 Angular direktifleri, yeniden kullanılabilir davranışları kapsüllemek için harika bir yol sunar -- direktifler bir elemana nitelikler, CSS sınıfları ve olay dinleyicileri uygulayabilir.
 
 _Direktif bileşim API'si_, bileşen TypeScript sınıfı _içinden_ bir bileşenin ana elemanına direktifler uygulamanıza olanak tanır.
 
-## Adding directives to a component
+## Bir bileşene direktif ekleme
 
 Bir bileşenin dekoratörüne `hostDirectives` özelliği ekleyerek bileşenlere direktifler uygularsınız. Bu tür direktiflere _ana direktifler_ diyoruz.
 
@@ -19,7 +19,7 @@ Bu örnekte, `MenuBehavior` direktifini `AdminMenu`'nun ana elemanına uyguluyor
 export class AdminMenu {}
 ```
 
-Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#including-inputs-and-outputs) bölümüne bakın.
+Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#input-ve-outputları-dahil-etme) bölümüne bakın.
 
 **Angular, ana direktifleri derleme zamanında statik olarak uygular.** Çalışma zamanında dinamik olarak direktif ekleyemezsiniz.
 
@@ -27,7 +27,7 @@ Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir ör
 
 **Angular, `hostDirectives` özelliğinde uygulanan direktiflerin `selector`'ını yok sayar.**
 
-## Including inputs and outputs
+## Input ve output'ları dahil etme
 
 Bileşeninize `hostDirectives` uyguladığınızda, ana direktiflerden gelen girdiler ve çıktılar varsayılan olarak bileşeninizin API'sine dahil edilmez. `hostDirectives` içindeki girişi genişleterek girdileri ve çıktıları bileşeninizin API'sine açıkça dahil edebilirsiniz:
 
@@ -73,7 +73,7 @@ export class AdminMenu {}
 <admin-menu id="top-menu" (closed)="logMenuClosed()"></admin-menu>
 ```
 
-## Adding directives to another directive
+## Başka bir direktife direktif ekleme
 
 Bileşenlere ek olarak diğer direktiflere de `hostDirectives` ekleyebilirsiniz. Bu, birden fazla davranışın geçişli olarak birleştirilmesini sağlar.
 
@@ -101,9 +101,9 @@ export class MenuWithTooltip { }
 export class SpecializedMenuWithTooltip { }
 ```
 
-## Host directive semantics
+## Ana direktif semantiği
 
-### Directive execution order
+### Direktif çalıştırma sırası
 
 Ana direktifler, doğrudan bir şablonda kullanılan bileşenler ve direktiflerle aynı yaşam döngüsünden geçer. Ancak, ana direktifler her zaman constructor'larını, yaşam döngüsü kancalarını ve bağlamalarını uygulandıkları bileşen veya direktiften _önce_ yürütür.
 
@@ -158,7 +158,7 @@ Yukarıdaki örnekte yürütme sırası:
 8. `CustomTooltip` ana bağlamalarını uygular
 9. `EvenMoreCustomTooltip` ana bağlamalarını uygular
 
-### Dependency injection
+### Bağımlılık enjeksiyonu
 
 `hostDirectives` belirten bir bileşen veya direktif, bu ana direktiflerin örneklerini enjekte edebilir ve tersi de geçerlidir.
 

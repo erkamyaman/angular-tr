@@ -27,7 +27,7 @@ export class App {
 
 <docs-workflow>
 
-<docs-step title="Import the `LowerCase` pipe">
+<docs-step title="`LowerCase` pipe'ını içe aktarın">
 Öncelikle, `app.ts` dosyasını `@angular/common` paketinden `LowerCasePipe` için dosya seviyesinde içe aktarma ekleyerek güncelleyin.
 
 ```ts
@@ -36,7 +36,7 @@ import {LowerCasePipe} from '@angular/common';
 
 </docs-step>
 
-<docs-step title="Add the pipe to the template imports">
+<docs-step title="Pipe'ı şablon importlarına ekleyin">
 Ardından, `@Component()` dekoratörünün `imports` dizisini `LowerCasePipe` referansını içerecek şekilde güncelleyin.
 
 ```ts {highlight:[3]}
@@ -48,7 +48,7 @@ Ardından, `@Component()` dekoratörünün `imports` dizisini `LowerCasePipe` re
 
 </docs-step>
 
-<docs-step title="Add the pipe to the template">
+<docs-step title="Pipe'ı şablona ekleyin">
 Son olarak, `app.ts` dosyasındaki şablonu `lowercase` pipe'ını içerecek şekilde güncelleyin:
 
 ```angular-html

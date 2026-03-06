@@ -1,4 +1,4 @@
-# Angular elements overview
+# Angular Elements'e genel bakış
 
 _Angular elements_, Angular bileşenlerinin _özel öğeler_ \(aynı zamanda Web Components olarak da adlandırılır\) olarak paketlenmiş halidir; framework'ten bağımsız bir şekilde yeni HTML öğeleri tanımlamak için bir web standardıdır.
 
@@ -11,7 +11,7 @@ Tarayıcı, bir HTML etiketini somutlaştırılabilir bir JavaScript sınıfına
 Bir bileşeni özel öğeye dönüştürmek, gerekli tüm Angular altyapısını tarayıcıya sunar.
 Özel öğe oluşturmak basit ve kolaydır ve bileşen tanımlı görünümünüzü değişiklik algılama ve veri bağlama ile otomatik olarak bağlar, Angular işlevselliğini ilgili yerleşik HTML eşdeğerleriyle eşler.
 
-## Using custom elements
+## Özel öğeleri kullanma
 
 Özel öğeler kendilerini başlatır - DOM'a eklendiklerinde başlarlar ve DOM'dan kaldırıldıklarında yok edilirler.
 Bir özel öğe herhangi bir sayfanın DOM'una eklendiğinde, diğer herhangi bir HTML öğesi gibi görünür ve davranır ve Angular terimleri veya kullanım kuralları hakkında özel bir bilgi gerektirmez.
@@ -33,7 +33,7 @@ Bir özel öğe herhangi bir sayfanın DOM'una eklendiğinde, diğer herhangi bi
   </docs-code>
 </docs-code-multifile>
 
-### How it works
+### Nasıl çalışır
 
 `createCustomElement()` fonksiyonu, bir bileşeni tarayıcıda özel öğe olarak kaydedilebilen bir sınıfa dönüştürür.
 Yapılandırılmış sınıfınızı tarayıcının özel öğe kayıt defterine kaydettikten sonra, yeni öğeyi doğrudan DOM'a eklediğiniz içerikte yerleşik bir HTML öğesi gibi kullanın:
@@ -46,7 +46,7 @@ Yapılandırılmış sınıfınızı tarayıcının özel öğe kayıt defterine
 İçerik, Angular şablon sözdizimini kullanan bileşenin şablonu tarafından sağlanır ve bileşen ve DOM verileri kullanılarak render edilir.
 Bileşendeki giriş özellikleri, öğe için giriş niteliklerine karşılık gelir.
 
-## Transforming components to custom elements
+## Bileşenleri özel öğelere dönüştürme
 
 Angular, bir Angular bileşenini bağımlılıklarıyla birlikte özel bir öğeye dönüştürmek için `createCustomElement()` fonksiyonunu sağlar.
 

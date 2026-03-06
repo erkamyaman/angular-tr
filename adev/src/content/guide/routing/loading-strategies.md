@@ -1,4 +1,4 @@
-# Route Loading Strategies
+# Route Yükleme Stratejileri
 
 Angular yönlendirmesinde rotaların ve bileşenlerin nasıl ve ne zaman yüklendiğini anlamak, duyarlı web uygulamaları oluşturmak için çok önemlidir. Angular, yükleme davranışını kontrol etmek için iki temel strateji sunar:
 
@@ -7,7 +7,7 @@ Angular yönlendirmesinde rotaların ve bileşenlerin nasıl ve ne zaman yüklen
 
 Her yaklaşım, farklı senaryolar için belirgin avantajlar sunar.
 
-## Eagerly loaded components
+## Hevesli yüklenen bileşenler
 
 [`component`](api/router/Route#component) özelliği ile bir rota tanımladığınızda, referans verilen bileşen rota yapılandırmasıyla aynı JavaScript paketinin bir parçası olarak hevesli şekilde yüklenir.
 
@@ -17,8 +17,8 @@ import {HomePage} from './components/home/home-page';
 import {LoginPage} from './components/auth/login-page';
 
 export const routes: Routes = [
-  // HomePage and LoginPage are both directly referenced in this config,
-  // so their code is eagerly included in the same JavaScript bundle as this file.
+  // HomePage ve LoginPage bu yapılandırmada doğrudan referans verilmiştir,
+  // bu nedenle kodları bu dosya ile aynı JavaScript paketine hevesli olarak dahil edilir.
   {
     path: '',
     component: HomePage,
@@ -34,7 +34,7 @@ Rota bileşenlerini bu şekilde hevesli yüklemek, tarayıcının ilk sayfa yük
 
 İlk sayfa yüklemenize daha fazla JavaScript dahil etmek daha yavaş ilk yükleme sürelerine yol açsa da, kullanıcı uygulama içinde gezinirken daha sorunsuz geçişlere yol açabilir.
 
-## Lazily loaded components and routes
+## Tembel yüklenen bileşenler ve route'lar
 
 Bir rota aktif hale geldiğinde bileşen için JavaScript'i tembel yüklemek için [`loadComponent`](api/router/Route#loadComponent) özelliğini kullanabilirsiniz. [`loadChildren`](api/router/Route#loadChildren) özelliği ise rota eşleştirme sırasında alt rotaları tembel yükler.
 
@@ -60,7 +60,7 @@ Tembel yüklenen dosya `default` dışa aktarma kullanıyorsa, dışa aktarılan
 
 Rotaları tembel yüklemek, ilk paketten büyük JavaScript bölümlerini çıkararak Angular uygulamanızın yükleme hızını önemli ölçüde iyileştirebilir. Kodunuzun bu bölümleri, yönlendiricinin yalnızca kullanıcı ilgili rotayı ziyaret ettiğinde istediği ayrı JavaScript "parçalarına" derlenir.
 
-## Injection context lazy loading
+## Enjeksiyon bağlamında lazy loading
 
 Yönlendirici, [`loadComponent`](/api/router/Route#loadComponent) ve [`loadChildren`](/api/router/Route#loadChildren) fonksiyonlarını **geçerli rotanın enjeksiyon bağlamında** çalıştırır ve bu yükleyici fonksiyonlar içinde [`inject`](/api/core/inject) çağrısı yaparak o rotada bildirilen, hiyerarşik bağımlılık enjeksiyonu aracılığıyla üst rotalardan devralınan veya global olarak kullanılabilen sağlayıcılara erişmenize olanak tanır. Bu, bağlama duyarlı tembel yükleme sağlar.
 
@@ -72,7 +72,7 @@ import {FeatureFlags} from './feature-flags';
 export const routes: Routes = [
   {
     path: 'dashboard',
-    // Runs inside the route's injection context
+    // Rotanın enjeksiyon bağlamında çalışır
     loadComponent: () => {
       const flags = inject(FeatureFlags);
       return flags.isPremium
@@ -83,7 +83,7 @@ export const routes: Routes = [
 ];
 ```
 
-## Should I use an eager or a lazy route?
+## Hevesli mi yoksa tembel bir route mu kullanmalıyım?
 
 Bir rotanın hevesli mi yoksa tembel mi olması gerektiğine karar verirken dikkate alınması gereken birçok faktör vardır.
 
@@ -91,6 +91,6 @@ Genel olarak, birincil açılış sayfası/sayfaları için hevesli yükleme, di
 
 NOTE: Tembel rotalar, kullanıcının talep ettiği başlangıç veri miktarını azaltmanın ön performans avantajına sahip olsa da, istenmeyen olabilecek gelecek veri istekleri ekler. Bu, özellikle birden fazla düzeyde iç içe tembel yükleme ile uğraşırken doğrudur ve performansı önemli ölçüde etkileyebilir.
 
-## Next steps
+## Sonraki adımlar
 
 [Outlet'ler ile rotalarınızın içeriğini nasıl görüntüleyeceğinizi](/guide/routing/show-routes-with-outlets) öğrenin.

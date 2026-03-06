@@ -1,8 +1,8 @@
-# Component selectors
+# Bileşen seçicileri
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Her bilesen, bilesnenin nasil kullanilacagini belirleyen bir [CSS secici](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) tanimlar:
+Her bileşen, bileşenin nasıl kullanılacağını belirleyen bir [CSS seçici](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) tanımlar:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -12,7 +12,7 @@ Her bilesen, bilesnenin nasil kullanilacagini belirleyen bir [CSS secici](https:
 export class ProfilePhoto { }
 ```
 
-_Diger_ bilesenlerin sablonlarinda eslesen bir HTML elemani olusturarak bileseni kullanirsiniz:
+_Diğer_ bileşenlerin şablonlarında eşleşen bir HTML elemanı oluşturarak bileşeni kullanırsınız:
 
 ```angular-ts {highlight: [3]}
 @Component({
@@ -24,31 +24,31 @@ _Diger_ bilesenlerin sablonlarinda eslesen bir HTML elemani olusturarak bileseni
 export class UserProfile { }
 ```
 
-**Angular, secicileri derleme zamaninda statik olarak eslestirir**. DOM'u calisma zamaninda, Angular baglamalari veya DOM API'leri araciligiyla degistirmek, render edilen bilesenleri etkilemez.
+**Angular, seçicileri derleme zamanında statik olarak eşleştirir**. DOM'u çalışma zamanında, Angular bağlamaları veya DOM API'leri aracılığıyla değiştirmek, render edilen bileşenleri etkilemez.
 
-**Bir eleman tam olarak bir bilesen secicisiyle eslesebilir.** Birden fazla bilesen secicisi tek bir elemanla eslestirse, Angular bir hata bildirir.
+**Bir eleman tam olarak bir bileşen seçicisiyle eşleşebilir.** Birden fazla bileşen seçicisi tek bir elemanla eşleşirse, Angular bir hata bildirir.
 
-**Bilesen secicileri buyuk-kucuk harf duyarlidir.**
+**Bileşen seçicileri büyük-küçük harf duyarlıdır.**
 
-## Types of selectors
+## Seçici türleri
 
-Angular, bilesen secicilerinde temel [CSS secici turlerinin](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) sinirli bir alt kumesini destekler:
+Angular, bileşen seçicilerinde temel [CSS seçici türlerinin](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) sınırlı bir alt kümesini destekler:
 
-| **Secici turu** | **Aciklama**                                                                                              | **Ornekler**                  |
-| --------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| Tur secici      | Elemanlari HTML etiket adina veya dugum adina gore eslestirir.                                            | `profile-photo`               |
-| Nitelik secici  | Elemanlari bir HTML nitelginin varligina ve istege bagli olarak o niteligin tam degerine gore eslestirir. | `[dropzone]` `[type="reset"]` |
-| Sinif secici    | Elemanlari bir CSS sinifinin varligina gore eslestirir.                                                   | `.menu-item`                  |
+| **Seçici türü** | **Açıklama**                                                                                               | **Örnekler**                  |
+| --------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Tür seçici      | Elemanları HTML etiket adına veya düğüm adına göre eşleştirir.                                             | `profile-photo`               |
+| Nitelik seçici  | Elemanları bir HTML niteliğinin varlığına ve isteğe bağlı olarak o niteliğin tam değerine göre eşleştirir. | `[dropzone]` `[type="reset"]` |
+| Sınıf seçici    | Elemanları bir CSS sınıfının varlığına göre eşleştirir.                                                    | `.menu-item`                  |
 
-Nitelik degerleri icin Angular, esittir (`=`) operatoru ile tam nitelik degeri eslestirmeyi destekler. Angular diger nitelik degeri operatorlerini desteklemez.
+Nitelik değerleri için Angular, eşittir (`=`) operatörü ile tam nitelik değeri eşleştirmeyi destekler. Angular diğer nitelik değeri operatörlerini desteklemez.
 
-Angular bilesen secicileri, [nesil birlestirici](https://developer.mozilla.org/docs/Web/CSS/Descendant_combinator) veya [alt birlestirici](https://developer.mozilla.org/docs/Web/CSS/Child_combinator) dahil olmak uzere birlestircileri desteklemez.
+Angular bileşen seçicileri, [nesil birleştirici](https://developer.mozilla.org/docs/Web/CSS/Descendant_combinator) veya [alt birleştirici](https://developer.mozilla.org/docs/Web/CSS/Child_combinator) dahil olmak üzere birleştiricileri desteklemez.
 
-Angular bilesen secicileri [ad alanlarinin](https://developer.mozilla.org/docs/Web/SVG/Namespaces_Crash_Course) belirtilmesini desteklemez.
+Angular bileşen seçicileri [ad alanlarının](https://developer.mozilla.org/docs/Web/SVG/Namespaces_Crash_Course) belirtilmesini desteklemez.
 
-### The `:not` pseudo-class
+### `:not` sahte sınıfı
 
-Angular [:not sahte sinifini](https://developer.mozilla.org/docs/Web/CSS/:not) destekler. Bir bilesnenin secicisinin hangi elemanlarla eslesecegini daraltmak icin bu sahte sinifi herhangi bir baska seciciye ekleyebilirsiniz. Ornegin, bir `[dropzone]` nitelik secicisi tanimlayabilir ve `textarea` elemanlarinin eslesmesini onleyebilirsiniz:
+Angular [:not sahte sınıfını](https://developer.mozilla.org/docs/Web/CSS/:not) destekler. Bir bileşenin seçicisinin hangi elemanlarla eşleşeceğini daraltmak için bu sahte sınıfı herhangi bir başka seçiciye ekleyebilirsiniz. Örneğin, bir `[dropzone]` nitelik seçicisi tanımlayabilir ve `textarea` elemanlarının eşleşmesini önleyebilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -58,11 +58,11 @@ Angular [:not sahte sinifini](https://developer.mozilla.org/docs/Web/CSS/:not) d
 export class DropZone { }
 ```
 
-Angular, bilesen secicilerinde baska hicbir sahte sinif veya sahte eleman desteklemez.
+Angular, bileşen seçicilerinde başka hiçbir sahte sınıf veya sahte eleman desteklemez.
 
-### Combining selectors
+### Seçicileri birleştirme
 
-Birden fazla seciciyi birlestirerek birlestirebilirsiniz. Ornegin, `type="reset"` belirten `<button>` elemanlarini eslestirebilirsiniz:
+Birden fazla seçiciyi birleştirerek birleştirebilirsiniz. Örneğin, `type="reset"` belirten `<button>` elemanlarını eşleştirebilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -72,7 +72,7 @@ Birden fazla seciciyi birlestirerek birlestirebilirsiniz. Ornegin, `type="reset"
 export class ResetButton { }
 ```
 
-Ayrica virgule ayrilmis bir liste ile birden fazla secici tanimlayabilirsiniz:
+Ayrıca virgüle ayrılmış bir liste ile birden fazla seçici tanımlayabilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -82,23 +82,23 @@ Ayrica virgule ayrilmis bir liste ile birden fazla secici tanimlayabilirsiniz:
 export class DropZone { }
 ```
 
-Angular, listedeki secicilerden _herhangi biriyle_ eslesen her eleman icin bir bilesen olusturur.
+Angular, listedeki seçicilerden _herhangi biriyle_ eşleşen her eleman için bir bileşen oluşturur.
 
-## Choosing a selector
+## Seçici seçme
 
-Bilesenlerin buyuk cogunlugu, secicileri olarak ozel bir eleman adi kullanmalidir. Tum ozel eleman adlari, [HTML spesifikasyonu](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name) tarafindan aciklandigi gibi bir tire icermelidir. Varsayilan olarak Angular, mevcut hicbir bilesne ile eslesmeyen ozel bir etiket adiyla karsilastiginda hata bildirir ve yanlis yazilmis bilesen adlarindan kaynaklanan hatalari onler.
+Bileşenlerin büyük çoğunluğu, seçicileri olarak özel bir eleman adı kullanmalıdır. Tüm özel eleman adları, [HTML spesifikasyonu](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name) tarafından açıklandığı gibi bir tire içermelidir. Varsayılan olarak Angular, mevcut hiçbir bileşen ile eşleşmeyen özel bir etiket adıyla karşılaştığında hata bildirir ve yanlış yazılmış bileşen adlarından kaynaklanan hataları önler.
 
-Yerel ozel elemanlari Angular sablonlarinda kullanma hakkinda ayrintilar icin [Gelismis bilesen yapilandirmasi](guide/components/advanced-configuration) belgesine bakin.
+Yerel özel elemanları Angular şablonlarında kullanma hakkında ayrıntılar için [Gelişmiş bileşen yapılandırması](guide/components/advanced-configuration) belgesine bakın.
 
-### Selector prefixes
+### Seçici önekleri
 
-Angular ekibi, projenizde tanimlanan tum ozel bilesenlerin kisa ve tutarli bir onek kullanmasini onerir. Ornegin, YouTube'u Angular ile yapacak olsaniz, bilesenlerinizi `yt-` oneki ile adlandirir, `yt-menu`, `yt-player` gibi bilesenler olustururdunuz. Secicilerinizi bu sekilde ad alani altinda toplamak, belirli bir bilesnenin nereden geldigini hemen anlasilir kilar. Varsayilan olarak Angular CLI `app-` onekini kullanir.
+Angular ekibi, projenizde tanımlanan tüm özel bileşenlerin kısa ve tutarlı bir önek kullanmasını önerir. Örneğin, YouTube'u Angular ile yapacak olsanız, bileşenlerinizi `yt-` öneki ile adlandırır, `yt-menu`, `yt-player` gibi bileşenler oluştururdunuz. Seçicilerinizi bu şekilde ad alanı altında toplamak, belirli bir bileşenin nereden geldiğini hemen anlaşılır kılar. Varsayılan olarak Angular CLI `app-` önekini kullanır.
 
-IMPORTANT: Angular kendi framework API'leri icin `ng` secici onekini kullanir. Kendi ozel bilesenleriniz icin secici oneki olarak asla `ng` kullanmayin.
+IMPORTANT: Angular kendi framework API'leri için `ng` seçici önekini kullanır. Kendi özel bileşenleriniz için seçici öneki olarak asla `ng` kullanmayın.
 
-### When to use an attribute selector
+### Nitelik seçici ne zaman kullanılır
 
-Standart bir yerel eleman uzerinde bilesen olusturmak istediginizde nitelik secici kullanmayi dusunmelisiniz. Ornegin, ozel bir buton bileseni olusturmak istiyorsaniz, nitelik secicisi kullanarak standart `<button>` elemaninin avantajlarindan yararlanabilirsiniz:
+Standart bir yerel eleman üzerinde bileşen oluşturmak istediğinizde nitelik seçici kullanmayı düşünmelisiniz. Örneğin, özel bir buton bileşeni oluşturmak istiyorsanız, nitelik seçicisi kullanarak standart `<button>` elemanının avantajlarından yararlanabilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -108,9 +108,9 @@ Standart bir yerel eleman uzerinde bilesen olusturmak istediginizde nitelik seci
 export class YouTubeUploadButton { }
 ```
 
-Bu yaklasim, bilesnenin tuketicilerinin ek caba harcamadan elemanin tum standart API'lerini dogrudan kullanmalarina olanak tanir. Bu ozellikle `aria-label` gibi ARIA nitelikleri icin degerlidir.
+Bu yaklaşım, bileşenin tüketicilerinin ek çaba harcamadan elemanın tüm standart API'lerini doğrudan kullanmalarına olanak tanır. Bu özellikle `aria-label` gibi ARIA nitelikleri için değerlidir.
 
-Angular, mevcut bir bilesle eslesmeyen ozel niteliklerle karsilastiginda hata bildirmez. Nitelik secicileri kullanan bilesenlerde, tuketiciler bileseni veya NgModule'unu icerir (import) etmeyi unutabilir ve bilesen render edilmeyebilir.
-Daha fazla bilgi icin [Bilesenleri iceri aktarma ve kullanma](guide/components#imports-in-the-component-decorator) belgesine bakin.
+Angular, mevcut bir bileşenle eşleşmeyen özel niteliklerle karşılaştığında hata bildirmez. Nitelik seçicileri kullanan bileşenlerde, tüketiciler bileşeni veya NgModule'unu içerir (import) etmeyi unutabilir ve bileşen render edilmeyebilir.
+Daha fazla bilgi için [Bileşenleri içeri aktarma ve kullanma](guide/components#component-dekoratöründe-importlar) belgesine bakın.
 
-Nitelik secicileri tanimlayan bilesenler kucuk harf, tire ile ayrilmis nitelikler kullanmalidir. Yukarida aciklanan ayni onek onerilerini takip edebilirsiniz.
+Nitelik seçicileri tanımlayan bileşenler küçük harf, tire ile ayrılmış nitelikler kullanmalıdır. Yukarıda açıklanan aynı önek önerilerini takip edebilirsiniz.

@@ -6,69 +6,9 @@
   <docs-pill href="/api?query=combobox#angular_aria_combobox" title="Combobox API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-Bir metin girisi ile bir acilir pencereyi koordine eden, otomatik tamamlama, select ve multiselect kaliplari icin temel yonerge saglayan yonerge.
-
-<docs-tab-group>
-  <docs-tab label="Basic">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Material">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Retro">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-</docs-tab-group>
-
-## Usage
-
-Combobox, bir metin girisi ile bir acilir pencereyi koordine eden temel yonergedir. Otomatik tamamlama, select ve multiselect kaliplari icin temel olusturur. Su durumlarda combobox'i dogrudan kullanmayi dusunun:
-
-- **Ozel otomatik tamamlama kaliplari olusturma** - Ozellestirilmis filtreleme veya oneri davranisi olusturma
-- **Ozel secim bilesenleri olusturma** - Benzersiz gereksinimleri olan acilir menuler gelistirme
-- **Girisi acilir pencereyle koordine etme** - Metin girisini listbox, tree veya dialog icerigiyle eslestirme
-- **Belirli filtre modlari uygulama** - Manuel, otomatik secim veya vurgulama davranislari kullanma
-
-Bunun yerine belgelendirilmis kaliplari kullanin:
-
-- Filtrelemeli standart otomatik tamamlama gerektiginde - Kullanima hazir ornekler icin [Autocomplete kalibina](guide/aria/autocomplete) bakin
-- Tek secimli acilir menuler gerektiginde - Eksiksiz acilir menu uygulamasi icin [Select kalibina](guide/aria/select) bakin
-- Coklu secimli acilir menuler gerektiginde - Kompakt goruntuyle coklu secim icin [Multiselect kalibina](guide/aria/multiselect) bakin
-
-NOTE: [Autocomplete](guide/aria/autocomplete), [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) rehberleri, bu yonergeyi belirli kullanim durumlari icin [Listbox](guide/aria/listbox) ile birlestiren belgelendirilmis kaliplari gosterir.
-
-## Features
-
-Angular'in combobox'i, tam erisilebilir bir giris-acilir pencere koordinasyon sistemi saglar:
-
-- **Acilir Pencereli Metin Girisi** - Giris alanini acilir pencere icerigiyle koordine eder
-- **Uc Filtre Modu** - Manuel, otomatik secim veya vurgulama davranislari
-- **Klavye Navigasyonu** - Ok tuslari, Enter, Escape islemesi
-- **Ekran Okuyucu Destegi** - role="combobox" ve aria-expanded dahil yerlesik ARIA nitelikleri
-- **Acilir Pencere Yonetimi** - Kullanici etkilesimine dayali otomatik goster/gizle
-- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
-
-## Examples
-
-### Autocomplete
-
-Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulmalarına ve secmelerine yardimci olan erisilebilir bir giris alani.
+Bir metin girişi ile bir açılır pencereyi koordine eden, otomatik tamamlama, select ve multiselect kalıpları için temel yönerge sağlayan yönerge.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -96,11 +36,71 @@ Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulm
   </docs-tab>
 </docs-tab-group>
 
-`filterMode="manual"` ayari filtreleme ve secim uzerinde tam kontrol saglar. Giris, secenekler listesini filtreleyen bir sinyali gunceller. Kullanicilar ok tuslariyla gezinir ve Enter veya tiklama ile secer. Bu mod, ozel filtreleme mantigi icin en fazla esnekligi saglar. Eksiksiz filtreleme kaliplari ve ornekleri icin [Autocomplete rehberine](guide/aria/autocomplete) bakin.
+## Kullanım
 
-### Readonly mode
+Combobox, bir metin girişi ile bir açılır pencereyi koordine eden temel yönergedir. Otomatik tamamlama, select ve multiselect kalıpları için temel oluşturur. Şu durumlarda combobox'ı doğrudan kullanmayı düşünün:
 
-Tek secimli acilir menuler olusturmak icin klavye navigasyonu ve ekran okuyucu destegi ile salt okunur combobox'i listbox ile birlestiren bir kalip.
+- **Özel otomatik tamamlama kalıpları oluşturma** - Özelleştirilmiş filtreleme veya öneri davranışı oluşturma
+- **Özel seçim bileşenleri oluşturma** - Benzersiz gereksinimleri olan açılır menüler geliştirme
+- **Girişi açılır pencereyle koordine etme** - Metin girişini listbox, tree veya dialog içeriğiyle eşleştirme
+- **Belirli filtre modları uygulama** - Manuel, otomatik seçim veya vurgulama davranışları kullanma
+
+Bunun yerine belgelendirilmiş kalıpları kullanın:
+
+- Filtrelemeli standart otomatik tamamlama gerektiğinde - Kullanıma hazır örnekler için [Autocomplete kalıbına](guide/aria/autocomplete) bakın
+- Tek seçimli açılır menüler gerektiğinde - Eksiksiz açılır menü uygulaması için [Select kalıbına](guide/aria/select) bakın
+- Çoklu seçimli açılır menüler gerektiğinde - Kompakt görüntüyle çoklu seçim için [Multiselect kalıbına](guide/aria/multiselect) bakın
+
+NOTE: [Autocomplete](guide/aria/autocomplete), [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) rehberleri, bu yönergeyi belirli kullanım durumları için [Listbox](guide/aria/listbox) ile birleştiren belgelendirilmiş kalıpları gösterir.
+
+## Özellikler
+
+Angular'ın combobox'ı, tam erişilebilir bir giriş-açılır pencere koordinasyon sistemi sağlar:
+
+- **Açılır Pencereli Metin Girişi** - Giriş alanını açılır pencere içeriğiyle koordine eder
+- **Üç Filtre Modu** - Manuel, otomatik seçim veya vurgulama davranışları
+- **Klavye Navigasyonu** - Ok tuşları, Enter, Escape işlemesi
+- **Ekran Okuyucu Desteği** - role="combobox" ve aria-expanded dahil yerleşik ARIA nitelikleri
+- **Açılır Pencere Yönetimi** - Kullanıcı etkileşimine dayalı otomatik göster/gizle
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+
+## Örnekler
+
+### Otomatik Tamamlama
+
+Kullanıcılar yazarken seçenekleri filtreleyen ve öneren, bir listeden değer bulmalarına ve seçmelerine yardımcı olan erişilebilir bir giriş alanı.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+`filterMode="manual"` ayarı filtreleme ve seçim üzerinde tam kontrol sağlar. Giriş, seçenekler listesini filtreleyen bir sinyali günceller. Kullanıcılar ok tuşlarıyla gezinir ve Enter veya tıklama ile seçer. Bu mod, özel filtreleme mantığı için en fazla esnekliği sağlar. Eksiksiz filtreleme kalıpları ve örnekleri için [Autocomplete rehberine](guide/aria/autocomplete) bakın.
+
+### Salt Okunur Modu
+
+Tek seçimli açılır menüler oluşturmak için klavye navigasyonu ve ekran okuyucu desteği ile salt okunur combobox'ı listbox ile birleştiren bir kalıp.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -128,13 +128,13 @@ Tek secimli acilir menuler olusturmak icin klavye navigasyonu ve ekran okuyucu d
   </docs-tab>
 </docs-tab-group>
 
-`readonly` niteligi giris alanina yazmayi engeller. Acilir pencere tiklama veya ok tuslariyla acilir. Kullanicilar klavye ile secenekler arasinda gezinir ve Enter veya tiklama ile secer.
+`readonly` niteliği giriş alanına yazmayı engeller. Açılır pencere tıklama veya ok tuşlarıyla açılır. Kullanıcılar klavye ile seçenekler arasında gezinir ve Enter veya tıklama ile seçer.
 
-Bu yapilandirma, [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) kaliplari icin temeli saglar. Tetikleyiciler ve katman konumlandirmasiyla eksiksiz acilir menu uygulamalari icin bu rehberlere bakin.
+Bu yapılandırma, [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) kalıpları için temeli sağlar. Tetikleyiciler ve katman konumlandırmasıyla eksiksiz açılır menü uygulamaları için bu rehberlere bakın.
 
-### Dialog popup
+### Dialog Açılır Penceresi
 
-Acilir pencereler bazen arka plan ve odak yakalama ile modal davranisa ihtiyac duyar. Combobox dialog yonergesi, ozellestirilmis kullanim durumlari icin bu kalibi saglar.
+Açılır pencereler bazen arka plan ve odak yakalama ile modal davranışa ihtiyaç duyar. Combobox dialog yönergesi, özelleştirilmiş kullanım durumları için bu kalıbı sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -162,64 +162,64 @@ Acilir pencereler bazen arka plan ve odak yakalama ile modal davranisa ihtiyac d
   </docs-tab>
 </docs-tab-group>
 
-`ngComboboxDialog` yonergesi, yerel dialog elemanini kullanarak modal bir acilir pencere olusturur. Bu, arka plan davranisi ve odak yakalama saglar. Secim arayuzu modal etkilesim gerektirdiginde veya acilir pencere icerigi tam ekran odak gerektiecek kadar karmasik oldugunda dialog acilir pencerelerini kullanin.
+`ngComboboxDialog` yönergesi, yerel dialog elemanını kullanarak modal bir açılır pencere oluşturur. Bu, arka plan davranışı ve odak yakalama sağlar. Seçim arayüzü modal etkileşim gerektirdiğinde veya açılır pencere içeriği tam ekran odak gerektirecek kadar karmaşık olduğunda dialog açılır pencerelerini kullanın.
 
-## APIs
+## API'ler
 
-### Combobox Directive
+### Combobox Yönergesi
 
-`ngCombobox` yonergesi bir metin girisini bir acilir pencereyle koordine eder.
+`ngCombobox` yönergesi bir metin girişini bir açılır pencereyle koordine eder.
 
-#### Inputs
+#### Girdiler
 
 | Property         | Type                                           | Default    | Description                                            |
 | ---------------- | ---------------------------------------------- | ---------- | ------------------------------------------------------ |
-| `filterMode`     | `'manual'` \| `'auto-select'` \| `'highlight'` | `'manual'` | Secim davranisini kontrol eder                         |
-| `disabled`       | `boolean`                                      | `false`    | Combobox'i devre disi birakir                          |
-| `readonly`       | `boolean`                                      | `false`    | Combobox'i salt okunur yapar (Select/Multiselect icin) |
-| `firstMatch`     | `V`                                            | -          | Otomatik secim icin ilk eslesen ogenin degeri          |
-| `alwaysExpanded` | `boolean`                                      | `false`    | Acilir pencereyi her zaman acik tutar                  |
+| `filterMode`     | `'manual'` \| `'auto-select'` \| `'highlight'` | `'manual'` | Seçim davranışını kontrol eder                         |
+| `disabled`       | `boolean`                                      | `false`    | Combobox'ı devre dışı bırakır                          |
+| `readonly`       | `boolean`                                      | `false`    | Combobox'ı salt okunur yapar (Select/Multiselect için) |
+| `firstMatch`     | `V`                                            | -          | Otomatik seçim için ilk eşleşen öğenin değeri          |
+| `alwaysExpanded` | `boolean`                                      | `false`    | Açılır pencereyi her zaman açık tutar                  |
 
-**Filtre Modlari:**
+**Filtre Modları:**
 
-- **`'manual'`** - Kullanici filtreleme ve secimi acikca kontrol eder. Acilir pencere, filtreleme mantiginiza gore secenekleri gosterir. Kullanicilar Enter veya tiklama ile secer. Bu mod en fazla esnekligi saglar.
-- **`'auto-select'`** - Giris degeri, kullanicilar yazarken otomatik olarak ilk eslesen secenege guncellenir. Koordinasyon icin `firstMatch` girisi gerektirir. Ornekler icin [Autocomplete rehberine](guide/aria/autocomplete#auto-select-mode) bakin.
-- **`'highlight'`** - Giris degerini degistirmeden eslesen metni vurgular. Kullanicilar ok tuslariyla gezinir ve Enter ile secer.
+- **`'manual'`** - Kullanıcı filtreleme ve seçimi açıkça kontrol eder. Açılır pencere, filtreleme mantığınıza göre seçenekleri gösterir. Kullanıcılar Enter veya tıklama ile seçer. Bu mod en fazla esnekliği sağlar.
+- **`'auto-select'`** - Giriş değeri, kullanıcılar yazarken otomatik olarak ilk eşleşen seçeneğe güncellenir. Koordinasyon için `firstMatch` girişi gerektirir. Örnekler için [Autocomplete rehberine](guide/aria/autocomplete#otomatik-seçim-modu) bakın.
+- **`'highlight'`** - Giriş değerini değiştirmeden eşleşen metni vurgular. Kullanıcılar ok tuşlarıyla gezinir ve Enter ile seçer.
 
-#### Signals
+#### Sinyaller
 
 | Property   | Type              | Description                                  |
 | ---------- | ----------------- | -------------------------------------------- |
-| `expanded` | `Signal<boolean>` | Acilir pencerenin su anda acik olup olmadigi |
+| `expanded` | `Signal<boolean>` | Açılır pencerenin şu anda açık olup olmadığı |
 
-#### Methods
+#### Metodlar
 
 | Method     | Parameters | Description           |
 | ---------- | ---------- | --------------------- |
-| `open`     | none       | Combobox'i acar       |
-| `close`    | none       | Combobox'i kapatir    |
-| `expand`   | none       | Combobox'i genisletir |
-| `collapse` | none       | Combobox'i daraltir   |
+| `open`     | none       | Combobox'ı açar       |
+| `close`    | none       | Combobox'ı kapatır    |
+| `expand`   | none       | Combobox'ı genişletir |
+| `collapse` | none       | Combobox'ı daraltır   |
 
-### ComboboxInput Directive
+### ComboboxInput Yönergesi
 
-`ngComboboxInput` yonergesi bir giris elemanini combobox'a baglar.
+`ngComboboxInput` yönergesi bir giriş elemanını combobox'a bağlar.
 
 #### Model
 
 | Property | Type     | Description                                           |
 | -------- | -------- | ----------------------------------------------------- |
-| `value`  | `string` | `[(value)]` kullanilarak iki yonlu baglanabilir deger |
+| `value`  | `string` | `[(value)]` kullanılarak iki yönlü bağlanabilir değer |
 
-Giris elemani klavye islemesi ve ARIA niteliklerini otomatik olarak alir.
+Giriş elemanı klavye işlemesi ve ARIA niteliklerini otomatik olarak alır.
 
-### ComboboxPopup Directive
+### ComboboxPopup Yönergesi
 
-`ngComboboxPopup` yonergesi (ana yonerge) acilir pencere gorunurluğunu ve koordinasyonunu yonetir. Tipik olarak bir `ng-template` icinde `ngComboboxPopupContainer` ile veya CDK Overlay ile kullanilir.
+`ngComboboxPopup` yönergesi (ana yönerge) açılır pencere görünürlüğünü ve koordinasyonunu yönetir. Tipik olarak bir `ng-template` içinde `ngComboboxPopupContainer` ile veya CDK Overlay ile kullanılır.
 
-### ComboboxPopupContainer Directive
+### ComboboxPopupContainer Yönergesi
 
-`ngComboboxPopupContainer` yonergesi bir `ng-template`'i acilir pencere icerigi olarak isaretler.
+`ngComboboxPopupContainer` yönergesi bir `ng-template`'i açılır pencere içeriği olarak işaretler.
 
 ```html
 <ng-template ngComboboxPopupContainer>
@@ -227,11 +227,11 @@ Giris elemani klavye islemesi ve ARIA niteliklerini otomatik olarak alir.
 </ng-template>
 ```
 
-Konumlandirma icin Popover API veya CDK Overlay ile kullanilir.
+Konumlandırma için Popover API veya CDK Overlay ile kullanılır.
 
-### ComboboxDialog Directive
+### ComboboxDialog Yönergesi
 
-`ngComboboxDialog` yonergesi modal bir combobox acilir penceresi olusturur.
+`ngComboboxDialog` yönergesi modal bir combobox açılır penceresi oluşturur.
 
 ```html
 <dialog ngComboboxDialog>
@@ -239,17 +239,17 @@ Konumlandirma icin Popover API veya CDK Overlay ile kullanilir.
 </dialog>
 ```
 
-Arka plan ve odak yakalama ile modal acilir pencere davranisi icin kullanin.
+Arka plan ve odak yakalama ile modal açılır pencere davranışı için kullanın.
 
-### Related patterns and directives
+### İlgili Kalıplar ve Yönergeler
 
-Combobox, bu belgelendirilmis kalipler icin temel yonergedir:
+Combobox, bu belgelendirilmiş kalıplar için temel yönergedir:
 
-- **[Autocomplete](guide/aria/autocomplete)** - Filtreleme ve oneriler kalibi (Combobox'i filtre modlariyla kullanir)
-- **[Select](guide/aria/select)** - Tek secim acilir menu kalibi (Combobox'i `readonly` ile kullanir)
-- **[Multiselect](guide/aria/multiselect)** - Coklu secim kalibi (Combobox'i `readonly` + coklu etkin Listbox ile kullanir)
+- **[Autocomplete](guide/aria/autocomplete)** - Filtreleme ve öneriler kalıbı (Combobox'ı filtre modlarıyla kullanır)
+- **[Select](guide/aria/select)** - Tek seçim açılır menü kalıbı (Combobox'ı `readonly` ile kullanır)
+- **[Multiselect](guide/aria/multiselect)** - Çoklu seçim kalıbı (Combobox'ı `readonly` + çoklu etkin Listbox ile kullanır)
 
-Combobox tipik olarak sunlarla birlestirilir:
+Combobox tipik olarak şunlarla birleştirilir:
 
-- **[Listbox](guide/aria/listbox)** - En yaygin acilir pencere icerigi
-- **[Tree](guide/aria/tree)** - Hiyerarsik acilir pencere icerigi (ornekler icin Tree rehberine bakin)
+- **[Listbox](guide/aria/listbox)** - En yaygın açılır pencere içeriği
+- **[Tree](guide/aria/tree)** - Hiyerarşik açılır pencere içeriği (örnekler için Tree rehberine bakın)

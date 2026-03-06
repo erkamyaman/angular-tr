@@ -1,10 +1,10 @@
-# Adding harness support for additional testing environments
+# Ek test ortamları için harness desteği ekleme
 
-## Before you start
+## Başlamadan önce
 
 TIP: Bu kılavuz, [bileşen donanımları genel bakış kılavuzunu](guide/testing/component-harnesses-overview) zaten okuduğunuzu varsayar. Bileşen donanımlarını kullanmaya yeni başlıyorsanız önce onu okuyun.
 
-### When does adding support for a test environment make sense?
+### Bir test ortamı için destek eklemek ne zaman mantıklıdır?
 
 Aşağıdaki ortamlarda bileşen donanımlarını kullanmak için Angular CDK'nın iki yerleşik ortamını kullanabilirsiniz:
 
@@ -15,7 +15,7 @@ Desteklenen bir test ortamı kullanmak için [Bileşenleriniz için donanım olu
 
 Aksi takdirde, diğer ortamlar için destek eklemek istiyorsanız, ortamınızda bir DOM öğesiyle nasıl etkileşim kurulacağını ve DOM etkileşimlerinin nasıl çalıştığını tanımlamanız gerekir. Daha fazla bilgi edinmek için okumaya devam edin.
 
-### CDK Installation
+### CDK Kurulumu
 
 [Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories), bileşen oluşturmak için bir davranış temelleri setidir. Bileşen donanımlarını kullanmak için önce npm'den `@angular/cdk` yükleyin. Bunu terminalinizden Angular CLI kullanarak yapabilirsiniz:
 
@@ -23,7 +23,7 @@ Aksi takdirde, diğer ortamlar için destek eklemek istiyorsanız, ortamınızda
 ng add @angular/cdk
 ```
 
-## Creating a `TestElement` implementation
+## Bir `TestElement` uygulaması oluşturma
 
 Her test ortamı bir `TestElement` uygulaması tanımlamalıdır. `TestElement` arayüzü, bir DOM öğesinin ortamdan bağımsız temsili olarak hizmet eder. Donanımların, altta yatan ortamdan bağımsız olarak DOM öğeleriyle etkileşim kurmasını sağlar. Bazı ortamlar DOM öğeleriyle senkron etkileşimi desteklemediğinden (ör. WebDriver), tüm `TestElement` metotları asenkrondur ve işlemin sonucuyla birlikte bir `Promise` döndürür.
 
@@ -33,7 +33,7 @@ Her test ortamı bir `TestElement` uygulaması tanımlamalıdır. `TestElement` 
 
 Angular CDK'daki [UnitTestElement](/api/cdk/testing/testbed/UnitTestElement) ve [SeleniumWebDriverElement](/api/cdk/testing/selenium-webdriver/SeleniumWebDriverElement) uygulamaları, bu arayüzün uygulamalarına iyi örnekler olarak hizmet eder.
 
-## Creating a `HarnessEnvironment` implementation
+## Bir `HarnessEnvironment` uygulaması oluşturma
 
 Test yazarları, testlerde kullanmak üzere bileşen donanımı örnekleri oluşturmak için `HarnessEnvironment` kullanır. `HarnessEnvironment`, yeni ortam için somut bir alt sınıf oluşturmak üzere genişletilmesi gereken soyut bir sınıftır. Yeni bir test ortamını desteklerken, tüm soyut üyeler için somut uygulamalar ekleyen bir `HarnessEnvironment` alt sınıfı oluşturun.
 
@@ -54,7 +54,7 @@ Bu eksik metotları uygulamanın yanı sıra, bu sınıf test yazarlarının `Co
 
 Angular CDK'daki [`TestbedHarnessEnvironment`](/api/cdk/testing/testbed/TestbedHarnessEnvironment) ve [SeleniumWebDriverHarnessEnvironment](/api/cdk/testing/selenium-webdriver/SeleniumWebDriverHarnessEnvironment) uygulamaları, bu arayüzün uygulamalarına iyi örnekler olarak hizmet eder.
 
-## Handling auto change detection
+## Otomatik değişiklik algılamayı yönetme
 
 `manualChangeDetection` ve parallel API'leri desteklemek için ortamınız, otomatik değişiklik algılama durumu için bir işleyici yüklemelidir.
 

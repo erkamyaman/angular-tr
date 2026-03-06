@@ -1,4 +1,4 @@
-# Schematics for libraries
+# Kütüphaneler için Schematics
 
 Bir Angular kütüphanesi oluşturduğunuzda, Angular CLI ile entegre eden şematiklerle birlikte sağlayabilir ve paketleyebilirsiniz.
 Şematiklerinizle, kullanıcılarınız kütüphanenizin başlangıç sürümünü yüklemek için `ng add`'ı,
@@ -6,7 +6,7 @@ kütüphanenizde tanımlanan yapıtları oluşturmak için `ng generate`'i ve bo
 
 Her üç şematik türü de kütüphanenizle paketleyebileceğiniz bir koleksiyonun parçası olabilir.
 
-## Creating a schematics collection
+## Schematics koleksiyonu oluşturma
 
 Bir koleksiyon başlatmak için şematik dosyalarını oluşturmanız gerekir.
 Aşağıdaki adımlar, herhangi bir proje dosyasını değiştirmeden başlangıç desteğini nasıl ekleyeceğinizi gösterir.
@@ -30,7 +30,7 @@ Aşağıdaki adımlar, herhangi bir proje dosyasını değiştirmeden başlangı
 Oluşturduğunuz başlangıç şeması, CLI'a `ng add` komutunu destekleyen şematiğin nerede bulunacağını söyler.
 Artık o şematiği oluşturmaya hazırsınız.
 
-## Providing installation support
+## Kurulum desteği sağlama
 
 `ng add` komutu için bir şematik, kullanıcılarınız için başlangıç kurulum sürecini iyileştirebilir.
 Aşağıdaki adımlar bu tür bir şematiği tanımlar.
@@ -43,7 +43,7 @@ Aşağıdaki adımlar bu tür bir şematiği tanımlar.
 
 Angular CLI, kütüphanenin en son sürümünü otomatik olarak yükler ve bu örnek, uygulamanın köküne `MyLibModule`'u ekleyerek bir adım daha ileri gider. `addRootImport` fonksiyonu, bir kod bloğu döndürmesi gereken bir geri çağrım kabul eder. `code` fonksiyonuyla etiketlenen dizenin içine herhangi bir kod yazabilirsiniz ve herhangi bir harici sembol, uygun import deyimlerinin oluşturulmasını sağlamak için `external` fonksiyonuyla sarılmalıdır.
 
-### Define dependency type
+### Bağımlılık türünü tanımlama
 
 Kütüphanenin projenin `package.json` yapılandırma dosyasındaki `dependencies`'e mi, `devDependencies`'e mi yoksa hiç kaydedilmemesi mi gerektiğini yapılandırmak için `ng-add`'in `save` seçeneğini kullanın.
 
@@ -58,7 +58,7 @@ Olası değerler:
 | `"dependencies"`    | Paketi dependencies'e ekle     |
 | `"devDependencies"` | Paketi devDependencies'e ekle  |
 
-## Building your schematics
+## Schematics'lerinizi derleme
 
 Şematiklerinizi kütüphanenizle birlikte paketlemek için kütüphaneyi şematikleri ayrı olarak derleyecek şekilde yapılandırmanız ve ardından bunları pakete eklemeniz gerekir.
 Şematiklerinizi kütüphanenizi derledikten _sonra_ derlemeniz gerekir, böylece doğru dizine yerleştirilirler.
@@ -86,7 +86,7 @@ Kütüphaneye şematikleri nasıl derleyeceğini söylemek için, kütüphane de
    - Hem `build` hem de `postbuild` betikleri `copyfiles` ve `typescript` bağımlılıklarını gerektirir.
      Bağımlılıkları yüklemek için `devDependencies` içinde tanımlanan yola gidin ve betikleri çalıştırmadan önce `npm install` komutunu çalıştırın.
 
-## Providing generation support
+## Oluşturma desteği sağlama
 
 Kullanıcılarınızın kütüphanenizde tanımlanan bir yapıtı oluşturmak için `ng generate` komutunu kullanmalarına olanak tanıyan, koleksiyonunuza adlandırılmış bir şematik ekleyebilirsiniz.
 
@@ -101,7 +101,7 @@ ng generate my-lib:my-service
 
 Başlamak için `schematics` klasöründe `my-service` adlı yeni bir alt klasör oluşturun.
 
-### Configure the new schematic
+### Yeni şematiği yapılandırma
 
 Koleksiyona bir şematik eklediğinizde, koleksiyonun şemasında ona işaret etmeniz ve bir kullanıcının komuta geçirebileceği seçenekleri tanımlayan yapılandırma dosyaları sağlamanız gerekir.
 
@@ -133,7 +133,7 @@ Koleksiyona bir şematik eklediğinizde, koleksiyonun şemasında ona işaret et
    | path       | Şematiğe sağlanan yolu geçersiz kılar. Varsayılan yol değeri geçerli çalışma dizinine dayanır.                                            |
    | project    | Şematiğin çalıştırılacağı belirli bir proje sağlar. Şematikte, seçenek kullanıcı tarafından sağlanmazsa bir varsayılan sağlayabilirsiniz. |
 
-### Add template files
+### Şablon dosyalarını ekleme
 
 Bir projeye yapıtlar eklemek için şematiğinizin kendi şablon dosyalarına ihtiyacı vardır.
 Şematik şablonları, kod çalıştırma ve değişken değiştirme için özel sözdizimini destekler.
@@ -160,7 +160,7 @@ Bir projeye yapıtlar eklemek için şematiğinizin kendi şablon dosyalarına i
    - `name`, fabrika fonksiyonunuzdan bir özellik olarak sağlanır.
      Şemada tanımladığınız `name` ile aynıdır.
 
-### Add the factory function
+### Fabrika fonksiyonunu ekleme
 
 Artık altyapı yerinde olduğuna göre, kullanıcının projesinde ihtiyaç duyduğunuz değişiklikleri gerçekleştiren ana fonksiyonu tanımlayabilirsiniz.
 
@@ -187,7 +187,7 @@ Bu veri yapıları ve sözdiziminin ayrıntıları için [Schematics README](htt
 Bu kural fabrikası, ağacı değiştirmeden döndürür.
 Seçenekler, `ng generate` komutundan geçirilen seçenek değerleridir.
 
-## Define a generation rule
+## Bir oluşturma kuralı tanımlama
 
 Artık kullanıcının uygulamasını, kütüphanenizde tanımlanan servis için kurmak üzere gerçekten değiştiren kodu oluşturmak için çerçeveye sahipsiniz.
 
@@ -198,7 +198,7 @@ Her iki durumda da, bu şematiğin uygulandığı belirli projeyi tanımlamanız
 Bunu, fabrika fonksiyonuna geçirilen `Tree` nesnesini kullanarak yapın.
 `Tree` metotları, çalışma alanınızdaki eksiksiz dosya ağacına erişmenizi sağlar ve şematiğin yürütülmesi sırasında dosyaları okumanıza ve yazmanıza olanak tanır.
 
-### Get the project configuration
+### Proje yapılandırmasını alma
 
 1. Hedef projeyi belirlemek için, çalışma alanı yapılandırma dosyası `angular.json`'ın içeriğini okumak üzere `workspaces.readWorkspace` metodunu kullanın.
    `workspaces.readWorkspace` kullanmak için `Tree`'den bir `workspaces.WorkspaceHost` oluşturmanız gerekir.
@@ -221,7 +221,7 @@ Bunu, fabrika fonksiyonuna geçirilen `Tree` nesnesini kullanarak yapın.
 
    <docs-code header="projects/my-lib/schematics/my-service/index.ts (Project Info)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="path"/>
 
-### Define the rule
+### Kuralı tanımlama
 
 Bir `Rule`, harici şablon dosyalarını kullanabilir, dönüştürebilir ve dönüştürülmüş şablonla başka bir `Rule` nesnesi döndürebilir.
 Şematiğiniz için gereken özel dosyaları oluşturmak üzere şablonlamayı kullanın.
@@ -252,12 +252,12 @@ Aşağıdaki şematik kural fonksiyonunun eksiksiz bir örneğine bakın.
 
 Kurallar ve yardımcı metotlar hakkında daha fazla bilgi için [Sağlanan Kurallar](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/schematics#provided-rules) belgesine bakın.
 
-## Running your library schematic
+## Kütüphane schematic'inizi çalıştırma
 
 Kütüphanenizi ve şematiklerinizi derledikten sonra, projenize karşı çalıştırmak için şematik koleksiyonunu yükleyebilirsiniz.
 Aşağıdaki adımlar, daha önce oluşturduğunuz şematiği kullanarak bir servis oluşturmayı gösterir.
 
-### Build your library and schematics
+### Kütüphanenizi ve schematics'lerinizi derleme
 
 Çalışma alanınızın kökünden, kütüphaneniz için `ng build` komutunu çalıştırın.
 
@@ -276,7 +276,7 @@ npm run build
 
 ```
 
-### Link the library
+### Kütüphaneyi bağlama
 
 Kütüphaneniz ve şematikleriniz paketlenmiş ve çalışma alanınızın kökündeki `dist/my-lib` klasörüne yerleştirilmiştir.
 Şematiği çalıştırmak için kütüphaneyi `node_modules` klasörünüze bağlamanız gerekir.
@@ -288,7 +288,7 @@ npm link dist/my-lib
 
 ```
 
-### Run the schematic
+### Schematic'i çalıştırma
 
 Artık kütüphaneniz yüklü olduğuna göre, `ng generate` komutunu kullanarak şematiği çalıştırın.
 

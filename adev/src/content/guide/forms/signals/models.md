@@ -1,16 +1,16 @@
-# Form models
+# Form modelleri
 
 Form modelleri, Signal Forms'un temelidir ve form verileriniz için tek doğruluk kaynağı olarak hizmet eder. Bu kılavuz, form modellerinin nasıl oluşturulacağını, güncelleneceğini ve sürdürülebilirlik için nasıl tasarlanacağını inceler.
 
 NOTE: Form modelleri, bileşen çift yönlü bağlama için kullanılan Angular'ın `model()` sinyalinden farklıdır. Form modeli, form verilerini saklayan yazılabilir bir sinyaldir, `model()` ise ebeveyn/alt bileşen iletişimi için girdiler/çıktılar oluşturur.
 
-## What form models solve
+## Form modellerinin çözdüğü sorunlar
 
 Formlar, zamanla değişen verileri yönetmeyi gerektirir. Net bir yapı olmadan, bu veriler bileşen özellikleri arasında dağılabilir ve bu da değişiklikleri takip etmeyi, girdiyi doğrulamayı veya verileri bir sunucuya göndermeyi zorlaştırır.
 
 Form modelleri, form verilerini tek bir yazılabilir sinyalde merkezileştirerek bu sorunu çözer. Model güncellendiğinde, form bu değişiklikleri otomatik olarak yansıtır. Kullanıcılar formla etkileşime girdiğinde, model buna göre güncellenir.
 
-## Creating models
+## Model oluşturma
 
 Form modeli, Angular'ın `signal()` fonksiyonuyla oluşturulan yazılabilir bir sinyaldir. Sinyal, formunuzun veri yapısını temsil eden bir nesne tutar.
 
@@ -40,7 +40,7 @@ export class LoginComponent {
 
 `[formField]` direktifi, her girdi öğesini alan ağacındaki karşılık gelen alana bağlayarak kullanıcı arayüzü ile model arasında otomatik çift yönlü senkronizasyon sağlar.
 
-### Using TypeScript types
+### TypeScript türlerini kullanma
 
 TypeScript nesne sabitlerinden türleri çıkarsa da, açık türler tanımlamak kod kalitesini artırır ve daha iyi IntelliSense desteği sağlar.
 
@@ -70,7 +70,7 @@ const emailField = loginForm.email;
 const usernameField = loginForm.username;
 ```
 
-### Initializing all fields
+### Tüm alanları başlatma
 
 Form modelleri, alan ağacına dahil etmek istediğiniz tüm alanlar için başlangıç değerleri sağlamalıdır.
 
@@ -112,11 +112,11 @@ HELPFUL: `<input type=text>` ve `<textarea>` gibi yerel metin kontrolleri `null`
 
 `undefined` olarak ayarlanan alanlar alan ağacından hariç tutulur. `{value: undefined}` içeren bir model `{}` ile aynı şekilde davranır -- alana erişim bir `FieldTree` yerine `undefined` döndürür.
 
-## Reading model values
+## Model değerlerini okuma
 
 Form değerlerine iki şekilde erişebilirsiniz: doğrudan model sinyalinden veya bireysel alanlar aracılığıyla. Her yaklaşım farklı bir amaca hizmet eder.
 
-### Reading from the model
+### Modelden okuma
 
 Form gönderimi sırasında olduğu gibi tam form verilerine ihtiyacınız olduğunda model sinyaline erişin:
 
@@ -132,7 +132,7 @@ async onSubmit() {
 
 Model sinyali tüm veri nesnesini döndürür ve bu da onu tam form durumuyla çalışan işlemler için ideal kılar.
 
-### Reading from field state
+### Alan durumundan okuma
 
 Alan ağacındaki her alan bir fonksiyondur. Bir alanı çağırmak, alanın değeri, doğrulama durumu ve etkileşim durumu için reaktif sinyaller içeren bir `FieldState` nesnesi döndürür.
 
@@ -162,9 +162,9 @@ TIP: Alan durumu `value()` ötesinde birçok sinyal daha içerir; doğrulama dur
 <!-- TODO: UNCOMMENT BELOW WHEN GUIDE IS AVAILABLE -->
 <!-- Tam kapsam için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın. -->
 
-## Updating form models programmatically
+## Form modellerini programatik olarak güncelleme
 
-### Replacing form models with `set()`
+### `set()` ile form modellerini değiştirme
 
 Tüm değeri değiştirmek için form modelinde `set()` kullanın:
 
@@ -188,7 +188,7 @@ resetForm() {
 
 Bu yaklaşım, bir API'den veri yüklerken veya tüm formu sıfırlarken iyi çalışır.
 
-### Update a single field directly with `set()` or `update()`
+### `set()` veya `update()` ile tek bir alanı doğrudan güncelleme
 
 Alan durumunu doğrudan güncellemek için bireysel alan değerlerinde `set()` kullanın:
 
@@ -204,7 +204,7 @@ incrementAge() {
 
 Bunlar "alan düzeyinde güncellemeler" olarak da bilinir. Model sinyaline otomatik olarak yayılır ve her ikisini de senkronize tutar.
 
-### Example: Loading data from an API
+### Örnek: API'den veri yükleme
 
 Yaygın bir kalıp, veri çekmeyi ve modeli doldurmayı içerir:
 
@@ -232,11 +232,11 @@ export class UserProfileComponent {
 
 Model değiştiğinde form alanları otomatik olarak güncellenir ve ek kod olmadan çekilen verileri görüntüler.
 
-## Two-way data binding
+## Çift yönlü veri bağlama
 
 `[formField]` direktifi, model, form durumu ve kullanıcı arayüzü arasında otomatik çift yönlü senkronizasyon oluşturur.
 
-### How data flows
+### Verinin nasıl aktığı
 
 Değişiklikler çift yönlü olarak akar:
 
@@ -256,7 +256,7 @@ Değişiklikler çift yönlü olarak akar:
 
 Bu senkronizasyon otomatik olarak gerçekleşir. Modeli ve kullanıcı arayüzünü senkronize tutmak için abonelik veya olay yöneticisi yazmazsınız.
 
-### Example: Both directions
+### Örnek: Her iki yön
 
 ```angular-ts
 @Component({
@@ -279,11 +279,11 @@ export class UserComponent {
 
 Kullanıcı girdiye yazdığında, `userModel().name` güncellenir. Düğmeye tıklandığında, girdi değeri "Bob" olarak değişir. Manuel senkronizasyon kodu gerekmez.
 
-## Model structure patterns
+## Model yapısı kalıpları
 
 Form modelleri düz nesneler olabilir veya iç içe nesneler ve diziler içerebilir. Seçtiğiniz yapı, alanlara nasıl eriştiğinizi ve doğrulamayı nasıl organize ettiğinizi etkiler.
 
-### Flat vs nested models
+### Düz ve iç içe modeller
 
 Düz form modelleri tüm alanları en üst seviyede tutar:
 
@@ -327,7 +327,7 @@ const userModel = signal({
 - Gruplanmış veriler API yapınızla eşleşiyorsa
 - Grubu bir birim olarak doğrulamak istiyorsanız
 
-### Working with nested objects
+### İç içe nesnelerle çalışma
 
 Nesne yolunu takip ederek iç içe alanlara erişebilirsiniz:
 
@@ -366,7 +366,7 @@ userForm.settings.theme; // FieldTree<string>
 })
 ```
 
-### Working with arrays
+### Dizilerle çalışma
 
 Modeller, öğe koleksiyonları için diziler içerebilir:
 
@@ -387,7 +387,7 @@ Nesne içeren dizi öğeleri otomatik olarak takip kimlikleri alır ve bu, öğe
 
 <!-- TBD: Dinamik diziler ve karmaşık dizi işlemleri için [Dizilerle çalışma kılavuzuna](guide/forms/signals/arrays) bakın. -->
 
-## Next steps
+## Sonraki adımlar
 
 Bu kılavuz, modeller oluşturmayı ve değerleri güncellemeyi ele aldı. İlgili kılavuzlar, Signal Forms'un diğer yönlerini inceler:
 

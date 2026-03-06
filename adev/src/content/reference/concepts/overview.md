@@ -1,4 +1,4 @@
-# Concepts
+# Kavramlar
 
 <docs-card-container>
   <docs-card title="NgModules" link="Learn more" href="guide/ngmodules">

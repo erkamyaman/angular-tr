@@ -1,4 +1,4 @@
-# Workspace npm dependencies
+# Çalışma alanı npm bağımlılıkları
 
 Angular Framework, Angular CLI ve Angular uygulamaları tarafından kullanılan bileşenler, [npm paketleri](https://docs.npmjs.com/getting-started/what-is-npm 'What is npm?') olarak paketlenir ve [npm kayıt defteri](https://docs.npmjs.com) kullanılarak dağıtılır.
 
@@ -20,7 +20,7 @@ Bu `package.json`, çalışma alanındaki tüm projeler tarafından kullanılır
 Başlangıçta bu `package.json`, _bir başlangıç paket seti_ içerir; bunlardan bazıları Angular için gereklidir, diğerleri ise yaygın uygulama senaryolarını destekler.
 Uygulamanız geliştikçe `package.json`'a paketler eklersiniz.
 
-## Default Dependencies
+## Varsayılan Bağımlılıklar
 
 Aşağıdaki Angular paketleri, yeni bir Angular çalışma alanı için varsayılan `package.json` dosyasında bağımlılık olarak dahil edilmiştir.
 Angular paketlerinin tam listesi için [API referanslarına](api) bakın.

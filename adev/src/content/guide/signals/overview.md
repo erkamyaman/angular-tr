@@ -134,7 +134,7 @@ Angular aşağıdaki durumlarda otomatik olarak bir reaktif bağlama girer:
 - Bir `computed` sinyali değerlendirilirken.
 - Bir `linkedSignal` değerlendirilirken.
 - Bir `resource`'un params veya loader fonksiyonu değerlendirilirken.
-- Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#binding-to-the-host-element) bağlamalar dahil).
+- Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#host-elemanına-bağlama) bağlamalar dahil).
 
 Bu işlemler sırasında Angular _canlı_ bir bağlantı oluşturur. İzlenen bir sinyal değişirse, Angular _sonunda_ tüketiciyi yeniden çalıştıracaktır.
 

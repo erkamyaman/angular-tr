@@ -6,9 +6,9 @@
   <docs-pill href="/api?query=grid#angular_aria_grid" title="Grid API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-Bir grid, kullanicilarin yonlu ok tuslari, Home, End ve Page Up/Down kullanarak iki boyutlu veriler veya etkilesimli elemanlar arasinda gezinmesini saglar. Gridler veri tablolari, takvimler, hesap tablolari ve iliskili etkilesimli elemanlari gruplayan yerlesim kaliplari icin calisir.
+Bir grid, kullanıcıların yönlü ok tuşları, Home, End ve Page Up/Down kullanarak iki boyutlu veriler veya etkileşimli elemanlar arasında gezinmesini sağlar. Gridler veri tabloları, takvimler, hesap tabloları ve ilişkili etkileşimli elemanları gruplayan yerleşim kalıpları için çalışır.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.ts"/>
@@ -16,40 +16,40 @@ Bir grid, kullanicilarin yonlu ok tuslari, Home, End ve Page Up/Down kullanarak 
   <docs-code header="CSS" path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.css"/>
 </docs-code-multifile>
 
-## Usage
+## Kullanım
 
-Gridler, satirlar ve sutunlar halinde duzenlenmis ve kullanicilarin birden fazla yonde klavye navigasyonuna ihtiyac duyduklari veriler veya etkilesimli elemanlar icin iyi calisir.
+Gridler, satırlar ve sütunlar halinde düzenlenmiş ve kullanıcıların birden fazla yönde klavye navigasyonuna ihtiyaç duydukları veriler veya etkileşimli elemanlar için iyi çalışır.
 
-**Grid kullanin:**
+**Grid kullanın:**
 
-- Duzenlenebilir veya secilebilir hucrelere sahip etkilesimli veri tablolari olustururken
-- Takvim veya tarih seciciler olustururken
-- Hesap tablosu benzeri arayuzler uygularken
-- Bir sayfadaki sekme duraklarini azaltmak icin etkilesimli elemanlari (butonlar, onay kutulari) gruplarken
-- Iki boyutlu klavye navigasyonu gerektiren arayuzler olustururken
+- Düzenlenebilir veya seçilebilir hücrelere sahip etkileşimli veri tabloları oluştururken
+- Takvim veya tarih seçiciler oluştururken
+- Hesap tablosu benzeri arayüzler uygularken
+- Bir sayfadaki sekme duraklarını azaltmak için etkileşimli elemanları (butonlar, onay kutuları) gruplarken
+- İki boyutlu klavye navigasyonu gerektiren arayüzler oluştururken
 
-**Gridlerden kacinin:**
+**Gridlerden kaçının:**
 
-- Basit salt okunur tablolar gosterirken (bunun yerine semantik HTML `<table>` kullanin)
-- Tek sutunlu listeler gosterirken (bunun yerine [Listbox](guide/aria/listbox) kullanin)
-- Hiyerarsik veri gosterirken (bunun yerine [Tree](guide/aria/tree) kullanin)
-- Tablo yerlesimi olmayan formlar olustururken (standart form kontrolleri kullanin)
+- Basit salt okunur tablolar gösterirken (bunun yerine semantik HTML `<table>` kullanın)
+- Tek sütunlu listeler gösterirken (bunun yerine [Listbox](guide/aria/listbox) kullanın)
+- Hiyerarşik veri gösterirken (bunun yerine [Tree](guide/aria/tree) kullanın)
+- Tablo yerleşimi olmayan formlar oluştururken (standart form kontrolleri kullanın)
 
-## Features
+## Özellikler
 
-- **Iki boyutlu navigasyon** - Ok tuslari tum yonlerde hucreler arasinda hareket eder
-- **Odak modlari** - Dolasan tabindex veya activedescendant odak stratejileri arasinda secim yapin
-- **Secim destegi** - Tekli veya coklu secim modlariyla istege bagli hucre secimi
-- **Sarma davranisi** - Grid kenarlarinda navigasyonun nasil sarilacagini yapilandirin (surekli, dongu veya sarmasiz)
-- **Aralik secimi** - Degistirici tuslar veya suruklemeuyle birden fazla hucre secin
-- **Devre disi durumlar** - Tum gridi veya bireysel hucreleri devre disi birakin
-- **RTL destegi** - Otomatik sagdan sola dil navigasyonu
+- **İki boyutlu navigasyon** - Ok tuşları tüm yönlerde hücreler arasında hareket eder
+- **Odak modları** - Dolaşan tabindex veya activedescendant odak stratejileri arasında seçim yapın
+- **Seçim desteği** - Tekli veya çoklu seçim modlarıyla isteğe bağlı hücre seçimi
+- **Sarma davranışı** - Grid kenarlarında navigasyonun nasıl sarılacağını yapılandırın (sürekli, döngü veya sarmasız)
+- **Aralık seçimi** - Değiştirici tuşlar veya sürüklemeyle birden fazla hücre seçin
+- **Devre dışı durumlar** - Tüm gridi veya bireysel hücreleri devre dışı bırakın
+- **RTL desteği** - Otomatik sağdan sola dil navigasyonu
 
-## Examples
+## Örnekler
 
-### Data table grid
+### Veri Tablosu Gridi
 
-Kullanicilarin ok tuslariyla hucreler arasinda gezinmesi gereken etkilesimli tablolar icin grid kullanin. Bu ornek, klavye navigasyonlu temel bir veri tablosunu gosterir.
+Kullanıcıların ok tuşlarıyla hücreler arasında gezinmesi gereken etkileşimli tablolar için grid kullanın. Bu örnek, klavye navigasyonlu temel bir veri tablosunu gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -68,11 +68,11 @@ Kullanicilarin ok tuslariyla hucreler arasinda gezinmesi gereken etkilesimli tab
   </docs-tab>
 </docs-tab-group>
 
-`ngGrid` yonergesini tablo elemanina, `ngGridRow`'u her satira ve `ngGridCell`'i her hucreye uygulayin.
+`ngGrid` yönergesini tablo elemanına, `ngGridRow`'u her satıra ve `ngGridCell`'i her hücreye uygulayın.
 
-### Calendar grid
+### Takvim Gridi
 
-Takvimler, gridler icin yaygin bir kullanim durumudur. Bu ornek, kullanicilarin ok tuslariyla tarihler arasinda gezdigi bir ay gorunumunu gosterir.
+Takvimler, gridler için yaygın bir kullanım durumudur. Bu örnek, kullanıcıların ok tuşlarıyla tarihler arasında gezdiği bir ay görünümünü gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -98,11 +98,11 @@ Takvimler, gridler icin yaygin bir kullanim durumudur. Bu ornek, kullanicilarin 
   </docs-tab>
 </docs-tab-group>
 
-Kullanicilar bir hucreye odaklandiginda Enter veya Bosluk tusuna basarak bir tarihi etkinlestirebilir.
+Kullanıcılar bir hücreye odaklandığında Enter veya Boşluk tuşuna basarak bir tarihi etkinleştirebilir.
 
-### Layout grid
+### Yerleşim Gridi
 
-Etkilesimli elemanlari gruplamak ve sekme duraklarini azaltmak icin yerlesim gridi kullanin. Bu ornek, hap butonlarindan olusan bir gridi gosterir.
+Etkileşimli elemanları gruplamak ve sekme duraklarını azaltmak için yerleşim gridi kullanın. Bu örnek, hap butonlarından oluşan bir gridi gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -128,11 +128,11 @@ Etkilesimli elemanlari gruplamak ve sekme duraklarini azaltmak icin yerlesim gri
   </docs-tab>
 </docs-tab-group>
 
-Her buton arasinda sekme tusuna basmak yerine, kullanicilar ok tuslariyla gezinir ve yalnizca bir buton sekme odagini alir.
+Her buton arasında sekme tuşuna basmak yerine, kullanıcılar ok tuşlarıyla gezinir ve yalnızca bir buton sekme odağını alır.
 
-### Selection and focus modes
+### Seçim ve Odak Modları
 
-`[enableSelection]="true"` ile secimi etkinlestirin ve odak ile secimin nasil etkilesecegini yapilandirin.
+`[enableSelection]="true"` ile seçimi etkinleştirin ve odak ile seçimin nasıl etkileşeceğini yapılandırın.
 
 ```angular-html
 <table
@@ -149,68 +149,68 @@ Her buton arasinda sekme tusuna basmak yerine, kullanicilar ok tuslariyla gezini
 </table>
 ```
 
-**Secim modlari:**
+**Seçim modları:**
 
-- `follow`: Odaklanan hucre otomatik olarak secilir
-- `explicit`: Kullanicilar hucreleri Bosluk veya tiklama ile secer
+- `follow`: Odaklanan hücre otomatik olarak seçilir
+- `explicit`: Kullanıcılar hücreleri Boşluk veya tıklama ile seçer
 
-**Odak modlari:**
+**Odak modları:**
 
-- `roving`: Odak, `tabindex` kullanilarak hucrelere hareket eder (basit gridler icin daha iyidir)
-- `activedescendant`: Odak grid kapsayicisinda kalir, `aria-activedescendant` aktif hucreyi gosterir (sanal kaydirma icin daha iyidir)
+- `roving`: Odak, `tabindex` kullanılarak hücrelere hareket eder (basit gridler için daha iyidir)
+- `activedescendant`: Odak grid kapsayıcısında kalır, `aria-activedescendant` aktif hücreyi gösterir (sanal kaydırma için daha iyidir)
 
-## APIs
+## API'ler
 
 ### Grid
 
-Satirlar ve hucreler icin klavye navigasyonu ve odak yonetimi saglayan kapsayici yonerge.
+Satırlar ve hücreler için klavye navigasyonu ve odak yönetimi sağlayan kapsayıcı yönerge.
 
-#### Inputs
+#### Girdiler
 
 | Property               | Type                                 | Default    | Description                                                                    |
 | ---------------------- | ------------------------------------ | ---------- | ------------------------------------------------------------------------------ |
-| `enableSelection`      | `boolean`                            | `false`    | Grid icin secimin etkin olup olmadigi                                          |
-| `disabled`             | `boolean`                            | `false`    | Tum gridi devre disi birakir                                                   |
-| `softDisabled`         | `boolean`                            | `true`     | `true` oldugunda, devre disi hucreler odaklanabilir ancak etkilesimli degildir |
-| `focusMode`            | `'roving' \| 'activedescendant'`     | `'roving'` | Grid tarafindan kullanilan odak stratejisi                                     |
-| `rowWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Satirlar boyunca navigasyon sarma davranisi                                    |
-| `colWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Sutunlar boyunca navigasyon sarma davranisi                                    |
-| `multi`                | `boolean`                            | `false`    | Birden fazla hucrenin secilebilip secilemeyecegi                               |
-| `selectionMode`        | `'follow' \| 'explicit'`             | `'follow'` | Secimin odagi takip edip etmedigi veya acik eylem gerektirip gerektirmedigi    |
-| `enableRangeSelection` | `boolean`                            | `false`    | Degistirici tuslar veya suruklemeuyle aralik secimlerini etkinlestirir         |
+| `enableSelection`      | `boolean`                            | `false`    | Grid için seçimin etkin olup olmadığı                                          |
+| `disabled`             | `boolean`                            | `false`    | Tüm gridi devre dışı bırakır                                                   |
+| `softDisabled`         | `boolean`                            | `true`     | `true` olduğunda, devre dışı hücreler odaklanabilir ancak etkileşimli değildir |
+| `focusMode`            | `'roving' \| 'activedescendant'`     | `'roving'` | Grid tarafından kullanılan odak stratejisi                                     |
+| `rowWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Satırlar boyunca navigasyon sarma davranışı                                    |
+| `colWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Sütunlar boyunca navigasyon sarma davranışı                                    |
+| `multi`                | `boolean`                            | `false`    | Birden fazla hücrenin seçilebilip seçilemeyeceği                               |
+| `selectionMode`        | `'follow' \| 'explicit'`             | `'follow'` | Seçimin odağı takip edip etmediği veya açık eylem gerektirip gerektirmediği    |
+| `enableRangeSelection` | `boolean`                            | `false`    | Değiştirici tuşlar veya sürüklemeyle aralık seçimlerini etkinleştirir          |
 
 ### GridRow
 
-Bir grid icindeki bir satiri temsil eder ve grid hucreleri icin kapsayici gorevi gorur.
+Bir grid içindeki bir satırı temsil eder ve grid hücreleri için kapsayıcı görevi görür.
 
-#### Inputs
+#### Girdiler
 
 | Property   | Type     | Default | Description                      |
 | ---------- | -------- | ------- | -------------------------------- |
-| `rowIndex` | `number` | auto    | Bu satirin grid icindeki indeksi |
+| `rowIndex` | `number` | auto    | Bu satırın grid içindeki indeksi |
 
 ### GridCell
 
-Bir grid satirindaki bireysel bir hucreyi temsil eder.
+Bir grid satırındaki bireysel bir hücreyi temsil eder.
 
-#### Inputs
+#### Girdiler
 
 | Property      | Type                         | Default        | Description                                                 |
 | ------------- | ---------------------------- | -------------- | ----------------------------------------------------------- |
-| `id`          | `string`                     | auto           | Hucre icin benzersiz tanimlayici                            |
-| `role`        | `string`                     | `'gridcell'`   | Hucre rolu: `gridcell`, `columnheader` veya `rowheader`     |
-| `disabled`    | `boolean`                    | `false`        | Bu hucreyi devre disi birakir                               |
-| `selected`    | `boolean`                    | `false`        | Hucrenin secili olup olmadigi (iki yonlu baglama destekler) |
-| `selectable`  | `boolean`                    | `true`         | Hucrenin secilebilir olup olmadigi                          |
-| `rowSpan`     | `number`                     | —              | Hucrenin kapladigi satir sayisi                             |
-| `colSpan`     | `number`                     | —              | Hucrenin kapladigi sutun sayisi                             |
-| `rowIndex`    | `number`                     | —              | Hucrenin satir indeksi                                      |
-| `colIndex`    | `number`                     | —              | Hucrenin sutun indeksi                                      |
-| `orientation` | `'vertical' \| 'horizontal'` | `'horizontal'` | Hucre icindeki widget'lar icin yon                          |
-| `wrap`        | `boolean`                    | `true`         | Widget navigasyonunun hucre icinde sarilip sarilmadigi      |
+| `id`          | `string`                     | auto           | Hücre için benzersiz tanımlayıcı                            |
+| `role`        | `string`                     | `'gridcell'`   | Hücre rolü: `gridcell`, `columnheader` veya `rowheader`     |
+| `disabled`    | `boolean`                    | `false`        | Bu hücreyi devre dışı bırakır                               |
+| `selected`    | `boolean`                    | `false`        | Hücrenin seçili olup olmadığı (iki yönlü bağlama destekler) |
+| `selectable`  | `boolean`                    | `true`         | Hücrenin seçilebilir olup olmadığı                          |
+| `rowSpan`     | `number`                     | —              | Hücrenin kapladığı satır sayısı                             |
+| `colSpan`     | `number`                     | —              | Hücrenin kapladığı sütun sayısı                             |
+| `rowIndex`    | `number`                     | —              | Hücrenin satır indeksi                                      |
+| `colIndex`    | `number`                     | —              | Hücrenin sütun indeksi                                      |
+| `orientation` | `'vertical' \| 'horizontal'` | `'horizontal'` | Hücre içindeki widget'lar için yön                          |
+| `wrap`        | `boolean`                    | `true`         | Widget navigasyonunun hücre içinde sarılıp sarılmadığı      |
 
-#### Signals
+#### Sinyaller
 
 | Property | Type              | Description                           |
 | -------- | ----------------- | ------------------------------------- |
-| `active` | `Signal<boolean>` | Hucrenin su anda odakta olup olmadigi |
+| `active` | `Signal<boolean>` | Hücrenin şu anda odakta olup olmadığı |

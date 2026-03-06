@@ -1,4 +1,4 @@
-# Dependent state with `linkedSignal`
+# `linkedSignal` ile bağımlı durum
 
 Angular kodunuzda bir miktar durum tutmak için `signal` fonksiyonunu kullanabilirsiniz. Bazen bu durum başka bir duruma bağlıdır. Örneğin, kullanıcının bir sipariş için kargo yöntemi seçmesine olanak tanıyan bir bileşen düşünün:
 
@@ -9,7 +9,7 @@ Angular kodunuzda bir miktar durum tutmak için `signal` fonksiyonunu kullanabil
 export class ShippingMethodPicker {
   shippingOptions: Signal<ShippingMethod[]> = getShippingOptions();
 
-  // Select the first shipping option by default.
+  // Varsayılan olarak ilk kargo seçeneğini seç.
   selectedOption = signal(this.shippingOptions()[0]);
 
   changeShipping(newOptionIndex: number) {
@@ -29,7 +29,7 @@ Bu örnekte, `selectedOption` varsayılan olarak ilk seçenektir, ancak kullanı
 export class ShippingMethodPicker {
   shippingOptions: Signal<ShippingMethod[]> = getShippingOptions();
 
-  // Initialize selectedOption to the first shipping option.
+  // selectedOption'ı ilk kargo seçeneği ile başlat.
   selectedOption = linkedSignal(() => this.shippingOptions()[0]);
 
   changeShipping(index: number) {
@@ -54,7 +54,7 @@ shippingOptions.set(['Email', 'Will Call', 'Postal service']);
 console.log(selectedOption()); // 'Email'
 ```
 
-## Accounting for previous state
+## Önceki durumu dikkate alma
 
 Bazı durumlarda, bir `linkedSignal` için hesaplama, `linkedSignal`'in önceki değerini dikkate almalıdır.
 
@@ -83,11 +83,11 @@ export class ShippingMethodPicker {
   ]);
 
   selectedOption = linkedSignal<ShippingMethod[], ShippingMethod>({
-    // `selectedOption` is set to the `computation` result whenever this `source` changes.
+    // Bu `source` her değiştiğinde `selectedOption` `computation` sonucuna ayarlanır.
     source: this.shippingOptions,
     computation: (newOptions, previous) => {
-      // If the newOptions contain the previously selected option, preserve that selection.
-      // Otherwise, default to the first option.
+      // newOptions daha önce seçilen seçeneği içeriyorsa, bu seçimi koru.
+      // Aksi takdirde, ilk seçeneği varsayılan olarak kullan.
       return newOptions.find((opt) => opt.id === previous?.value.id) ?? newOptions[0];
     },
   });
@@ -114,7 +114,7 @@ Bir `linkedSignal` oluştururken, yalnızca bir hesaplama sağlamak yerine ayrı
 
 HELPFUL: `previous` parametresini kullanırken, `linkedSignal`'in jenerik tür argümanlarını açıkça sağlamak gereklidir. İlk jenerik tür `source`'un türüne karşılık gelir ve ikinci jenerik tür `computation`'ın çıktı türünü belirler.
 
-## Custom equality comparison
+## Özel eşitlik karşılaştırması
 
 `linkedSignal`, diğer herhangi bir sinyal gibi, özel bir eşitlik fonksiyonu ile yapılandırılabilir. Bu fonksiyon, `linkedSignal`'in değerinin (hesaplama sonucu) değişip değişmediğini belirlemek için alt bağımlılıklar tarafından kullanılır:
 
@@ -122,11 +122,11 @@ HELPFUL: `previous` parametresini kullanırken, `linkedSignal`'in jenerik tür a
 const activeUser = signal({id: 123, name: 'Morgan', isAdmin: true});
 
 const activeUserEditCopy = linkedSignal(() => activeUser(), {
-  // Consider the user as the same if it's the same `id`.
+  // Aynı `id`'ye sahipse kullanıcıyı aynı kabul et.
   equal: (a, b) => a.id === b.id,
 });
 
-// Or, if separating `source` and `computation`
+// Veya `source` ve `computation` ayrı kullanılırsa
 const activeUserEditCopy = linkedSignal({
   source: activeUser,
   computation: (user) => user,

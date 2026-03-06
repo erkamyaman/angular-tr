@@ -1,10 +1,10 @@
-# Extended Diagnostics
+# Genişletilmiş Tanılamalar
 
 Teknik olarak derleyici veya çalışma zamanı için geçerli olan, ancak karmaşık nüansları veya uyarıları olabilen birçok kodlama kalıbı vardır.
 Bu kalıplar, bir geliştiricinin beklediği etkiyi yaratmayabilir ve bu durum genellikle hatalara yol açar.
 Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir kod tabanı içinde yaygın en iyi uygulamaları zorunlu kılmak amacıyla bu kalıpların çoğunu tanımlayan "genişletilmiş tanılama" özelliğini içerir.
 
-## Diagnostics
+## Tanılamalar
 
 Şu anda Angular aşağıdaki genişletilmiş tanılamaları desteklemektedir:
 
@@ -27,7 +27,7 @@ Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir k
 | `NG8117` | [`uninvokedFunctionInTextInterpolation`](extended-diagnostics/NG8117) |
 | `NG8021` | [`deferTriggerMisconfiguration`](extended-diagnostics/NG8021)         |
 
-## Configuration
+## Yapılandırma
 
 Genişletilmiş tanılamalar varsayılan olarak uyarıdır ve derlemeyi engellemez.
 Her tanılama şu şekilde yapılandırılabilir:
@@ -54,15 +54,15 @@ Kontrol ciddiyeti bir [Angular derleyici seçeneği](reference/configs/angular-c
 ```
 
 `checks` alanı, bireysel tanılamaların adlarını ilişkili kategorileriyle eşler.
-Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Diagnostics](#diagnostics) bölümüne bakın.
+Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Diagnostics](#tanılamalar) bölümüne bakın.
 
 `defaultCategory` alanı, `checks` altında açıkça listelenmemiş tüm tanılamalar için kullanılır.
 Ayarlanmazsa, bu tür tanılamalar `warning` olarak değerlendirilir.
 
-Genişletilmiş tanılamalar [`strictTemplates`](tools/cli/template-typecheck#strict-mode) etkinleştirildiğinde verilir.
+Genişletilmiş tanılamalar [`strictTemplates`](tools/cli/template-typecheck#katı-mod) etkinleştirildiğinde verilir.
 Bu, derleyicinin Angular şablon türlerini daha iyi anlamasını ve doğru ve anlamlı tanılamalar sağlamasını mümkün kılmak için gereklidir.
 
-## Semantic Versioning
+## Semantik Versiyonlama
 
 Angular ekibi, Angular'ın **minor** sürümlerinde yeni genişletilmiş tanılamalar eklemeyi veya etkinleştirmeyi planlamaktadır (bkz. [semver](https://docs.npmjs.com/about-semantic-versioning)).
 Bu, Angular'ı yükseltmenin mevcut kod tabanınızda yeni uyarılar gösterebileceği anlamına gelir.
@@ -70,10 +70,10 @@ Bu, ekibin özellikleri daha hızlı sunmasını ve genişletilmiş tanılamalar
 
 Ancak, `"defaultCategory": "error"` ayarı bu tür uyarıları kesin hatalara yükseltir.
 Bu, bir minor sürüm yükseltmesinin derleme hataları oluşturmasına neden olabilir ve bu durum semver uyumlu olmayan bir kırılma değişikliği olarak görülebilir.
-Herhangi bir yeni tanılama, yukarıdaki [yapılandırma](#configuration) aracılığıyla bastırılabilir veya uyarılara düşürülebilir, bu nedenle genişletilmiş tanılamaları varsayılan olarak hata olarak değerlendiren projeler üzerindeki etkisi minimum olmalıdır.
+Herhangi bir yeni tanılama, yukarıdaki [yapılandırma](#yapılandırma) aracılığıyla bastırılabilir veya uyarılara düşürülebilir, bu nedenle genişletilmiş tanılamaları varsayılan olarak hata olarak değerlendiren projeler üzerindeki etkisi minimum olmalıdır.
 Varsayılan olarak hata kullanmak çok güçlü bir araçtır; projeniz için `error`'ın doğru varsayılan olup olmadığına karar verirken bu semver uyarısını göz önünde bulundurun.
 
-## New Diagnostics
+## Yeni Tanılamalar
 
 Angular ekibi, eklenebilecek yeni tanılamalar hakkında önerilere her zaman açıktır.
 Genişletilmiş tanılamalar genel olarak şunları yapmalıdır:

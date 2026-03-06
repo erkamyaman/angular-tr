@@ -1,26 +1,26 @@
-# Slow computations
+# Yavaş hesaplamalar
 
-Her degisiklik algilama dongusunde Angular senkron olarak:
+Her değişiklik algılama döngüsünde Angular senkron olarak:
 
-- Aksi belirtilmedikce, her bilesenin algilama stratejisine dayali olarak tum bilesenlerdeki tum sablon ifadelerini degerlendirir
-- `ngDoCheck`, `ngAfterContentChecked`, `ngAfterViewChecked` ve `ngOnChanges` yasam dongusu kancalarini calistirir.
-  Bir sablon veya yasam dongusu kancasi icindeki tek bir yavas hesaplama, Angular hesaplamalari sirali olarak calistirdigi icin tum degisiklik algilama surecini yavaslatabilir.
+- Aksi belirtilmedikçe, her bileşenin algılama stratejisine dayalı olarak tüm bileşenlerdeki tüm şablon ifadelerini değerlendirir
+- `ngDoCheck`, `ngAfterContentChecked`, `ngAfterViewChecked` ve `ngOnChanges` yaşam döngüsü kancalarını çalıştırır.
+  Bir şablon veya yaşam döngüsü kancası içindeki tek bir yavaş hesaplama, Angular hesaplamaları sıralı olarak çalıştırdığı için tüm değişiklik algılama sürecini yavaşlatabilir.
 
-## Identifying slow computations
+## Yavaş hesaplamaları belirleme
 
-Agir hesaplamalari Angular DevTools'un profil cikaricisi ile belirleyebilirsiniz. Performans zaman cizelgesinde, belirli bir degisiklik algilama dongusunu onizlemek icin bir cubuga tiklayin. Bu, her bilesen icin framework'un degisiklik algilamada ne kadar zaman harcadigini gosteren bir cubuk grafik goruntler. Bir bilesene tikladiginizda, Angular'in sablonunu ve yasam dongusu kancalarini degerlendirmek icin ne kadar zaman harcadigini onizleyebilirsiniz.
+Ağır hesaplamaları Angular DevTools'un profil çıkarıcısı ile belirleyebilirsiniz. Performans zaman çizelgesinde, belirli bir değişiklik algılama döngüsünü önizlemek için bir çubuğa tıklayın. Bu, her bileşen için framework'un değişiklik algılamada ne kadar zaman harcadığını gösteren bir çubuk grafik görüntüler. Bir bileşene tıkladığınızda, Angular'ın şablonunu ve yaşam döngüsü kancalarını değerlendirmek için ne kadar zaman harcadığını önizleyebilirsiniz.
 
 <img alt="Angular DevTools profiler preview showing slow computation" src="assets/images/best-practices/runtime-performance/slow-computations.png">
 
-Ornegin, yukaridaki ekran goruntusunde, kaydedilen ikinci degisiklik algilama dongusu secilmistir. Angular bu dongu icin 573 ms'den fazla harcamis olup, zamanin buyuk bolumu `EmployeeListComponent`'te harcanmistir. Ayrinti panelinde, Angular'in `EmployeeListComponent`'in sablonunu degerlendirmek icin 297 ms'den fazla harcadigini gorebilirsiniz.
+Örneğin, yukarıdaki ekran görüntüsünde, kaydedilen ikinci değişiklik algılama döngüsü seçilmiştir. Angular bu döngü için 573 ms'den fazla harcamış olup, zamanın büyük bölümü `EmployeeListComponent`'te harcanmıştır. Ayrıntı panelinde, Angular'ın `EmployeeListComponent`'in şablonunu değerlendirmek için 297 ms'den fazla harcadığını görebilirsiniz.
 
-## Optimizing slow computations
+## Yavaş hesaplamaları optimize etme
 
-Yavas hesaplamalari ortadan kaldirmak icin birkaç teknik:
+Yavaş hesaplamaları ortadan kaldırmak için birkaç teknik:
 
-- **Temeldeki algortimayi optimize etme**. Bu onerilen yaklasimdir. Soruna neden olan algoritmayı hizlandirabilirseniz, tum degisiklik algilama mekanizmasini hizlandirabilirsiniz.
-- **Saf borular kullanarak onbellekleme**. Agir hesaplamayi saf bir [boruya](guide/templates/pipes) tasiyabilirsiniz. Angular, saf bir boruyu yalnizca girislerinin degistigini algiladiginda, onceki cagirdigi zamana kiyasla yeniden degerlendirir.
-- **Memoizasyon kullanma**. [Memoizasyon](https://en.wikipedia.org/wiki/Memoization), saf borulara benzer bir tekniktir; fark, saf borularin yalnizca hesaplamadan son sonucu korumasina karsin memoizasyonun birden fazla sonucu depolayabilmesidir.
-- **Yasam dongusu kancalarinda yeniden boyama/yeniden akislardan kacinma**. Belirli [islemler](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/) tarayicinin sayfanin duzenini senkron olarak yeniden hesaplamasina veya yeniden render etmesine neden olur. Yeniden akislar ve yeniden boyamalar genellikle yavas oldugundan, bunlari her degisiklik algilama dongusunde gerceklestirmekten kacinmak istersiniz.
+- **Temeldeki algoritmayı optimize etme**. Bu önerilen yaklaşımdır. Soruna neden olan algoritmayı hızlandırabilirseniz, tüm değişiklik algılama mekanizmasını hızlandırabilirsiniz.
+- **Saf borular kullanarak önbellekleme**. Ağır hesaplamayı saf bir [boruya](guide/templates/pipes) taşıyabilirsiniz. Angular, saf bir boruyu yalnızca girişlerinin değiştiğini algıladığında, önceki çağırdığı zamana kıyasla yeniden değerlendirir.
+- **Memoizasyon kullanma**. [Memoizasyon](https://en.wikipedia.org/wiki/Memoization), saf borulara benzer bir tekniktir; fark, saf boruların yalnızca hesaplamadan son sonucu korumasına karşın memoizasyonun birden fazla sonucu depolayabilmesidir.
+- **Yaşam döngüsü kancalarında yeniden boyama/yeniden akışlardan kaçınma**. Belirli [işlemler](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/) tarayıcının sayfanın düzenini senkron olarak yeniden hesaplamasına veya yeniden render etmesine neden olur. Yeniden akışlar ve yeniden boyamalar genellikle yavaş olduğundan, bunları her değişiklik algılama döngüsünde gerçekleştirmekten kaçınmak istersiniz.
 
 Saf borular ve memoizasyonun farkli odulusler vardır. Saf borular, genel bir yazılım mühendisliği pratigı olan fonksiyon sonuclarını önbelleğe almaya yönelik memoizasyona kıyasla Angular'a özgü bir kavramdır. Ağır hesaplamayı farklı argümanlarla sık sık çağırırsanız, memoizasyonun bellek yükü önemli olabilir.

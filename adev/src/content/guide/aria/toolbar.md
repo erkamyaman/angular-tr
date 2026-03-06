@@ -6,7 +6,7 @@
   <docs-pill href="/api/aria/toolbar/Toolbar" title="Toolbar API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
 Klavye navigasyonu ile ilgili kontrolleri ve eylemleri gruplamak için kullanılan bir kapsayıcı; genellikle metin biçimlendirme, araç çubukları ve komut panelleri için kullanılır.
 

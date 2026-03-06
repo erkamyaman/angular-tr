@@ -1,10 +1,10 @@
-# DI in action
+# DI uygulamada
 
 Bu kılavuz, Angular'da bağımlılık enjeksiyonunun ek özelliklerini inceler.
 
-NOTE: InjectionToken ve özel sağlayıcıların kapsamlı açıklaması için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injection-tokens) bakın.
+NOTE: InjectionToken ve özel sağlayıcıların kapsamlı açıklaması için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injection-tokenlar) bakın.
 
-## Inject the component's DOM element
+## Bileşenin DOM elemanını enjekte etme
 
 Geliştiriciler bundan kaçınmaya çalışsa da, bazı görsel efektler ve üçüncü taraf araçlar doğrudan DOM erişimi gerektirir.
 Sonuç olarak, bir bileşenin DOM elemanına erişmeniz gerekebilir.
@@ -26,7 +26,7 @@ export class HighlightDirective {
 }
 ```
 
-## Inject the host element's tag name
+## Ana elemanın etiket adını enjekte etme
 
 Bir ana elemanın etiket adına ihtiyaç duyduğunuzda, `HOST_TAG_NAME` token'ını kullanarak enjekte edin.
 
@@ -42,13 +42,13 @@ export class RoleButtonDirective {
   onAction() {
     switch (this.tagName) {
       case 'button':
-        // Handle button action
+        // Buton eylemini işle
         break;
       case 'a':
-        // Handle anchor action
+        // Bağlantı eylemini işle
         break;
       default:
-        // Handle other elements
+        // Diğer elemanları işle
         break;
     }
   }
@@ -57,7 +57,7 @@ export class RoleButtonDirective {
 
 NOTE: Ana elemanın etiket adı olmayabilirse (örneğin `ng-container` veya `ng-template`), enjeksiyonu isteğe bağlı yapın.
 
-## Resolve circular dependencies with a forward reference
+## İleri referans ile döngüsel bağımlılıkları çözme
 
 TypeScript'te sınıf bildirim sırası önemlidir.
 Bir sınıf tanımlanmadan önce doğrudan ona referans veremezsiniz.

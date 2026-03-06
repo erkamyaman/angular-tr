@@ -39,11 +39,11 @@ export class App {}
 
 <docs-workflow>
 
-<docs-step title="Define an `input()` property">
+<docs-step title="Bir `input()` özelliği tanımlayın">
 `user.ts` dosyasındaki kodu, `User` üzerinde `name` adında bir `input` özelliği tanımlayacak ve `string` tipini belirtecek şekilde güncelleyin. Şimdilik başlangıç değeri ayarlamayın ve `input()` fonksiyonunu argümansız çağırın. Şablonu, cümlenin sonunda `name` özelliğini çağıracak ve enterpolasyon yapacak şekilde güncellediğinizden emin olun.
 </docs-step>
 
-<docs-step title="Pass a value to the `input` property">
+<docs-step title="`input` özelliğine bir değer geçirin">
 `app.ts` dosyasındaki kodu, `name` özelliğine `"Simran"` değerini gönderecek şekilde güncelleyin.
 <br>
 

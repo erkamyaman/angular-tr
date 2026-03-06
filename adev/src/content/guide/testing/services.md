@@ -1,10 +1,10 @@
-# Testing services
+# Servisleri test etme
 
 Servisler genellikle bileşenlerin dayandığı uygulamanızın iş mantığını içerir. Servisleri test etmek, mantığın herhangi bir bileşen veya şablondan bağımsız olarak doğru çalıştığını doğrular.
 
-Bu kılavuz, Angular CLI projelerinin varsayılan olarak içerdiği [Vitest](https://vitest.dev/)'i kullanır. Test kurulumu hakkında daha fazla bilgi için [test genel bakış kılavuzuna](guide/testing#set-up-for-testing) bakın.
+Bu kılavuz, Angular CLI projelerinin varsayılan olarak içerdiği [Vitest](https://vitest.dev/)'i kullanır. Test kurulumu hakkında daha fazla bilgi için [test genel bakış kılavuzuna](guide/testing#test-için-kurulum) bakın.
 
-## Testing a service
+## Bir servisi test etme
 
 Temel aritmetik işlemleri yapan bir `Calculator` servisi düşünün:
 
@@ -34,8 +34,8 @@ describe('Calculator', () => {
   let service: Calculator;
 
   beforeEach(() => {
-    // Injects the Calculator service which is available to Angular
-    // because the service uses `providedIn: 'root'`
+    // Calculator servisini enjekte eder; servis `providedIn: 'root'`
+    // kullandığı için Angular tarafından erişilebilirdir
     service = TestBed.inject(Calculator);
   });
 
@@ -51,7 +51,7 @@ describe('Calculator', () => {
 
 Yukarıdaki örnekte, `beforeEach` bloğu her testten önce servisin taze bir örneğini enjekte eder. Bu, her testin önceki testlerden sızmış durum olmadan izole çalışmasını sağlar.
 
-## Testing services with dependencies
+## Bağımlılıkları olan servisleri test etme
 
 Çoğu servis, düzgün çalışmak için diğer servislere bağımlıdır. Varsayılan olarak `TestBed`, bu bağımlılıkların gerçek uygulamalarını sağlar; bu da testlerinizin uygulamanızın kullandığı gerçek kod yollarını çalıştırdığı anlamına gelir. Ancak bazen bir bağımlılık karmaşık, yavaş veya öngörülemez olabilir. Bu durumlarda, kontrollü bir yedek ile değiştirebilirsiniz.
 
@@ -84,7 +84,7 @@ export class OrderTotal {
 
 Bu örnekte `OrderTotal`, Angular'ın bağımlılık enjeksiyon sisteminden `TaxCalculator`'ı talep etmek için `inject()` kullanır. Varsayılan olarak `TestBed`, bunun gibi basit hesaplamalar için mükemmel olan gerçek `TaxCalculator`'ı sağlar. Ancak `TaxCalculator` karmaşık mantık, ağ istekleri veya öngörülemez sonuçlar içeriyorsa, kontrollü bir yedek ile değiştirmek isteyebilirsiniz.
 
-### Replacing a dependency with a stub
+### Bir bağımlılığı stub ile değiştirme
 
 Bir stub, bir bağımlılığı veya metodu öngörülebilir değerler döndüren biriyle değiştirmenin bir yoludur ve bu da test sonuçlarının doğrulanmasını kolaylaştırabilir.
 
@@ -96,8 +96,8 @@ import {beforeEach, describe, expect, it, vi, type Mocked} from 'vitest';
 import {OrderTotal} from './order-total';
 import {TaxCalculator} from './tax-calculator';
 
-// Vitest's `Mocked` utility type ensures the stub is type-safe,
-// while `vi.fn()` creates a mock function for each method
+// Vitest'in `Mocked` yardımcı tipi stub'ın tip güvenli olmasını sağlar,
+// `vi.fn()` ise her metot için bir mock fonksiyonu oluşturur
 const taxCalculatorStub: Mocked<TaxCalculator> = {
   calculate: vi.fn(),
 };
@@ -106,12 +106,12 @@ describe('OrderTotal', () => {
   let service: OrderTotal;
 
   beforeEach(() => {
-    // `mockReturnValue` sets a controlled return value for the stub
+    // `mockReturnValue` stub için kontrollü bir dönüş değeri ayarlar
     taxCalculatorStub.calculate.mockReturnValue(5);
 
     TestBed.configureTestingModule({
-      // The `providers` array accepts a provider object where `provide`
-      // specifies the dependency to replace and `useValue` defines the stub
+      // `providers` dizisi, `provide` ile değiştirilecek bağımlılığı
+      // ve `useValue` ile stub'ı tanımlayan bir provider nesnesi kabul eder
       providers: [{provide: TaxCalculator, useValue: taxCalculatorStub}],
     });
     service = TestBed.inject(OrderTotal);
@@ -125,7 +125,7 @@ describe('OrderTotal', () => {
 
 Bu stub ile `OrderTotal` `TaxCalculator`'ı talep ettiğinde, `TestBed` bunun yerine `taxCalculatorStub`'ı kullanmayı bilir. Stub her zaman 5 döndürdüğünden, test `OrderTotal`'ın vergi oranının `TaxCalculator`'da değişip değişmediğinden bağımsız olarak ara toplamına vergi değerini doğru şekilde eklediğini doğrular.
 
-### Verifying interactions with spies
+### Spy'lar ile etkileşimleri doğrulama
 
 Bir stub, bir bağımlılığın ne döndürdüğünü kontrol eder, ancak bazen bir servisin bağımlılığını doğru argümanlarla çağırdığını da doğrulamanız gerekir. Bu, bir fonksiyonun nasıl çağrıldığını izleyen spy'lar ile gerçekleştirilebilir. Vitest'te bu işlevsellik `vi.fn()` içine yerleştirilmiştir ve servisler arasındaki etkileşimleri doğrulamanıza olanak tanır.
 
@@ -155,7 +155,7 @@ describe('OrderTotal', () => {
     expect(service.total(100)).toBe(105);
   });
 
-  // Verify the interaction with a spy
+  // Spy ile etkileşimi doğrula
   it('calls the tax calculator', () => {
     service.total(100);
     expect(taxCalculatorStub.calculate).toHaveBeenCalledExactlyOnce();
@@ -165,8 +165,9 @@ describe('OrderTotal', () => {
 
 Yeni test, `OrderTotal`'ın toplamı hesaplarken `TaxCalculator.calculate`'i çağırdığını doğrular. Bu, servisler arasındaki etkileşimin doğru şekilde gerçekleştiğini doğrulamak istediğinizde faydalıdır.
 
-## Testing HTTP services
+## HTTP servisleri test etme
 
 Birçok servis, sunucudan veri almak için Angular'ın `HttpClient`'ını kullanır. Angular, gerçek ağ istekleri yapmadan HTTP yanıtlarını kontrol etmenize olanak tanıyan `HttpClient` için özel test araçları sağlar.
 
 `HttpClient` kullanan servisleri test etme hakkında ayrıntılar için [HTTP test kılavuzuna](guide/http/testing) bakın.
+ın.

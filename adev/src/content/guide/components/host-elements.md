@@ -1,11 +1,11 @@
-# Component host elements
+# Bileşen host elemanları
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Angular, bilesnenin secicisiyle eslesen her HTML elemani icin bilesnenin bir ornegini olusturur. Bir bilesnenin secicisiyle eslesen DOM elemani, o bilesnenin **host elemani**dir. Bir bilesnenin sablonunun icerigi, host elemani icerisinde render edilir.
+Angular, bileşenin seçicisiyle eşleşen her HTML elemanı için bileşenin bir örneğini oluşturur. Bir bileşenin seçicisiyle eşleşen DOM elemanı, o bileşenin **host elemanı**dır. Bir bileşenin şablonunun içeriği, host elemanı içerisinde render edilir.
 
 ```angular-ts
-// Component source
+// Bileşen kaynağı
 @Component({
   selector: 'profile-photo',
   template: `<img src="profile-photo.jpg" alt="Your profile photo" />`,
@@ -14,14 +14,14 @@ export class ProfilePhoto {}
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <h3>Your profile photo</h3>
 <profile-photo />
 <button>Upload a new profile photo</button>
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <h3>Your profile photo</h3>
 <profile-photo>
   <img src="profile-photo.jpg" alt="Your profile photo" />
@@ -29,11 +29,11 @@ export class ProfilePhoto {}
 <button>Upload a new profile photo</button>
 ```
 
-Yukaridaki ornekte, `<profile-photo>` bileseni `ProfilePhoto` bilesnenin host elemanidir.
+Yukarıdaki örnekte, `<profile-photo>` bileşeni `ProfilePhoto` bileşenin host elemanıdır.
 
-## Binding to the host element
+## Host elemanına bağlama
 
-Bir bilesen, host elemanina ozellikler, nitelikler, stiller ve olaylar baglayabilir. Bu, bilesnenin sablonu icerisindeki elemanlardaki baglamalarla ayni sekilde calisir, ancak `@Component` dekoratorundeki `host` ozelligi ile tanimlanir:
+Bir bileşen, host elemanına özellikler, nitelikler, stiller ve olaylar bağlayabilir. Bu, bileşenin şablonu içerisindeki elemanlardaki bağlamalarla aynı şekilde çalışır, ancak `@Component` dekoratöründeki `host` özelliği ile tanımlanır:
 
 ```angular-ts
 @Component({
@@ -58,13 +58,13 @@ export class CustomSlider {
 }
 ```
 
-NOTE: Bir olay adinin onune eklenebilecek genel hedef adlari `document:`, `window:` ve `body:` dir.
+NOTE: Bir olay adının önüne eklenebilecek genel hedef adları `document:`, `window:` ve `body:` dir.
 
-## The `@HostBinding` and `@HostListener` decorators
+## `@HostBinding` ve `@HostListener` dekoratörleri
 
-Alternatif olarak, sinif uyelerine `@HostBinding` ve `@HostListener` dekoratorlerini uygulayarak host elemanina baglama yapabilirsiniz.
+Alternatif olarak, sınıf üyelerine `@HostBinding` ve `@HostListener` dekoratörlerini uygulayarak host elemanına bağlama yapabilirsiniz.
 
-`@HostBinding`, host ozelliklerini ve niteliklerini ozellikler ve getter'lara baglamaniza olanak tanir:
+`@HostBinding`, host özelliklerini ve niteliklerini özellikler ve getter'lara bağlamanıza olanak tanır:
 
 ```ts
 @Component({
@@ -83,7 +83,7 @@ export class CustomSlider {
 }
 ```
 
-`@HostListener`, host elemanina olay dinleyicileri baglamaniza olanak tanir. Dekorator bir olay adi ve istege bagli bir arguman dizisi kabul eder:
+`@HostListener`, host elemanına olay dinleyicileri bağlamanıza olanak tanır. Dekoratör bir olay adı ve isteğe bağlı bir argüman dizisi kabul eder:
 
 ```ts
 export class CustomSlider {
@@ -95,12 +95,12 @@ export class CustomSlider {
 ```
 
 <docs-callout critical title="Prefer using the `host` property over the decorators">
-  **Her zaman `@HostBinding` ve `@HostListener` yerine `host` ozelligini kullanmayi tercih edin.** Bu dekoratorler yalnizca geriye donuk uyumluluk icin mevcuttur.
+  **Her zaman `@HostBinding` ve `@HostListener` yerine `host` özelliğini kullanmayı tercih edin.** Bu dekoratörler yalnızca geriye dönük uyumluluk için mevcuttur.
 </docs-callout>
 
-## Binding collisions
+## Bağlama çakışmaları
 
-Bir sablonda bilesen kullandiginizda, o bilesen orneginin elemanina baglamalar ekleyebilirsiniz. Bilesen ayni zamanda ayni ozellikler veya nitelikler icin host baglamalari da tanimlayabilir.
+Bir şablonda bileşen kullandığınızda, o bileşen örneğinin elemanına bağlamalar ekleyebilirsiniz. Bileşen aynı zamanda aynı özellikler veya nitelikler için host bağlamaları da tanımlayabilir.
 
 ```angular-ts
 @Component({
@@ -117,16 +117,16 @@ export class ProfilePhoto { /* ... */ }
 <profile-photo role="group" [id]="otherId" />
 ```
 
-Bu gibi durumlarda, hangi degerin kazanacagini asagidaki kurallar belirler:
+Bu gibi durumlarda, hangi değerin kazanacağını aşağıdaki kurallar belirler:
 
-- Her iki deger de statikse, ornek baglamasi kazanir.
-- Bir deger statik ve digeri dinamikse, dinamik deger kazanir.
-- Her iki deger de dinamikse, bilesnenin host baglamasi kazanir.
+- Her iki değer de statikse, örnek bağlaması kazanır.
+- Bir değer statik ve diğeri dinamikse, dinamik değer kazanır.
+- Her iki değer de dinamikse, bileşenin host bağlaması kazanır.
 
-## Styling with CSS custom properties
+## CSS özel özellikleri ile stillendirme
 
-Gelistiriciler, bilesen stillerinin esnek yapilandirilmasini saglamak icin siklikla [CSS Ozel Ozellikleri](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)'ne guvenirler.
-Bu tur ozel ozellikleri host elemani uzerinde bir [stil baglamasi][stil baglamasi](guide/templates/binding#css-style-properties) ile ayarlayabilirsiniz.
+Geliştiriciler, bileşen stillerinin esnek yapılandırılmasını sağlamak için sıklıkla [CSS Özel Özellikleri](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)'ne güvenirler.
+Bu tür özel özellikleri host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-stil-özellikleri) ile ayarlayabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -140,11 +140,11 @@ export class MyComponent {
 }
 ```
 
-Bu ornekte, `--my-background` CSS ozel ozelligi `color` sinyaline baglidir. Ozel ozelligin degeri, `color` sinyali her degistiginde otomatik olarak guncellenecektir. Bu, mevcut bileseni ve bu ozel ozellige dayanan tum alt bilesenleri etkileyecektir.
+Bu örnekte, `--my-background` CSS özel özelliği `color` sinyaline bağlıdır. Özel özelliğin değeri, `color` sinyali her değiştiğinde otomatik olarak güncellenecektir. Bu, mevcut bileşeni ve bu özel özelliğe dayanan tüm alt bileşenleri etkileyecektir.
 
-### Setting custom properties on children components
+### Alt bileşenlerde özel özellikleri ayarlama
 
-Alternatif olarak, alt bilesenlerin host elemani uzerinde bir [stil baglamasi](guide/templates/binding#css-style-properties) ile CSS ozel ozelliklerini ayarlamak da mumkundur.
+Alternatif olarak, alt bileşenlerin host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-stil-özellikleri) ile CSS özel özelliklerini ayarlamak da mümkündür.
 
 ```angular-ts
 @Component({
@@ -156,9 +156,9 @@ export class MyComponent {
 }
 ```
 
-## Injecting host element attributes
+## Host eleman niteliklerini enjekte etme
 
-Bilesenlere ve direktiflere, [`inject`](api/core/inject) fonksiyonu ile birlikte `HostAttributeToken` kullanarak host elemanlarindan statik nitelikler okunabilir.
+Bileşenlere ve direktiflere, [`inject`](api/core/inject) fonksiyonu ile birlikte `HostAttributeToken` kullanarak host elemanlarından statik nitelikler okunabilir.
 
 ```ts
 import { Component, HostAttributeToken, inject } from '@angular/core';
@@ -176,4 +176,4 @@ export class Button {
 <app-button variation="primary">Click me</app-button>
 ```
 
-HELPFUL: Enjeksiyon istege bagli olarak isaretlenmedikce, nitelik eksik oldugunda `HostAttributeToken` bir hata verir.
+HELPFUL: Enjeksiyon isteğe bağlı olarak işaretlenmedikçe, nitelik eksik olduğunda `HostAttributeToken` bir hata verir.

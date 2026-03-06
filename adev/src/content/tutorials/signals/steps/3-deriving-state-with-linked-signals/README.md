@@ -10,7 +10,7 @@ Bu aktivitede, önceki kullanıcı durum sistemindeki hesaplanmış `notificatio
 
 <docs-workflow>
 
-<docs-step title="Import linkedSignal function">
+<docs-step title="linkedSignal fonksiyonunu içe aktarın">
 Mevcut içe aktarmalarınıza `linkedSignal` ekleyin.
 
 ```ts
@@ -20,7 +20,7 @@ import {Component, signal, computed, linkedSignal, ChangeDetectionStrategy} from
 
 </docs-step>
 
-<docs-step title="Convert computed to linkedSignal with the same expression">
+<docs-step title="computed ifadesini aynı ifadeyle linkedSignal'e dönüştürün">
 Hesaplanmış `notificationsEnabled` sinyalini, aynı ifadeyi kullanarak bir linkedSignal ile değiştirin:
 
 ```ts
@@ -34,7 +34,7 @@ notificationsEnabled = linkedSignal(() => this.userStatus() === 'online');
 İfade aynıdır, ancak linkedSignal yazılabilir bir sinyal oluşturur. `userStatus` değiştiğinde yine otomatik olarak güncellenecektir, ancak bunu manuel olarak da ayarlayabilirsiniz.
 </docs-step>
 
-<docs-step title="Add a method to manually toggle notifications">
+<docs-step title="Bildirimleri manuel olarak değiştirmek için bir metot ekleyin">
 Bağlantılı sinyallere doğrudan yazılabileceğini gösteren bir metot ekleyin:
 
 ```ts
@@ -47,7 +47,7 @@ toggleNotifications() {
 Temel fark budur: computed sinyaller salt okunurdur, ancak bağlantılı sinyaller reaktif bağlantılarını korurken manuel olarak güncellenebilir.
 </docs-step>
 
-<docs-step title="Update the template to add manual notification control">
+<docs-step title="Manuel bildirim kontrolü eklemek için şablonu güncelleyin">
 Bildirimler için bir geçiş düğmesi eklemek üzere şablonunuzu güncelleyin:
 
 ```angular-html
@@ -73,7 +73,7 @@ Bildirimler için bir geçiş düğmesi eklemek üzere şablonunuzu güncelleyin
 
 </docs-step>
 
-<docs-step title="Observe the reactive behavior">
+<docs-step title="Reaktif davranışı gözlemleyin">
 Şimdi davranışı test edin:
 
 1. Kullanıcı durumunu değiştirin - `notificationsEnabled` sinyalinin otomatik olarak güncellendiğine dikkat edin

@@ -1,6 +1,6 @@
-# Async reactivity with resources
+# Resource'lar ile asenkron reaktivite
 
-IMPORTANT: `resource` [deneyseldir](reference/releases#experimental). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
+IMPORTANT: `resource` [deneyseldir](reference/releases#deneysel). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
 
 Tüm sinyal API'leri senkrondur-- `signal`, `computed`, `input`, vb. Ancak uygulamalar genellikle asenkron olarak kullanılabilen verilerle uğraşmak zorundadır. Bir `Resource`, asenkron verileri uygulamanızın sinyal tabanlı koduna dahil etmenin ve yine de verilerine senkron olarak erişmenin bir yolunu sunar.
 
@@ -14,25 +14,25 @@ import {resource, Signal} from '@angular/core';
 const userId: Signal<string> = getUserId();
 
 const userResource = resource({
-  // Define a reactive computation.
-  // The params value recomputes whenever any read signals change.
+  // Reaktif bir hesaplama tanımla.
+  // params değeri, okunan sinyallerden herhangi biri değiştiğinde yeniden hesaplanır.
   params: () => ({id: userId()}),
 
-  // Define an async loader that retrieves data.
-  // The resource calls this function every time the `params` value changes.
+  // Veri alan asenkron bir loader tanımla.
+  // Resource, `params` değeri her değiştiğinde bu fonksiyonu çağırır.
   loader: ({params}) => fetchUser(params),
 });
 
-// Create a computed signal based on the result of the resource's loader function.
+// Resource'un loader fonksiyonunun sonucuna dayalı bir computed sinyal oluştur.
 const firstName = computed(() => {
   if (userResource.hasValue()) {
-    // `hasValue` serves 2 purposes:
-    // - It acts as type guard to strip `undefined` from the type
-    // - If protects against reading a throwing `value` when the resource is in error state
+    // `hasValue` iki amaca hizmet eder:
+    // - Türden `undefined`'ı çıkaran bir tür koruması görevi görür
+    // - Resource hata durumundayken hata fırlatan `value` okumasına karşı korur
     return userResource.value().firstName;
   }
 
-  // fallback in case the resource value is `undefined` or if the resource is in error state
+  // Resource değeri `undefined` ise veya resource hata durumundaysa yedek değer
   return undefined;
 });
 ```
@@ -41,25 +41,25 @@ const firstName = computed(() => {
 
 `params` özelliği, bir parametre değeri üreten reaktif bir hesaplama tanımlar. Bu hesaplamada okunan sinyaller değiştiğinde, kaynak `computed`'a benzer şekilde yeni bir parametre değeri üretir.
 
-`loader` özelliği bir `ResourceLoader` tanımlar-- bir miktar durum alan asenkron bir fonksiyon. Kaynak, `params` hesaplaması yeni bir değer ürettiğinde yükleyiciyi çağırır ve o değeri yükleyiciye iletir. Daha fazla ayrıntı için aşağıdaki [Resource yükleyicileri](#resource-loaders) bölümüne bakın.
+`loader` özelliği bir `ResourceLoader` tanımlar-- bir miktar durum alan asenkron bir fonksiyon. Kaynak, `params` hesaplaması yeni bir değer ürettiğinde yükleyiciyi çağırır ve o değeri yükleyiciye iletir. Daha fazla ayrıntı için aşağıdaki [Resource yükleyicileri](#resource-loaderları) bölümüne bakın.
 
 `Resource`, yükleyicinin sonuçlarını içeren bir `value` sinyaline sahiptir.
 
-## Resource loaders
+## Resource loader'ları
 
 Bir kaynak oluştururken bir `ResourceLoader` belirtirsiniz. Bu yükleyici, tek bir parametre kabul eden asenkron bir fonksiyondur-- bir `ResourceLoaderParams` nesnesi-- ve bir değer döndürür.
 
 `ResourceLoaderParams` nesnesi üç özellik içerir: `params`, `previous` ve `abortSignal`.
 
-| Property      | Description                                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `params`      | The value of the resource's `params` computation.                                                                                                |
-| `previous`    | An object with a `status` property, containing the previous `ResourceStatus`.                                                                    |
-| `abortSignal` | An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). See [Aborting requests](#aborting-requests) below for details. |
+| Property      | Description                                                                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `params`      | The value of the resource's `params` computation.                                                                                                     |
+| `previous`    | An object with a `status` property, containing the previous `ResourceStatus`.                                                                         |
+| `abortSignal` | An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). See [Aborting requests](#requestleri-iptal-etme) below for details. |
 
 `params` hesaplaması `undefined` döndürürse, yükleyici fonksiyon çalışmaz ve kaynak durumu `'idle'` olur.
 
-### Aborting requests
+### Request'leri iptal etme
 
 Kaynak, `params` hesaplaması yüklenme sırasında değişirse bekleyen bir yükleme işlemini iptal eder.
 
@@ -71,8 +71,8 @@ const userId: Signal<string> = getUserId();
 const userResource = resource({
   params: () => ({id: userId()}),
   loader: ({params, abortSignal}): Promise<User> => {
-    // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
-    // indicates that the request has been aborted.
+    // fetch, verilen `AbortSignal` request'in iptal edildiğini belirttiğinde
+    // bekleyen tüm HTTP request'lerini iptal eder.
     return fetch(`users/${params.id}`, {signal: abortSignal});
   },
 });
@@ -80,7 +80,7 @@ const userResource = resource({
 
 `AbortSignal` ile istek iptali hakkında daha fazla ayrıntı için MDN'deki [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) sayfasına bakın.
 
-### Reloading
+### Yeniden yükleme
 
 `reload` yöntemini çağırarak bir kaynağın `loader`'ını programatik olarak tetikleyebilirsiniz.
 
@@ -97,7 +97,7 @@ const userResource = resource({
 userResource.reload();
 ```
 
-## Resource status
+## Resource durumu
 
 Kaynak nesnesi, asenkron yükleyicinin durumunu okumak için çeşitli sinyal özelliklerine sahiptir.
 
@@ -122,11 +122,11 @@ Kaynak nesnesi, asenkron yükleyicinin durumunu okumak için çeşitli sinyal ö
 
 Bu durum bilgisini, yükleme göstergeleri ve hata mesajları gibi kullanıcı arayüzü öğelerini koşullu olarak görüntülemek için kullanabilirsiniz.
 
-## Reactive data fetching with `httpResource`
+## `httpResource` ile reaktif veri çekme
 
 [`httpResource`](/guide/http/http-resource), `HttpClient` etrafında size istek durumunu ve yanıtı sinyal olarak veren bir sarmalayıcıdır. Yakalayıcılar dahil Angular HTTP yığını aracılığıyla HTTP istekleri yapar.
 
-## Resource composition with snapshots
+## Snapshot'lar ile Resource bileşimi
 
 `ResourceSnapshot`, bir kaynağın mevcut durumunun yapılandırılmış bir temsilidir. Her kaynağın mevcut durumunun sinyalini sağlayan bir `snapshot` özelliği vardır.
 
@@ -143,7 +143,7 @@ const userSnapshot = userResource.snapshot;
 
 Her anlık görüntü bir `status` ve bir `value` veya `error` içerir.
 
-### Composing resources with snapshots
+### Snapshot'lar ile resource'ları birleştirme
 
 `resourceFromSnapshots` kullanarak anlık görüntülerden yeni kaynaklar oluşturabilirsiniz. Bu, kaynak davranışını dönüştürmek için `computed` ve `linkedSignal` gibi sinyal API'leri ile bileşimi mümkün kılar.
 
@@ -155,12 +155,12 @@ function withPreviousValue<T>(input: Resource<T>): Resource<T> {
     source: input.snapshot,
     computation: (snap, previous) => {
       if (snap.status === 'loading' && previous && previous.value.status !== 'error') {
-        // When the input resource enters loading state, we keep the value
-        // from its previous state, if any.
+        // Giriş resource'u yükleme durumuna geçtiğinde, varsa
+        // önceki durumundaki değeri koruruz.
         return {status: 'loading' as const, value: previous.value.value};
       }
 
-      // Otherwise we simply forward the state of the input resource.
+      // Aksi takdirde giriş resource'unun durumunu olduğu gibi iletiriz.
       return snap;
     },
   });
@@ -174,6 +174,6 @@ function withPreviousValue<T>(input: Resource<T>): Resource<T> {
 export class AwesomeProfile {
   userId = input.required<number>();
   user = withPreviousValue(httpResource(() => `/user/${this.userId()}`));
-  // When userId changes, user.value() keeps the old user data until the new one loads
+  // userId değiştiğinde, user.value() yeni veri yüklenene kadar eski kullanıcı verisini korur
 }
 ```

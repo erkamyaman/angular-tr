@@ -1,4 +1,4 @@
-# Authoring schematics
+# Schematics Yazarlığı
 
 Angular projelerinde çalışacak kendi şematiklerinizi oluşturabilirsiniz.
 Kütüphane geliştiricileri genellikle şematikleri kütüphaneleriyle birlikte paketleyerek Angular CLI ile entegre ederler.
@@ -11,7 +11,7 @@ Angular Schematics araçları, sanal bir dosya sistemi oluşturarak yan etkilere
 Bir şematik, sanal dosya sistemine uygulanabilecek bir dönüşüm hattını tanımlar.
 Bir şematik çalıştığında, dönüşümler bellekte kaydedilir ve yalnızca geçerli oldukları doğrulandıktan sonra gerçek dosya sisteminde uygulanır.
 
-## Schematics concepts
+## Schematics Kavramları
 
 Şematiklerin genel API'si, temel kavramları temsil eden sınıfları tanımlar.
 
@@ -31,16 +31,16 @@ Bir kurala geçirilen bağlam nesnesi, şematiğin çalışması için ihtiyaç 
 Bağlam ayrıca, hazırlık ağacındaki değişikliklerin temel ağaca nasıl birleştirileceğini belirleyen bir _birleştirme stratejisi_ tanımlar.
 Bir değişiklik kabul edilebilir, görmezden gelinebilir veya bir istisna fırlatabilir.
 
-### Defining rules and actions
+### Kuralları ve Eylemleri Tanımlama
 
-[Schematics CLI](#schematics-cli) ile yeni bir boş şematik oluşturduğunuzda, üretilen giriş fonksiyonu bir _kural fabrikasıdır_.
+[Schematics CLI](#schematics-cliı) ile yeni bir boş şematik oluşturduğunuzda, üretilen giriş fonksiyonu bir _kural fabrikasıdır_.
 Bir `RuleFactory` nesnesi, bir `Rule` oluşturan üst düzey bir fonksiyon tanımlar.
 
 ```ts {header: "index.ts"}
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 
-// You don't have to export the function as default.
-// You can also have more than one rule factory per file.
+// Fonksiyonu varsayılan olarak dışa aktarmanız gerekmez.
+// Dosya başına birden fazla kural fabrikasına da sahip olabilirsiniz.
 export function helloWorld(\_options: any): Rule {
    return (tree: Tree,\_context: SchematicContext) => {
     return tree;
@@ -66,7 +66,7 @@ import {
 } from '@angular-devkit/core';
 ```
 
-### Defining input options with a schema and interfaces
+### Şema ve Arayüzlerle Girdi Seçeneklerini Tanımlama
 
 Kurallar, çağırandan seçenek değerlerini toplayabilir ve şablonlara enjekte edebilir.
 Kurallarınız için mevcut seçenekler, izin verilen değerleri ve varsayılanlarıyla birlikte şematiğin JSON şema dosyası `<schematic>/schema.json` içinde tanımlanır.
@@ -92,7 +92,7 @@ Kurallarınız için mevcut seçenekler, izin verilen değerleri ve varsayılanl
 
 Angular CLI komut şematikleri için şema dosyalarının örneklerini [`@schematics/angular`](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/schema.json) içinde görebilirsiniz.
 
-### Schematic prompts
+### Schematic İstemleri
 
 Şematik _istemler_, şematik yürütmesine kullanıcı etkileşimi getirir.
 Şematik seçeneklerini, kullanıcıya özelleştirilebilir bir soru görüntüleyecek şekilde yapılandırın.
@@ -122,7 +122,7 @@ Her iki istemli şema aşağıdaki gibi olur.
 }
 ```
 
-#### Prompt short-form syntax
+#### İstem Kısa Biçim Sözdizimi
 
 Bu örnekler, yalnızca sorunun metnini sağlayan kısa biçimli istem sözdizimini kullanır.
 Çoğu durumda, gereken tek şey budur.
@@ -168,7 +168,7 @@ Aşağıdaki örnekte, özellik numaralı bir değer alır, bu nedenle şematik 
 Değer kabul edilebilir değilse, kullanıcıdan yeni bir değer istenir.
 Bu, şematiğe geçirilen herhangi bir değerin şematiğin uygulamasının beklentilerini karşılamasını sağlar, böylece şematiğin kodu içinde ek kontroller eklemenize gerek kalmaz.
 
-#### Prompt long-form syntax
+#### İstem Uzun Biçim Sözdizimi
 
 `x-prompt` alanı sözdizimi, istem üzerinde ek özelleştirme ve kontrol gerektiren durumlar için uzun bir biçimi destekler.
 Bu biçimde, `x-prompt` alanı değeri, istemin davranışını özelleştiren alt alanları olan bir JSON nesnesidir.
@@ -207,7 +207,7 @@ Uzun biçim kullanarak, şematik menü seçeneklerinin daha açık biçimlendiri
 }
 ```
 
-#### x-prompt schema
+#### x-prompt Şeması
 
 Bir şematiğin seçeneklerini tanımlayan JSON şeması, istem ve ilgili davranışlarının bildirimsel tanımına izin veren uzantıları destekler.
 İstemleri desteklemek için bir şematiğin kodunda ek mantık veya değişiklik gerekmez.
@@ -255,7 +255,7 @@ Aşağıdaki JSON şeması, `x-prompt` alanı için uzun biçim sözdiziminin ek
 }
 ```
 
-## Schematics CLI
+## Schematics CLI'ı
 
 Şematikler kendi komut satırı aracıyla birlikte gelir.
 Node 6.9 veya üstünü kullanarak, Schematics komut satırı aracını global olarak yükleyin:
@@ -274,7 +274,7 @@ Ancak şematiklerin en yaygın kullanımı, bir Angular kütüphanesini Angular 
 Bunu, Schematics CLI'ı kullanmadan doğrudan bir Angular çalışma alanındaki kütüphane projesi içinde şematik dosyalarını oluşturarak yapın.
 [Kütüphaneler için Şematikler](tools/cli/schematics-for-libraries) belgesine bakın.
 
-### Creating a schematics collection
+### Bir Schematics Koleksiyonu Oluşturma
 
 Aşağıdaki komut, aynı adda yeni bir proje klasöründe `hello-world` adlı yeni bir şematik oluşturur.
 
@@ -303,7 +303,7 @@ Başlangıç şematiği, proje klasörüyle aynı adı alır ve `src/hello-world
 Bu koleksiyona ilgili şematikleri ekleyin ve şematiğinizin işlevselliğini tanımlamak için oluşturulan iskelet kodu değiştirin.
 Her şematik adı koleksiyon içinde benzersiz olmalıdır.
 
-### Running a schematic
+### Bir Schematic Çalıştırma
 
 Adlandırılmış bir şematiği çalıştırmak için `schematics` komutunu kullanın.
 Proje klasörünün yolunu, şematik adını ve gerekli seçenekleri aşağıdaki biçimde sağlayın.
@@ -323,7 +323,7 @@ schematics .:hello-world
 
 ```
 
-### Adding a schematic to a collection
+### Bir Koleksiyona Schematic Ekleme
 
 Mevcut bir koleksiyona şematik eklemek için, yeni bir şematik projesi başlatmak için kullandığınız aynı komutu kullanın, ancak proje klasörü içinde çalıştırın.
 
@@ -337,7 +337,7 @@ schematics blank --name=goodbye-world
 Komut, koleksiyonunuz içinde ana `index.ts` dosyası ve ilişkili test spec dosyasıyla yeni adlandırılmış şematiği oluşturur.
 Ayrıca yeni şematiğin adını, açıklamasını ve fabrika fonksiyonunu koleksiyonun `collection.json` dosyasındaki şemasına ekler.
 
-## Collection contents
+## Koleksiyon İçerikleri
 
 Bir koleksiyonun kök proje klasörünün üst düzeyi yapılandırma dosyalarını, bir `node_modules` klasörünü ve bir `src/` klasörünü içerir.
 `src/` klasörü, koleksiyondaki adlandırılmış şematikler için alt klasörleri ve toplanan şematikleri açıklayan bir şema olan `collection.json`'ı içerir.
@@ -366,7 +366,7 @@ Her şematik bir ad, açıklama ve fabrika fonksiyonu ile oluşturulur.
 - İsteğe bağlı `aliases` dizisi, şematiği çağırmak için kullanılabilecek bir veya daha fazla dize belirtir.
   Örneğin, Angular CLI "generate" komutu için şematiğin `ng g` komutunu kullanmanıza izin veren "g" takma adı vardır.
 
-### Named schematics
+### Adlandırılmış Schematic'ler
 
 Schematics CLI'ı kullanarak boş bir şematik projesi oluşturduğunuzda, yeni boş şematik koleksiyonun ilk üyesidir ve koleksiyonla aynı ada sahiptir.
 Bu koleksiyona yeni bir adlandırılmış şematik eklediğinizde, otomatik olarak `collection.json` şemasına eklenir.

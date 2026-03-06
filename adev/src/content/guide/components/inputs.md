@@ -1,10 +1,10 @@
-# Accepting data with input properties
+# Girdi özellikleri ile veri kabul etme
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-TIP: Diger web framework'lerine asina iseniz, girdi ozellikleri _props_ ile benzerdir.
+TIP: Diğer web framework'lerine aşina iseniz, girdi özellikleri _props_ ile benzerdir.
 
-Bir bilesen kullandiginizda, ona genellikle bazi veriler iletmek istersiniz. Bir bilesen, kabul ettigi verileri **girdiler** bildirerek belirtir:
+Bir bileşen kullandığınızda, ona genellikle bazı veriler iletmek istersiniz. Bir bileşen, kabul ettiği verileri **girdiler** bildirerek belirtir:
 
 ```ts {highlight:[8]}
 import {Component, input} from '@angular/core';
@@ -13,54 +13,54 @@ import {Component, input} from '@angular/core';
   /*...*/
 })
 export class CustomSlider {
-  // Declare an input named 'value' with a default value of zero.
+  // 'value' adında, varsayılan değeri sıfır olan bir girdi bildirin.
   value = input(0);
 }
 ```
 
-Bu, ozelligi bir sablonda baglayabilmenizi saglar:
+Bu, özelliği bir şablonda bağlayabilmenizi sağlar:
 
 ```angular-html
 <custom-slider [value]="50" />
 ```
 
-Bir girdinin varsayilan degeri varsa, TypeScript turu varsayilan degerden cikarir:
+Bir girdinin varsayılan değeri varsa, TypeScript türü varsayılan değerden çıkarır:
 
 ```ts
 @Component({
   /*...*/
 })
 export class CustomSlider {
-  // TypeScript infers that this input is a number, returning InputSignal<number>.
+  // TypeScript bu girdinin bir number olduğunu çıkarır, InputSignal<number> döndürür.
   value = input(0);
 }
 ```
 
-Fonksiyona bir generic parametre belirterek girdi icin acikca bir tur bildirebilirsiniz.
+Fonksiyona bir generic parametre belirterek girdi için açıkça bir tür bildirebilirsiniz.
 
-Varsayilan degeri olmayan bir girdi ayarlanmazsa, degeri `undefined` olur:
+Varsayılan değeri olmayan bir girdi ayarlanmazsa, değeri `undefined` olur:
 
 ```ts
 @Component({
   /*...*/
 })
 export class CustomSlider {
-  // Produces an InputSignal<number | undefined> because `value` may not be set.
+  // `value` ayarlanmayabileceği için InputSignal<number | undefined> üretir.
   value = input<number>();
 }
 ```
 
-**Angular girdileri derleme zamaninda statik olarak kaydeder**. Girdiler calisma zamaninda eklenemez veya kaldirilamaz.
+**Angular girdileri derleme zamanında statik olarak kaydeder**. Girdiler çalışma zamanında eklenemez veya kaldırılamaz.
 
-`input` fonksiyonu Angular derleyicisi icin ozel bir anlam tasir. **`input` fonksiyonunu yalnizca bilesen ve direktif ozellik baslangic degerlerinde cagirabilirsiniz.**
+`input` fonksiyonu Angular derleyicisi için özel bir anlam taşır. **`input` fonksiyonunu yalnızca bileşen ve direktif özellik başlangıç değerlerinde çağırabilirsiniz.**
 
-Bir bilesen sinifini genisletirken, **girdiler alt sinif tarafindan miras alinir.**
+Bir bileşen sınıfını genişletirken, **girdiler alt sınıf tarafından miras alınır.**
 
-**Girdi adlari buyuk-kucuk harf duyarlidir.**
+**Girdi adları büyük-küçük harf duyarlıdır.**
 
-## Reading inputs
+## Girdileri okuma
 
-`input` fonksiyonu bir `InputSignal` dondurur. Sinyali cagirarak degeri okuyabilirsiniz:
+`input` fonksiyonu bir `InputSignal` döndürür. Sinyali çağırarak değeri okuyabilirsiniz:
 
 ```ts {highlight:[11]}
 import {Component, input, computed} from '@angular/core';
@@ -69,41 +69,41 @@ import {Component, input, computed} from '@angular/core';
   /*...*/
 })
 export class CustomSlider {
-  // Declare an input named 'value' with a default value of zero.
+  // 'value' adında, varsayılan değeri sıfır olan bir girdi bildirin.
   value = input(0);
 
-  // Create a computed expression that reads the value input
+  // value girdisini okuyan bir computed ifadesi oluşturun
   label = computed(() => `The slider's value is ${this.value()}`);
 }
 ```
 
-`input` fonksiyonu tarafindan olusturulan sinyaller salt okunurdur.
+`input` fonksiyonu tarafından oluşturulan sinyaller salt okunurdur.
 
-## Required inputs
+## Zorunlu girdiler
 
-`input` yerine `input.required` cagirarak bir girdinin `required` (zorunlu) oldugunu bildirebilirsiniz:
+`input` yerine `input.required` çağırarak bir girdinin `required` (zorunlu) olduğunu bildirebilirsiniz:
 
 ```ts {highlight:[6]}
 @Component({
   /*...*/
 })
 export class CustomSlider {
-  // Declare a required input named value. Returns an `InputSignal<number>`.
+  // 'value' adında zorunlu bir girdi bildirin. `InputSignal<number>` döndürür.
   value = input.required<number>();
 }
 ```
 
-Angular, bilesen bir sablonda kullanildiginda zorunlu girdilerin _mutlaka_ ayarlanmis olmasini zorunlu kilar. Tum zorunlu girdilerini belirtmeden bir bilesen kullanmaya calisirsiniz, Angular derleme zamaninda bir hata bildirir.
+Angular, bileşen bir şablonda kullanıldığında zorunlu girdilerin _mutlaka_ ayarlanmış olmasını zorunlu kılar. Tüm zorunlu girdilerini belirtmeden bir bileşen kullanmaya çalışırsanız, Angular derleme zamanında bir hata bildirir.
 
-Zorunlu girdiler, dondurilen `InputSignal`'in generic parametresine otomatik olarak `undefined` eklemez.
+Zorunlu girdiler, döndürülen `InputSignal`'in generic parametresine otomatik olarak `undefined` eklemez.
 
-## Configuring inputs
+## Girdileri yapılandırma
 
-`input` fonksiyonu, girdinin calisma seklini degistirmenize olanak taniyan ikinci bir parametre olarak bir yapilandirma nesnesi kabul eder.
+`input` fonksiyonu, girdinin çalışma şeklini değiştirmenize olanak tanıyan ikinci bir parametre olarak bir yapılandırma nesnesi kabul eder.
 
-### Input transforms
+### Girdi dönüşümleri
 
-Angular tarafindan ayarlandiginda girdinin degerini degistirmek icin bir `transform` fonksiyonu belirtebilirsiniz.
+Angular tarafından ayarlandığında girdinin değerini değiştirmek için bir `transform` fonksiyonu belirtebilirsiniz.
 
 ```ts {highlight:[6]}
 @Component({
@@ -123,17 +123,17 @@ function trimString(value: string | undefined): string {
 <custom-slider [label]="systemVolume" />
 ```
 
-Yukaridaki ornekte, `systemVolume` degeri her degistiginde Angular `trimString` fonksiyonunu calistirir ve `label`'i sonuca ayarlar.
+Yukarıdaki örnekte, `systemVolume` değeri her değiştiğinde Angular `trimString` fonksiyonunu çalıştırır ve `label`'ı sonuca ayarlar.
 
-Girdi donusumlerinin en yaygin kullanim alani, sablonlarda genellikle `null` ve `undefined` dahil olmak uzere daha genis bir deger turleri araligi kabul etmektir.
+Girdi dönüşümlerinin en yaygın kullanım alanı, şablonlarda genellikle `null` ve `undefined` dahil olmak üzere daha geniş bir değer türleri aralığı kabul etmektir.
 
-**Girdi donusum fonksiyonu derleme zamaninda statik olarak analiz edilebilir olmalidir.** Donusum fonksiyonlarini kosullu olarak veya bir ifade degerl endirmesinin sonucu olarak ayarlayamazsiniz.
+**Girdi dönüşüm fonksiyonu derleme zamanında statik olarak analiz edilebilir olmalıdır.** Dönüşüm fonksiyonlarını koşullu olarak veya bir ifade değerlendirmesinin sonucu olarak ayarlayamazsınız.
 
-**Girdi donusum fonksiyonlari her zaman [saf fonksiyonlar](https://en.wikipedia.org/wiki/Pure_function) olmalidir.** Donusum fonksiyonu disindaki duruma guvenme, onceden tahmin edilemeyen davranislara yol acabilir.
+**Girdi dönüşüm fonksiyonları her zaman [saf fonksiyonlar](https://en.wikipedia.org/wiki/Pure_function) olmalıdır.** Dönüşüm fonksiyonu dışındaki duruma güvenme, önceden tahmin edilemeyen davranışlara yol açabilir.
 
-#### Type checking
+#### Tür denetimi
 
-Bir girdi donusumu belirttiginizde, donusum fonksiyonunun parametre turu, sablonda girdiye ayarlanabilecek deger turlerini belirler.
+Bir girdi dönüşümü belirttiğinizde, dönüşüm fonksiyonunun parametre türü, şablonda girdiye ayarlanabilecek değer türlerini belirler.
 
 ```ts
 @Component({
@@ -148,11 +148,11 @@ function appendPx(value: number): string {
 }
 ```
 
-Yukaridaki ornekte, `widthPx` girdisi bir `number` kabul ederken `InputSignal` ozelligi bir `string` dondurur.
+Yukarıdaki örnekte, `widthPx` girdisi bir `number` kabul ederken `InputSignal` özelliği bir `string` döndürür.
 
-#### Built-in transformations
+#### Yerleşik dönüşümler
 
-Angular, en yaygin iki senaryo icin iki yerlesik donusum fonksiyonu icerir: degerleri boolean ve sayiya zorlama.
+Angular, en yaygın iki senaryo için iki yerleşik dönüşüm fonksiyonu içerir: değerleri boolean ve sayıya zorlama.
 
 ```ts
 import {Component, input, booleanAttribute, numberAttribute} from '@angular/core';
@@ -166,13 +166,13 @@ export class CustomSlider {
 }
 ```
 
-`booleanAttribute`, standart HTML [boolean nitelikleri](https://developer.mozilla.org/docs/Glossary/Boolean/HTML)'nin davranisini taklit eder; niteligin _varligi_ "true" degerini gosterir. Ancak Angular'in `booleanAttribute`'u, `"false"` literal dizesini boolean `false` olarak degerlenderir.
+`booleanAttribute`, standart HTML [boolean nitelikleri](https://developer.mozilla.org/docs/Glossary/Boolean/HTML)'nin davranışını taklit eder; niteliğin _varlığı_ "true" değerini gösterir. Ancak Angular'ın `booleanAttribute`'u, `"false"` literal dizesini boolean `false` olarak değerlendirir.
 
-`numberAttribute`, verilen degeri bir sayiya ayristirmayi dener, ayristirma basarisiz olursa `NaN` uretir.
+`numberAttribute`, verilen değeri bir sayıya ayrıştırmayı dener, ayrıştırma başarısız olursa `NaN` üretir.
 
-### Input aliases
+### Girdi takma adları
 
-Sablonlarda bir girdinin adini degistirmek icin `alias` secenegini belirtebilirsiniz.
+Şablonlarda bir girdinin adını değiştirmek için `alias` seçeneğini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -187,60 +187,61 @@ export class CustomSlider {
 <custom-slider [sliderValue]="50" />
 ```
 
-Bu takma ad, ozelligin TypeScript kodundaki kullanimini etkilemez.
+Bu takma ad, özelliğin TypeScript kodundaki kullanımını etkilemez.
 
-Bilesen girdileri icin takma ad kullanmaktan genel olarak kacinmaniz gerekirken, bu ozellik ozellikleri yeniden adlandirirken orijinal ad icin bir takma ad korumak veya yerel DOM eleman ozellikleriyle ad cakismalarini onlemek icin yararli olabilir.
+Bileşen girdileri için takma ad kullanmaktan genel olarak kaçınmanız gerekirken, bu özellik özellikleri yeniden adlandırırken orijinal ad için bir takma ad korumak veya yerel DOM eleman özellikleriyle ad çakışmalarını önlemek için yararlı olabilir.
 
-## Model inputs
+## Model input'lar
 
-**Model girdileri**, bir bilesnenin yeni degerleri ust bilesenine geri yaymasini saglayan ozel bir girdi turudur.
+**Model girdileri**, bir bileşenin yeni değerleri üst bileşenine geri yaymasını sağlayan özel bir girdi türüdür.
 
-Bir bilesen olusturulurken, standart bir girdi olusturur gibi bir model girdisi tanimlayabilirsiniz.
+Bir bileşen oluşturulurken, standart bir girdi oluşturur gibi bir model girdisi tanımlayabilirsiniz.
 
-Her iki girdi turu de birinin ozellige bir deger baglamasina izin verir. Ancak, **model girdileri bilesen yazarinin ozellige deger yazmasina izin verir**. Ozellik iki yonlu baglama ile baglanmissa, yeni deger o baglamaya yayilir.
+Her iki girdi türü de birinin özelliğe bir değer bağlamasına izin verir. Ancak, **model girdileri bileşen yazarının özelliğe değer yazmasına izin verir**. Özellik iki yönlü bağlama ile bağlanmışsa, yeni değer o bağlamaya yayılır.
 
 ```ts
 @Component({
   /* ... */
 })
 export class CustomSlider {
-  // Define a model input named "value".
+  // "value" adında bir model girdisi tanımlayın.
   value = model(0);
 
   increment() {
-    // Update the model input with a new value, propagating the value to any bindings.
+    // Model girdisini yeni bir değerle güncelleyin, değeri tüm bağlamalara yayın.
     this.value.update((oldValue) => oldValue + 10);
   }
 }
 
 @Component({
   /* ... */
-  // Using the two-way binding syntax means that any changes to the slider's
-  // value automatically propagate back to the `volume` signal.
-  // Note that this binding uses the signal *instance*, not the signal value.
+  // İki yönlü bağlama sözdizimi kullanmak, slider'ın değerindeki
+  // herhangi bir değişikliğin otomatik olarak `volume` sinyaline
+  // geri yayılması anlamına gelir.
+  // Bu bağlamanın sinyal *örneğini* kullandığına, sinyal değerini değil, dikkat edin.
   template: `<custom-slider [(value)]="volume" />`,
 })
 export class MediaControls {
-  // Create a writable signal for the `volume` local state.
+  // `volume` yerel durumu için yazılabilir bir sinyal oluşturun.
   volume = signal(0);
 }
 ```
 
-Yukaridaki ornekte, `CustomSlider` kendi `value` model girdisine deger yazabilir ve bu degerler `MediaControls`'daki `volume` sinyaline geri yayilir. Bu baglama, `value` ve `volume` degerlerini senkronize tutar. Baglama isleminin sinyal _ornegini_ ilettigine, sinyalin _degerini_ degil, dikkat edin.
+Yukarıdaki örnekte, `CustomSlider` kendi `value` model girdisine değer yazabilir ve bu değerler `MediaControls`'daki `volume` sinyaline geri yayılır. Bu bağlama, `value` ve `volume` değerlerini senkronize tutar. Bağlama işleminin sinyal _örneğini_ ilettiğine, sinyalin _değerini_ değil, dikkat edin.
 
-Diger acilardan, model girdileri standart girdilere benzer sekilde calisir. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contextler) dahil olmak uzere sinyal fonksiyonunu cagirarak degeri okuyabilirsiniz.
+Diğer açılardan, model girdileri standart girdilere benzer şekilde çalışır. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contextler) dahil olmak üzere sinyal fonksiyonunu çağırarak değeri okuyabilirsiniz.
 
-Sablonlarda iki yonlu baglama hakkinda daha fazla bilgi icin [Iki yonlu baglama](guide/templates/two-way-binding) belgesine bakin.
+Şablonlarda iki yönlü bağlama hakkında daha fazla bilgi için [İki yönlü bağlama](guide/templates/two-way-binding) belgesine bakın.
 
-### Two-way binding with plain properties
+### Düz özelliklerle iki yönlü bağlama
 
-Duz bir JavaScript ozelligini bir model girdisine baglayabilirsiniz.
+Düz bir JavaScript özelliğini bir model girdisine bağlayabilirsiniz.
 
 ```angular-ts
 @Component({
   /* ... */
-  // `value` is a model input.
-  // The parenthesis-inside-square-brackets syntax (aka "banana-in-a-box") creates a two-way binding
+  // `value` bir model girdisidir.
+  // Köşeli parantez içinde parantez sözdizimi (diğer adıyla "banana-in-a-box") iki yönlü bağlama oluşturur
   template: '<custom-slider [(value)]="volume" />',
 })
 export class MediaControls {
@@ -248,48 +249,48 @@ export class MediaControls {
 }
 ```
 
-Yukaridaki ornekte, `CustomSlider` kendi `value` model girdisine deger yazabilir ve bu degerler `MediaControls`'daki `volume` ozelligine geri yayilir. Bu baglama, `value` ve `volume` degerlerini senkronize tutar.
+Yukarıdaki örnekte, `CustomSlider` kendi `value` model girdisine değer yazabilir ve bu değerler `MediaControls`'daki `volume` özelliğine geri yayılır. Bu bağlama, `value` ve `volume` değerlerini senkronize tutar.
 
-### Implicit `change` events
+### Örtük `change` olayları
 
-Bir bilesen veya direktifte model girdisi bildirdiginizde, Angular otomatik olarak o model icin karsilik gelen bir [cikti](guide/components/outputs) olusturur. Ciktinin adi, model girdisinin adinin sonuna "Change" eklenmesiyle olusur.
+Bir bileşen veya direktifte model girdisi bildirdiğinizde, Angular otomatik olarak o model için karşılık gelen bir [çıktı](guide/components/outputs) oluşturur. Çıktının adı, model girdisinin adının sonuna "Change" eklenmesiyle oluşur.
 
 ```ts
 @Directive({
   /* ... */
 })
 export class CustomCheckbox {
-  // This automatically creates an output named "checkedChange".
-  // Can be subscribed to using `(checkedChange)="handler()"` in the template.
+  // Bu otomatik olarak "checkedChange" adında bir çıktı oluşturur.
+  // Şablonda `(checkedChange)="handler()"` ile abone olunabilir.
   checked = model(false);
 }
 ```
 
-Angular, model girdisinin `set` veya `update` yontemlerini cagirarak yeni bir deger yazdiginizda bu degisiklik olayini yayar.
+Angular, model girdisinin `set` veya `update` yöntemlerini çağırarak yeni bir değer yazdığınızda bu değişiklik olayını yayar.
 
-Ciktilar hakkinda daha fazla ayrinti icin [Ciktilarla ozel olaylar](guide/components/outputs) belgesine bakin.
+Çıktılar hakkında daha fazla ayrıntı için [Çıktılarla özel olaylar](guide/components/outputs) belgesine bakın.
 
-### Customizing model inputs
+### Model input'ları özelleştirme
 
-Bir model girdisini zorunlu olarak isaretleyebilir veya [standart bir girdi](guide/components/inputs) ile ayni sekilde bir takma ad saglayabilirsiniz.
+Bir model girdisini zorunlu olarak işaretleyebilir veya [standart bir girdi](guide/components/inputs) ile aynı şekilde bir takma ad sağlayabilirsiniz.
 
-Model girdileri girdi donusumlerini desteklemez.
+Model girdileri girdi dönüşümlerini desteklemez.
 
-### When to use model inputs
+### Model input'ları ne zaman kullanılır
 
-Bir bilesnenin iki yonlu baglamayi desteklemesini istediginizde model girdilerini kullanin. Bu, genellikle bir bilesnenin kullanici etkilesime dayali olarak bir degeri degistirmek icin var oldugu durumlarda uygundur. En yaygin olarak, tarih secici veya combobox gibi ozel form kontrolleri birincil degerleri icin model girdileri kullanmalidir.
+Bir bileşenin iki yönlü bağlamayı desteklemesini istediğinizde model girdilerini kullanın. Bu, genellikle bir bileşenin kullanıcı etkileşimine dayalı olarak bir değeri değiştirmek için var olduğu durumlarda uygundur. En yaygın olarak, tarih seçici veya combobox gibi özel form kontrolleri birincil değerleri için model girdileri kullanmalıdır.
 
-## Choosing input names
+## Girdi adlarını seçme
 
-DOM elemanlarinin HTMLElement uzerindeki ozellikleriyle cakisan girdi adlari secmekten kacinin. Ad cakismalari, bagli ozelligin bilesene mi yoksa DOM elemanina mi ait oldugu konusunda kafa karisikligina neden olur.
+DOM elemanlarının HTMLElement üzerindeki özellikleriyle çakışan girdi adları seçmekten kaçının. Ad çakışmaları, bağlı özelliğin bileşene mi yoksa DOM elemanına mı ait olduğu konusunda kafa karışıklığına neden olur.
 
-Bilesen girdileri icin, bilesen secicilerinde yaptiginiz gibi onek eklemekten kacinin. Belirli bir eleman yalnizca bir bilesen barindirabilecegi icin, herhangi bir ozel ozelligin bilesene ait oldugu varsayilabilir.
+Bileşen girdileri için, bileşen seçicilerinde yaptığınız gibi önek eklemekten kaçının. Belirli bir eleman yalnızca bir bileşen barındırabilceği için, herhangi bir özel özelliğin bileşene ait olduğu varsayılabilir.
 
-## Declaring inputs with the `@Input` decorator
+## `@Input` dekoratörü ile girdi bildirme
 
-TIP: Angular ekibi yeni projeler icin sinyal tabanli `input` fonksiyonunu onerse de, orijinal dekorator tabanli `@Input` API'si tamamen desteklenmeye devam etmektedir.
+TIP: Angular ekibi yeni projeler için sinyal tabanlı `input` fonksiyonunu önerse de, orijinal dekoratör tabanlı `@Input` API'si tamamen desteklenmeye devam etmektedir.
 
-Alternatif olarak, bir ozellige `@Input` dekoratoru ekleyerek bilesen girdileri bildirebilirsiniz:
+Alternatif olarak, bir özelliğe `@Input` dekoratörü ekleyerek bileşen girdileri bildirebilirsiniz:
 
 ```ts {highlight:[5]}
 @Component({
@@ -300,19 +301,19 @@ export class CustomSlider {
 }
 ```
 
-Bir girdiye baglama, hem sinyal tabanli hem de dekorator tabanli girdilerde aynidir:
+Bir girdiye bağlama, hem sinyal tabanlı hem de dekoratör tabanlı girdilerde aynıdır:
 
 ```angular-html
 <custom-slider [value]="50" />
 ```
 
-### Customizing decorator-based inputs
+### Dekoratör tabanlı girdileri özelleştirme
 
-`@Input` dekoratoru, girdinin calisma seklini degistirmenize olanak taniyan bir yapilandirma nesnesi kabul eder.
+`@Input` dekoratörü, girdinin çalışma şeklini değiştirmenize olanak tanıyan bir yapılandırma nesnesi kabul eder.
 
-#### Required inputs
+#### Zorunlu girdiler
 
-Belirli bir girdinin her zaman bir degere sahip olmasini zorunlu kilmak icin `required` secenegini belirtebilirsiniz.
+Belirli bir girdinin her zaman bir değere sahip olmasını zorunlu kılmak için `required` seçeneğini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -323,11 +324,11 @@ export class CustomSlider {
 }
 ```
 
-Tum zorunlu girdilerini belirtmeden bir bilesen kullanmaya calisirsiniz, Angular derleme zamaninda bir hata bildirir.
+Tüm zorunlu girdilerini belirtmeden bir bileşen kullanmaya çalışırsanız, Angular derleme zamanında bir hata bildirir.
 
-#### Input transforms
+#### Girdi dönüşümleri
 
-Angular tarafindan ayarlandiginda girdinin degerini degistirmek icin bir `transform` fonksiyonu belirtebilirsiniz. Bu donusum fonksiyonu, yukarida aciklanan sinyal tabanli girdilerin donusum fonksiyonlariyla ayni sekilde calisir.
+Angular tarafından ayarlandığında girdinin değerini değiştirmek için bir `transform` fonksiyonu belirtebilirsiniz. Bu dönüşüm fonksiyonu, yukarıda açıklanan sinyal tabanlı girdilerin dönüşüm fonksiyonlarıyla aynı şekilde çalışır.
 
 ```ts {highlight:[6]}
 @Component({
@@ -343,9 +344,9 @@ function trimString(value: string | undefined) {
 }
 ```
 
-#### Input aliases
+#### Girdi takma adları
 
-Sablonlarda bir girdinin adini degistirmek icin `alias` secenegini belirtebilirsiniz.
+Şablonlarda bir girdinin adını değiştirmek için `alias` seçeneğini belirtebilirsiniz.
 
 ```ts {highlight:[5]}
 @Component({
@@ -360,13 +361,13 @@ export class CustomSlider {
 <custom-slider [sliderValue]="50" />
 ```
 
-`@Input` dekoratoru ayrica yapilandirma nesnesi yerine ilk parametresi olarak takma adi kabul eder.
+`@Input` dekoratörü ayrıca yapılandırma nesnesi yerine ilk parametresi olarak takma adı kabul eder.
 
-Girdi takma adlari, yukarida aciklanan sinyal tabanli girdilerle ayni sekilde calisir.
+Girdi takma adları, yukarıda açıklanan sinyal tabanlı girdilerle aynı şekilde çalışır.
 
-### Inputs with getters and setters
+### Getter ve setter'lar ile girdiler
 
-Dekorator tabanli girdiler kullanildiginda, getter ve setter ile uygulanan bir ozellik bir girdi olabilir:
+Dekoratör tabanlı girdiler kullanıldığında, getter ve setter ile uygulanan bir özellik bir girdi olabilir:
 
 ```ts
 export class CustomSlider {
@@ -383,7 +384,7 @@ export class CustomSlider {
 }
 ```
 
-Yalnizca bir public setter tanimlayarak _salt yazilir_ bir girdi bile olusturabilirsiniz:
+Yalnızca bir public setter tanımlayarak _salt yazılır_ bir girdi bile oluşturabilirsiniz:
 
 ```ts
 export class CustomSlider {
@@ -396,16 +397,16 @@ export class CustomSlider {
 }
 ```
 
-**Mumkun oldugunda getter ve setter'lar yerine girdi donusumlerini kullanmayi tercih edin.**
+**Mümkün olduğunda getter ve setter'lar yerine girdi dönüşümlerini kullanmayı tercih edin.**
 
-Karmasik veya maliyetli getter ve setter'lardan kacinin. Angular bir girdinin setter'ini birden fazla kez cagirabilir, bu da setter DOM manipulasyonu gibi maliyetli islemler gerceklestiriyorsa uygulama performansini olumsuz etkileyebilir.
+Karmaşık veya maliyetli getter ve setter'lardan kaçının. Angular bir girdinin setter'ını birden fazla kez çağırabilir, bu da setter DOM manipülasyonu gibi maliyetli işlemler gerçekleştiriyorsa uygulama performansını olumsuz etkileyebilir.
 
-## Specify inputs in the `@Component` decorator
+## `@Component` dekoratöründe girdileri belirtme
 
-`@Input` dekoratorune ek olarak, bir bilesnenin girdilerini `@Component` dekoratorundeki `inputs` ozelligi ile de belirtebilirsiniz. Bu, bir bilesen bir temel siniftan ozellik miras aldiginda yararli olabilir:
+`@Input` dekoratörüne ek olarak, bir bileşenin girdilerini `@Component` dekoratöründeki `inputs` özelliği ile de belirtebilirsiniz. Bu, bir bileşen bir temel sınıftan özellik miras aldığında yararlı olabilir:
 
 ```ts {highlight:[4]}
-// `CustomSlider` inherits the `disabled` property from `BaseSlider`.
+// `CustomSlider`, `BaseSlider`'dan `disabled` özelliğini miras alır.
 @Component({
   ...,
   inputs: ['disabled'],
@@ -413,10 +414,10 @@ Karmasik veya maliyetli getter ve setter'lardan kacinin. Angular bir girdinin se
 export class CustomSlider extends BaseSlider { }
 ```
 
-Dizede iki noktadan sonra takma adi belirterek `inputs` listesinde ek olarak bir girdi takma adi belirtebilirsiniz:
+Dizede iki noktadan sonra takma adı belirterek `inputs` listesinde ek olarak bir girdi takma adı belirtebilirsiniz:
 
 ```ts {highlight:[4]}
-// `CustomSlider` inherits the `disabled` property from `BaseSlider`.
+// `CustomSlider`, `BaseSlider`'dan `disabled` özelliğini miras alır.
 @Component({
   ...,
   inputs: ['disabled: sliderDisabled'],

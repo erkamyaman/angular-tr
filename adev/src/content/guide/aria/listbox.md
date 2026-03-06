@@ -6,9 +6,9 @@
   <docs-pill href="/api?query=listbox#angular_aria_listbox" title="Listbox API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-Kullanicilarin secim yapabilecegi bir secenek listesi gosteren, klavye navigasyonu, tekli veya coklu secim ve ekran okuyucu destegi saglayan yonerge.
+Kullanıcıların seçim yapabileceği bir seçenek listesi gösteren, klavye navigasyonu, tekli veya çoklu seçim ve ekran okuyucu desteği sağlayan yönerge.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -36,47 +36,47 @@ Kullanicilarin secim yapabilecegi bir secenek listesi gosteren, klavye navigasyo
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım
 
-Listbox, [Select](guide/aria/select), [Multiselect](guide/aria/multiselect) ve [Autocomplete](guide/aria/autocomplete) kaliplari tarafindan kullanilan temel bir yonergedir. Cogu acilir menu ihtiyaci icin bunun yerine bu belgelendirilmis kaliplari kullanin.
+Listbox, [Select](guide/aria/select), [Multiselect](guide/aria/multiselect) ve [Autocomplete](guide/aria/autocomplete) kalıpları tarafından kullanılan temel bir yönergedir. Çoğu açılır menü ihtiyacı için bunun yerine bu belgelendirilmiş kalıpları kullanın.
 
-Su durumlarda listbox'i dogrudan kullanmayi dusunun:
+Şu durumlarda listbox'ı doğrudan kullanmayı düşünün:
 
-- **Ozel secim bilesenleri olusturma** - Belirli davranisa sahip ozellestirilmis arayuzler olusturma
-- **Gorunur secim listeleri** - Secilebilir ogeleri dogrudan sayfada gosterme (acilir menulerde degil)
-- **Ozel entegrasyon kaliplari** - Benzersiz acilir pencere veya yerlesim gereksinimlerile entegrasyon
+- **Özel seçim bileşenleri oluşturma** - Belirli davranışa sahip özelleştirilmiş arayüzler oluşturma
+- **Görünür seçim listeleri** - Seçilebilir öğeleri doğrudan sayfada gösterme (açılır menülerde değil)
+- **Özel entegrasyon kalıpları** - Benzersiz açılır pencere veya yerleşim gereksinimleriyle entegrasyon
 
-Listbox'tan kacinin:
+Listbox'tan kaçının:
 
-- **Navigasyon menuleri gerektiginde** - Eylemler ve komutlar icin [Menu](guide/aria/menu) yonergesini kullanin
+- **Navigasyon menüleri gerektiğinde** - Eylemler ve komutlar için [Menu](guide/aria/menu) yönergesini kullanın
 
-## Features
+## Özellikler
 
-Angular'in listbox'i tam erisilebilir bir liste uygulamasi saglar:
+Angular'ın listbox'ı tam erişilebilir bir liste uygulaması sağlar:
 
-- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Enter veya Bosluk ile secin
-- **Ekran Okuyucu Destegi** - role="listbox" dahil yerlesik ARIA nitelikleri
-- **Tekli veya Coklu Secim** - `multi` niteligi secim modunu kontrol eder
-- **Yatay veya Dikey** - Yerlesim yonu icin `orientation` niteligi
-- **Yazarak arama** - Eslesen seceneklere atlamak icin karakterleri yazin
-- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Enter veya Boşluk ile seçin
+- **Ekran Okuyucu Desteği** - role="listbox" dahil yerleşik ARIA nitelikleri
+- **Tekli veya Çoklu Seçim** - `multi` niteliği seçim modunu kontrol eder
+- **Yatay veya Dikey** - Yerleşim yönü için `orientation` niteliği
+- **Yazarak arama** - Eşleşen seçeneklere atlamak için karakterleri yazın
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
 
-## Examples
+## Örnekler
 
-### Basic listbox
+### Temel Listbox
 
-Uygulamalarin bazen bir acilir menude gizlenmis yerine dogrudan sayfada gorunen secilebilir listelere ihtiyaci vardir. Bagimsiz bir listbox, bu gorunen liste arayuzleri icin klavye navigasyonu ve secim saglar.
+Uygulamaların bazen bir açılır menüde gizlenmiş yerine doğrudan sayfada görünen seçilebilir listelere ihtiyacı vardır. Bağımsız bir listbox, bu görünen liste arayüzleri için klavye navigasyonu ve seçim sağlar.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/listbox/src/basic/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/aria/listbox/src/basic/app/app.ts" />
   <docs-code header="app.html" path="adev/src/content/examples/aria/listbox/src/basic/app/app.html" />
 </docs-code-multifile>
 
-`values` model sinyali secili ogelere iki yonlu baglama saglar. `selectionMode="explicit"` ile kullanicilar secenekleri secmek icin Bosluk veya Enter'a basar. Listbox'i combobox ve katman konumlandirmasiyla birlestiren acilir menu kaliplari icin [Select](guide/aria/select) kalibina bakin.
+`values` model sinyali seçili öğelere iki yönlü bağlama sağlar. `selectionMode="explicit"` ile kullanıcılar seçenekleri seçmek için Boşluk veya Enter'a basar. Listbox'ı combobox ve katman konumlandırmasıyla birleştiren açılır menü kalıpları için [Select](guide/aria/select) kalıbına bakın.
 
-### Horizontal listbox
+### Yatay Listbox
 
-Listeler bazen yatay olarak daha iyi calisir, ornegin arac cubugu benzeri arayuzler veya sekme tarzi secimler. `orientation` niteligi hem yerlesimi hem de klavye navigasyon yonunu degistirir.
+Listeler bazen yatay olarak daha iyi çalışır, örneğin araç çubuğu benzeri arayüzler veya sekme tarzı seçimler. `orientation` niteliği hem yerleşimi hem de klavye navigasyon yönünü değiştirir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -104,13 +104,13 @@ Listeler bazen yatay olarak daha iyi calisir, ornegin arac cubugu benzeri arayuz
   </docs-tab>
 </docs-tab-group>
 
-`orientation="horizontal"` ile yukari ve asagi ok tuslari yerine sol ve sag ok tuslari secenekler arasinda gezinir. Listbox, navigasyon yonunu tersine cevirerek sagdan sola (RTL) dilleri otomatik olarak isler.
+`orientation="horizontal"` ile yukarı ve aşağı ok tuşları yerine sol ve sağ ok tuşları seçenekler arasında gezinir. Listbox, navigasyon yönünü tersine çevirerek sağdan sola (RTL) dilleri otomatik olarak işler.
 
-### Selection modes
+### Seçim Modları
 
-Listbox, ogelerin ne zaman secilecegini kontrol eden iki secim modunu destekler.
+Listbox, öğelerin ne zaman seçileceğini kontrol eden iki seçim modunu destekler.
 
-`'follow'` modu odaklanan ogeyi otomatik olarak secer, secim sik degistiginde daha hizli etkilesim saglar. `'explicit'` modu, gezinirken kazara degisiklikleri onlemek icin secimi onaylamak icin Bosluk veya Enter gerektirir. Acilir menu kaliplari genellikle tek secim icin `'follow'` modunu kullanir.
+`'follow'` modu odaklanan öğeyi otomatik olarak seçer, seçim sık değiştiğinde daha hızlı etkileşim sağlar. `'explicit'` modu, gezinirken kazara değişiklikleri önlemek için seçimi onaylamak için Boşluk veya Enter gerektirir. Açılır menü kalıpları genellikle tek seçim için `'follow'` modunu kullanır.
 
 #### Explicit
 
@@ -128,80 +128,80 @@ Listbox, ogelerin ne zaman secilecegini kontrol eden iki secim modunu destekler.
 
 | Mode         | Description                                                                                |
 | ------------ | ------------------------------------------------------------------------------------------ |
-| `'follow'`   | Odaklanan ogeyi otomatik olarak secer, secim sik degistiginde daha hizli etkilesim saglar  |
-| `'explicit'` | Secimi onaylamak icin Bosluk veya Enter gerektirir, gezinirken kazara degisiklikleri onler |
+| `'follow'`   | Odaklanan öğeyi otomatik olarak seçer, seçim sık değiştiğinde daha hızlı etkileşim sağlar  |
+| `'explicit'` | Seçimi onaylamak için Boşluk veya Enter gerektirir, gezinirken kazara değişiklikleri önler |
 
-TIP: Acilir menu kaliplari genellikle tek secim icin `'follow'` modunu kullanir.
+TIP: Açılır menü kalıpları genellikle tek seçim için `'follow'` modunu kullanır.
 
-## APIs
+## API'ler
 
-### Listbox Directive
+### Listbox Yönergesi
 
-`ngListbox` yonergesi secilebilir seceneklerden olusan erisilebilir bir liste olusturur.
+`ngListbox` yönergesi seçilebilir seçeneklerden oluşan erişilebilir bir liste oluşturur.
 
-#### Inputs
+#### Girdiler
 
 | Property         | Type                               | Default      | Description                                     |
 | ---------------- | ---------------------------------- | ------------ | ----------------------------------------------- |
-| `id`             | `string`                           | auto         | Listbox icin benzersiz tanimlayici              |
-| `multi`          | `boolean`                          | `false`      | Coklu secimi etkinlestirir                      |
-| `orientation`    | `'vertical'` \| `'horizontal'`     | `'vertical'` | Listenin yerlesim yonu                          |
-| `wrap`           | `boolean`                          | `true`       | Odagin liste kenarlarinda sarilip sarilmadigi   |
-| `selectionMode`  | `'follow'` \| `'explicit'`         | `'follow'`   | Secimin nasil tetiklendigi                      |
-| `focusMode`      | `'roving'` \| `'activedescendant'` | `'roving'`   | Odak yonetim stratejisi                         |
-| `softDisabled`   | `boolean`                          | `true`       | Devre disi ogelerin odaklanabilir olup olmadigi |
-| `disabled`       | `boolean`                          | `false`      | Tum listbox'i devre disi birakir                |
-| `readonly`       | `boolean`                          | `false`      | Listbox'i salt okunur yapar                     |
-| `typeaheadDelay` | `number`                           | `500`        | Yazarak arama sifirlanmadan onceki milisaniye   |
+| `id`             | `string`                           | auto         | Listbox için benzersiz tanımlayıcı              |
+| `multi`          | `boolean`                          | `false`      | Çoklu seçimi etkinleştirir                      |
+| `orientation`    | `'vertical'` \| `'horizontal'`     | `'vertical'` | Listenin yerleşim yönü                          |
+| `wrap`           | `boolean`                          | `true`       | Odağın liste kenarlarında sarılıp sarılmadığı   |
+| `selectionMode`  | `'follow'` \| `'explicit'`         | `'follow'`   | Seçimin nasıl tetiklendiği                      |
+| `focusMode`      | `'roving'` \| `'activedescendant'` | `'roving'`   | Odak yönetim stratejisi                         |
+| `softDisabled`   | `boolean`                          | `true`       | Devre dışı öğelerin odaklanabilir olup olmadığı |
+| `disabled`       | `boolean`                          | `false`      | Tüm listbox'ı devre dışı bırakır                |
+| `readonly`       | `boolean`                          | `false`      | Listbox'ı salt okunur yapar                     |
+| `typeaheadDelay` | `number`                           | `500`        | Yazarak arama sıfırlanmadan önceki milisaniye   |
 
 #### Model
 
 | Property | Type  | Description                                     |
 | -------- | ----- | ----------------------------------------------- |
-| `values` | `V[]` | Secili degerlerin iki yonlu baglanabilir dizisi |
+| `values` | `V[]` | Seçili değerlerin iki yönlü bağlanabilir dizisi |
 
-#### Signals
+#### Sinyaller
 
 | Property | Type          | Description                           |
 | -------- | ------------- | ------------------------------------- |
-| `values` | `Signal<V[]>` | Su anda secili degerler sinyal olarak |
+| `values` | `Signal<V[]>` | Şu anda seçili değerler sinyal olarak |
 
-#### Methods
+#### Metodlar
 
 | Method                     | Parameters                        | Description                   |
 | -------------------------- | --------------------------------- | ----------------------------- |
-| `scrollActiveItemIntoView` | `options?: ScrollIntoViewOptions` | Aktif ogeyi gorünume kaydirir |
-| `gotoFirst`                | none                              | Listbox'taki ilk ogeye gider  |
+| `scrollActiveItemIntoView` | `options?: ScrollIntoViewOptions` | Aktif öğeyi görünüme kaydırır |
+| `gotoFirst`                | none                              | Listbox'taki ilk öğeye gider  |
 
-### Option Directive
+### Option Yönergesi
 
-`ngOption` yonergesi bir listbox icindeki bir ogeyi isaretler.
+`ngOption` yönergesi bir listbox içindeki bir öğeyi işaretler.
 
-#### Inputs
+#### Girdiler
 
 | Property   | Type      | Default | Description                                |
 | ---------- | --------- | ------- | ------------------------------------------ |
-| `id`       | `string`  | auto    | Secenek icin benzersiz tanimlayici         |
-| `value`    | `V`       | -       | Bu secenekle iliskili deger (zorunlu)      |
-| `label`    | `string`  | -       | Ekran okuyuculari icin istege bagli etiket |
-| `disabled` | `boolean` | `false` | Bu secenegin devre disi olup olmadigi      |
+| `id`       | `string`  | auto    | Seçenek için benzersiz tanımlayıcı         |
+| `value`    | `V`       | -       | Bu seçenekle ilişkili değer (zorunlu)      |
+| `label`    | `string`  | -       | Ekran okuyucuları için isteğe bağlı etiket |
+| `disabled` | `boolean` | `false` | Bu seçeneğin devre dışı olup olmadığı      |
 
-#### Signals
+#### Sinyaller
 
 | Property   | Type              | Description                       |
 | ---------- | ----------------- | --------------------------------- |
-| `selected` | `Signal<boolean>` | Bu secenegin secili olup olmadigi |
-| `active`   | `Signal<boolean>` | Bu secenegin odakta olup olmadigi |
+| `selected` | `Signal<boolean>` | Bu seçeneğin seçili olup olmadığı |
+| `active`   | `Signal<boolean>` | Bu seçeneğin odakta olup olmadığı |
 
-### Related patterns
+### İlgili Kalıplar
 
-Listbox, su belgelendirilmis acilir menu kaliplari tarafindan kullanilir:
+Listbox, şu belgelendirilmiş açılır menü kalıpları tarafından kullanılır:
 
-- **[Select](guide/aria/select)** - Salt okunur combobox + listbox kullanan tek secimli acilir menu kalibi
-- **[Multiselect](guide/aria/multiselect)** - Salt okunur combobox + `multi` ile listbox kullanan coklu secimli acilir menu kalibi
-- **[Autocomplete](guide/aria/autocomplete)** - Combobox + listbox kullanan filtrelenebilir acilir menu kalibi
+- **[Select](guide/aria/select)** - Salt okunur combobox + listbox kullanan tek seçimli açılır menü kalıbı
+- **[Multiselect](guide/aria/multiselect)** - Salt okunur combobox + `multi` ile listbox kullanan çoklu seçimli açılır menü kalıbı
+- **[Autocomplete](guide/aria/autocomplete)** - Combobox + listbox kullanan filtrelenebilir açılır menü kalıbı
 
-Tetikleyici, acilir pencere ve katman konumlandirmasiyla eksiksiz acilir menu kaliplari icin, listbox'i tek basina kullanmak yerine bu kalip rehberlerine bakin.
+Tetikleyici, açılır pencere ve katman konumlandırmasıyla eksiksiz açılır menü kalıpları için, listbox'ı tek başına kullanmak yerine bu kalıp rehberlerine bakın.
 
 <docs-pill-row>
   <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" title="Listbox ARIA pattern"/>

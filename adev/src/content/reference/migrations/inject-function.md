@@ -1,4 +1,4 @@
-# Migration to the `inject` function
+# `inject` fonksiyonuna geçiş
 
 Angular'ın [`inject`](/api/core/inject) fonksiyonu, yapıcı tabanlı enjeksiyona kıyasla daha doğru türler ve standart dekoratörlerle daha iyi uyumluluk sunar.
 
@@ -10,7 +10,7 @@ Bu şematik, sınıflarınızdaki yapıcı tabanlı enjeksiyonu bunun yerine [`i
 ng generate @angular/core:inject
 ```
 
-#### Before
+#### Önce
 
 ```typescript
 import {Component, Inject, Optional} from '@angular/core';
@@ -26,7 +26,7 @@ export class MyComp {
 }
 ```
 
-#### After
+#### Sonra
 
 ```typescript
 import {Component, inject} from '@angular/core';
@@ -40,7 +40,7 @@ export class MyComp {
 }
 ```
 
-## Migration options
+## Geçiş seçenekleri
 
 Geçiş, çıktısını özelleştirmek için çeşitli seçenekler içerir.
 
@@ -57,7 +57,7 @@ Angular, soyut sınıfların parametrelerinin enjekte edilebilir olduğunu doğr
 Varsayılan olarak, geçiş kodu mümkün olduğunca temizlemeye çalışır, bu da yapıcıdan parametreleri silmeyi veya herhangi bir kod içermiyorsa tüm yapıcıyı silmeyi içerir.
 Bazı durumlarda bu, Angular dekoratörleri olan sınıflar Angular dekoratörleri olan diğer sınıflardan miras aldığında derleme hatalarına yol açabilir. Bu seçeneği etkinleştirirseniz, geçiş daha fazla kod pahasına geriye dönük uyumluluğu korumak için ek bir yapıcı imzası oluşturacaktır.
 
-#### Before
+#### Önce
 
 ```typescript
 import {Component} from '@angular/core';
@@ -69,7 +69,7 @@ export class MyComp {
 }
 ```
 
-#### After
+#### Sonra
 
 ```ts
 import { Component } from '@angular/core';
@@ -92,7 +92,7 @@ private service = inject(MyService);
 
 **NOTE:** Zaten nullable olarak tip atanmış parametrelere null olmayan iddialar eklenmeyecektir, çünkü bunlara bağımlı kod muhtemelen zaten null olabilirliğini hesaba katmaktadır.
 
-#### Before
+#### Önce
 
 ```typescript
 import {Component, Inject, Optional} from '@angular/core';
@@ -107,7 +107,7 @@ export class MyComp {
 }
 ```
 
-#### After
+#### Sonra
 
 ```typescript
 import {Component, inject} from '@angular/core';

@@ -1,8 +1,8 @@
-# Service Worker configuration file
+# Service Worker yapılandırma dosyası
 
 Bu konu, service worker yapılandırma dosyasının özelliklerini açıklar.
 
-## Modifying the configuration
+## Yapılandırmayı değiştirme
 
 `ngsw-config.json` JSON yapılandırma dosyası, Angular service worker'ının hangi dosyaları ve veri URL'lerini önbelleğe alması gerektiğini ve önbelleğe alınan dosyaları ve verileri nasıl güncellemesi gerektiğini belirtir.
 [Angular CLI](tools/cli) bu yapılandırma dosyasını `ng build` sırasında işler.
@@ -38,7 +38,7 @@ Kalıplarınızın URL'lerin başlangıcı ve/veya sonuyla eşleşmesini istiyor
 | `/*.html`    | Yalnızca kökteki HTML dosyalarını belirtir |
 | `!/**/*.map` | Tüm sourcemap'leri hariç tutar             |
 
-## Service worker configuration properties
+## Service worker yapılandırma özellikleri
 
 Aşağıdaki bölümler yapılandırma dosyasının her bir özelliğini açıklar.
 
@@ -308,7 +308,7 @@ Belirtilmezse, varsayılan değer veri grubunun yapılandırılmış stratejisin
 | `freshness` stratejisine sahip gruplar   | Varsayılan değer `true`'dur ve service worker opak yanıtları önbelleğe alır. Bu gruplar her seferinde veriyi isteyecek ve yalnızca çevrimdışıyken veya yavaş bir ağdayken önbelleğe alınmış yanıta geri dönecektir. Bu nedenle, service worker'ın bir hata yanıtını önbelleğe alması önemli değildir.                              |
 | `performance` stratejisine sahip gruplar | Varsayılan değer `false`'tur ve service worker opak yanıtları önbelleğe almaz. Bu gruplar, hata geçici bir ağ veya sunucu sorunundan kaynaklanmış olsa bile, `maxAge` süresi dolana kadar önbelleğe alınmış bir yanıt döndürmeye devam edecektir. Bu nedenle, service worker'ın bir hata yanıtını önbelleğe alması sorunlu olurdu. |
 
-<docs-callout title="Comment on opaque responses">
+<docs-callout title="Opak yanıtlar hakkında yorum">
 
 Aşina değilseniz, [opak yanıt](https://fetch.spec.whatwg.org#concept-filtered-response-opaque), CORS başlıkları döndürmeyen farklı bir kaynaktaki bir kaynağı talep ederken döndürülen özel bir yanıt türüdür.
 Opak yanıtın özelliklerinden biri, service worker'ın durumunu okumasına izin verilmemesidir, yani isteğin başarılı olup olmadığını kontrol edemez.
@@ -326,7 +326,7 @@ Ayrıntılar için [assetGroups](#assetgroups) bölümüne bakın.
 
 Bu isteğe bağlı bölüm, dizin dosyasına yönlendirilecek özel bir URL listesi belirtmenizi sağlar.
 
-#### Handling navigation requests
+#### Navigasyon isteklerini işleme
 
 ServiceWorker, herhangi bir `asset` veya `data` grubuyla eşleşmeyen navigasyon isteklerini belirtilen [dizin dosyasına](#index) yönlendirir.
 Bir istek, aşağıdaki durumlarda navigasyon isteği olarak kabul edilir:
@@ -340,12 +340,12 @@ Bir istek, aşağıdaki durumlarda navigasyon isteği olarak kabul edilir:
 
 HELPFUL: Navigasyon isteklerinin ağa gönderilip gönderilmeyeceğini yapılandırmak için [navigationRequestStrategy](#navigationrequeststrategy) bölümüne ve [applicationMaxAge](#applicationmaxage) bölümlerine bakın.
 
-#### Matching navigation request URLs
+#### Navigasyon isteği URL'lerini eşleştirme
 
 Bu varsayılan kriterler çoğu durumda yeterli olsa da, bazen farklı kurallar yapılandırmak istenebilir.
 Örneğin, Angular uygulamasının parçası olmayan belirli rotaları yok saymak ve bunları sunucuya iletmek isteyebilirsiniz.
 
-Bu alan, çalışma zamanında eşleştirilen URL'ler ve [glob benzeri](#modifying-the-configuration) URL kalıplarının bir dizisini içerir.
+Bu alan, çalışma zamanında eşleştirilen URL'ler ve [glob benzeri](#yapılandırmayı-değiştirme) URL kalıplarının bir dizisini içerir.
 Hem negatif kalıpları (yani `!` ile başlayan kalıplar) hem de negatif olmayan kalıpları ve URL'leri içerebilir.
 
 Yalnızca URL'leri negatif olmayan URL'lerden/kalıplardan _herhangi biriyle_ eşleşen ve negatif olanların _hiçbiriyle_ eşleşmeyen istekler navigasyon istekleri olarak kabul edilir.
@@ -355,10 +355,10 @@ Alan atlanırsa, varsayılan olarak şu değeri alır:
 
 ```ts
 [
-  '/**', // Include all URLs.
-  '!/**/*.*', // Exclude URLs to files (containing a file extension in the last segment).
-  '!/**/*__*', // Exclude URLs containing `__` in the last segment.
-  '!/**/*__*/**', // Exclude URLs containing `__` in any other segment.
+  '/**', // Tüm URL'leri dahil et.
+  '!/**/*.*', // Dosyalara yönelik URL'leri hariç tut (son segmentte dosya uzantısı içerenler).
+  '!/**/*__*', // Son segmentte `__` içeren URL'leri hariç tut.
+  '!/**/*__*/**', // Diğer segmentlerde `__` içeren URL'leri hariç tut.
 ];
 ```
 

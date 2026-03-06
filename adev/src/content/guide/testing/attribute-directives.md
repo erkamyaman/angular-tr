@@ -1,9 +1,9 @@
-# Testing Attribute Directives
+# Attribute Directive'leri Test Etme
 
 Bir _nitelik yönergesi_, bir öğenin, bileşenin veya başka bir yönergenin davranışını değiştirir.
 Adı, yönergenin uygulanma biçimini yansıtır: bir ana öğe üzerinde nitelik olarak.
 
-## Testing the `Highlight` directive
+## `Highlight` directive'ini test etme
 
 Örnek uygulamanın `Highlight` yönergesi, bir öğenin arka plan rengini veri bağlı bir renge veya varsayılan renge \(açık gri\) göre ayarlar.
 Ayrıca öğenin özel bir özelliğini \(`customProperty`\) gösterebileceğinden başka bir neden olmaksızın `true` olarak ayarlar.
@@ -12,8 +12,8 @@ Ayrıca öğenin özel bir özelliğini \(`customProperty`\) gösterebileceğind
 import {Directive, inject, input} from '@angular/core';
 
 /**
- * Set backgroundColor for the attached element to highlight color
- * and set the element's customProperty attribute to true
+ * Eklenmiş öğenin backgroundColor'ını vurgulama rengine ayarlar
+ * ve öğenin customProperty niteliğini true olarak ayarlar
  */
 @Directive({
   selector: '[highlight]',
@@ -42,7 +42,7 @@ Uygulama genelinde kullanılır, belki de en basit şekilde `About` bileşeninde
 export class About {}
 ```
 
-`About` bileşeni içindeki `Highlight` yönergesinin belirli kullanımını test etmek, yalnızca [Bileşen test senaryolarının](guide/testing/components-scenarios) ["İç içe bileşen testleri"](guide/testing/components-scenarios#nested-component-tests) bölümünde incelenen teknikleri gerektirir.
+`About` bileşeni içindeki `Highlight` yönergesinin belirli kullanımını test etmek, yalnızca [Bileşen test senaryolarının](guide/testing/components-scenarios) ["İç içe bileşen testleri"](guide/testing/components-scenarios#iç-içe-bileşen-testleri) bölümünde incelenen teknikleri gerektirir.
 
 ```ts
 let fixture: ComponentFixture<About>;
@@ -93,17 +93,17 @@ Başlangıç değeri "cyan" kelimesidir ve bu, giriş kutusunun arka plan rengi 
 
 ```ts
 let fixture: ComponentFixture<Test>;
-let des: DebugElement[]; // the three elements w/ the directive
+let des: DebugElement[]; // directive'e sahip üç öğe
 
 beforeEach(async () => {
   fixture = TestBed.createComponent(Test);
   await fixture.whenStable();
 
-  // all elements with an attached Highlight
+  // Highlight eklenmiş tüm öğeler
   des = fixture.debugElement.queryAll(By.directive(Highlight));
 });
 
-// color tests
+// renk test'leri
 it('should have three highlighted elements', () => {
   expect(des.length).toBe(3);
 });
@@ -120,13 +120,13 @@ it('should color 2nd <h2> background w/ default color', () => {
 });
 
 it('should bind <input> background to value color', async () => {
-  // easier to work with nativeElement
+  // nativeElement ile çalışmak daha kolay
   const input = des[2].nativeElement as HTMLInputElement;
   expect(input.style.backgroundColor, 'initial backgroundColor').toBe('cyan');
 
   input.value = 'green';
 
-  // Dispatch a DOM event so that Angular responds to the input value change.
+  // Angular'ın girdi değeri değişikliğine yanıt vermesi için bir DOM olayı gönder.
   input.dispatchEvent(new Event('input'));
   await fixture.whenStable();
 
@@ -134,7 +134,7 @@ it('should bind <input> background to value color', async () => {
 });
 
 it('bare <h2> should not have a backgroundColor', () => {
-  // the h2 without the Highlight directive
+  // Highlight directive'i olmayan h2
   const bareH2 = fixture.debugElement.query(By.css('h2:not([highlight])'));
 
   expect(bareH2.styles.backgroundColor).toBeUndefined();

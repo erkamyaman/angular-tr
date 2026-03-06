@@ -1,9 +1,9 @@
 <docs-decorative-header title="Autocomplete">
 </docs-decorative-header>
 
-## Overview
+## Genel Bakış
 
-Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulmalarına ve secmelerine yardimci olan erisilebilir bir giris alani.
+Kullanıcılar yazarken seçenekleri filtreleyen ve öneren, bir listeden değer bulmalarına ve seçmelerine yardımcı olan erişilebilir bir giriş alanı.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -31,35 +31,35 @@ Kullanicilar yazarken secenekleri filtreleyen ve oneren, bir listeden deger bulm
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım
 
-Otomatik tamamlama, kullanicilarin yazmanin kaydirmadan daha hizli oldugu buyuk bir secenek kumesinden secim yapmasi gerektiginde en iyi calisir. Su durumlarda otomatik tamamlama kullanmayi dusunun:
+Otomatik tamamlama, kullanıcıların yazmanın kaydırmadan daha hızlı olduğu büyük bir seçenek kümesinden seçim yapması gerektiğinde en iyi çalışır. Şu durumlarda otomatik tamamlama kullanmayı düşünün:
 
-- **Secenek listesi uzun** (20'den fazla oge) - Yazmak, bir acilir menuyu kaydirmaya gore secimleri daha hizli daraltir
-- **Kullanicilar ne aradıklarını biliyor** - Beklenen degerin bir kismini yazabilirler (il adi, urun veya kullanici adi gibi)
-- **Secenekler tahmin edilebilir kaliplari takip ediyor** - Kullanicilar kismi eslesmeleri tahmin edebilir (ulke kodlari, e-posta alanlari veya kategoriler gibi)
-- **Hiz onemli** - Formlar kapsamli navigasyon olmadan hizli secimden faydalanir
+- **Seçenek listesi uzun** (20'den fazla öğe) - Yazmak, bir açılır menüyü kaydırmaya göre seçimleri daha hızlı daraltır
+- **Kullanıcılar ne aradıklarını biliyor** - Beklenen değerin bir kısmını yazabilirler (il adı, ürün veya kullanıcı adı gibi)
+- **Seçenekler tahmin edilebilir kalıpları takip ediyor** - Kullanıcılar kısmi eşleşmeleri tahmin edebilir (ülke kodları, e-posta alanları veya kategoriler gibi)
+- **Hız önemli** - Formlar kapsamlı navigasyon olmadan hızlı seçimden faydalanır
 
-Su durumlarda otomatik tamamlamadan kacinin:
+Şu durumlarda otomatik tamamlamadan kaçının:
 
-- Listede 10'dan az secenek var - Duzgun bir acilir menu veya radyo grubu daha iyi gorunurluk saglar
-- Kullanicilarin seceneklere goz atmasi gerekiyor - Kesfetmek onemliyse, tum secenekleri onceden gosterin
-- Secenekler bilinmiyor - Kullanicilar listede var olduğunu bilmedikleri seyleri yazamaz
+- Listede 10'dan az seçenek var - Düzgün bir açılır menü veya radyo grubu daha iyi görünürlük sağlar
+- Kullanıcıların seçeneklere göz atması gerekiyor - Keşfetmek önemliyse, tüm seçenekleri önceden gösterin
+- Seçenekler bilinmiyor - Kullanıcılar listede var olduğunu bilmedikleri şeyleri yazamaz
 
-## Features
+## Özellikler
 
-Angular'in otomatik tamamlamasi, tam erisilebilir bir combobox uygulamasi saglar:
+Angular'ın otomatik tamamlaması, tam erişilebilir bir combobox uygulaması sağlar:
 
-- **Klavye Navigasyonu** - Ok tuslariyla secenekler arasinda gezinin, Enter ile secin, Escape ile kapatin
-- **Ekran Okuyucu Destegi** - Yardimci teknolojiler icin yerlesik ARIA nitelikleri
-- **Uc Filtre Modu** - Otomatik secim, manuel secim veya vurgulama davranisi arasinda secim yapin
-- **Sinyal Tabanli Reaktivite** - Angular sinyalleri kullanan reaktif durum yonetimi
-- **Popover API Entegrasyonu** - Optimum konumlandirma icin yerel HTML Popover API'sinden yararlanir
-- **Cift Yonlu Metin Destegi** - Sagdan sola (RTL) dilleri otomatik olarak isler
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Enter ile seçin, Escape ile kapatın
+- **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA nitelikleri
+- **Üç Filtre Modu** - Otomatik seçim, manuel seçim veya vurgulama davranışı arasında seçim yapın
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+- **Popover API Entegrasyonu** - Optimum konumlandırma için yerel HTML Popover API'sinden yararlanır
+- **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak işler
 
-## Examples
+## Örnekler
 
-### Auto-select mode
+### Otomatik seçim modu
 
 Kismi metin yazan kullanicilar, girdilerinin mevcut bir secenekle eslestigine dair aninda onay bekler. Otomatik secim modu, kullanicilar yazarken giris degerini ilk filtrelenmis secenekle eslesecek sekilde gunceller, gereken tus vurusu sayisini azaltir ve aramalarinin dogru yolda olduguna dair aninda geri bildirim saglar.
 
@@ -89,7 +89,7 @@ Kismi metin yazan kullanicilar, girdilerinin mevcut bir secenekle eslestigine da
   </docs-tab>
 </docs-tab-group>
 
-### Manual selection mode
+### Manuel seçim modu
 
 Manuel secim modu, kullanicilar oneri listesinde gezinirken yazilan metni degistirmeden tutar ve otomatik guncellemelerden kaynaklanan karisikligi onler. Giris, yalnizca kullanicilar secimlerini Enter veya tiklamayla acikca onayladiklarinda degisir.
 

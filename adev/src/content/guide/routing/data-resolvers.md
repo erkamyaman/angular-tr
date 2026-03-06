@@ -1,14 +1,14 @@
-# Data resolvers
+# Veri Resolver'ları
 
 Veri çözücüler, bir rotaya navigasyon yapmadan önce veri çekmenize olanak tanır ve bileşenlerinizin render edilmeden önce ihtiyaç duydukları verileri almasını sağlar. Bu, yükleme durumları ihtiyacını önlemeye ve temel verileri önceden yükleyerek kullanıcı deneyimini iyileştirmeye yardımcı olabilir.
 
-## What are data resolvers?
+## Veri resolver'ları nedir?
 
 Veri çözücü, `ResolveFn` fonksiyonunu uygulayan bir servistir. Bir rota etkinleştirilmeden önce çalışır ve API'lerden, veritabanlarından veya diğer kaynaklardan veri çekebilir. Çözümlenen veri, `ActivatedRoute` aracılığıyla bileşen tarafından kullanılabilir hale gelir.
 
-Veri çözücüler, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
+Veri çözücüler, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#rota-providerları) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
-## Why use data resolvers?
+## Veri resolver'ları neden kullanılır?
 
 Veri çözücüler yaygın yönlendirme sorunlarını çözer:
 
@@ -17,7 +17,7 @@ Veri çözücüler yaygın yönlendirme sorunlarını çözer:
 - **Hata yönetimi**: Veri çekme hatalarını navigasyondan önce yönetin
 - **Veri tutarlılığı**: SSR için önemli olan, render etmeden önce gerekli verilerin mevcut olmasını sağlayın
 
-## Creating a resolver
+## Resolver oluşturma
 
 `ResolveFn` türünde bir fonksiyon yazarak bir çözücü oluşturursunuz.
 
@@ -50,7 +50,7 @@ export const settingsResolver: ResolveFn<Settings> = (
 };
 ```
 
-## Configuring routes with resolvers
+## Route'ları resolver'lar ile yapılandırma
 
 Bir rotaya bir veya daha fazla veri çözücü eklemek istediğinizde, rota yapılandırmasındaki `resolve` anahtarı altına ekleyebilirsiniz. `Routes` türü, rota yapılandırmaları için yapıyı tanımlar:
 
@@ -71,9 +71,9 @@ export const routes: Routes = [
 
 [`resolve` yapılandırması hakkında API dokümanlarından](api/router/Route#resolve) daha fazla bilgi edinebilirsiniz.
 
-## Accessing resolved data in components
+## Bileşenlerde çözümlenmiş verilere erişme
 
-### Using ActivatedRoute
+### ActivatedRoute kullanma
 
 Çözümlenen verilere, `ActivatedRoute`'tan `signal` fonksiyonunu kullanarak anlık görüntü verilerine erişerek bir bileşende ulaşabilirsiniz:
 
@@ -98,7 +98,7 @@ export class UserDetail {
 }
 ```
 
-### Using withComponentInputBinding
+### withComponentInputBinding kullanma
 
 Çözümlenen verilere erişmenin farklı bir yaklaşımı, yönlendiricinizi `provideRouter` ile yapılandırırken `withComponentInputBinding()` kullanmaktır. Bu, çözümlenen verilerin doğrudan bileşen girişleri olarak aktarılmasına olanak tanır:
 
@@ -133,7 +133,7 @@ export class UserDetail {
 
 Bu yaklaşım daha iyi tür güvenliği sağlar ve yalnızca çözümlenen verilere erişmek için `ActivatedRoute` enjekte etme ihtiyacını ortadan kaldırır.
 
-## Error handling in resolvers
+## Resolver'larda hata yönetimi
 
 Navigasyon hatalarında, veri çözücülerinizde hataları nazikçe yönetmek önemlidir. Aksi takdirde, bir `NavigationError` oluşur ve geçerli rotaya navigasyon başarısız olur, bu da kullanıcılarınız için kötü bir deneyime yol açar.
 
@@ -143,7 +143,7 @@ Veri çözücülerle hataları yönetmenin üç temel yolu vardır:
 2. Router olaylarına abonelik aracılığıyla hataları yönetme
 3. Hataları doğrudan çözücüde yönetme
 
-### Centralize error handling in `withNavigationErrorHandler`
+### `withNavigationErrorHandler` ile hata yönetimini merkezileştirme
 
 [`withNavigationErrorHandler`](api/router/withNavigationErrorHandler) özelliği, başarısız veri çözücülerden kaynaklananlar dahil tüm navigasyon hatalarını yönetmenin merkezi bir yolunu sağlar. Bu yaklaşım, hata yönetimi mantığını tek bir yerde tutar ve çözücüler arasında tekrarlanan hata yönetimi kodunu önler.
 
@@ -178,12 +178,12 @@ Bu yapılandırma ile çözücüleriniz veri çekmeye odaklanabilirken merkezi i
 export const userResolver: ResolveFn<User> = (route) => {
   const userStore = inject(UserStore);
   const userId = route.paramMap.get('id')!;
-  // No need for explicit error handling - let it bubble up
+  // Açık hata yönetimi gerekli değil - hatanın yukarı çıkmasına izin ver
   return userStore.getUser(userId);
 };
 ```
 
-### Managing errors through a subscription to router events
+### Router olaylarına abonelik aracılığıyla hataları yönetme
 
 Çözücü hatalarını, router olaylarına abone olarak ve `NavigationError` olaylarını dinleyerek de yönetebilirsiniz. Bu yaklaşım, hata yönetimi üzerinde daha ayrıntılı kontrol sağlar ve özel hata kurtarma mantığı uygulamanıza olanak tanır.
 
@@ -243,7 +243,7 @@ Bu yaklaşım özellikle şu durumlarda yararlıdır:
 - Hata türüne göre belirli hata mesajları göstermek
 - Analitik amaçlarla navigasyon hatalarını izlemek
 
-### Handling errors directly in the resolver
+### Hataları doğrudan resolver'da yönetme
 
 İşte hatayı kaydeden ve `Router` servisini kullanarak genel `/users` sayfasına geri yönlendiren güncellenmiş bir `userResolver` örneği:
 
@@ -268,11 +268,11 @@ export const userResolver: ResolveFn<User | RedirectCommand> = (route) => {
 };
 ```
 
-## Navigation loading considerations
+## Navigasyon yükleme değerlendirmeleri
 
 Veri çözücüler bileşenler içindeki yükleme durumlarını önlese de, farklı bir UX değerlendirmesi ortaya çıkarır: çözücüler çalışırken navigasyon engellenir. Özellikle yavaş ağ isteklerinde, kullanıcılar bir bağlantıya tıklama ile yeni rotayı görme arasında gecikmeler yaşayabilir.
 
-### Providing navigation feedback
+### Navigasyon geri bildirimi sağlama
 
 Çözücü çalışması sırasında kullanıcı deneyimini iyileştirmek için router olaylarını dinleyebilir ve yükleme göstergeleri gösterebilirsiniz:
 
@@ -297,7 +297,7 @@ export class App {
 
 Bu yaklaşım, çözücüler veri çekerken kullanıcıların navigasyonun devam ettiğine dair görsel geri bildirim almasını sağlar.
 
-## Best practices
+## En iyi uygulamalar
 
 - **Çözücüleri hafif tutun**: Çözücüler yalnızca temel verileri çekmeli, sayfanın ihtiyaç duyabileceği her şeyi değil
 - **Hataları yönetin**: Kullanıcılara mümkün olan en iyi deneyimi sunmak için hataları her zaman nazikçe yönetmeyi unutmayın
@@ -306,7 +306,7 @@ Bu yaklaşım, çözücüler veri çekerken kullanıcıların navigasyonun devam
 - **Makul zaman aşımları belirleyin**: Navigasyonu süresiz olarak engelleyebilecek çözücülerden kaçının
 - **Tür güvenliği**: Çözümlenen veriler için TypeScript arayüzleri kullanın
 
-## Reading parent resolved data in child resolvers
+## Alt resolver'larda üst çözümlenmiş verileri okuma
 
 Çözücüler üst rotadan alt rotaya doğru çalışır. Bir üst rota bir çözücü tanımladığında, çözümlenen veriler daha sonra çalışan alt çözücüler tarafından kullanılabilir.
 
@@ -321,16 +321,16 @@ import type { User } from './types';
 provideRouter([
   {
     path: 'users/:id',
-    resolve: { user: userResolver }, // user resolver in the parent route
+    resolve: { user: userResolver }, // üst rotadaki user resolver
     children: [
       {
         path: 'posts',
         component: UserPosts,
-        // route.data.user is available here while this resolver runs
+        // Bu resolver çalışırken route.data.user burada kullanılabilir
         resolve: {
           posts: (route: ActivatedRouteSnapshot) => {
             const postService = inject(PostService);
-            const user = route.parent?.data['user'] as User; // parent data
+            const user = route.parent?.data['user'] as User; // üst rota verisi
             const userId = user.id;
             return postService.getPostByUser(userId);
           },

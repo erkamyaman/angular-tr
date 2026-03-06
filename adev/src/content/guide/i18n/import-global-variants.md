@@ -1,4 +1,4 @@
-# Import global variants of the locale data
+# Yerel ayar verilerinin global varyantlarını içe aktarma
 
 [Angular CLI][CliMain], [`ng build`][CliBuild] komutunu `--localize` seçeneğiyle çalıştırdığınızda yerel ayar verilerini otomatik olarak dahil eder.
 
@@ -12,7 +12,7 @@ HELPFUL: Angular'ın ilk kurulumu zaten Amerika Birleşik Devletleri için İngi
 npm'deki `@angular/common` paketi yerel ayar veri dosyalarını içerir.
 Yerel ayar verilerinin global varyantları `@angular/common/locales/global` içinde mevcuttur.
 
-## `import` example for French
+## Fransızca için `import` örneği
 
 Örneğin, uygulamayı başlattığınız `main.ts` dosyasında Fransızca \(`fr`\) için global varyantları içe aktarabilirsiniz.
 

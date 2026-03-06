@@ -4,7 +4,7 @@ Angular'da özellik bağlama, HTML öğelerinin, Angular bileşenlerinin ve daha
 
 Özellikler ve nitelikler için dinamik olarak değer ayarlamak üzere özellik bağlamayı kullanın. Buton özelliklerini değiştirme, resim yollarını programatik olarak ayarlama ve bileşenler arasında değer paylaşma gibi işlemler yapabilirsiniz.
 
-NOTE: [Temel bilgiler kılavuzundaki dinamik özellik ve nitelik ayarlama](/essentials/templates#setting-dynamic-properties-and-attributes) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki dinamik özellik ve nitelik ayarlama](/essentials/templates#dinamik-özellikler-ve-öznitelikler-ayarlama) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, şablonlarda özellik bağlamayı nasıl kullanacağınızı öğreneceksiniz.
 
@@ -20,7 +20,7 @@ Bu örnekte, `src` niteliğinin değeri `imageURL` sınıf özelliğine bağlana
 
 <docs-workflow>
 
-<docs-step title="Add a property called `isEditable`" header="app.ts" language="ts">
+<docs-step title="`isEditable` adlı bir özellik ekleyin" header="app.ts" language="ts">
 `app.ts` dosyasındaki kodu, `App` sınıfına `isEditable` adında ve başlangıç değeri `true` olan bir özellik ekleyerek güncelleyin.
 
 ```ts {highlight:[2]}
@@ -31,7 +31,7 @@ export class App {
 
 </docs-step>
 
-<docs-step title="Bind to `contentEditable`" header="app.ts" language="ts">
+<docs-step title="`contentEditable`'a bağlayın" header="app.ts" language="ts">
 Sonra, `div`'in `contentEditable` niteliğini `isEditable` özelliğine <code aria-label="square brackets">[]</code> sözdizimini kullanarak bağlayın.
 
 ```angular-ts {highlight:[3]}
@@ -47,4 +47,4 @@ Sonra, `div`'in `contentEditable` niteliğini `isEditable` özelliğine <code ar
 
 Div artık düzenlenebilir durumda. Harika is!
 
-Özellik bağlama, Angular'ın birçok güçlü özelliğinden biridir. Daha fazla bilgi edinmek isterseniz [Angular belgelerine](guide/templates/binding#css-class-and-style-property-bindings) göz atın.
+Özellik bağlama, Angular'ın birçok güçlü özelliğinden biridir. Daha fazla bilgi edinmek isterseniz [Angular belgelerine](guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) göz atın.

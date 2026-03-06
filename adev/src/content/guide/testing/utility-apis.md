@@ -1,22 +1,22 @@
-# Testing Utility APIs
+# Test Yardımcı API'leri
 
 NOTE: Bu kılavuz Vitest için güncellenirken, yardımcı API'lerin bazı açıklamaları ve örnekleri şu anda Karma/Jasmine bağlamında sunulmaktadır. Uygulanabilir yerlerde Vitest eşdeğerlerini ve güncellenmiş rehberliği sağlamak için aktif olarak çalışıyoruz.
 
 Bu sayfa en kullanışlı Angular test özelliklerini açıklar.
 
 Angular test araçları `TestBed`, `ComponentFixture` ve test ortamını kontrol eden bir avuç fonksiyon içerir.
-[`TestBed`](#testbed-class-summary) ve [`ComponentFixture`](#the-componentfixture) sınıfları ayrı ayrı ele alınmaktadır.
+[`TestBed`](#testbed-sınıf-özeti) ve [`ComponentFixture`](#componentfixture) sınıfları ayrı ayrı ele alınmaktadır.
 
 İşte bağımsız fonksiyonların olası kullanım sırasına göre bir özeti:
 
-| Fonksiyon    | Ayrıntılar                                                                                                                                                                                                                                                             |
-| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`inject`]   | Mevcut `TestBed` enjektöründen bir veya daha fazla servisi bir test fonksiyonuna enjekte eder. Bileşenin kendisi tarafından sağlanan bir servisi enjekte edemez. [debugElement.injector](guide/testing/components-scenarios#get-injected-services) tartışmasına bakın. |
-| `getTestBed` | `TestBed`'in mevcut örneğini alır. Genellikle gereksizdir çünkü `TestBed` sınıfının statik sınıf metotları genellikle yeterlidir. `TestBed` örneği, statik metotlar olarak mevcut olmayan nadiren kullanılan birkaç üyeyi ortaya çıkarır.                              |
+| Fonksiyon    | Ayrıntılar                                                                                                                                                                                                                                                                      |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`inject`]   | Mevcut `TestBed` enjektöründen bir veya daha fazla servisi bir test fonksiyonuna enjekte eder. Bileşenin kendisi tarafından sağlanan bir servisi enjekte edemez. [debugElement.injector](guide/testing/components-scenarios#enjekte-edilen-servisleri-alma) tartışmasına bakın. |
+| `getTestBed` | `TestBed`'in mevcut örneğini alır. Genellikle gereksizdir çünkü `TestBed` sınıfının statik sınıf metotları genellikle yeterlidir. `TestBed` örneği, statik metotlar olarak mevcut olmayan nadiren kullanılan birkaç üyeyi ortaya çıkarır.                                       |
 
 Karmaşık asenkron senaryoları ele almak veya eski Zone.js tabanlı uygulamaları test etmek için [Zone.js Test Araçları](guide/testing/zone-js-testing-utilities) kılavuzuna bakın.
 
-## `TestBed` class summary
+## `TestBed` sınıf özeti
 
 `TestBed` sınıfı, temel Angular test araçlarından biridir.
 API'si oldukça geniştir ve onu parça parça keşfedene kadar bunaltıcı olabilir.
@@ -70,13 +70,13 @@ Her bireysel testten önce yeni bir başlangıç sağlamak için `TestBed` metot
 Statik `TestBed` _sınıf_ metotları tarafından kapsanmayan birkaç `TestBed` örnek metodu vardır.
 Bunlara nadiren ihtiyaç duyulur.
 
-## The `ComponentFixture`
+## `ComponentFixture`
 
 `TestBed.createComponent<T>`, `T` bileşeninin bir örneğini oluşturur ve o bileşen için güçlü tipli bir `ComponentFixture` döndürür.
 
 `ComponentFixture` özellikleri ve metotları, bileşene, DOM temsiline ve Angular ortamının yönlerine erişim sağlar.
 
-### `ComponentFixture` properties
+### `ComponentFixture` özellikleri
 
 İşte test yazarları için olası kullanım sırasına göre en önemli özellikler.
 
@@ -87,7 +87,7 @@ Bunlara nadiren ihtiyaç duyulur.
 | `nativeElement`     | Bileşenin kökündeki yerel DOM öğesi.                                                                                                                                                                                                                        |
 | `changeDetectorRef` | Bileşen için `ChangeDetectorRef`. <br /> `ChangeDetectorRef`, `ChangeDetectionStrategy.OnPush` yöntemine sahip bir bileşeni test ederken veya bileşenin değişiklik algılaması programatik kontrolünüz altında olduğunda en değerlidir.                      |
 
-### `ComponentFixture` methods
+### `ComponentFixture` metotları
 
 _Fixture_ metotları, Angular'ın bileşen ağacında belirli görevleri yerine getirmesini sağlar.
 Simüle edilmiş kullanıcı eylemine yanıt olarak Angular davranışını tetiklemek için bu metotları çağırın.
@@ -134,7 +134,7 @@ Yüklem, bir `DebugElement` alan ve _doğru_ bir değer döndüren herhangi bir 
 Aşağıdaki örnek, "content" adlı bir şablon yerel değişkenine referansı olan tüm `DebugElement`'leri bulur:
 
 ```ts
-// Filter for DebugElements with a #content reference
+// #content referansına sahip DebugElement'leri filtrele
 const contentRefs = el.queryAll((de) => de.references['content']);
 ```
 
@@ -147,7 +147,7 @@ Angular `By` sınıfı, yaygın yüklemler için üç statik metoda sahiptir:
 | `By.directive(directive)` | Angular'ın yönerge sınıfının bir örneğiyle eşleştirdiği öğeleri döndürür |
 
 ```ts
-// Can find DebugElement either by css selector or by directive
+// DebugElement CSS seçici veya directive ile bulunabilir
 const h2 = fixture.debugElement.query(By.css('h2'));
 const directive = fixture.debugElement.query(By.directive(Highlight));
 ```

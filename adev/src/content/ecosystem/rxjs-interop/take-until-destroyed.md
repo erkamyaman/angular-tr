@@ -1,4 +1,4 @@
-# Unsubscribing with `takeUntilDestroyed`
+# `takeUntilDestroyed` ile abonelik iptali
 
 TIP: Bu kılavuz, [bileşen ve direktif yaşam döngüsüne](guide/components/lifecycle) aşina olduğunuzu varsayar.
 
@@ -15,8 +15,8 @@ export class UserProfile {
   private popup = inject(CustomPopupShower);
 
   constructor() {
-    // This subscription the 'notifications' Observable is automatically
-    // unsubscribed when the 'UserProfile' component is destroyed.
+    // 'notifications' Observable'ına olan bu abonelik,
+    // 'UserProfile' bileşeni yok edildiğinde otomatik olarak iptal edilir.
     const messages: Observable<string> = this.dispatcher.notifications;
     messages.pipe(takeUntilDestroyed()).subscribe((message) => {
       this.popup.show(message);
@@ -35,8 +35,8 @@ export class UserProfile {
   private destroyRef = inject(DestroyRef);
 
   startListeningToNotifications() {
-    // Always pass a `DestroyRef` if you call `takeUntilDestroyed` outside
-    // of an injection context.
+    // `takeUntilDestroyed`'ı bir enjeksiyon bağlamı dışında çağırıyorsanız
+    // her zaman bir `DestroyRef` geçirin.
     const messages: Observable<string> = this.dispatcher.notifications;
     messages.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((message) => {
       this.popup.show(message);

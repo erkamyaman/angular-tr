@@ -1,10 +1,10 @@
-<docs-decorative-header title="Templates" imgSrc="adev/src/assets/images/templates.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Şablonlar" imgSrc="adev/src/assets/images/templates.svg"> <!-- markdownlint-disable-line -->
 Dinamik kullanıcı arayüzleri oluşturmak için Angular'ın şablon sözdizimini kullanın.
 </docs-decorative-header>
 
 Bileşen şablonları sadece statik HTML değildir -- bileşen sınıfınızdaki verileri kullanabilir ve kullanıcı etkileşimi için işleyiciler kurabilir.
 
-## Showing dynamic text
+## Dinamik Metin Gösterme
 
 Angular'da bir _bağlama (binding)_, bir bileşenin şablonu ile verileri arasında dinamik bir bağlantı oluşturur. Bu bağlantı, bileşenin verilerindeki değişikliklerin render edilen şablonu otomatik olarak güncellemesini sağlar.
 
@@ -38,14 +38,14 @@ Render edilen sayfa yeni değeri yansıtacak şekilde güncellenir:
 <h1>Profile for cool_coder_789</h1>
 ```
 
-## Setting dynamic properties and attributes
+## Dinamik Özellikler ve Öznitelikler Ayarlama
 
 Angular, köşeli parantezlerle DOM özelliklerine dinamik değerler bağlamayı destekler:
 
 ```angular-ts
 @Component({
   /*...*/
-  // Set the `disabled` property of the button based on the value of `isValidUserId`.
+  // `isValidUserId` değerine göre butonun `disabled` özelliğini ayarla.
   template: `<button [disabled]="!isValidUserId()">Save changes</button>`,
 })
 export class UserProfile {
@@ -56,27 +56,27 @@ export class UserProfile {
 Ayrıca öznitelik adının önüne `attr.` ekleyerek HTML _özniteliklerine_ de bağlama yapabilirsiniz:
 
 ```angular-html
-<!-- Bind the `role` attribute on the `<ul>` element to value of `listRole`. -->
+<!-- `<ul>` elementindeki `role` özniteliğini `listRole` değerine bağla. -->
 <ul [attr.role]="listRole()"></ul>
 ```
 
 Angular, bağlanan değer değiştiğinde DOM özelliklerini ve özniteliklerini otomatik olarak günceller.
 
-## Handling user interaction
+## Kullanıcı Etkileşimini Yönetme
 
 Angular, şablonunuzdaki bir elemana parantezlerle olay dinleyicileri eklemenizi sağlar:
 
 ```angular-ts
 @Component({
   /*...*/
-  // Add an 'click' event handler that calls the `cancelSubscription` method.
+  // `cancelSubscription` metodunu çağıran bir 'click' olay işleyicisi ekle.
   template: `<button (click)="cancelSubscription()">Cancel subscription</button>`,
 })
 export class UserProfile {
   /* ... */
 
   cancelSubscription() {
-    /* Your event handling code goes here. */
+    /* Olay işleme kodunuz buraya gelecek. */
   }
 }
 ```
@@ -86,19 +86,19 @@ export class UserProfile {
 ```angular-ts
 @Component({
   /*...*/
-  // Add an 'click' event handler that calls the `cancelSubscription` method.
+  // `cancelSubscription` metodunu çağıran bir 'click' olay işleyicisi ekle.
   template: `<button (click)="cancelSubscription($event)">Cancel subscription</button>`,
 })
 export class UserProfile {
   /* ... */
 
   cancelSubscription(event: Event) {
-    /* Your event handling code goes here. */
+    /* Olay işleme kodunuz buraya gelecek. */
   }
 }
 ```
 
-## Control flow with `@if` and `@for`
+## `@if` ve `@for` ile Kontrol Akışı
 
 Angular'ın `@if` bloğu ile bir şablonun bazı kısımlarını koşullu olarak gizleyip gösterebilirsiniz:
 
@@ -137,15 +137,15 @@ Angular'ın `@for` bloğu ile bir şablonun bir kısmını birden fazla kez tekr
 </ul>
 ```
 
-Angular, yukarıdaki örnekte gösterilen `track` anahtar kelimesini, `@for` tarafından oluşturulan DOM elementleriyle verileri ilişkilendirmek için kullanır. Daha fazla bilgi için [_@for bloklarında track neden önemlidir?_](guide/templates/control-flow#why-is-track-in-for-blocks-important) bölümüne bakın.
+Angular, yukarıdaki örnekte gösterilen `track` anahtar kelimesini, `@for` tarafından oluşturulan DOM elementleriyle verileri ilişkilendirmek için kullanır. Daha fazla bilgi için [_@for bloklarında track neden önemlidir?_](guide/templates/control-flow#for-bloklarında-track-neden-önemlidir) bölümüne bakın.
 
 TIP: Angular şablonları hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Şablonlar kılavuzuna](guide/templates) bakın.
 
-## Next Step
+## Sonraki Adım
 
 Uygulamada dinamik veri ve şablonlara sahip olduğunuza göre, belirli elementleri koşullu olarak gizleme veya gösterme, elementler üzerinde döngü yapma ve daha fazlasıyla şablonları nasıl geliştireceğinizi öğrenmenin zamanı geldi.
 
 <docs-pill-row>
-  <docs-pill title="Modular design with dependency injection" href="essentials/dependency-injection" />
-  <docs-pill title="In-depth template guide" href="guide/templates" />
+  <docs-pill title="Bağımlılık enjeksiyonu ile modüler tasarım" href="essentials/dependency-injection" />
+  <docs-pill title="Detaylı şablon kılavuzu" href="guide/templates" />
 </docs-pill-row>

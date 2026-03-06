@@ -1,9 +1,9 @@
-<docs-decorative-header title="Installation" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Kurulum" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
 Çevrimiçi başlatıcılarla veya terminalinizi kullanarak yerel olarak Angular'a hızlıca başlayın.
 
-## Play Online
+## Çevrimiçi Deneyin
 
 Angular'ı bir proje oluşturmadan tarayıcınızda denemek istiyorsanız, çevrimiçi deneme alanımızı kullanabilirsiniz:
 
@@ -13,22 +13,22 @@ Angular'ı bir proje oluşturmadan tarayıcınızda denemek istiyorsanız, çevr
   </docs-card>
 </docs-card-container>
 
-## Set up a new project locally
+## Yerel Olarak Yeni Bir Proje Oluşturun
 
 Yeni bir projeye başlıyorsanız, Git gibi araçları kullanabilmek için büyük olasılıkla yerel bir proje oluşturmak isteyeceksiniz.
 
-### Prerequisites
+### Ön Koşullar
 
 - **Node.js** - [v20.19.0 veya daha yeni](/reference/versions)
 - **Metin editörü** - [Visual Studio Code](https://code.visualstudio.com/) öneriyoruz
 - **Terminal** - Angular CLI komutlarını çalıştırmak için gereklidir
 - **Geliştirme Aracı** - Geliştirme iş akışınızı iyileştirmek için [Angular Language Service](/tools/language-service) öneriyoruz
 
-### Instructions
+### Talimatlar
 
 Aşağıdaki kılavuz, yerel bir Angular projesi oluşturma adımlarında size yol gösterecektir.
 
-#### Install Angular CLI
+#### Angular CLI'ı Yükleyin
 
 Bir terminal açın ([Visual Studio Code](https://code.visualstudio.com/) kullanıyorsanız, [entegre terminal](https://code.visualstudio.com/docs/editor/integrated-terminal) açabilirsiniz) ve aşağıdaki komutu çalıştırın:
 
@@ -60,9 +60,9 @@ Bir terminal açın ([Visual Studio Code](https://code.visualstudio.com/) kullan
 
 </docs-code-multifile>
 
-Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#install-the-angular-cli) göz atın.
+Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#angular-cliı-yükleme) göz atın.
 
-#### Create a new project
+#### Yeni Bir Proje Oluşturun
 
 Terminalinizde, istediğiniz proje adıyla `ng new` CLI komutunu çalıştırın. Aşağıdaki örneklerde, `my-first-angular-app` örnek proje adını kullanacağız.
 
@@ -83,7 +83,7 @@ Yapılandırma seçeneklerini belirledikten ve CLI kurulumu tamamladıktan sonra
 
 Bu noktada, projenizi yerel olarak çalıştırmaya hazırsınız!
 
-#### Running your new project locally
+#### Yeni Projenizi Yerel Olarak Çalıştırma
 
 Terminalinizde, yeni Angular projenize geçin.
 
@@ -108,10 +108,10 @@ NOTE: Raw file sizes do not reflect development server per-request transformatio
 
 Artık `Local` kısmındaki adresi (örneğin, `http://localhost:4200`) ziyaret ederek uygulamanızı görebilirsiniz. Keyifli kodlamalar!
 
-### Using AI for Development
+### Geliştirme İçin Yapay Zeka Kullanımı
 
 Tercih ettiğiniz yapay zeka destekli IDE'de geliştirmeye başlamak için [Angular prompt kuralları ve en iyi uygulamalarına göz atın](/ai/develop-with-ai).
 
-## Next steps
+## Sonraki Adımlar
 
 Angular projenizi oluşturduğunuza göre, [Temel Bilgiler kılavuzumuzda](/essentials) Angular hakkında daha fazla bilgi edinebilir veya detaylı kılavuzlarımızdan bir konu seçebilirsiniz!

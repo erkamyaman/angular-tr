@@ -1,35 +1,35 @@
-# Custom service worker scripts
+# Özel service worker betikleri
 
 Angular service worker mükemmel yetenekler sunsa da, push bildirimlerini işleme, arka plan senkronizasyonu veya diğer service worker olayları gibi özel işlevsellik eklemeniz gerekebilir. Angular service worker'ı içe aktaran ve genişleten özel bir service worker betiği oluşturabilirsiniz.
 
-## Creating a custom service worker
+## Özel bir service worker oluşturma
 
 Angular'ın işlevselliğini genişleten özel bir service worker oluşturmak için:
 
 1. `src` dizininizde özel bir service worker dosyası (örneğin `custom-sw.js`) oluşturun:
 
 ```js
-// Import the Angular service worker
+// Angular service worker'ını içe aktar
 importScripts('./ngsw-worker.js');
 
 (function () {
   'use strict';
 
-  // Add custom notification click handler
+  // Özel bildirim tıklama işleyicisi ekle
   self.addEventListener('notificationclick', (event) => {
-    console.log('Custom notification click handler');
-    console.log('Notification details:', event.notification);
+    console.log('Özel bildirim tıklama işleyicisi');
+    console.log('Bildirim ayrıntıları:', event.notification);
 
-    // Handle notification click - open URL if provided
+    // Bildirim tıklamasını işle - URL sağlanmışsa aç
     if (clients.openWindow && event.notification.data.url) {
       event.waitUntil(clients.openWindow(event.notification.data.url));
-      console.log('Opening URL:', event.notification.data.url);
+      console.log('URL açılıyor:', event.notification.data.url);
     }
   });
 
-  // Add custom background sync handler
+  // Özel arka plan senkronizasyonu işleyicisi ekle
   self.addEventListener('sync', (event) => {
-    console.log('Custom background sync handler');
+    console.log('Özel arka plan senkronizasyonu işleyicisi');
 
     if (event.tag === 'background-sync') {
       event.waitUntil(doBackgroundSync());
@@ -37,11 +37,11 @@ importScripts('./ngsw-worker.js');
   });
 
   function doBackgroundSync() {
-    // Implement your background sync logic here
+    // Arka plan senkronizasyonu mantığınızı burada uygulayın
     return fetch('https://example.com/api/sync')
       .then((response) => response.json())
-      .then((data) => console.log('Background sync completed:', data))
-      .catch((error) => console.error('Background sync failed:', error));
+      .then((data) => console.log('Arka plan senkronizasyonu tamamlandı:', data))
+      .catch((error) => console.error('Arka plan senkronizasyonu başarısız:', error));
   }
 })();
 ```
@@ -86,7 +86,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-### Best practices for custom service workers
+### Özel service worker'lar için en iyi uygulamalar
 
 Angular service worker'ı genişletirken:
 
@@ -96,7 +96,7 @@ Angular service worker'ı genişletirken:
 - Hem geliştirme hem de üretim ortamlarında **kapsamlı bir şekilde test edin**
 - Özel kodunuzun Angular service worker işlevselliğini bozmasını önlemek için **hataları zarif bir şekilde işleyin**
 
-### Common use cases
+### Yaygın kullanım senaryoları
 
 Özel service worker'lar yaygın olarak şunlar için kullanılır:
 

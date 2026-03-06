@@ -1,18 +1,18 @@
-# Referencing component children with queries
+# Sorgularla bileşen alt elemanlarına referans verme
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Bir bilesen, alt elemanlari bulan ve injector'larindan deger okuyan **sorgular** tanimlayabilir.
+Bir bileşen, alt elemanları bulan ve injector'larından değer okuyan **sorgular** tanımlayabilir.
 
-Gelistiriciler en yaygin olarak alt bilesenlere, direktiflere, DOM elemanlarina ve daha fazlasina referanslar almak icin sorgulari kullanir.
+Geliştiriciler en yaygın olarak alt bileşenlere, direktiflere, DOM elemanlarına ve daha fazlasına referanslar almak için sorguları kullanır.
 
-Tum sorgu fonksiyonlari, en guncel sonuclari yansitan sinyaller dondurur. `computed` ve `effect` gibi [reaktif baglamlar](guide/signals#reactive-contextler) dahil olmak uzere sinyal fonksiyonunu cagirarak sonucu okuyabilirsiniz.
+Tüm sorgu fonksiyonları, en güncel sonuçları yansıtan sinyaller döndürür. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contextler) dahil olmak üzere sinyal fonksiyonunu çağırarak sonucu okuyabilirsiniz.
 
-Iki sorgu kategorisi vardir: **gorunum sorgulari** ve **icerik sorgulari.**
+İki sorgu kategorisi vardır: **görünüm sorguları** ve **içerik sorguları.**
 
-## View queries
+## Görünüm sorguları
 
-Gorunum sorgulari, bilesnenin _gorunumundeki_ -- bilesnenin kendi sablonunda tanimlanan -- elemanlardan sonuclari alir. Tek bir sonuc icin `viewChild` fonksiyonu ile sorgulama yapabilirsiniz.
+Görünüm sorguları, bileşenin _görünümündeki_ -- bileşenin kendi şablonunda tanımlanan -- elemanlardan sonuçları alır. Tek bir sonuç için `viewChild` fonksiyonu ile sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -33,11 +33,11 @@ export class CustomCard {
 }
 ```
 
-Bu ornekte, `CustomCard` bileseni bir alt `CustomCardHeader` icin sorgu yapar ve sonucu bir `computed` icinde kullanir.
+Bu örnekte, `CustomCard` bileşeni bir alt `CustomCardHeader` için sorgu yapar ve sonucu bir `computed` içinde kullanır.
 
-Sorgu bir sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman `@if` tarafindan gizlenmisse gerceklesebilir. Angular, uygulama durumunuz degistikce `viewChild` sonucunu guncel tutar.
+Sorgu bir sonuç bulamazsa, değeri `undefined` olur. Bu, hedef eleman `@if` tarafından gizlenmişse gerçekleşebilir. Angular, uygulama durumunuz değiştikçe `viewChild` sonucunu güncel tutar.
 
-`viewChildren` fonksiyonu ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
+`viewChildren` fonksiyonu ile birden fazla sonuç için de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [17]}
 @Component({
@@ -61,13 +61,13 @@ export class CustomCard {
 }
 ```
 
-`viewChildren`, sorgu sonuclarinin bir `Array`'ini iceren bir sinyal olusturur.
+`viewChildren`, sorgu sonuçlarının bir `Array`'ini içeren bir sinyal oluşturur.
 
-**Sorgular asla bilesen sinirlarini delmez.** Gorunum sorgulari yalnizca bilesnenin sablonundan sonuc alabilir.
+**Sorgular asla bileşen sınırlarını delmez.** Görünüm sorguları yalnızca bileşenin şablonundan sonuç alabilir.
 
-## Content queries
+## İçerik sorguları
 
-Icerik sorgulari, bilesnenin _icerigindeki_ -- bilesnenin kullanildigi sablonda bilesnenin icerisine yuvalanan -- elemanlardan sonuclari alir. Tek bir sonuc icin `contentChild` fonksiyonu ile sorgulama yapabilirsiniz.
+İçerik sorguları, bileşenin _içeriğindeki_ -- bileşenin kullanıldığı şablonda bileşenin içerisine yuvalanan -- elemanlardan sonuçları alır. Tek bir sonuç için `contentChild` fonksiyonu ile sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -89,7 +89,7 @@ export class CustomExpando {
 
 @Component({
   /* ... */
-  // CustomToggle is used inside CustomExpando as content.
+  // CustomToggle, içerik olarak CustomExpando içinde kullanılır.
   template: `
     <custom-expando>
       <custom-toggle>Show</custom-toggle>
@@ -99,11 +99,11 @@ export class CustomExpando {
 export class UserProfile {}
 ```
 
-Sorgu bir sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman mevcut degilse veya `@if` tarafindan gizlenmisse gerceklesebilir. Angular, uygulama durumunuz degistikce `contentChild` sonucunu guncel tutar.
+Sorgu bir sonuç bulamazsa, değeri `undefined` olur. Bu, hedef eleman mevcut değilse veya `@if` tarafından gizlenmişse gerçekleşebilir. Angular, uygulama durumunuz değiştikçe `contentChild` sonucunu güncel tutar.
 
-Varsayilan olarak, icerik sorgulari yalnizca bilesnenin _dogrudan_ alt elemanlarini bulur ve alt elemanlarin icerisine inmez.
+Varsayılan olarak, içerik sorguları yalnızca bileşenin _doğrudan_ alt elemanlarını bulur ve alt elemanların içerisine inmez.
 
-`contentChildren` fonksiyonu ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
+`contentChildren` fonksiyonu ile birden fazla sonuç için de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 15]}
 @Component({
@@ -135,15 +135,15 @@ export class CustomMenu {
 export class UserProfile {}
 ```
 
-`contentChildren`, sorgu sonuclarinin bir `Array`'ini iceren bir sinyal olusturur.
+`contentChildren`, sorgu sonuçlarının bir `Array`'ini içeren bir sinyal oluşturur.
 
-**Sorgular asla bilesen sinirlarini delmez.** Icerik sorgulari yalnizca bilesnenin kendisi ile ayni sablondaki sonuclari alabilir.
+**Sorgular asla bileşen sınırlarını delmez.** İçerik sorguları yalnızca bileşenin kendisi ile aynı şablondaki sonuçları alabilir.
 
-## Required queries
+## Zorunlu sorgular
 
-Bir alt sorgu (`viewChild` veya `contentChild`) sonuc bulamazsa, degeri `undefined` olur. Bu, hedef eleman `@if` veya `@for` gibi bir kontrol akisi ifadesi tarafindan gizlenmisse gerceklesebilir. Bu nedenle, alt sorgular deger turlerinde `undefined` iceren bir sinyal dondurur.
+Bir alt sorgu (`viewChild` veya `contentChild`) sonuç bulamazsa, değeri `undefined` olur. Bu, hedef eleman `@if` veya `@for` gibi bir kontrol akışı ifadesi tarafından gizlenmişse gerçekleşebilir. Bu nedenle, alt sorgular değer türlerinde `undefined` içeren bir sinyal döndürür.
 
-Bazi durumlarda, ozellikle `viewChild` ile, belirli bir alt elemanin her zaman mevcut oldugunu kesinlikle bilirsiniz. Diger durumlarda, belirli bir alt elemanin mevcut olmasini katici bir sekilde zorunlu kilmak isteyebilirsiniz. Bu durumlar icin _zorunlu sorgu_ kullanabilirsiniz.
+Bazı durumlarda, özellikle `viewChild` ile, belirli bir alt elemanın her zaman mevcut olduğunu kesinlikle bilirsiniz. Diğer durumlarda, belirli bir alt elemanın mevcut olmasını katı bir şekilde zorunlu kılmak isteyebilirsiniz. Bu durumlar için _zorunlu sorgu_ kullanabilirsiniz.
 
 ```ts
 @Component({
@@ -155,15 +155,15 @@ export class CustomCard {
 }
 ```
 
-Zorunlu bir sorgu eslesen bir sonuc bulamazsa, Angular bir hata bildirir. Bu bir sonucun mevcut oldugunu garanti ettigi icin, zorunlu sorgular sinyalin deger turune otomatik olarak `undefined` eklemez.
+Zorunlu bir sorgu eşleşen bir sonuç bulamazsa, Angular bir hata bildirir. Bu bir sonucun mevcut olduğunu garanti ettiği için, zorunlu sorgular sinyalin değer türüne otomatik olarak `undefined` eklemez.
 
-## Query locators
+## Sorgu konumlandırıcıları
 
-Her sorgu dekoratorunun ilk parametresi **konumlandirici**sidir (locator).
+Her sorgu dekoratörünün ilk parametresi **konumlandırıcı**sıdır (locator).
 
-Cogunlukla konumlandirici olarak bir bilesen veya direktif kullanmak istersiniz.
+Çoğunlukla konumlandırıcı olarak bir bileşen veya direktif kullanmak istersiniz.
 
-Alternatif olarak, bir [sablon referans degiskeni](guide/templates/variables#template-reference-variables)'ne karsilik gelen bir dize konumlandirici belirtebilirsiniz.
+Alternatif olarak, bir [şablon referans değişkeni](guide/templates/variables#şablon-referans-değişkenleri)'ne karşılık gelen bir dize konumlandırıcı belirtebilirsiniz.
 
 ```angular-ts
 @Component({
@@ -178,15 +178,15 @@ export class ActionBar {
 }
 ```
 
-Birden fazla eleman ayni sablon referans degiskenini tanimliyorsa, sorgu eslesen ilk elemani alir.
+Birden fazla eleman aynı şablon referans değişkenini tanımlıyorsa, sorgu eşleşen ilk elemanı alır.
 
-Angular, sorgu konumlandiricilari olarak CSS secicilerini desteklemez.
+Angular, sorgu konumlandırıcıları olarak CSS seçicilerini desteklemez.
 
-### Queries and the injector tree
+### Sorgular ve injector ağacı
 
-TIP: Saglayicilar ve Angular'in enjeksiyon agaci hakkinda arka plan bilgisi icin [Bagimlilik Enjeksiyonu](guide/di) belgesine bakin.
+TIP: Sağlayıcılar ve Angular'ın enjeksiyon ağacı hakkında arka plan bilgisi için [Bağımlılık Enjeksiyonu](guide/di) belgesine bakın.
 
-Daha ileri durumlar icin, konumlandirici olarak herhangi bir `ProviderToken` kullanabilirsiniz. Bu, bilesen ve direktif saglayicilarina dayali olarak elemanlari bulmaniza olanak tanir.
+Daha ileri durumlar için, konumlandırıcı olarak herhangi bir `ProviderToken` kullanabilirsiniz. Bu, bileşen ve direktif sağlayıcılarına dayalı olarak elemanları bulmanıza olanak tanır.
 
 ```angular-ts
 const SUB_ITEM = new InjectionToken<string>('sub-item');
@@ -205,15 +205,15 @@ export class CustomList {
 }
 ```
 
-Yukaridaki ornek konumlandirici olarak bir `InjectionToken` kullanir, ancak belirli elemanlari bulmak icin herhangi bir `ProviderToken` kullanabilirsiniz.
+Yukarıdaki örnek konumlandırıcı olarak bir `InjectionToken` kullanır, ancak belirli elemanları bulmak için herhangi bir `ProviderToken` kullanabilirsiniz.
 
-## Query options
+## Sorgu seçenekleri
 
-Tum sorgu fonksiyonlari ikinci parametre olarak bir secenekler nesnesi kabul eder. Bu secenekler, sorgunun sonuclarini nasil bulacagini kontrol eder.
+Tüm sorgu fonksiyonları ikinci parametre olarak bir seçenekler nesnesi kabul eder. Bu seçenekler, sorgunun sonuçlarını nasıl bulacağını kontrol eder.
 
-### Reading specific values from an element's injector
+### Bir elemanın injector'ından belirli değerleri okuma
 
-Varsayilan olarak, sorgu konumlandiricisi hem aradiginiz elemani hem de alinan degeri belirtir. Konumlandirici tarafindan eslestirilen elemandan farkli bir deger almak icin alternatif olarak `read` secenegini belirtebilirsiniz.
+Varsayılan olarak, sorgu konumlandırıcısı hem aradığınız elemanı hem de alınan değeri belirtir. Konumlandırıcı tarafından eşleştirilen elemandan farklı bir değer almak için alternatif olarak `read` seçeneğini belirtebilirsiniz.
 
 ```ts
 @Component({
@@ -224,14 +224,14 @@ export class CustomExpando {
 }
 ```
 
-Yukaridaki ornek, `ExpandoContent` direktifine sahip bir eleman bulur ve o elemanla iliskili `TemplateRef`'i alir.
+Yukarıdaki örnek, `ExpandoContent` direktifine sahip bir eleman bulur ve o elemanla ilişkili `TemplateRef`'i alır.
 
-Gelistiriciler en yaygin olarak `read` ile `ElementRef` ve `TemplateRef` alir.
+Geliştiriciler en yaygın olarak `read` ile `ElementRef` ve `TemplateRef` alır.
 
-### Content descendants
+### İçerik alt elemanları
 
-Varsayilan olarak, `contentChildren` sorgulari yalnizca bilesnenin _dogrudan_ alt elemanlarini bulur ve alt elemanlarin icerisine inmez.
-`contentChild` sorgulari varsayilan olarak alt elemanlarin icerisine iner.
+Varsayılan olarak, `contentChildren` sorguları yalnızca bileşenin _doğrudan_ alt elemanlarını bulur ve alt elemanların içerisine inmez.
+`contentChild` sorguları varsayılan olarak alt elemanların içerisine iner.
 
 ```angular-ts {highlight: [13, 14, 15, 16, 17]}
 @Component({
@@ -256,19 +256,19 @@ export class CustomExpando {
 export class UserProfile {}
 ```
 
-Yukaridaki ornekte, `CustomExpando` `contentChildren` ile `<custom-toggle>`'i bulamaz cunku bu, `<custom-expando>`'nun dogrudan alt elemani degildir. `descendants: true` ayarlayarak, sorguyu ayni sablondaki tum alt elemanlara inecek sekilde yapilandirirsiniz. Ancak sorgular, diger sablonlardaki elemanlari gezmek icin _asla_ bilesenlerin icerisine girmez.
+Yukarıdaki örnekte, `CustomExpando` `contentChildren` ile `<custom-toggle>`'ı bulamaz çünkü bu, `<custom-expando>`'nun doğrudan alt elemanı değildir. `descendants: true` ayarlayarak, sorguyu aynı şablondaki tüm alt elemanlara inecek şekilde yapılandırırsınız. Ancak sorgular, diğer şablonlardaki elemanları gezmek için _asla_ bileşenlerin içerisine girmez.
 
-Gorunum sorgulari her zaman alt elemanlara indigi icin bu secenege sahip degildir.
+Görünüm sorguları her zaman alt elemanlara indiği için bu seçeneğe sahip değildir.
 
-## Decorator-based queries
+## Dekoratör tabanlı sorgular
 
-TIP: Angular ekibi yeni projeler icin sinyal tabanli sorgu fonksiyonlarini onerse de, orijinal dekorator tabanli sorgu API'leri tamamen desteklenmeye devam etmektedir.
+TIP: Angular ekibi yeni projeler için sinyal tabanlı sorgu fonksiyonlarını önerse de, orijinal dekoratör tabanlı sorgu API'leri tamamen desteklenmeye devam etmektedir.
 
-Alternatif olarak, karsilik gelen dekoratoru bir ozellige ekleyerek sorgular bildirebilirsiniz. Dekorator tabanli sorgular, asagida acikladigi durumlar disinda sinyal tabanli sorgularla ayni sekilde davranir.
+Alternatif olarak, karşılık gelen dekoratörü bir özelliğe ekleyerek sorgular bildirebilirsiniz. Dekoratör tabanlı sorgular, aşağıda açıkladığı durumlar dışında sinyal tabanlı sorgularla aynı şekilde davranır.
 
-### View queries {#decorator-view-queries}
+### Görünüm sorguları {#decorator-view-queries}
 
-`@ViewChild` dekoratoru ile tek bir sonuc icin sorgulama yapabilirsiniz.
+`@ViewChild` dekoratörü ile tek bir sonuç için sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18]}
 @Component({
@@ -292,13 +292,13 @@ export class CustomCard implements AfterViewInit {
 }
 ```
 
-Bu ornekte, `CustomCard` bileseni bir alt `CustomCardHeader` icin sorgu yapar ve sonuca `ngAfterViewInit` icinde erisir.
+Bu örnekte, `CustomCard` bileşeni bir alt `CustomCardHeader` için sorgu yapar ve sonuca `ngAfterViewInit` içinde erişir.
 
-Angular, uygulama durumunuz degistikce `@ViewChild` sonucunu guncel tutar.
+Angular, uygulama durumunuz değiştikçe `@ViewChild` sonucunu güncel tutar.
 
-**Gorunum sorgu sonuclari `ngAfterViewInit` yasam dongusu yonteminde kullanilabilir hale gelir**. Bu noktadan once deger `undefined` olur. Bilesen yasam dongusu hakkinda ayrintilar icin [Yasam Dongusu](guide/components/lifecycle) bolumune bakin.
+**Görünüm sorgu sonuçları `ngAfterViewInit` yaşam döngüsü yönteminde kullanılabilir hale gelir**. Bu noktadan önce değer `undefined` olur. Bileşen yaşam döngüsü hakkında ayrıntılar için [Yaşam Döngüsü](guide/components/lifecycle) bölümüne bakın.
 
-`@ViewChildren` dekoratoru ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
+`@ViewChildren` dekoratörü ile birden fazla sonuç için de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [17, 19, 20, 21, 22, 23]}
 @Component({
@@ -327,11 +327,11 @@ export class CustomCard implements AfterViewInit {
 }
 ```
 
-`@ViewChildren`, sorgu sonuclarini iceren bir `QueryList` nesnesi olusturur. `changes` ozelligi araciligiyla sorgu sonuclarindaki degisikliklere zaman icinde abone olabilirsiniz.
+`@ViewChildren`, sorgu sonuçlarını içeren bir `QueryList` nesnesi oluşturur. `changes` özelliği aracılığıyla sorgu sonuçlarındaki değişikliklere zaman içinde abone olabilirsiniz.
 
-### Content queries {#decorator-content-queries}
+### İçerik sorguları {#decorator-content-queries}
 
-`@ContentChild` dekoratoru ile tek bir sonuc icin sorgulama yapabilirsiniz.
+`@ContentChild` dekoratörü ile tek bir sonuç için sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18]}
 @Component({
@@ -365,13 +365,13 @@ export class CustomExpando implements AfterContentInit {
 export class UserProfile {}
 ```
 
-Bu ornekte, `CustomExpando` bileseni bir alt `CustomToggle` icin sorgu yapar ve sonuca `ngAfterContentInit` icinde erisir.
+Bu örnekte, `CustomExpando` bileşeni bir alt `CustomToggle` için sorgu yapar ve sonuca `ngAfterContentInit` içinde erişir.
 
-Angular, uygulama durumunuz degistikce `@ContentChild` sonucunu guncel tutar.
+Angular, uygulama durumunuz değiştikçe `@ContentChild` sonucunu güncel tutar.
 
-**Icerik sorgu sonuclari `ngAfterContentInit` yasam dongusu yonteminde kullanilabilir hale gelir**. Bu noktadan once deger `undefined` olur. Bilesen yasam dongusu hakkinda ayrintilar icin [Yasam Dongusu](guide/components/lifecycle) bolumune bakin.
+**İçerik sorgu sonuçları `ngAfterContentInit` yaşam döngüsü yönteminde kullanılabilir hale gelir**. Bu noktadan önce değer `undefined` olur. Bileşen yaşam döngüsü hakkında ayrıntılar için [Yaşam Döngüsü](guide/components/lifecycle) bölümüne bakın.
 
-`@ContentChildren` dekoratoru ile birden fazla sonuc icin de sorgulama yapabilirsiniz.
+`@ContentChildren` dekoratörü ile birden fazla sonuç için de sorgulama yapabilirsiniz.
 
 ```angular-ts {highlight: [14, 16, 17, 18, 19, 20]}
 @Component({
@@ -408,15 +408,15 @@ export class CustomMenu implements AfterContentInit {
 export class UserProfile {}
 ```
 
-`@ContentChildren`, sorgu sonuclarini iceren bir `QueryList` nesnesi olusturur. `changes` ozelligi araciligiyla sorgu sonuclarindaki degisikliklere zaman icinde abone olabilirsiniz.
+`@ContentChildren`, sorgu sonuçlarını içeren bir `QueryList` nesnesi oluşturur. `changes` özelliği aracılığıyla sorgu sonuçlarındaki değişikliklere zaman içinde abone olabilirsiniz.
 
-### Decorator-based query options
+### Dekoratör tabanlı sorgu seçenekleri
 
-Tum sorgu dekoratorleri ikinci parametre olarak bir secenekler nesnesi kabul eder. Bu secenekler, asagida acikladigi durumlar disinda sinyal tabanli sorgularla ayni sekilde calisir.
+Tüm sorgu dekoratörleri ikinci parametre olarak bir seçenekler nesnesi kabul eder. Bu seçenekler, aşağıda açıkladığı durumlar dışında sinyal tabanlı sorgularla aynı şekilde çalışır.
 
-### Static queries
+### Statik sorgular
 
-`@ViewChild` ve `@ContentChild` dekoratorleri `static` secenegini kabul eder.
+`@ViewChild` ve `@ContentChild` dekoratörleri `static` seçeneğini kabul eder.
 
 ```angular-ts
 @Component({
@@ -432,26 +432,26 @@ export class CustomCard implements OnInit {
 }
 ```
 
-`static: true` ayarlayarak, Angular'a bu sorgunun hedefinin _her zaman_ mevcut oldugunu ve kosullu olarak render edilmedigini garanti edersiniz. Bu, sonucu daha erken, `ngOnInit` yasam dongusu yonteminde kullanilabilir kilar.
+`static: true` ayarlayarak, Angular'a bu sorgunun hedefinin _her zaman_ mevcut olduğunu ve koşullu olarak render edilmediğini garanti edersiniz. Bu, sonucu daha erken, `ngOnInit` yaşam döngüsü yönteminde kullanılabilir kılar.
 
-Statik sorgu sonuclari baslatmadan sonra guncellenmez.
+Statik sorgu sonuçları başlatmadan sonra güncellenmez.
 
-`static` secenegi `@ViewChildren` ve `@ContentChildren` sorgulari icin mevcut degildir.
+`static` seçeneği `@ViewChildren` ve `@ContentChildren` sorguları için mevcut değildir.
 
-### Using QueryList
+### QueryList kullanımı
 
-`@ViewChildren` ve `@ContentChildren` her ikisi de sonuclarin bir listesini iceren bir `QueryList` nesnesi saglar.
+`@ViewChildren` ve `@ContentChildren` her ikisi de sonuçların bir listesini içeren bir `QueryList` nesnesi sağlar.
 
-`QueryList`, `map`, `reduce` ve `forEach` gibi sonuclarla dizi benzeri bir sekilde calismanizi saglayan bir dizi kolaylik API'si sunar. Mevcut sonuclarin bir dizisini `toArray` cagirarak alabilirsiniz.
+`QueryList`, `map`, `reduce` ve `forEach` gibi sonuçlarla dizi benzeri bir şekilde çalışmanızı sağlayan bir dizi kolaylık API'si sunar. Mevcut sonuçların bir dizisini `toArray` çağırarak alabilirsiniz.
 
-Sonuclar her degistiginde bir islem yapmak icin `changes` ozelligine abone olabilirsiniz.
+Sonuçlar her değiştiğinde bir işlem yapmak için `changes` özelliğine abone olabilirsiniz.
 
-## Common query pitfalls
+## Yaygın sorgu tuzakları
 
-Sorgulari kullanirken, yaygin tuzaklar kodunuzun anlasilmasini ve bakimini zorlastirabilir.
+Sorguları kullanırken, yaygın tuzaklar kodunuzun anlaşılmasını ve bakımını zorlaştırabilir.
 
-Birden fazla bilesen arasinda paylasilan durum icin her zaman tek bir dogru kaynagi koruyun. Bu, farkli bilesenlerdeki tekrarlanan durumun senkronizasyondan cikmasi senaryolarindan kacinir.
+Birden fazla bileşen arasında paylaşılan durum için her zaman tek bir doğru kaynağı koruyun. Bu, farklı bileşenlerdeki tekrarlanan durumun senkronizasyondan çıkması senaryolarından kaçınır.
 
-Alt bilesenlere dogrudan durum yazmayin. Bu kalip, anlasilmasi zor ve kirilgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarina yol acabilir.
+Alt bileşenlere doğrudan durum yazmayın. Bu kalıp, anlaşılması zor ve kırılgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarına yol açabilir.
 
-Ust veya ata bilesenlere asla dogrudan durum yazmayin. Bu kalip, anlasilmasi zor ve kirilgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarina yol acabilir.
+Üst veya ata bileşenlere asla doğrudan durum yazmayın. Bu kalıp, anlaşılması zor ve kırılgan koda ve [ExpressionChangedAfterItHasBeenChecked](errors/NG0100) hatalarına yol açabilir.

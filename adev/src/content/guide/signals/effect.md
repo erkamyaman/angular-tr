@@ -12,7 +12,7 @@ Effect'ler her zaman **en az bir kez** çalışır. Bir effect çalıştığınd
 
 Effect'ler her zaman **asenkron olarak**, değişiklik algılama sürecinde yürütülür.
 
-### Use cases for effects
+### Effect'ler için kullanım alanları
 
 Effect'ler başvurmanız gereken son API olmalıdır. Türetilmiş değerler için her zaman `computed()`'u ve hem türetilebilen hem de manuel olarak ayarlanabilen değerler için `linkedSignal()`'ı tercih edin. Kendinizi bir effect ile bir sinyalden diğerine veri kopyalarken buluyorsanız, bu doğruluk kaynağınızı daha yukarıya taşımanız ve bunun yerine `computed()` veya `linkedSignal()` kullanmanız gerektiğinin bir işaretidir. Effect'ler, sinyal durumunu zorunlu (imperative), sinyal olmayan API'lerle senkronize etmek için en iyisidir.
 
@@ -29,7 +29,7 @@ Durum değişikliklerinin yayılması için effect kullanmaktan kaçının. Bu, 
 Bunun yerine, diğer duruma bağlı durumu modellemek için `computed` sinyallerini kullanın.
 </docs-callout>
 
-### Injection context
+### Enjeksiyon bağlamı
 
 Varsayılan olarak, bir `effect()` oluşturmayı yalnızca bir [enjeksiyon bağlamında](guide/di/dependency-injection-context) (`inject` fonksiyonuna erişiminizin olduğu yerde) yapabilirsiniz. Bu gereksinimi karşılamanın en kolay yolu, `effect`'i bir bileşen, direktif veya servis `constructor`'ı içinde çağırmaktır:
 
@@ -41,7 +41,7 @@ export class EffectiveCounter {
   readonly count = signal(0);
 
   constructor() {
-    // Register a new effect.
+    // Yeni bir effect kaydet.
     effect(() => {
       console.log(`The count is: ${this.count()}`);
     });
@@ -70,7 +70,7 @@ export class EffectiveCounter {
 }
 ```
 
-### Execution of effects
+### Effect'lerin yürütülmesi
 
 Angular, effect'leri için oluşturuldukları bağlama göre iki örtük davranış tanımlar.
 
@@ -84,7 +84,7 @@ Her iki tür `effect`'in yürütülmesi de değişiklik algılama sürecine bağ
 
 Her iki durumda da, effect yürütülmesi sırasında effect bağımlılıklarından en az biri değiştiyse, effect değişiklik algılama sürecinde ilerlemeden önce yeniden çalışacaktır.
 
-### Destroying effects
+### Effect'lerin yok edilmesi
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 
@@ -95,7 +95,7 @@ Bir `effect`, ne zaman yok edileceğini etkileyen iki farklı bağlamda oluştur
 
 Effect'ler bir `EffectRef` döndürür. Bir effect'i manuel olarak elden çıkarmak için ref'in `destroy` yöntemini kullanabilirsiniz. Otomatik temizlemeyi devre dışı bırakmak için bir effect oluştururken bunu `manualCleanup` seçeneği ile birleştirebilirsiniz. Artık gerekli olmadıklarında bu tür effect'leri gerçekten yok etmeye dikkat edin.
 
-### Effect cleanup functions
+### Effect cleanup fonksiyonları
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 Effect'ler, effect yok edildiğinde veya ilk işlem tamamlanmadan tekrar çalıştığında iptal etmeniz gereken uzun süren işlemleri başlatabilir. Bir effect oluştururken, fonksiyonunuz isteğe bağlı olarak ilk parametresi olarak bir `onCleanup` fonksiyonunu kabul edebilir. Bu `onCleanup` fonksiyonu, effect'in bir sonraki çalışmasından önce veya effect yok edildiğinde çağrılan bir geri çağrı kaydetmenize olanak tanır.
@@ -114,7 +114,7 @@ effect((onCleanup) => {
 });
 ```
 
-## Side effects on DOM elements
+## DOM öğeleri üzerindeki yan etkiler
 
 `effect` fonksiyonu, sinyal değişikliklerine tepki olarak kod çalıştırmak için genel amaçlı bir araçtır. Ancak Angular DOM'u güncellemeden _önce_ çalışır. Bazı durumlarda, DOM'u manuel olarak incelemeniz veya değiştirmeniz ya da doğrudan DOM erişimi gerektiren üçüncü taraf bir kütüphaneyi entegre etmeniz gerekebilir.
 
@@ -130,14 +130,14 @@ export class MyFancyChart {
   chart: ChartInstance;
 
   constructor() {
-    // Run a single time to create the chart instance
+    // Grafik örneğini oluşturmak için bir kez çalıştır
     afterNextRender({
       write: () => {
         this.chart = initializeChart(this.canvas().nativeElement(), this.chartData());
       },
     });
 
-    // Re-run after DOM has been updated whenever `chartData` changes
+    // `chartData` değiştiğinde DOM güncellendikten sonra tekrar çalıştır
     afterRenderEffect(() => {
       this.chart.updateData(this.chartData());
     });
@@ -149,7 +149,7 @@ Bu örnekte `afterRenderEffect`, üçüncü taraf bir kütüphane tarafından ol
 
 TIP: DOM değişikliklerini kontrol etmek için genellikle `afterRenderEffect`'e ihtiyacınız yoktur. `ResizeObserver`, `MutationObserver` ve `IntersectionObserver` gibi API'ler mümkün olduğunda `effect` veya `afterRenderEffect` yerine tercih edilir.
 
-### Render phases
+### Render fazları
 
 DOM'a erişmek ve onu değiştirmek, uygulamanızın performansını etkileyebilir, örneğin çok fazla gereksiz [yeniden akış](https://developer.mozilla.org/en-US/docs/Glossary/Reflow) tetikleyerek.
 
@@ -187,7 +187,7 @@ afterRenderEffect({
 
 CRITICAL: Fazı belirtmezseniz, `afterRenderEffect` geri çağrıları `mixedReadWrite` fazında çalıştırır. Bu, ek DOM yeniden akışlarına neden olarak uygulama performansını kötüleştirebilir.
 
-#### Phase executions
+#### Faz yürütmeleri
 
 `earlyRead` fazı geri çağrısı parametre almaz. Sonraki her faz, önceki fazın geri çağrısının dönüş değerini bir Signal olarak alır. Fazlar arasında çalışmayı koordine etmek için bunu kullanabilirsiniz.
 
@@ -200,11 +200,11 @@ Effect'ler aşağıdaki faz sırasında çalışır:
 
 Fazlardan biri `afterRenderEffect` tarafından izlenen bir sinyal değerini değiştirirse, etkilenen fazlar tekrar yürütülür.
 
-#### Cleanup
+#### Temizleme
 
 Her faz, argüman olarak bir temizleme geri çağrı fonksiyonu sağlar. Temizleme geri çağrıları, `afterRenderEffect` yok edildiğinde veya faz effect'leri yeniden çalıştırılmadan önce yürütülür.
 
-### Server-side rendering caveats
+### Sunucu taraflı render uyarıları
 
 `afterRenderEffect`, `afterNextRender`/`afterEveryRender`'a benzer şekilde yalnızca istemcide çalışır.
 

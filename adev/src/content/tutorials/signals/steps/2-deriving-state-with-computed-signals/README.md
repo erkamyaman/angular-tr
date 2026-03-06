@@ -10,7 +10,7 @@ Kullanıcı durum sinyalimizden bilgi türeten hesaplanmış değerler ekleyerek
 
 <docs-workflow>
 
-<docs-step title="Import computed function">
+<docs-step title="computed fonksiyonunu içe aktarın">
 Mevcut içe aktarmalarınıza `computed` ekleyin.
 
 ```ts
@@ -20,7 +20,7 @@ import {Component, signal, computed, ChangeDetectionStrategy} from '@angular/cor
 
 </docs-step>
 
-<docs-step title="Create a computed signal for notifications">
+<docs-step title="Bildirimler için bir computed sinyal oluşturun">
 Kullanıcı durumuna göre bildirimlerin etkinleştirilip etkinleştirilmeyeceğini belirleyen bir hesaplanmış sinyal ekleyin.
 
 ```ts
@@ -30,7 +30,7 @@ notificationsEnabled = computed(() => this.userStatus() === 'online');
 Bu hesaplanmış sinyal, `userStatus` sinyali her değiştiğinde otomatik olarak yeniden hesaplanacaktır. Sinyalin değerini okumak için hesaplanmış fonksiyonun içinde `this.userStatus()` çağrısını nasıl yaptığımıza dikkat edin.
 </docs-step>
 
-<docs-step title="Create a computed signal for a descriptive message">
+<docs-step title="Açıklayıcı bir mesaj için computed sinyal oluşturun">
 Kullanıcı durumuna göre açıklayıcı bir mesaj oluşturan bir hesaplanmış sinyal ekleyin.
 
 ```ts
@@ -52,7 +52,7 @@ statusMessage = computed(() => {
 Bu, hesaplanmış sinyallerin switch ifadeleri ve dize dönüşümleriyle daha karmaşık mantığı nasıl işleyebileceğini gösterir.
 </docs-step>
 
-<docs-step title="Create a computed signal that calculates working hours availability">
+<docs-step title="Çalışma saatleri müsaitliğini hesaplayan bir computed sinyal oluşturun">
 Kullanıcının çalışma saatleri içinde olup olmadığını hesaplayan bir hesaplanmış sinyal ekleyin.
 
 ```ts
@@ -67,7 +67,7 @@ isWithinWorkingHours = computed(() => {
 Bu, hesaplanmış sinyallerin nasıl hesaplamalar yapabildiğini ve birden fazla veri kaynağını birleştirebildiğini gösterir. `userStatus` değiştiğinde değer otomatik olarak güncellenir.
 </docs-step>
 
-<docs-step title="Display the computed values in the template">
+<docs-step title="Computed değerleri şablonda görüntüleyin">
 Şablonda zaten "Loading..." gösteren yer tutucular var. Bunları hesaplanmış sinyallerinizle değiştirin:
 
 1. Bildirimler için, `Loading...` yerine bir `@if` bloğu koyun:

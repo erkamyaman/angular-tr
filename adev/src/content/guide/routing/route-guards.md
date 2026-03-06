@@ -1,10 +1,10 @@
-# Control route access with guards
+# Guard'lar ile Route Erişimini Kontrol Etme
 
 CRITICAL: İstemci tarafı koruyucularına erişim kontrolünün tek kaynağı olarak asla güvenmeyin. Web tarayıcısında çalışan tüm JavaScript, tarayıcıyı çalıştıran kullanıcı tarafından değiştirilebilir. İstemci tarafı koruyucularına ek olarak, kullanıcı yetkilendirmesini her zaman sunucu tarafında uygulayın.
 
 Rota koruyucuları, bir kullanıcının belirli bir rotaya gidip gidemeyeceğini veya rotadan ayrılıp ayrılamayacağını kontrol eden fonksiyonlardır. Bunlar, kullanıcının belirli rotalara erişip erişemeyeceğini yöneten kontrol noktaları gibidir. Rota koruyucularının yaygın kullanım örnekleri arasında kimlik doğrulama ve erişim kontrolü yer alır.
 
-## Creating a route guard
+## Route guard oluşturma
 
 Angular CLI kullanarak bir rota koruyucusu oluşturabilirsiniz:
 
@@ -12,11 +12,11 @@ Angular CLI kullanarak bir rota koruyucusu oluşturabilirsiniz:
 ng generate guard CUSTOM_NAME
 ```
 
-Bu, hangi [rota koruyucusu türünü](#types-of-route-guards) kullanacağınızı seçmenizi isteyecek ve ardından ilgili `CUSTOM_NAME-guard.ts` dosyasını oluşturacaktır.
+Bu, hangi [rota koruyucusu türünü](#route-guard-türleri) kullanacağınızı seçmenizi isteyecek ve ardından ilgili `CUSTOM_NAME-guard.ts` dosyasını oluşturacaktır.
 
 TIP: Angular projenizde ayrı bir TypeScript dosyası oluşturarak da elle bir rota koruyucusu oluşturabilirsiniz. Geliştiriciler genellikle dosyayı diğer dosyalardan ayırt etmek için dosya adına `-guard.ts` son eki ekler.
 
-## Route guard return types
+## Route guard dönüş türleri
 
 Tüm rota koruyucuları aynı olası dönüş türlerini paylaşır. Bu, navigasyonu nasıl kontrol ettiğiniz konusunda esneklik sağlar:
 
@@ -28,7 +28,7 @@ Tüm rota koruyucuları aynı olası dönüş türlerini paylaşır. Bu, navigas
 
 NOTE: `CanMatch` farklı davranır — `false` döndürdüğünde, Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
 
-## Types of route guards
+## Route guard türleri
 
 Angular, her biri farklı amaçlara hizmet eden dört tür rota koruyucusu sağlar:
 
@@ -39,7 +39,7 @@ Angular, her biri farklı amaçlara hizmet eden dört tür rota koruyucusu sağl
   <docs-pill href="#canmatch" title="CanMatch"/>
 </docs-pill-row>
 
-Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
+Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#rota-providerları) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
 ### CanActivate
 
@@ -50,7 +50,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `route`: `ActivatedRouteSnapshot` - Etkinleştirilen rota hakkında bilgi içerir
 - `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
 
 ```ts
 export const authGuard: CanActivateFn = (
@@ -75,7 +75,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `childRoute`: `ActivatedRouteSnapshot` - Etkinleştirilen alt rotanın "gelecek" anlık görüntüsü (yani yönlendiricinin navigasyon yapmaya çalıştığı durum) hakkında bilgi içerir
 - `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
 
 ```ts
 export const adminChildGuard: CanActivateChildFn = (
@@ -100,7 +100,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `currentState`: `RouterStateSnapshot` - Geçerli yönlendirici durumunu içerir
 - `nextState`: `RouterStateSnapshot` - Navigasyon yapılan sonraki yönlendirici durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
 
 ```ts
 export const unsavedChangesGuard: CanDeactivateFn<Form> = (
@@ -126,7 +126,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `route`: `Route` - Değerlendirilen rota yapılandırması
 - `segments`: `UrlSegment[]` - Önceki üst rota değerlendirmeleri tarafından tüketilmemiş URL segmentleri
 
-[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir, ancak `false` döndürdüğünde Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
+[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir, ancak `false` döndürdüğünde Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
 
 ```ts
 export const featureToggleGuard: CanMatchFn = (route: Route, segments: UrlSegment[]) => {
@@ -157,7 +157,7 @@ Bu örnekte, kullanıcı `/dashboard` adresini ziyaret ettiğinde, doğru koruyu
 
 Daha fazla bilgi için [CanMatchFn API dokümanlarına](api/router/CanMatchFn) göz atın.
 
-## Applying guards to routes
+## Guard'ları route'lara uygulama
 
 Rota koruyucularınızı oluşturduktan sonra, bunları rota tanımlarınızda yapılandırmanız gerekir.
 
@@ -171,21 +171,21 @@ import {canDeactivateGuard} from './guards/can-deactivate.guard';
 import {featureToggleGuard} from './guards/feature-toggle.guard';
 
 const routes: Routes = [
-  // Basic CanActivate - requires authentication
+  // Temel CanActivate - kimlik doğrulama gerektirir
   {
     path: 'dashboard',
     component: Dashboard,
     canActivate: [authGuard],
   },
 
-  // Multiple CanActivate guards - requires authentication AND admin role
+  // Birden fazla CanActivate guard'ı - kimlik doğrulama VE yönetici rolü gerektirir
   {
     path: 'admin',
     component: Admin,
     canActivate: [authGuard, adminGuard],
   },
 
-  // CanActivate + CanDeactivate - protected route with unsaved changes check
+  // CanActivate + CanDeactivate - kaydedilmemiş değişiklik kontrolü ile korumalı rota
   {
     path: 'profile',
     component: Profile,
@@ -193,26 +193,26 @@ const routes: Routes = [
     canDeactivate: [canDeactivateGuard],
   },
 
-  // CanActivateChild - protects all child routes
+  // CanActivateChild - tüm alt rotaları korur
   {
-    path: 'users', // /user - NOT protected
+    path: 'users', // /user - KORUNMUYOR
     canActivateChild: [authGuard],
     children: [
-      // /users/list - PROTECTED
+      // /users/list - KORUMALI
       {path: 'list', component: UserList},
-      // /users/detail/:id - PROTECTED
+      // /users/detail/:id - KORUMALI
       {path: 'detail/:id', component: UserDetail},
     ],
   },
 
-  // CanMatch - conditionally matches route based on feature flag
+  // CanMatch - özellik bayrağına göre koşullu rota eşleştirme
   {
     path: 'beta-feature',
     component: BetaFeature,
     canMatch: [featureToggleGuard],
   },
 
-  // Fallback route if beta feature is disabled
+  // Beta özelliği devre dışıysa yedek rota
   {
     path: 'beta-feature',
     component: ComingSoon,

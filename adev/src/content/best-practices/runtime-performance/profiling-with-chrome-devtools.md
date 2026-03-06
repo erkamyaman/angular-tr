@@ -1,94 +1,94 @@
-# Profiling with the Chrome DevTools
+# Chrome DevTools ile profil çıkarma
 
-Angular, framework'e ozgu verileri ve icgoruuleri dogrudan [Chrome DevTools performans panelinde](https://developer.chrome.com/docs/devtools/performance/overview) sunmak icin [Chrome DevTools genisletilebilirlik API'si](https://developer.chrome.com/docs/devtools/performance/extension) ile entegre olur.
+Angular, framework'e özgü verileri ve içgörüleri doğrudan [Chrome DevTools performans panelinde](https://developer.chrome.com/docs/devtools/performance/overview) sunmak için [Chrome DevTools genişletilebilirlik API'si](https://developer.chrome.com/docs/devtools/performance/extension) ile entegre olur.
 
-Entegrasyon etkinlestirildiginde, iki veri seti iceren bir [performans profili kaydedebilirsiniz](https://developer.chrome.com/docs/devtools/performance#record):
+Entegrasyon etkinleştirildiğinde, iki veri seti içeren bir [performans profili kaydedebilirsiniz](https://developer.chrome.com/docs/devtools/performance#record):
 
-- Chrome'un kodunuzun bir tarayicida calismasini anlayisina dayanan standart performans girisleri ve
-- Framework'un calisma zamani tarafindan saglanan Angular'a ozgu girisler.
+- Chrome'un kodunuzun bir tarayıcıda çalışmasını anlayışına dayanan standart performans girişleri ve
+- Framework'un çalışma zamanı tarafından sağlanan Angular'a özgü girişler.
 
-Her iki veri seti de ayni sekmede ancak ayri izlerde birlikte sunulur:
+Her iki veri seti de aynı sekmede ancak ayrı izlerde birlikte sunulur:
 
 <img alt="Angular custom track in Chrome DevTools profiler" src="assets/images/best-practices/runtime-performance/angular-perf-in-chrome.png">
 
-Angular'a ozgu veriler, bir tarayici tarafindan yakalanan daha dusuk duzeyli fonksiyon ve yontem cagrilarinin yaninda framework kavramlari (bilesenler, degisiklik algilama, yasam dongusu kancalari vb.) acisindan ifade edilir. Bu iki veri seti birbiriyle iliskilidir ve farkli gorunumler ile ayrniti duzeyleri arasinda gecis yapabilirsiniz.
+Angular'a özgü veriler, bir tarayıcı tarafından yakalanan daha düşük düzeyli fonksiyon ve yöntem çağrılarının yanında framework kavramları (bileşenler, değişiklik algılama, yaşam döngüsü kancaları vb.) açısından ifade edilir. Bu iki veri seti birbiriyle ilişkilidir ve farklı görünümler ile ayrıntı düzeyleri arasında geçiş yapabilirsiniz.
 
-Kodunuzun tarayicida nasil calistigini daha iyi anlamak icin Angular izini kullanabilirsiniz, bunlar arasinda:
+Kodunuzun tarayıcıda nasıl çalıştığını daha iyi anlamak için Angular izini kullanabilirsiniz, bunlar arasında:
 
-- Belirli bir kod blogunun Angular uygulamasinin bir parcasi olup olmadigini veya ayni sayfada calisan baska bir betige ait olup olmadigini belirleme.
-- Performans darbogazlarini belirleme ve bunlari belirli bilesenlere veya servislere atama.
-- Her degisiklik algilama dongusu nun gorsel bir dokumuyle Angular'in ic calismalari hakkinda daha derin icgoru kazanma.
+- Belirli bir kod bloğunun Angular uygulamasının bir parçası olup olmadığını veya aynı sayfada çalışan başka bir betiğe ait olup olmadığını belirleme.
+- Performans darboğazlarını belirleme ve bunları belirli bileşenlere veya servislere atama.
+- Her değişiklik algılama döngüsünün görsel bir dökümüyle Angular'ın iç çalışmaları hakkında daha derin içgörü kazanma.
 
-## Recording a profile
+## Profil kaydetme
 
-### Enable integration
+### Entegrasyonu etkinleştirme
 
-Angular profil cikarmayi iki yoldan biriyle etkinlestirebilirsiniz:
+Angular profil çıkarmayı iki yoldan biriyle etkinleştirebilirsiniz:
 
-1. Chrome'un konsol panelinde [`ng.enableProfiling()`](api/core/enableProfiling) calistirin veya
-1. Uygulama baslangic kodunuza (`@angular/core`'dan iceri aktarilan) [`enableProfiling()`](api/core/enableProfiling) cagrisini ekleyin.
+1. Chrome'un konsol panelinde [`ng.enableProfiling()`](api/core/enableProfiling) çalıştırın veya
+1. Uygulama başlangıç kodunuza (`@angular/core`'dan içeri aktarılan) [`enableProfiling()`](api/core/enableProfiling) çağrısını ekleyin.
 
-NOTE: Angular profil cikarma yalnizca gelistirme modunda calisir.
+NOTE: Angular profil çıkarma yalnızca geliştirme modunda çalışır.
 
-Baslangicta calisan tum olaylari yakalamak icin uygulama bootstrap'inde entegrasyonu nasil etkinlestirebileceginize dair bir ornek:
+Başlangıçta çalışan tüm olayları yakalamak için uygulama bootstrap'inde entegrasyonu nasıl etkinleştirebileceğinize dair bir örnek:
 
 ```ts
 import {enableProfiling} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MyApp} from './my-app';
 
-// Turn on profiling *before* bootstrapping your application
-// in order to capture all of the code run on start-up.
+// Başlangıçta çalışan tüm kodu yakalamak için uygulamanızı
+// başlatmadan *önce* profil çıkarmayı etkinleştirin.
 enableProfiling();
 bootstrapApplication(MyApp);
 ```
 
-### Record a profile
+### Profil kaydetme
 
-Chrome DevTools performans panelindeki **Record** dugmesini kullanin:
+Chrome DevTools performans panelindeki **Record** düğmesini kullanın:
 
 <img alt="Recording a profile" src="assets/images/best-practices/runtime-performance/recording-profile-in-chrome.png">
 
-Profil kaydetme hakkinda daha fazla ayrinti icin [Chrome DevTools belgeleri](https://developer.chrome.com/docs/devtools/performance#record)'ne bakin.
+Profil kaydetme hakkında daha fazla ayrıntı için [Chrome DevTools belgeleri](https://developer.chrome.com/docs/devtools/performance#record)'ne bakın.
 
-## Interpreting a recorded profile
+## Kaydedilmiş bir profili yorumlama
 
-Performans sorunlarini hizla belirlemek ve teshis etmek icin "Angular" ozel izini kullanabilirsiniz. Asagidaki bolumler bazi yaygin profil cikarma senaryolarini tanimlamaktadir.
+Performans sorunlarını hızla belirlemek ve teşhis etmek için "Angular" özel izini kullanabilirsiniz. Aşağıdaki bölümler bazı yaygın profil çıkarma senaryolarını tanımlamaktadır.
 
-### Differentiating between your Angular application and other tasks on the same page
+### Angular uygulamanız ile aynı sayfadaki diğer görevleri ayırt etme
 
-Angular ve Chrome verileri ayri ancak iliskili izlerde sunuldugu icin, Angular'in uygulama kodunun ne zaman calistirildigini, baska bir tarayici isleminin (tipik olarak duzenleme ve boyama) veya ayni sayfada calisan diger betiklerin (bu durumda ozel Angular izinde herhangi bir veri bulunmaz) aksine gorebilirsiniz:
+Angular ve Chrome verileri ayrı ancak ilişkili izlerde sunulduğu için, Angular'ın uygulama kodunun ne zaman çalıştırıldığını, başka bir tarayıcı işleminin (tipik olarak düzenleme ve boyama) veya aynı sayfada çalışan diğer betiklerin (bu durumda özel Angular izinde herhangi bir veri bulunmaz) aksine görebilirsiniz:
 
 <img alt="Profile data: Angular vs. 3rd party scripts execution" src="assets/images/best-practices/runtime-performance/profile-angular-vs-3rd-party.png">
 
-Bu, daha fazla arastirmanin Angular uygulama koduna mi yoksa kod tabaninizin veya bagimlilikiarinizin diger bolumlerne mi odaklanmasi gerektigini belirlemenize olanak tanir.
+Bu, daha fazla araştırmanın Angular uygulama koduna mı yoksa kod tabanınızın veya bağımlılıklarınızın diğer bölümlerine mi odaklanması gerektiğini belirlemenize olanak tanır.
 
-### Color-coding
+### Renk kodlaması
 
-Angular, gorev turlerini ayirt etmek icin alev grafigi grafiklerinde renkler kullanir:
+Angular, görev türlerini ayırt etmek için alev grafiği grafiklerinde renkler kullanır:
 
-- 🟦 Mavi, uygulama gelistiricisi tarafindan yazilan TypeScript kodunu temsil eder (ornegin: servisler, bilesen yapicilari ve yasam dongusu kancalari vb.).
-- 🟪 Mor, uygulama gelistiricisi tarafindan yazilan ve Angular derleyicisi tarafindan donusturulen sablon kodunu temsil eder.
-- 🟩 Yesil, uygulama koduna giris noktalarini temsil eder ve kod calistirma _nedenlerini_ belirler.
+- 🟦 Mavi, uygulama geliştiricisi tarafından yazılan TypeScript kodunu temsil eder (örneğin: servisler, bileşen yapıcıları ve yaşam döngüsü kancaları vb.).
+- 🟪 Mor, uygulama geliştiricisi tarafından yazılan ve Angular derleyicisi tarafından dönüştürülen şablon kodunu temsil eder.
+- 🟩 Yeşil, uygulama koduna giriş noktalarını temsil eder ve kod çalıştırma _nedenlerini_ belirler.
 
-Asagidaki ornekler, cesitli gercek kayitlarda tanimlanan renk kodlamasini gostermektedir.
+Aşağıdaki örnekler, çeşitli gerçek kayıtlarda tanımlanan renk kodlamasını göstermektedir.
 
-#### Example: Application bootstrapping
+#### Örnek: Uygulama başlatma
 
-Uygulama bootstrap sureci genellikle su ogenelerden olusur:
+Uygulama bootstrap süreci genellikle şu öğelerden oluşur:
 
-- `bootstrapApplication` cagrisi, kok bilesenin ornekelenmesi ve ilk degisiklik algilama gibi maviye isaretlenmis tetikleyiciler
-- Bootstrap sirasinda orneklenen, yesile isaretlenmis cesitli DI servisleri.
+- `bootstrapApplication` çağrısı, kök bileşenin örneklenmesi ve ilk değişiklik algılama gibi maviye işaretlenmiş tetikleyiciler
+- Bootstrap sırasında örneklenen, yeşile işaretlenmiş çeşitli DI servisleri.
 
 <img alt="Profile data: bootstrap application" src="assets/images/best-practices/runtime-performance/profile-bootstrap-application.png">
 
-#### Example: Component execution
+#### Örnek: Bileşen işleme
 
-Bir bilesenin islenmesi tipik olarak bir giris noktasi (mavi) ve ardindan sablon calistirmasi (mor) olarak temsil edilir. Bir sablon ise direktiflerin orneklenmesini ve yasam dongusu kancalarinin calistirlimasini (yesil) tetikleyebilir:
+Bir bileşenin işlenmesi tipik olarak bir giriş noktası (mavi) ve ardından şablon çalıştırması (mor) olarak temsil edilir. Bir şablon ise direktiflerin örneklenmesini ve yaşam döngüsü kancalarının çalıştırılmasını (yeşil) tetikleyebilir:
 
 <img alt="Profile data: component processing" src="assets/images/best-practices/runtime-performance/profile-component-processing.png">
 
-#### Example: Change detection
+#### Örnek: Değişiklik algılama
 
 Bir degisiklik algilama dongusu genellikle bir veya daha fazla veri senkronizasyon gecisindan (mavi) olusur; her gecis bir bilesen alt kumesini gezer.
 

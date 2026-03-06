@@ -10,7 +10,7 @@ Bu eğitim dersi, Angular uygulamanıza `HousingLocation` bileşeninin nasıl ek
 
 <docs-workflow>
 
-<docs-step title="Create the `HousingLocation`">
+<docs-step title="`HousingLocation` bileşenini oluşturun">
 Bu adımda, uygulamanız için yeni bir bileşen oluşturursunuz.
 
 IDE'nizin **Terminal** bölmesinde:
@@ -39,7 +39,7 @@ IDE'nizin **Terminal** bölmesinde:
 1. Sonraki adımları tamamlarken `ng serve` komutunu çalışır durumda bırakın.
    </docs-step>
 
-<docs-step title="Add the new component to your app's layout">
+<docs-step title="Yeni bileşeni uygulamanızın düzenine ekleyin">
 Bu adımda, yeni bileşen `HousingLocation`'ı uygulamanızın `Home` bileşenine eklersiniz, böylece uygulamanızın düzeninde görüntülenir.
 
 IDE'nizin **Edit** bölmesinde:
@@ -59,7 +59,7 @@ IDE'nizin **Edit** bölmesinde:
 
 </docs-step>
 
-<docs-step title="Add the styles for the component">
+<docs-step title="Bileşen için stilleri ekleyin">
 Bu adımda, uygulamanızın düzgün görüntülenmesi için `HousingLocation` bileşeninin önceden yazılmış stillerini uygulamanıza kopyalayacaksınız.
 
 1. `src/app/housing-location/housing-location.css` dosyasını açın ve aşağıdaki stilleri dosyaya yapıştırın:

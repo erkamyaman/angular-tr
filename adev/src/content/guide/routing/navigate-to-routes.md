@@ -1,8 +1,8 @@
-# Navigate to routes
+# Route'lara Navigasyon
 
 RouterLink direktifi, Angular'ın navigasyona bildirimsel yaklaşımıdır. Angular'ın yönlendirme sistemiyle sorunsuz bir şekilde entegre olan standart bağlantı öğelerini (`<a>`) kullanmanıza olanak tanır.
 
-## How to use RouterLink
+## RouterLink nasıl kullanılır
 
 Bir `href` özniteliğine sahip normal bağlantı öğeleri `<a>` kullanmak yerine, Angular yönlendirmesinden yararlanmak için uygun yol ile bir RouterLink direktifi eklersiniz.
 
@@ -22,15 +22,15 @@ import {RouterLink} from '@angular/router';
 export class App {}
 ```
 
-### Using absolute or relative links
+### Mutlak veya göreceli bağlantılar kullanma
 
 Angular yönlendirmesinde **göreceli URL'ler**, geçerli rotanın konumuna göre navigasyon yolları tanımlamanıza olanak tanır. Bunun aksine **mutlak URL'ler**, protokolü (örn. `http://`) ve **kök alan adını** (örn. `google.com`) içeren tam yolu içerir.
 
 ```angular-html
-<!-- Absolute URL -->
+<!-- Mutlak URL -->
 <a href="https://www.angular.dev/essentials">Angular Essentials Guide</a>
 
-<!-- Relative URL -->
+<!-- Göreceli URL -->
 <a href="/essentials">Angular Essentials Guide</a>
 ```
 
@@ -38,12 +38,12 @@ Bu örnekte, ilk örnek essentials sayfası için protokolü (yani `https://`) v
 
 Genel olarak, göreceli URL'ler yönlendirme hiyerarşisi içindeki mutlak konumlarını bilmeleri gerekmediğinden uygulamalar arasında daha sürdürülebilir oldukları için tercih edilir.
 
-### How relative URLs work
+### Göreceli URL'ler nasıl çalışır
 
 Angular yönlendirme, göreceli URL'leri tanımlamak için iki söz dizimi sunar: dizeler ve diziler.
 
 ```angular-html
-<!-- Navigates user to /dashboard -->
+<!-- Kullanıcıyı /dashboard'a yönlendirir -->
 <a routerLink="dashboard">Dashboard</a>
 <a [routerLink]="['dashboard']">Dashboard</a>
 ```
@@ -61,16 +61,16 @@ Ayrıca Angular yönlendirme, göreceli yolun eğik çizgi (`/`) ile ön eklenip
 Örneğin, kullanıcı `example.com/settings` adresindeyse, çeşitli senaryolar için farklı göreceli yollar şöyle tanımlanabilir:
 
 ```angular-html
-<!-- Navigates to /settings/notifications -->
+<!-- /settings/notifications'a yönlendirir -->
 <a routerLink="notifications">Notifications</a>
 <a routerLink="/settings/notifications">Notifications</a>
 
-<!-- Navigates to /team/:teamId/user/:userId -->
+<!-- /team/:teamId/user/:userId'ye yönlendirir -->
 <a routerLink="/team/123/user/456">User 456</a>
 <a [routerLink]="['/team', teamId, 'user', userId]">Current User</a>
 ```
 
-## Programmatic navigation to routes
+## Route'lara programatik navigasyon
 
 `RouterLink` şablonlarda bildirimsel navigasyonu yönetirken, Angular mantık, kullanıcı eylemleri veya uygulama durumuna göre gezinmeniz gereken senaryolar için programatik navigasyon sağlar. `Router` enjekte ederek, rotalara dinamik olarak gezinebilir, parametreler geçirebilir ve TypeScript kodunuzda navigasyon davranışını kontrol edebilirsiniz.
 
@@ -89,24 +89,24 @@ export class AppDashboard {
   private router = inject(Router);
 
   navigateToProfile() {
-    // Standard navigation
+    // Standart navigasyon
     this.router.navigate(['/profile']);
 
-    // With route parameters
+    // Route parametreleri ile
     this.router.navigate(['/users', userId]);
 
-    // With query parameters
+    // Sorgu parametreleri ile
     this.router.navigate(['/search'], {
       queryParams: {category: 'books', sort: 'price'},
     });
 
-    // With matrix parameters
+    // Matris parametreleri ile
     this.router.navigate(['/products', {featured: true, onSale: true}]);
   }
 }
 ```
 
-`router.navigate()` hem basit hem de karmaşık yönlendirme senaryolarını destekler ve rota parametreleri, [sorgu parametreleri](/guide/routing/read-route-state#query-parameters) geçirmenize ve navigasyon davranışını kontrol etmenize olanak tanır.
+`router.navigate()` hem basit hem de karmaşık yönlendirme senaryolarını destekler ve rota parametreleri, [sorgu parametreleri](/guide/routing/read-route-state#sorgu-parametreleri) geçirmenize ve navigasyon davranışını kontrol etmenize olanak tanır.
 
 Ayrıca `relativeTo` seçeneğini kullanarak yönlendirme ağacındaki bileşeninizin konumuna göre dinamik navigasyon yolları oluşturabilirsiniz.
 
@@ -124,17 +124,17 @@ export class UserDetail {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  // Navigate to a sibling route
+  // Kardeş rotaya navigasyon
   navigateToEdit() {
-    // From: /users/123
-    // To:   /users/123/edit
+    // Kaynak: /users/123
+    // Hedef:  /users/123/edit
     this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
-  // Navigate to parent
+  // Üst rotaya navigasyon
   navigateToParent() {
-    // From: /users/123
-    // To:   /users
+    // Kaynak: /users/123
+    // Hedef:  /users
     this.router.navigate(['..'], {relativeTo: this.route});
   }
 }
@@ -145,32 +145,32 @@ export class UserDetail {
 `router.navigateByUrl()` yöntemi, dizi segmentleri yerine URL yol dizeleri kullanarak programatik olarak gezinmenin doğrudan bir yolunu sağlar. Bu yöntem, tam bir URL yolunuz olduğunda ve mutlak navigasyon yapmanız gerektiğinde, özellikle harici olarak sağlanan URL'ler veya derin bağlantı senaryolarıyla çalışırken idealdir.
 
 ```ts
-// Standard route navigation
+// Standart rota navigasyonu
 router.navigateByUrl('/products');
 
-// Navigate to nested route
+// İç içe rotaya navigasyon
 router.navigateByUrl('/products/featured');
 
-// Complete URL with parameters and fragment
+// Parametreler ve fragment ile tam URL
 router.navigateByUrl('/products/123?view=details#reviews');
 
-// Navigate with query parameters
+// Sorgu parametreleri ile navigasyon
 router.navigateByUrl('/search?category=books&sortBy=price');
 
-// With matrix parameters
+// Matris parametreleri ile
 router.navigateByUrl('/sales-awesome;isOffer=true;showModal=false');
 ```
 
 Geçerli URL'yi geçmişte değiştirmeniz gerektiğinde, `navigateByUrl` bir `replaceUrl` seçeneğine sahip yapılandırma nesnesi de kabul eder.
 
 ```ts
-// Replace current URL in history
+// Geçerli URL'yi geçmişte değiştir
 router.navigateByUrl('/checkout', {
   replaceUrl: true,
 });
 ```
 
-### Display a different URL in the address bar
+### Adres çubuğunda farklı bir URL görüntüleme
 
 Tarayıcının adres çubuğunda, rota eşleştirmesi için kullanılandan farklı bir URL görüntülemek için `navigateByUrl`'ye bir browserUrl seçeneği geçirebilirsiniz.
 
@@ -184,12 +184,12 @@ Angular `/not-found` rotasına navigasyon yapar ve render eder, ancak tarayıcı
 
 NOTE: `browserUrl` yalnızca tarayıcının adres çubuğunda görünen şeyi etkiler.
 
-## Customizing the browser URL with RouterLink
+## RouterLink ile tarayıcı URL'sini özelleştirme
 
 `RouterLink` direktifi, bir bağlantıya tıklandığında tarayıcının adres çubuğunda görüntülenen URL'yi, Angular'ın navigasyon yaptığı rotadan bağımsız olarak kontrol etmenize olanak tanıyan bir `browserUrl` girişini de destekler.
 
 ```angular-html
-<!-- Navigates to /dashboard, but the address bar shows /home -->
+<!-- /dashboard'a yönlendirir, ancak adres çubuğu /home gösterir -->
 <a [routerLink]="['/dashboard']" [browserUrl]="'/home'">Go to Dashboard</a>
 ```
 
@@ -212,11 +212,11 @@ export class ProductList {
 
   product = {id: 42, name: 'Widget'};
 
-  // Create a UrlTree to display in the address bar
+  // Adres çubuğunda görüntülenecek bir UrlTree oluştur
   displayUrl: UrlTree = this.router.createUrlTree(['/products', 'widget']);
 }
 ```
 
-## Next steps
+## Sonraki adımlar
 
 Duyarlı ve bağlama duyarlı bileşenler oluşturmak için [rota durumunu nasıl okuyacağınızı](/guide/routing/read-route-state) öğrenin.

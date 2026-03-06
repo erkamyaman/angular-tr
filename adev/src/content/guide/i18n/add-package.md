@@ -1,4 +1,4 @@
-# Add the localize package
+# Yerelleştirme paketini ekleme
 
 Angular'ın yerelleştirme özelliklerinden yararlanmak için [Angular CLI][CliMain] kullanarak `@angular/localize` paketini projenize ekleyin.
 
@@ -13,7 +13,7 @@ HELPFUL: `package.json` ve `tsconfig.json` dosyaları hakkında daha fazla bilgi
 
 `@angular/localize` yüklü değilse ve projenizin yerelleştirilmiş bir sürümünü derlemeye çalışırsanız (örneğin, şablonlarda `i18n` niteliklerini kullanırken), [Angular CLI][CliMain] projeniz için i18n'i etkinleştirmek üzere atacağınız adımları içeren bir hata oluşturur.
 
-## Options
+## Seçenekler
 
 | OPTION             | DESCRIPTION                                                                                                                                                                             | VALUE TYPE | DEFAULT VALUE |
 | :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
@@ -22,7 +22,7 @@ HELPFUL: `package.json` ve `tsconfig.json` dosyaları hakkında daha fazla bilgi
 
 Daha fazla mevcut seçenek için [Angular CLI][CliMain]'daki `ng add` bölümüne bakın.
 
-## What's next
+## Sıradaki
 
 <docs-pill-row>
   <docs-pill href="guide/i18n/locale-id" title="Refer to locales by ID"/>

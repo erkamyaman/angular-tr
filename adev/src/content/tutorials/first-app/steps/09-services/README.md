@@ -27,7 +27,7 @@ _Bağımlılık enjeksiyonu_, bir uygulamanın bileşenlerinin bağımlılıklar
 
 <docs-workflow>
 
-<docs-step title="Create a new service for your app">
+<docs-step title="Uygulamanız için yeni bir servis oluşturun">
 Bu adım, uygulamanız için enjekte edilebilir bir servis oluşturur.
 
 IDE'nizin **Terminal** bölmesinde:
@@ -44,7 +44,7 @@ IDE'nizin **Terminal** bölmesinde:
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
    </docs-step>
 
-<docs-step title="Add static data to the new service">
+<docs-step title="Yeni servise statik veri ekleyin">
 Bu adım, yeni servisinize bazı örnek veriler ekler.
 İlerideki bir derste, statik verileri gerçek bir uygulamada yapabileceğiniz gibi veri almak için bir web arayüzüyle değiştireceksiniz.
 Şimdilik, uygulamanızın yeni servisi, şimdiye kadar `Home` bileşeninde yerel olarak oluşturulan verileri kullanır.
@@ -69,7 +69,7 @@ IDE'nizin **Edit** bölmesinde:
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
    </docs-step>
 
-<docs-step title="Inject the new service into `Home`">
+<docs-step title="Yeni servisi `Home` bileşenine enjekte edin">
 Bu adım, yeni servisi uygulamanızın `Home` bileşenine enjekte eder, böylece uygulama verilerini bir servisten okuyabilir.
 İlerideki bir derste, statik verileri gerçek bir uygulamada yapabileceğiniz gibi veri almak için canlı bir veri kaynağıyla değiştireceksiniz.
 

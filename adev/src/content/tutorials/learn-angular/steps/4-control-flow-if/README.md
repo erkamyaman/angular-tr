@@ -4,7 +4,7 @@ Kullanıcıya ekranda neyin gösterileceğine karar vermek, uygulama geliştirme
 
 Şablonlarda koşullu gösterimi ifade etmek için Angular, `@if` şablon sözdizimini kullanır.
 
-NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#control-flow-with-if-and-for) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#if-ve-for-ile-kontrol-akışı) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, şablonlarda koşullu ifadelerin nasıl kullanılacağını öğreneceksiniz.
 
@@ -35,16 +35,16 @@ Dikkat edilmesi gereken iki nokta:
 
 <docs-workflow>
 
-<docs-step title="Create a property called `isServerRunning`">
+<docs-step title="`isServerRunning` adlı bir özellik oluşturun">
 `App` sınıfında, `isServerRunning` adında bir `boolean` özellik ekleyin ve başlangıç değerini `true` olarak ayarlayın.
 </docs-step>
 
-<docs-step title="Use `@if` in the template">
+<docs-step title="Şablonda `@if` kullanın">
 `isServerRunning` değeri `true` ise `Yes, the server is running` mesajını göstermek için şablonu güncelleyin.
 
 </docs-step>
 
-<docs-step title="Use `@else` in the template">
+<docs-step title="Şablonda `@else` kullanın">
 Angular artık `@else` sözdizimi ile else durumunu tanımlamak için yerel şablon sözdizimini desteklemektedir. Else durumu olarak `No, the server is not running` mesajını göstermek için şablonu güncelleyin.
 
 İşte bir örnek:

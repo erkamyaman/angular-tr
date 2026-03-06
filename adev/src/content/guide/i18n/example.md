@@ -1,4 +1,4 @@
-# Example Angular Internationalization application
+# Örnek Angular Uluslararasılaştırma uygulaması
 
 <!-- ## Explore the translated example application -->
 
@@ -6,7 +6,7 @@
 <!-- TODO: link to GitHub -->
 <!-- <docs-code live path="adev/src/content/examples/i18n" title="live example"/> -->
 
-## `fr-CA` and `en-US` example
+## `fr-CA` ve `en-US` örneği
 
 Aşağıdaki sekmeler örnek uygulamayı ve ilişkili çeviri dosyalarını gösterir.
 

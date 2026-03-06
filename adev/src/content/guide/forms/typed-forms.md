@@ -1,10 +1,10 @@
-# Typed Forms
+# Türlenmiş Form'lar
 
 Angular 14'ten itibaren, reaktif formlar varsayılan olarak kesin tür denetimine sahiptir.
 
 Bu kılavuzun arka planı olarak, [Angular Reaktif Formları](guide/forms/reactive-forms) ile zaten tanıdık olmalısınız.
 
-## Overview of Typed Forms
+## Türlenmiş Form'lara genel bakış
 
 <docs-video src="https://www.youtube.com/embed/L-odCf4MfJc" alt="Typed Forms in Angular" />
 
@@ -31,7 +31,7 @@ Eklenen güvenliğe ek olarak, türler IDE'lerde daha iyi otomatik tamamlama ve 
 
 Bu iyileştirmeler şu anda yalnızca _reaktif_ formlara uygulanır ([_şablon odaklı_ formlara](guide/forms/template-driven-forms) değil).
 
-## Untyped Forms
+## Türlenmemiş Form'lar
 
 Türlenmemiş formlar hala desteklenmektedir ve daha önce olduğu gibi çalışmaya devam edecektir. Bunları kullanmak için `@angular/forms`'dan `Untyped` sembollerini içe aktarmanız gerekir:
 
@@ -44,7 +44,7 @@ const login = new UntypedFormGroup({
 
 Her `Untyped` sembolü, önceki Angular sürümündekiyle tam olarak aynı anlama sahiptir. `Untyped` ön eklerini kaldırarak türleri kademeli olarak etkinleştirebilirsiniz.
 
-## `FormControl`: Getting Started
+## `FormControl`: Başlangıç
 
 En basit olası form tek bir kontrolden oluşur:
 
@@ -54,7 +54,7 @@ const email = new FormControl('angularrox@gmail.com');
 
 Bu kontrol otomatik olarak `FormControl<string|null>` türüne sahip olarak çıkarılacaktır. TypeScript, bu türü [`FormControl` API'si](api/forms/FormControl) boyunca otomatik olarak uygulayacaktır; `email.value`, `email.valueChanges`, `email.setValue(...)` vb.
 
-### Nullability
+### Null olabilirlik
 
 Merak edebilirsiniz: Bu kontrolün türü neden `null` içeriyor? Bunun nedeni, kontrolün herhangi bir zamanda reset çağrılarak `null` olabilmesidir:
 
@@ -74,7 +74,7 @@ console.log(email.value); // angularrox@gmail.com
 
 Tekrar belirtmek gerekirse, bu seçenek `.reset()` çağrıldığında formunuzun çalışma zamanı davranışını etkiler ve dikkatli bir şekilde değiştirilmelidir.
 
-### Specifying an Explicit Type
+### Açık bir tür belirtme
 
 Çıkarıma güvenmek yerine türü belirtmek mümkündür. Başlangıç değeri `null` olan bir kontrolü düşünün. Başlangıç değeri `null` olduğundan, TypeScript istediğimizden daha dar olan `FormControl<null>` çıkarımını yapacaktır.
 
@@ -90,7 +90,7 @@ const email = new FormControl<string | null>(null);
 email.setValue('angularrox@gmail.com');
 ```
 
-## `FormArray`: Dynamic, Homogenous Collections
+## `FormArray`: Dinamik, homojen koleksiyonlar
 
 Bir `FormArray`, açık uçlu bir kontrol listesi içerir. Tür parametresi, her iç kontrolün türüne karşılık gelir:
 
@@ -118,11 +118,11 @@ aliases.clear();
 console.log(aliases.length); // 0
 ```
 
-## `FormGroup` and `FormRecord`
+## `FormGroup` ve `FormRecord`
 
 Angular, numaralandırılmış anahtar kümesine sahip formlar için `FormGroup` türünü ve açık uçlu veya dinamik gruplar için `FormRecord` adlı bir tür sağlar.
 
-### Partial Values
+### Kısmi değerler
 
 Giriş formunu tekrar düşünün:
 
@@ -141,7 +141,7 @@ Daha spesifik olarak, `login.value.email`'in türü `string|undefined`'dır ve T
 
 Devre dışı bırakılmış kontrolleri _dahil eden_ değere erişmek ve böylece olası `undefined` alanlarını atlamak istiyorsanız, `login.getRawValue()` kullanabilirsiniz.
 
-### Optional Controls and Dynamic Groups
+### Opsiyonel kontroller ve dinamik gruplar
 
 Bazı formların mevcut olabilen veya olmayabilen, çalışma zamanında eklenip kaldırılabilen kontrolleri vardır. Bu kontrolleri _opsiyonel alanlar_ kullanarak temsil edebilirsiniz:
 
@@ -180,7 +180,7 @@ Bir `FormRecord`, `FormBuilder` ile de oluşturulabilir:
 const addresses = fb.record({'Andrew': '2340 Folsom St'});
 ```
 
-## `FormBuilder` and `NonNullableFormBuilder`
+## `FormBuilder` ve `NonNullableFormBuilder`
 
 `FormBuilder` sınıfı, yukarıdaki örneklerle aynı şekilde yeni türleri desteklemek üzere yükseltilmiştir.
 

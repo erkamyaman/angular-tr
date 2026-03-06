@@ -1,8 +1,8 @@
-# Animating your Application with CSS
+# CSS ile uygulamanızı animasyonlama
 
 CSS, uygulamanizda guzel ve ilgi cekici animasyonlar olusturmaniz icin guclu bir arac seti sunar.
 
-## How to write animations in native CSS
+## Yerel CSS'de animasyonlar nasıl yazılır
 
 Daha once yerel CSS animasyonlari yazmadiysaniz, baslangic icin bir dizi mukemmel rehber vardir. Bunlardan biraci:
 [MDN's CSS Animations guide](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations)
@@ -16,7 +16,7 @@ ve birkaç video:
 
 Bu cesitli rehber ve egitimlerin bazilarina goz atin, ardindan bu rehbere geri donun.
 
-## Creating Reusable Animations
+## Yeniden kullanılabilir animasyonlar oluşturma
 
 `@keyframes` kullanarak uygulamaniz genelinde paylasabileceginiz yeniden kullanilabilir animasyonlar olusturabilirsiniz. Paylasilmis bir CSS dosyasinda anahtar kare animasyonlari tanimlayin ve uygulamanizda istediginiz her yerde bu anahtar kare animasyonlarini yeniden kullanabileceksiniz.
 
@@ -24,19 +24,19 @@ Bu cesitli rehber ve egitimlerin bazilarina goz atin, ardindan bu rehbere geri d
 
 `animated-class` sinifini bir elemana eklemek, o eleman uzerinde animasyonu tetikler.
 
-## Animating a Transition
+## Bir geçişi animasyonlama
 
-### Animating State and Styles
+### Durum ve stilleri animasyonlama
 
 Iki farkli durum arasinda animasyon yapmak isteyebilirsiniz, ornegin bir eleman acildiginda veya kapatildiginda. Bunu anahtar kare animasyonu veya gecis stili kullanarak CSS siniflariyla gerceklestirebilirsiniz.
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="animation-states"/>
 
-`open` veya `closed` durumunu tetiklemek, bileseninizdeki eleman uzerinde siniflari degistirerek yapilir. Bunu nasil yapacaginiza dair ornekleri [sablon rehberimizde](guide/templates/binding#css-class-and-style-property-bindings) bulabilirsiniz.
+`open` veya `closed` durumunu tetiklemek, bileseninizdeki eleman uzerinde siniflari degistirerek yapilir. Bunu nasil yapacaginiza dair ornekleri [sablon rehberimizde](guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) bulabilirsiniz.
 
-[Stilleri dogrudan animasyonlama](guide/templates/binding#css-style-properties) icin sablon rehberinde benzer ornekler gorebilirsiniz.
+[Stilleri dogrudan animasyonlama](guide/templates/binding#css-stil-özellikleri) icin sablon rehberinde benzer ornekler gorebilirsiniz.
 
-### Transitions, Timing, and Easing
+### Geçişler, zamanlama ve yumuşatma
 
 Animasyon genellikle zamanlama, gecikme ve yumusaklik davranislarini ayarlamayi gerektirir. Bu, bircok CSS ozelligi veya kisayol ozellikleri kullanilarak yapilabilir.
 
@@ -48,7 +48,7 @@ Benzer sekilde, `@keyframes` kullanmayan animasyonlar icin `transition-duration`
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="transition-timing"/>
 
-### Triggering an Animation
+### Bir animasyonu tetikleme
 
 Animasyonlar CSS stilleri veya siniflari degistirerek tetiklenebilir. Bir sinif bir elemanda mevcut oldigunda, animasyon gerceklesir. Sinifi kaldirmak, elemani o eleman icin tanimlanmis CSS'e geri dondurecektir. Iste bir ornek:
 
@@ -58,9 +58,9 @@ Animasyonlar CSS stilleri veya siniflari degistirerek tetiklenebilir. Bir sinif 
     <docs-code header="open-close.css" path="adev/src/content/examples/animations/src/app/native-css/open-close.css"/>
 </docs-code-multifile>
 
-## Transition and Triggers
+## Geçiş ve tetikleyiciler
 
-### Animating Auto Height
+### Otomatik yüksekliği animasyonlama
 
 Otomatik yukseklige animasyon yapmak icin css-grid kullanabilirsiniz.
 
@@ -72,7 +72,7 @@ Otomatik yukseklige animasyon yapmak icin css-grid kullanabilirsiniz.
 
 Tum tarayicilari destekleme konusunda endiselenmeniz gerekmiyorsa, otomatik yukseklige animasyon yapmanin gercek cozumu olan `calc-size()`'i da inceleyebilirsiniz. Daha fazla bilgi icin [MDN belgelerine](https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size) ve (bu egitime)[https://frontendmasters.com/blog/one-of-the-boss-battles-of-css-is-almost-won-transitioning-to-auto/] bakin.
 
-### Animate entering and leaving a view
+### Görünüme giriş ve çıkış animasyonu
 
 Bir oge gorünume girdiginde veya gorünumden ayrildiginda animasyonlar olusturabilirsiniz. Bir elemanin gorünume girisini animasyonlamaya bakalim. Bunu, eleman gorünume girdiginde animasyon siniflari uygulayacak olan `animate.enter` ile yapacagiz.
 
@@ -92,7 +92,7 @@ Bir elemanin gorünumden ayrilirken animasyonlanmasi, gorünume girerken animasy
 
 `animate.enter` ve `animate.leave` hakkinda daha fazla bilgi icin [Giris ve Cikis animasyonlari rehberine](guide/animations) bakin.
 
-### Animating increment and decrement
+### Artırma ve azaltma animasyonu
 
 Artirma ve azaltmada animasyon uygulamalarda yaygin bir kaliptir. Bu davranisi nasil gerceklestirebileceginize dair bir ornek.
 
@@ -102,7 +102,7 @@ Artirma ve azaltmada animasyon uygulamalarda yaygin bir kaliptir. Bu davranisi n
     <docs-code header="increment-decrement.css" path="adev/src/content/examples/animations/src/app/native-css/increment-decrement.css" />
 </docs-code-multifile>
 
-### Disabling an animation or all animations
+### Bir animasyonu veya tüm animasyonları devre dışı bırakma
 
 Belirttiginiz animasyonlari devre disi birakmak istiyorsaniz, birden fazla seceeneginiz vardir.
 
@@ -121,7 +121,7 @@ Bu sinifi bir elemana uygulamak, o eleman uzerindeki herhangi bir animasyonun ca
 
 3. Programatik olarak animasyon siniflari eklemeyi engelleyin
 
-### Animation Callbacks
+### Animasyon geri çağırmaları
 
 Animasyonlar sirasinda belirli noktalarda yurutmek istediginiz eylemleriniz varsa, dinleyebileceginiz bir dizi mevcut olay vardir. Birkazci:
 
@@ -139,11 +139,11 @@ Web Animations API bircok ek islev sunar. Mevcut tum animasyon API'lerini gormek
 
 NOTE: Bu geri cagirmalarla kabarciklanma sorunlarina dikkat edin. Alt ve ust elemanlari animasyonluyorsaniz, olaylar alt elemanlardan ust elemanlara dogru kabarciklanir. Bir alt dugumden kabarciklanan bir olaya degil, istediginiz olay hedefine yanit verdiginizden emin olmak icin yayilimi durdurun veya olay icindeki daha fazla ayrinti inceleyin. Dogru dugumlere sahip oldugunuzu dogrulamak icin `animationname` ozelligini veya gecisi yapilan ozellikleri inceleyebilirsiniz.
 
-## Complex Sequences
+## Karmaşık diziler
 
 Animasyonlar genellikle basit bir fade in veya fade out'tan daha karmasiktir. Calistirmak isteyeceginiz bircok karmasik animasyon dizisi olabilir. Bu olasi senaryolarin bazilarina goz atalim.
 
-### Staggering animations in a list
+### Listede kademeli animasyonlar
 
 Yaygin efektlerden biri, kademeli bir etki olusturmak icin listedeki her ogenin animasyonlarini kademelilestirmektir. Bu, `animation-delay` veya `transition-delay` kullanilarak gerceklestirilebilir. Bu CSS'nin nasil gorunebilecegine dair bir ornek.
 
@@ -153,7 +153,7 @@ Yaygin efektlerden biri, kademeli bir etki olusturmak icin listedeki her ogenin 
     <docs-code header="stagger.css" path="adev/src/content/examples/animations/src/app/native-css/stagger.css" />
 </docs-code-multifile>
 
-### Parallel Animations
+### Paralel animasyonlar
 
 `animation` kisayol ozelligini kullanarak bir elemana ayni anda birden fazla animasyon uygulayabilirsiniz. Her birinin kendi suresi ve gecikmesi olabilir. Bu, animasyonlari bir araya getirmenize ve karmasik efektler olusturmaniza olanak tanir.
 
@@ -167,7 +167,7 @@ Yaygin efektlerden biri, kademeli bir etki olusturmak icin listedeki her ogenin 
 
 Bu ornekte, `rotate` ve `fade-in` animasyonlari ayni anda baslar, ancak farkli surelere sahiptir.
 
-### Animating the items of a reordering list
+### Yeniden sıralanan listenin öğelerini animasyonlama
 
 Bir `@for` dongusundeki ogeler kaldirilip yeniden eklenecek, bu da giris animasyonlari icin `@starting-styles` kullanilarak animasyonlari tetikleyecektir. Alternatif olarak, ayni davranis icin `animate.enter` kullanabilirsiniz. Asagidaki ornekte gorulduğu gibi elemanlar kaldirilirken animasyonlamak icin `animate.leave` kullanin.
 
@@ -177,11 +177,11 @@ Bir `@for` dongusundeki ogeler kaldirilip yeniden eklenecek, bu da giris animasy
     <docs-code header="reorder.css" path="adev/src/content/examples/animations/src/app/native-css/reorder.css" />
 </docs-code-multifile>
 
-## Programmatic control of animations
+## Animasyonların programatik kontrolü
 
 [`Element.getAnimations()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAnimations) kullanarak bir elemandaki animasyonlari dogrudan alabilirsiniz. Bu, o elemandaki her [`Animation`](https://developer.mozilla.org/en-US/docs/Web/API/Animation)'in bir dizisini dondurur. Animasyon paketinin `AnimationPlayer`'inin sundugu seylerden cok daha fazlasini yapmak icin `Animation` API'sini kullanabilirsiniz. Buradan `cancel()`, `play()`, `pause()`, `reverse()` ve cok daha fazlasini yapabilirsiniz. Bu yerel API, animasyonlarinizi kontrol etmeniz icin ihtiyaciniz olan her seyi saglamalidir.
 
-## More on Angular animations
+## Angular animasyonları hakkında daha fazla bilgi
 
 Asagidakilerle de ilgilenebilirsiniz:
 

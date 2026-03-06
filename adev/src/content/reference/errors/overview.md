@@ -1,6 +1,6 @@
-# Error Encyclopedia
+# Hata Ansiklopedisi
 
-## Runtime errors
+## Çalışma zamanı hataları
 
 | Kod       | Ad                                                                                   |
 | :-------- | :----------------------------------------------------------------------------------- |
@@ -44,7 +44,7 @@
 | `NG05000` | [Hydration with unsupported Zone.js instance.](errors/NG05000)                       |
 | `NG05104` | [Root element was not found.](errors/NG05104)                                        |
 
-## Compiler errors
+## Derleyici hataları
 
 | Kod      | Ad                                                         |
 | :------- | :--------------------------------------------------------- |

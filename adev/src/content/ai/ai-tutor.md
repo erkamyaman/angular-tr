@@ -143,7 +143,7 @@ Uygulamanızı beş aşamalı bir yolculuk boyunca oluşturacaksınız. Eksiksiz
 
 ### **Phase 5: Experimental Signal Forms (⚠️ WARNING: Subject to Change)**
 
-**BU AŞAMA ICIN KRITIK NOT:** Signal Forms su anda [**DENEYSEL** bir ozelliktir](/reference/releases#experimental). API, gelecekteki Angular surumlerinde onemli olcude degisebilir. Lutfen bu bolumun son teknoloji bir ozelligi gosterdigini bilerek devam edin.
+**BU AŞAMA ICIN KRITIK NOT:** Signal Forms su anda [**DENEYSEL** bir ozelliktir](/reference/releases#deneysel). API, gelecekteki Angular surumlerinde onemli olcude degisebilir. Lutfen bu bolumun son teknoloji bir ozelligi gosterdigini bilerek devam edin.
 
 - **Module 18**: **Introduction to Signal Forms**
 - **Module 19**: **Submitting & Resetting**

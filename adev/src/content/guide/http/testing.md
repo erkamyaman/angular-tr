@@ -1,4 +1,4 @@
-# Test requests
+# Request'leri Test Etme
 
 Herhangi bir dış bağımlılık için olduğu gibi, testlerinizin uzak bir sunucu ile etkileşimi simüle edebilmesi için HTTP arka ucunu taklit etmeniz gerekir. `@angular/common/http/testing` kütüphanesi, uygulama tarafından yapılan istekleri yakalamak, bunlar hakkında doğrulamalar yapmak ve arka ucunuzun davranışını taklit etmek için yanıtları simüle etmek amacıyla araçlar sağlar.
 
@@ -6,7 +6,7 @@ Test kütüphanesi, uygulamanın önce kodu yürütüp istekleri yaptığı bir 
 
 Sonunda, testler uygulamanın beklenmeyen istekler yapmadığını doğrulayabilir.
 
-## Setup for testing
+## Test Kurulumu
 
 `HttpClient` kullanımını test etmeye başlamak için `TestBed`'i yapılandırın ve testinizin kurulumuna `provideHttpClient()` ile `provideHttpClientTesting()`'i dahil edin. Bu, `HttpClient`'ı gerçek ağ yerine bir test arka ucu kullanacak şekilde yapılandırır. Ayrıca test arka ucu ile etkileşim kurmak, hangi isteklerin yapıldığına dair beklentiler belirlemek ve bu isteklere yanıtları temizlemek için kullanacağınız `HttpTestingController`'ı da sağlar. `HttpTestingController`, yapılandırıldıktan sonra `TestBed`'den enjekte edilebilir.
 
@@ -15,7 +15,7 @@ IMPORTANT: `provideHttpClient()`'ı `provideHttpClientTesting()`'den **önce** s
 ```ts
 TestBed.configureTestingModule({
   providers: [
-    // ... other test providers
+    // ... diğer test sağlayıcıları
     provideHttpClient(),
     provideHttpClientTesting(),
   ],
@@ -26,7 +26,7 @@ const httpTesting = TestBed.inject(HttpTestingController);
 
 Artık testleriniz istek yaptığında, normal arka uç yerine test arka ucuna ulaşacaktır. `httpTesting`'i bu istekler hakkında doğrulamalar yapmak için kullanabilirsiniz.
 
-## Expecting and answering requests
+## Request'leri Bekleme ve Yanıtlama
 
 Örneğin, bir GET isteğinin oluşmasını bekleyen ve sahte bir yanıt sağlayan bir test yazabilirsiniz:
 
@@ -37,28 +37,28 @@ TestBed.configureTestingModule({
 
 const httpTesting = TestBed.inject(HttpTestingController);
 
-// Load `ConfigService` and request the current configuration.
+// `ConfigService`'i yükle ve mevcut yapılandırmayı iste.
 const service = TestBed.inject(ConfigService);
 const config$ = service.getConfig<Config>();
 
-// `firstValueFrom` subscribes to the `Observable`, which makes the HTTP request,
-// and creates a `Promise` of the response.
+// `firstValueFrom`, HTTP isteğini yapan `Observable`'a abone olur
+// ve yanıtın bir `Promise`'ini oluşturur.
 const configPromise = firstValueFrom(config$);
 
-// At this point, the request is pending, and we can assert it was made
-// via the `HttpTestingController`:
+// Bu noktada istek beklemede ve `HttpTestingController`
+// aracılığıyla yapıldığını doğrulayabiliriz:
 const req = httpTesting.expectOne('/api/config', 'Request to load the configuration');
 
-// We can assert various properties of the request if desired.
+// İstenirse isteğin çeşitli özelliklerini doğrulayabiliriz.
 expect(req.request.method).toBe('GET');
 
-// Flushing the request causes it to complete, delivering the result.
+// İsteği temizlemek tamamlanmasına ve sonucun iletilmesine neden olur.
 req.flush(DEFAULT_CONFIG);
 
-// We can then assert that the response was successfully delivered by the `ConfigService`:
+// Ardından yanıtın `ConfigService` tarafından başarıyla iletildiğini doğrulayabiliriz:
 expect(await configPromise).toEqual(DEFAULT_CONFIG);
 
-// Finally, we can assert that no other requests were made.
+// Son olarak, başka istek yapılmadığını doğrulayabiliriz.
 httpTesting.verify();
 ```
 
@@ -82,43 +82,43 @@ Bekleyen istek kalmadığını doğrulayan son adım, bir `afterEach()` adımın
 
 ```ts
 afterEach(() => {
-  // Verify that none of the tests make any extra HTTP requests.
+  // Testlerin hiçbirinin fazladan HTTP isteği yapmadığını doğrula.
   TestBed.inject(HttpTestingController).verify();
 });
 ```
 
-## Handling more than one request at once
+## Aynı Anda Birden Fazla İsteği Yönetme
 
 Testinizde yinelenen isteklere yanıt vermeniz gerekiyorsa, `expectOne()` yerine `match()` API'sini kullanın. Aynı argümanları alır ancak eşleşen isteklerin bir dizisini döndürür. Döndürüldükten sonra, bu istekler gelecekteki eşleşmelerden çıkarılır ve bunları temizlemek ve doğrulamaktan siz sorumlusunuz.
 
 ```ts
 const allGetRequests = httpTesting.match({method: 'GET'});
 for (const req of allGetRequests) {
-  // Handle responding to each request.
+  // Her isteğe yanıt vermeyi yönet.
 }
 ```
 
-## Advanced matching
+## Gelişmiş Eşleştirme
 
 Tüm eşleştirme fonksiyonları, özel eşleştirme mantığı için bir yüklem fonksiyonu kabul eder:
 
 ```ts
-// Look for one request that has a request body.
+// İstek gövdesi olan bir istek ara.
 const requestsWithBody = httpTesting.expectOne((req) => req.body !== null);
 ```
 
 `expectNone` fonksiyonu, verilen kriterlere uyan hiçbir isteğin olmadığını doğrular.
 
 ```ts
-// Assert that no mutation requests have been issued.
+// Değişiklik isteği yapılmadığını doğrula.
 httpTesting.expectNone((req) => req.method !== 'GET');
 ```
 
-## Testing error handling
+## Hata Yönetimini Test Etme
 
 Uygulamanızın HTTP istekleri başarısız olduğundaki yanıtlarını test etmelisiniz.
 
-### Backend errors
+### Arka Uç Hataları
 
 Arka uç hatalarını (sunucu başarısız bir durum kodu döndürdüğünde) test etmek için, arka ucunuzun bir istek başarısız olduğunda döndüreceğini taklit eden bir hata yanıtı ile istekleri temizleyin.
 
@@ -126,10 +126,10 @@ Arka uç hatalarını (sunucu başarısız bir durum kodu döndürdüğünde) te
 const req = httpTesting.expectOne('/api/config');
 req.flush('Failed!', {status: 500, statusText: 'Internal Server Error'});
 
-// Assert that the application successfully handled the backend error.
+// Uygulamanın arka uç hatasını başarıyla yönettiğini doğrula.
 ```
 
-### Network errors
+### Ağ Hataları
 
 İstekler ağ hataları nedeniyle de başarısız olabilir ve bunlar `ProgressEvent` hataları olarak ortaya çıkar. Bunlar `error()` yöntemi ile iletilebilir:
 
@@ -137,10 +137,10 @@ req.flush('Failed!', {status: 500, statusText: 'Internal Server Error'});
 const req = httpTesting.expectOne('/api/config');
 req.error(new ProgressEvent('network error!'));
 
-// Assert that the application successfully handled the network error.
+// Uygulamanın ağ hatasını başarıyla yönettiğini doğrula.
 ```
 
-## Testing an Interceptor
+## Bir Interceptor'ı Test Etme
 
 Yakalayıcılarınızın istenen koşullarda çalıştığını test etmelisiniz.
 
@@ -167,7 +167,7 @@ Bu yakalayıcı için `TestBed` yapılandırması `withInterceptors` özelliğin
 TestBed.configureTestingModule({
   providers: [
     AuthService,
-    // Testing one interceptor at a time is recommended.
+    // Aynı anda tek bir interceptor'ı test etmek önerilir.
     provideHttpClient(withInterceptors([authInterceptor])),
     provideHttpClientTesting(),
   ],
@@ -207,7 +207,7 @@ TestBed.configureTestingModule({
     AuthService,
     provideHttpClient(withInterceptorsFromDi()),
     provideHttpClientTesting(),
-    // We rely on the HTTP_INTERCEPTORS token to register the AuthInterceptor as an HttpInterceptor
+    // AuthInterceptor'ı bir HttpInterceptor olarak kaydetmek için HTTP_INTERCEPTORS token'ına güveniyoruz
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
 });

@@ -8,7 +8,7 @@ Bu aktivitede, üst bileşenle senkronize kalırken kendi durumunu yöneten öze
 
 <docs-workflow>
 
-<docs-step title="Set up the custom checkbox with model signal">
+<docs-step title="Model sinyali ile özel onay kutusunu kurun">
 `custom-checkbox` bileşeninde, üst bileşenin değerini hem alabilecek hem de güncelleyebilecek bir model sinyali oluşturun.
 
 ```ts
@@ -25,7 +25,7 @@ label = input<string>('');
 Salt okunur olan `input()` sinyallerinin aksine, `model()` sinyalleri hem okunabilir hem de yazılabilir.
 </docs-step>
 
-<docs-step title="Create the checkbox template">
+<docs-step title="Onay kutusu şablonunu oluşturun">
 Tıklamalara yanıt veren ve kendi modelini güncelleyen onay kutusu şablonunu oluşturun.
 
 ```html
@@ -39,7 +39,7 @@ Tıklamalara yanıt veren ve kendi modelini güncelleyen onay kutusu şablonunu 
 Bileşen, model sinyalinden okur ve onu güncellemek için bir metoda sahiptir.
 </docs-step>
 
-<docs-step title="Add the toggle method">
+<docs-step title="Toggle metodunu ekleyin">
 Onay kutusu tıklandığında model sinyalini güncelleyen toggle metodunu uygulayın.
 
 ```ts
@@ -52,7 +52,7 @@ toggle() {
 Alt bileşen `this.checked.set()` çağrısı yaptığında, değişiklik otomatik olarak üst bileşene yayılır. Bu, `input()` sinyallerinden temel farktır.
 </docs-step>
 
-<docs-step title="Set up two-way binding in the parent">
+<docs-step title="Üst bileşende iki yönlü bağlamayı kurun">
 Önce, `app.ts` dosyasındaki model sinyal özelliklerini ve metotlarını yorumdan çıkarın:
 
 ```ts
@@ -104,7 +104,7 @@ Bölüm 3. **Düğmelere tıklama işleyicileri ekleyin:**
 `[(checked)]` sözdizimi iki yönlü bağlama oluşturur - veri bileşene aşağı akar VE değişiklikler, sinyalin kendisine referans veren ve sinyal getter'ını doğrudan _çağırmayan_ bir olay yayarak üst bileşene geri akar.
 </docs-step>
 
-<docs-step title="Test the two-way binding">
+<docs-step title="İki yönlü bağlamayı test edin">
 İki yönlü bağlamayı çalışırken görmek için uygulamanızla etkileşime geçin:
 
 1. **Onay kutularına tıklayın** - Bileşen kendi durumunu günceller ve üst bileşeni bilgilendirir

@@ -1,8 +1,8 @@
-# Refer to locales by ID
+# Yerel ayarlara kimlik ile başvurma
 
 Angular, metin dizelerinin uluslararasılaştırılması için doğru yerel ayar verilerini bulmak amacıyla Unicode _yerel ayar tanımlayıcısını_ \(Unicode locale ID\) kullanır.
 
-<docs-callout title="Unicode locale ID">
+<docs-callout title="Unicode yerel ayar kimliği">
 
 - Bir yerel ayar kimliği [Unicode Common Locale Data Repository (CLDR) çekirdek belirtimi][UnicodeCldrDevelopmentCoreSpecification]'ne uygundur.
   Yerel ayar kimlikleri hakkında daha fazla bilgi için [Unicode Language and Locale Identifiers][UnicodeCldrDevelopmentCoreSpecificationLocaleIDs] bölümüne bakın.
@@ -38,7 +38,7 @@ Bu kılavuzdaki örnekler için aşağıdaki dilleri ve yerel ayarları kullanı
 Dil kodlarının listesi için [ISO 639-2](https://www.loc.gov/standards/iso639-2) bölümüne bakın.
 </docs-callout>
 
-## Set the source locale ID
+## Kaynak yerel ayar kimliğini belirleme
 
 Bileşen şablonunu ve kodunu yazdığınız kaynak dili ayarlamak için Angular CLI'yi kullanın.
 
@@ -54,14 +54,14 @@ Derleme için projenizin kaynak yerel ayarını değiştirmek üzere aşağıdak
   "projects": {
     "your-project": {
       "i18n": {
-        "sourceLocale": "ca" // Use your desired locale code
+        "sourceLocale": "ca" // İstediğiniz yerel ayar kodunu kullanın
       }
     }
   }
 }
 ```
 
-## What's next
+## Sıradaki
 
 <docs-pill-row>
   <docs-pill href="guide/i18n/format-data-locale" title="Format data based on locale"/>

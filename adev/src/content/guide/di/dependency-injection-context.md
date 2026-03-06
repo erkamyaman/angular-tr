@@ -1,4 +1,4 @@
-# Injection context
+# Enjeksiyon bağlamı
 
 Bağımlılık enjeksiyonu (DI) sistemi, dahili olarak mevcut enjektörün kullanılabilir olduğu bir çalışma zamanı bağlamına dayanır.
 
@@ -14,9 +14,9 @@ Enjeksiyon bağlamı şu durumlarda kullanılabilir:
 
 Bir enjeksiyon bağlamında ne zaman olduğunuzu bilmek, örnekleri enjekte etmek için [`inject`](api/core/inject) fonksiyonunu kullanmanıza olanak tanır.
 
-NOTE: Sınıf constructor'larında ve alan başlatıcılarında `inject()` kullanmanın temel örnekleri için [genel bakış kılavuzuna](/guide/di#where-can-inject-be-used) bakın.
+NOTE: Sınıf constructor'larında ve alan başlatıcılarında `inject()` kullanmanın temel örnekleri için [genel bakış kılavuzuna](/guide/di#inject-nerede-kullanılabilir) bakın.
 
-## Stack frame in context
+## Bağlamdaki yığın çerçevesi
 
 Bazı API'ler bir enjeksiyon bağlamında çalışacak şekilde tasarlanmıştır. Bu, örneğin rota korumaları için geçerlidir. Bu, koruma fonksiyonu içinde bir servise erişmek için [`inject`](api/core/inject) kullanılmasına olanak tanır.
 
@@ -31,7 +31,7 @@ const canActivateTeam: CanActivateFn = (
 };
 ```
 
-## Run within an injection context
+## Bir enjeksiyon bağlamında çalıştırma
 
 Zaten bir enjeksiyon bağlamında olmadan belirli bir fonksiyonu bir enjeksiyon bağlamında çalıştırmak istediğinizde, bunu `runInInjectionContext` ile yapabilirsiniz.
 Bu, örneğin `EnvironmentInjector` gibi belirli bir enjektöre erişim gerektirir:
@@ -45,7 +45,7 @@ export class HeroService {
 
   someMethod() {
     runInInjectionContext(this.environmentInjector, () => {
-      inject(SomeService); // Do what you need with the injected service
+      inject(SomeService); // Enjekte edilen service ile ihtiyacınız olanı yapın
     });
   }
 }
@@ -53,7 +53,7 @@ export class HeroService {
 
 [`inject`](/api/core/inject)'in yalnızca enjektör gerekli token'ı çözebiliyorsa bir örnek döndüreceğini unutmayın.
 
-## Asserts the context
+## Bağlamı doğrulama
 
 Angular, mevcut bağlamın bir enjeksiyon bağlamı olduğunu doğrulayan ve değilse net bir hata fırlatan `assertInInjectionContext` yardımcı fonksiyonunu sağlar. Hata mesajının doğru API giriş noktasına işaret etmesi için çağıran fonksiyona bir referans iletin. Bu, varsayılan genel enjeksiyon hatasından daha net ve uygulanabilir bir mesaj üretir.
 
@@ -76,14 +76,14 @@ import {injectNativeElement} from './dom-helpers';
   /* … */
 })
 export class PreviewCard {
-  readonly hostEl = injectNativeElement<HTMLElement>(); // Field initializer runs in an injection context.
+  readonly hostEl = injectNativeElement<HTMLElement>(); // Alan başlatıcı bir enjeksiyon bağlamında çalışır.
 
   onAction() {
-    const anotherRef = injectNativeElement<HTMLElement>(); // Fails: runs outside an injection context.
+    const anotherRef = injectNativeElement<HTMLElement>(); // Başarısız: enjeksiyon bağlamı dışında çalışır.
   }
 }
 ```
 
-## Using DI outside of a context
+## Bağlam dışında DI kullanma
 
 Bir enjeksiyon bağlamı dışında [`inject`](api/core/inject) çağırmak veya `assertInInjectionContext` çağırmak [NG0203 hatasını](/errors/NG0203) fırlatır.

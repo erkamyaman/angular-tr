@@ -1,10 +1,10 @@
-# Binding dynamic text, properties and attributes
+# Dinamik metin, özellik ve nitelikleri bağlama
 
-Angular'da bir **bağlama (binding)**, bir bilesenin sablonu ile verileri arasinda dinamik bir baglanti olusturur. Bu baglanti, bilesenin verilerindeki degisikliklerin islenmis sablonu otomatik olarak guncellemesini saglar.
+Angular'da bir **bağlama (binding)**, bir bileşenin şablonu ile verileri arasında dinamik bir bağlantı oluşturur. Bu bağlantı, bileşenin verilerindeki değişikliklerin işlenmiş şablonu otomatik olarak güncellemesini sağlar.
 
-## Render dynamic text with text interpolation
+## Metin interpolasyonu ile dinamik metin işleme
 
-Sablonlarda dinamik metni cifte suslu parantezlerle baglayabilirsiniz; bu, Angular'a icindeki ifadeden sorumlu oldugunu ve dogru sekilde guncellenmesini saglamasini bildirir. Buna **metin interpolasyonu** denir.
+Şablonlarda dinamik metni çifte süslü parantezlerle bağlayabilirsiniz; bu, Angular'a içindeki ifadeden sorumlu olduğunu ve doğru şekilde güncellenmesini sağlamasını bildirir. Buna **metin interpolasyonu** denir.
 
 ```angular-ts
 @Component({
@@ -18,22 +18,22 @@ export class App {
 }
 ```
 
-Bu ornekte, parca sayfaya islendiginde Angular `{{ theme }}` yerine `dark` koyacaktir.
+Bu örnekte, parça sayfaya işlendiğinde Angular `{{ theme }}` yerine `dark` koyacaktır.
 
 ```angular-html
-<!-- Rendered Output -->
+<!-- İşlenmiş Çıktı -->
 <p>Your color preference is dark.</p>
 ```
 
-Zaman icinde degisen baglamalar degerleri [signal'lerden](/guide/signals) okumalidirlar. Angular, sablonda okunan signal'leri takip eder ve bu signal degerleri degistiginde islenmis sayfayi gunceller.
+Zaman içinde değişen bağlamalar değerleri [signal'lerden](/guide/signals) okumalıdırlar. Angular, şablonda okunan signal'leri takip eder ve bu signal değerleri değiştiğinde işlenmiş sayfayı günceller.
 
 ```angular-ts
 @Component({
   template: `
-    <!-- Does not necessarily update when `welcomeMessage` changes. -->
+    <!-- `welcomeMessage` değiştiğinde mutlaka güncellenmez. -->
     <p>{{ welcomeMessage }}</p>
 
-    <p>Your color preference is {{ theme() }}.</p> <!-- Always updates when the value of the `theme` signal changes. -->
+    <p>Your color preference is {{ theme() }}.</p> <!-- `theme` signal'inin değeri değiştiğinde her zaman güncellenir. -->
   `
   ...
 })
@@ -43,98 +43,98 @@ export class App {
 }
 ```
 
-Daha fazla bilgi icin [Signal'ler rehberine](/guide/signals) bakin.
+Daha fazla bilgi için [Signal'ler rehberine](/guide/signals) bakın.
 
-Tema ornegiyle devam edersek, bir kullanici sayfa yuklendikten sonra `theme` signal'ini `'light'` olarak guncelleyen bir butona tiklarsa, sayfa buna uygun olarak guncellenir:
+Tema örneğiyle devam edersek, bir kullanıcı sayfa yüklendikten sonra `theme` signal'ini `'light'` olarak güncelleyen bir butona tıklarsa, sayfa buna uygun olarak güncellenir:
 
 ```angular-html
-<!-- Rendered Output -->
+<!-- İşlenmiş Çıktı -->
 <p>Your color preference is light.</p>
 ```
 
-Metin interpolasyonunu HTML'de normalde metin yazdginiz her yerde kullanabilirsiniz.
+Metin interpolasyonunu HTML'de normalde metin yazdığınız her yerde kullanabilirsiniz.
 
-Tum ifade degerleri bir dizgeye donusturulur. Nesneler ve diziler degerin `toString` yontemi kullanilarak donusturulur.
+Tüm ifade değerleri bir dizgeye dönüştürülür. Nesneler ve diziler değerin `toString` yöntemi kullanılarak dönüştürülür.
 
-## Binding dynamic properties and attributes
+## Dinamik özellik ve nitelikleri bağlama
 
-Angular, koseli parantezlerle nesne ozelliklerine ve HTML niteliklerine dinamik degerler baglamayi destekler.
+Angular, köşeli parantezlerle nesne özelliklerine ve HTML niteliklerine dinamik değerler bağlamayı destekler.
 
-Bir HTML elemaninin DOM ornegindeki, bir [bilesenin](guide/components) ornegindeki veya bir [direktifin](guide/directives) ornegindeki ozelliklere baglama yapabilirsiniz.
+Bir HTML elemanının DOM örneğindeki, bir [bileşenin](guide/components) örneğindeki veya bir [direktifin](guide/directives) örneğindeki özelliklere bağlama yapabilirsiniz.
 
-### Native element properties
+### Yerel eleman özellikleri
 
-Her HTML elemaninin karsilik gelen bir DOM temsili vardir. Ornegin, her `<button>` HTML elemani DOM'da bir `HTMLButtonElement` ornegine karsilik gelir. Angular'da, elemanlarin DOM temsiline dogrudan deger ayarlamak icin ozellik baglamalarini kullanirsiniz.
+Her HTML elemanının karşılık gelen bir DOM temsili vardır. Örneğin, her `<button>` HTML elemanı DOM'da bir `HTMLButtonElement` örneğine karşılık gelir. Angular'da, elemanların DOM temsiline doğrudan değer ayarlamak için özellik bağlamalarını kullanırsınız.
 
 ```angular-html
-<!-- Bind the `disabled` property on the button element's DOM object -->
+<!-- Button elemanının DOM nesnesindeki `disabled` özelliğini bağla -->
 <button [disabled]="isFormValid()">Save</button>
 ```
 
-Bu ornekte, `isFormValid` her degistiginde Angular otomatik olarak `HTMLButtonElement` orneginin `disabled` ozelligini ayarlar.
+Bu örnekte, `isFormValid` her değiştiğinde Angular otomatik olarak `HTMLButtonElement` örneğinin `disabled` özelliğini ayarlar.
 
-### Component and directive properties
+### Bileşen ve direktif özellikleri
 
-Bir eleman Angular bileseni oldugunda, ayni koseli parantez sozdizimini kullanarak bilesen giris ozelliklerini ayarlamak icin ozellik baglamalarini kullanabilirsiniz.
+Bir eleman Angular bileşeni olduğunda, aynı köşeli parantez sözdizimini kullanarak bileşen giriş özelliklerini ayarlamak için özellik bağlamalarını kullanabilirsiniz.
 
 ```angular-html
-<!-- Bind the `value` property on the `MyListbox` component instance. -->
+<!-- `MyListbox` bileşen örneğindeki `value` özelliğini bağla. -->
 <my-listbox [value]="mySelection()" />
 ```
 
-Bu ornekte, `mySelection` her degistiginde Angular otomatik olarak `MyListbox` orneginin `value` ozelligini ayarlar.
+Bu örnekte, `mySelection` her değiştiğinde Angular otomatik olarak `MyListbox` örneğinin `value` özelliğini ayarlar.
 
-Direktif ozelliklerine de baglama yapabilirsiniz.
+Direktif özelliklerine de bağlama yapabilirsiniz.
 
 ```angular-html
-<!-- Bind to the `ngSrc` property of the `NgOptimizedImage` directive  -->
+<!-- `NgOptimizedImage` direktifinin `ngSrc` özelliğine bağla  -->
 <img [ngSrc]="profilePhotoUrl()" alt="The current user's profile photo" />
 ```
 
-### Attributes
+### Nitelikler
 
-Karsilik gelen DOM ozellikleri olmayan HTML niteliklerini (ornegin SVG nitelikleri) ayarlamaniz gerektiginde, sablonunuzdaki elemanlara `attr.` oneki ile nitelik baglayabilirsiniz.
+Karşılık gelen DOM özellikleri olmayan HTML niteliklerini (örneğin SVG nitelikleri) ayarlamanız gerektiğinde, şablonunuzdaki elemanlara `attr.` öneki ile nitelik bağlayabilirsiniz.
 
 <!-- prettier-ignore -->
 ```angular-html
-<!-- Bind the `role` attribute on the `<ul>` element to the component's `listRole` property. -->
+<!-- `<ul>` elemanındaki `role` niteliğini bileşenin `listRole` özelliğine bağla. -->
 <ul [attr.role]="listRole()">
 ```
 
-Bu ornekte, `listRole` her degistiginde Angular otomatik olarak `setAttribute` cagirarak `<ul>` elemaninin `role` nitelligini ayarlar.
+Bu örnekte, `listRole` her değiştiğinde Angular otomatik olarak `setAttribute` çağırarak `<ul>` elemanının `role` niteliğini ayarlar.
 
-Bir nitelik baglamasinin degeri `null` ise, Angular `removeAttribute` cagirarak niteligi kaldirir.
+Bir nitelik bağlamasının değeri `null` ise, Angular `removeAttribute` çağırarak niteliği kaldırır.
 
-### Text interpolation in properties and attributes
+### Özellik ve niteliklerde metin interpolasyonu
 
-Ozellik ve niteliklerde metin interpolasyonu sozdizimini de kullanabilirsiniz; bunun icin ozellik veya nitelik adinin etrafinda koseli parantezler yerine cifte suslu parantez sozdizimini kullanirsiniz. Bu sozdizimini kullandiginizda Angular, atama islemini bir ozellik baglamasi olarak degerlendirir.
+Özellik ve niteliklerde metin interpolasyonu sözdizimini de kullanabilirsiniz; bunun için özellik veya nitelik adının etrafında köşeli parantezler yerine çifte süslü parantez sözdizimini kullanırsınız. Bu sözdizimini kullandığınızda Angular, atama işlemini bir özellik bağlaması olarak değerlendirir.
 
 ```angular-html
-<!-- Binds a value to the `alt` property of the image element's DOM object. -->
+<!-- Görsel elemanının DOM nesnesindeki `alt` özelliğine bir değer bağlar. -->
 <img src="profile-photo.jpg" alt="Profile photo of {{ firstName() }}" />
 ```
 
-## CSS class and style property bindings
+## CSS sınıfı ve stil özelliği bağlamaları
 
-Angular, elemanlara CSS siniflarini ve CSS stil ozelliklerini baglamak icin ek ozellikler destekler.
+Angular, elemanlara CSS sınıflarını ve CSS stil özelliklerini bağlamak için ek özellikler destekler.
 
-### CSS classes
+### CSS sınıfları
 
-Bagli degerin [truthy veya falsy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) olmasina gore bir elemana CSS sinifi kosullu olarak eklemek veya kaldirmak icin bir CSS sinif baglamasi olusturabilirsiniz.
+Bağlı değerin [truthy veya falsy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) olmasına göre bir elemana CSS sınıfı koşullu olarak eklemek veya kaldırmak için bir CSS sınıf bağlaması oluşturabilirsiniz.
 
 <!-- prettier-ignore -->
 ```angular-html
-<!-- When `isExpanded` is truthy, add the `expanded` CSS class. -->
+<!-- `isExpanded` truthy olduğunda `expanded` CSS sınıfını ekle. -->
 <ul [class.expanded]="isExpanded()">
 ```
 
-Ayrica dogrudan `class` ozelligine baglama da yapabilirsiniz. Angular uc tur degeri kabul eder:
+Ayrıca doğrudan `class` özelliğine bağlama da yapabilirsiniz. Angular üç tür değeri kabul eder:
 
-| `class` degerinin aciklamasi                                                                                                                                       | TypeScript turu       |
+| `class` değerinin açıklaması                                                                                                                                       | TypeScript türü       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| Boslukla ayrilmis bir veya daha fazla CSS sinifi iceren bir dizge                                                                                                  | `string`              |
-| CSS sinif dizgelerinden olusan bir dizi                                                                                                                            | `string[]`            |
-| Her ozellik adinin bir CSS sinif adi oldugu ve karsilik gelen her degerin o sinifin elemana uygulanip uygulanmayacagini truthy degerine gore belirledigi bir nesne | `Record<string, any>` |
+| Boşlukla ayrılmış bir veya daha fazla CSS sınıfı içeren bir dizge                                                                                                  | `string`              |
+| CSS sınıf dizgelerinden oluşan bir dizi                                                                                                                            | `string[]`            |
+| Her özellik adının bir CSS sınıf adı olduğu ve karşılık gelen her değerin o sınıfın elemana uygulanıp uygulanmayacağını truthy değerine göre belirlediği bir nesne | `Record<string, any>` |
 
 ```angular-ts
 @Component({
@@ -155,7 +155,7 @@ export class UserProfile {
 }
 ```
 
-Yukaridaki ornek asagidaki DOM'u isler:
+Yukarıdaki örnek aşağıdaki DOM'u işler:
 
 <!-- prettier-ignore -->
 ```angular-html
@@ -164,9 +164,9 @@ Yukaridaki ornek asagidaki DOM'u isler:
 <button class="highlighted"> ... </button>
 ```
 
-Angular gecerli CSS sinif adlari olmayan dizge degerlerini yok sayar.
+Angular geçerli CSS sınıf adları olmayan dizge değerlerini yok sayar.
 
-Statik CSS siniflarini, dogrudan `class` baglamasini ve belirli sinif baglamalarini birlikte kullanirken Angular, islenmis sonucta tum siniflari akilli bir sekilde birlestirir.
+Statik CSS sınıflarını, doğrudan `class` bağlamasını ve belirli sınıf bağlamalarını birlikte kullanırken Angular, işlenmiş sonuçta tüm sınıfları akıllı bir şekilde birleştirir.
 
 ```angular-ts
 @Component({
@@ -179,45 +179,45 @@ export class Listbox {
 }
 ```
 
-Yukaridaki ornekte Angular, `ul` elemanini uc CSS sinifinin tumunu uygulayarak isler.
+Yukarıdaki örnekte Angular, `ul` elemanını üç CSS sınıfının tümünü uygulayarak işler.
 
 <!-- prettier-ignore -->
 ```angular-html
 <ul class="list box expanded">
 ```
 
-Angular, islenmis elemanlardaki CSS siniflarinin belirli bir sirasini garanti etmez.
+Angular, işlenmiş elemanlardaki CSS sınıflarının belirli bir sırasını garanti etmez.
 
-`class`'i bir diziye veya nesneye baglarken, Angular onceki degeri mevcut degerle uclu esittir operatoru (`===`) kullanarak karsilastirir. Angular'in guncellemeleri uygulayabilmesi icin bu degerleri degistirdiginizde yeni bir nesne veya dizi ornegi olusturmaniz gerekir.
+`class`'ı bir diziye veya nesneye bağlarken, Angular önceki değeri mevcut değerle üçlü eşittir operatörü (`===`) kullanarak karşılaştırır. Angular'ın güncellemeleri uygulayabilmesi için bu değerleri değiştirdiğinizde yeni bir nesne veya dizi örneği oluşturmanız gerekir.
 
-Bir eleman ayni CSS sinifi icin birden fazla baglamaya sahipse, Angular stil oncelik sirasina gore catismalari cozumler.
+Bir eleman aynı CSS sınıfı için birden fazla bağlamaya sahipse, Angular stil öncelik sırasına göre çatışmaları çözümler.
 
-NOTE: Sinif baglamalari, tek bir anahtarda boslukla ayrilmis sinif adlarini desteklemez. Ayrica baglama referansi ayni kaldigi icin nesnelerdeki mutasyonlari da algilayamaz. Bunlardan birini veya digerini kullanmaniz gerekiyorsa, [ngClass](/api/common/NgClass) direktifini kullanin.
+NOTE: Sınıf bağlamaları, tek bir anahtarda boşlukla ayrılmış sınıf adlarını desteklemez. Ayrıca bağlama referansı aynı kaldığı için nesnelerdeki mutasyonları da algılayamaz. Bunlardan birini veya diğerini kullanmanız gerekiyorsa, [ngClass](/api/common/NgClass) direktifini kullanın.
 
-### CSS style properties
+### CSS stil özellikleri
 
-Ayrica dogrudan bir elemana CSS stil ozelliklerini de baglayabilirsiniz.
+Ayrıca doğrudan bir elemana CSS stil özelliklerini de bağlayabilirsiniz.
 
 <!-- prettier-ignore -->
 ```angular-html
-<!-- Set the CSS `display` property based on the `isExpanded` property. -->
+<!-- `isExpanded` özelliğine göre CSS `display` özelliğini ayarla. -->
 <section [style.display]="isExpanded() ? 'block' : 'none'">
 ```
 
-Birim kabul eden CSS ozellikleri icin birimleri de belirtebilirsiniz.
+Birim kabul eden CSS özellikleri için birimleri de belirtebilirsiniz.
 
 <!-- prettier-ignore -->
 ```angular-html
-<!-- Set the CSS `height` property to a pixel value based on the `sectionHeightInPixels` property. -->
+<!-- `sectionHeightInPixels` özelliğine göre CSS `height` özelliğini piksel değeri olarak ayarla. -->
 <section [style.height.px]="sectionHeightInPixels()">
 ```
 
-Ayrica bir baglamada birden fazla stil degerini de ayarlayabilirsiniz. Angular asagidaki deger turlerini kabul eder:
+Ayrıca bir bağlamada birden fazla stil değerini de ayarlayabilirsiniz. Angular aşağıdaki değer türlerini kabul eder:
 
-| `style` degerinin aciklamasi                                                                                           | TypeScript turu       |
+| `style` değerinin açıklaması                                                                                           | TypeScript türü       |
 | ---------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| Sifir veya daha fazla CSS bildirimi iceren bir dizge, ornegin `"display: flex; margin: 8px"`.                          | `string`              |
-| Her ozellik adinin bir CSS ozellik adi oldugu ve karsilik gelen her degerin o CSS ozelliginin degeri oldugu bir nesne. | `Record<string, any>` |
+| Sıfır veya daha fazla CSS bildirimi içeren bir dizge, örneğin `"display: flex; margin: 8px"`.                          | `string`              |
+| Her özellik adının bir CSS özellik adı olduğu ve karşılık gelen her değerin o CSS özelliğinin değeri olduğu bir nesne. | `Record<string, any>` |
 
 ```angular-ts
 @Component({
@@ -236,7 +236,7 @@ export class UserProfile {
 }
 ```
 
-Yukaridaki ornek asagidaki DOM'u isler.
+Yukarıdaki örnek aşağıdaki DOM'u işler.
 
 <!-- prettier-ignore -->
 ```angular-html
@@ -244,13 +244,13 @@ Yukaridaki ornek asagidaki DOM'u isler.
 <section style="border: 1px solid black; font-weight: bold"> ... </section>
 ```
 
-`style`'i bir nesneye baglarken, Angular onceki degeri mevcut degerle uclu esittir operatoru (`===`) kullanarak karsilastirir. Angular'in guncellemeleri uygulayabilmesi icin bu degerleri degistirdiginizde yeni bir nesne ornegi olusturmaniz gerekir.
+`style`'ı bir nesneye bağlarken, Angular önceki değeri mevcut değerle üçlü eşittir operatörü (`===`) kullanarak karşılaştırır. Angular'ın güncellemeleri uygulayabilmesi için bu değerleri değiştirdiğinizde yeni bir nesne örneği oluşturmanız gerekir.
 
-Bir eleman ayni stil ozelligi icin birden fazla baglamaya sahipse, Angular stil oncelik sirasina gore catismalari cozumler.
+Bir eleman aynı stil özelliği için birden fazla bağlamaya sahipse, Angular stil öncelik sırasına göre çatışmaları çözümler.
 
-## ARIA attributes
+## ARIA nitelikleri
 
-Angular, ARIA niteliklerine dizge degerleri baglamayi destekler.
+Angular, ARIA niteliklerine dizge değerleri bağlamayı destekler.
 
 ```angular-html
 <button type="button" [aria-label]="actionLabel()">
@@ -258,6 +258,6 @@ Angular, ARIA niteliklerine dizge degerleri baglamayi destekler.
 </button>
 ```
 
-Angular, dizge degerini elemanin `aria-label` nitelligine yazar ve bagli deger `null` oldugunda kaldirrir.
+Angular, dizge değerini elemanın `aria-label` niteliğine yazar ve bağlı değer `null` olduğunda kaldırır.
 
-Bazi ARIA ozellikleri, yapili degerler (ornegin eleman referanslari) kabul eden DOM ozellikleri veya direktif girisleri sunar. Bu durumlar icin standart ozellik baglamalarini kullanin. Ornekler ve ek rehberlik icin [erisilebilirlik rehberine](best-practices/a11y#aria-attributes-and-properties) bakin.
+Bazı ARIA özellikleri, yapılı değerler (örneğin eleman referansları) kabul eden DOM özellikleri veya direktif girişleri sunar. Bu durumlar için standart özellik bağlamalarını kullanın. Örnekler ve ek rehberlik için [erişilebilirlik rehberine](best-practices/a11y#aria-özellikleri-ve-nitelikleri) bakın.

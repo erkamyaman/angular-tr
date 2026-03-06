@@ -17,7 +17,7 @@ IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriy
 
 <docs-workflow>
 
-<docs-step title="Add a method to send form data">
+<docs-step title="Form verilerini göndermek için bir metot ekleyin">
 Bu adım, uygulamanızın servisine, form verilerini verilerin hedefine göndermek için alan bir metot ekler.
 Bu örnekte, metot formdaki verileri tarayıcının konsol günlüğüne yazar.
 
@@ -31,7 +31,7 @@ IDE'nizin **Edit** bölmesinde:
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>
 
-<docs-step title="Add the form functions to the details page">
+<docs-step title="Ayrıntılar sayfasına form fonksiyonlarını ekleyin">
 Bu adım, formun etkileşimlerini yöneten kodu ayrıntılar sayfasına ekler.
 
 IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
@@ -60,7 +60,7 @@ IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>
 
-<docs-step title="Add the form's markup to the details page">
+<docs-step title="Ayrıntılar sayfasına formun işaretlemesini ekleyin">
 Bu adım, formu görüntüleyen işaretlemeyi ayrıntılar sayfasına ekler.
 
 IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
@@ -78,7 +78,7 @@ IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
 
 </docs-step>
 
-<docs-step title="Test your app's new form">
+<docs-step title="Uygulamanızın yeni formunu test edin">
 Bu adım, form verileri uygulamaya gönderildiğinde form verilerinin konsol günlüğünde göründüğünü görmek için yeni formu test eder.
 
 1. IDE'nizin **Terminal** bölmesinde, `ng serve` çalışmıyorsa çalıştırın.

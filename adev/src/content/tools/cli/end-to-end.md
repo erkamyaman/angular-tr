@@ -1,8 +1,8 @@
-# End to End Testing
+# Uçtan Uca Test
 
 Uçtan uca veya (E2E) test, tüm uygulamanızın baştan sona veya _"uçtan uca"_ beklendiği gibi çalıştığını doğrulamak için kullanılan bir test biçimidir. E2E testi, kodunuzun temel uygulama ayrıntılarından tamamen bağımsız olması bakımından birim testinden farklıdır. Genellikle bir uygulamayı, kullanıcının onunla etkileşim kurma şeklini taklit eden bir biçimde doğrulamak için kullanılır. Bu sayfa, Angular CLI kullanarak Angular'da uçtan uca teste başlama kılavuzu olarak hizmet eder.
 
-## Set Up E2E Testing
+## E2E Testini Kurma
 
 Angular CLI, Angular uygulamanız için uçtan uca testleri çalıştırmak için ihtiyacınız olan her şeyi indirir ve kurar.
 
@@ -38,7 +38,7 @@ Puppeteer
 
 Yukarıdaki listeden kullanmak istediğiniz test çalıştırıcısını bulamazsanız, `ng add` kullanarak manuel olarak bir paket ekleyebilirsiniz.
 
-## Running E2E Tests
+## E2E Testlerini Çalıştırma
 
 Uygulamanız uçtan uca test için yapılandırıldığına göre, testlerinizi çalıştırmak için aynı komutu kullanabiliriz.
 
@@ -48,9 +48,9 @@ ng e2e
 
 ```
 
-Entegre e2e paketlerinden herhangi biriyle testlerinizi çalıştırmanın "özel" bir tarafı olmadığını unutmayın. `ng e2e` komutu aslında arka planda `e2e` builder'ını çalıştırmaktadır. `e2e` adında her zaman [kendi özel builder'ınızı oluşturabilir](tools/cli/cli-builder#creating-a-builder) ve `ng e2e` kullanarak çalıştırabilirsiniz.
+Entegre e2e paketlerinden herhangi biriyle testlerinizi çalıştırmanın "özel" bir tarafı olmadığını unutmayın. `ng e2e` komutu aslında arka planda `e2e` builder'ını çalıştırmaktadır. `e2e` adında her zaman [kendi özel builder'ınızı oluşturabilir](tools/cli/cli-builder#builder-oluşturma) ve `ng e2e` kullanarak çalıştırabilirsiniz.
 
-## More information on end-to-end testing tools
+## Uçtan Uca Test Araçları Hakkında Daha Fazla Bilgi
 
 | Test Aracı  | Ayrıntılar                                                                                                    |
 | :---------- | :------------------------------------------------------------------------------------------------------------ |

@@ -1,11 +1,11 @@
-# Background processing using web workers
+# Web worker'lar kullanarak arka plan işleme
 
 [Web worker'lar](https://developer.mozilla.org/docs/Web/API/Web_Workers_API), CPU yoğun hesaplamaları bir arka plan iş parçacığında çalıştırmanıza olanak tanıyarak ana iş parçacığını kullanıcı arayüzünü güncellemek için serbest bırakır.
 Bilgisayar Destekli Tasarım \(CAD\) çizimleri oluşturma veya ağır geometrik hesaplamalar yapma gibi çok sayıda hesaplama gerçekleştiren uygulamalar, performansı artırmak için web worker'ları kullanabilir.
 
 HELPFUL: Angular CLI, kendisinin bir web worker içinde çalıştırılmasını desteklemez.
 
-## Adding a web worker
+## Web worker ekleme
 
 Mevcut bir projeye web worker eklemek için Angular CLI `ng generate` komutunu kullanın.
 
@@ -36,15 +36,15 @@ Komut aşağıdaki işlemleri gerçekleştirir.
 
    ```ts {header:"src/app/app.component.ts"}
    if (typeof Worker !== 'undefined') {
-     // Create a new
+     // Yeni bir worker oluştur
      const worker = new Worker(new URL('./app.worker', import.meta.url));
      worker.onmessage = ({data}) => {
        console.log(`page got message: ${data}`);
      };
      worker.postMessage('hello');
    } else {
-     // Web workers are not supported in this environment.
-     // You should add a fallback so that your program still executes correctly.
+     // Bu ortamda web worker'lar desteklenmiyor.
+     // Programınızın yine de doğru çalışması için bir yedek mekanizma eklemelisiniz.
    }
    ```
 

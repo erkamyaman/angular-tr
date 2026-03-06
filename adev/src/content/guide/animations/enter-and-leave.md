@@ -1,4 +1,4 @@
-# Animating your applications with `animate.enter` and `animate.leave`
+# `animate.enter` ve `animate.leave` ile uygulamalarınızı animasyonlama
 
 Iyi tasarlanmis animasyonlar uygulamanizi daha eglenceli ve kullanimi kolay hale getirebilir, ancak sadece gorsel bir unsur degildir.
 Animasyonlar uygulamanizi ve kullanici deneyimini bircok sekilde iyilestirebilir:
@@ -55,7 +55,7 @@ NOTE: Bir elemanda birden fazla anahtar kare animasyonu veya gecis ozelligi kull
     <docs-code header="leave-binding.css" path="adev/src/content/examples/animations/src/app/enter-and-leave/leave-binding.css"/>
 </docs-code-multifile>
 
-### Element removal order matters
+### Eleman kaldırma sırası önemlidir
 
 `animate.leave` animasyonlarinin nasil calistirildiginda ve bir animasyonun ne zaman gercekleseceginde bazi incelikler vardir. `animate.leave`, kaldirilan elemanin uzerine yerlestirilmisse calisir. Ancak, `animate.leave` kaldirilan elemanin bir _alt ogesi_ olan bir elemandaysa animasyon **yapmaz**. Bunun nedeni, bir ust dugum kaldirildiginda tum alt agaci da beraberinde goturmesidir ve o ust dugumde animasyon olmadigindan hemen kaldirilacaktir. Bu, `animate.leave` ile animasyonlanacak bir eleman olmadigini gosterir. `animate.leave` kullaniminizda bunu dikkate almaniz gerekecektir.
 
@@ -65,7 +65,7 @@ NOTE: Bir elemanda birden fazla anahtar kare animasyonu veya gecis ozelligi kull
     <docs-code header="leave.css" path="adev/src/content/examples/animations/src/app/enter-and-leave/leave-parent.css"/>
 </docs-code-multifile>
 
-## Event Bindings, Functions, and Third-party Libraries
+## Olay bağlamaları, fonksiyonlar ve üçüncü parti kütüphaneler
 
 Hem `animate.enter` hem de `animate.leave`, fonksiyon cagrilarina izin veren olay baglama sozdizimini destekler. Bu sozdizimini bilesen kodunuzdaki bir fonksiyonu cagirmak veya [GSAP](https://gsap.com/), [anime.js](https://animejs.com/) veya herhangi bir JavaScript animasyon kutuphanesi gibi ucuncu parti animasyon kutuphanelerini kullanmak icin kullanabilirsiniz.
 
@@ -85,11 +85,11 @@ IMPORTANT: `animate.leave` kullanirken Angular'in elemani kaldirmasi icin `anima
   { provide: MAX_ANIMATION_TIMEOUT, useValue: 6000 }
 ```
 
-## Compatibility with Legacy Angular Animations
+## Eski Angular animasyonlarıyla uyumluluk
 
 Eski animasyonlari `animate.enter` ve `animate.leave` ile ayni bilesen icinde kullanamazsiniz. Bunu yapmak, giris siniflarinin eleman uzerinde kalmasina veya ayrilan dugumlerin kaldirilmamasina yol acar. Ayni _uygulama_ icinde hem eski animasyonlari hem de yeni `animate.enter` ve `animate.leave` animasyonlarini kullanmak ise sorun degildir. Tek istisna icerik projeksiyonudur. Eski animasyonlari olan bir bilesenden `animate.enter` veya `animate.leave` olan baska bir bilesene icerik projeksiyonu yapiyorsaniz veya tam tersi, bu ayni bilesende birlikte kullaniliyormus gibi ayni davranisa yol acar. Bu desteklenmemektedir.
 
-## Testing
+## Test etme
 
 TestBed, test ortaminizda animasyonlari etkinlestirmek veya devre disi birakmak icin yerlesik destek saglar. CSS animasyonlari calismak icin bir tarayici gerektirir ve API'lerin cogu test ortaminda mevcut degildir. Varsayilan olarak TestBed, test ortamlarinizdaki animasyonlari sizin icin devre disi birakir.
 
@@ -103,7 +103,7 @@ Bu, test ortaminizda animasyonlari normal sekilde davranacak sekilde yapilandiri
 
 NOTE: Bazi test ortamlari `animationstart`, `animationend` ve bunlarin gecis olay karsiliklari gibi animasyon olaylarini yayinlamaz.
 
-## More on Angular animations
+## Angular animasyonları hakkında daha fazla bilgi
 
 Asagidakilerle de ilgilenebilirsiniz:
 

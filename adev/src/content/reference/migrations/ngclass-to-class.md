@@ -1,4 +1,4 @@
-# Migration from NgClass to class bindings
+# NgClass'tan sınıf bağlamalarına geçiş
 
 Bu şematik, uygulamanızdaki NgClass direktifi kullanımlarını sınıf bağlamalarına geçirir.
 Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
@@ -9,19 +9,19 @@ Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
 ng generate @angular/core:ngclass-to-class
 ```
 
-#### Before
+#### Önce
 
 ```html
 <div [ngClass]="{admin: isAdmin, dense: density === 'high'}"></div>
 ```
 
-#### After
+#### Sonra
 
 ```html
 <div [class]="{admin: isAdmin, dense: density === 'high'}"></div>
 ```
 
-## Configuration options
+## Yapılandırma seçenekleri
 
 Geçiş, belirli ihtiyaçlarınıza göre ince ayar yapmak için birkaç seçeneği destekler.
 

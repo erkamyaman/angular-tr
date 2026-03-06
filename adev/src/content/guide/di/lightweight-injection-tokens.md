@@ -1,4 +1,4 @@
-# Optimizing client application size with lightweight injection tokens
+# Hafif enjeksiyon token'ları ile istemci uygulama boyutunu optimize etme
 
 Bu sayfa, kütüphane geliştiricileri için önerilen bir bağımlılık enjeksiyonu tekniğinin kavramsal bir genel bakışını sağlar.
 Kütüphanenizi _hafif enjeksiyon token'ları_ ile tasarlamak, kütüphanenizi kullanan istemci uygulamalarının paket boyutunu optimize etmeye yardımcı olur.
@@ -17,7 +17,7 @@ Bu durumda, uygulama geliştiricisi bu servisin tree-shaken edilmesini ve derlen
 Uygulama geliştiricisi kütüphanedeki bir tree-shaking sorunu hakkında bilgi sahibi olamayacağı veya düzeltemeyeceği için, bunu yapmak kütüphane geliştiricisinin sorumluluğundadır.
 Kullanılmayan bileşenlerin tutulmasını önlemek için, kütüphaneniz hafif enjeksiyon token'ı tasarım desenini kullanmalıdır.
 
-## When tokens are retained
+## Token'lar ne zaman tutulur
 
 Token tutulmasının hangi koşullarda gerçekleştiğini daha iyi açıklamak için, bir library-card bileşeni sağlayan bir kütüphane düşünün.
 Bu bileşen bir gövde içerir ve isteğe bağlı bir başlık içerebilir:
@@ -68,12 +68,12 @@ Derleyici, bu konumlardaki token referanslarını farklı şekilde ele alır:
 Bu, uygulama aslında hiçbir yerde `<lib-header>` kullanmasa bile referans verilen bileşenin tree-shaken edilmesini engeller.
 `LibHeader`'ın kodu, şablonu ve stilleri birleşerek çok büyükse, gereksiz yere dahil etmek istemci uygulamasının boyutunu önemli ölçüde artırabilir.
 
-## When to use the lightweight injection token pattern
+## Hafif enjeksiyon token'ı deseni ne zaman kullanılır
 
 Tree-shaking sorunu, bir bileşen enjeksiyon token'ı olarak kullanıldığında ortaya çıkar.
 Bunun gerçekleşebileceği iki durum vardır:
 
-- Token, bir [içerik sorgusunun](guide/components/queries#content-queries) değer konumunda kullanılır.
+- Token, bir [içerik sorgusunun](guide/components/queries#içerik-sorguları) değer konumunda kullanılır.
 - Token, `inject` fonksiyonu ile kullanılır.
 
 Aşağıdaki örnekte, `CustomOther` token'ının her iki kullanımı da `CustomOther`'ın tutulmasına neden olur ve kullanılmadığında tree-shaken edilmesini engeller:
@@ -92,7 +92,7 @@ Token artık bir değer konumundadır, bu da tree-shaker'ın referansı tutması
 
 HELPFUL: Kütüphaneler tüm servisler için [tree-shakeable sağlayıcılar](guide/di/defining-dependency-providers) kullanmalı ve bağımlılıkları bileşenler veya modüller yerine root seviyesinde sağlamalıdır.
 
-## Using lightweight injection tokens
+## Hafif enjeksiyon token'larını kullanma
 
 Hafif enjeksiyon token'ı tasarım deseni, enjeksiyon token'ı olarak küçük bir soyut sınıf kullanmaktan ve gerçek uygulamayı daha sonraki bir aşamada sağlamaktan oluşur.
 Soyut sınıf tutulur, tree-shaken edilmez, ancak küçüktür ve uygulama boyutu üzerinde maddi bir etkisi yoktur.
@@ -133,7 +133,7 @@ Bu token'ı bileşen tanımında sağlayıcı olarak güvenle kullanabilirsiniz,
 3. `contentChild` veya `contentChildren` kullanılarak hafif desenin enjeksiyonu.
 4. Hafif enjeksiyon token'ının uygulamasında, hafif enjeksiyon token'ını uygulama ile ilişkilendiren bir sağlayıcı.
 
-### Use the lightweight injection token for API definition
+### API tanımı için hafif enjeksiyon token'ını kullanma
 
 Hafif bir enjeksiyon token'ı enjekte eden bir bileşenin, enjekte edilen sınıfta bir yöntemi çağırması gerekebilir.
 Token artık soyut bir sınıftır. Enjekte edilebilir bileşen bu sınıfı uyguladığından, soyut hafif enjeksiyon token'ı sınıfında da soyut bir yöntem bildirmelisiniz.
@@ -154,7 +154,7 @@ abstract class LibHeaderToken {
 })
 class LibHeader extends LibHeaderToken {
   doSomething(): void {
-    // Concrete implementation of `doSomething`
+    // `doSomething`'in somut uygulaması
   }
 }
 
@@ -176,7 +176,7 @@ Bu örnekte, üst eleman alt bileşeni almak için token'ı sorgular ve varsa or
 Alt elemanda bir yöntem çağırmadan önce, üst bileşen alt bileşenin mevcut olup olmadığını kontrol eder.
 Alt bileşen tree-shaken edilmişse, ona çalışma zamanı referansı yoktur ve yöntemine çağrı yapılmaz.
 
-### Naming your lightweight injection token
+### Hafif enjeksiyon token'ınızı adlandırma
 
 Hafif enjeksiyon token'ları yalnızca bileşenlerle yararlıdır.
 [Angular Stil Kılavuzu](style-guide), bileşenleri `Component` son eki olmadan adlandırmanızı önerir.

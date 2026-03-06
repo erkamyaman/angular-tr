@@ -1,8 +1,8 @@
-# Content projection with ng-content
+# ng-content ile içerik yansıtma
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okudugunuzu varsayar. Angular'da yeniyseniz once onu okuyun.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Farkli icerik turleri icin kapsayici gorevi goren bilesenlere siklikla ihtiyac duyarsiniz. Ornegin, ozel bir kart bileseni olusturmak isteyebilirsiniz:
+Farklı içerik türleri için kapsayıcı görevi gören bileşenlere sıklıkla ihtiyaç duyarsınız. Örneğin, özel bir kart bileşeni oluşturmak isteyebilirsiniz:
 
 ```angular-ts
 @Component({
@@ -14,7 +14,7 @@ export class CustomCard {
 }
 ```
 
-**Icerigin nereye yerlestirilecegin i belirtmek icin `<ng-content>` elemanini yer tutucu olarak kullanabilirsiniz**:
+**İçeriğin nereye yerleştirileceğini belirtmek için `<ng-content>` elemanını yer tutucu olarak kullanabilirsiniz**:
 
 ```angular-ts
 @Component({
@@ -26,12 +26,12 @@ export class CustomCard {
 }
 ```
 
-TIP: `<ng-content>`, [yerel `<slot>` elemani](https://developer.mozilla.org/docs/Web/HTML/Element/slot) ile benzer sekilde calisir, ancak bazi Angular'a ozgu islevselliklerle birlikte.
+TIP: `<ng-content>`, [yerel `<slot>` elemanı](https://developer.mozilla.org/docs/Web/HTML/Element/slot) ile benzer şekilde çalışır, ancak bazı Angular'a özgü işlevselliklerle birlikte.
 
-`<ng-content>` iceren bir bilesen kullandiginizda, bilesen host elemaninin tum alt elemanlari o `<ng-content>` konumunda render edilir veya **yansitilir** (project):
+`<ng-content>` içeren bir bileşen kullandığınızda, bileşen host elemanının tüm alt elemanları o `<ng-content>` konumunda render edilir veya **yansıtılır** (project):
 
 ```angular-ts
-// Component source
+// Bileşen kaynağı
 @Component({
   selector: 'custom-card',
   template: `
@@ -46,14 +46,14 @@ export class CustomCard {
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <p>This is the projected content</p>
 </custom-card>
 ```
 
 ```angular-html
-<!-- The rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <p>This is the projected content</p>
@@ -61,15 +61,15 @@ export class CustomCard {
 </custom-card>
 ```
 
-Angular, bu sekilde iletilen bir bilesnenin tum alt elemanlarini o bilesnenin **icerigi** olarak adlandirir. Bu, bilesnenin sablonunda tanimlanan elemanlara karsilik gelen bilesnenin **gorunumu**nden (view) farklidir.
+Angular, bu şekilde iletilen bir bileşenin tüm alt elemanlarını o bileşenin **içeriği** olarak adlandırır. Bu, bileşenin şablonunda tanımlanan elemanlara karşılık gelen bileşenin **görünümü**nden (view) farklıdır.
 
-**`<ng-content>` elemani ne bir bilesen ne de bir DOM elemanidir**. Bunun yerine, Angular'a icerigi nerede render edecegini soyleyen ozel bir yer tutucudur. Angular'in derleyicisi tum `<ng-content>` elemanlarini derleme zamaninda isler. `<ng-content>` elemanini calisma zamaninda ekleyemez, kaldiramazsiniz veya degistiremezsiniz. `<ng-content>` uzerine direktifler, stiller veya rastgele nitelikler ekleyemezsiniz.
+**`<ng-content>` elemanı ne bir bileşen ne de bir DOM elemanıdır**. Bunun yerine, Angular'a içeriği nerede render edeceğini söyleyen özel bir yer tutucudur. Angular'ın derleyicisi tüm `<ng-content>` elemanlarını derleme zamanında işler. `<ng-content>` elemanını çalışma zamanında ekleyemez, kaldıramazsınız veya değiştiremezsiniz. `<ng-content>` üzerine direktifler, stiller veya rastgele nitelikler ekleyemezsiniz.
 
-IMPORTANT: `<ng-content>` elemanini `@if`, `@for` veya `@switch` ile kosullu olarak dahil etmemelisiniz. Angular, `<ng-content>` yer tutucusu gizli olsa bile, o yer tutucuya render edilen icerik icin her zaman DOM dugumlerini olusturur ve baslatir. Bilesen iceriginin kosullu render edilmesi icin [Sablon parcalari](api/core/ng-template) belgesine bakin.
+IMPORTANT: `<ng-content>` elemanını `@if`, `@for` veya `@switch` ile koşullu olarak dahil etmemelisiniz. Angular, `<ng-content>` yer tutucusu gizli olsa bile, o yer tutucuya render edilen içerik için her zaman DOM düğümlerini oluşturur ve başlatır. Bileşen içeriğinin koşullu render edilmesi için [Şablon parçaları](api/core/ng-template) belgesine bakın.
 
-## Multiple content placeholders
+## Birden fazla içerik yer tutucusu
 
-Angular, CSS secicisine dayali olarak farkli `<ng-content>` yer tutucularina farkli elemanlarin yansitilmasini destekler. Yukaridaki kart ornegini genisleterek, `select` niteligi kullanarak kart basligi ve kart govdesi icin iki yer tutucu olusturabilirsiniz:
+Angular, CSS seçicisine dayalı olarak farklı `<ng-content>` yer tutucularına farklı elemanların yansıtılmasını destekler. Yukarıdaki kart örneğini genişleterek, `select` niteliği kullanarak kart başlığı ve kart gövdesi için iki yer tutucu oluşturabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -86,7 +86,7 @@ export class CardBody {}
 ```
 
 ```angular-ts
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 @Component({
   selector: 'custom-card',
   template: `
@@ -101,7 +101,7 @@ export class CustomCard {}
 ```
 
 ```angular-ts
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 @Component({
   selector: 'app-root',
   imports: [CustomCard, CardTitle, CardBody],
@@ -116,7 +116,7 @@ export class App {}
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -126,22 +126,22 @@ export class App {}
 </custom-card>
 ```
 
-`<ng-content>` yer tutucusu, [bilesen secicileri](guide/components/selectors) ile ayni CSS secicilerini destekler.
+`<ng-content>` yer tutucusu, [bileşen seçicileri](guide/components/selectors) ile aynı CSS seçicilerini destekler.
 
-`select` niteligi olan bir veya daha fazla `<ng-content>` yer tutucusu ve `select` niteligi olmayan bir `<ng-content>` yer tutucusu eklerseniz, ikincisi herhangi bir `select` niteligi ile eslesmeyen tum elemanlari yakalar:
+`select` niteliği olan bir veya daha fazla `<ng-content>` yer tutucusu ve `select` niteliği olmayan bir `<ng-content>` yer tutucusu eklerseniz, ikincisi herhangi bir `select` niteliği ile eşleşmeyen tüm elemanları yakalar:
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title"></ng-content>
   <div class="card-divider"></div>
-  <!-- capture anything except "card-title" -->
+  <!-- "card-title" dışındaki her şeyi yakala -->
   <ng-content></ng-content>
 </div>
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <card-title>Hello</card-title>
   <img src="..." />
@@ -150,7 +150,7 @@ export class App {}
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -161,14 +161,14 @@ export class App {}
 </custom-card>
 ```
 
-Bir bilesen, `select` niteligi olmayan bir `<ng-content>` yer tutucusu icermiyorsa, bilesnenin yer tutuculariyla eslesmeyen elemanlar DOM'a render edilmez.
+Bir bileşen, `select` niteliği olmayan bir `<ng-content>` yer tutucusu içermiyorsa, bileşenin yer tutucularıyla eşleşmeyen elemanlar DOM'a render edilmez.
 
-## Fallback content
+## Yedek içerik
 
-Angular, bir bilesnenin `<ng-content>` yer tutucusu icin eslesen alt icerik yoksa _yedek icerik_ gosterebilir. `<ng-content>` elemaninin kendisine alt icerik ekleyerek yedek icerik belirtebilirsiniz.
+Angular, bir bileşenin `<ng-content>` yer tutucusu için eşleşen alt içerik yoksa _yedek içerik_ gösterebilir. `<ng-content>` elemanının kendisine alt içerik ekleyerek yedek içerik belirtebilirsiniz.
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title">Default Title</ng-content>
   <div class="card-divider"></div>
@@ -177,15 +177,15 @@ Angular, bir bilesnenin `<ng-content>` yer tutucusu icin eslesen alt icerik yoks
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <card-title>Hello</card-title>
-  <!-- No card-body provided -->
+  <!-- card-body sağlanmadı -->
 </custom-card>
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -195,12 +195,12 @@ Angular, bir bilesnenin `<ng-content>` yer tutucusu icin eslesen alt icerik yoks
 </custom-card>
 ```
 
-## Aliasing content for projection
+## Yansıtma için içerik takma adı verme
 
-Angular, herhangi bir eleman uzerinde bir CSS secici belirtmenize olanak taniyan ozel bir `ngProjectAs` niteligi destekler. `ngProjectAs` niteligi olan bir eleman `<ng-content>` yer tutucusuyla kontrol edildiginde, Angular elemanin kimligi yerine `ngProjectAs` degerini karsilastirir:
+Angular, herhangi bir eleman üzerinde bir CSS seçici belirtmenize olanak tanıyan özel bir `ngProjectAs` niteliği destekler. `ngProjectAs` niteliği olan bir eleman `<ng-content>` yer tutucusuyla kontrol edildiğinde, Angular elemanın kimliği yerine `ngProjectAs` değerini karşılaştırır:
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title"></ng-content>
   <div class="card-divider"></div>
@@ -209,7 +209,7 @@ Angular, herhangi bir eleman uzerinde bir CSS secici belirtmenize olanak taniyan
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <h3 ngProjectAs="card-title">Hello</h3>
 
@@ -218,7 +218,7 @@ Angular, herhangi bir eleman uzerinde bir CSS secici belirtmenize olanak taniyan
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <h3>Hello</h3>
@@ -228,4 +228,4 @@ Angular, herhangi bir eleman uzerinde bir CSS secici belirtmenize olanak taniyan
 </custom-card>
 ```
 
-`ngProjectAs` yalnizca statik degerleri destekler ve dinamik ifadelere baglanamaz.
+`ngProjectAs` yalnızca statik değerleri destekler ve dinamik ifadelere bağlanamaz.

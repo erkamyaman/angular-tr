@@ -1,11 +1,11 @@
-# Configuring application environments
+# Uygulama Ortamlarını Yapılandırma
 
 Projeniz için `development` ve `staging` gibi farklı varsayılan değerlere sahip, farklı adlandırılmış derleme yapılandırmaları tanımlayabilirsiniz.
 
 Her adlandırılmış yapılandırma, `build`, `serve` ve `test` gibi çeşitli builder hedeflerine uygulanan seçenekler için varsayılan değerlere sahip olabilir.
 [Angular CLI](tools/cli) `build`, `serve` ve `test` komutları, hedeflenen ortamınız için dosyaları uygun sürümlerle değiştirebilir.
 
-## Angular CLI configurations
+## Angular CLI Yapılandırmaları
 
 Angular CLI builder'ları, komut satırında sağlanan yapılandırmaya göre bir builder'ın belirli seçeneklerinin üzerine yazmaya olanak tanıyan bir `configurations` nesnesini destekler.
 
@@ -18,11 +18,11 @@ Angular CLI builder'ları, komut satırında sağlanan yapılandırmaya göre bi
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            // By default, disable source map generation.
+            // Varsayılan olarak, kaynak harita oluşturmayı devre dışı bırak.
             "sourceMap": false
           },
           "configurations": {
-            // For the `debug` configuration, enable source maps.
+            // `debug` yapılandırması için kaynak haritaları etkinleştir.
             "debug": {
               "sourceMap": true
             }
@@ -52,7 +52,7 @@ ng build --configuration debug,production,customer-facing
 
 ```
 
-## Configure environment-specific defaults
+## Ortama Özgü Varsayılan Değerleri Yapılandırma
 
 `@angular-devkit/build-angular:browser`, bir derleme çalıştırılmadan önce kaynak dosyaların değiştirilmesi için bir seçenek olan dosya değiştirmelerini destekler.
 Bunu `--configuration` ile birlikte kullanmak, uygulamanızda ortama özgü verileri yapılandırmak için bir mekanizma sağlar.
@@ -109,7 +109,7 @@ export const environment = {
 };
 ```
 
-## Using environment-specific variables in your app
+## Uygulamanızda Ortama Özgü Değişkenleri Kullanma
 
 Tanımladığınız ortam yapılandırmalarını kullanmak için bileşenlerinizin orijinal ortam dosyasını içe aktarması gerekir:
 
@@ -124,7 +124,7 @@ Bileşen dosyasındaki (`app.ts`) aşağıdaki kod, yapılandırma dosyalarında
 ```ts
 import {environment} from './../environments/environment';
 
-// Fetches from `http://my-prod-url` in production, `http://my-dev-url` in development.
+// Üretimde `http://my-prod-url`'den, geliştirmede `http://my-dev-url`'den veri çeker.
 fetch(environment.apiUrl);
 ```
 
@@ -190,11 +190,11 @@ Varsayılan olarak, `build` hedefi `production` ve `development` yapılandırmal
     "options": { … },
     "configurations": {
       "development": {
-        // Use the `development` configuration of the `build` target.
+        // `build` hedefinin `development` yapılandırmasını kullan.
         "buildTarget": "my-app:build:development"
       },
       "production": {
-        // Use the `production` configuration of the `build` target.
+        // `build` hedefinin `production` yapılandırmasını kullan.
         "buildTarget": "my-app:build:production"
       }
     },

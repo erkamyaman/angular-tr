@@ -1,64 +1,64 @@
-# Keeping your Angular projects up-to-date
+# Angular projelerinizi güncel tutma
 
-Web ve tum web ekosistemi gibi, Angular da surekli olarak gelistirilmektedir.
-Angular, surekli iyilestirmeyi guclu bir kararlilik odagi ve guncellemeleri basit hale getirme ile dengeler.
-Angular uygulamanizi guncel tutmak, oncul yeni ozelliklerden, optimizasyonlardan ve hata duzeltmelerinden yararlanmanizi saglar.
+Web ve tüm web ekosistemi gibi, Angular da sürekli olarak geliştirilmektedir.
+Angular, sürekli iyileştirmeyi güçlü bir kararlılık odağı ve güncellemeleri basit hale getirme ile dengeler.
+Angular uygulamanızı güncel tutmak, öncül yeni özelliklerden, optimizasyonlardan ve hata düzeltmelerinden yararlanmanızı sağlar.
 
-Bu belge, Angular uygulamalarinizi ve kutuphanelerinizi guncel tutmaniza yardimci olacak bilgi ve kaynaklar icermektedir.
+Bu belge, Angular uygulamalarınızı ve kütüphanelerinizi güncel tutmanıza yardımcı olacak bilgi ve kaynaklar içermektedir.
 
-Surum politikamiz ve uygulamalarimiz hakkinda bilgi icin — destek ve kullanim disi birakma uygulamalari ile yayin takvimi dahil — [Angular surumleme ve yayinlar](reference/releases 'Angular versioning and releases') sayfasina bakin.
+Sürüm politikamız ve uygulamalarımız hakkında bilgi için — destek ve kullanım dışı bırakma uygulamaları ile yayın takvimi dahil — [Angular versiyonlama ve yayınlar](reference/releases 'Angular versioning and releases') sayfasına bakın.
 
-HELPFUL: Su anda AngularJS kullaniyorsaniz, [AngularJS'den Yukseltme](https://angular.io/guide/upgrade 'Upgrading from Angular JS') sayfasina bakin.
-_AngularJS_, Angular'in tum v1.x surumlerinin adidir.
+HELPFUL: Şu anda AngularJS kullanıyorsanız, [AngularJS'den Yükseltme](https://angular.io/guide/upgrade 'Upgrading from Angular JS') sayfasına bakın.
+_AngularJS_, Angular'ın tüm v1.x sürümlerinin adıdır.
 
-## Getting notified of new releases
+## Yeni sürümlerden bildirim alma
 
-Yeni surumler mevcut oldugunda bildirim almak icin X'te (eski adiyla Twitter) [@angular](https://x.com/angular '@angular on X') hesabini takip edin veya [Angular blogu](https://blog.angular.dev 'Angular blog')'na abone olun.
+Yeni sürümler mevcut olduğunda bildirim almak için X'te (eski adıyla Twitter) [@angular](https://x.com/angular '@angular on X') hesabını takip edin veya [Angular blogu](https://blog.angular.dev 'Angular blog')'na abone olun.
 
-## Learning about new features
+## Yeni özellikler hakkında bilgi edinme
 
-Yenilikler neler? Neler degisti? En onemli bilmeniz gereken seyleri [surum duyurularinda](https://blog.angular.dev/ 'Angular blog - release announcements') Angular blogunda paylasiyoruz.
+Yenilikler neler? Neler değişti? En önemli bilmeniz gereken şeyleri [sürüm duyurularında](https://blog.angular.dev/ 'Angular blog - release announcements') Angular blogunda paylaşıyoruz.
 
-Surume gore duzenlenmis degisikliklerin tam listesini incelemek icin [Angular degisiklik gunlugu](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log')'ne bakin.
+Sürüme göre düzenlenmiş değişikliklerin tam listesini incelemek için [Angular değişiklik günlüğü](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log')'ne bakın.
 
-## Checking your version of Angular
+## Angular sürümünüzü kontrol etme
 
-Uygulamanizin Angular surumunu kontrol etmek icin proje dizininizden `ng version` komutunu kullanin.
+Uygulamanızın Angular sürümünü kontrol etmek için proje dizininizden `ng version` komutunu kullanın.
 
-## Finding the current version of Angular
+## Angular'ın güncel sürümünü bulma
 
-Angular'in en son kararli yayinlanmis surumu [npm'de](https://www.npmjs.com/package/@angular/core 'Angular on npm') "Version" altinda gorulur. Ornegin, `16.2.4`.
+Angular'ın en son kararlı yayınlanmış sürümü [npm'de](https://www.npmjs.com/package/@angular/core 'Angular on npm') "Version" altında görülür. Örneğin, `16.2.4`.
 
-Ayrica CLI komutu [`ng update`](cli/update) kullanarak Angular'in en guncel surumunu bulabilirsiniz.
-Varsayilan olarak, [`ng update`](cli/update) (ek arguman olmadan) mevcut guncellemeleri listeler.
+Ayrıca CLI komutu [`ng update`](cli/update) kullanarak Angular'ın en güncel sürümünü bulabilirsiniz.
+Varsayılan olarak, [`ng update`](cli/update) (ek argüman olmadan) mevcut güncellemeleri listeler.
 
-## Updating your environment and apps
+## Ortamınızı ve uygulamalarınızı güncelleme
 
-Guncellemeyi karmasik olmaktan cikarmak icin, etkilesimli [Angular Guncelleme Kilavuzu](update-guide)'nda eksiksiz talimatlar sagliyoruz.
+Güncellemeyi karmaşık olmaktan çıkarmak için, etkileşimli [Angular Güncelleme Kılavuzu](update-guide)'nda eksiksiz talimatlar sağlıyoruz.
 
-Angular Guncelleme Kilavuzu, belirttiginiz mevcut ve hedef surumlere dayali olarak ozellesitirilmis guncelleme talimatlari saglar.
-Uygulamalarinizin karmasikligina uygun temel ve gelismis guncelleme yollarini icerir.
-Ayrica sorun giderme bilgileri ve yeni surumden en iyi sekilde yararlanmaniza yardimci olacak onerilen manuel degisiklikleri icerir.
+Angular Güncelleme Kılavuzu, belirttiğiniz mevcut ve hedef sürümlere dayalı olarak özelleştirilmiş güncelleme talimatları sağlar.
+Uygulamalarınızın karmaşıklığına uygun temel ve gelişmiş güncelleme yollarını içerir.
+Ayrıca sorun giderme bilgileri ve yeni sürümden en iyi şekilde yararlanmanıza yardımcı olacak önerilen manuel değişiklikleri içerir.
 
-Basit guncellemeler icin CLI komutu [`ng update`](cli/update) ihtiyaciniz olan tek seydir.
-Ek arguman olmadan, [`ng update`](cli/update) mevcut guncellemeleri listeler ve uygulamanizi en guncel surume guncellemek icin onerilen adimlari saglar.
+Basit güncellemeler için CLI komutu [`ng update`](cli/update) ihtiyacınız olan tek şeydir.
+Ek argüman olmadan, [`ng update`](cli/update) mevcut güncellemeleri listeler ve uygulamanızı en güncel sürüme güncellemek için önerilen adımları sağlar.
 
-[Angular Surumleme ve Yayinlar](reference/releases#angular-versioning 'Angular Release Practices, Versioning'), bir surumun surum numarasina gore bekleyebileceginiz degisiklik duzeyini tanimlar.
-Ayrica desteklenen guncelleme yollarini da tanimlar.
+[Angular Versiyonlama ve Yayınlar](reference/releases#angular-versiyonlama 'Angular Release Practices, Versioning'), bir sürümün sürüm numarasına göre bekleyebileceğiniz değişiklik düzeyini tanımlar.
+Ayrıca desteklenen güncelleme yollarını da tanımlar.
 
-## Resource summary
+## Kaynak özeti
 
-- Surum duyurulari:
-  [Angular blogu - surum duyurulari](https://blog.angular.dev/ 'Angular blog announcements about recent releases')
+- Sürüm duyuruları:
+  [Angular blogu - sürüm duyuruları](https://blog.angular.dev/ 'Angular blog announcements about recent releases')
 
-- Surum ayrintilari:
-  [Angular degisiklik gunlugu](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log')
+- Sürüm ayrıntıları:
+  [Angular değişiklik günlüğü](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log')
 
-- Guncelleme talimatlari:
-  [Angular Guncelleme Kilavuzu](update-guide)
+- Güncelleme talimatları:
+  [Angular Güncelleme Kılavuzu](update-guide)
 
-- Guncelleme komutu referansları:
+- Güncelleme komutu referansları:
   [Angular CLI `ng update` komut referansları](cli/update)
 
-- Surumleme, yayin, destek ve kullanim disi birakma uygulamalari:
-  [Angular surumleme ve yayinlar](reference/releases 'Angular versioning and releases')
+- Versiyonlama, yayın, destek ve kullanım dışı bırakma uygulamaları:
+  [Angular versiyonlama ve yayınlar](reference/releases 'Angular versioning and releases')

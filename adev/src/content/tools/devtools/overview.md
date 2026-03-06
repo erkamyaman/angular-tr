@@ -1,4 +1,4 @@
-# DevTools Overview
+# DevTools Genel Bakış
 
 Angular DevTools, Angular uygulamaları için hata ayıklama ve profil oluşturma yetenekleri sağlayan bir tarayıcı uzantısıdır.
 
@@ -13,7 +13,7 @@ HELPFUL: Chrome'un yeni sekme sayfası yüklü uzantıları çalıştırmaz, bu 
 
 <img src="assets/images/guide/devtools/devtools.png" alt="An overview of Angular DevTools showing a tree of components for an application.">
 
-## Open your application
+## Uygulamanızı Açma
 
 Uzantıyı açtığınızda üç ek sekme göreceksiniz:
 
@@ -32,16 +32,16 @@ HELPFUL: Chromium tabanlı tarayıcı kullanıcıları için, [Performans paneli
 Angular DevTools'un sağ üst köşesinde bir bilgi düğmesi bulunur ve bu düğme bir açılır pencere açar.
 Bilgi açılır penceresi, diğerlerinin yanı sıra sayfada hangi Angular sürümünün çalıştığını ve devtools sürümünü içerir.
 
-### Angular application not detected
+### Angular uygulaması algılanamadı
 
 Angular DevTools'u açarken "Angular application not detected" hata mesajı görürseniz, bu, sayfadaki bir Angular uygulamasıyla iletişim kuramadığı anlamına gelir.
 Bunun en yaygın nedeni, incelediğiniz web sayfasının bir Angular uygulaması içermemesidir.
 Doğru web sayfasını incelediğinizden ve Angular uygulamasının çalıştığından emin olun.
 
-### We detected an application built with production configuration
+### Üretim yapılandırmasıyla derlenmiş bir uygulama algılandı
 
 "We detected an application built with production configuration. Angular DevTools only supports development builds." hata mesajı görürseniz, bu, sayfada bir Angular uygulaması bulunduğu ancak üretim optimizasyonlarıyla derlendiği anlamına gelir.
 Üretim için derleme yaparken, Angular CLI performansı artırmak için sayfadaki JavaScript miktarını en aza indirmek amacıyla çeşitli hata ayıklama özelliklerini kaldırır. Bu, DevTools ile iletişim kurmak için gereken özellikleri de içerir.
 
 DevTools'u çalıştırmak için uygulamanızı optimizasyonlar devre dışı bırakılmış şekilde derlemeniz gerekir. `ng serve` bunu varsayılan olarak yapar.
-Dağıtılmış bir uygulamada hata ayıklamanız gerekiyorsa, yapılandırmanızda [`optimization` yapılandırma seçeneği](reference/configs/workspace-config#optimization-configuration) (`{"optimization": false}`) ile optimizasyonları devre dışı bırakın.
+Dağıtılmış bir uygulamada hata ayıklamanız gerekiyorsa, yapılandırmanızda [`optimization` yapılandırma seçeneği](reference/configs/workspace-config#optimizasyon-yapılandırması) (`{"optimization": false}`) ile optimizasyonları devre dışı bırakın.

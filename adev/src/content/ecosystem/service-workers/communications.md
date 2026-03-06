@@ -1,4 +1,4 @@
-# Communicating with the Service Worker
+# Service Worker ile İletişim
 
 Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmekten fazlasını yapar; aynı zamanda service worker ile etkileşim kurmak ve uygulamanızın önbelleklemesini kontrol etmek için kullanabileceğiniz servisler sağlar.
 
@@ -12,7 +12,7 @@ Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmek
 - Service worker'dan sunucuda yeni güncellemeler olup olmadığını kontrol etmesini isteme.
 - Service worker'dan mevcut sekme için uygulamanın en son sürümünü etkinleştirmesini isteme.
 
-### Version updates
+### Sürüm güncellemeleri
 
 `versionUpdates`, `SwUpdate`'in bir `Observable` özelliğidir ve beş olay türü yayar:
 
@@ -26,7 +26,7 @@ Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmek
 
 <docs-code header="log-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/log-update.service.ts" region="sw-update"/>
 
-### Checking for updates
+### Güncellemeleri kontrol etme
 
 Service worker'dan sunucuya herhangi bir güncelleme dağıtılıp dağıtılmadığını kontrol etmesini istemek mümkündür.
 Service worker, başlatma sırasında ve her navigasyon isteğinde — yani kullanıcı farklı bir adresten uygulamanıza gittiğinde — güncellemeleri kontrol eder.
@@ -51,7 +51,7 @@ Bu gecikmeden kaçınmak için, önceki örnekte gösterildiği gibi, güncellem
 Alternatif olarak, ServiceWorker için farklı bir [kayıt stratejisi](api/service-worker/SwRegistrationOptions#registrationStrategy) tanımlamak isteyebilirsiniz.
 </docs-callout>
 
-### Updating to the latest version
+### En son sürüme güncelleme
 
 Mevcut bir sekmeyi, yeni bir sürüm hazır olur olmaz sayfayı yenileyerek en son sürüme güncelleyebilirsiniz.
 Kullanıcının ilerlemesini kesintiye uğratmamak için, genellikle kullanıcıya sormak ve sayfayı yenileyip en son sürüme güncellemenin uygun olduğunu onaylamasını sağlamak iyi bir fikirdir:
@@ -66,7 +66,7 @@ Yeniden yüklemeden güncelleme, uygulama kabuğu ile tembel yüklenen parçalar
 `activateUpdate()`'i yalnızca belirli kullanım durumunuz için güvenli olduğundan eminseniz kullanmalısınız.
 </docs-callout>
 
-### Handling an unrecoverable state
+### Kurtarılamaz bir durumu işleme
 
 Bazı durumlarda, service worker'ın bir istemciye hizmet vermek için kullandığı uygulamanın sürümü, tam bir sayfa yeniden yüklemesi olmadan kurtarılamayan bozuk bir durumda olabilir.
 
@@ -98,7 +98,7 @@ Bu hataları bildirim almak ve işlemek için `SwUpdate#unrecoverable`'a abone o
 
 <docs-code header="handle-unrecoverable-state.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/handle-unrecoverable-state.service.ts" region="sw-unrecoverable-state"/>
 
-## More on Angular service workers
+## Angular service worker'lar hakkında daha fazlası
 
 Aşağıdakiler de ilginizi çekebilir:
 

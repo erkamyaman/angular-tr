@@ -8,7 +8,7 @@ Bu aktivitede, alt bileşenlerle programatik olarak etkileşim kurmak için view
 
 <docs-workflow>
 
-<docs-step title="Add viewChild import">
+<docs-step title="viewChild içe aktarmasını ekleyin">
 Önce, `app.ts` dosyasında alt bileşenlere erişmek için `viewChild` içe aktarmasını ekleyin.
 
 ```ts
@@ -17,7 +17,7 @@ import {Component, signal, computed, viewChild, ChangeDetectionStrategy} from '@
 
 </docs-step>
 
-<docs-step title="Create viewChild queries">
+<docs-step title="viewChild sorguları oluşturun">
 Alt bileşenlere erişmek için App bileşenine viewChild sorguları ekleyin.
 
 ```ts
@@ -29,7 +29,7 @@ cartSummary = viewChild(CartSummary);
 Bu sorgular, alt bileşen örneklerine referans veren sinyaller oluşturur.
 </docs-step>
 
-<docs-step title="Implement parent methods">
+<docs-step title="Üst bileşen metotlarını uygulayın">
 `app.ts` dosyasında alt bileşenler üzerinde metotları çağırmak için viewChild sorgularını kullanın:
 
 ```ts
@@ -50,7 +50,7 @@ initiateCheckout() {
 
 </docs-step>
 
-<docs-step title="Test the interactions">
+<docs-step title="Etkileşimleri test edin">
 Kontrol düğmeleri artık çalışmalıdır:
 
 - **"Show First Product Details"** - ProductCard üzerinde `highlight()` çağırır

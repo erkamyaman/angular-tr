@@ -1,10 +1,11 @@
 <div class="header">Hydration</div>
 <div class="description">
-  Hydration is the process that restores the server-side rendered application on the client
+  Hydration, sunucu tarafında render edilen uygulamayı istemci tarafında geri yükleyen süreçtir
 
   <p>
-    This demo showcases Angular's hydration strategies, allowing you to simulate network latency and
-    observe how different components hydrate based on their configured triggers.
+    Bu demo, Angular'ın hydration stratejilerini sergiler; ağ gecikmesini simüle etmenize ve farklı
+    bileşenlerin yapılandırılmış tetikleyicilerine göre nasıl hydrate olduğunu gözlemlemenize olanak
+    tanır.
   </p>
 </div>
 
@@ -16,13 +17,13 @@
         <div class="card config-card">
           <h3 class="sidebar-title font-mono">
             <docs-icon>schedule</docs-icon>
-            Simulation Config
+            Simülasyon Ayarları
           </h3>
 
           <div class="config-controls">
             <div class="control-group">
               <div class="label-row">
-                <label>Network Latency</label>
+                <label>Ağ Gecikmesi</label>
                 <span class="latency-value font-mono">{{ latency() }}ms</span>
               </div>
               <input
@@ -42,14 +43,14 @@
               class="btn-reset"
             >
               <docs-icon>refresh</docs-icon>
-              Reset Lifecycle
+              Yaşam Döngüsünü Sıfırla
             </button>
           </div>
         </div>
 
         <!-- Terminal Log -->
         <div class="terminal">
-          <h3 class="terminal-title font-mono">Hydration Engine Log</h3>
+          <h3 class="terminal-title font-mono">Hydration Motor Günlüğü</h3>
           <div class="terminal-body font-mono custom-scrollbar">
             @for (evt of eventQueue(); track $index) {
               <div class="log-entry animate-in">
@@ -59,7 +60,7 @@
               </div>
             }
             @if (eventQueue().length === 0) {
-              <div class="log-placeholder">Awaiting app bootstrap...</div>
+              <div class="log-placeholder">Uygulama bootstrap bekleniyor...</div>
             }
           </div>
         </div>
@@ -89,15 +90,17 @@
                   <div class="spinner-outer"></div>
                   <div class="spinner-inner"></div>
                 </div>
-                <p class="ssr-title">Generating SSR Markup...</p>
+                <p class="ssr-title">SSR Markup oluşturuluyor...</p>
               </div>
             }
 
             <div class="viewport-flex">
               <div class="viewport-header">
                 <div class="header-text">
-                  <h4 class="viewport-title">Component Strategies</h4>
-                  <p class="viewport-subtitle">Mixing eager and deferred hydration triggers.</p>
+                  <h4 class="viewport-title">Bileşen Stratejileri</h4>
+                  <p class="viewport-subtitle">
+                    Eager ve deferred hydration tetikleyicilerini karıştırma.
+                  </p>
                 </div>
                 <div class="viewport-stats">
                   <div class="stats-label">Main App</div>
@@ -186,31 +189,32 @@
       <div class="explainer-item">
         <h5 class="explainer-title"><span class="dot-red"></span> Eager Hydration</h5>
         <p class="explainer-text">
-          Essential components (like navigation or top-fold content) hydrate as soon as the main
-          application bundle is ready.
+          Temel bileşenler (navigasyon veya üst kısım içeriği gibi) ana uygulama bundle'ı hazır olur
+          olmaz hydrate olur.
         </p>
       </div>
       <div class="explainer-item">
         <h5 class="explainer-title"><span class="dot-violet"></span> Incremental Hydration</h5>
         <p class="explainer-text">
-          Use hydration triggers like <code>on interaction</code> or <code>on timer</code> to delay
-          JS execution for non-critical elements.
+          Kritik olmayan elementler için JS çalıştırmayı geciktirmek üzere
+          <code>on interaction</code> veya <code>on timer</code> gibi hydration tetikleyicilerini
+          kullanın.
         </p>
       </div>
       <div class="explainer-item">
         <h5 class="explainer-title"><span class="dot-green"></span> Event Replay</h5>
         <p class="explainer-text">
-          User clicks are never lost. Angular records events during the "Static" phase and
-          re-dispatches them once hydrated.
+          Kullanıcı tıklamaları asla kaybolmaz. Angular, "Static" aşamasında olayları kaydeder ve
+          hydrate olduktan sonra yeniden gönderir.
         </p>
       </div>
     </div>
   </div>
   <button
     class="docs-primary-btn"
-    [attr.text]="'Learn more about hydration'"
+    [attr.text]="'Hydration hakkında daha fazla bilgi edinin'"
     routerLink="/guide/hydration"
   >
-    Learn more about hydration
+    Hydration hakkında daha fazla bilgi edinin
   </button>
 </div>

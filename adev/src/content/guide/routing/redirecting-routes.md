@@ -1,8 +1,8 @@
-# Redirecting Routes
+# Route Redirect'leri
 
 Rota yönlendirmeleri, kullanıcıları otomatik olarak bir rotadan diğerine yönlendirmenize olanak tanır. Bunu, bir adrese gönderilen postanın farklı bir adrese iletildiği posta yönlendirmesi gibi düşünün. Bu, eski URL'leri yönetmek, varsayılan rotalar uygulamak veya erişim kontrolünü yönetmek için kullanışlıdır.
 
-## How to configure redirects
+## Redirect'ler nasıl yapılandırılır
 
 Rota yapılandırmanızda `redirectTo` özelliği ile yönlendirmeler tanımlayabilirsiniz. Bu özellik bir dize kabul eder.
 
@@ -10,14 +10,14 @@ Rota yapılandırmanızda `redirectTo` özelliği ile yönlendirmeler tanımlaya
 import {Routes} from '@angular/router';
 
 const routes: Routes = [
-  // Simple redirect
+  // Basit redirect
   {path: 'marketing', redirectTo: 'newsletter'},
 
-  // Redirect with path parameters
+  // Yol parametreleri ile redirect
   {path: 'legacy-user/:id', redirectTo: 'users/:id'},
 
-  // Redirect any other URLs that don't match
-  // (also known as a "wildcard" redirect)
+  // Eşleşmeyen diğer tüm URL'leri redirect et
+  // ("joker karakter" redirect olarak da bilinir)
   {path: '**', redirectTo: '/login'},
 ];
 ```
@@ -28,7 +28,7 @@ Bu örnekte üç yönlendirme vardır:
 2. Kullanıcı herhangi bir `/legacy-user/:id` yolunu ziyaret ettiğinde ilgili `/users/:id` yoluna yönlendirilir.
 3. Kullanıcı yönlendiricide tanımlanmamış herhangi bir yolu ziyaret ettiğinde, `**` joker yol tanımı nedeniyle giriş sayfasına yönlendirilir.
 
-## Understanding `pathMatch`
+## `pathMatch`'i anlama
 
 Rotalardaki `pathMatch` özelliği, geliştiricilerin Angular'ın bir URL'yi rotalarla nasıl eşleştireceğini kontrol etmesini sağlar.
 
@@ -47,10 +47,10 @@ Varsayılan olarak tüm yönlendirmeler `prefix` stratejisini kullanır.
 
 ```ts
 export const routes: Routes = [
-  // This redirect route is equivalent to…
+  // Bu redirect rotası şuna eşdeğerdir...
   { path: 'news', redirectTo: 'blog },
 
-  // This explicitly defined route redirect pathMatch
+  // Bu açıkça tanımlanmış rota redirect pathMatch
   { path: 'news', redirectTo: 'blog', pathMatch: 'prefix' },
 ];
 ```
@@ -86,7 +86,7 @@ Bu şu anlama gelir:
 1. Yalnızca `/news` yolu `/blog`'a yönlendirilir.
 2. `/news/articles` veya `/news/articles/1` gibi sonraki segmentler yeni `/blog` ön ekiyle yönlendirilmez.
 
-## Conditional redirects
+## Koşullu redirect'ler
 
 `redirectTo` özelliği, kullanıcıların nasıl yönlendirildiğine mantık eklemek için bir fonksiyon da kabul edebilir.
 
@@ -107,12 +107,12 @@ export const routes: Routes = [
       const location = activatedRouteSnapshot.params['location'];
       const currentHour = new Date().getHours();
 
-      // Check if user requested a specific meal via query parameter
+      // Kullanıcının sorgu parametresi aracılığıyla belirli bir öğün isteyip istemediğini kontrol et
       if (activatedRouteSnapshot.queryParams['meal']) {
         return `/restaurant/${location}/menu/${queryParams['meal']}`;
       }
 
-      // Auto-redirect based on time of day
+      // Günün saatine göre otomatik redirect
       if (currentHour >= 5 && currentHour < 11) {
         return `/restaurant/${location}/menu/breakfast`;
       } else if (currentHour >= 11 && currentHour < 17) {
@@ -123,18 +123,18 @@ export const routes: Routes = [
     },
   },
 
-  // Destination routes
+  // Hedef rotalar
   {path: 'restaurant/:location/menu/breakfast', component: Menu},
   {path: 'restaurant/:location/menu/lunch', component: Menu},
   {path: 'restaurant/:location/menu/dinner', component: Menu},
 
-  // Default redirect
+  // Varsayılan redirect
   {path: '', redirectTo: '/restaurant/downtown/menu', pathMatch: 'full'},
 ];
 ```
 
 Daha fazla bilgi için [RedirectFunction API dokümanlarına](api/router/RedirectFunction) göz atın.
 
-## Next steps
+## Sonraki adımlar
 
 `redirectTo` özelliği hakkında daha fazla bilgi için [API dokümanlarına](api/router/Route#redirectTo) göz atın.

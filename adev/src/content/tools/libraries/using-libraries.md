@@ -1,9 +1,9 @@
-# Usage of Angular libraries published to npm
+# npm'e yayınlanmış Angular kütüphanelerinin kullanımı
 
 Angular uygulamanızı oluştururken, gelişmiş birinci taraf kütüphanelerinin yanı sıra zengin bir üçüncü taraf kütüphane ekosisteminden yararlanın.
 [Angular Material][AngularMaterialMain], gelişmiş bir birinci taraf kütüphanesi örneğidir.
 
-## Install libraries
+## Kütüphaneleri yükleme
 
 Kütüphaneler, genellikle Angular CLI ile entegre eden şematiklerle birlikte [npm paketleri][GuideNpmPackages] olarak yayınlanır.
 Yeniden kullanılabilir kütüphane kodunu bir uygulamaya entegre etmek için paketi yüklemeniz ve sağlanan işlevselliği kullandığınız konumda içe aktarmanız gerekir.
@@ -16,7 +16,7 @@ Proje kodundaki ek iskele işlemleri, içe aktarma ifadelerini, yazı tiplerini 
 Yayınlanmış bir kütüphane genellikle o kütüphanenin uygulamanıza nasıl ekleneceğine dair bir `README` dosyası veya başka belgeler sağlar.
 Bir örnek için [Angular Material][AngularMaterialMain] belgelerine bakın.
 
-### Library typings
+### Kütüphane tip tanımlamaları
 
 Genellikle kütüphane paketleri, `.d.ts` dosyalarında tip tanımlamaları içerir; `node_modules/@angular/material` içindeki örneklere bakın.
 Kütüphanenizin paketi tip tanımlamaları içermiyorsa ve IDE'niz hata veriyorsa, kütüphaneyle birlikte `@types/<lib_name>` paketini yüklemeniz gerekebilir.
@@ -62,7 +62,7 @@ Bunu yapmak için:
 
 Gerektiğinde daha fazla tip tanımlaması ekleyin.
 
-## Updating libraries
+## Kütüphaneleri güncelleme
 
 Bir kütüphane yayıncısı tarafından güncellenebilir ve ayrıca güncel tutulması gereken kendi bağımlılıkları vardır.
 Yüklü kütüphanelerinize yönelik güncellemeleri kontrol etmek için [`ng update`][CliUpdate] Angular CLI komutunu kullanın.
@@ -74,7 +74,7 @@ Angular'ı yeni bir sürüme güncellediğinizde, kullandığınız tüm kütüp
 Kütüphanelerin karşılıklı bağımlılıkları varsa, bunları belirli bir sırayla güncellemeniz gerekebilir.
 Yardım için [Angular Update Guide][AngularUpdateMain]'a bakın.
 
-## Adding a library to the runtime global scope
+## Çalışma zamanı global kapsamına kütüphane ekleme
 
 Eski bir JavaScript kütüphanesi bir uygulamaya aktarılmıyorsa, çalışma zamanı global kapsamına ekleyebilir ve bir script etiketi ile eklenmiş gibi yükleyebilirsiniz.
 Angular CLI'yi, [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki derleme hedefinin `scripts` ve `styles` seçeneklerini kullanarak derleme zamanında bunu yapacak şekilde yapılandırın.
@@ -110,7 +110,7 @@ Angular CLI'yi, [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme
 
 1. Bootstrap 4'ün uygulamanızda çalıştığını görmek için `ng serve` Angular CLI komutunu çalıştırın veya yeniden başlatın.
 
-### Using runtime-global libraries inside your app
+### Uygulamanızda çalışma zamanı global kütüphanelerini kullanma
 
 "scripts" dizisini kullanarak bir kütüphaneyi içe aktardıktan sonra, TypeScript kodunuzda bir import ifadesi kullanarak **içe aktarmayın**.
 Aşağıdaki kod parçacığı örnek bir import ifadesidir.
@@ -125,7 +125,7 @@ Bu, özellikle JQuery gibi eklentileri olan kütüphaneler için kötüdür çü
 Bunun yerine, kütüphaneniz için tip tanımlamalarını indirmek üzere `npm install @types/jquery` Angular CLI komutunu çalıştırın ve ardından kütüphane kurulum adımlarını izleyin.
 Bu, o kütüphane tarafından sunulan global değişkenlere erişmenizi sağlar.
 
-### Defining typings for runtime-global libraries
+### Çalışma zamanı global kütüphaneleri için tip tanımlamaları belirleme
 
 Kullanmanız gereken global kütüphanenin global tip tanımlamaları yoksa, bunları `src/typings.d.ts`'de manuel olarak `any` olarak bildirebilirsiniz.
 

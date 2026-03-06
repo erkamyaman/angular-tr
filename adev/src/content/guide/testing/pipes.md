@@ -1,8 +1,8 @@
-# Testing Pipes
+# Pipe'ları Test Etme
 
 [Pipe'ları](guide/templates/pipes) Angular test araçları olmadan test edebilirsiniz.
 
-## Testing the `TitleCasePipe`
+## `TitleCasePipe`'ı test etme
 
 Bir pipe sınıfı, girdi değerini dönüştürülmüş bir çıktı değerine manipüle eden tek bir `transform` metoduna sahiptir.
 `transform` uygulaması nadiren DOM ile etkileşim kurar.
@@ -15,7 +15,7 @@ Her kelimenin ilk harfini büyük yapan bir `TitleCasePipe` düşünün.
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({name: 'titlecase', pure: true})
-/** Transform to Title Case: uppercase the first letter of the words in a string. */
+/** Başlık Durumuna Dönüştür: bir dizedeki kelimelerin ilk harfini büyük yapar. */
 export class TitleCasePipe implements PipeTransform {
   transform(input: string): string {
     return input.length === 0
@@ -29,7 +29,7 @@ Düzenli ifade kullanan her şey kapsamlı bir şekilde test edilmeye değerdir.
 
 ```ts
 describe('TitleCasePipe', () => {
-  // This pipe is a pure, stateless function so no need for BeforeEach
+  // Bu pipe saf, durumsuz bir fonksiyondur, bu yüzden BeforeEach'e gerek yoktur
   const pipe = new TitleCasePipe();
 
   it('transforms "abc" to "Abc"', () => {
@@ -40,11 +40,11 @@ describe('TitleCasePipe', () => {
     expect(pipe.transform('abc def')).toBe('Abc Def');
   });
 
-  // ... more tests ...
+  // ... daha fazla test ...
 });
 ```
 
-## Writing DOM tests to support a pipe test
+## Bir pipe test'ini desteklemek için DOM test'leri yazma
 
 Bunlar pipe'ın _izole_ testleridir.
 `TitleCasePipe`'ın uygulama bileşenlerinde uygulandığında düzgün çalışıp çalışmadığını söyleyemezler.
@@ -53,18 +53,18 @@ Bunun gibi bileşen testleri eklemeyi düşünün:
 
 ```ts
 it('should convert hero name to Title Case', async () => {
-  // get the name's input and display elements from the DOM
+  // DOM'dan adın girdi ve görüntü öğelerini al
   const hostElement: HTMLElement = harness.routeNativeElement!;
   const nameInput: HTMLInputElement = hostElement.querySelector('input')!;
   const nameDisplay: HTMLElement = hostElement.querySelector('span')!;
 
-  // simulate user entering a new name into the input box
+  // kullanıcının girdi kutusuna yeni bir ad girmesini simüle et
   nameInput.value = 'quick BROWN  fOx';
 
-  // Dispatch a DOM event so that Angular learns of input value change.
+  // Angular'ın girdi değeri değişikliğini öğrenmesi için bir DOM olayı gönder.
   nameInput.dispatchEvent(new Event('input'));
 
-  // Wait for Angular to update the display binding through the title pipe
+  // Angular'ın title pipe üzerinden görüntü bağlamasını güncellemesini bekle
   await harness.fixture.whenStable();
 
   expect(nameDisplay.textContent).toBe('Quick Brown  Fox');

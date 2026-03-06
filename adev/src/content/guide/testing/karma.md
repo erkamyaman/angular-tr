@@ -1,12 +1,12 @@
-# Testing with Karma and Jasmine
+# Karma ve Jasmine ile test etme
 
 [Vitest](https://vitest.dev) yeni Angular projeleri için varsayılan test çalıştırıcısı olsa da, [Karma](https://karma-runner.github.io) hâlâ desteklenen ve yaygın olarak kullanılan bir test çalıştırıcısıdır. Bu kılavuz, Angular uygulamanızı [Jasmine](https://jasmine.github.io) test çerçevesi ile Karma test çalıştırıcısını kullanarak test etme talimatları sağlar.
 
-## Setting Up Karma and Jasmine
+## Karma ve Jasmine kurulumu
 
 Karma ve Jasmine'i yeni bir proje için kurabilir veya mevcut bir projeye ekleyebilirsiniz.
 
-### For New Projects
+### Yeni projeler için
 
 Karma ve Jasmine önceden yapılandırılmış yeni bir proje oluşturmak için `ng new` komutunu `--test-runner=karma` seçeneği ile çalıştırın:
 
@@ -14,7 +14,7 @@ Karma ve Jasmine önceden yapılandırılmış yeni bir proje oluşturmak için 
 ng new my-karma-app --test-runner=karma
 ```
 
-### For Existing Projects
+### Mevcut projeler için
 
 Mevcut bir projeye Karma ve Jasmine eklemek için şu adımları izleyin:
 
@@ -74,7 +74,7 @@ Mevcut bir projeye Karma ve Jasmine eklemek için şu adımları izleyin:
     }
     ```
 
-## Running Tests
+## Test'leri çalıştırma
 
 Projeniz yapılandırıldıktan sonra [`ng test`](cli/test) komutunu kullanarak testleri çalıştırın:
 
@@ -105,11 +105,11 @@ Sadece o testi yeniden çalıştırmak için bir test satırına tıklayın veya
 
 Bu arada `ng test` komutu değişiklikleri izlemeye devam eder. Bunu çalışırken görmek için bir kaynak dosyada küçük bir değişiklik yapıp kaydedin. Testler tekrar çalışır, tarayıcı yenilenir ve yeni test sonuçları görünür.
 
-## Configuration
+## Yapılandırma
 
 Angular CLI, Jasmine ve Karma yapılandırmasını sizin için yönetir. `angular.json` dosyasında belirtilen seçeneklere dayalı olarak tam yapılandırmayı bellekte oluşturur.
 
-### Customizing Karma Configuration
+### Karma yapılandırmasını özelleştirme
 
 Karma'yı özelleştirmek istiyorsanız, aşağıdaki komutu çalıştırarak bir `karma.conf.js` oluşturabilirsiniz:
 
@@ -119,7 +119,7 @@ ng generate config karma
 
 HELPFUL: Karma yapılandırması hakkında daha fazla bilgi için [Karma yapılandırma kılavuzunu](http://karma-runner.github.io/6.4/config/configuration-file.html) okuyun.
 
-### Setting the Test Runner in `angular.json`
+### `angular.json`'da test çalıştırıcısını ayarlama
 
 Projeniz için test çalıştırıcısını açıkça Karma olarak ayarlamak istiyorsanız, `angular.json` dosyanızdaki `test` hedefini bulun ve `runner` seçeneğini `karma` olarak ayarlayın:
 
@@ -143,7 +143,7 @@ Projeniz için test çalıştırıcısını açıkça Karma olarak ayarlamak ist
 }
 ```
 
-## Code coverage enforcement
+## Kod coverage zorunluluğu
 
 Minimum bir kod kapsam seviyesini zorunlu kılmak için `karma.conf.js` dosyanızdaki `coverageReporter` bölümünde `check` özelliğini kullanabilirsiniz.
 
@@ -170,7 +170,7 @@ coverageReporter: {
 
 Bu, belirtilen kapsam eşikleri karşılanmazsa test çalışmasının başarısız olmasına neden olur.
 
-## Testing in continuous integration
+## Sürekli entegrasyonda test etme
 
 Karma testlerinizi bir CI ortamında çalıştırmak için aşağıdaki komutu kullanın:
 
@@ -180,13 +180,13 @@ ng test --no-watch --no-progress --browsers=ChromeHeadless
 
 NOTE: `--no-watch` ve `--no-progress` bayrakları, testlerin bir kez çalışıp temiz bir şekilde çıkmasını sağlamak için CI ortamlarında Karma için kritik öneme sahiptir. `--browsers=ChromeHeadless` bayrağı da grafik arayüz olmadan tarayıcı ortamında testleri çalıştırmak için gereklidir.
 
-## Debugging tests
+## Test'lerde hata ayıklama
 
 Testleriniz beklediğiniz gibi çalışmıyorsa, bunları tarayıcıda inceleyebilir ve hata ayıklayabilirsiniz.
 
 Karma test çalıştırıcısı ile bir uygulamada hata ayıklamak için:
 
-1.  Karma tarayıcı penceresini açın. Bu adımda yardıma ihtiyacınız varsa [Test için kurulum](guide/testing#set-up-for-testing) bölümüne bakın.
+1.  Karma tarayıcı penceresini açın. Bu adımda yardıma ihtiyacınız varsa [Test için kurulum](guide/testing#test-için-kurulum) bölümüne bakın.
 2.  Yeni bir tarayıcı sekmesi açmak ve testleri yeniden çalıştırmak için **DEBUG** düğmesine tıklayın.
 3.  Tarayıcının **Geliştirici Araçlarını** açın. Windows'ta `Ctrl-Shift-I` tuşlarına basın. macOS'ta `Command-Option-I` tuşlarına basın.
 4.  **Sources** bölümünü seçin.

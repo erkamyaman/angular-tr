@@ -1,4 +1,4 @@
-# Creating custom route matches
+# Özel Route Eşleştiricileri Oluşturma
 
 Angular Router, kullanıcılarınızın uygulamanızda gezinmesine yardımcı olmak için kullanabileceğiniz güçlü bir eşleştirme stratejisini destekler.
 Bu eşleştirme stratejisi statik rotaları, parametreli değişken rotaları, joker rotaları ve daha fazlasını destekler.
@@ -7,11 +7,11 @@ Ayrıca, URL'lerin daha karmaşık olduğu durumlar için kendi özel kalıp eş
 Bu eğitimde, Angular'ın `UrlMatcher`'ını kullanarak özel bir rota eşleştirici oluşturacaksınız.
 Bu eşleştirici, URL'de bir Twitter kullanıcı adı arar.
 
-## Objectives
+## Hedefler
 
 Angular'ın `UrlMatcher`'ını kullanarak özel bir rota eşleştirici uygulayın.
 
-## Create a sample application
+## Örnek bir uygulama oluşturma
 
 Angular CLI kullanarak, _angular-custom-route-match_ adlı yeni bir uygulama oluşturun.
 Varsayılan Angular uygulama çerçevesine ek olarak, bir _profile_ bileşeni de oluşturacaksınız.
@@ -43,7 +43,7 @@ Varsayılan Angular uygulama çerçevesine ek olarak, bir _profile_ bileşeni de
 
    <docs-code header="app.html" path="adev/src/content/examples/routing-with-urlmatcher/src/app/app.html"/>
 
-## Configure your routes for your application
+## Uygulamanız için route'ları yapılandırma
 
 Uygulama çerçeveniz hazır olduğunda, `app.config.ts` dosyanıza yönlendirme yetenekleri eklemeniz gerekir.
 Bu işlemin bir parçası olarak, URL'de bir Twitter kullanıcı adı arayan özel bir URL eşleştirici oluşturacaksınız.
@@ -73,7 +73,7 @@ Bu özel eşleştirici, aşağıdaki görevleri yerine getiren bir fonksiyondur:
 
 HELPFUL: Özel bir URL eşleştirici, diğer herhangi bir rota tanımı gibi davranır. Alt rotaları veya tembel yüklenen rotaları, diğer herhangi bir rotada olduğu gibi tanımlayın.
 
-## Reading the route parameters
+## Route parametrelerini okuma
 
 Özel eşleştirici hazır olduğunda, artık `profile` bileşeninde rota parametresini bağlayabilirsiniz.
 
@@ -84,7 +84,7 @@ Daha önce `provideRouter`'da `withComponentInputBinding` özelliğini eklemişt
 username = input.required<string>();
 ```
 
-## Test your custom URL matcher
+## Özel URL eşleştiricinizi test etme
 
 Kodunuz hazır olduğunda, artık özel URL eşleştiricinizi test edebilirsiniz.
 
@@ -102,7 +102,7 @@ Kodunuz hazır olduğunda, artık özel URL eşleştiricinizi test edebilirsiniz
 
    Sayfada `Hello, Angular!` yazan yeni bir cümle belirir.
 
-## Next steps
+## Sonraki Adımlar
 
 Angular Router ile kalıp eşleştirme, uygulamanızda dinamik URL'leriniz olduğunda size çok fazla esneklik sağlar.
 Angular Router hakkında daha fazla bilgi edinmek için aşağıdaki konulara bakın:

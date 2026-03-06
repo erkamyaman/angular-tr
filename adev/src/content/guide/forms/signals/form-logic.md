@@ -1,10 +1,10 @@
-# Adding form logic
+# Form mantığı ekleme
 
 Signal Forms, şemalar kullanarak formunuza mantık eklemenize olanak tanır. Doğrulama mantığı [Doğrulama kılavuzunda](guide/forms/signals/validation) ele alınmaktadır ve bu kılavuz şemalarda mevcut olan diğer kuralları tartışır. Alanları koşullu olarak devre dışı bırakabilir, diğer değerlere göre gizleyebilir, salt okunur yapabilir, kullanıcı girdisini geciktirebilir ve özel kontroller için meta veri ekleyebilirsiniz.
 
 Bu kılavuz, alan davranışını kontrol etmek için `disabled()`, `hidden()`, `readonly()`, `debounce()` ve `metadata()` gibi kuralların nasıl kullanılacağını gösterir.
 
-## When to add form logic
+## Form mantığı ne zaman eklenmeli
 
 Alan davranışı diğer alan değerlerine bağlı olduğunda veya reaktif olarak güncellenmesi gerektiğinde kuralları kullanın. Örneğin:
 
@@ -12,7 +12,7 @@ Alan davranışı diğer alan değerlerine bağlı olduğunda veya reaktif olara
 - Kargo gerekmedikçe gizlenen bir adres alanı
 - API çağrılarını azaltmak için geciktirilen bir arama alanı
 
-## How rules work
+## Kurallar nasıl çalışır
 
 Kurallar, formunuzdaki belirli alanlara reaktif mantık bağlar. Çoğu kural, isteğe bağlı bir argüman olarak reaktif mantık fonksiyonu kabul eder. Reaktif mantık fonksiyonu, referans verdiği sinyaller değiştiğinde otomatik olarak yeniden hesaplanır, tıpkı bir `computed` gibi.
 
@@ -30,7 +30,7 @@ NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`) formunuzda
 
 `FieldContext` özellikleri ve yöntemleri hakkında tam ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-## Prevent field updates with `disabled()`
+## `disabled()` ile alan güncellemelerini engelleme
 
 `disabled()` kuralı bir alanın devre dışı durumunu yapılandırır.
 
@@ -38,7 +38,7 @@ Alanın durumuna göre `disabled` niteliğini otomatik olarak bağlamak için `[
 
 NOTE: Devre dışı alanlar doğrulamayı atlar -- form doğrulama kontrollerine katılmazlar. Alanın değeri korunur ancak doğrulanmaz. Doğrulama davranışı hakkında ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-### Always disabled
+### Her zaman devre dışı
 
 Bir alanı kalıcı olarak devre dışı bırakmak için `disabled()`'ı yalnızca alan yoluyla çağırın:
 
@@ -68,7 +68,7 @@ export class Settings {
 }
 ```
 
-### Conditional disabling
+### Koşullu devre dışı bırakma
 
 Koşullara göre bir alanı devre dışı bırakmak için, `true` (devre dışı) veya `false` (etkin) döndüren bir reaktif mantık fonksiyonu sağlayın:
 
@@ -105,7 +105,7 @@ export class Order {
 
 Bu örnekte, sipariş toplamı 50$'dan az olduğunda kupon kodu alanı devre dışı bırakılır.
 
-### Disabled reasons
+### Devre dışı bırakma nedenleri
 
 Bir alanı devre dışı bıraktığınızda, `true` yerine bir dize döndürerek kullanıcıya yönelik açıklamalar sağlayın:
 
@@ -157,7 +157,7 @@ Reaktif mantık fonksiyonu şunları döndürür:
 
 Nedenlere alan durumundaki `disabledReasons()` sinyali aracılığıyla erişin. Her nedenin döndürdüğünüz dizeyi içeren bir `message` özelliği vardır.
 
-#### Multiple disabled reasons
+#### Birden fazla devre dışı bırakma nedeni
 
 Aynı alanda `disabled()`'ı birden fazla kez de çağırabilirsiniz ve döndürülen tüm nedenler birikir:
 
@@ -174,7 +174,7 @@ orderForm = form(this.orderModel, (schemaPath) => {
 
 Her iki koşul da doğruysa, alan her iki devre dışı nedenini gösterir. Bu kalıp, ayrı tutmak istediğiniz karmaşık kullanılabilirlik kuralları için yararlıdır.
 
-## Configuring `hidden()` state on fields
+## Alanlarda `hidden()` durumunu yapılandırma
 
 `hidden()` kuralı bir alanın gizli durumunu yapılandırır. Ancak bu yalnızca programatik bir durum ayarlar. **Alanın kullanıcı arayüzünde görünüp görünmeyeceğini siz kontrol edersiniz**.
 
@@ -182,7 +182,7 @@ IMPORTANT: `disabled` ve `readonly`'den farklı olarak, `hidden` durumu için ye
 
 NOTE: Devre dışı alanlar gibi, gizli alanlar da doğrulamayı atlar. Ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-### Basic field hiding
+### Temel alan gizleme
 
 `true` (gizli) veya `false` (görünür) döndüren bir reaktif mantık fonksiyonuyla `hidden()` kullanın:
 
@@ -219,13 +219,13 @@ export class Profile {
 }
 ```
 
-## Display uneditable fields with `readonly()`
+## `readonly()` ile düzenlenemez alanları görüntüleme
 
 `readonly()` kuralı kullanıcıların bir alanı güncellemesini engeller. `[FormField]` direktifi, bu durumu HTML `readonly` niteliğine otomatik olarak bağlar ve bu, düzenlemeyi engellerken kullanıcıların odaklanmasına ve metin seçmesine izin verir.
 
 NOTE: Salt okunur alanlar [doğrulamayı](guide/forms/signals/validation) atlar.
 
-### Always readonly
+### Her zaman salt okunur
 
 Bir alanı kalıcı olarak salt okunur yapmak için `readonly()`'yi yalnızca alan yoluyla çağırın:
 
@@ -262,7 +262,7 @@ export class Account {
 
 `[FormField]` direktifi, alanın durumuna göre `readonly` niteliğini otomatik olarak bağlar.
 
-### Conditional readonly
+### Koşullu salt okunur
 
 Koşullara göre bir alanı salt okunur yapmak için reaktif mantık fonksiyonu sağlayın:
 
@@ -299,7 +299,7 @@ export class Document {
 
 `isLocked` doğru olduğunda, başlık alanı salt okunur olur.
 
-## Choose between hidden, disabled, and readonly
+## hidden, disabled ve readonly arasında seçim yapma
 
 Bu üç yapılandırma fonksiyonu alan kullanılabilirliğini farklı şekillerde kontrol eder:
 
@@ -331,11 +331,11 @@ Alan şu durumlarda `readonly()` seçin:
 | Kullanıcılar odaklanabilir/seçebilir | Hayır      | Hayır        | Evet         |
 | HTML form gönderime dahil            | Hayır      | Hayır        | Evet         |
 
-## Delay input operations with `debounce()`
+## `debounce()` ile girdi işlemlerini geciktirme
 
 `debounce()` kuralı form modelinin güncellenmesini geciktirir. Bu, performans optimizasyonu ve hızlı girdi sırasında gereksiz işlemleri azaltmak için kullanışlıdır.
 
-### What debouncing does
+### Geciktirme ne yapar
 
 Geciktirme olmadan, her tuş vuruşu form modelini anında günceller. Bu şunları tetikleyebilir:
 
@@ -345,7 +345,7 @@ Geciktirme olmadan, her tuş vuruşu form modelini anında günceller. Bu şunla
 
 Geciktirme bu güncellemeleri erteler ve gereksiz işleri azaltır.
 
-### Basic debouncing
+### Temel geciktirme
 
 Milisaniye cinsinden bir gecikme belirterek bir alanı geciktirebilirsiniz:
 
@@ -383,7 +383,7 @@ export class Search {
 - Kullanıcı yazmaya devam ederse, zamanlayıcı her tuş vuruşuyla sıfırlanır
 - Kullanıcı 300ms durduğunda, model son değerle güncellenir
 
-### Timing guarantees
+### Zamanlama garantileri
 
 `debounce()` fonksiyonu, kullanıcıların bu mekanizmalar aracılığıyla veri kaybetmemesini sağlar:
 
@@ -392,7 +392,7 @@ export class Search {
 
 Bu, kullanıcıların geciktirme gecikmelerinin sona ermesini beklemeden hızlı yazabilecekleri, sekmeyle geçebilecekleri veya formu gönderebilecekleri anlamına gelir.
 
-### Custom debounce logic
+### Özel geciktirme mantığı
 
 Gelişmiş kontrol için, değerin ne zaman senkronize edileceğini kontrol eden bir geciktirici fonksiyon sağlayın. Bu fonksiyon, kontrol değeri her güncellendiğinde çağrılır ve anında senkronize etmek için `undefined` veya çözülene kadar senkronizasyonu engelleyen bir Promise döndürebilir:
 
@@ -417,7 +417,7 @@ export class Search {
 
   searchForm = form(this.searchModel, (schemaPath) => {
     debounce(schemaPath.query, () => {
-      // 500ms sonra çözülen bir promise döndür
+      // 500ms sonra çözümlenen bir promise döndür
       return new Promise<void>((resolve) => {
         setTimeout(() => resolve(), 500);
       });
@@ -437,7 +437,7 @@ Geciktirici fonksiyon şunları döndürebilir:
 - Senkronizasyonu harici olaylarla koordine etme
 - Uygulama durumuna göre koşullu geciktirme
 
-### When to use debouncing
+### Geciktirme ne zaman kullanılmalı
 
 Geciktirme en çok şu durumlarda kullanışlıdır:
 
@@ -452,11 +452,11 @@ Geciktirme en çok şu durumlarda kullanışlıdır:
 - Performans faydası ihmal edilebilirse
 - Kullanıcılar gerçek zamanlı geri bildirim bekliyorsa
 
-## Associate data with a field using `metadata()`
+## `metadata()` kullanarak bir alana veri ilişkilendirme
 
 Meta veri, [özel kontroller](guide/forms/signals/custom-controls) veya form mantığı tarafından okunabilecek hesaplanmış bilgileri alanlara eklemenize olanak tanır. Yaygın kullanım durumları arasında HTML girdi nitelikleri (min, max, maxlength, pattern), özel kullanıcı arayüzü ipuçları (yer tutucu metin, yardım metni) ve erişilebilirlik bilgileri bulunur.
 
-### Pre-defined metadata keys
+### Önceden tanımlanmış meta veri anahtarları
 
 Signal Forms, doğrulama kurallarının otomatik olarak doldurduğu altı önceden tanımlanmış meta veri anahtarı sağlar:
 
@@ -469,7 +469,7 @@ Signal Forms, doğrulama kurallarının otomatik olarak doldurduğu altı önced
 
 `required()` veya `min()` gibi doğrulama kuralları kullandığınızda, ilgili meta verileri otomatik olarak ayarlarlar. `metadata()` fonksiyonu, bir alanla ilişkili ek veriler yayınlamak için bir yol sağlar.
 
-### Reading pre-defined metadata
+### Önceden tanımlanmış meta verileri okuma
 
 `[FormField]` direktifi, yerleşik meta verileri otomatik olarak HTML niteliklerine bağlar. Ayrıca alan durumundaki yerleşik erişimcileri kullanarak meta verileri doğrudan okuyabilirsiniz:
 
@@ -506,7 +506,7 @@ export class Age {
 
 `[formField]` direktifi otomatik olarak `required`, `min` ve `max` niteliklerini girdiye bağlar. Görüntüleme veya mantık amaçları için bu değerleri `field().required()`, `field().min()` ve `field().max()` kullanarak okuyabilirsiniz.
 
-### Setting metadata manually
+### Meta verileri manuel olarak ayarlama
 
 Doğrulama kuralları bunları otomatik olarak ayarlamadığında meta veri değerlerini ayarlamak için `metadata()` fonksiyonunu kullanın. `MIN` ve `MAX` gibi yerleşik meta veriler için doğrulama kurallarını tercih edin:
 
@@ -523,14 +523,14 @@ export class Custom {
   customModel = signal({score: 0});
 
   customForm = form(this.customModel, (schemaPath) => {
-    // Yerleşik doğrulama kurallarını kullanın - meta verileri otomatik olarak ayarlarlar
+    // Yerleşik doğrulama kurallarını kullanın — meta verileri otomatik olarak ayarlarlar
     min(schemaPath.score, 0);
     max(schemaPath.score, 100);
 
     // Gerekirse özel doğrulama mantığı ekleyin
     validate(schemaPath.score, ({value}) => {
       const score = value();
-      // min/max ötesinde özel doğrulama (örn. 5'in katı olmalı)
+      // min/max ötesinde özel doğrulama (örneğin 5'in katı olmalı)
       if (score % 5 !== 0) {
         return {kind: 'increment', message: 'Score must be a multiple of 5'};
       }
@@ -540,7 +540,7 @@ export class Custom {
 }
 ```
 
-### Creating custom metadata keys
+### Özel meta veri anahtarları oluşturma
 
 Uygulamaya özgü bilgiler için kendi meta veri anahtarlarınızı oluşturun:
 
@@ -566,14 +566,14 @@ Varsayılan olarak, özel meta veri anahtarları "son yazan kazanır" stratejisi
 
 **Önemli:** Meta veri anahtarlarını her zaman modül düzeyinde tanımlayın, asla bileşenlerin içinde değil. Meta veri anahtarları nesne kimliğine dayanır ve bunları yeniden oluşturmak o kimliği kaybeder.
 
-### Accumulating metadata with reducers
+### İndirgeyiciler ile meta veri biriktirme
 
 Varsayılan olarak, aynı anahtarla `metadata()`'yı birden fazla kez çağırmak "son yazan kazanır" kullanır -- yalnızca son değer tutulur. Bunun yerine değerleri biriktirmek için `createMetadataKey()`'e bir indirgeyici geçirin:
 
 ```angular-ts
 import {createMetadataKey, metadata, MetadataReducer} from '@angular/forms/signals';
 
-// Değerleri bir diziye biriktiren bir anahtar oluşturun
+// Değerleri bir diziye biriktiren bir anahtar oluşturma
 export const HINTS = createMetadataKey<string, string[]>(MetadataReducer.list());
 
 // Birden fazla çağrı değerleri biriktirir
@@ -596,14 +596,14 @@ Angular, `MetadataReducer` aracılığıyla yerleşik indirgeyiciler sağlar:
 - `MetadataReducer.or()` - Boolean değerlerin mantıksal VEYA'sı
 - `MetadataReducer.and()` - Boolean değerlerin mantıksal VE'si
 
-### Managed metadata keys
+### Yönetilen meta veri anahtarları
 
 Biriktirilmiş sonuçtan yeni bir değer hesaplamanız gerektiğinde `createManagedMetadataKey()` kullanın. Dönüşüm fonksiyonu, indirgenmiş değerin bir sinyalini alır ve hesaplanmış sonucu döndürür:
 
 ```angular-ts
 import {createManagedMetadataKey, metadata, MetadataReducer} from '@angular/forms/signals';
 
-// İpuçlarını biriktirin ve sonuçtan ek veri hesaplayın
+// İpuçlarını biriktirme ve sonuçtan ek veri hesaplama
 export const HINTS = createManagedMetadataKey(
   (signal) =>
     computed(() => {
@@ -623,7 +623,7 @@ form(model, (schemaPath) => {
   metadata(schemaPath.password, HINTS, () => 'Include a special character');
 });
 
-// Sonuç: Dönüştürülmüş değere sahip sinyal
+// Sonuç: Dönüştürülmüş değeri içeren sinyal
 const passwordHints = passwordForm.password().metadata(HINTS)();
 // { messages: ['At least 8 characters', 'Include a number', 'Include a special character'], count: 3 }
 ```
@@ -633,7 +633,7 @@ Yönetilen meta veri anahtarı iki argüman alır:
 1. **Dönüşüm fonksiyonu** - Biriktirilmiş sonuçtan yeni bir değer hesaplar (indirgenmiş değerin bir sinyalini alır)
 2. **İndirgeyici** - Değerlerin nasıl biriktiğini belirler (isteğe bağlı - varsayılan "son yazan kazanır")
 
-### Reactive metadata
+### Reaktif meta veri
 
 Meta verileri diğer alan değerlerine reaktif yapın:
 
@@ -680,7 +680,7 @@ export class Inventory {
 
 `max()` doğrulama kuralı, seçilen öğeye göre `MAX` meta verilerini reaktif olarak ayarlar. Bu, doğrulama kurallarının diğer alanlar güncellendiğinde değişen koşullu değerlere nasıl sahip olabileceğini gösterir.
 
-### Using metadata in custom controls
+### Özel kontrollerde meta veri kullanma
 
 Özel kontroller, HTML niteliklerini ve davranışlarını yapılandırmak için meta verileri okuyabilir:
 
@@ -720,11 +720,11 @@ Bu kalıp, özel kontrollerin şemada tanımlanan doğrulama kurallarına ve met
 
 TIP: Özel kontroller oluşturma hakkında daha fazla bilgi için [Özel Kontroller kılavuzuna](guide/forms/signals/custom-controls) bakın.
 
-## Combining rules
+## Kuralları birleştirme
 
 Aynı alana birden fazla kural uygulayabilir ve form durumuna göre tüm kural gruplarını uygulamak için koşullu mantık kullanabilirsiniz.
 
-### Multiple rules on one field
+### Bir alanda birden fazla kural
 
 Bir alanın davranışının tüm yönlerini yapılandırmak için birden fazla kural uygulayın:
 
@@ -777,7 +777,7 @@ Bu kurallar birlikte çalışır:
 - Geciktirme, diğer durumdan bağımsız olarak model güncellemelerini etkiler
 - Meta veri bağımsızdır ve her zaman kullanılabilir
 
-### Conditional logic with applyWhen
+### applyWhen ile koşullu mantık
 
 Tüm kural gruplarını koşullu olarak uygulamak için `applyWhen()` kullanın:
 
@@ -831,7 +831,7 @@ export class Address {
 
 Koşullu kurallar yalnızca koşul doğru olduğunda çalışır. Bu, doğrulama kurallarının veya davranışın kullanıcı seçimlerine göre değiştiği karmaşık formlar için kullanışlıdır.
 
-### Reusable schema functions
+### Yeniden kullanılabilir şema fonksiyonları
 
 Yaygın kural yapılandırmalarını yeniden kullanılabilir fonksiyonlara çıkarın:
 
@@ -857,7 +857,7 @@ const registrationForm = form(registrationModel, (schemaPath) => {
 
 Bu kalıp, uygulamanızda birden fazla formda kullandığınız standart alan yapılandırmalarınız olduğunda yararlıdır.
 
-## Next steps
+## Sonraki adımlar
 
 Signal Forms hakkında daha fazla bilgi edinmek için şu ilgili kılavuzlara göz atın:
 

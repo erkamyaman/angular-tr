@@ -1,4 +1,4 @@
-# Migration to self-closing tags
+# Kendinden kapanan etiketlere geçiş
 
 Kendinden kapanan etiketler, [v16](https://blog.angular.dev/angular-v16-is-here-4d7a28ec680d#7065)'dan beri Angular şablonlarında desteklenmektedir.
 
@@ -10,13 +10,13 @@ Bu şematik, uygulamanızdaki şablonları kendinden kapanan etiketler kullanaca
 ng generate @angular/core:self-closing-tag
 ```
 
-#### Before
+#### Önce
 
 ```angular-html
 <hello-world></hello-world>
 ```
 
-#### After
+#### Sonra
 
 ```angular-html
 <hello-world />

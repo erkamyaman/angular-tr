@@ -1,10 +1,10 @@
-# RxJS interop with component and directive outputs
+# Bileşen ve direktif çıktıları ile RxJS birlikte çalışması
 
 TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/outputs) aşina olduğunuzu varsayar.
 
 `@angular/rxjs-interop` paketi, bileşen ve direktif çıktılarıyla ilgili iki API sunar.
 
-## Creating an output based on an RxJs Observable
+## Bir RxJS Observable'a dayalı çıktı oluşturma
 
 `outputFromObservable`, bir RxJS observable'a dayalı olarak yayın yapan bir bileşen veya direktif çıktısı oluşturmanıza olanak tanır:
 
@@ -18,7 +18,7 @@ import {outputFromObservable} from '@angular/core/rxjs-interop';
 class Draggable {
   pointerMoves$: Observable<PointerMovements> = listenToPointerMoves();
 
-  // Whenever `pointerMoves$` emits, the `pointerMove` event fires.
+  // `pointerMoves$` her yayın yaptığında, `pointerMove` olayı tetiklenir.
   pointerMove = outputFromObservable(this.pointerMoves$);
 }
 ```
@@ -29,7 +29,7 @@ class Draggable {
 
 HELPFUL: Değerleri zorunlu olarak yayabiliyorsanız doğrudan `output()` kullanmayı düşünün.
 
-## Creating an RxJS Observable from a component or directive output
+## Bir bileşen veya direktif çıktısından RxJS Observable oluşturma
 
 `outputToObservable` fonksiyonu, bir bileşen çıktısından RxJS observable oluşturmanıza olanak tanır.
 
@@ -41,7 +41,7 @@ import {outputToObservable} from '@angular/core/rxjs-interop';
     valueChange = output<number>();
 }
 
-// Instance reference to `CustomSlider`.
+// `CustomSlider` örnek referansı.
 const slider: CustomSlider = createSlider();
 
 outputToObservable(slider.valueChange) // Observable<number>

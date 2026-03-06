@@ -8,7 +8,7 @@ Bu aktivitede, sepet görüntüleme bileşeninin durum değişikliklerine otomat
 
 <docs-workflow>
 
-<docs-step title="Add cart store signals">
+<docs-step title="Sepet deposu sinyallerini ekleyin">
 `cart-store.ts` dosyasında sepet durumunu reaktif hale getirmek için salt okunur ve computed sinyaller ekleyin.
 
 ```ts
@@ -33,7 +33,7 @@ readonly totalPrice = computed(() => {
 Bu sinyaller, bileşenlerin sepet verilerine ve hesaplanmış toplamlara reaktif olarak erişmesini sağlar. `asReadonly()` metodu, harici kodun sepet öğelerini doğrudan değiştirmesini engeller; `computed()` ise kaynak sinyal değiştiğinde otomatik olarak güncellenen türetilmiş durum oluşturur.
 </docs-step>
 
-<docs-step title="Complete the quantity update methods">
+<docs-step title="Miktar güncelleme metotlarını tamamlayın">
 `cart-display.ts` dosyasındaki sepet görüntüleme bileşeni, şablonunda zaten sepet deposu sinyallerini kullanıyor. Sepet öğelerini değiştirmek için miktar güncelleme metotlarını tamamlayın:
 
 ```ts
@@ -57,7 +57,7 @@ decreaseQuantity(id: string) {
 Bu metotlar, `cartItems()` kullanarak mevcut sepet durumunu okur ve deponun metotları aracılığıyla miktarları günceller. Sinyaller değiştiğinde UI otomatik olarak güncellenir!
 </docs-step>
 
-<docs-step title="Update the main app component">
+<docs-step title="Ana uygulama bileşenini güncelleyin">
 Sepet servisini kullanmak ve sepet bileşenini görüntülemek için `app.ts` dosyasındaki ana uygulama bileşenini güncelleyin.
 
 ```angular-ts

@@ -1,4 +1,4 @@
-# Format data based on locale
+# Yerel ayara göre verileri biçimlendirme
 
 Angular, aşağıdaki yerleşik veri dönüştürme [pipe'larını](guide/templates/pipes) sağlar.
 Veri dönüştürme pipe'ları, her yerel ayarın kurallarına göre verileri biçimlendirmek için [`LOCALE_ID`][ApiCoreLocaleId] token'ını kullanır.
@@ -10,7 +10,7 @@ Veri dönüştürme pipe'ları, her yerel ayarın kurallarına göre verileri bi
 | [`DecimalPipe`][ApiCommonDecimalpipe]   | Bir sayıyı ondalık sayı dizesine dönüştürür. |
 | [`PercentPipe`][ApiCommonPercentpipe]   | Bir sayıyı yüzde dizesine dönüştürür.        |
 
-## Use DatePipe to display the current date
+## Geçerli tarihi görüntülemek için DatePipe kullanma
 
 Geçerli tarihi mevcut yerel ayarın biçiminde görüntülemek için `DatePipe` için aşağıdaki biçimi kullanın.
 
@@ -18,7 +18,7 @@ Geçerli tarihi mevcut yerel ayarın biçiminde görüntülemek için `DatePipe`
 {{ today | date }}
 ```
 
-## Override current locale for CurrencyPipe
+## CurrencyPipe için mevcut yerel ayarı geçersiz kılma
 
 Mevcut `LOCALE_ID` token değerini geçersiz kılmak için pipe'a `locale` parametresini ekleyin.
 
@@ -30,7 +30,7 @@ Para birimini Amerikan İngilizcesi \(`en-US`\) kullanmaya zorlamak için `Curre
 
 HELPFUL: `CurrencyPipe` için belirtilen yerel ayar, uygulamanızın global `LOCALE_ID` token'ını geçersiz kılar.
 
-## What's next
+## Sıradaki
 
 <docs-pill-row>
   <docs-pill href="guide/i18n/prepare" title="Prepare component for translation"/>

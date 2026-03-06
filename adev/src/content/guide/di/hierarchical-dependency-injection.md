@@ -1,10 +1,10 @@
-# Hierarchical injectors
+# Hiyerarşik injector'lar
 
 Bu kılavuz, Angular'ın hiyerarşik bağımlılık enjeksiyonu sistemi hakkında çözümleme kuralları, değiştiriciler ve gelişmiş desenler dahil olmak üzere derinlemesine bilgi sağlar.
 
-NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injector-hierarchy-in-angular) bakın.
+NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#angularda-injector-hiyerarşisi) bakın.
 
-## Types of injector hierarchies
+## Injector hiyerarşi türleri
 
 Angular'da iki enjektör hiyerarşisi vardır:
 
@@ -13,7 +13,7 @@ Angular'da iki enjektör hiyerarşisi vardır:
 | `EnvironmentInjector` hierarchy | Bu hiyerarşide `@Injectable()` veya `ApplicationConfig` içindeki `providers` dizisini kullanarak bir `EnvironmentInjector` yapılandırın.                                                       |
 | `ElementInjector` hierarchy     | Her DOM elemanında örtük olarak oluşturulur. Bir `ElementInjector`, `@Directive()` veya `@Component()` üzerindeki `providers` özelliğinde yapılandırmadığınız sürece varsayılan olarak boştur. |
 
-<docs-callout title="NgModule Based Applications">
+<docs-callout title="NgModule Tabanlı Uygulamalar">
 `NgModule` tabanlı uygulamalar için, `@NgModule()` veya `@Injectable()` anotasyonunu kullanarak `ModuleInjector` hiyerarşisi ile bağımlılıklar sağlayabilirsiniz.
 </docs-callout>
 
@@ -24,7 +24,7 @@ Angular'da iki enjektör hiyerarşisi vardır:
 - `@Injectable()` `providedIn` özelliğini `root` veya `platform` olarak belirtmek için kullanma
 - `ApplicationConfig` `providers` dizisi
 
-<docs-callout title="Tree-shaking and @Injectable()">
+<docs-callout title="Tree-shaking ve @Injectable()">
 
 `@Injectable()` `providedIn` özelliğini kullanmak, `ApplicationConfig` `providers` dizisini kullanmaktan tercih edilir. `@Injectable()` `providedIn` ile optimizasyon araçları, uygulamanızın kullanmadığı servisleri kaldıran tree-shaking işlemi yapabilir. Bu, daha küçük paket boyutlarıyla sonuçlanır.
 
@@ -40,7 +40,7 @@ Servisleri `@Injectable()` dekoratörünün `providedIn` özelliğini kullanarak
 import {Injectable} from '@angular/core';
 
 @Injectable({
-  providedIn: 'root', // <--provides this service in the root EnvironmentInjector
+  providedIn: 'root', // <--bu service'i root EnvironmentInjector'da sağlar
 })
 export class ItemService {
   name = 'telephone';
@@ -61,7 +61,7 @@ export class ItemService {
 
 Tembel yüklenen diğer `@NgModule`'lar yüklendiğinde alt `ModuleInjector` hiyerarşileri oluşturulur.
 
-### Platform injector
+### Platform injector'ı
 
 `root`'un üzerinde iki enjektör daha vardır, ek bir `EnvironmentInjector` ve `NullInjector()`.
 
@@ -106,7 +106,7 @@ Tüm istekler, `bootstrapApplication()` yöntemine iletilen `ApplicationConfig` 
 `bootstrapApplication`'ın `ApplicationConfig`'inde uygulama çapında bir sağlayıcı yapılandırırsanız, `@Injectable()` meta verilerinde `root` için yapılandırılmış olanı geçersiz kılar.
 Bunu, birden fazla uygulamayla paylaşılan bir servisin varsayılan olmayan bir sağlayıcısını yapılandırmak için yapabilirsiniz.
 
-İşte bileşen yönlendirici yapılandırmasının, `ApplicationConfig`'in `providers` listesinde sağlayıcısını listeleyerek varsayılan olmayan bir [konum stratejisi](guide/routing/common-router-tasks#locationstrategy-and-browser-url-styles) içerdiği bir örnek.
+İşte bileşen yönlendirici yapılandırmasının, `ApplicationConfig`'in `providers` listesinde sağlayıcısını listeleyerek varsayılan olmayan bir [konum stratejisi](guide/routing/common-router-tasks#locationstrategy-ve-tarayıcı-url-stilleri) içerdiği bir örnek.
 
 ```ts
 providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}];
@@ -131,10 +131,10 @@ Angular, her DOM elemanı için örtük olarak `ElementInjector` hiyerarşileri 
 export class TestComponent
 ```
 
-HELPFUL: `EnvironmentInjector` ağacı, `ModuleInjector` ve `ElementInjector` ağacı arasındaki ilişkiyi anlamak için [çözümleme kuralları](#resolution-rules) bölümüne bakın.
+HELPFUL: `EnvironmentInjector` ağacı, `ModuleInjector` ve `ElementInjector` ağacı arasındaki ilişkiyi anlamak için [çözümleme kuralları](#çözümleme-kuralları) bölümüne bakın.
 
 Bir bileşende servisler sağladığınızda, bu servis o bileşen örneğindeki `ElementInjector` aracılığıyla kullanılabilir.
-[Çözümleme kuralları](#resolution-rules) bölümünde açıklanan görünürlük kurallarına göre alt bileşen/direktiflerde de görünür olabilir.
+[Çözümleme kuralları](#çözümleme-kuralları) bölümünde açıklanan görünürlük kurallarına göre alt bileşen/direktiflerde de görünür olabilir.
 
 Bileşen örneği yok edildiğinde, o servis örneği de yok edilir.
 
@@ -145,7 +145,7 @@ Bu, direktiflerin yanı sıra bileşenlerin de `providers` özelliğini kullanar
 `providers` özelliğini kullanarak bir bileşen veya direktif için bir sağlayıcı yapılandırdığınızda, bu sağlayıcı o bileşen veya direktifin `ElementInjector`'ına aittir.
 Aynı eleman üzerindeki bileşenler ve direktifler bir enjektörü paylaşır.
 
-## Resolution rules
+## Çözümleme kuralları
 
 Bir bileşen/direktif için bir token çözümlenirken, Angular bunu iki aşamada çözümler:
 
@@ -165,12 +165,12 @@ Aynı DI token'ı için farklı seviyelerde bir sağlayıcı kaydettiyseniz, Ang
 
 HELPFUL: `NgModule` tabanlı uygulamalarda, Angular `ElementInjector` hiyerarşilerinde sağlayıcı bulamazsa `ModuleInjector` hiyerarşisinde arama yapacaktır.
 
-## Resolution modifiers
+## Çözümleme değiştiricileri
 
 Angular'ın çözümleme davranışı `optional`, `self`, `skipSelf` ve `host` ile değiştirilebilir.
 Her birini `@angular/core`'dan içe aktarın ve servisinizi enjekte ederken [`inject`](/api/core/inject) yapılandırmasında kullanın.
 
-### Types of modifiers
+### Değiştirici türleri
 
 Çözümleme değiştiricileri üç kategoriye ayrılır:
 
@@ -257,11 +257,11 @@ Alt bileşende farklı bir değeriniz olduğunu, akçaağaç yaprağı 🍁, anc
   selector: 'app-skipself',
   templateUrl: './skipself.html',
   styleUrls: ['./skipself.css'],
-  // Angular would ignore this LeafService instance
+  // Angular bu LeafService örneğini yok sayar
   providers: [{provide: LeafService, useValue: {emoji: '🍁'}}],
 })
 export class Skipself {
-  // Use skipSelf as inject option
+  // skipSelf'i inject seçeneği olarak kullan
   public leaf = inject(LeafService, {skipSelf: true});
 }
 ```
@@ -295,18 +295,18 @@ Ağaçta daha yukarıda bir servis örneği olsa bile, Angular aramaya devam etm
   selector: 'app-host',
   templateUrl: './host.html',
   styleUrls: ['./host.css'],
-  // provide the service
+  // service'i sağla
   providers: [{provide: FlowerService, useValue: {emoji: '🌷'}}],
 })
 export class Host {
-  // use host when injecting the service
+  // service'i enjekte ederken host kullan
   flower = inject(FlowerService, {host: true, optional: true});
 }
 ```
 
 `Host`, `host` seçeneğine sahip olduğundan, `Host`'un üstünün `flower.emoji` değeri ne olursa olsun, `Host` lale <code>🌷</code> kullanacaktır.
 
-### Modifiers with constructor injection
+### Constructor injection ile değiştiriciler
 
 Daha önce sunulduğu gibi, constructor enjeksiyonunun davranışı `@Optional()`, `@Self()`, `@SkipSelf()` ve `@Host()` ile değiştirilebilir.
 
@@ -318,7 +318,7 @@ export class SelfNoData {
 }
 ```
 
-## Logical structure of the template
+## Şablonun mantıksal yapısı
 
 Bileşen sınıfında servisler sağladığınızda, servisler bu servisleri nerede ve nasıl sağladığınıza göre `ElementInjector` ağacı içinde görünür olur.
 
@@ -351,7 +351,7 @@ Aşağıda, `<app-root>` ve `<app-child>` görünüm ağaçlarının tek bir man
 
 `<#VIEW>` sınırlamasını anlamak, bileşen sınıfında servisleri yapılandırdığınızda özellikle önemlidir.
 
-## Example: Providing services in `@Component()`
+## Örnek: `@Component()` içinde service'ler sağlama
 
 `@Component()` (veya `@Directive()`) dekoratörünü kullanarak servisleri nasıl sağladığınız, görünürlüklerini belirler.
 Aşağıdaki bölümler, servis görünürlüğünü `skipSelf` ve `host` ile değiştirme yollarıyla birlikte `providers` ve `viewProviders`'ı gösterir.
@@ -376,7 +376,7 @@ Bunlar gerçek nitelikler değildir, arka planda neler olduğunu göstermek içi
 | `@Provide(Token=Value)`   | Mantıksal ağaçtaki bu konumda `Token`'ın `Value` ile sağlandığını gösterir.       |
 | `@ApplicationConfig`      | Bu konumda yedek bir `EnvironmentInjector` kullanılması gerektiğini gösterir.     |
 
-### Example app structure
+### Örnek uygulama yapısı
 
 Örnek uygulamada, `root`'ta kırmızı hibiskus <code>🌺</code> `emoji` değeri ile sağlanan bir `FlowerService` vardır.
 
@@ -471,7 +471,7 @@ Token'ın çözümlenmesi iki aşamada gerçekleşir:
 
 1. `ApplicationConfig` tarafından sağlanan `EnvironmentInjector`, enjeksiyon token'ı `ElementInjector` hiyerarşilerinde bulunamadığında yedek enjektör olarak hareket eder.
 
-### Using the `providers` array
+### `providers` dizisini kullanma
 
 Şimdi, `Child` sınıfında, yaklaşan bölümlerde daha karmaşık çözümleme kurallarını göstermek için `FlowerService` için bir sağlayıcı ekleyin:
 
@@ -480,11 +480,11 @@ Token'ın çözümlenmesi iki aşamada gerçekleşir:
   selector: 'app-child',
   templateUrl: './child.html',
   styleUrls: ['./child.css'],
-  // use the providers array to provide a service
+  // bir service sağlamak için providers dizisini kullan
   providers: [{provide: FlowerService, useValue: {emoji: '🌻'}}],
 })
 export class Child {
-  // inject the service
+  // service'i enjekte et
   flower = inject(FlowerService);
 }
 ```
@@ -530,7 +530,7 @@ Bu durumda, `FlowerService`, `<app-child>`'ın ayçiçeği <code>🌻</code> ile
 Enjektörün enjektör ağacında daha ileriye bakması gerekmez.
 `FlowerService`'i bulur bulmaz durur ve kırmızı hibiskusu <code>🌺</code> asla görmez.
 
-### Using the `viewProviders` array
+### `viewProviders` dizisini kullanma
 
 `@Component()` dekoratöründe servis sağlamanın başka bir yolu olarak `viewProviders` dizisini kullanın.
 `viewProviders` kullanmak, servisleri `<#VIEW>` içinde görünür kılar.
@@ -538,7 +538,7 @@ Enjektörün enjektör ağacında daha ileriye bakması gerekmez.
 HELPFUL: Adımlar, `viewProviders` dizisini kullanma dışında `providers` dizisini kullanmakla aynıdır.
 
 Adım adım talimatlar için bu bölümle devam edin.
-Kendiniz ayarlayabiliyorsanız, [Servis kullanılabilirliğini değiştirme](#visibility-of-provided-tokens) bölümüne atlayın.
+Kendiniz ayarlayabiliyorsanız, [Servis kullanılabilirliğini değiştirme](#sağlanan-tokenların-görünürlüğü) bölümüne atlayın.
 
 Gösterim için, `viewProviders`'ı göstermek amacıyla bir `AnimalService` oluşturuyoruz.
 İlk olarak, balina <code>🐳</code> `emoji` özelliğine sahip bir `AnimalService` oluşturun:
@@ -573,12 +573,12 @@ Burada, köpek 🐶 değerine sahiptir.
   selector: 'app-child',
   templateUrl: './child.html',
   styleUrls: ['./child.css'],
-  // provide services
+  // service'leri sağla
   providers: [{provide: FlowerService, useValue: {emoji: '🌻'}}],
   viewProviders: [{provide: AnimalService, useValue: {emoji: '🐶'}}],
 })
 export class Child {
-  // inject services
+  // service'leri enjekte et
   flower = inject(FlowerService);
   animal = inject(AnimalService);
 }
@@ -630,7 +630,7 @@ Emoji from AnimalService: 🐶
 Bu, enjektör önce bileşenin `ElementInjector`'ına baktığından, köpek <code>🐶</code> `AnimalService` değerini bulur.
 `ElementInjector` ağacında aramaya devam etmesi gerekmez, `ModuleInjector`'da da araması gerekmez.
 
-### `providers` vs. `viewProviders`
+### `providers` ve `viewProviders` karşılaştırması
 
 `viewProviders` alanı kavramsal olarak `providers`'a benzerdir, ancak önemli bir fark vardır.
 `viewProviders`'da yapılandırılan sağlayıcılar, bileşenin mantıksal çocukları olarak sona eren yansıtılmış içerik için görünür değildir.
@@ -743,7 +743,7 @@ Mantıksal ağaçta `AnimalService` şöyle görünecektir:
 `<app-inspector>`'ın yansıtılmış içeriği köpeği <code>🐶</code> değil balinayı <code>🐳</code> görür, çünkü köpek <code>🐶</code> `<app-child>` `<#VIEW>` içindedir.
 `<app-inspector>` köpeği <code>🐶</code> yalnızca `<#VIEW>` içinde de olması durumunda görebilir.
 
-### Visibility of provided tokens
+### Sağlanan token'ların görünürlüğü
 
 Görünürlük dekoratörleri, mantıksal ağaçta enjeksiyon token'ı aramasının nerede başlayıp nerede biteceğini etkiler.
 Bunu yapmak için, görünürlük yapılandırmasını bir bildirim noktasına değil, enjeksiyon noktasına, yani `inject()` çağrılırken yerleştirin.
@@ -931,11 +931,11 @@ Mantıksal ağaç temsili bunun nedenini gösterir:
 `skipSelf`, enjektörün `AnimalService` aramasına isteğin kaynaklandığı `<app-child>` değil `<app-root>`'tan başlamasına neden olur ve `host`, aramayı `<app-root>` `<#VIEW>`'de durdurur.
 `AnimalService`, `viewProviders` dizisi aracılığıyla sağlandığından, enjektör `<#VIEW>` içinde kirpiyi <code>🦔</code> bulur.
 
-## Example: `ElementInjector` use cases
+## Örnek: `ElementInjector` kullanım senaryoları
 
 Farklı seviyelerde bir veya daha fazla sağlayıcı yapılandırma yeteneği yararlı olasılıklar açar.
 
-### Scenario: service isolation
+### Senaryo: service izolasyonu
 
 Mimari nedenler, bir servise erişimi ait olduğu uygulama alanıyla sınırlamanıza yol açabilir.
 Örneğin, kötü karakterlerin bir listesini görüntüleyen bir `VillainsList` oluşturduğumuzu düşünün.
@@ -960,7 +960,7 @@ export class VillainsList {}
 `VillainsService`, bildirildiği yer olduğu için `VillainsList`'e göre bir tekil örnektir.
 `VillainsList` yok edilmediği sürece aynı `VillainsService` örneği olacaktır, ancak birden fazla `VillainsList` örneği varsa, her `VillainsList` örneğinin kendi `VillainsService` örneği olacaktır.
 
-### Scenario: multiple edit sessions
+### Senaryo: birden fazla düzenleme oturumu
 
 Birçok uygulama, kullanıcıların aynı anda birkaç açık görev üzerinde çalışmasına olanak tanır.
 Örneğin, bir vergi hazırlama uygulamasında, hazırlayıcı gün boyunca birinden diğerine geçerek birkaç vergi beyannamesi üzerinde çalışıyor olabilir.
@@ -1089,7 +1089,7 @@ Servisi bileşen seviyesinde sağlamak, bileşenin _her_ örneğinin servisin ö
 
 HELPFUL: Senaryonun geri kalan kodu, belgelerin başka yerlerinde öğrenebileceğiniz diğer Angular özelliklerine ve tekniklerine dayanır.
 
-### Scenario: specialized providers
+### Senaryo: özelleştirilmiş provider'lar
 
 Bir servisi başka bir seviyede tekrar sağlamanın bir diğer nedeni, bileşen ağacında daha derinde o servisin _daha özelleştirilmiş_ bir uygulamasını ikame etmektir.
 

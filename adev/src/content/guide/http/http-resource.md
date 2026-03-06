@@ -1,12 +1,12 @@
-# Reactive data fetching with `httpResource`
+# `httpResource` ile Reaktif Veri Alma
 
-IMPORTANT: `httpResource` [deneyseldir](reference/releases#experimental). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
+IMPORTANT: `httpResource` [deneyseldir](reference/releases#deneysel). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
 
 `httpResource`, `HttpClient` etrafında size istek durumunu ve yanıtı sinyal olarak veren reaktif bir sarmalayıcıdır. Bu sinyalleri `computed`, `effect`, `linkedSignal` veya herhangi bir reaktif API ile kullanabilirsiniz. `HttpClient` üzerine inşa edildiğinden, `httpResource` yakalayıcılar gibi aynı özelliklerin tümünü destekler.
 
 Angular'ın `resource` kalıbı hakkında daha fazla bilgi için [`resource` ile asenkron reaktivite](/guide/signals/resource) bölümüne bakın.
 
-## `Using httpResource`
+## `httpResource` Kullanımı
 
 TIP: Uygulama sağlayıcılarınıza `provideHttpClient`'ı dahil ettiğinizden emin olun. Ayrıntılar için [HttpClient Kurulumu](/guide/http/setup) bölümüne bakın.
 
@@ -15,7 +15,7 @@ Bir URL döndürerek bir HTTP kaynağı tanımlayabilirsiniz:
 ```ts
 userId = input.required<string>();
 
-user = httpResource(() => `/api/user/${userId()}`); // A reactive function as argument
+user = httpResource(() => `/api/user/${userId()}`); // Argüman olarak reaktif bir fonksiyon
 ```
 
 `httpResource` reaktiftir, yani bağlı olduğu sinyallerden herhangi biri (örneğin `userId`) değiştiğinde, kaynak yeni bir HTTP isteği gönderecektir.
@@ -66,19 +66,19 @@ TIP: `POST` veya `PUT` gibi _değişiklik_ işlemleri için `httpResource` kulla
 
 HELPFUL: Hata durumundaki bir `resource`'da `value` sinyalini okumak çalışma zamanında hata fırlatır. `value` okumalarını `hasValue()` ile korumak önerilir.
 
-### Response types
+### Response Türleri
 
 Varsayılan olarak, `httpResource` yanıtı JSON olarak döndürür ve ayrıştırır. Ancak, `httpResource` üzerindeki ek fonksiyonlarla alternatif dönüş türleri belirtebilirsiniz:
 
 ```ts
-httpResource.text(() => ({ … })); // returns a string in value()
+httpResource.text(() => ({ … })); // value() içinde bir string döndürür
 
-httpResource.blob(() => ({ … })); // returns a Blob object in value()
+httpResource.blob(() => ({ … })); // value() içinde bir Blob nesnesi döndürür
 
-httpResource.arrayBuffer(() => ({ … })); // returns an ArrayBuffer in value()
+httpResource.arrayBuffer(() => ({ … })); // value() içinde bir ArrayBuffer döndürür
 ```
 
-## Response parsing and validation
+## Response Ayrıştırma ve Doğrulama
 
 Veri alırken, yanıtları genellikle [Zod](https://zod.dev) veya [Valibot](https://valibot.dev) gibi popüler açık kaynak kütüphaneleri kullanarak önceden tanımlanmış bir şemaya göre doğrulamak isteyebilirsiniz. Doğrulama kütüphanelerini bu şekilde `httpResource` ile bir `parse` seçeneği belirterek entegre edebilirsiniz. `parse` fonksiyonunun dönüş türü, kaynağın `value` türünü belirler.
 
@@ -101,7 +101,7 @@ export class CharacterViewer {
 }
 ```
 
-## Testing an httpResource
+## httpResource'u Test Etme
 
 `httpResource`, `HttpClient` etrafında bir sarmalayıcı olduğundan, `httpResource`'u `HttpClient` ile aynı API'lerle test edebilirsiniz. Ayrıntılar için [HttpClient Testi](/guide/http/testing) bölümüne bakın.
 
@@ -115,11 +115,11 @@ TestBed.configureTestingModule({
 const id = signal(0);
 const mockBackend = TestBed.inject(HttpTestingController);
 const response = httpResource(() => `/data/${id()}`, {injector: TestBed.inject(Injector)});
-TestBed.tick(); // Triggers the effect
+TestBed.tick(); // Effect'i tetikler
 const firstRequest = mockBackend.expectOne('/data/0');
 firstRequest.flush(0);
 
-// Ensures the values are propagated to the httpResource
+// Değerlerin httpResource'a yayıldığından emin olur
 await TestBed.inject(ApplicationRef).whenStable();
 
 expect(response.value()).toEqual(0);

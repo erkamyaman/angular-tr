@@ -1,16 +1,16 @@
-# Creating harnesses for your components
+# Bileşenleriniz için harness oluşturma
 
-## Before you start
+## Başlamadan önce
 
 TIP: Bu kılavuz, [bileşen donanımları genel bakış kılavuzunu](guide/testing/component-harnesses-overview) zaten okuduğunuzu varsayar. Bileşen donanımlarını kullanmaya yeni başlıyorsanız önce onu okuyun.
 
-### When does creating a test harness make sense?
+### Test harness oluşturmak ne zaman mantıklıdır?
 
 Angular ekibi, birçok yerde kullanılan ve bir miktar kullanıcı etkileşimi olan paylaşılan bileşenler için bileşen test donanımları oluşturmayı önerir. Bu en yaygın olarak widget kütüphaneleri ve benzeri yeniden kullanılabilir bileşenler için geçerlidir. Donanımlar bu durumlar için değerlidir çünkü bu paylaşılan bileşenlerin tüketicilerine bir bileşenle etkileşim kurmak için iyi desteklenen bir API sağlarlar. Donanımları kullanan testler, DOM yapısı ve belirli olay dinleyicileri gibi bu paylaşılan bileşenlerin güvenilmez uygulama ayrıntılarına bağımlı olmaktan kaçınabilir.
 
 Yalnızca tek bir yerde görünen bileşenler, örneğin bir uygulamadaki bir sayfa için donanımlar o kadar fazla fayda sağlamaz. Bu durumlarda, testler ve bileşenler aynı anda güncellendiğinden, bir bileşenin testleri bu bileşenin uygulama ayrıntılarına makul olarak bağımlı olabilir. Ancak donanımı hem birim hem de uçtan uca testlerde kullanacaksanız, donanımlar yine de bir miktar değer sağlar.
 
-### CDK Installation
+### CDK Kurulumu
 
 [Component Dev Kit (CDK)](https://material.angular.dev/cdk/categories), bileşen oluşturmak için bir davranış temelleri setidir. Bileşen donanımlarını kullanmak için önce npm'den `@angular/cdk` yükleyin. Bunu terminalinizden Angular CLI kullanarak yapabilirsiniz:
 
@@ -18,7 +18,7 @@ Yalnızca tek bir yerde görünen bileşenler, örneğin bir uygulamadaki bir sa
 ng add @angular/cdk
 ```
 
-## Extending `ComponentHarness`
+## `ComponentHarness`'ı genişletme
 
 Soyut `ComponentHarness` sınıfı, tüm bileşen donanımları için temel sınıftır. Özel bir bileşen donanımı oluşturmak için `ComponentHarness`'ı genişletin ve `hostSelector` statik özelliğini uygulayın.
 
@@ -53,9 +53,9 @@ class MyPopupHarness extends ComponentHarness {
 }
 ```
 
-`ComponentHarness` alt sınıfları yalnızca `hostSelector` özelliğini gerektirse de, çoğu donanım `HarnessPredicate` örnekleri oluşturmak için statik bir `with` metodu da uygulamalıdır. [Donanımları filtreleme bölümü](guide/testing/using-component-harnesses#filtering-harnesses) bunu daha ayrıntılı ele alır.
+`ComponentHarness` alt sınıfları yalnızca `hostSelector` özelliğini gerektirse de, çoğu donanım `HarnessPredicate` örnekleri oluşturmak için statik bir `with` metodu da uygulamalıdır. [Donanımları filtreleme bölümü](guide/testing/using-component-harnesses#harnessları-filtreleme) bunu daha ayrıntılı ele alır.
 
-## Finding elements in the component's DOM
+## Bileşenin DOM'unda öğeleri bulma
 
 Bir `ComponentHarness` alt sınıfının her örneği, karşılık gelen bileşenin belirli bir örneğini temsil eder. Bileşenin ana öğesine `ComponentHarness` temel sınıfından `host()` metodu aracılığıyla erişebilirsiniz.
 
@@ -69,15 +69,15 @@ Farklı `locatorFor` metotlarının tam liste ayrıntıları için [ComponentHar
 class MyPopupHarness extends ComponentHarness {
   static hostSelector = 'my-popup';
 
-  // Gets the trigger element
+  // Tetikleyici öğeyi alır
   getTriggerElement = this.locatorFor('button');
 
-  // Gets the content element.
+  // İçerik öğesini alır.
   getContentElement = this.locatorForOptional('.my-popup-content');
 }
 ```
 
-## Working with `TestElement` instances
+## `TestElement` örnekleri ile çalışma
 
 `TestElement`, farklı test ortamlarında (Birim testleri, WebDriver, vb.) çalışmak üzere tasarlanmış bir soyutlamadır. Donanımları kullanırken, tüm DOM etkileşimini bu arayüz aracılığıyla gerçekleştirmelisiniz. `document.querySelector()` gibi DOM öğelerine erişmenin diğer yolları tüm test ortamlarında çalışmaz.
 
@@ -94,13 +94,13 @@ class MyPopupHarness extends ComponentHarness {
   protected getTriggerElement = this.locatorFor('button');
   protected getContentElement = this.locatorForOptional('.my-popup-content');
 
-  /** Toggles the open state of the popup. */
+  /** Popup'ın açık durumunu değiştirir. */
   async toggle() {
     const trigger = await this.getTriggerElement();
     return trigger.click();
   }
 
-  /** Checks if the popup us open. */
+  /** Popup'ın açık olup olmadığını kontrol eder. */
   async isOpen() {
     const content = await this.getContentElement();
     return !!content;
@@ -108,7 +108,7 @@ class MyPopupHarness extends ComponentHarness {
 }
 ```
 
-## Loading harnesses for subcomponents
+## Alt bileşenler için harness'ları yükleme
 
 Daha büyük bileşenler genellikle alt bileşenlerden oluşur. Bu yapıyı bir bileşenin donanımında da yansıtabilirsiniz. `ComponentHarness` üzerindeki `locatorFor` metotlarının her birinin, öğeler yerine alt donanımları bulmak için kullanılabilen alternatif bir imzası vardır.
 
@@ -145,10 +145,10 @@ class MyMenuHarness extends ComponentHarness {
 
   protected getPopupHarness = this.locatorFor(MyPopupHarness);
 
-  /** Gets the currently shown menu items (empty list if menu is closed). */
+  /** Şu anda gösterilen menü öğelerini alır (menü kapalıysa boş liste). */
   getItems = this.locatorForAll(MyMenuItemHarness);
 
-  /** Toggles open state of the menu. */
+  /** Menünün açık durumunu değiştirir. */
   async toggle() {
     const popupHarness = await this.getPopupHarness();
     return popupHarness.toggle();
@@ -160,7 +160,7 @@ class MyMenuItemHarness extends ComponentHarness {
 }
 ```
 
-## Filtering harness instances with `HarnessPredicate`
+## `HarnessPredicate` ile harness örneklerini filtreleme
 
 Bir sayfada belirli bir bileşenin birden fazla örneği olduğunda, belirli bir bileşen örneğini almak için bileşenin bazı özelliklerine göre filtreleme yapmak isteyebilirsiniz. Örneğin, belirli bir metne sahip bir düğme veya belirli bir kimliğe sahip bir menü isteyebilirsiniz. `HarnessPredicate` sınıfı, bir `ComponentHarness` alt sınıfı için bu tür kriterleri yakalayabilir. Test yazarı `HarnessPredicate` örneklerini manuel olarak oluşturabilirken, `ComponentHarness` alt sınıfının yaygın filtreler için yüklemler oluşturmak üzere bir yardımcı metot sağlaması daha kolaydır.
 
@@ -172,19 +172,19 @@ Ek seçenekler eklemesi gereken donanımlar, `BaseHarnessFilters` arayüzünü g
 
 ```ts
 interface MyMenuHarnessFilters extends BaseHarnessFilters {
-  /** Filters based on the trigger text for the menu. */
+  /** Menünün tetikleyici metnine göre filtreler. */
   triggerText?: string | RegExp;
 }
 
 interface MyMenuItemHarnessFilters extends BaseHarnessFilters {
-  /** Filters based on the text of the menu item. */
+  /** Menü öğesinin metnine göre filtreler. */
   text?: string | RegExp;
 }
 
 class MyMenuHarness extends ComponentHarness {
   static hostSelector = 'my-menu';
 
-  /** Creates a `HarnessPredicate` used to locate a particular `MyMenuHarness`. */
+  /** Belirli bir `MyMenuHarness`'ı bulmak için kullanılan `HarnessPredicate` oluşturur. */
   static with(options: MyMenuHarnessFilters): HarnessPredicate<MyMenuHarness> {
     return new HarnessPredicate(MyMenuHarness, options).addOption(
       'trigger text',
@@ -195,7 +195,7 @@ class MyMenuHarness extends ComponentHarness {
 
   protected getPopupHarness = this.locatorFor(MyPopupHarness);
 
-  /** Gets the text of the menu trigger. */
+  /** Menü tetikleyicisinin metnini alır. */
   async getTriggerText(): Promise<string> {
     const popupHarness = await this.getPopupHarness();
     return popupHarness.getTriggerText();
@@ -205,7 +205,7 @@ class MyMenuHarness extends ComponentHarness {
 class MyMenuItemHarness extends ComponentHarness {
   static hostSelector = 'my-menu-item';
 
-  /** Creates a `HarnessPredicate` used to locate a particular `MyMenuItemHarness`. */
+  /** Belirli bir `MyMenuItemHarness`'ı bulmak için kullanılan `HarnessPredicate` oluşturur. */
   static with(options: MyMenuItemHarnessFilters): HarnessPredicate<MyMenuItemHarness> {
     return new HarnessPredicate(MyMenuItemHarness, options).addOption(
       'text',
@@ -214,7 +214,7 @@ class MyMenuItemHarness extends ComponentHarness {
     );
   }
 
-  /** Gets the text of the menu item. */
+  /** Menü öğesinin metnini alır. */
   async getText(): Promise<string> {
     const host = await this.host();
     return host.text();
@@ -228,7 +228,7 @@ class MyMenuItemHarness extends ComponentHarness {
 class MyMenuHarness extends ComponentHarness {
   static hostSelector = 'my-menu';
 
-  /** Gets a list of items in the menu, optionally filtered based on the given criteria. */
+  /** Menüdeki öğelerin listesini alır, isteğe bağlı olarak verilen kriterlere göre filtrelenmiş. */
   async getItems(filters: MyMenuItemHarnessFilters = {}): Promise<MyMenuItemHarness[]> {
     const getFilteredItems = this.locatorForAll(MyMenuItemHarness.with(filters));
     return getFilteredItems();
@@ -237,7 +237,7 @@ class MyMenuHarness extends ComponentHarness {
 }
 ```
 
-## Creating `HarnessLoader` for elements that use content projection
+## İçerik projeksiyon kullanan öğeler için `HarnessLoader` oluşturma
 
 Bazı bileşenler, bileşenin şablonuna ek içerik projekte eder. Daha fazla bilgi için [içerik projeksiyon kılavuzuna](guide/components/content-projection) bakın.
 
@@ -251,7 +251,7 @@ class MyPopupHarness extends ContentContainerComponentHarness<string> {
 }
 ```
 
-## Accessing elements outside of the component's host element
+## Bileşenin host öğesi dışındaki öğelere erişme
 
 Bir bileşen donanımının, karşılık gelen bileşeninin ana öğesi dışındaki öğelere erişmesi gereken zamanlar vardır. Örneğin, kayan bir öğe veya açılır pencere görüntüleyen kod genellikle DOM öğelerini doğrudan belge gövdesine ekler, örneğin Angular CDK'daki `Overlay` servisi.
 
@@ -263,7 +263,7 @@ Yukarıdaki `MyPopup` bileşeninin popup içeriği için kendi şablonundaki bir
 class MyPopupHarness extends ComponentHarness {
   static hostSelector = 'my-popup';
 
-  /** Gets a `HarnessLoader` whose root element is the popup's content element. */
+  /** Kök öğesi popup'ın içerik öğesi olan bir `HarnessLoader` alır. */
   async getHarnessLoaderForContent(): Promise<HarnessLoader> {
     const rootLocator = this.documentRootLocatorFactory();
     return rootLocator.harnessLoaderFor('my-popup-content');
@@ -271,7 +271,7 @@ class MyPopupHarness extends ComponentHarness {
 }
 ```
 
-## Waiting for asynchronous tasks
+## Asenkron görevleri bekleme
 
 `TestElement` üzerindeki metotlar, Angular'ın değişiklik algılamasını otomatik olarak tetikler ve `NgZone` içindeki görevleri bekler. Çoğu durumda donanım yazarlarının asenkron görevleri beklemek için özel bir çaba göstermesi gerekmez.
 

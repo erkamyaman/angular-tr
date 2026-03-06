@@ -1,17 +1,17 @@
 <div class="two-column-step">
   <div class="step-description">
-    <div class="header">Signals: Fine-Grained Reactivity</div>
+    <div class="header">Sinyaller: İnce Taneli Reaktivite</div>
     <div class="description">
-      Type in the search box to filter the list. A
-      <code>computed</code> signal automatically recalculates the
-      <code>filteredItems</code> whenever the <code>searchTerm</code> signal changes.
+      Listeyi filtrelemek için arama kutusuna yazın. Bir
+      <code>computed</code> sinyali, <code>searchTerm</code> sinyali her değiştiğinde
+      <code>filteredItems</code>'ı otomatik olarak yeniden hesaplar.
     </div>
 
     <div class="demo-display">
       <input
         [value]="searchTerm()"
         (input)="onSearch($event.target.value)"
-        placeholder="Search for fruit..."
+        placeholder="Meyve ara..."
         class="demo-input"
       />
       <div class="demo-list">
@@ -23,10 +23,10 @@
 
     <button
       class="docs-primary-btn"
-      [attr.text]="'Learn more about signals'"
+      [attr.text]="'Sinyaller hakkında daha fazla bilgi edinin'"
       routerLink="/guide/signals"
     >
-      Learn more about signals
+      Sinyaller hakkında daha fazla bilgi edinin
     </button>
   </div>
 

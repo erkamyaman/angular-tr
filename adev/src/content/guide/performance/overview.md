@@ -1,4 +1,4 @@
-<docs-decorative-header title="Server-side & hybrid rendering" imgSrc="adev/src/assets/images/overview.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Sunucu taraflı ve hibrit oluşturma" imgSrc="adev/src/assets/images/overview.svg"> <!-- markdownlint-disable-line -->
 Farklı render stratejileri ile uygulamanızın performansını optimize edebileceğiniz farklı yolları öğrenin.
 </docs-decorative-header>
 
