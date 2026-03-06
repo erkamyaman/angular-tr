@@ -1,4 +1,4 @@
-# Angular coding style guide
+# Angular kodlama stil rehberi
 
 ## Giriş
 
@@ -95,7 +95,7 @@ dosya başına bir bileşen, direktif veya servis anlamına gelir. Ancak, sını
 
 Şüpheliyseniz, daha küçük dosyalara yol açan yaklaşımla gidin.
 
-## Dependency injection
+## Bağımlılık enjeksiyonu
 
 ### `inject` fonksiyonunu constructor parametre enjeksiyonuna tercih edin
 

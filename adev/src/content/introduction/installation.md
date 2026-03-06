@@ -8,7 +8,7 @@
 Angular'ı bir proje oluşturmadan tarayıcınızda denemek istiyorsanız, çevrimiçi deneme alanımızı kullanabilirsiniz:
 
 <docs-card-container>
-  <docs-card title="" href="/playground" link="Open on Playground">
+  <docs-card title="" href="/playground" link="Oyun Alanında Aç">
   Bir Angular uygulamasıyla oynamanın en hızlı yolu. Kurulum gerekmez.
   </docs-card>
 </docs-card-container>

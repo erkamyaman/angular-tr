@@ -3,13 +3,13 @@
 Bu sayfada indirilebilen logo grafikleri [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) kapsamında sağlanmaktadır.
 
 <docs-card-container>
-  <docs-card title="Angular logos" href="https://drive.google.com/drive/folders/1IgcAwLDVZUz8ycnFa7T4_H6B4V4LhYUQ?usp=sharing" link="Download from Google Drive">
+  <docs-card title="Angular logoları" href="https://drive.google.com/drive/folders/1IgcAwLDVZUz8ycnFa7T4_H6B4V4LhYUQ?usp=sharing" link="Google Drive'dan indirin">
     ![Angular wordmark gradient logo](assets/images/press-kit/angular_wordmark_gradient.png "Angular wordmark gradient logo")
     ![Angular wordmark white logo](assets/images/press-kit/angular_wordmark_white.png "Angular wordmark white logo")
     ![Angular wordmark black logo](assets/images/press-kit/angular_wordmark_black.png "Angular wordmark black logo")
     Siyah ve beyaz varsayılan renk varyasyonlarıdır ve çoğu durumda kullanılmalıdır. Simge ve kilitlemenin gradyan versiyonu hem statik hem de animasyonlu formatlarda mevcuttur ve renkli bir simge gerekli olduğu durumlarda kullanılabilir.
   </docs-card>
-  <docs-card title="Brand guidelines" href="https://drive.google.com/drive/folders/1gD5-kamfribnib6TH4-aqVZxjYaDZlCg?usp=drive_link" link="Download from Google Drive">
+  <docs-card title="Marka kılavuzları" href="https://drive.google.com/drive/folders/1gD5-kamfribnib6TH4-aqVZxjYaDZlCg?usp=drive_link" link="Google Drive'dan indirin">
     ![Angular animated gradient logo](assets/images/press-kit/angular_icon_gradient.gif "Angular animated gradient logo")
     Marka kılavuzları klasörlerimiz, markanın nasıl uyarlanabileceğine dair tasarım dosyalarını, rehberliği ve topluluk örneklerini içerir.
     Logoyu uyarlama hakkında daha fazla bilgi için aşağıdaki bölümü okuyun.

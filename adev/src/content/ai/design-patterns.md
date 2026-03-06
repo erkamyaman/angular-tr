@@ -1,8 +1,8 @@
-# Design patterns for AI SDKs and signal APIs
+# Yapay zeka SDK'ları ve sinyal API'leri için tasarım kalıpları
 
 Yapay zeka ve Büyük Dil Modeli (LLM) API'leri ile etkileşim, asenkron işlemleri yönetme, akış verilerini işleme ve potansiyel olarak yavaş veya güvenilmez ağ istekleri için duyarlı bir kullanıcı deneyimi tasarlama gibi benzersiz zorluklar ortaya çıkarır. Angular [sinyalleri](guide/signals) ve [`resource`](guide/signals/resource) API'si, bu sorunları zarif bir şekilde çözmek için güçlü araçlar sağlar.
 
-## Triggering requests with signals
+## Sinyallerle istekleri tetikleme
 
 Kullanıcı tarafından sağlanan promptlarla çalışırken yaygın bir desen, kullanıcının canlı girdisini API çağrısını tetikleyen gönderilmiş değerden ayırmaktır.
 
@@ -38,7 +38,7 @@ storyResource = resource({
 });
 ```
 
-## Preparing LLM data for templates
+## Şablonlar için LLM verilerini hazırlama
 
 LLM API'lerini yapılandırılmış veri döndürecek şekilde yapılandırabilirsiniz. `resource`'unuzu LLM'den beklenen çıktıyla eşleşecek şekilde güçlü bir şekilde tiplemek, daha iyi tip güvenliği ve düzenleyici otomatik tamamlama sağlar.
 
@@ -63,7 +63,7 @@ storyParts = linkedSignal<string[], string[]>({
 });
 ```
 
-## Performance and user experience
+## Performans ve kullanıcı deneyimi
 
 LLM API'leri, geleneksel, daha deterministik API'lere göre daha yavaş ve hataya daha yatkın olabilir. Performanslı ve kullanıcı dostu bir arayüz oluşturmak için çeşitli Angular özelliklerini kullanabilirsiniz.
 
@@ -92,7 +92,7 @@ Aşağıdaki örnek, yükleme ve yeniden deneme işlevselliği ile yapay zeka ta
 }
 ```
 
-## AI patterns in action: streaming chat responses
+## Uygulamada yapay zeka kalıpları: akış halinde sohbet yanıtları
 
 Arayüzler genellikle LLM tabanlı API'lerden gelen kısmi sonuçları, yanıt verileri ulaştıkça kademeli olarak görüntüler. Angular'ın resource API'si, bu tür desenleri desteklemek için yanıtları akış halinde gönderme yeteneği sağlar. `resource`'un `stream` özelliği, bir sinyal değerine zaman içinde güncelleme uygulamak için kullanabileceğiniz bir asenkron fonksiyon kabul eder. Güncellenen sinyal, akış halindeki verileri temsil eder.
 

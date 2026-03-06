@@ -4,17 +4,17 @@ Angular AI Tutor, sıfırdan eksiksiz, modern bir Angular uygulaması oluşturma
 
 Amacımız eleştirel düşünmeyi teşvik etmek ve öğrendiklerinizi kalıcı hale getirmenize yardımcı olmaktır. Sadece kod vermek yerine, eğitmen kavramları açıklayacak, örnekler gösterecek ve ardından kendi başınıza çözmeniz için projeye özgü alıştırmalar verecektir.
 
-## Get Started
+## Başlarken
 
 Yapay zeka eğitmenine [Angular MCP sunucusu](ai/mcp) aracılığıyla erişebilirsiniz.
 
-1. Angular MCP sunucusunu [kurun](ai/mcp#get-started)
+1. Angular MCP sunucusunu [kurun](ai/mcp#başlarken)
 2. Yeni bir Angular projesi oluşturun `ng new <project-name>`
 3. [Gemini CLI](https://geminicli.com/) gibi yapay zeka destekli bir düzenleyici veya araçta yeni projenize gidin (`cd <project-name>`)
 4. `launch the Angular AI tutor` gibi bir prompt girin
    ![A screenshot demonstrating how to launch the Angular AI Tutor in the Gemini CLI.](assets/images/launch-ai-tutor.png 'Launch the Angular AI Tutor')
 
-## Using the AI Tutor
+## Yapay Zeka Eğitmenini Kullanma
 
 Her modül kısa bir kavram açıklaması ile başlar.
 ![A screenshot of the Angular AI Tutor presenting a brief concept explanation.](assets/images/ai-tutor-preview-1.png 'Angular AI Tutor explanation')
@@ -25,29 +25,29 @@ Eğitmen ayrıca anlayışınızı test etmek için açık uçlu bir alıştırm
 Son olarak, eğitmen bir sonraki modüle geçmeden önce çalışmanızı kontrol edecektir.
 ![A screenshot of the Angular AI Tutor checking the user's work.](assets/images/ai-tutor-preview-4.png 'Angular AI Tutor check')
 
-## How It Works: The Learning Cycle
+## Nasıl Çalışır: Öğrenme Döngüsü
 
 Her yeni konu için, öğrendiklerinizi daha iyi aklınızda tutmanıza yardımcı olmak amacıyla eleştirel düşünmeyi vurgulayan bir öğrenme döngüsü izleyeceksiniz.
 
-1. **Learn the Concept:** Eğitmen kısaca temel bir Angular özelliğini açıklayacak ve bunu göstermek için genel bir kod örneği gösterecektir.
-2. **Apply Your Knowledge:** Hemen uygulamalı bir alıştırma alacaksınız. Eğitmen bu alıştırmaları hedefler ve beklenen sonuçlarla üst düzeyde sunar ve çözümü kendiniz düşünmenizi teşvik eder.
-3. **Get Feedback & Support:** Hazır olduğunuzda eğitmene bildirin. Çözümünüzün doğru olduğunu doğrulamak için **proje dosyalarınızı otomatik olarak okuyacaktır**. Takılırsanız, tamamen kontrolde olursunuz. Daha fazla rehberlik için **"hint"** isteyebilir veya **"detailed guide"** veya **"step-by-step instructions"** yazarak adım adım talimatlar alabilirsiniz.
+1. **Kavramı Öğrenin:** Eğitmen kısaca temel bir Angular özelliğini açıklayacak ve bunu göstermek için genel bir kod örneği gösterecektir.
+2. **Bilginizi Uygulayın:** Hemen uygulamalı bir alıştırma alacaksınız. Eğitmen bu alıştırmaları hedefler ve beklenen sonuçlarla üst düzeyde sunar ve çözümü kendiniz düşünmenizi teşvik eder.
+3. **Geri Bildirim ve Destek Alın:** Hazır olduğunuzda eğitmene bildirin. Çözümünüzün doğru olduğunu doğrulamak için **proje dosyalarınızı otomatik olarak okuyacaktır**. Takılırsanız, tamamen kontrolde olursunuz. Daha fazla rehberlik için **"hint"** isteyebilir veya **"detailed guide"** veya **"step-by-step instructions"** yazarak adım adım talimatlar alabilirsiniz.
 
 Başarılı olduktan sonra eğitmen doğrudan bir sonraki konuya geçecektir. Ayrıca istediğiniz zaman eğitmenden bir konu hakkında daha fazla bilgi isteyebilir veya ilgili herhangi bir Angular sorusu sorabilirsiniz.
 
 ---
 
-## **Features & Commands**
+## **Özellikler ve Komutlar**
 
 Öğrenme deneyiminizin kontrolü sizdedir. Bu özellikleri istediğiniz zaman kullanın:
 
-### **Leave and Come Back**
+### **Ayrılın ve Geri Dönün**
 
 Mola vermekten çekinmeyin. İlerlemeniz projenizin koduna bağlıdır. Yeni bir oturum için döndüğünüzde, eğitmen tam olarak nerede kaldığınızı belirlemek için dosyalarınızı otomatik olarak analiz edecek ve kaldığınız yerden sorunsuz bir şekilde devam etmenizi sağlayacaktır.
 
 **Profesyonel İpucu:** İlerlemenizi kaydetmek için Git kullanmanızı şiddetle tavsiye ederiz. Bir modülü tamamladıktan sonra, değişikliklerinizi kaydetmek harika bir fikirdir (örneğin, `git commit -m "Complete Phase 1, Module 8"`). Bu, her zaman dönebileceğiniz kişisel bir kontrol noktası görevi görür.
 
-### **Adjust Your Experience Level**
+### **Deneyim Seviyenizi Ayarlayın**
 
 Deneyim seviyenizi **Beginner (1-3)**, **Intermediate (4-7)** veya **Experienced (8-10)** olarak ayarlayabilirsiniz. Bu ayarı oturumunuz sırasında istediğiniz zaman değiştirebilirsiniz ve eğitmen öğretme stilini hemen buna uyarlayacaktır.
 
@@ -56,7 +56,7 @@ Deneyim seviyenizi **Beginner (1-3)**, **Intermediate (4-7)** veya **Experienced
 - "Set my experience level to beginner."
 - "Change my rating to 8."
 
-### **See the Full Learning Plan**
+### **Tam Öğrenme Planını Görün**
 
 Büyük resmi görmek veya ne kadar ilerlediğinizi kontrol etmek mi istiyorsunuz? İçindekiler tablosunu sormanız yeterli.
 
@@ -68,11 +68,11 @@ Büyük resmi görmek veya ne kadar ilerlediğinizi kontrol etmek mi istiyorsunu
 
 Eğitmen tam öğrenme planını görüntüleyecek ve mevcut konumunuzu işaretleyecektir.
 
-### **A Note on Styling**
+### **Stillendirme Hakkında Bir Not**
 
 Eğitmen, düzenli bir görünüm sağlamak için uygulamanıza temel stil uygulayacaktır. Uygulamayı kendinize ait hale getirmek için kendi stilinizi uygulamanız şiddetle teşvik edilmektedir.
 
-### **Skip the Current Module**
+### **Mevcut Modülü Atlayın**
 
 Öğrenme yolundaki bir sonraki konuya geçmeyi tercih ediyorsanız, eğitmenden mevcut alıştırmayı atlamasını isteyebilirsiniz.
 
@@ -83,7 +83,7 @@ Eğitmen, düzenli bir görünüm sağlamak için uygulamanıza temel stil uygul
 
 Eğitmen onay isteyecek ve ardından mevcut modülün tam kod çözümünü sunacak ve bir sonraki modüle sorunsuz devam edebilmenizi sağlamak için gerekli güncellemeleri otomatik olarak uygulamaya çalışacaktır.
 
-### **Jump to Any Topic**
+### **Herhangi Bir Konuya Atlayın**
 
 Sıra dışı belirli bir konu hakkında bilgi edinmek istiyorsanız (örneğin, temellerden formlara atlamak), yapabilirsiniz. Eğitmen, projenizi seçilen modül için doğru başlangıç noktasına güncellemek üzere gerekli kodu sağlayacak ve gerekli güncellemeleri otomatik olarak uygulamaya çalışacaktır.
 
@@ -95,7 +95,7 @@ Sıra dışı belirli bir konu hakkında bilgi edinmek istiyorsanız (örneğin,
 
 ---
 
-## **Troubleshooting**
+## **Sorun Giderme**
 
 Eğitmen doğru yanıt vermezse veya uygulamanızda bir sorun olduğundan şüpheleniyorsanız, deneyebileceğiniz birkaç şey:
 
@@ -106,7 +106,7 @@ Eğitmen doğru yanıt vermezse veya uygulamanızda bir sorun olduğundan şüph
 5. **Tarayıcıyı Zorla Yeniden Başlatın:** Hatalar bazen yalnızca tarayıcının geliştirici konsolunda görünür. Zorla yeniden başlatma, uygulamayla ilgili altta yatan sorunları temizlemeye yardımcı olabilir.
 6. **Yeni Bir Sohbet Başlatın:** Mevcut geçmişi kaldırmak ve yeniden başlamak için her zaman yeni bir sohbet başlatabilirsiniz. Eğitmen, bulunduğunuz en son adımı bulmak için dosyalarınızı okuyacaktır.
 
-## **Your Learning Journey: The Phased Path**
+## **Öğrenme Yolculuğunuz: Aşamalı Yol**
 
 Uygulamanızı beş aşamalı bir yolculuk boyunca oluşturacaksınız. Eksiksiz, tam işlevli bir Angular uygulaması oluşturmak için bu yolu baştan sona takip edebilirsiniz. Her modül mantıksal olarak bir öncekinin üzerine inşa ederek sizi temellerden gelişmiş, gerçek dünya özelliklerine taşır.
 
@@ -152,7 +152,7 @@ Uygulamanızı beş aşamalı bir yolculuk boyunca oluşturacaksınız. Eksiksiz
 
 ---
 
-## **A Note on AI & Feedback**
+## **Yapay Zeka ve Geri Bildirim Hakkında Bir Not**
 
 Bu egitmen bir Buyuk Dil Modeli (LLM) tarafindan desteklenmektedir. Onu bir uzman yapmak icin cok calistigimiz halde, yapay zekalar hata yapabilir. Yanlis gorunen bir aciklama veya kod ornegiyle karsilastirsaniz, lutfen bize bildirin. Egitmeni duzeltebilirsiniz ve yanitini buna gore ayarlayacaktir.
 

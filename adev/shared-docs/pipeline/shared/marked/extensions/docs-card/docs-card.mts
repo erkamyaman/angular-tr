@@ -87,7 +87,7 @@ function getStandardCard(renderer: AdevDocsRenderer, token: DocsCardToken) {
         <h3>${token.title}</h3>
         ${renderer.parser.parse(token.tokens)}
       </div>
-      <span>${token.link ? token.link : 'Learn more'}</span>
+      <span>${token.link ? token.link : 'Daha fazla bilgi'}</span>
     </a>
     `;
   } else if (token.href) {
@@ -97,7 +97,7 @@ function getStandardCard(renderer: AdevDocsRenderer, token: DocsCardToken) {
         ${token.title ? `<h3>${token.title}</h3>` : ''}
         ${parseWithoutCreatingLinks(renderer, token)}
       </div>
-      <span>${token.link ? token.link : 'Learn more'}</span>
+      <span>${token.link ? token.link : 'Daha fazla bilgi'}</span>
     </a>
     `;
   }
@@ -134,7 +134,7 @@ function getCardWithSvgIllustration(renderer: RendererThis, token: DocsCardToken
             ${token.title ? `<h3>${token.title}</h3>` : ''}
             ${renderer.parser.parse(token.tokens)}
           </div>
-          <span>${token.link ? token.link : 'Learn more'}</span>
+          <span>${token.link ? token.link : 'Daha fazla bilgi'}</span>
         </div>
       </a>
       `;
