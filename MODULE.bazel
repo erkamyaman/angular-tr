@@ -71,8 +71,8 @@ use_repo(node, "nodejs_windows_amd64")
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 pnpm.pnpm(
     name = "pnpm",
-    pnpm_version = "10.30.3",
-    pnpm_version_integrity = "sha512-yWHR4KLY41TsqlFmuCJRZmi39Ey1vZUSLVkN2Bki9gb1RzttI+xKW+Bef80Y6EiNR9l4u+mBhy8RRdBumnQAFw==",
+    pnpm_version = "10.31.0",
+    pnpm_version_integrity = "sha512-45JziL+qgHjOt5t0j/wegnToTXUWPme8IuBsDTrtQ90VMVHL8R1/gwH/SsuYxovcXK32mJUygB/6/js+SmPCaA==",
 )
 use_repo(pnpm, "pnpm")
 
@@ -117,9 +117,9 @@ use_repo(npm, "npm")
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
 rules_ts_ext.deps(
     name = "angular_npm_typescript",
-    # Obtained by: curl --silent https://registry.npmjs.org/typescript/6.0.0-beta | jq -r '.dist.integrity'
-    ts_integrity = "sha512-CldZdztDpQRLM1HC6WDQjQkQN5Ub5zRau737a1diGh3lPmb9oRsaWHk1y5iqK0o7+1bNJ0oXfEGRkAogFZBL+Q==",
-    ts_version = "6.0.0-beta",
+    # Obtained by: curl --silent https://registry.npmjs.org/typescript/6.0.1-rc | jq -r '.dist.integrity'
+    ts_integrity = "sha512-7XlzYb+p/7YxX6qSOzwB4mxVFRdAgWWkj1PgAZ+jzldeuFV6Z77vwFbNxHsUXAL/bhlWY2jCT8shLwDJR8337g==",
+    ts_version = "6.0.1-rc",
 )
 use_repo(rules_ts_ext, **{"npm_typescript": "angular_npm_typescript"})
 
