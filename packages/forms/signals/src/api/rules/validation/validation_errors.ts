@@ -7,7 +7,7 @@
  */
 
 import type {FormField} from '../../../directive/form_field_directive';
-import type {FieldTree} from '../../types';
+import type {ReadonlyFieldTree} from '../../types';
 import type {StandardSchemaValidationError} from './standard_schema';
 
 /**
@@ -24,9 +24,7 @@ export interface ValidationErrorOptions {
  *
  * @experimental 21.0.0
  */
-export type WithFieldTree<T> = T & {fieldTree: FieldTree<unknown>};
-/** @deprecated Use `WithFieldTree` instead  */
-export type WithField<T> = WithFieldTree<T>;
+export type WithFieldTree<T> = T & {fieldTree: ReadonlyFieldTree<unknown>};
 
 /**
  * A type that allows the given type `T` to optionally have a `field` property.
@@ -34,9 +32,9 @@ export type WithField<T> = WithFieldTree<T>;
  *
  * @experimental 21.0.0
  */
-export type WithOptionalFieldTree<T> = Omit<T, 'fieldTree'> & {fieldTree?: FieldTree<unknown>};
-/** @deprecated Use `WithOptionalFieldTree` instead  */
-export type WithOptionalField<T> = WithOptionalFieldTree<T>;
+export type WithOptionalFieldTree<T> = Omit<T, 'fieldTree'> & {
+  fieldTree?: ReadonlyFieldTree<unknown>;
+};
 
 /**
  * A type that ensures the given type `T` does not have a `field` property.
@@ -45,8 +43,6 @@ export type WithOptionalField<T> = WithOptionalFieldTree<T>;
  * @experimental 21.0.0
  */
 export type WithoutFieldTree<T> = T & {fieldTree: never};
-/** @deprecated Use `WithoutFieldTree` instead  */
-export type WithoutField<T> = WithoutFieldTree<T>;
 
 /**
  * Create a required error associated with the target field
@@ -281,7 +277,7 @@ export declare namespace ValidationError {
    */
   export interface WithFieldTree extends ValidationError {
     /** The field associated with this error. */
-    readonly fieldTree: FieldTree<unknown>;
+    readonly fieldTree: ReadonlyFieldTree<unknown>;
     readonly formField?: FormField<unknown>;
   }
   /** @deprecated Use `ValidationError.WithFieldTree` instead  */
@@ -302,7 +298,7 @@ export declare namespace ValidationError {
    */
   export interface WithOptionalFieldTree extends ValidationError {
     /** The field associated with this error. */
-    readonly fieldTree?: FieldTree<unknown>;
+    readonly fieldTree?: ReadonlyFieldTree<unknown>;
   }
   /** @deprecated Use `ValidationError.WithOptionalFieldTree` instead  */
   export type WithOptionalField = WithOptionalFieldTree;
@@ -335,7 +331,7 @@ export abstract class BaseNgValidationError implements ValidationError {
   readonly kind: string = '';
 
   /** The field associated with this error. */
-  readonly fieldTree!: FieldTree<unknown>;
+  readonly fieldTree!: ReadonlyFieldTree<unknown>;
 
   /** Human readable error message. */
   readonly message?: string;

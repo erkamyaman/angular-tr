@@ -1,5 +1,5 @@
-@use '../../../../../styles/typography';
-@use '../../../../../styles/theme' as th;
+@use '../../../styles/typography';
+@use '../../../styles/theme' as th;
 
 :host {
   display: block;
@@ -34,6 +34,10 @@
           width: 16px;
           height: 16px;
           font-size: 16px;
+        }
+
+        ng-icon {
+          --icon-size: 14px;
         }
       }
     }
