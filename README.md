@@ -1,4 +1,4 @@
-<h1 align="center">Angular Türkçe Dokümantasyon</h1>
+<h1 align="center">Angular Türkçe Dokümantasyon 🇹🇷</h1>
 
 <p align="center">
   <img src="adev/src/assets/images/press-kit/angular_icon_gradient.gif" alt="angular-logo" width="120px" height="120px"/>
