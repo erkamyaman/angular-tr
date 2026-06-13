@@ -1,9 +1,9 @@
 <h1 align="center">Angular Türkçe Dokümantasyon 🇹🇷</h1>
 
 <p align="center">
-  <img src="adev/src/assets/images/press-kit/angular_icon_gradient.gif" alt="angular-logo" width="120px" height="120px"/>
+  <img src="adev/src/assets/images/press-kit/angular_icon_gradient.gif" alt="angular-logo" height="120px" align="middle"/>
   &nbsp;&nbsp;
-  <img src="adev/src/assets/images/turkey-flag.svg" alt="Türk bayrağı" width="150px"/>
+  <img src="adev/src/assets/images/turkey-flag.svg" alt="Türk bayrağı" height="120px" align="middle"/>
   <br>
   <em>Angular'ın resmi dokümantasyonunun topluluk tarafından sürdürülen Türkçe çevirisi.</em>
   <br>
