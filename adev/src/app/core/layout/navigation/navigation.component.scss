@@ -31,6 +31,7 @@
 
 .adev-mobile-nav-bar {
   display: none;
+  align-items: center;
   gap: 0.75rem;
   backdrop-filter: blur(16px);
   background-color: color-mix(in srgb, var(--page-background) 70%, transparent);
@@ -57,6 +58,30 @@
 
   docs-icon {
     color: var(--primary-contrast);
+  }
+
+  // Contribute (GitHub) pill, pushed to the end of the mobile bar
+  .adev-mobile-contribute {
+    margin-inline-start: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 5px 10px;
+    border: 1px solid var(--senary-contrast);
+    border-radius: 0.25rem;
+    background: var(--page-background);
+    color: var(--primary-contrast);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+
+    span {
+      background-image: var(--red-to-pink-to-purple-horizontal-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
   }
 }
 

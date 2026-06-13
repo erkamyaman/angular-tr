@@ -22,6 +22,7 @@
   margin-top: 3rem;
   padding: 0 3rem;
   display: flex;
+  align-items: stretch;
   justify-content: space-between;
   gap: 0.5rem;
   top: var(--layout-padding);
@@ -29,7 +30,10 @@
   z-index: 1;
 
   @include mq.for-tablet-landscape-down {
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 1rem;
     margin-top: 4rem;
   }
 
@@ -195,24 +199,35 @@ section {
     align-items: center;
     gap: 1rem;
 
-    @include mq.for-tablet-landscape-down() {
+    // On phone the global top-bar Contribute button is shown, so hide this
+    // duplicate to avoid two "Katkıda Bulun" buttons at once.
+    @include mq.for-phone-only {
       display: none;
     }
   }
 
   .adev-github-link {
     display: flex;
+    align-self: stretch;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    background: var(--primary-contrast);
-    color: var(--page-background);
+    padding: 5px 10px;
+    border: 1px solid var(--senary-contrast);
+    border-radius: 0.25rem;
+    background: var(--page-background);
+    color: var(--primary-contrast);
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
     transition: opacity 0.2s ease;
+
+    span {
+      background-image: var(--red-to-pink-to-purple-horizontal-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
     svg {
       flex-shrink: 0;
