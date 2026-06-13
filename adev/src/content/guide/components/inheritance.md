@@ -1,11 +1,10 @@
-# Inheritance
+# Kalıtım
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Angular components are TypeScript classes and participate in standard JavaScript inheritance
-semantics.
+Angular bileşenleri TypeScript sınıflarıdır ve standart JavaScript kalıtım semantiklerine katılır.
 
-A component can extend any base class:
+Bir bileşen herhangi bir temel sınıfı genişletebilir:
 
 ```ts
 export class ListboxBase {
@@ -16,15 +15,13 @@ export class ListboxBase {
   /*...*/
 })
 export class CustomListbox extends ListboxBase {
-  // CustomListbox inherits the `value` property.
+  // CustomListbox `value` özelliğini miras alır.
 }
 ```
 
-## Extending other components and directives
+## Diğer bileşen ve direktifleri genişletme
 
-When a component extends another component or a directive, it inherits some of the metadata defined in
-the base class's decorator and the base class's decorated members. This includes
-host bindings, inputs, outputs, lifecycle methods.
+Bir bileşen başka bir bileşeni veya bir direktifi genişlettiğinde, temel sınıfın dekoratöründe tanımlanan bazı meta verileri ve temel sınıfın dekore edilmiş üyelerini miras alır. Bu; host bağlamalarını, girdileri, çıktıları ve yaşam döngüsü yöntemlerini içerir.
 
 ```angular-ts
 @Component({
@@ -56,16 +53,31 @@ export class CustomListbox extends ListboxBase {
 }
 ```
 
-In the example above, `CustomListbox` inherits all the information associated with `ListboxBase`,
-overriding the selector and template with its own values. `CustomListbox` has two inputs (`value`
-and `disabled`) and two event listeners (`keydown` and `click`).
+Yukarıdaki örnekte, `CustomListbox` ile ilişkili tüm bilgileri `ListboxBase`'den miras alır ve seçici ile şablonu kendi değerleriyle geçersiz kılar. `CustomListbox` iki girdiye (`value` ve `disabled`) ve iki olay dinleyicisine (`keydown` ve `click`) sahiptir.
 
-Child classes end up with the _union_ of all of their ancestors' inputs, outputs, and host bindings
-and their own.
+Alt sınıflar, tüm atalarının girdilerinin, çıktılarının ve host bağlamalarının _birleşimiyle_ ve kendi girdileri, çıktıları ve host bağlamalarıyla sonuçlanır.
 
-### Forwarding injected dependencies
+### Enjekte edilen bağımlılıkları iletme
 
-If a base class injects dependencies as constructor parameters, the child class must explicitly class these dependencies to `super`.
+Bir temel sınıf `inject()`'i bir özellik başlatıcısı olarak kullandığında, alt sınıf bu özelliği otomatik olarak devralır. `super`'a iletme gerekmez.
+
+```ts
+@Component({
+  /*...*/
+})
+export class ListboxBase {
+  protected element = inject(ElementRef);
+}
+
+@Component({
+  /*...*/
+})
+export class CustomListbox extends ListboxBase {
+  // `element`, `ListboxBase`'ten devralınır.
+}
+```
+
+Bir temel sınıf, constructor parametreleri olarak bağımlılıkları enjekte ediyorsa, alt sınıfın bu bağımlılıkları açıkça `super`'a iletmesi gerekir.
 
 ```ts
 @Component({
@@ -85,11 +97,9 @@ export class CustomListbox extends ListboxBase {
 }
 ```
 
-### Overriding lifecycle methods
+### Yaşam döngüsü yöntemlerini geçersiz kılma
 
-If a base class defines a lifecycle method, such as `ngOnInit`, a child class that also
-implements `ngOnInit` _overrides_ the base class's implementation. If you want to preserve the base
-class's lifecycle method, explicitly call the method with `super`:
+Bir temel sınıf `ngOnInit` gibi bir yaşam döngüsü yöntemi tanımlıyorsa, ayrıca `ngOnInit` uygulayan bir alt sınıf temel sınıfın uygulamasını _geçersiz kılar_. Temel sınıfın yaşam döngüsü yöntemini korumak istiyorsanız, `super` ile yöntemi açıkça çağırın:
 
 ```ts
 @Component({

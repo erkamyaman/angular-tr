@@ -1,99 +1,99 @@
-# Profiling with the Chrome DevTools
+# Chrome DevTools ile profil çıkarma
 
-Angular integrates with the [Chrome DevTools extensibility API](https://developer.chrome.com/docs/devtools/performance/extension) to present framework-specific data and insights directly in the [Chrome DevTools performance panel](https://developer.chrome.com/docs/devtools/performance/overview).
+Angular, framework'e özgü verileri ve içgörüleri doğrudan [Chrome DevTools performans panelinde](https://developer.chrome.com/docs/devtools/performance/overview) sunmak için [Chrome DevTools genişletilebilirlik API'si](https://developer.chrome.com/docs/devtools/performance/extension) ile entegre olur.
 
-With the integration enabled, you can [record a performance profile](https://developer.chrome.com/docs/devtools/performance#record) containing two sets of data:
+Entegrasyon etkinleştirildiğinde, iki veri seti içeren bir [performans profili kaydedebilirsiniz](https://developer.chrome.com/docs/devtools/performance#record):
 
-- Standard performance entries based on Chrome's understanding of your code executing in a browser, and
-- Angular-specific entries contributed by the framework's runtime.
+- Chrome'un kodunuzun bir tarayıcıda çalışmasını anlayışına dayanan standart performans girişleri ve
+- Framework'un çalışma zamanı tarafından sağlanan Angular'a özgü girişler.
 
-Both sets of data are presented together on the same tab, but on separate tracks:
+Her iki veri seti de aynı sekmede ancak ayrı izlerde birlikte sunulur:
 
 <img alt="Angular custom track in Chrome DevTools profiler" src="assets/images/best-practices/runtime-performance/angular-perf-in-chrome.png">
 
-Angular-specific data are expressed in terms of framework concepts (components, change detection, lifecycle hooks, etc.) alongside lower-level function and method calls captured by a browser. These two data sets are correlated, and you can switch between the different views and level of details.
+Angular'a özgü veriler, bir tarayıcı tarafından yakalanan daha düşük düzeyli fonksiyon ve yöntem çağrılarının yanında framework kavramları (bileşenler, değişiklik algılama, yaşam döngüsü kancaları vb.) açısından ifade edilir. Bu iki veri seti birbiriyle ilişkilidir ve farklı görünümler ile ayrıntı düzeyleri arasında geçiş yapabilirsiniz.
 
-You can use the Angular track to better understand how your code runs in the browser, including:
+Kodunuzun tarayıcıda nasıl çalıştığını daha iyi anlamak için Angular izini kullanabilirsiniz, bunlar arasında:
 
-- Determining whether a given code block is part of the Angular application, or whether it belongs to another script running on the same page.
-- Identifying performance bottlenecks and attribute those to specific components or services.
-- Gaining deeper insight into Angular's inner working with a visual breakdown of each change detection cycle.
+- Belirli bir kod bloğunun Angular uygulamasının bir parçası olup olmadığını veya aynı sayfada çalışan başka bir betiğe ait olup olmadığını belirleme.
+- Performans darboğazlarını belirleme ve bunları belirli bileşenlere veya servislere atama.
+- Her değişiklik algılama döngüsünün görsel bir dökümüyle Angular'ın iç çalışmaları hakkında daha derin içgörü kazanma.
 
-## Recording a profile
+## Profil kaydetme
 
-### Enable integration
+### Entegrasyonu etkinleştirme
 
-You can enable Angular profiling in one of two ways:
+Angular profil çıkarmayı iki yoldan biriyle etkinleştirebilirsiniz:
 
-1. Run [`ng.enableProfiling()`](api/core/enableProfiling) in Chrome's console panel, or
-1. Include a call to [`enableProfiling()`](api/core/enableProfiling) in your application startup code (imported from `@angular/core`).
+1. Chrome'un konsol panelinde [`ng.enableProfiling()`](api/core/enableProfiling) çalıştırın veya
+1. Uygulama başlangıç kodunuza (`@angular/core`'dan içeri aktarılan) [`enableProfiling()`](api/core/enableProfiling) çağrısını ekleyin.
 
-NOTE: Angular profiling works exclusively in development mode.
+NOTE: Angular profil çıkarma yalnızca geliştirme modunda çalışır.
 
-Here is an example of how you can enable the integration in the application bootstrap to capture all possible events:
+Başlangıçta çalışan tüm olayları yakalamak için uygulama bootstrap'inde entegrasyonu nasıl etkinleştirebileceğinize dair bir örnek:
 
 ```ts
 import {enableProfiling} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MyApp} from './my-app';
 
-// Turn on profiling *before* bootstrapping your application
-// in order to capture all of the code run on start-up.
+// Başlangıçta çalışan tüm kodu yakalamak için uygulamanızı
+// başlatmadan *önce* profil çıkarmayı etkinleştirin.
 enableProfiling();
 bootstrapApplication(MyApp);
 ```
 
-### Record a profile
+### Profil kaydetme
 
-Use the **Record** button in the Chrome DevTools performance panel:
+Chrome DevTools performans panelindeki **Record** düğmesini kullanın:
 
 <img alt="Recording a profile" src="assets/images/best-practices/runtime-performance/recording-profile-in-chrome.png">
 
-See the [Chrome DevTools documentation](https://developer.chrome.com/docs/devtools/performance#record) for more details on recording profiles.
+Profil kaydetme hakkında daha fazla ayrıntı için [Chrome DevTools belgeleri](https://developer.chrome.com/docs/devtools/performance#record)'ne bakın.
 
-## Interpreting a recorded profile
+## Kaydedilmiş bir profili yorumlama
 
-You can use the "Angular" custom track to quickly identify and diagnose performance issues. The following sections describe some common profiling scenarios.
+Performans sorunlarını hızla belirlemek ve teşhis etmek için "Angular" özel izini kullanabilirsiniz. Aşağıdaki bölümler bazı yaygın profil çıkarma senaryolarını tanımlamaktadır.
 
-### Differentiating between your Angular application and other tasks on the same page
+### Angular uygulamanız ile aynı sayfadaki diğer görevleri ayırt etme
 
-As Angular and Chrome data are presented on the separate but correlated tracks, you can see when Angular's application code is executed as opposed to some other browser processing (typically layout and paint) or other scripts running on the same page (in this case the custom Angular track does not have any data):
+Angular ve Chrome verileri ayrı ancak ilişkili izlerde sunulduğu için, Angular'ın uygulama kodunun ne zaman çalıştırıldığını, başka bir tarayıcı işleminin (tipik olarak düzenleme ve boyama) veya aynı sayfada çalışan diğer betiklerin (bu durumda özel Angular izinde herhangi bir veri bulunmaz) aksine görebilirsiniz:
 
 <img alt="Profile data: Angular vs. 3rd party scripts execution" src="assets/images/best-practices/runtime-performance/profile-angular-vs-3rd-party.png">
 
-This allows you to determine whether further investigations should focus on the Angular application code or on other parts of your codebase or dependencies.
+Bu, daha fazla araştırmanın Angular uygulama koduna mı yoksa kod tabanınızın veya bağımlılıklarınızın diğer bölümlerine mi odaklanması gerektiğini belirlemenize olanak tanır.
 
-### Color-coding
+### Renk kodlaması
 
-Angular uses colors in the flame chart graph to distinguish tasks types:
+Angular, görev türlerini ayırt etmek için alev grafiği grafiklerinde renkler kullanır:
 
-- 🟦 Blue represents TypeScript code written by the application developer (for example: services, component constructors and lifecycle hooks, etc.).
-- 🟪 Purple represents templates code written by the application developer and transformed by the Angular compiler.
-- 🟩 Green represents entry points to the application code and identifies _reasons_ for executing code.
+- 🟦 Mavi, uygulama geliştiricisi tarafından yazılan TypeScript kodunu temsil eder (örneğin: servisler, bileşen yapıcıları ve yaşam döngüsü kancaları vb.).
+- 🟪 Mor, uygulama geliştiricisi tarafından yazılan ve Angular derleyicisi tarafından dönüştürülen şablon kodunu temsil eder.
+- 🟩 Yeşil, uygulama koduna giriş noktalarını temsil eder ve kod çalıştırma _nedenlerini_ belirler.
 
-The following examples illustrate the described color-coding in various, real-life recordings.
+Aşağıdaki örnekler, çeşitli gerçek kayıtlarda tanımlanan renk kodlamasını göstermektedir.
 
-#### Example: Application bootstrapping
+#### Örnek: Uygulama başlatma
 
-The application bootstrap process usually consists of:
+Uygulama bootstrap süreci genellikle şu öğelerden oluşur:
 
-- Triggers marked in blue, such as the call to the `bootstrapApplication`, instantiation of the root component, and initial change detection
-- Various DI services instantiated during bootstrap, marked in green.
+- `bootstrapApplication` çağrısı, kök bileşenin örneklenmesi ve ilk değişiklik algılama gibi maviye işaretlenmiş tetikleyiciler
+- Bootstrap sırasında örneklenen, yeşile işaretlenmiş çeşitli DI servisleri.
 
 <img alt="Profile data: bootstrap application" src="assets/images/best-practices/runtime-performance/profile-bootstrap-application.png">
 
-#### Example: Component execution
+#### Örnek: Bileşen işleme
 
-One component processing is typically represented as an entry point (blue) followed by its template execution (purple). A template might, in turn, trigger instantiation of directives and execution of lifecycle hooks (green):
+Bir bileşenin işlenmesi tipik olarak bir giriş noktası (mavi) ve ardından şablon çalıştırması (mor) olarak temsil edilir. Bir şablon ise direktiflerin örneklenmesini ve yaşam döngüsü kancalarının çalıştırılmasını (yeşil) tetikleyebilir:
 
 <img alt="Profile data: component processing" src="assets/images/best-practices/runtime-performance/profile-component-processing.png">
 
-#### Example: Change detection
+#### Örnek: Değişiklik algılama
 
-A change detection cycle usually consists of one or more data synchronization passes (blue), where each pass traverses a subset of components.
+Bir degisiklik algilama dongusu genellikle bir veya daha fazla veri senkronizasyon gecisindan (mavi) olusur; her gecis bir bilesen alt kumesini gezer.
 
 <img alt="Profile data: change detection" src="assets/images/best-practices/runtime-performance/profile-change-detection.png">
 
-With this data visualization, it is possible to immediately identify components that were involved in the change detection and which were skipped (typically the `OnPush` components that were not marked dirty).
+Bu veri gorsellestirmesi ile, degisiklik algilamaya dahil olan bilesenler ve hangilerinin atlangini (tipik olarak kirli olarak isaretlenmemis `OnPush` bilesenleri) hemen belirlemek mumkundur.
 
-Additionally, you can inspect the number of synchronization passes for one change detection. Having more than one synchronization pass suggest that state is updated during change detection. You should avoid this, as it slows down page updates and can even result in infinite loops in the worst cases.
+Ek olarak, bir degisiklik algilama icin senkronizasyon gecisi sayisini inceleyebilirsiniz. Birden fazla senkronizasyon gecisine sahip olmak, degisiklik algilama sirasinda durumun guncellendigini gostrebilir. Bundan kacinmalisiniz, cunku sayfa guncellemelerini yavaslatir ve en kotu durumda sonsuz dongulere bile yol acabilir.

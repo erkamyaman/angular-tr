@@ -1,26 +1,26 @@
-# Slow computations
+# Yavaş hesaplamalar
 
-On every change detection cycle, Angular synchronously:
+Her değişiklik algılama döngüsünde Angular senkron olarak:
 
-- Evaluates all template expressions in all components, unless specified otherwise, based on that each component's detection strategy
-- Executes the `ngDoCheck`, `ngAfterContentChecked`, `ngAfterViewChecked`, and `ngOnChanges` lifecycle hooks.
-  A single slow computation within a template or a lifecycle hook can slow down the entire change detection process because Angular runs the computations sequentially.
+- Aksi belirtilmedikçe, her bileşenin algılama stratejisine dayalı olarak tüm bileşenlerdeki tüm şablon ifadelerini değerlendirir
+- `ngDoCheck`, `ngAfterContentChecked`, `ngAfterViewChecked` ve `ngOnChanges` yaşam döngüsü kancalarını çalıştırır.
+  Bir şablon veya yaşam döngüsü kancası içindeki tek bir yavaş hesaplama, Angular hesaplamaları sıralı olarak çalıştırdığı için tüm değişiklik algılama sürecini yavaşlatabilir.
 
-## Identifying slow computations
+## Yavaş hesaplamaları belirleme
 
-You can identify heavy computations with Angular DevTools’ profiler. In the performance timeline, click a bar to preview a particular change detection cycle. This displays a bar chart, which shows how long the framework spent in change detection for each component. When you click a component, you can preview how long Angular spent evaluating its template and lifecycle hooks.
+Ağır hesaplamaları Angular DevTools'un profil çıkarıcısı ile belirleyebilirsiniz. Performans zaman çizelgesinde, belirli bir değişiklik algılama döngüsünü önizlemek için bir çubuğa tıklayın. Bu, her bileşen için framework'un değişiklik algılamada ne kadar zaman harcadığını gösteren bir çubuk grafik görüntüler. Bir bileşene tıkladığınızda, Angular'ın şablonunu ve yaşam döngüsü kancalarını değerlendirmek için ne kadar zaman harcadığını önizleyebilirsiniz.
 
 <img alt="Angular DevTools profiler preview showing slow computation" src="assets/images/best-practices/runtime-performance/slow-computations.png">
 
-For example, in the preceding screenshot, the second recorded change detection cycle is selected. Angular spent over 573 ms on this cycle, with the most time spent in the `EmployeeListComponent`. In the details panel, you can see that Angular spent over 297 ms evaluating the template of the `EmployeeListComponent`.
+Örneğin, yukarıdaki ekran görüntüsünde, kaydedilen ikinci değişiklik algılama döngüsü seçilmiştir. Angular bu döngü için 573 ms'den fazla harcamış olup, zamanın büyük bölümü `EmployeeListComponent`'te harcanmıştır. Ayrıntı panelinde, Angular'ın `EmployeeListComponent`'in şablonunu değerlendirmek için 297 ms'den fazla harcadığını görebilirsiniz.
 
-## Optimizing slow computations
+## Yavaş hesaplamaları optimize etme
 
-Here are several techniques to remove slow computations:
+Yavaş hesaplamaları ortadan kaldırmak için birkaç teknik:
 
-- **Optimizing the underlying algorithm**. This is the recommended approach. If you can speed up the algorithm that is causing the problem, you can speed up the entire change detection mechanism.
-- **Caching using pure pipes**. You can move the heavy computation to a pure [pipe](guide/templates/pipes). Angular reevaluates a pure pipe only if it detects that its inputs have changed, compared to the previous time Angular called it.
-- **Using memoization**. [Memoization](https://en.wikipedia.org/wiki/Memoization) is a similar technique to pure pipes, with the difference that pure pipes preserve only the last result from the computation where memoization could store multiple results.
-- **Avoid repaints/reflows in lifecycle hooks**. Certain [operations](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/) cause the browser to either synchronously recalculate the layout of the page or re-render it. Since reflows and repaints are generally slow, you want to avoid performing them in every change detection cycle.
+- **Temeldeki algoritmayı optimize etme**. Bu önerilen yaklaşımdır. Soruna neden olan algoritmayı hızlandırabilirseniz, tüm değişiklik algılama mekanizmasını hızlandırabilirsiniz.
+- **Saf borular kullanarak önbellekleme**. Ağır hesaplamayı saf bir [boruya](guide/templates/pipes) taşıyabilirsiniz. Angular, saf bir boruyu yalnızca girişlerinin değiştiğini algıladığında, önceki çağırdığı zamana kıyasla yeniden değerlendirir.
+- **Memoizasyon kullanma**. [Memoizasyon](https://en.wikipedia.org/wiki/Memoization), saf borulara benzer bir tekniktir; fark, saf boruların yalnızca hesaplamadan son sonucu korumasına karşın memoizasyonun birden fazla sonucu depolayabilmesidir.
+- **Yaşam döngüsü kancalarında yeniden boyama/yeniden akışlardan kaçınma**. Belirli [işlemler](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/) tarayıcının sayfanın düzenini senkron olarak yeniden hesaplamasına veya yeniden render etmesine neden olur. Yeniden akışlar ve yeniden boyamalar genellikle yavaş olduğundan, bunları her değişiklik algılama döngüsünde gerçekleştirmekten kaçınmak istersiniz.
 
-Pure pipes and memoization have different trade-offs. Pure pipes are an Angular built-in concept compared to memoization, which is a general software engineering practice for caching function results. The memory overhead of memoization could be significant if you invoke the heavy computation frequently with different arguments.
+Saf borular ve memoizasyonun farkli odulusler vardır. Saf borular, genel bir yazılım mühendisliği pratigı olan fonksiyon sonuclarını önbelleğe almaya yönelik memoizasyona kıyasla Angular'a özgü bir kavramdır. Ağır hesaplamayı farklı argümanlarla sık sık çağırırsanız, memoizasyonun bellek yükü önemli olabilir.

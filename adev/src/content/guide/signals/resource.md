@@ -1,12 +1,10 @@
-# Async reactivity with resources
+# Resource'lar ile asenkron reaktivite
 
-IMPORTANT: `resource` is [experimental](reference/releases#experimental). It's ready for you to try, but it might change before it is stable.
+Tüm sinyal API'leri senkrondur-- `signal`, `computed`, `input`, vb. Ancak uygulamalar genellikle asenkron olarak kullanılabilen verilerle uğraşmak zorundadır. Bir `Resource`, asenkron verileri uygulamanızın sinyal tabanlı koduna dahil etmenin ve yine de verilerine senkron olarak erişmenin bir yolunu sunar.
 
-All signal APIs are synchronous— `signal`, `computed`, `input`, etc. However, applications often need to deal with data that is available asynchronously. A `Resource` gives you a way to incorporate async data into your application's signal-based code and still allow you to access its data synchronously.
+Herhangi bir asenkron işlemi gerçekleştirmek için bir `Resource` kullanabilirsiniz, ancak `Resource` için en yaygın kullanım durumu bir sunucudan veri almaktır. Aşağıdaki örnek bazı kullanıcı verilerini almak için bir kaynak oluşturur.
 
-You can use a `Resource` to perform any kind of async operation, but the most common use-case for `Resource` is fetching data from a server. The following example creates a resource to fetch some user data.
-
-The easiest way to create a `Resource` is the `resource` function.
+Bir `Resource` oluşturmanın en kolay yolu `resource` fonksiyonudur.
 
 ```typescript
 import {resource, Signal} from '@angular/core';
@@ -14,56 +12,56 @@ import {resource, Signal} from '@angular/core';
 const userId: Signal<string> = getUserId();
 
 const userResource = resource({
-  // Define a reactive computation.
-  // The params value recomputes whenever any read signals change.
+  // Reaktif bir hesaplama tanımla.
+  // params değeri, okunan sinyallerden herhangi biri değiştiğinde yeniden hesaplanır.
   params: () => ({id: userId()}),
 
-  // Define an async loader that retrieves data.
-  // The resource calls this function every time the `params` value changes.
+  // Veri alan asenkron bir loader tanımla.
+  // Resource, `params` değeri her değiştiğinde bu fonksiyonu çağırır.
   loader: ({params}) => fetchUser(params),
 });
 
-// Create a computed signal based on the result of the resource's loader function.
+// Resource'un loader fonksiyonunun sonucuna dayalı bir computed sinyal oluştur.
 const firstName = computed(() => {
   if (userResource.hasValue()) {
-    // `hasValue` serves 2 purposes:
-    // - It acts as type guard to strip `undefined` from the type
-    // - If protects against reading a throwing `value` when the resource is in error state
+    // `hasValue` iki amaca hizmet eder:
+    // - Türden `undefined`'ı çıkaran bir tür koruması görevi görür
+    // - Resource hata durumundayken hata fırlatan `value` okumasına karşı korur
     return userResource.value().firstName;
   }
 
-  // fallback in case the resource value is `undefined` or if the resource is in error state
+  // Resource değeri `undefined` ise veya resource hata durumundaysa yedek değer
   return undefined;
 });
 ```
 
-The `resource` function accepts a `ResourceOptions` object with two main properties: `params` and `loader`.
+`resource` fonksiyonu iki ana özelliğe sahip bir `ResourceOptions` nesnesi kabul eder: `params` ve `loader`.
 
-The `params` property defines a reactive computation that produces a parameter value. Whenever signals read in this computation change, the resource produces a new parameter value, similar to `computed`.
+`params` özelliği, bir parametre değeri üreten reaktif bir hesaplama tanımlar. Bu hesaplamada okunan sinyaller değiştiğinde, kaynak `computed`'a benzer şekilde yeni bir parametre değeri üretir.
 
-The `loader` property defines a `ResourceLoader`— an async function that retrieves some state. The resource calls the loader every time the `params` computation produces a new value, passing that value to the loader. See [Resource loaders](#resource-loaders) below for more details.
+`loader` özelliği bir `ResourceLoader` tanımlar-- bir miktar durum alan asenkron bir fonksiyon. Kaynak, `params` hesaplaması yeni bir değer ürettiğinde yükleyiciyi çağırır ve o değeri yükleyiciye iletir. Daha fazla ayrıntı için aşağıdaki [Resource yükleyicileri](#resource-loaderları) bölümüne bakın.
 
-`Resource` has a `value` signal that contains the results of the loader.
+`Resource`, yükleyicinin sonuçlarını içeren bir `value` sinyaline sahiptir.
 
-## Resource loaders
+## Resource loader'ları
 
-When creating a resource, you specify a `ResourceLoader`. This loader is an async function that accepts a single parameter— a `ResourceLoaderParams` object— and returns a value.
+Bir kaynak oluştururken bir `ResourceLoader` belirtirsiniz. Bu yükleyici, tek bir parametre kabul eden asenkron bir fonksiyondur-- bir `ResourceLoaderParams` nesnesi-- ve bir değer döndürür.
 
-The `ResourceLoaderParams` object contains three properties: `params`, `previous`, and `abortSignal`.
+`ResourceLoaderParams` nesnesi üç özellik içerir: `params`, `previous` ve `abortSignal`.
 
-| Property      | Description                                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `params`      | The value of the resource's `params` computation.                                                                                                |
-| `previous`    | An object with a `status` property, containing the previous `ResourceStatus`.                                                                    |
-| `abortSignal` | An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). See [Aborting requests](#aborting-requests) below for details. |
+| Property      | Description                                                                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `params`      | The value of the resource's `params` computation.                                                                                                     |
+| `previous`    | An object with a `status` property, containing the previous `ResourceStatus`.                                                                         |
+| `abortSignal` | An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). See [Aborting requests](#requestleri-iptal-etme) below for details. |
 
-If the `params` computation returns `undefined`, the loader function does not run and the resource status becomes `'idle'`.
+`params` hesaplaması `undefined` döndürürse, yükleyici fonksiyon çalışmaz ve kaynak durumu `'idle'` olur.
 
-### Aborting requests
+### Request'leri iptal etme
 
-A resource aborts an outstanding loading operation if the `params` computation changes while the resource is loading.
+Kaynak, `params` hesaplaması yüklenme sırasında değişirse bekleyen bir yükleme işlemini iptal eder.
 
-You can use the `abortSignal` in `ResourceLoaderParams` to respond to aborted requests. For example, the native `fetch` function accepts an `AbortSignal`:
+İptal edilen isteklere yanıt vermek için `ResourceLoaderParams` içindeki `abortSignal`'i kullanabilirsiniz. Örneğin, yerel `fetch` fonksiyonu bir `AbortSignal` kabul eder:
 
 ```typescript
 const userId: Signal<string> = getUserId();
@@ -71,18 +69,18 @@ const userId: Signal<string> = getUserId();
 const userResource = resource({
   params: () => ({id: userId()}),
   loader: ({params, abortSignal}): Promise<User> => {
-    // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
-    // indicates that the request has been aborted.
+    // fetch, verilen `AbortSignal` request'in iptal edildiğini belirttiğinde
+    // bekleyen tüm HTTP request'lerini iptal eder.
     return fetch(`users/${params.id}`, {signal: abortSignal});
   },
 });
 ```
 
-See [`AbortSignal` on MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) for more details on request cancellation with `AbortSignal`.
+`AbortSignal` ile istek iptali hakkında daha fazla ayrıntı için MDN'deki [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) sayfasına bakın.
 
-### Reloading
+### Yeniden yükleme
 
-You can programmatically trigger a resource's `loader` by calling the `reload` method.
+`reload` yöntemini çağırarak bir kaynağın `loader`'ını programatik olarak tetikleyebilirsiniz.
 
 ```typescript
 const userId: Signal<string> = getUserId();
@@ -97,9 +95,9 @@ const userResource = resource({
 userResource.reload();
 ```
 
-## Resource status
+## Resource durumu
 
-The resource object has several signal properties for reading the status of the asynchronous loader.
+Kaynak nesnesi, asenkron yükleyicinin durumunu okumak için çeşitli sinyal özelliklerine sahiptir.
 
 | Property    | Description                                                                                                     |
 | ----------- | --------------------------------------------------------------------------------------------------------------- |
@@ -109,26 +107,46 @@ The resource object has several signal properties for reading the status of the 
 | `isLoading` | Whether the resource loader is currently running.                                                               |
 | `status`    | The resource's specific `ResourceStatus`, as described below.                                                   |
 
-The `status` signal provides a specific `ResourceStatus` that describes the state of the resource using a string constant.
+`status` sinyali, kaynağın durumunu bir string sabiti kullanarak tanımlayan belirli bir `ResourceStatus` sağlar.
 
 | Status        | `value()`         | Description                                                                  |
 | ------------- | :---------------- | ---------------------------------------------------------------------------- |
 | `'idle'`      | `undefined`       | The resource has no valid request and the loader has not run.                |
 | `'error'`     | `undefined`       | The loader has encountered an error.                                         |
 | `'loading'`   | `undefined`       | The loader is running as a result of the `params` value changing.            |
-| `'reloading'` | Previous value    | The loader is running as a result calling of the resource's `reload` method. |
+| `'reloading'` | Previous value    | The loader is running as a result of calling the resource's `reload` method. |
 | `'resolved'`  | Resolved value    | The loader has completed.                                                    |
 | `'local'`     | Locally set value | The resource's value has been set locally via `.set()` or `.update()`        |
 
-You can use this status information to conditionally display user interface elements, such loading indicators and error messages.
+Bu durum bilgisini, yükleme göstergeleri ve hata mesajları gibi kullanıcı arayüzü öğelerini koşullu olarak görüntülemek için kullanabilirsiniz.
 
-## Reactive data fetching with `httpResource`
+## SSR ile `resource` verilerini önbelleğe alma
 
-[`httpResource`](/guide/http/http-resource) is a wrapper around `HttpClient` that gives you the request status and response as signals. It makes HTTP requests through the Angular HTTP stack, including interceptors.
+Bir uygulama sunucuda işlendiğinde, ilk HTML'i üretmek için bir kaynak yükleyicisi bir kez çalışır. Hidrasyon sırasında tarayıcı normalde aynı yükleyiciyi yeniden çalıştırır.
 
-## Resource composition with snapshots
+Sunucu sonucunu yeniden kullanmak için kaynak için bir `id` sağlayın. Angular, çözümlenen değeri sunucuda `TransferState` içinde saklar ve kaynağı istemcide `'resolved'` durumunda başlatmak için kullanır.
 
-A `ResourceSnapshot` is a structured representation of a resource's current state. Every resource has a `snapshot` property that provides a signal of its current state.
+```ts
+const userId: Signal<string> = getUserId();
+
+const userResource = resource({
+  params: () => ({id: userId()}),
+  loader: ({params}) => fetchUser(params),
+  id: 'user-unique-id',
+});
+```
+
+`id` değeri, Angular'ın önbelleğe alınmış girişi onu isteyen kaynakla eşleştirebilmesi için uygulamanız içinde benzersiz ve sunucu ile istemcide aynı olmalıdır.
+
+IMPORTANT: Önbelleğe alınan değer sayfanın HTML'ine serileştirildiğinden, sunucu tarafı işlemeyi tetikleyen kullanıcıya özgü veri yükleyen kaynaklarda `id` ayarlamaktan kaçının, özellikle işlenen HTML önbelleğe alınabiliyorsa veya kullanıcılar arasında paylaşılabiliyorsa.
+
+## `httpResource` ile reaktif veri çekme
+
+[`httpResource`](/guide/http/http-resource), `HttpClient` etrafında size istek durumunu ve yanıtı sinyal olarak veren bir sarmalayıcıdır. Yakalayıcılar dahil Angular HTTP yığını aracılığıyla HTTP istekleri yapar.
+
+## Snapshot'lar ile Resource bileşimi
+
+`ResourceSnapshot`, bir kaynağın mevcut durumunun yapılandırılmış bir temsilidir. Her kaynağın mevcut durumunun sinyalini sağlayan bir `snapshot` özelliği vardır.
 
 ```ts
 const userId: Signal<string> = getUserId();
@@ -141,11 +159,11 @@ const userResource = resource({
 const userSnapshot = userResource.snapshot;
 ```
 
-Each snapshot contains a `status` and either a `value` or an `error`.
+Her anlık görüntü bir `status` ve bir `value` veya `error` içerir.
 
-### Composing resources with snapshots
+### Snapshot'lar ile resource'ları birleştirme
 
-You can create new resources from snapshots using `resourceFromSnapshots`. This enables composition with signal APIs like `computed` and `linkedSignal` to transform resource behavior.
+`resourceFromSnapshots` kullanarak anlık görüntülerden yeni kaynaklar oluşturabilirsiniz. Bu, kaynak davranışını dönüştürmek için `computed` ve `linkedSignal` gibi sinyal API'leri ile bileşimi mümkün kılar.
 
 ```ts
 import {linkedSignal, resourceFromSnapshots, Resource, ResourceSnapshot} from '@angular/core';
@@ -155,12 +173,12 @@ function withPreviousValue<T>(input: Resource<T>): Resource<T> {
     source: input.snapshot,
     computation: (snap, previous) => {
       if (snap.status === 'loading' && previous && previous.value.status !== 'error') {
-        // When the input resource enters loading state, we keep the value
-        // from its previous state, if any.
+        // Giriş resource'u yükleme durumuna geçtiğinde, varsa
+        // önceki durumundaki değeri koruruz.
         return {status: 'loading' as const, value: previous.value.value};
       }
 
-      // Otherwise we simply forward the state of the input resource.
+      // Aksi takdirde giriş resource'unun durumunu olduğu gibi iletiriz.
       return snap;
     },
   });
@@ -174,6 +192,6 @@ function withPreviousValue<T>(input: Resource<T>): Resource<T> {
 export class AwesomeProfile {
   userId = input.required<number>();
   user = withPreviousValue(httpResource(() => `/user/${this.userId()}`));
-  // When userId changes, user.value() keeps the old user data until the new one loads
+  // userId değiştiğinde, user.value() yeni veri yüklenene kadar eski kullanıcı verisini korur
 }
 ```

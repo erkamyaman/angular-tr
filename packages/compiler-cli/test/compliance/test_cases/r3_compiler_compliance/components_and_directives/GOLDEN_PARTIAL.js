@@ -76,7 +76,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
                 }]
         }] });
 class MyForwardPipe {
-    transform() { }
+    transform(param) { }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: MyForwardPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
     static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: MyForwardPipe, isStandalone: false, name: "my_forward_pipe" });
 }
@@ -732,4 +732,44 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: nested_component_definition.d.ts
  ****************************************************************************************************/
 export {};
+
+/****************************************************************************************************
+ * PARTIAL FILE: abstract_directive.js
+ ****************************************************************************************************/
+import { Component, Directive } from '@angular/core';
+import * as i0 from "@angular/core";
+export class AbstractDir {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: AbstractDir, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", type: AbstractDir, isStandalone: true, selector: "[test-dir]", ngImport: i0 });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: AbstractDir, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[test-dir]',
+                }]
+        }] });
+export class AbstractComp {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: AbstractComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", type: AbstractComp, isStandalone: true, selector: "test-comp", ngImport: i0, template: '', isInline: true });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: AbstractComp, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'test-comp',
+                    template: ''
+                }]
+        }] });
+
+/****************************************************************************************************
+ * PARTIAL FILE: abstract_directive.d.ts
+ ****************************************************************************************************/
+import * as i0 from "@angular/core";
+export declare abstract class AbstractDir {
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractDir, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractDir, "[test-dir]", never, {}, {}, never, never, true, never>;
+}
+export declare abstract class AbstractComp {
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractComp, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AbstractComp, "test-comp", never, {}, {}, never, never, true, never>;
+}
 

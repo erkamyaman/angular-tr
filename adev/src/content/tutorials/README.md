@@ -6,96 +6,93 @@
 
 ## Tutorial files
 
-The tutorials content consists of the tutorial content, source code and configuration.
+Öğretici içerik; öğretici metin, kaynak kod ve yapılandırmadan oluşur.
 
 ### Content: `README.md`
 
-The tutorial content must be located in a `README.md` file in the tutorial directory.
+Öğretici içerik, öğretici dizinindeki bir `README.md` dosyasında bulunmalıdır.
 
-Taking the `learn-angular` tutorial as an example, see: [`src/content/tutorials/learn-angular/intro/README.md`](/src/content/tutorials/learn-angular/intro/README.md)
+Örnek olarak `learn-angular` öğreticisine bakın: [`src/content/tutorials/learn-angular/intro/README.md`](/src/content/tutorials/learn-angular/intro/README.md)
 
 ### Configuration: `config.json`
 
-Each tutorial is defined by a `config.json`, which can have the following options:
+Her öğretici, aşağıdaki seçeneklere sahip olabilen bir `config.json` ile tanımlanır:
 
-- `title`: defines the tutorial title used in the tutorial nav
-- `nextTutorial`: the path of the next tutorial (only in `intro/` step)
-- `src`: the relative path to an external directory, which defines the tutorial source code used in the embedded editor
-- `answerSrc`: the relative path to an external directory, which defines the tutorial answer used in the embedded editor
-- `openFiles`: an array of files to be open in the editor
-- `type`: the type denotes how the tutorial will be presented and which components are necessary for that tutorial
-  - `cli`: a tutorial with a `cli` type will contain only the content and an interactive terminal with the Angular CLI
-  - `editor`: used for the complete embedded editor, containing the code editor, the preview, an interactive terminal and the console with outputs from the dev server
-  - `local`: disables the embedded editor and shows only the content
-  - `editor-only`: a special config used for the tutorial playground and the homepage playground, which disables the content and shows only the embedded editor
+- `title`: öğretici navigasyonunda kullanılan öğretici başlığını tanımlar
+- `nextTutorial`: sonraki öğreticinin yolu (yalnızca `intro/` adımında)
+- `src`: gömülü düzenleyicide kullanılan öğretici kaynak kodunu tanımlayan harici bir dizine olan göreceli yol
+- `answerSrc`: gömülü düzenleyicide kullanılan öğretici cevabını tanımlayan harici bir dizine olan göreceli yol
+- `openFiles`: düzenleyicide açılacak dosyalar dizisi
+- `type`: öğreticinin nasıl sunulacağını ve hangi bileşenlerin gerekli olduğunu belirleyen tür
+  - `cli`: `cli` türündeki bir öğretici yalnızca içerik ve Angular CLI ile etkileşimli bir terminal içerir
+  - `editor`: kod düzenleyici, önizleme, etkileşimli terminal ve geliştirme sunucusundan gelen çıktıları içeren konsol dahil tam gömülü düzenleyici için kullanılır
+  - `local`: gömülü düzenleyiciyi devre dışı bırakır ve yalnızca içeriği gösterir
+  - `editor-only`: öğretici oyun alanı ve ana sayfa oyun alanı için kullanılan özel bir yapılandırma; içeriği devre dışı bırakır ve yalnızca gömülü düzenleyiciyi gösterir
 
 ### Source code
 
-The tutorial source code includes every file in the tutorial directory, except `README.md` and `config.json`.
+Öğretici kaynak kodu, öğretici dizinindeki `README.md` ve `config.json` dışındaki tüm dosyaları içerir.
 
-The tutorial source code has precedence over the [`common`](#common) project file, so if a file exists in both [`common`](#common) and in the tutorial directory, containing the same relative path, the tutorial file will override the [`common`](#common) file.
+Öğretici kaynak kodu [`common`](#common) proje dosyasına göre önceliğe sahiptir; dolayısıyla aynı göreceli yolda hem [`common`](#common) hem de öğretici dizininde bir dosya varsa, öğretici dosyası [`common`](#common) dosyasını geçersiz kılar.
 
 ## Tutorials directory structure
 
-A tutorial is composed of an introduction and steps. Both the intro and each step contains its own content, config and source code.
+Bir öğretici, bir giriş ve adımlardan oluşur. Hem giriş hem de her adım kendi içeriğini, yapılandırmasını ve kaynak kodunu barındırır.
 
-Taking the `learn-angular` tutorial as an example:
+Örnek olarak `learn-angular` öğreticisi:
 
 ### Introduction
 
 [`src/content/tutorials/learn-angular/intro`](/src/content/tutorials/learn-angular/intro)
 
-is the introduction of the tutorial, which will live in the `/tutorials/learn-angular` route.
+öğreticinin girişidir ve `/tutorials/learn-angular` rotasında yer alır.
 
 ### Steps
 
-[`src/content/tutorials/learn-angular/steps`](/src/content/tutorials/learn-angular/steps) is the directory that contains the tutorial steps.
+[`src/content/tutorials/learn-angular/steps`](/src/content/tutorials/learn-angular/steps) öğretici adımlarını içeren dizindir.
 
-These are some examples from the `learn-angular` tutorial:
+`learn-angular` öğreticisinden bazı örnekler:
 
-- [`learn-angular/steps/1-components-in-angular`](/src/content/tutorials/learn-angular/steps/1-components-in-angular): The route will be `/tutorials/learn-angular/components-in-angular`
-- [`learn-angular/steps/2-updating-the-component-class`](/src/content/tutorials/learn-angular/steps/2-updating-the-component-class): The route will be `/tutorials/learn-angular/updating-the-component-class`
+- [`learn-angular/steps/1-components-in-angular`](/src/content/tutorials/learn-angular/steps/1-components-in-angular): Rota `/tutorials/learn-angular/components-in-angular` olacaktır
+- [`learn-angular/steps/2-updating-the-component-class`](/src/content/tutorials/learn-angular/steps/2-updating-the-component-class): Rota `/tutorials/learn-angular/updating-the-component-class` olacaktır
 
-Each step directory must start with a number followed by a hyphen, then followed by the step pathname.
+Her adım dizini bir sayı ile başlamalı, ardından bir tire ve adım yol adı gelmelidir.
 
-- The number denotes the step, defining which will be the previous and next step within a tutorial.
-- The hyphen is a delimiter :).
-- The pathname taken from the directory name defines the step URL.
+- Sayı, adımı belirtir ve öğretici içindeki önceki ve sonraki adımı tanımlar.
+- Tire bir ayırıcıdır :).
+- Dizin adından alınan yol adı, adımın URL'sini tanımlar.
 
 ## Reserved tutorials directories
 
 ### `common`
 
-The common project is a complete Angular project that is reused by all tutorials. It contains all
-dependencies(`package.json`, `package-lock.json`), project configuration(`tsconfig.json`, `angular.json`) and main files to bootstrap the application(`index.html`, `main.ts`, `app.module.ts`).
+Ortak proje, tüm öğreticiler tarafından yeniden kullanılan eksiksiz bir Angular projesidir. Tüm bağımlılıkları (`package.json`, `package-lock.json`), proje yapılandırmasını (`tsconfig.json`, `angular.json`) ve uygulamayı başlatmak için ana dosyaları (`index.html`, `main.ts`, `app.module.ts`) içerir.
 
-A common project is used for a variety of reasons:
+Ortak proje çeşitli nedenlerle kullanılır:
 
-- Avoid duplication of files in tutorials.
-- Optimize in-app performance by requesting the common project files and dependencies only once, benefiting from the
-  browser cache on subsequent requests.
-- Require a single `npm install` for all tutorials, therefore reducing the time to interactive with the tutorial
-  when navigating different tutorials and steps.
-- Provide a consistent environment for all tutorials.
-- Allow each tutorial to focus on the specific source code for what's being taught and not on the project setup.
+- Öğreticilerde dosya tekrarını önlemek.
+- Ortak proje dosyalarını ve bağımlılıkları yalnızca bir kez isteyerek uygulama içi performansı optimize etmek; sonraki isteklerde tarayıcı önbelleğinden yararlanmak.
+- Tüm öğreticiler için tek bir `npm install` gerektirmek, böylece farklı öğreticiler ve adımlar arasında gezinirken etkileşim süresini azaltmak.
+- Tüm öğreticiler için tutarlı bir ortam sağlamak.
+- Her öğreticinin proje kurulumuna değil, öğretilen konuya özgü kaynak koduna odaklanmasını sağlamak.
 
-See [`src/content/tutorials/common`](/src/content/tutorials/common)
+Bakınız: [`src/content/tutorials/common`](/src/content/tutorials/common)
 
 ### `playground`
 
-The playground contains the source code for the tutorials playground at `/playground`. It should not contain any content.
+Oyun alanı, `/playground` adresindeki öğretici oyun alanı için kaynak kodunu içerir. Herhangi bir içerik barındırmamalıdır.
 
-See [`src/content/tutorials/playground`](/src/content/tutorials/playground)
+Bakınız: [`src/content/tutorials/playground`](/src/content/tutorials/playground)
 
 ### `homepage`
 
-The homepage contains the source code for the homepage playground. It should not contain any content.
+Ana sayfa, ana sayfa oyun alanı için kaynak kodunu içerir. Herhangi bir içerik barındırmamalıdır.
 
-See [`src/content/tutorials/homepage`](/src/content/tutorials/homepage)
+Bakınız: [`src/content/tutorials/homepage`](/src/content/tutorials/homepage)
 
 ## Update dependencies
 
-To update the dependencies of all tutorials you can run the following script
+Tüm öğreticilerin bağımlılıklarını güncellemek için aşağıdaki betiği çalıştırabilirsiniz
 
 ```bash
 rm ./adev/src/content/tutorials/homepage/package-lock.json  ./adev/src/content/tutorials/first-app/common/package-lock.json ./adev/src/content/tutorials/learn-angular/common/package-lock.json ./adev/src/content/tutorials/playground/common/package-lock.json ./adev/src/content/tutorials/deferrable-views/common/package-lock.json

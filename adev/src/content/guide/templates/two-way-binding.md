@@ -1,16 +1,16 @@
-# Two-way binding
+# Çift yönlü binding
 
-**Two way binding** is a shorthand to simultaneously bind a value into an element, while also giving that element the ability to propagate changes back through this binding.
+**Çift yönlü bağlama (two-way binding)**, bir değeri eşzamanlı olarak bir elemana bağlarken, aynı zamanda o elemana değişiklikleri bu bağlama üzerinden geri iletme yeteneği veren bir kısayoldur.
 
-## Syntax
+## Sözdizimi
 
-The syntax for two-way binding is a combination of square brackets and parentheses, `[()]`. It combines the syntax from property binding, `[]`, and the syntax from event binding, `()`. The Angular community informally refers to this syntax as "banana-in-a-box".
+Çift yönlü bağlama sözdizimi, köşeli parantez ve parantezlerin birleşimidir: `[()]`. Özellik bağlamasının sözdizimi olan `[]` ile olay bağlamasının sözdizimi olan `()`'yi birleştirir. Angular topluluğu bu sözdizimini resmi olmayan şekilde "kutu içindeki muz" (banana-in-a-box) olarak adlandırır.
 
-## Two-way binding with form controls
+## Form kontrolleri ile çift yönlü binding
 
-Developers commonly use two-way binding to keep component data in sync with a form control as a user interacts with the control. For example, when a user fills out a text input, it should update the state in the component.
+Geliştiriciler, kullanıcı bir kontrolle etkileşime girdikçe bileşen verilerini bir form kontrolüyle senkronize tutmak için yaygın olarak çift yönlü bağlama kullanır. Örneğin, bir kullanıcı bir metin girdisini doldurduğunda, bileşendeki durumu güncellemelidir.
 
-The following example dynamically updates the `firstName` attribute on the page:
+Aşağıdaki örnek, `firstName` niteliğini sayfada dinamik olarak günceller:
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -30,24 +30,23 @@ export class App {
 }
 ```
 
-To use two-way binding with native form controls, you need to:
+Yerel form kontrolleriyle çift yönlü bağlama kullanmak için:
 
-1. Import the `FormsModule` from `@angular/forms`
-1. Use the `ngModel` directive with the two-way binding syntax (e.g., `[(ngModel)]`)
-1. Assign it the state that you want it to update (e.g., `firstName`)
+1. `@angular/forms`'dan `FormsModule`'u içeri aktarın
+1. Çift yönlü bağlama sözdizimi ile `ngModel` direktifini kullanın (örn. `[(ngModel)]`)
+1. Güncellenmesini istediğiniz durumu atayın (örn. `firstName`)
 
-Once that is set up, Angular will ensure that any updates in the text input will reflect correctly inside of the component state!
+Bu yapılandırıldıktan sonra, Angular metin girdisindeki herhangi bir güncellemenin bileşen durumunda doğru şekilde yansıtılmasını sağlayacaktır!
 
-Learn more about [`NgModel`](/api/forms/NgModel) in the official docs.
+Resmi belgelerde [`NgModel`](/api/forms/NgModel) hakkında daha fazla bilgi edinin.
 
-## Two-way binding between components
+## Bileşenler arası çift yönlü binding
 
-Leveraging two-way binding between a parent and child component requires more configuration compared to form elements.
+Bir üst ve alt bileşen arasında çift yönlü bağlamayı kullanmak, form elemanlarına kıyasla daha fazla yapılandırma gerektirir.
 
-Here is an example where the `App` is responsible for setting the initial count state, but the logic for updating and rendering the UI for the counter primarily resides inside its child `Counter`.
+İşte `App`'in başlangıç sayaç durumunu ayarlamasından sorumlu olduğu, ancak sayacın güncelleme mantığı ve kullanıcı arayüzü işlemesinin ağırlıklı olarak alt bileşeni olan `Counter` içinde bulunduğu bir örnek.
 
-```angular-ts
-// ./app.ts
+```angular-ts {header: 'app.ts'}
 import {Component} from '@angular/core';
 import {Counter} from './counter';
 
@@ -66,8 +65,7 @@ export class App {
 }
 ```
 
-```angular-ts
-// './counter.ts';
+```angular-ts {header: 'counter.ts'}
 import {Component, model} from '@angular/core';
 
 @Component({
@@ -87,20 +85,19 @@ export class Counter {
 }
 ```
 
-### Enabling two-way binding between components
+### Bileşenler arası çift yönlü binding'i etkinleştirme
 
-If we break down the example above to its core, each two-way binding for components requires the following:
+Yukarıdaki örneği özüne indirgersek, bileşenler için her çift yönlü bağlama aşağıdakileri gerektirir:
 
-The child component must contain a `model` property.
+Alt bileşen bir `model` özelliğine sahip olmalıdır.
 
-Here is a simplified example:
+İşte basitleştirilmiş bir örnek:
 
-```angular-ts
-// './counter.ts';
+```angular-ts {header: 'counter.ts'}
 import {Component, model} from '@angular/core';
 
 @Component({
-  /* Omitted for brevity */
+  /* Kısalık için atlanmıştır */
 })
 export class Counter {
   count = model<number>(0);
@@ -111,15 +108,14 @@ export class Counter {
 }
 ```
 
-The parent component must:
+Üst bileşen şunları yapmalıdır:
 
-1. Wrap the `model` property name in the two-way binding syntax.
-1. Assign a property or a signal to the `model` property.
+1. `model` özellik adını çift yönlü bağlama sözdizimi içine sarın.
+1. `model` özelliğine bir özellik veya signal atayın.
 
-Here is a simplified example:
+İşte basitleştirilmiş bir örnek:
 
-```angular-ts
-// ./app.ts
+```angular-ts {header: 'app.ts'}
 import {Component} from '@angular/core';
 import {Counter} from './counter';
 

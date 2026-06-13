@@ -6,12 +6,15 @@
   [element]="signalGraph.element()"
   (nodeClick)="onNodeClick($event)"
   (clusterCollapse)="detailsVisible.set(false)"
+  (searchedNodeFound)="detailsVisible.set(false)"
 />
 
 @let node = selectedNode();
 @if (node && detailsVisible()) {
   <ng-signal-details
     [node]="node"
+    [graph]="signalGraph.graph()!"
+    [element]="signalGraph.element()!"
     (gotoSource)="gotoSource($event)"
     (expandCluster)="expandCluster($event)"
     (highlightDeps)="highlightDeps($event)"

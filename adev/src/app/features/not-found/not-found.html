@@ -1,22 +1,19 @@
 <main class="docs-viewer">
   <header class="docs-header">
     <div class="docs-page-title">
-      <h1 tabindex="-1"><span class="docs-emoji">Page Not Found 🙃</span></h1>
+      <h1 tabindex="-1"><span class="docs-emoji">Sayfa Bulunamadı 🙃</span></h1>
     </div>
   </header>
+  <p>Aradığınız şeyi bulamadık. URL'den çıkarılan terim için bir arama başlattık.</p>
   <p>
-    We couldn't find what you were looking for. We have initiated a search for the term extracted
-    from the URL.
-  </p>
-  <p>
-    If you think this is a mistake, please
+    Bunun bir hata olduğunu düşünüyorsanız, lütfen
     <a
       href="https://github.com/angular/angular/issues/new?template=3-docs-bug.yaml"
       target="_blank"
     >
-      open an issue</a
+      bir sorun bildirin</a
     >
-    so we can fix it.
+    böylece düzeltebiliriz.
   </p>
 
   <!-- Search results that match the queried URL that we couldn't find  -->
@@ -24,8 +21,8 @@
     <!-- The search results are faded in if/once we have results -->
     <div animate.enter="enter-animation">
       <br /><br />
-      <h2>Feeling lucky?</h2>
-      <p>Maybe what you're looking for is in the list below:</p>
+      <h2>Şansınızı deneyin</h2>
+      <p>Belki aradığınız şey aşağıdaki listede:</p>
 
       <ul class="docs-search-results docs-mini-scroll-track">
         @for (result of searchResults(); track $index) {

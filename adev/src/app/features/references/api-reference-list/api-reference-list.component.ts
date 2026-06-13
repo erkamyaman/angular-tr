@@ -9,7 +9,6 @@
 import {CdkMenuModule} from '@angular/cdk/menu';
 import {KeyValuePipe} from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   EnvironmentInjector,
   afterNextRender,
@@ -56,7 +55,6 @@ export const DEFAULT_STATUS = STATUSES.stable | STATUSES.developerPreview | STAT
   ],
   templateUrl: './api-reference-list.component.html',
   styleUrls: ['./api-reference-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ApiReferenceList {
   // services
@@ -82,7 +80,7 @@ export default class ApiReferenceList {
   );
 
   protected packageOptions = computed<SelectOption[]>(() => [
-    {label: 'All Packages', value: ALL_PACKAGES},
+    {label: 'Tüm Paketler', value: ALL_PACKAGES},
     ...this.apiReferenceManager.apiGroups().map((group) => ({
       label: group.title,
       value: group.id,
@@ -94,10 +92,10 @@ export default class ApiReferenceList {
   protected readonly statuses = STATUSES;
 
   protected readonly statusLabels = {
-    [STATUSES.stable]: 'Stable',
-    [STATUSES.developerPreview]: 'Developer Preview',
-    [STATUSES.experimental]: 'Experimental',
-    [STATUSES.deprecated]: 'Deprecated',
+    [STATUSES.stable]: 'Kararlı',
+    [STATUSES.developerPreview]: 'Geliştirici Önizlemesi',
+    [STATUSES.experimental]: 'Deneysel',
+    [STATUSES.deprecated]: 'Kullanımdan Kaldırılmış',
   };
 
   readonly filteredGroups = computed((): ApiItemsGroup[] => {

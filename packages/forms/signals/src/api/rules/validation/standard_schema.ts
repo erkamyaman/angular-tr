@@ -9,7 +9,7 @@
 import {resource, ɵisPromise} from '@angular/core';
 import type {StandardSchemaV1} from '@standard-schema/spec';
 import {addDefaultField} from '../../../field/validation';
-import type {FieldTree, LogicFn, SchemaPath, SchemaPathTree} from '../../types';
+import type {LogicFn, ReadonlyFieldTree, SchemaPath, SchemaPathTree} from '../../types';
 import {createMetadataKey, metadata} from '../metadata';
 import {validateAsync} from './validate_async';
 import {validateTree} from './validate_tree';
@@ -26,7 +26,7 @@ import {
  * i.e. `{[key: string]: unknown}`. It allows specific string keys to pass through, even if their
  * value is `unknown`, e.g. `{key: unknown}`.
  *
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export type RemoveStringIndexUnknownKey<K, V> = string extends K
   ? unknown extends V
@@ -39,7 +39,7 @@ export type RemoveStringIndexUnknownKey<K, V> = string extends K
  * We use this on the `TSchema` type in `validateStandardSchema` in order to accommodate Zod's
  * `looseObject` which includes `{[key: string]: unknown}` as part of the type.
  *
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export type IgnoreUnknownProperties<T> =
   T extends Record<PropertyKey, unknown>
@@ -61,7 +61,7 @@ export type IgnoreUnknownProperties<T> =
  *
  * @see [Signal Form Schema Validation](guide/forms/signals/validation#integration-with-schema-validation-libraries)
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export function validateStandardSchema<TSchema, TModel extends IgnoreUnknownProperties<TSchema>>(
   path: SchemaPath<TModel> & SchemaPathTree<TModel>,
@@ -126,7 +126,7 @@ export function validateStandardSchema<TSchema, TModel extends IgnoreUnknownProp
  * @param options The validation error options
  *
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export function standardSchemaError(
   issue: StandardSchemaV1.Issue,
@@ -138,7 +138,7 @@ export function standardSchemaError(
  * @param options The optional validation error options
  *
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export function standardSchemaError(
   issue: StandardSchemaV1.Issue,
@@ -159,13 +159,13 @@ export function standardSchemaError(
  * @returns A `ValidationError` representing the issue.
  */
 function standardIssueToFormTreeError(
-  fieldTree: FieldTree<unknown>,
+  fieldTree: ReadonlyFieldTree<unknown>,
   issue: StandardSchemaV1.Issue,
 ): StandardSchemaValidationError {
-  let target = fieldTree as FieldTree<Record<PropertyKey, unknown>>;
+  let target = fieldTree as ReadonlyFieldTree<Record<PropertyKey, unknown>>;
   for (const pathPart of issue.path ?? []) {
     const pathKey = typeof pathPart === 'object' ? pathPart.key : pathPart;
-    target = target[pathKey] as FieldTree<Record<PropertyKey, unknown>>;
+    target = target[pathKey] as ReadonlyFieldTree<Record<PropertyKey, unknown>>;
   }
   return addDefaultField(standardSchemaError(issue, {message: issue.message}), target);
 }
@@ -174,7 +174,7 @@ function standardIssueToFormTreeError(
  * An error used to indicate an issue validating against a standard schema.
  *
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export class StandardSchemaValidationError extends BaseNgValidationError {
   override readonly kind = 'standardSchema';

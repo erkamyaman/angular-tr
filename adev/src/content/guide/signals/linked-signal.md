@@ -1,6 +1,6 @@
-# Dependent state with `linkedSignal`
+# `linkedSignal` ile bağımlı durum
 
-You can use the `signal` function to hold some state in your Angular code. Sometimes, this state depends on some _other_ state. For example, imagine a component that lets the user select a shipping method for an order:
+Angular kodunuzda bir miktar durum tutmak için `signal` fonksiyonunu kullanabilirsiniz. Bazen bu durum başka bir duruma bağlıdır. Örneğin, kullanıcının bir sipariş için kargo yöntemi seçmesine olanak tanıyan bir bileşen düşünün:
 
 ```typescript
 @Component({
@@ -9,7 +9,7 @@ You can use the `signal` function to hold some state in your Angular code. Somet
 export class ShippingMethodPicker {
   shippingOptions: Signal<ShippingMethod[]> = getShippingOptions();
 
-  // Select the first shipping option by default.
+  // Varsayılan olarak ilk kargo seçeneğini seç.
   selectedOption = signal(this.shippingOptions()[0]);
 
   changeShipping(newOptionIndex: number) {
@@ -18,9 +18,9 @@ export class ShippingMethodPicker {
 }
 ```
 
-In this example, the `selectedOption` defaults to the first option, but changes if the user selects another option. But `shippingOptions` is a signal— its value may change! If `shippingOptions` changes, `selectedOption` may contain a value that is no longer a valid option.
+Bu örnekte, `selectedOption` varsayılan olarak ilk seçenektir, ancak kullanıcı başka bir seçenek seçerse değişir. Fakat `shippingOptions` bir sinyaldir-- değeri değişebilir! `shippingOptions` değişirse, `selectedOption` artık geçerli bir seçenek olmayan bir değer içerebilir.
 
-**The `linkedSignal` function lets you create a signal to hold some state that is intrinsically _linked_ to some other state.** Revisiting the example above, `linkedSignal` can replace `signal`:
+**`linkedSignal` fonksiyonu, doğası gereği başka bir duruma _bağlı_ olan bir durum tutmak için bir sinyal oluşturmanıza olanak tanır.** Yukarıdaki örneği tekrar ele alırsak, `linkedSignal` `signal`'in yerini alabilir:
 
 ```ts
 @Component({
@@ -29,7 +29,7 @@ In this example, the `selectedOption` defaults to the first option, but changes 
 export class ShippingMethodPicker {
   shippingOptions: Signal<ShippingMethod[]> = getShippingOptions();
 
-  // Initialize selectedOption to the first shipping option.
+  // selectedOption'ı ilk kargo seçeneği ile başlat.
   selectedOption = linkedSignal(() => this.shippingOptions()[0]);
 
   changeShipping(index: number) {
@@ -38,9 +38,9 @@ export class ShippingMethodPicker {
 }
 ```
 
-`linkedSignal` works similarly to `signal` with one key difference— instead of passing a default value, you pass a _computation function_, just like `computed`. When the value of the computation changes, the value of the `linkedSignal` changes to the computation result. This helps ensure that the `linkedSignal` always has a valid value.
+`linkedSignal`, bir temel farkla `signal`'e benzer şekilde çalışır-- varsayılan bir değer iletmek yerine, tıpkı `computed` gibi bir _hesaplama fonksiyonu_ iletirsiniz. Hesaplamanın değeri değiştiğinde, `linkedSignal`'in değeri hesaplama sonucuna dönüşür. Bu, `linkedSignal`'in her zaman geçerli bir değere sahip olmasını sağlamaya yardımcı olur.
 
-The following example shows how the value of a `linkedSignal` can change based on its linked state:
+Aşağıdaki örnek, bir `linkedSignal`'in değerinin bağlı durumuna göre nasıl değişebildiğini gösterir:
 
 ```ts
 const shippingOptions = signal(['Ground', 'Air', 'Sea']);
@@ -54,11 +54,11 @@ shippingOptions.set(['Email', 'Will Call', 'Postal service']);
 console.log(selectedOption()); // 'Email'
 ```
 
-## Accounting for previous state
+## Önceki durumu dikkate alma
 
-In some cases, the computation for a `linkedSignal` needs to account for the previous value of the `linkedSignal`.
+Bazı durumlarda, bir `linkedSignal` için hesaplama, `linkedSignal`'in önceki değerini dikkate almalıdır.
 
-In the example above, `selectedOption` always updates back to the first option when `shippingOptions` changes. You may, however, want to preserve the user's selection if their selected option is still somewhere in the list. To accomplish this, you can create a `linkedSignal` with a separate _source_ and _computation_:
+Yukarıdaki örnekte, `shippingOptions` değiştiğinde `selectedOption` her zaman ilk seçeneğe geri döner. Ancak, seçilen seçenek hala listede bir yerdeyse kullanıcının seçimini korumak isteyebilirsiniz. Bunu gerçekleştirmek için ayrı _kaynak_ ve _hesaplama_ ile bir `linkedSignal` oluşturabilirsiniz:
 
 ```ts
 interface ShippingMethod {
@@ -83,11 +83,11 @@ export class ShippingMethodPicker {
   ]);
 
   selectedOption = linkedSignal<ShippingMethod[], ShippingMethod>({
-    // `selectedOption` is set to the `computation` result whenever this `source` changes.
+    // Bu `source` her değiştiğinde `selectedOption` `computation` sonucuna ayarlanır.
     source: this.shippingOptions,
     computation: (newOptions, previous) => {
-      // If the newOptions contain the previously selected option, preserve that selection.
-      // Otherwise, default to the first option.
+      // newOptions daha önce seçilen seçeneği içeriyorsa, bu seçimi koru.
+      // Aksi takdirde, ilk seçeneği varsayılan olarak kullan.
       return newOptions.find((opt) => opt.id === previous?.value.id) ?? newOptions[0];
     },
   });
@@ -106,30 +106,92 @@ export class ShippingMethodPicker {
 }
 ```
 
-When you create a `linkedSignal`, you can pass an object with separate `source` and `computation` properties instead of providing just a computation.
+Bir `linkedSignal` oluştururken, yalnızca bir hesaplama sağlamak yerine ayrı `source` ve `computation` özelliklerine sahip bir nesne iletebilirsiniz.
 
-The `source` can be any signal, such as a `computed` or component `input`. The `linkedSignal` updates its value when the `source` changes or when any signal referenced in the `computation` changes, updating its value with the result of the provided `computation`.
+`source`, bir `computed` veya bileşen `input`'u gibi herhangi bir sinyal olabilir. `linkedSignal`, `source` değiştiğinde veya `computation` içinde referans verilen herhangi bir sinyal değiştiğinde değerini günceller ve sağlanan `computation`'ın sonucu ile değerini günceller.
 
-The `computation` is a function that receives the new value of `source` and a `previous` object. The `previous` object has two properties— `previous.source` is the previous value of `source`, and `previous.value` is the previous value of the `linkedSignal`. You can use these previous values to decide the new result of the computation.
+`computation`, `source`'un yeni değerini ve bir `previous` nesnesini alan bir fonksiyondur. `previous` nesnesinin iki özelliği vardır-- `previous.source` `source`'un önceki değeridir ve `previous.value` `linkedSignal`'in önceki değeridir. Hesaplamanın yeni sonucuna karar vermek için bu önceki değerleri kullanabilirsiniz.
 
-HELPFUL: When using the `previous` parameter, it is necessary to provide the generic type arguments of `linkedSignal` explicitly. The first generic type corresponds with the type of `source` and the second generic type determines the output type of `computation`.
+HELPFUL: `previous` parametresini kullanırken, `linkedSignal`'in jenerik tür argümanlarını açıkça sağlamak gereklidir. İlk jenerik tür `source`'un türüne karşılık gelir ve ikinci jenerik tür `computation`'ın çıktı türünü belirler.
 
-## Custom equality comparison
+## Özel eşitlik karşılaştırması
 
-`linkedSignal`, as any other signal, can be configured with a custom equality function. This function is used by downstream dependencies to determine if that value of the `linkedSignal` (result of a computation) changed:
+`linkedSignal`, diğer herhangi bir sinyal gibi, özel bir eşitlik fonksiyonu ile yapılandırılabilir. Bu fonksiyon, `linkedSignal`'in değerinin (hesaplama sonucu) değişip değişmediğini belirlemek için alt bağımlılıklar tarafından kullanılır:
 
 ```typescript
 const activeUser = signal({id: 123, name: 'Morgan', isAdmin: true});
 
 const activeUserEditCopy = linkedSignal(() => activeUser(), {
-  // Consider the user as the same if it's the same `id`.
+  // Aynı `id`'ye sahipse kullanıcıyı aynı kabul et.
   equal: (a, b) => a.id === b.id,
 });
 
-// Or, if separating `source` and `computation`
+// Veya `source` ve `computation` ayrı kullanılırsa
 const activeUserEditCopy = linkedSignal({
   source: activeUser,
   computation: (user) => user,
   equal: (a, b) => a.id === b.id,
 });
+```
+
+## set işlemini özelleştirme
+
+Bazen bir `linkedSignal`'ın `set` ve `update` işlemlerinin değeri doğrudan güncellemek yerine, gerçeğin kaynağına (source of truth) geri yazmasını isteyebilirsiniz. Bu davranışı, seçeneklere bir `set` fonksiyonu geçirerek özelleştirebilirsiniz.
+
+Özel `set` fonksiyonu iki argüman alır:
+
+1. Atanan yeni değer.
+2. `linkedSignal`'ın iç durumunu doğrudan güncellemek için çağırabileceğiniz bir `rawSet` fonksiyonu (varsayılan davranışla eşleşir).
+
+NOTE: `rawSet` kullanmak, `linkedSignal`'ın değerini doğrudan güncellemenize olanak tanır. Bu, hesaplamanın çalışmasını önlemek için yararlı olabilir; örneğin pahalı bir türetme söz konusuysa ve sonucu zaten biliyorsanız.
+
+### Bir source signal'a geri yazma
+
+Sıcaklığı Fahrenheit olarak gösteren ve düzenlenmesine izin veren, ancak gerçeğin kaynağı olarak bir Celsius signal kullanan bir bileşeni düşünün:
+
+```typescript
+const tempC = signal(0);
+const tempF = linkedSignal(() => (tempC() * 9) / 5 + 32, {
+  set: (valF) => tempC.set(((valF - 32) * 5) / 9),
+});
+
+console.log(tempF()); // 32
+
+// Fahrenheit'i ayarlamak Celsius'u günceller, bu da reaktif olarak Fahrenheit'i günceller
+tempF.set(212);
+console.log(tempC()); // 100
+console.log(tempF()); // 212
+```
+
+### Bir üst nesne içindeki bir özelliği güncelleme
+
+Bir başka yaygın senaryo, bir üst nesne içindeki belirli bir özelliği güncellemektir. Üst nesne bir signal içinde tutulur ve siz iç içe geçmiş bir özelliğe bağlanırsınız:
+
+```typescript
+interface Order {
+  id: number;
+  shippingMethod: string;
+}
+
+const order = signal<Order>({
+  id: 42,
+  shippingMethod: 'Ground',
+});
+
+const shippingMethod = linkedSignal(() => order().shippingMethod, {
+  set: (newMethod) => {
+    // Değişikliği order'a geri yazmak için değişmez (immutable) bir güncelleme yap
+    order.update((currentOrder) => ({
+      ...currentOrder,
+      shippingMethod: newMethod,
+    }));
+  },
+});
+
+console.log(shippingMethod()); // 'Ground'
+
+// shippingMethod'u güncellemek üst order nesnesini günceller
+shippingMethod.set('Air');
+console.log(order()); // { id: 42, shippingMethod: 'Air' }
+console.log(shippingMethod()); // 'Air'
 ```

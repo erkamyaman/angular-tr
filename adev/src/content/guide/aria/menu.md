@@ -6,70 +6,9 @@
   <docs-pill href="/api/aria/menu/Menu" title="Menu API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-A menu offers a list of actions or options to users, typically appearing in response to a button click or right-click. Menus support keyboard navigation with arrow keys, submenus, checkboxes, radio buttons, and disabled items.
-
-<docs-tab-group>
-  <docs-tab label="Basic">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Material">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Retro">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-</docs-tab-group>
-
-## Usage
-
-Menus work well for presenting lists of actions or commands that users can choose from.
-
-**Use menus when:**
-
-- Building application command menus (File, Edit, View)
-- Creating context menus (right-click actions)
-- Showing dropdown action lists
-- Implementing toolbar dropdowns
-- Organizing settings or options
-
-**Avoid menus when:**
-
-- Building site navigation (use navigation landmarks instead)
-- Creating form selects (use the [Select](guide/aria/select) component)
-- Switching between content panels (use [Tabs](guide/aria/tabs))
-- Showing collapsible content (use [Accordion](guide/aria/accordion))
-
-## Features
-
-- **Keyboard navigation** - Arrow keys, Home/End, and character search for efficient navigation
-- **Submenus** - Nested menu support with automatic positioning
-- **Menu types** - Standalone menus, triggered menus, and menubars
-- **Checkboxes and radios** - Toggle and selection menu items
-- **Disabled items** - Soft or hard disabled states with focus management
-- **Auto-close behavior** - Configurable close on selection
-- **RTL support** - Right-to-left language navigation
-
-## Examples
-
-### Menu with trigger
-
-Create a dropdown menu by pairing a trigger button with a menu. The trigger opens and closes the menu.
+Bir menü, kullanıcılara eylemler veya seçenekler listesi sunar, tipik olarak bir buton tıklaması veya sağ tıklama yanıtı olarak görünür. Menüler ok tuşlarıyla klavye navigasyonunu, alt menüleri, onay kutularını, radyo butonlarını ve devre dışı öğeleri destekler.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -97,22 +36,83 @@ Create a dropdown menu by pairing a trigger button with a menu. The trigger open
   </docs-tab>
 </docs-tab-group>
 
-The menu automatically closes when a user selects an item or presses Escape.
+## Kullanım
 
-### Context menu
+Menüler, kullanıcıların seçebileceği eylem veya komut listeleri sunmak için iyi çalışır.
 
-Context menus appear at the cursor position when users right-click an element.
+**Menü kullanın:**
+
+- Uygulama komut menüleri oluştururken (Dosya, Düzenle, Görüntüle)
+- Bağlam menüleri oluştururken (sağ tıklama eylemleri)
+- Açılır eylem listeleri gösterirken
+- Araç çubuğu açılır menüleri uygularken
+- Ayarları veya seçenekleri düzenlerken
+
+**Menülerden kaçının:**
+
+- Site navigasyonu oluştururken (bunun yerine navigasyon yer işaretlerini kullanın)
+- Form select'leri oluştururken (bunun yerine [Select](guide/aria/select) bileşenini kullanın)
+- İçerik panelleri arasında geçiş yaparken (bunun yerine [Tabs](guide/aria/tabs) kullanın)
+- Daraltılabilir içerik gösterirken (bunun yerine [Accordion](guide/aria/accordion) kullanın)
+
+## Özellikler
+
+- **Klavye navigasyonu** - Ok tuşları, Home/End ve karakter arama ile verimli navigasyon
+- **Alt menüler** - Otomatik konumlandırma ile iç içe menü desteği
+- **Menü türleri** - Bağımsız menüler, tetikleyicili menüler ve menü çubukları
+- **Onay kutuları ve radyolar** - Değiştirme ve seçim menü öğeleri
+- **Devre dışı öğeler** - Odak yönetimiyle yumuşak veya sert devre dışı durumlar
+- **Otomatik kapanma davranışı** - Seçimde yapılandırılabilir kapanma
+- **RTL desteği** - Sağdan sola dil navigasyonu
+
+## Örnekler
+
+### Tetikleyicili menü
+
+Bir tetikleyici butonla bir menüyü eşleştirerek açılır menü oluşturun. Tetikleyici menüyü açar ve kapatır.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menu/src/menu-trigger/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+Kullanıcı bir öğe seçtiğinde veya Escape'e bastığında menü otomatik olarak kapanır.
+
+### Bağlam menüsü
+
+Bağlam menüleri, kullanıcılar bir elemana sağ tıkladığında imleç konumunda görünür.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menu/src/menu-context/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/aria/menu/src/menu-context/app/app.ts"/>
   <docs-code header="app.html" path="adev/src/content/examples/aria/menu/src/menu-context/app/app.html"/>
 </docs-code-multifile>
 
-Position the menu using the `contextmenu` event coordinates.
+Menüyü `contextmenu` olay koordinatlarını kullanarak konumlandırın.
 
-### Standalone menu
+### Bağımsız menü
 
-A standalone menu doesn't require a trigger and remains visible in the interface.
+Bağımsız menü bir tetikleyici gerektirmez ve arayüzde görünür kalır.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -140,11 +140,11 @@ A standalone menu doesn't require a trigger and remains visible in the interface
   </docs-tab>
 </docs-tab-group>
 
-Standalone menus work well for always-visible action lists or navigation.
+Bağımsız menüler her zaman görünen eylem listeleri veya navigasyon için iyi çalışır.
 
-### Disabled menu items
+### Devre dışı menü öğeleri
 
-Disable specific menu items using the `disabled` input. Control focus behavior with `softDisabled`.
+`disabled` girişini kullanarak belirli menü öğelerini devre dışı bırakın. `softDisabled` ile odak davranışını kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -172,86 +172,157 @@ Disable specific menu items using the `disabled` input. Control focus behavior w
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"`, disabled items can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled items are skipped during keyboard navigation.
+`[softDisabled]="true"` olduğunda, devre dışı öğeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı öğeler klavye navigasyonu sırasında atlanır.
 
-## APIs
+## Test Etme
+
+Angular Aria, menü bileşenlerini test etmek için bileşen harness'leri sağlar.
+Harness'lerin bir bileşen testinde nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {MenuHarness, MenuItemHarness} from '@angular/aria/menu/testing';
+import {MyMenuComponent} from './my-menu'; // Bileşeniniz
+
+describe('MyMenuComponent', () => {
+  let fixture: ComponentFixture<MyMenuComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyMenuComponent],
+    });
+
+    fixture = TestBed.createComponent(MyMenuComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should open menu and click item', async () => {
+    // Menü harness'ini tetikleyici metnine göre yükleyin
+    const menu = await loader.getHarness(MenuHarness.with({triggerText: 'Open Menu'}));
+
+    // Başlangıç durumunu doğrulayın
+    expect(await menu.isOpen()).toBe(false);
+
+    // Menüyü açın
+    await menu.open();
+    expect(await menu.isOpen()).toBe(true);
+
+    // Öğeleri alın
+    const items = await menu.getItems();
+    expect(items.length).toBe(3);
+    expect(await items[0].getText()).toBe('Item 1');
+
+    // İlk öğeye tıklayın
+    await items[0].click();
+
+    // Menü, seçimden sonra kapanmalıdır (uygulamanıza bağlı olarak)
+    expect(await menu.isOpen()).toBe(false);
+  });
+
+  it('should interact with submenus', async () => {
+    const menu = await loader.getHarness(MenuHarness.with({triggerText: 'Open Menu'}));
+    await menu.open();
+
+    // Bir alt menüyü tetikleyen öğeyi alın
+    const subItem = await loader.getHarness(MenuItemHarness.with({text: 'Submenu'}));
+    expect(await subItem.hasSubmenu()).toBe(true);
+
+    // Alt menüyü açın
+    await subItem.click();
+    const submenu = await subItem.getSubmenu();
+    expect(submenu).toBeTruthy();
+    expect(await submenu!.isOpen()).toBe(true);
+
+    // Alt menü öğeleriyle etkileşim kurun
+    const subItems = await submenu!.getItems();
+    expect(subItems.length).toBe(1);
+  });
+});
+```
+
+## API'ler
 
 ### Menu
 
-The container directive for menu items.
+Menü öğeleri için kapsayıcı yönerge.
 
-#### Inputs
+#### Girişler
 
-| Property       | Type      | Default | Description                                                   |
-| -------------- | --------- | ------- | ------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Disables all items in the menu                                |
-| `wrap`         | `boolean` | `true`  | Whether keyboard navigation wraps at edges                    |
-| `softDisabled` | `boolean` | `true`  | When `true`, disabled items are focusable but not interactive |
+| Property       | Type      | Default | Description                                                                  |
+| -------------- | --------- | ------- | ---------------------------------------------------------------------------- |
+| `disabled`     | `boolean` | `false` | Menüdeki tüm öğeleri devre dışı bırakır                                      |
+| `wrap`         | `boolean` | `true`  | Klavye navigasyonunun kenarlarda sarılıp sarılmadığı                         |
+| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
 
-#### Methods
+#### Yöntemler
 
-| Method  | Parameters | Description     |
-| ------- | ---------- | --------------- |
-| `close` | none       | Closes the menu |
+| Method  | Parameters | Description    |
+| ------- | ---------- | -------------- |
+| `close` | none       | Menüyü kapatır |
 
 ### MenuBar
 
-A horizontal container for multiple menus.
+Birden fazla menü için yatay kapsayıcı.
 
-#### Inputs
+#### Girişler
 
-| Property       | Type      | Default | Description                                                   |
-| -------------- | --------- | ------- | ------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Disables the entire menubar                                   |
-| `wrap`         | `boolean` | `true`  | Whether keyboard navigation wraps at edges                    |
-| `softDisabled` | `boolean` | `true`  | When `true`, disabled items are focusable but not interactive |
+| Property       | Type      | Default | Description                                                                  |
+| -------------- | --------- | ------- | ---------------------------------------------------------------------------- |
+| `disabled`     | `boolean` | `false` | Tüm menü çubuğunu devre dışı bırakır                                         |
+| `wrap`         | `boolean` | `true`  | Klavye navigasyonunun kenarlarda sarılıp sarılmadığı                         |
+| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
 
 ### MenuItem
 
-An individual item within a menu.
+Bir menü içindeki bireysel bir öğe.
 
-#### Inputs
+#### Girişler
 
-| Property     | Type      | Default | Description                                          |
-| ------------ | --------- | ------- | ---------------------------------------------------- |
-| `value`      | `any`     | —       | **Required.** Value for this item                    |
-| `disabled`   | `boolean` | `false` | Disables this menu item                              |
-| `submenu`    | `Menu`    | —       | Reference to a submenu                               |
-| `searchTerm` | `string`  | `''`    | Search term for typeahead (supports two-way binding) |
+| Property     | Type                                                  | Default      | Description                                                   |
+| ------------ | ----------------------------------------------------- | ------------ | ------------------------------------------------------------- |
+| `value`      | `any`                                                 | —            | **Zorunlu.** Bu öğenin değeri                                 |
+| `role`       | `'menuitem' \| 'menuitemcheckbox' \| 'menuitemradio'` | `'menuitem'` | Menü öğesi için ARIA rolü                                     |
+| `disabled`   | `boolean`                                             | `false`      | Bu menü öğesini devre dışı bırakır                            |
+| `submenu`    | `Menu`                                                | —            | Bir alt menüye referans                                       |
+| `searchTerm` | `string`                                              | `''`         | Yazarak arama için arama terimi (iki yönlü bağlama destekler) |
 
-#### Signals
+#### Sinyaller
 
-| Property   | Type              | Description                                |
-| ---------- | ----------------- | ------------------------------------------ |
-| `active`   | `Signal<boolean>` | Whether the item currently has focus       |
-| `expanded` | `Signal<boolean>` | Whether the submenu is expanded            |
-| `hasPopup` | `Signal<boolean>` | Whether the item has an associated submenu |
+| Property   | Type              | Description                                  |
+| ---------- | ----------------- | -------------------------------------------- |
+| `active`   | `Signal<boolean>` | Öğenin şu anda odakta olup olmadığı          |
+| `expanded` | `Signal<boolean>` | Alt menünün genişletilmiş olup olmadığı      |
+| `hasPopup` | `Signal<boolean>` | Öğenin ilişkili bir alt menüsü olup olmadığı |
 
-NOTE: MenuItem does not expose public methods. Use the `submenu` input to associate submenus with menu items.
+NOTE: MenuItem genel yöntemler sunmaz. Alt menüleri menü öğeleriyle ilişkilendirmek için `submenu` girişini kullanın.
 
 ### MenuTrigger
 
-A button or element that opens a menu.
+Bir menüyü açan buton veya eleman.
 
-#### Inputs
+#### Girişler
 
-| Property       | Type      | Default | Description                                |
-| -------------- | --------- | ------- | ------------------------------------------ |
-| `menu`         | `Menu`    | —       | **Required.** The menu to trigger          |
-| `disabled`     | `boolean` | `false` | Disables the trigger                       |
-| `softDisabled` | `boolean` | `true`  | When `true`, disabled trigger is focusable |
+| Property       | Type      | Default | Description                                            |
+| -------------- | --------- | ------- | ------------------------------------------------------ |
+| `menu`         | `Menu`    | —       | **Zorunlu.** Tetiklenecek menü                         |
+| `disabled`     | `boolean` | `false` | Tetikleyiciyi devre dışı bırakır                       |
+| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı tetikleyici odaklanabilir |
 
-#### Signals
+#### Sinyaller
 
-| Property   | Type              | Description                                |
-| ---------- | ----------------- | ------------------------------------------ |
-| `expanded` | `Signal<boolean>` | Whether the menu is currently open         |
-| `hasPopup` | `Signal<boolean>` | Whether the trigger has an associated menu |
+| Property   | Type              | Description                                      |
+| ---------- | ----------------- | ------------------------------------------------ |
+| `expanded` | `Signal<boolean>` | Menünün şu anda açık olup olmadığı               |
+| `hasPopup` | `Signal<boolean>` | Tetikleyicinin ilişkili bir menüsü olup olmadığı |
 
-#### Methods
+#### Yöntemler
 
-| Method   | Parameters | Description                  |
-| -------- | ---------- | ---------------------------- |
-| `open`   | none       | Opens the menu               |
-| `close`  | none       | Closes the menu              |
-| `toggle` | none       | Toggles the menu open/closed |
+| Method   | Parameters | Description                        |
+| -------- | ---------- | ---------------------------------- |
+| `open`   | none       | Menüyü açar                        |
+| `close`  | none       | Menüyü kapatır                     |
+| `toggle` | none       | Menüyü aç/kapa durumunu değiştirir |

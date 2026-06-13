@@ -1,8 +1,8 @@
-# Styling components
+# Bileşenleri stillendirme
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Components can optionally include CSS styles that apply to that component's DOM:
+Bileşenlere isteğe bağlı olarak o bileşenin DOM'una uygulanan CSS stilleri dahil edilebilir:
 
 ```angular-ts {highlight:[4]}
 @Component({
@@ -17,7 +17,7 @@ Components can optionally include CSS styles that apply to that component's DOM:
 export class ProfilePhoto {}
 ```
 
-You can also choose to write your styles in separate files:
+Stillerinizi ayrı dosyalarda yazmayı da seçebilirsiniz:
 
 ```angular-ts {highlight:[4]}
 @Component({
@@ -28,20 +28,14 @@ You can also choose to write your styles in separate files:
 export class ProfilePhoto {}
 ```
 
-When Angular compiles your component, these styles are emitted with your component's JavaScript
-output. This means that component styles participate in the JavaScript module system. When you
-render an Angular component, the framework automatically includes its associated styles, even when
-lazy-loading a component.
+Angular bileşeninizi derlediğinde, bu stiller bileşeninizin JavaScript çıktısıyla birlikte yayılır. Bu, bileşen stillerinin JavaScript modül sistemine katıldığı anlamına gelir. Bir Angular bileşeni render ettiğinizde, bir bileşeni tembel yüklerken bile framework otomatik olarak ilişkili stilleri dahil eder.
 
-Angular works with any tool that outputs CSS,
-including [Sass](https://sass-lang.com), [less](https://lesscss.org),
-and [stylus](https://stylus-lang.com).
+Angular, CSS çıktısı üreten herhangi bir araçla çalışır; bunlara [Sass](https://sass-lang.com), [Less](https://lesscss.org) ve [Stylus](https://stylus-lang.com) dahildir.
 
-## Style scoping
+## Stil kapsamı
 
-Every component has a **view encapsulation** setting that determines how the framework scopes a
-component's styles. There are four view encapsulation modes: `Emulated`, `ShadowDom`, `ExperimentalIsolatedShadowDom`, and `None`.
-You can specify the mode in the `@Component` decorator:
+Her bileşen, framework'ün bileşenin stillerini nasıl kapsülleyeceğini belirleyen bir **görünüm kapsüllemesi** ayarına sahiptir. Dört görünüm kapsüllemesi modu vardır: `Emulated`, `ShadowDom`, `ExperimentalIsolatedShadowDom` ve `None`.
+Modu `@Component` dekoratöründe belirtebilirsiniz:
 
 ```angular-ts {highlight:[3]}
 @Component({
@@ -53,92 +47,59 @@ export class ProfilePhoto { }
 
 ### ViewEncapsulation.Emulated
 
-By default, Angular uses emulated encapsulation so that a component's styles only apply to elements
-defined in that component's template. In this mode, the framework generates a unique HTML attribute
-for each component instance, adds that attribute to elements in the component's template, and
-inserts that attribute into the CSS selectors defined in your component's styles.
+Varsayılan olarak Angular, bir bileşenin stillerinin yalnızca o bileşenin şablonunda tanımlanan elemanlara uygulanması için emüle edilmiş kapsülleme kullanır. Bu modda framework, her bileşen örneği için benzersiz bir HTML niteliği oluşturur, bu niteliği bileşenin şablonundaki elemanlara ekler ve bu niteliği bileşeninizin stillerinde tanımlanan CSS seçicilerine ekler.
 
-This mode ensures that a component's styles do not leak out and affect other components. However,
-global styles defined outside of a component may still affect elements inside a component with
-emulated encapsulation.
+Bu mod, bir bileşenin stillerinin dışarı sızmasını ve diğer bileşenleri etkilemesini önler. Ancak, bir bileşenin dışında tanımlanan genel stiller, emüle edilmiş kapsüllemeye sahip bir bileşenin içerisindeki elemanları yine de etkileyebilir.
 
-In emulated mode, Angular supports
-the [`:host`](https://developer.mozilla.org/docs/Web/CSS/:host) pseudo-class.
-While the [`:host-context()`](https://developer.mozilla.org/docs/Web/CSS/:host-context) pseudo-class
-is deprecated in modern browsers, Angular's compiler provides full support for it. Both pseudo-classes
-can be used without relying on native
-[Shadow DOM](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM).
-During compilation, the framework transforms these pseudo classes into attributes so it doesn't
-comply with these native pseudo classes' rules at runtime (e.g. browser compatibility, specificity). Angular's
-emulated encapsulation mode does not support any other pseudo classes related to Shadow DOM, such
-as `::shadow` or `::part`.
+Emüle edilmiş modda Angular, [`:host`](https://developer.mozilla.org/docs/Web/CSS/:host) sahte sınıfını destekler. [`:host-context()`](https://developer.mozilla.org/docs/Web/CSS/:host-context) sahte sınıfı modern tarayıcılarda kullanımdan kaldırılmış olsa da, Angular'ın derleyicisi buna tam destek sağlar. Her iki sahte sınıf da yerel [Shadow DOM](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'a bağlı olmadan kullanılabilir. Derleme sırasında framework, bu sahte sınıfları niteliklere dönüştürür, dolayısıyla çalışma zamanında bu yerel sahte sınıfların kurallarına (örneğin tarayıcı uyumluluğu, özgüllük) uymaz. Angular'ın emüle edilmiş kapsülleme modu, `::shadow` veya `::part` gibi Shadow DOM ile ilgili diğer sahte sınıfları desteklemez.
 
 #### `::ng-deep`
 
-Angular's emulated encapsulation mode supports a custom pseudo class, `::ng-deep`.
-**The Angular team strongly discourages new use of `::ng-deep`**. These APIs remain
-exclusively for backwards compatibility.
+Angular'ın emüle edilmiş kapsülleme modu özel bir sahte sınıf olan `::ng-deep`'i destekler.
+**Angular ekibi `::ng-deep`'in yeni kullanımını kesinlikle tavsiye etmez.** Bu API'ler yalnızca geriye dönük uyumluluk için mevcuttur.
 
-When a selector contains `::ng-deep`, Angular stops applying view-encapsulation boundaries after that point in the selector. Any part of the selector that follows `::ng-deep` can match elements outside the component’s template.
+Bir seçici `::ng-deep` içerdiğinde, Angular seçicideki o noktadan sonra görünüm kapsülleme sınırlarını uygulamayı durdurur. `::ng-deep`'i izleyen seçicinin herhangi bir bölümü, bileşenin şablonu dışındaki elemanlarla eşleşebilir.
 
-For example:
+Örneğin:
 
-- a CSS rule selector like `p a`, using the emulated encapsulation, will match `<a>` elements that are descendants of a `<p>` element,
-  both being within the component's own template.
+- `p a` gibi bir CSS kural seçicisi, emüle edilmiş kapsülleme ile, bileşenin kendi şablonundaki bir `<p>` elemanının alt elemanları olan `<a>` elemanlarını eşleştirir, her ikisi de bileşenin kendi şablonu içerisindedir.
 
-- A selector like `::ng-deep p a` will match `<a>` elements anywhere in the application, descendants of a `<p>` element anywhere in the application.
+- `::ng-deep p a` gibi bir seçici, uygulamadaki herhangi bir yerdeki bir `<p>` elemanının alt elemanları olan `<a>` elemanlarını eşleştirir.
 
-  That effectively makes it behave like a global style.
+  Bu, etkili bir şekilde genel bir stil gibi davranmasını sağlar.
 
-- In `p ::ng-deep a`, Angular requires the `<p>` element to come from the component's own template, but the `<a>` element may be anywhere in the application.
+- `p ::ng-deep a` ifadesinde, Angular `<p>` elemanının bileşenin kendi şablonundan gelmesini gerektirir, ancak `<a>` elemanı uygulamadaki herhangi bir yerde olabilir.
 
-  So, in effect, the `<a>` element may be in the component's template, or in any of its projected or child content.
+  Dolayısıyla, `<a>` elemanı bileşenin şablonunda veya yansıtılan ya da alt içeriğinin herhangi birinde olabilir.
 
-- With `:host ::ng-deep p a`, both the `<a>` and `<p>` elements must be decendants of the component's host element.
+- `:host ::ng-deep p a` ifadesinde, hem `<a>` hem de `<p>` elemanları bileşenin host elemanının alt elemanları olmalıdır.
 
-  They can come from the component's template or the views of its child components, but not elsewhere in the app.
+  Bileşenin şablonundan veya alt bileşenlerinin görünümlerinden gelebilirler, ancak uygulamanın başka bir yerinden gelemezler.
 
 ### ViewEncapsulation.ShadowDom
 
-This mode scopes styles within a component by
-using [the web standard Shadow DOM API](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM).
-When enabling this mode, Angular attaches a shadow root to the component's host element and renders
-the component's template and styles into the corresponding shadow tree.
+Bu mod, [web standartı Shadow DOM API](https://developer.mozilla.org/docs/Web/Web_Components/Using_shadow_DOM)'sini kullanarak bir bileşen içindeki stilleri kapsüller. Bu mod etkinleştirildiğinde Angular, bileşenin host elemanına bir gölge kökü (shadow root) ekler ve bileşenin şablonunu ve stillerini karşılık gelen gölge ağacına render eder.
 
-Styles inside the shadow tree cannot affect elements outside of that shadow tree.
+Gölge ağacının içindeki stiller, o gölge ağacının dışındaki elemanları etkileyemez.
 
-Enabling `ShadowDom` encapsulation, however, impacts more than style scoping. Rendering the
-component in a shadow tree affects event propagation, interaction
-with [the `<slot>` API](https://developer.mozilla.org/docs/Web/Web_Components/Using_templates_and_slots),
-and how browser developer tools show elements. Always understand the full implications of using
-Shadow DOM in your application before enabling this option.
+Ancak `ShadowDom` kapsüllemesini etkinleştirmek, stil kapsülemesinden daha fazlasını etkiler. Bileşeni bir gölge ağacında render etmek, olay yayılımını, [`<slot>` API](https://developer.mozilla.org/docs/Web/Web_Components/Using_templates_and_slots)'si ile etkileşimi ve tarayıcı geliştirici araçlarının elemanları nasıl gösterdiğini etkiler. Uygulamanızda Shadow DOM kullanmanın tüm sonuçlarını her zaman anlayın ve bu seçeneği etkinleştirmeden önce bilin.
 
 ### ViewEncapsulation.ExperimentalIsolatedShadowDom
 
-Behaves as above, except this mode strictly guarantees that _only_ that component's styles apply to elements in the
-component's template. Global styles cannot affect elements in a shadow tree and styles inside the
-shadow tree cannot affect elements outside of that shadow tree.
+Yukarıdakiyle aynı şekilde davranır, ancak bu mod yalnızca o bileşenin stillerinin bileşenin şablonundaki elemanlara uygulanacağını kesinlikle garanti eder. Genel stiller gölge ağacındaki elemanları etkileyemez ve gölge ağacının içindeki stiller o gölge ağacının dışındaki elemanları etkileyemez.
 
 ### ViewEncapsulation.None
 
-This mode disables all style encapsulation for the component. Any styles associated with the
-component behave as global styles.
+Bu mod, bileşen için tüm stil kapsüllemesini devre dışı bırakır. Bileşen ile ilişkili herhangi bir stil, genel stiller gibi davranır.
 
-NOTE: In `Emulated` and `ShadowDom` modes, Angular doesn't 100% guarantee that your component's styles will always override styles coming from outside it.
-It is assumed that these styles have the same specificity as your component's styles in case of collision.
+NOTE: `Emulated` ve `ShadowDom` modlarında Angular, bileşenizin stillerinin bileşenin dışındaki stilleri her zaman geçersiz kılacağını %100 garanti etmez. Çakışma durumunda bu stillerin bileşeninizin stilleriyle aynı özgüllüğe sahip olduğu varsayılır.
 
-## Defining styles in templates
+## Şablonlarda stil tanımlama
 
-You can use the `<style>` element in a component's template to define additional styles. The
-component's view encapsulation mode applies to styles defined this way.
+Ek stiller tanımlamak için bileşenin şablonunda `<style>` elemanını kullanabilirsiniz. Bileşenin görünüm kapsülleme modu, bu şekilde tanımlanan stillere de uygulanır.
 
-Angular does not support bindings inside of style elements.
+Angular, stil elemanları içerisindeki bağlamaları desteklemez.
 
-## Referencing external style files
+## Harici stil dosyalarına referans verme
 
-Component templates can
-use [the `<link>` element](https://developer.mozilla.org/docs/Web/HTML/Element/link) to
-reference CSS files. Additionally, your CSS may
-use [the `@import`at-rule](https://developer.mozilla.org/docs/Web/CSS/@import) to reference
-CSS files. Angular treats these references as _external_ styles. External styles are not affected by
-emulated view encapsulation.
+Bileşen şablonları, CSS dosyalarına referans vermek için [`<link>` elemanı](https://developer.mozilla.org/docs/Web/HTML/Element/link)'nı kullanabilir. Ek olarak, CSS'iniz CSS dosyalarına referans vermek için [`@import` at-kuralı](https://developer.mozilla.org/docs/Web/CSS/@import)'nı kullanabilir. Angular bu referansları _harici_ stiller olarak değerlendirir. Harici stiller, emüle edilmiş görünüm kapsüllemesinden etkilenmez.

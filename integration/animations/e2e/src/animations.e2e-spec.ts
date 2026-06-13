@@ -91,4 +91,46 @@ describe('Animations Integration', () => {
     fallbackEls = await page.$$('.fallback-el');
     expect(fallbackEls.length).toBe(0);
   });
+
+  it('should immediately remove routed component without waiting for its inner component leave animations', async () => {
+    // Navigate to the nested route
+    await page.click('#nested-link');
+    await page.waitForSelector('.nested-parent');
+
+    let childEls = await page.$$('.child-target');
+    expect(childEls.length).toBe(2);
+
+    // Trigger a route navigation back to home
+    await page.click('#home-link');
+
+    // Given the child animation is 800ms long, if we don't wait for it across component boundaries,
+    // the previous component should be destroyed almost immediately.
+    // Wait just a short amount (100ms) and verify the nested component and its children are completely gone.
+    await new Promise((res) => setTimeout(res, 100));
+
+    childEls = await page.$$('.child-target');
+    expect(childEls.length).toBe(
+      0,
+      'Nested child component should have been removed immediately during routing',
+    );
+  });
+
+  it('should remove elements from DOM after reordering and removal with (animate.leave)', async () => {
+    // Wait for the test elements to be rendered
+    await page.waitForSelector('.test-item');
+
+    let items = await page.$$('.test-item');
+    expect(items.length).toBe(2);
+
+    // Shuffle
+    await page.click('#shuffle-test');
+    await new Promise((res) => setTimeout(res, 500));
+
+    // Remove
+    await page.click('#remove-test');
+    await new Promise((res) => setTimeout(res, 500));
+
+    items = await page.$$('.test-item');
+    expect(items.length).toBe(1);
+  });
 });

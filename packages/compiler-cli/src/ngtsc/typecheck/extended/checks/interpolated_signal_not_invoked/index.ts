@@ -61,6 +61,10 @@ class InterpolatedSignalCheck extends TemplateCheckWithVisitor<ErrorCode.INTERPO
     }
     // check bound inputs like `[prop]="mySignal"` on an element or inline template
     else if (node instanceof TmplAstElement && node.inputs.length > 0) {
+      // Allow signals to be passed directly to foreign components, without invocation.
+      if (ctx.templateTypeChecker.getForeignComponent(component, node) !== null) {
+        return [];
+      }
       const directivesOfElement = ctx.templateTypeChecker.getDirectivesOfNode(component, node);
       return node.inputs.flatMap((input) =>
         checkBoundAttribute(ctx, component, directivesOfElement, input),
@@ -168,9 +172,12 @@ function buildDiagnosticForSignal(
   node: PropertyRead,
   component: ts.ClassDeclaration,
 ): Array<NgTemplateDiagnostic<ErrorCode.INTERPOLATED_SIGNAL_NOT_INVOKED>> {
-  // check for `{{ mySignal }}`
   const symbol = ctx.templateTypeChecker.getSymbolOfNode(node, component);
-  if (symbol !== null && symbol.kind === SymbolKind.Expression && isSignalReference(symbol)) {
+  if (
+    symbol !== null &&
+    symbol.kind === SymbolKind.Expression &&
+    isSignalReference(symbol, ctx.templateTypeChecker)
+  ) {
     const templateMapping = ctx.templateTypeChecker.getSourceMappingAtTcbLocation(
       symbol.tcbLocation,
     )!;
@@ -192,11 +199,19 @@ function buildDiagnosticForSignal(
   if (!isFunctionInstanceProperty(node.name) && !isSignalInstanceProperty(node.name)) {
     return [];
   }
+
+  // If the receiver is not a PropertyRead, it means it's not a simple property access
+  // (e.g., it could be a MethodCall like `mySignal().set`). In that case, we assume
+  // it was invoked and skip the warning.
+  if (!(node.receiver instanceof PropertyRead)) {
+    return [];
+  }
+
   const symbolOfReceiver = ctx.templateTypeChecker.getSymbolOfNode(node.receiver, component);
   if (
     symbolOfReceiver !== null &&
     symbolOfReceiver.kind === SymbolKind.Expression &&
-    isSignalReference(symbolOfReceiver)
+    isSignalReference(symbolOfReceiver, ctx.templateTypeChecker)
   ) {
     const templateMapping = ctx.templateTypeChecker.getSourceMappingAtTcbLocation(
       symbolOfReceiver.tcbLocation,

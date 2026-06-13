@@ -14,7 +14,6 @@ import {
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {
   afterRenderEffect,
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -33,9 +32,9 @@ import {TabUpdate} from '../../tab-update/index';
 import {ComponentDataSource, FlatNode} from './component-data-source';
 import {getFullNodeNameString, isChildOf, parentCollapsed} from './directive-forest-utils';
 import {IndexedNode} from './index-forest';
-import {FilterComponent, FilterFn} from './filter/filter.component';
+import {FilterComponent, FilterFn} from '../../../shared/filter/filter.component';
 import {TreeNodeComponent, NodeTextMatch} from './tree-node/tree-node.component';
-import {directiveForestFilterFnGenerator} from './filter/directive-forest-filter-fn-generator';
+import {directiveForestFilterFnGenerator} from './directive-forest-filter-fn-generator';
 import {Debouncer} from '../../../shared/utils/debouncer';
 
 const NODE_ITEM_HEIGHT = 18; // px; Required for CDK Virtual Scroll
@@ -45,7 +44,6 @@ const RESIZE_OBSERVER_DEBOUNCE = 250; // ms
   selector: 'ng-directive-forest',
   templateUrl: './directive-forest.component.html',
   styleUrls: ['./directive-forest.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FilterComponent,
     CdkVirtualScrollViewport,

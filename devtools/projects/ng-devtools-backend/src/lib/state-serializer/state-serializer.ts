@@ -8,7 +8,7 @@
 
 import {ContainerType, Descriptor, NestedProp, PropType} from '../../../../protocol';
 
-import {isSignal, unwrapSignal} from '../utils';
+import {isSignal, unwrapSignal} from '../utils/general';
 
 import {getKeys} from './object-utils';
 import {getPropType} from './prop-type';
@@ -129,8 +129,8 @@ export function serializeDirectiveState(instance: object): Record<string, Descri
   return result;
 }
 
-export function serializeValue(value: unknown): Descriptor {
-  return levelSerializer({value}, 'value', false, 0, 0);
+export function serializeValue(value: unknown, level = 0): Descriptor {
+  return levelSerializer({value}, 'value', false, 0, level);
 }
 
 export function deeplySerializeSelectedProperties(

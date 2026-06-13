@@ -1,15 +1,15 @@
-# Query child elements with signal queries
+# Sinyal sorgularıyla alt elemanları sorgulama
 
-Now that you've learned [how to use signals with directives](/tutorials/signals/8-using-signals-with-directives), let's explore signal-based query APIs. These provide a reactive way to access and interact with child components and directives. Both components and directives can perform queries while also being queried themselves. Unlike the traditional ViewChild, signal queries automatically update and provide type-safe access to child components and directives.
+Artık [sinyalleri direktiflerle nasıl kullanacağınızı](/tutorials/signals/8-using-signals-with-directives) öğrendiğinize göre, sinyal tabanlı sorgu API'lerini keşfedelim. Bunlar, alt bileşenlere ve direktiflere erişmenin ve onlarla etkileşim kurmanın reaktif bir yolunu sağlar. Hem bileşenler hem de direktifler sorgu yapabilirken aynı zamanda kendileri de sorgulanabilir. Geleneksel ViewChild'ın aksine, sinyal sorguları otomatik olarak güncellenir ve alt bileşenlere ve direktiflere tür güvenli erişim sağlar.
 
-In this activity, you'll add viewChild queries to interact with child components programmatically.
+Bu aktivitede, alt bileşenlerle programatik olarak etkileşim kurmak için viewChild sorguları ekleyeceksiniz.
 
 <hr />
 
 <docs-workflow>
 
-<docs-step title="Add viewChild import">
-First, add the `viewChild` import to access child components in `app.ts`.
+<docs-step title="viewChild içe aktarmasını ekleyin">
+Önce, `app.ts` dosyasında alt bileşenlere erişmek için `viewChild` içe aktarmasını ekleyin.
 
 ```ts
 import {Component, signal, computed, viewChild, ChangeDetectionStrategy} from '@angular/core';
@@ -17,8 +17,8 @@ import {Component, signal, computed, viewChild, ChangeDetectionStrategy} from '@
 
 </docs-step>
 
-<docs-step title="Create viewChild queries">
-Add viewChild queries to the App component to access child components.
+<docs-step title="viewChild sorguları oluşturun">
+Alt bileşenlere erişmek için App bileşenine viewChild sorguları ekleyin.
 
 ```ts
 // Query APIs to access child components
@@ -26,11 +26,11 @@ firstProduct = viewChild(ProductCard);
 cartSummary = viewChild(CartSummary);
 ```
 
-These queries create signals that reference child component instances.
+Bu sorgular, alt bileşen örneklerine referans veren sinyaller oluşturur.
 </docs-step>
 
-<docs-step title="Implement parent methods">
-Use the viewChild queries to call methods on child components in `app.ts`:
+<docs-step title="Üst bileşen metotlarını uygulayın">
+`app.ts` dosyasında alt bileşenler üzerinde metotları çağırmak için viewChild sorgularını kullanın:
 
 ```ts
 showFirstProductDetails() {
@@ -50,17 +50,17 @@ initiateCheckout() {
 
 </docs-step>
 
-<docs-step title="Test the interactions">
-The control buttons should now work:
+<docs-step title="Etkileşimleri test edin">
+Kontrol düğmeleri artık çalışmalıdır:
 
-- **"Show First Product Details"** - Calls `highlight()` on the ProductCard
-- **"Initiate Checkout"** - Calls `initiateCheckout()` on the CartSummary
+- **"Show First Product Details"** - ProductCard üzerinde `highlight()` çağırır
+- **"Initiate Checkout"** - CartSummary üzerinde `initiateCheckout()` çağırır
 
-Click the buttons to see how viewChild queries enable parent components to control child behavior.
+Düğmelere tıklayarak viewChild sorgularının üst bileşenlerin alt bileşen davranışını nasıl kontrol ettiğini görün.
 </docs-step>
 
 </docs-workflow>
 
-Perfect! You've learned how to use signal-based query APIs for child component interaction:
+Mükemmel! Alt bileşen etkileşimi için sinyal tabanlı sorgu API'lerini nasıl kullanacağınızı öğrendiniz:
 
-In the next lesson, you'll learn about [how to react to signal changes with effect](/tutorials/signals/10-reacting-to-signal-changes-with-effect)!
+Bir sonraki derste, [sinyal değişikliklerine effect ile nasıl tepki verileceğini](/tutorials/signals/10-reacting-to-signal-changes-with-effect) öğreneceksiniz!

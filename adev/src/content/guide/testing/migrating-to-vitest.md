@@ -1,16 +1,16 @@
-# Migrating from Karma to Vitest
+# Karma'dan Vitest'e geçiş
 
-The Angular CLI uses [Vitest](https://vitest.dev/) as the default unit test runner for new projects. This guide provides instructions for migrating an existing project from Karma and Jasmine to Vitest.
+Angular CLI, yeni projeler için varsayılan birim test çalıştırıcısı olarak [Vitest](https://vitest.dev/)'i kullanır. Bu kılavuz, mevcut bir projeyi Karma ve Jasmine'den Vitest'e taşıma talimatları sağlar.
 
-IMPORTANT: Migrating an existing project to Vitest is considered experimental. This process also requires the use of the `application` build system, which is the default for all newly created projects.
+IMPORTANT: Mevcut bir projeyi Vitest'e taşımak deneysel olarak kabul edilir. Bu süreç ayrıca tüm yeni oluşturulan projeler için varsayılan olan `application` derleme sisteminin kullanılmasını gerektirir.
 
-## Manual migration steps
+## Manuel geçiş adımları
 
-Before using the automated refactoring schematic, you must manually update your project to use the Vitest test runner.
+Otomatik yeniden düzenleme şemasını kullanmadan önce, projenizi Vitest test çalıştırıcısını kullanacak şekilde manuel olarak güncellemeniz gerekir.
 
-### 1. Install dependencies
+### 1. Bağımlılıkları yükleme
 
-Install `vitest` and a DOM emulation library. While browser testing is still possible (see [step 5](#5-configure-browser-mode-optional)), Vitest uses a DOM emulation library by default to simulate a browser environment within Node.js for faster test execution. The CLI automatically detects and uses `happy-dom` if it's installed; otherwise, it falls back to `jsdom`. You must have one of these packages installed.
+`vitest` ve bir DOM emülasyon kütüphanesi yükleyin. Tarayıcı testi hâlâ mümkün olsa da ([adım 5](#5-tarayıcı-modunu-yapılandırma-isteğe-bağlı) bakın), Vitest daha hızlı test yürütme için Node.js içinde tarayıcı ortamını simüle etmek üzere varsayılan olarak bir DOM emülasyon kütüphanesi kullanır. CLI, yüklüyse `happy-dom`'u otomatik olarak algılayıp kullanır; aksi takdirde `jsdom`'a geri döner. Bu paketlerden birinin yüklü olması gerekir.
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
@@ -27,9 +27,9 @@ Install `vitest` and a DOM emulation library. While browser testing is still pos
   </docs-code>
 </docs-code-multifile>
 
-### 2. Update `angular.json`
+### 2. `angular.json`'ı güncelleme
 
-In your `angular.json` file, find the `test` target for your project and change the `builder` to `@angular/build:unit-test`.
+`angular.json` dosyanızda projeniz için `test` hedefini bulun ve `builder`'ı `@angular/build:unit-test` olarak değiştirin.
 
 ```json
 {
@@ -45,54 +45,54 @@ In your `angular.json` file, find the `test` target for your project and change 
 }
 ```
 
-The `unit-test` builder defaults to `"tsConfig": "tsconfig.spec.json"` and `"buildTarget": "::development"`. You can explicitly set these options if your project requires different values. For example, if the `development` build configuration is missing or you need different options for testing, you can create and use a `testing` or similarly named build configuration for `buildTarget`.
+`unit-test` builder'ı varsayılan olarak `"tsConfig": "tsconfig.spec.json"` ve `"buildTarget": "::development"` kullanır. Projeniz farklı değerler gerektiriyorsa bu seçenekleri açıkça ayarlayabilirsiniz. Örneğin, `development` derleme yapılandırması eksikse veya test için farklı seçeneklere ihtiyacınız varsa, `buildTarget` için `testing` veya benzer adda bir derleme yapılandırması oluşturabilir ve kullanabilirsiniz.
 
-The `@angular/build:karma` builder previously allowed build options (like `polyfills`, `assets`, or `styles`) to be configured directly within the `test` target. The new `@angular/build:unit-test` builder does not support this. If your test-specific build options differ from your existing `development` build configuration, you must move them to a dedicated build target configuration. If your test build options already match your `development` build configuration, no action is needed.
+Daha önce `@angular/build:karma` builder'ı, derleme seçeneklerinin (ör. `polyfills`, `assets` veya `styles`) doğrudan `test` hedefi içinde yapılandırılmasına izin veriyordu. Yeni `@angular/build:unit-test` builder'ı bunu desteklemez. Teste özgü derleme seçenekleriniz mevcut `development` derleme yapılandırmanızdan farklıysa, bunları özel bir derleme hedefi yapılandırmasına taşımanız gerekir. Test derleme seçenekleriniz zaten `development` derleme yapılandırmanızla eşleşiyorsa, herhangi bir işlem yapmanız gerekmez.
 
-### 3. Handle custom `karma.conf.js` configurations
+### 3. Özel `karma.conf.js` yapılandırmalarını ele alma
 
-Custom configurations in `karma.conf.js` are not automatically migrated. Before deleting your `karma.conf.js` file, review it for any custom settings that need to be migrated.
+`karma.conf.js` dosyasındaki özel yapılandırmalar otomatik olarak taşınmaz. `karma.conf.js` dosyanızı silmeden önce, taşınması gereken özel ayarlar için gözden geçirin.
 
-Many Karma options have equivalents in Vitest that can be set in a custom Vitest configuration file (e.g., `vitest.config.ts`) and linked to your `angular.json` via the `runnerConfig` option.
+Birçok Karma seçeneğinin, özel bir Vitest yapılandırma dosyasında (ör. `vitest.config.ts`) ayarlanabilen ve `angular.json` dosyanıza `runnerConfig` seçeneği aracılığıyla bağlanabilen Vitest eşdeğerleri vardır.
 
-Common migration paths include:
+Yaygın taşıma yolları şunlardır:
 
-- **Reporters**: Karma reporters must be replaced with Vitest-compatible reporters. These can often be configured directly in your `angular.json` under the `test.options.reporters` property. For more advanced configurations, use a custom `vitest.config.ts` file.
-- **Plugins**: Karma plugins may have Vitest equivalents that you will need to find and install. Note that code coverage is a first-class feature in the Angular CLI and can be enabled with `ng test --coverage`.
-- **Custom Browser Launchers**: These are replaced by the `browsers` option in `angular.json` and the installation of a browser provider like `@vitest/browser-playwright`.
+- **Muhabirler**: Karma muhabirleri Vitest uyumlu muhabirlerle değiştirilmelidir. Bunlar genellikle doğrudan `angular.json` dosyanızdaki `test.options.reporters` özelliği altında yapılandırılabilir. Daha gelişmiş yapılandırmalar için özel bir `vitest.config.ts` dosyası kullanın.
+- **Eklentiler**: Karma eklentilerinin bulmanız ve yüklemeniz gereken Vitest eşdeğerleri olabilir. Kod kapsamının Angular CLI'da birinci sınıf bir özellik olduğunu ve `ng test --coverage` ile etkinleştirilebileceğini unutmayın.
+- **Özel Tarayıcı Başlatıcıları**: Bunlar `angular.json` dosyasındaki `browsers` seçeneği ve `@vitest/browser-playwright` gibi bir tarayıcı sağlayıcısının yüklenmesiyle değiştirilir.
 
-For other settings, consult the official [Vitest documentation](https://vitest.dev/config/).
+Diğer ayarlar için resmi [Vitest belgelerine](https://vitest.dev/config/) başvurun.
 
-### 4. Remove Karma and `test.ts` files
+### 4. Karma ve `test.ts` dosyalarını kaldırma
 
-You can now delete `karma.conf.js` and `src/test.ts` from your project and uninstall the Karma-related packages. The following commands are based on the packages installed in a new Angular CLI project; your project may have other Karma-related packages to remove.
+Artık `karma.conf.js` ve `src/test.ts` dosyalarını projenizden silebilir ve Karma ile ilgili paketleri kaldırabilirsiniz. Aşağıdaki komutlar yeni bir Angular CLI projesinde yüklenen paketlere dayanmaktadır; projenizde kaldırılması gereken başka Karma ile ilgili paketler olabilir.
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
-    npm uninstall karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+    npm uninstall karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core
   </docs-code>
   <docs-code header="yarn" language="shell">
-    yarn remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+    yarn remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core
   </docs-code>
   <docs-code header="pnpm" language="shell">
-    pnpm remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+    pnpm remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core
   </docs-code>
   <docs-code header="bun" language="shell">
-    bun remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+    bun remove karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core
   </docs-code>
 </docs-code-multifile>
 
-### 5. Configure browser mode (optional)
+### 5. Tarayıcı modunu yapılandırma (isteğe bağlı)
 
-If you need to run tests in a real browser, you must install a browser provider and configure your `angular.json`.
+Testleri gerçek bir tarayıcıda çalıştırmanız gerekiyorsa, bir tarayıcı sağlayıcısı yüklemeli ve `angular.json` dosyanızı yapılandırmalısınız.
 
-**Install a browser provider:**
+**Bir tarayıcı sağlayıcısı yükleyin:**
 
-Choose one of the following browser providers based on your needs:
+İhtiyaçlarınıza göre aşağıdaki tarayıcı sağlayıcılarından birini seçin:
 
-- **Playwright**: `@vitest/browser-playwright` for Chromium, Firefox, and WebKit.
-- **WebdriverIO**: `@vitest/browser-webdriverio` for Chrome, Firefox, Safari, and Edge.
-- **Preview**: `@vitest/browser-preview` for Webcontainer environments (like StackBlitz).
+- **Playwright**: Chromium, Firefox ve WebKit için `@vitest/browser-playwright`.
+- **WebdriverIO**: Chrome, Firefox, Safari ve Edge için `@vitest/browser-webdriverio`.
+- **Preview**: WebContainer ortamları (StackBlitz gibi) için `@vitest/browser-preview`.
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
@@ -109,9 +109,9 @@ Choose one of the following browser providers based on your needs:
   </docs-code>
 </docs-code-multifile>
 
-**Update `angular.json` for browser mode:**
+**Tarayıcı modu için `angular.json`'ı güncelleyin:**
 
-Add the `browsers` option to your `test` target's options. The browser name depends on the provider you installed (e.g., `chromium` for Playwright, `chrome` for WebdriverIO).
+`test` hedefinizin seçeneklerine `browsers` seçeneğini ekleyin. Tarayıcı adı yüklediğiniz sağlayıcıya bağlıdır (ör. Playwright için `chromium`, WebdriverIO için `chrome`).
 
 ```json
 {
@@ -130,82 +130,80 @@ Add the `browsers` option to your `test` target's options. The browser name depe
 }
 ```
 
-Headless mode is enabled automatically if the `CI` environment variable is set or if a browser name includes "Headless" (e.g., `ChromeHeadless`). Otherwise, tests will run in a headed browser.
+`CI` ortam değişkeni ayarlandıysa veya tarayıcı adı "Headless" içeriyorsa (ör. `ChromeHeadless`) başsız mod otomatik olarak etkinleştirilir. Aksi takdirde testler görünür tarayıcıda çalışır.
 
-NOTE: Debugging with `ng test --debug` is not supported by browser mode.
+## Şemalarla otomatik test yeniden düzenleme
 
-## Automated test refactoring with schematics
+IMPORTANT: `refactor-jasmine-vitest` şeması deneyseldir ve tüm olası test kalıplarını kapsamayabilir. Şemanın yaptığı değişiklikleri her zaman gözden geçirin.
 
-IMPORTANT: The `refactor-jasmine-vitest` schematic is experimental and may not cover all possible test patterns. Always review the changes made by the schematic.
+Angular CLI, Jasmine testlerinizi Vitest kullanacak şekilde otomatik olarak yeniden düzenlemek için `refactor-jasmine-vitest` şemasını sağlar.
 
-The Angular CLI provides the `refactor-jasmine-vitest` schematic to automatically refactor your Jasmine tests to use Vitest.
+### Genel bakış
 
-### Overview
+Şema, test dosyalarınızdaki (`.spec.ts`) aşağıdaki dönüşümleri otomatikleştirir:
 
-The schematic automates the following transformations in your test files (`.spec.ts`):
+- `fit` ve `fdescribe`'ı `it.only` ve `describe.only`'ye dönüştürür.
+- `xit` ve `xdescribe`'ı `it.skip` ve `describe.skip`'e dönüştürür.
+- `spyOn` çağrılarını eşdeğer `vi.spyOn`'a dönüştürür.
+- `jasmine.objectContaining`'i `expect.objectContaining` ile değiştirir.
+- `jasmine.any`'yi `expect.any` ile değiştirir.
+- `jasmine.createSpy`'ı `vi.fn` ile değiştirir.
+- `beforeAll`, `beforeEach`, `afterAll` ve `afterEach`'i Vitest eşdeğerlerine günceller.
+- `fail()`'i Vitest'in `vi.fail()`'ine dönüştürür.
+- Beklentileri Vitest API'leriyle eşleşecek şekilde ayarlar
+- Otomatik olarak dönüştürülemeyen kod için TODO yorumları ekler
 
-- Converts `fit` and `fdescribe` to `it.only` and `describe.only`.
-- Converts `xit` and `xdescribe` to `it.skip` and `describe.skip`.
-- Converts `spyOn` calls to the equivalent `vi.spyOn`.
-- Replaces `jasmine.objectContaining` with `expect.objectContaining`.
-- Replaces `jasmine.any` with `expect.any`.
-- Replaces `jasmine.createSpy` with `vi.fn`.
-- Updates `beforeAll`, `beforeEach`, `afterAll`, and `afterEach` to their Vitest equivalents.
-- Converts `fail()` to Vitest's `vi.fail()`.
-- Adjusts expectations to match Vitest APIs
-- Adds TODO comments for code that cannot be automatically converted
+Şema aşağıdaki eylemleri **gerçekleştirmez**:
 
-The schematic **does not** perform the following actions:
+- `vitest` veya ilgili diğer bağımlılıkları yüklemez.
+- `angular.json` dosyanızı Vitest builder'ını kullanacak şekilde değiştirmez veya `test` hedefinden derleme seçeneklerini (ör. `polyfills` veya `styles`) taşımaz.
+- `karma.conf.js` veya `test.ts` dosyalarını kaldırmaz.
+- Karmaşık veya iç içe spy senaryolarını ele almaz; bunlar manuel yeniden düzenleme gerektirebilir.
 
-- It does not install `vitest` or other related dependencies.
-- It does not change your `angular.json` to use the Vitest builder or migrate any build options (like `polyfills` or `styles`) from the `test` target.
-- It does not remove `karma.conf.js` or `test.ts` files.
-- It does not handle complex or nested spy scenarios, which may require manual refactoring.
+### Şemayı çalıştırma
 
-### Running the schematic
+Projeniz Vitest için yapılandırıldıktan sonra, test dosyalarınızı yeniden düzenlemek için şemayı çalıştırabilirsiniz.
 
-Once your project is configured for Vitest, you can run the schematic to refactor your test files.
-
-To refactor **all** test files in your default project, run:
+Varsayılan projenizdeki **tüm** test dosyalarını yeniden düzenlemek için şunu çalıştırın:
 
 ```bash
 ng g @schematics/angular:refactor-jasmine-vitest
 ```
 
-### Options
+### Seçenekler
 
-You can use the following options to customize the schematic's behavior:
+Şemanın davranışını özelleştirmek için aşağıdaki seçenekleri kullanabilirsiniz:
 
-| Option                   | Description                                                                                         |
-| :----------------------- | :-------------------------------------------------------------------------------------------------- |
-| `--project <name>`       | Specify the project to refactor in a multi-project workspace. <br> Example: `--project=my-lib`      |
-| `--include <path>`       | Refactor only a specific file or directory. <br> Example: `--include=src/app/app.component.spec.ts` |
-| `--file-suffix <suffix>` | Specify a different file suffix for test files. <br> Example: `--file-suffix=.test.ts`              |
-| `--add-imports`          | Add explicit `vitest` imports if you have disabled globals in your Vitest configuration.            |
-| `--verbose`              | See detailed logging of all transformations applied.                                                |
-| `--browser-mode`         | If you intend to run the tests in browser mode.                                                     |
+| Seçenek                  | Açıklama                                                                                                         |
+| :----------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| `--project <name>`       | Çoklu proje çalışma alanında yeniden düzenlenecek projeyi belirtin. <br> Örnek: `--project=my-lib`               |
+| `--include <path>`       | Yalnızca belirli bir dosya veya dizini yeniden düzenleyin. <br> Örnek: `--include=src/app/app.component.spec.ts` |
+| `--file-suffix <suffix>` | Test dosyaları için farklı bir dosya uzantısı belirtin. <br> Örnek: `--file-suffix=.test.ts`                     |
+| `--add-imports`          | Vitest yapılandırmanızda globalleri devre dışı bıraktıysanız açık `vitest` import'ları ekleyin.                  |
+| `--verbose`              | Uygulanan tüm dönüşümlerin ayrıntılı günlüğünü görün.                                                            |
+| `--browser-mode`         | Testleri tarayıcı modunda çalıştırmayı planlıyorsanız.                                                           |
 
-### After migrating
+### Geçişten sonra
 
-After the schematic completes, it's a good practice to:
+Şema tamamlandıktan sonra iyi bir uygulama olarak:
 
-1.  **Run your tests**: Execute `ng test` to ensure that all tests still pass after the refactoring.
-2.  **Review the changes**: Look over the changes made by the schematic, paying close attention to any complex tests, especially those with intricate spies or mocks, as they may require further manual adjustments.
+1.  **Testlerinizi çalıştırın**: Yeniden düzenlemeden sonra tüm testlerin hâlâ geçtiğinden emin olmak için `ng test`'i çalıştırın.
+2.  **Değişiklikleri gözden geçirin**: Şemanın yaptığı değişiklikleri, özellikle karmaşık spy'lar veya mock'lar içeren karmaşık testlere dikkat ederek gözden geçirin; bunlar daha fazla manuel ayarlama gerektirebilir.
 
-The `ng test` command builds the application in _watch mode_ and launches the configured runner. Watch mode is enabled by default when using an interactive terminal and not running on CI.
+`ng test` komutu uygulamayı _izleme modunda_ derler ve yapılandırılan çalıştırıcıyı başlatır. Etkileşimli bir terminal kullanılırken ve CI'da çalışılmadığında izleme modu varsayılan olarak etkindir.
 
-## Configuration
+## Yapılandırma
 
-The Angular CLI takes care of the Vitest configuration for you, constructing the full configuration in memory based on options in `angular.json`.
+Angular CLI, `angular.json` dosyasındaki seçeneklere dayalı olarak yapılandırmayı bellekte oluşturarak Vitest yapılandırmasını sizin için yönetir.
 
-### Custom Vitest configuration
+### Özel Vitest yapılandırması
 
-IMPORTANT: While using a custom configuration enables advanced options, the Angular team does not provide direct support for the specific contents of the configuration file or for any third-party plugins used within it. The CLI will also override certain properties (`test.projects`, `test.include`) to ensure proper operation.
+IMPORTANT: Özel bir yapılandırma kullanmak gelişmiş seçenekleri etkinleştirirken, Angular ekibi yapılandırma dosyasının belirli içeriği veya içinde kullanılan herhangi bir üçüncü taraf eklentisi için doğrudan destek sağlamaz. CLI ayrıca düzgün çalışmayı sağlamak için belirli özellikleri (`test.projects`, `test.include`) geçersiz kılacaktır.
 
-You can provide a custom Vitest configuration file to override the default settings. For a full list of available options, see the official [Vitest documentation](https://vitest.dev/config/).
+Varsayılan ayarları geçersiz kılmak için özel bir Vitest yapılandırma dosyası sağlayabilirsiniz. Mevcut seçeneklerin tam listesi için resmi [Vitest belgelerine](https://vitest.dev/config/) bakın.
 
-**1. Direct path:**
-Provide a direct path to a Vitest configuration file in your `angular.json`:
+**1. Doğrudan yol:**
+`angular.json` dosyanızda bir Vitest yapılandırma dosyasına doğrudan yol sağlayın:
 
 ```json
 {
@@ -222,16 +220,19 @@ Provide a direct path to a Vitest configuration file in your `angular.json`:
 }
 ```
 
-**2. Automatic search for base configuration:**
-If you set `runnerConfig` to `true`, the builder will automatically search for a shared `vitest-base.config.*` file in your project and workspace roots.
+**2. Temel yapılandırma için otomatik arama:**
+`runnerConfig`'i `true` olarak ayarlarsanız, builder proje ve çalışma alanı köklerinizde paylaşılan bir `vitest-base.config.*` dosyası otomatik olarak arayacaktır.
 
-## `zone.js` based helpers are not supported
+## `zone.js` Vitest yaması
 
-The zone.js patches are not applied when running tests with Vitest, there for you won't be able use functions like `fakeAsync`, `flush` or `waitForAsync`.
-To migrate to Vitest you will also need to migrate your tests to native async and Vitest fake timers. See [an example here](/guide/testing/components-scenarios#async-test-with-a-vitest-fake-timers) for fake timers usages with Vitest.
+`fakeAsync`, `flush` veya `waitForAsync` gibi fonksiyonları kullanmak ya da mevcut testlerinizin bunlarla çalışmasını sağlamak için, `angular.json` dosyanızdaki test hedefi polyfill'lerinize `zone.js/plugins/vitest-patch` ekleyebilirsiniz.
 
-## Bug reports
+Yine de, mevcut test paketlerinizi yerel `async` ve Vitest sahte zamanlayıcılarına dönüştürmeyi planlamaya başlamanızı kuvvetle öneririz; çünkü yerleşik yaklaşım budur.
 
-Report issues and feature requests on [GitHub](https://github.com/angular/angular-cli/issues).
+Vitest ile sahte zamanlayıcı kullanımı için [burada bir örneğe](/guide/testing/components-scenarios#vitest-sahte-zamanlayıcıları-ile-asenkron-test) bakın.
 
-Please provide a minimal reproduction where possible to aid the team in addressing issues.
+## Hata raporları
+
+Sorunları ve özellik isteklerini [GitHub](https://github.com/angular/angular-cli/issues) üzerinden bildirin.
+
+Ekibin sorunları ele almasına yardımcı olmak için mümkünse minimal bir yeniden üretim sağlayın.

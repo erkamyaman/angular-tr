@@ -1,24 +1,22 @@
-# Learn Angular Signal Forms
+# Angular Sinyal Formlarını Öğrenin
 
-This interactive tutorial will teach you how to build reactive forms using Angular's experimental Signal Forms API.
+Bu etkileşimli öğretici, Angular'ın Signal Forms API'sini kullanarak reaktif formlar oluşturmayı size öğretecektir.
 
-IMPORTANT: Signal Forms is currently [experimental](reference/releases#experimental). The API may change before stabilizing. Check the [official documentation](guide/forms/signals/overview) for the latest updates.
+## Bu eğitimi nasıl kullanabilirsiniz
 
-## How to use this tutorial
+Bu öğretici, Angular'ın temel kavramlarını anladığınızı ve sinyaller (signals) konusunda temel bir bilginiz olduğunu varsayar. Angular'da yeniyseniz, [temel kavramlar rehberimizi](/essentials) okuyun. Sinyallerde yeniyseniz, önce [sinyaller öğreticisini](/tutorials/signals) tamamlayın.
 
-This tutorial assumes you understand Angular's core concepts and have basic familiarity with signals. If you're new to Angular, read our [essentials guide](/essentials). If you're new to signals, complete the [signals tutorial](/tutorials/signals) first.
+Her adım, Signal Forms'daki bir kavramı temsil eder. Sıfırdan eksiksiz bir giriş formu oluşturacak ve temelleri adım adım öğreneceksiniz.
 
-Each step represents a concept in Signal Forms. You'll build a complete login form from scratch, learning the fundamentals step by step.
+**Öğrenme yolunuz:**
 
-**Your learning path:**
+1. TypeScript ve sinyallerle form modelini oluşturma
+2. Formu şablonunuza bağlama
+3. Doğrulama kuralları ekleme
+4. Kullanıcılara doğrulama hatalarını gösterme
+5. Form gönderimini yönetme
+6. İleri düzey konuları ve sonraki adımları keşfetme
 
-1. Set up the form model with TypeScript and signals
-2. Connect the form to your template
-3. Add validation rules
-4. Display validation errors to users
-5. Handle form submission
-6. Explore advanced topics and next steps
+Takılırsanız, üstteki "Cevabı Göster" seçeneğine tıklayın.
 
-If you get stuck, click "Reveal answer" at the top.
-
-Alright, let's [get started](/tutorials/signal-forms/1-set-up-form-model)!
+Pekala, [başlayalım](/tutorials/signal-forms/1-set-up-form-model)!

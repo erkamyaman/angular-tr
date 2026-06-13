@@ -1,54 +1,51 @@
-# Migrating existing forms to Signal Forms
+# Mevcut form'ları Signal Form'lara taşıma
 
-This guide provides strategies for migrating existing codebases to Signal Forms, focusing on interoperability with
-existing Reactive Forms.
+Bu kılavuz, mevcut kod tabanlarını Signal Forms'a taşımak için stratejiler sunar ve mevcut Reactive Forms ile birlikte çalışabilirliğe odaklanır.
 
-## Top-down migration using `compatForm`
+## `compatForm` kullanarak yukarıdan aşağıya taşıma
 
-Sometimes you may want to use existing reactive `FormControl` instances within a Signal Form. This is useful for
-controls that involve:
+Bazen mevcut reaktif `FormControl` örneklerini bir Signal Form içinde kullanmak isteyebilirsiniz. Bu, aşağıdakileri içeren kontroller için kullanışlıdır:
 
-- Complex asynchronous logic.
-- Intricate RxJS operators that are not yet ported.
-- Integration with existing third-party libraries.
+- Karmaşık asenkron mantık.
+- Henüz taşınmamış karmaşık RxJS operatörleri.
+- Mevcut üçüncü taraf kütüphanelerle entegrasyon.
 
-### Integrating a `FormControl` into a signal form
+### Bir `FormControl`'ü signal form'a entegre etme
 
-Consider an existing `passwordControl` that uses a specialized `enterprisePasswordValidator`. Instead of rewriting the
-validator, you can bridge the control into your signal state.
+Özelleştirilmiş bir `enterprisePasswordValidator` kullanan mevcut bir `passwordControl` düşünün. Doğrulayıcıyı yeniden yazmak yerine, kontrolü sinyal durumunuza köprüleyebilirsiniz.
 
-We can do it using `compatForm`:
+Bunu `compatForm` kullanarak yapabiliriz:
 
 ```typescript
 import {signal} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {compatForm} from '@angular/forms/signals/compat';
 
-// 1. Existing control with a specialized validator
+// 1. Özel bir doğrulayıcı ile mevcut kontrol
 const passwordControl = new FormControl('', {
   validators: [Validators.required, enterprisePasswordValidator()],
   nonNullable: true,
 });
 
-// 2. Wrap it inside your form state signal
+// 2. Form durum sinyalinizin içine sarın
 const user = signal({
   email: '',
-  password: passwordControl, // Nest the existing control directly
+  password: passwordControl, // Mevcut kontrolü doğrudan iç içe yerleştirin
 });
 
-// 3. Create the form
+// 3. Formu oluşturun
 const f = compatForm(user);
 
-// Access values via the signal tree
-console.log(f.email().value()); // Current email value
-console.log(f.password().value()); // Current value of passwordControl
+// Sinyal ağacı üzerinden değerlere erişin
+console.log(f.email().value()); // Mevcut e-posta değeri
+console.log(f.password().value()); // passwordControl'ün mevcut değeri
 
-// Reactive state is proxied automatically
+// Reaktif durum otomatik olarak proxy yapılır
 const isPasswordValid = f.password().valid();
-const passwordErrors = f.password().errors(); // Returns CompatValidationError if the existing validator fails
+const passwordErrors = f.password().errors(); // Mevcut doğrulayıcı başarısız olursa CompatValidationError döndürür
 ```
 
-In the template, use standard reactive syntax by binding the underlying control:
+Şablonda, temel kontrolü bağlayarak standart reaktif sözdizimini kullanın:
 
 ```angular-html
 <form novalidate>
@@ -81,24 +78,23 @@ In the template, use standard reactive syntax by binding the underlying control:
   <docs-code header="app.html" path="adev/src/content/examples/signal-forms/src/compat-form-control-integration/app/app.html"/>
 </docs-code-multifile>
 
-### Integrating a `FormGroup` into a signal form
+### Bir `FormGroup`'u signal form'a entegre etme
 
-You can also wrap an entire `FormGroup`. This is common when a reusable sub-section of a form—such as an
-**Address Block**—is still managed by existing Reactive Forms.
+Ayrıca bir `FormGroup`'un tamamını da sarmalayabilirsiniz. Bu, formun yeniden kullanılabilir bir alt bölümünün - örneğin bir **Adres Bloğu** - hâlâ mevcut Reactive Forms tarafından yönetildiği durumlarda yaygındır.
 
 ```typescript
 import {signal} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {compatForm} from '@angular/forms/signals/compat';
 
-// 1. An existing address group with its own validation logic
+// 1. Kendi doğrulama mantığına sahip mevcut bir adres grubu
 const addressGroup = new FormGroup({
   street: new FormControl('123 Angular Way', Validators.required),
   city: new FormControl('Mountain View', Validators.required),
   zip: new FormControl('94043', Validators.required),
 });
 
-// 2. Include it in the state like it's a value
+// 2. Bir değermiş gibi duruma dahil edin
 const checkoutModel = signal({
   customerName: 'Pirojok the Cat',
   shippingAddress: addressGroup,
@@ -109,8 +105,7 @@ const f = compatForm(checkoutModel, (p) => {
 });
 ```
 
-The `shippingAddress` field acts as a branch in your Signal Form tree. You can bind these nested controls in your
-template by accessing the underlying existing controls via `.control()`:
+`shippingAddress` alanı, Signal Form ağacınızda bir dal olarak işlev görür. Bu iç içe geçmiş kontrolleri, temel mevcut kontrollere `.control()` üzerinden erişerek şablonunuzda bağlayabilirsiniz:
 
 ```angular-html
 <form novalidate>
@@ -179,16 +174,16 @@ template by accessing the underlying existing controls via `.control()`:
   <docs-code header="app.html" path="adev/src/content/examples/signal-forms/src/compat-form-group-integration/app/app.html"/>
 </docs-code-multifile>
 
-### Accessing values
+### Değerlere erişim
 
-While `compatForm` proxies value access on the `FormControl` level, the full form value preserves the control:
+`compatForm` değer erişimini `FormControl` düzeyinde proxy yaparken, tam form değeri kontrolü korur:
 
 ```typescript
 const passwordControl = new FormControl('password' /** ... */);
 
 const user = signal({
   email: '',
-  password: passwordControl, // Nest the existing control directly
+  password: passwordControl, // Mevcut kontrolü doğrudan iç içe yerleştirin
 });
 
 const form = compatForm(user);
@@ -196,7 +191,7 @@ form.password().value(); // 'password'
 form().value(); // { email: '', password: FormControl}
 ```
 
-If you need the whole form value, you'd have to build it manually:
+Tüm form değerine ihtiyacınız varsa, bunu manuel olarak oluşturmanız gerekir:
 
 ```typescript
 const formValue = computed(() => ({
@@ -205,12 +200,11 @@ const formValue = computed(() => ({
 })); // {email: '', password: ''}
 ```
 
-## Bottom-up migration
+## Aşağıdan yukarıya taşıma
 
-### Integrating a Signal Form into a `FormGroup`
+### Signal Form'u bir `FormGroup`'a entegre etme
 
-You can use `SignalFormControl` to expose a signal-based form as a standard `FormControl`. This is useful when you want
-to migrate leaf nodes of a form to Signals while keeping the parent `FormGroup` structure.
+Sinyal tabanlı bir formu standart bir `FormControl` olarak dışa aktarmak için `SignalFormControl` kullanabilirsiniz. Bu, üst `FormGroup` yapısını korurken formun yaprak düğümlerini Sinyallere taşımak istediğinizde kullanışlıdır.
 
 ```typescript
 import {Component, signal} from '@angular/core';
@@ -223,30 +217,95 @@ import {required} from '@angular/forms/signals';
   imports: [ReactiveFormsModule],
 })
 export class UserProfile {
-  // 1. Create a SignalFormControl, use signal form rules.
+  // 1. SignalFormControl oluşturun, signal form kurallarını kullanın.
   emailControl = new SignalFormControl('', (p) => {
     required(p, {message: 'Email is required'});
   });
 
-  // 2. Use it in an existing FormGroup
+  // 2. Mevcut bir FormGroup'ta kullanın
   form = new FormGroup({
     email: this.emailControl,
   });
 }
 ```
 
-The `SignalFormControl` synchronizes values and validation status bi-directionally:
+`SignalFormControl`, değerleri **Signal Forms** sistemi ile **Reactive Forms** sistemi arasında çift yönlü olarak senkronize eder:
 
-- **Signal -> Control**: Changing `email.set(...)` updates `emailControl.value` and the parent `form.value`.
-- **Control -> Signal**: Typing in the input (updating `emailControl`) updates the `email` signal.
-- **Validation**: Schema validators (like `required`) propagate errors to `emailControl.errors`.
+- **Signal -> Reactive**: Değerin Signal Forms üzerinden güncellenmesi Reactive Form kontrolünü anında günceller.
 
-### Disabling/Enabling control.
+```typescript
+// Signal Forms güncellemesi
+this.emailControl.fieldTree().value.set('new@example.com');
 
-Imperative APIs for changing the enabled/disabled state (like `enable()`, `disable()`) are intentionally not supported
-in `SignalFormControl`. This is because the state of the control should be derived from the signal state and rules.
+// Reactive Forms değişikliği yansıtır
+console.log(this.form.value); // {email: 'new@example.com'}
+```
 
-Attempting to call disable/enable would throw an error.
+- **Reactive -> Signal**: Değerin üst `FormGroup` üzerinden güncellenmesi Signal Forms durumunu günceller.
+
+```typescript
+// Reactive Forms güncellemesi
+this.form.patchValue({email: 'other@example.com'});
+
+// Signal Forms değişikliği yansıtır
+console.log(this.emailControl.fieldTree().value()); // 'other@example.com'
+```
+
+### `SignalFormControl` bağlama
+
+`SignalFormControl`'ü bir `FormGroup` içinde kullanmak için onu bir kontrol olarak geçirin ve şablonda `.fieldTree` kullanarak bağlayın:
+
+```typescript
+readonly emailControl = new SignalFormControl('', (p) => { required(p); });
+
+readonly form = new FormGroup({
+  name: new FormControl('Alice'),
+  email: this.emailControl,
+});
+```
+
+```angular-html {prefer}
+<form [formGroup]="form">
+  <!-- Standart kontrol -->
+  <input formControlName="name" />
+
+  <!-- Signal kontrolü -->
+  <input [formField]="emailControl.fieldTree" />
+</form>
+```
+
+```angular-html {avoid}
+<!-- Kaçının: SignalFormControl için formControlName veya [formControl] kullanmaktan -->
+<input formControlName="email" />
+<input [formControl]="emailControl" />
+```
+
+### `SignalFormControl` neden bir sinyal yerine bir değer alır
+
+Standart Signal Forms'ta, bir sinyal geçirerek bir form oluşturursunuz: `form(mySignal)`.
+
+Ancak `SignalFormControl`, ilk argümanı olarak (bir dize veya nesne gibi) **ham bir değer** alır:
+
+```typescript
+// Bir sinyal değil, ham bir değer alır
+const userControl = new SignalFormControl({
+  email: 'pirojok@example.com',
+});
+```
+
+`SignalFormControl`, yazma işlemlerini yakalamak ve Reactive Forms'un beklediği **eşzamanlı güncellemeleri** tetiklemek için sinyali dahili olarak oluşturur.
+
+Dahili sinyale `.sourceValue` aracılığıyla yine de erişebilirsiniz:
+
+```typescript
+const value = userControl.sourceValue();
+```
+
+### Disabling/Enabling control
+
+Etkin/devre dışı durumunu değiştirmek için zorunlu API'ler (`enable()`, `disable()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez. Bunun nedeni, kontrolün durumunun sinyal durumundan ve kurallardan türetilmesi gerektiğidir.
+
+disable/enable çağırmaya çalışmak bir hata fırlatır.
 
 ```typescript {avoid}
 import {signal, effect} from '@angular/core';
@@ -269,7 +328,7 @@ export class UserProfile {
 }
 ```
 
-Instead, use disabled rule:
+Bunun yerine, disabled kuralını kullanın:
 
 ```typescript {prefer}
 import {signal} from '@angular/core';
@@ -281,7 +340,7 @@ export class UserProfile {
 
   readonly emailControl = new SignalFormControl('', (p) => {
     // The control becomes disabled whenever isLoading is true
-    disabled(p, () => this.isLoading());
+    disabled(p, {when: () => this.isLoading()});
   });
 
   async saveData() {
@@ -294,10 +353,9 @@ export class UserProfile {
 
 ### Dynamic manipulation
 
-Imperative APIs for adding or removing validators (like `addValidators()`, `removeValidators()`, `setValidators()`) are
-intentionally not supported in `SignalFormControl`.
+Doğrulayıcı eklemek veya kaldırmak için zorunlu API'ler (`addValidators()`, `removeValidators()`, `setValidators()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez.
 
-Attempting to call these methods will throw an error.
+Bu yöntemleri çağırmaya çalışmak bir hata fırlatır.
 
 ```typescript {avoid}
 export class UserProfile {
@@ -316,7 +374,7 @@ export class UserProfile {
 }
 ```
 
-Instead, use `applyWhen` rule to conditionally apply validators:
+Bunun yerine, doğrulayıcıları koşullu olarak uygulamak için `applyWhen` kuralını kullanın:
 
 ```typescript {prefer}
 import {signal} from '@angular/core';
@@ -341,16 +399,13 @@ export class UserProfile {
 
 ### Manual Error Selection
 
-The `setErrors()` and `markAsPending()` methods are not supported. In Signal Forms, errors are derived from validation
-rules and async validation status. If you need to report an error, it should be done declaratively via a validation rule
-in the schema.
+`setErrors()` ve `markAsPending()` yöntemleri desteklenmez. Signal Forms'ta hatalar doğrulama kurallarından ve asenkron doğrulama durumundan türetilir. Bir hata bildirmeniz gerekiyorsa, bu şemadaki bir doğrulama kuralı aracılığıyla bildirimsel olarak yapılmalıdır.
 
 ## Automatic status classes
 
-Reactive/Template Forms automatically adds [class attributes](/guide/forms/template-driven-forms#track-control-states) (
-such as `.ng-valid` or `.ng-dirty`) to facilitate styling control states. Signal Forms does not do that.
+Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#kontrol-durumlarını-takip-etme) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
 
-If you want to preserve this behavior, you can provide the `NG_STATUS_CLASSES` preset:
+Bu davranışı korumak istiyorsanız, `NG_STATUS_CLASSES` ön ayarını sağlayabilirsiniz:
 
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';
@@ -365,7 +420,7 @@ bootstrapApplication(App, {
 });
 ```
 
-You can also provide your own custom configuration to apply whatever classes you wish based on you custom logic:
+Ayrıca kendi özel mantığınıza dayalı olarak istediğiniz sınıfları uygulamak için kendi özel yapılandırmanızı da sağlayabilirsiniz:
 
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';
@@ -383,6 +438,3 @@ bootstrapApplication(App, {
   ],
 });
 ```
-
-<!-- TODO: include some high level usage comment about how people should mostly interact with this via the signal forms API exposed on .fieldTree, not via the reactive forms methods. -->
-<!-- TODO: Elaborate on why the value taken is not a signal. -->

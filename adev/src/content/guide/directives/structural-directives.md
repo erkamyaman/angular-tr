@@ -1,14 +1,14 @@
-# Structural directives
+# Yapısal direktifler
 
-Structural directives are directives applied to an `<ng-template>` element that conditionally or repeatedly render the content of that `<ng-template>`.
+Yapısal direktifler, bir `<ng-template>` elemanına uygulanan ve o `<ng-template>`'in içeriğini koşullu veya tekrarlı olarak render eden direktiflerdir.
 
-## Example use case
+## Örnek kullanım durumu
 
-In this guide you'll build a structural directive which fetches data from a given data source and renders its template when that data is available. This directive is called `SelectDirective`, after the SQL keyword `SELECT`, and match it with an attribute selector `[select]`.
+Bu kılavuzda, belirli bir veri kaynağından veri getiren ve bu veri mevcut olduğunda şablonunu render eden bir yapısal direktif oluşturacaksınız. Bu direktif, SQL anahtar kelimesi `SELECT`'ten sonra `SelectDirective` olarak adlandırılır ve `[select]` nitelik seçicisi ile eşleştirilir.
 
-`SelectDirective` will have an input naming the data source to be used, which you will call `selectFrom`. The `select` prefix for this input is important for the [shorthand syntax](#structural-directive-shorthand). The directive will instantiate its `<ng-template>` with a template context providing the selected data.
+`SelectDirective`, kullanılacak veri kaynağını adlandıran bir girdiye sahip olacaktır ve buna `selectFrom` diyeceksiniz. Bu girdi için `select` öneki, [kısaltılmış sözdizimi](#yapısal-direktif-kısaltılmış-sözdizimi) açısından önemlidir. Direktif, seçilen veriyi sağlayan bir şablon bağlamı ile `<ng-template>`'ini örneklendirecektir.
 
-The following is an example of using this directive directly on an `<ng-template>` would look like:
+Aşağıda, bu direktifin doğrudan bir `<ng-template>` üzerinde kullanılmasına bir örnek verilmiştir:
 
 ```angular-html
 <ng-template select let-data [selectFrom]="source">
@@ -16,67 +16,71 @@ The following is an example of using this directive directly on an `<ng-template
 </ng-template>
 ```
 
-The structural directive can wait for the data to become available and then render its `<ng-template>`.
+Yapısal direktif, verinin kullanılabilir olmasını bekleyebilir ve ardından `<ng-template>`'ini render edebilir.
 
-HELPFUL: Note that Angular's `<ng-template>` element defines a template that doesn't render anything by default, if you just wrap elements in an `<ng-template>` without applying a structural directive those elements will not be rendered.
+HELPFUL: Angular'ın `<ng-template>` elemanının varsayılan olarak hiçbir şey render etmeyen bir şablon tanımladığını unutmayın; elemanları yapısal bir direktif uygulamadan yalnızca bir `<ng-template>` içine sararsanız, bu elemanlar render edilmez.
 
-For more information, see the [ng-template API](api/core/ng-template) documentation.
+Daha fazla bilgi için [ng-template API](api/core/ng-template) belgelerine bakın.
 
-## Structural directive shorthand
+## Yapısal direktif kısaltılmış sözdizimi
 
-Angular supports a shorthand syntax for structural directives which avoids the need to explicitly author an `<ng-template>` element.
+Angular, açıkça bir `<ng-template>` elemanı yazmak gereğinden kaçınan yapısal direktifler için kısaltılmış sözdizimini destekler.
 
-Structural directives can be applied directly on an element by prefixing the directive attribute selector with an asterisk (`*`), such as `*select`. Angular transforms the asterisk in front of a structural directive into an `<ng-template>` that hosts the directive and surrounds the element and its descendants.
+Yapısal direktifler, direktif nitelik seçicisinin önüne yıldız işareti (`*`) eklenerek doğrudan bir elemana uygulanabilir, örneğin `*select`. Angular, bir yapısal direktifin önündeki yıldız işaretini, direktifi barındıran ve elemanı ile alt öğelerini çevreleyen bir `<ng-template>`'e dönüştürür.
 
-You can use this with `SelectDirective` as follows:
+Bunu `SelectDirective` ile aşağıdaki gibi kullanabilirsiniz:
 
 ```angular-html
 <p *select="let data; from: source">The data is: {{ data }}</p>
 ```
 
-This example shows the flexibility of structural directive shorthand syntax, which is sometimes called _microsyntax_.
+Bu örnek, bazen _mikrosözdizimi_ olarak adlandırılan yapısal direktif kısaltılmış sözdiziminin esnekliğini gösterir.
 
-When used in this way, only the structural directive and its bindings are applied to the `<ng-template>`. Any other attributes or bindings on the `<p>` tag are left alone. For example, these two forms are equivalent:
+Bu şekilde kullanıldığında, `<ng-template>`'e yalnızca yapısal direktif ve bağlamaları uygulanır. `<p>` etiketindeki diğer nitelikler veya bağlamalar olduğu gibi bırakılır. Örneğin, bu iki form eşdeğerdir:
 
 ```angular-html
-<!-- Shorthand syntax: -->
+<!-- Kısaltılmış sözdizimi: -->
 <p class="data-view" *select="let data; from: source">The data is: {{ data }}</p>
 
-<!-- Long-form syntax: -->
+<!-- Uzun biçimli sözdizimi: -->
 <ng-template select let-data [selectFrom]="source">
   <p class="data-view">The data is: {{ data }}</p>
 </ng-template>
 ```
 
-Shorthand syntax is expanded through a set of conventions. A more thorough [grammar](#structural-directive-syntax-reference) is defined below, but in the above example, this transformation can be explained as follows:
+Kısaltılmış sözdizimi bir dizi kural aracılığıyla genişletilir. Daha kapsamlı bir [gramer](#yapısal-direktif-sözdizimi-referansı) aşağıda tanımlanmıştır, ancak yukarıdaki örnekte bu dönüşüm şu şekilde açıklanabilir:
 
-The first part of the `*select` expression is `let data`, which declares a template variable `data`. Since no assignment follows, the template variable is bound to the template context property `$implicit`.
+`*select` ifadesinin ilk kısmı `let data`'dır ve bir şablon değişkeni `data` bildirir. Ardından bir atama gelmediği için, şablon değişkeni şablon bağlam özelliği `$implicit`'e bağlanır.
 
-The second piece of syntax is a key-expression pair, `from source`. `from` is a binding key and `source` is a regular template expression. Binding keys are mapped to properties by transforming them to PascalCase and prepending the structural directive selector. The `from` key is mapped to `selectFrom`, which is then bound to the expression `source`. This is why many structural directives will have inputs that are all prefixed with the structural directive's selector.
+Sözdiziminin ikinci parçası, `from source` anahtar-ifade çiftidir. `from` bir bağlama anahtarıdır ve `source` normal bir şablon ifadesidir. Bağlama anahtarları, PascalCase'e dönüştürülerek ve yapısal direktif seçicisi eklenerek özelliklere eşlenir. `from` anahtarı `selectFrom`'a eşlenir ve ardından `source` ifadesine bağlanır. Bu nedenle birçok yapısal direktifin, yapısal direktifin seçicisi ile ön eklenmiş girdileri olacaktır.
 
-## One structural directive per element
+## Her eleman için tek bir yapısal direktif
 
-You can only apply one structural directive per element when using the shorthand syntax. This is because there is only one `<ng-template>` element onto which that directive gets unwrapped. Multiple directives would require multiple nested `<ng-template>`, and it's unclear which directive should be first. `<ng-container>` can be used when to create wrapper layers when multiple structural directives need to be applied around the same physical DOM element or component, which allows the user to define the nested structure.
+Kısaltılmış sözdizimini kullanırken her elemana yalnızca bir yapısal direktif uygulayabilirsiniz. Bunun nedeni, o direktifin açıldığı yalnızca bir `<ng-template>` elemanı olmasıdır. Birden fazla direktif, birden fazla iç içe `<ng-template>` gerektirir ve hangi direktifin önce olması gerektiği belirsizdir. Birden fazla yapısal direktifin aynı fiziksel DOM elemanı veya bileşen etrafında uygulanması gerektiğinde, kullanıcının iç içe yapıyı tanımlamasına olanak tanıyan sarma katmanları oluşturmak için `<ng-container>` kullanılabilir.
 
-## Creating a structural directive
+## Yapısal direktif oluşturma
 
-This section guides you through creating the `SelectDirective`.
+Bu bölüm, `SelectDirective`'i oluşturma sürecinde size rehberlik eder.
 
 <docs-workflow>
-<docs-step title="Generate the directive">
-Using the Angular CLI, run the following command, where `select` is the name of the directive:
+<docs-step title="Direktifi oluşturma">
+Angular CLI'yi kullanarak, `select`'in direktifin adı olduğu aşağıdaki komutu çalıştırın:
 
 ```shell
 ng generate directive select
 ```
 
-Angular creates the directive class and specifies the CSS selector, `[select]`, that identifies the directive in a template.
+Angular, direktif sınıfını oluşturur ve bir şablondaki direktifi tanımlayan CSS seçicisini `[select]` belirtir.
 </docs-step>
-<docs-step title="Make the directive structural">
-Import `TemplateRef`, and `ViewContainerRef`. Inject `TemplateRef` and `ViewContainerRef` in the directive as private properties.
+<docs-step title="Direktifi yapısal yapma">
+`TemplateRef`, `ViewContainerRef` ve `input`'u içe aktarın. `TemplateRef` ve `ViewContainerRef`'i direktife özel özellikler olarak enjekte edin.
 
 ```ts
-import {Directive, TemplateRef, ViewContainerRef} from '@angular/core';
+import {Directive, TemplateRef, ViewContainerRef, inject, input} from '@angular/core';
+
+export interface DataSource<T> {
+  load(): Promise<T>;
+}
 
 @Directive({
   selector: '[select]',
@@ -88,28 +92,28 @@ export class SelectDirective {
 ```
 
 </docs-step>
-<docs-step title="Add the 'selectFrom' input">
-Add a `selectFrom` `input()` property.
+<docs-step title="'selectFrom' girdisini ekleme">
+Bir `selectFrom` `input()` özelliği ekleyin.
 
 ```ts
 export class SelectDirective {
   // ...
-  selectFrom = input.required<DataSource>();
+  selectFrom = input.required<DataSource<unknown>>();
 }
 ```
 
 </docs-step>
-<docs-step title="Add the business logic">
-With `SelectDirective` now scaffolded as a structural directive with its input, you can now add the logic to fetch the data and render the template with it:
+<docs-step title="İş mantığını ekleme">
+`SelectDirective` artık girdisiyle bir yapısal direktif olarak iskelet haline getirildiğine göre, şimdi veriyi getirmek ve şablonu onunla render etmek için mantığı ekleyebilirsiniz:
 
 ```ts
 export class SelectDirective {
   // ...
   async ngOnInit() {
-    const data = await this.selectFrom.load();
+    const data = await this.selectFrom().load();
     this.viewContainerRef.createEmbeddedView(this.templateRef, {
-      // Create the embedded view with a context object that contains
-      // the data via the key `$implicit`.
+      // `$implicit` anahtarı aracılığıyla veriyi içeren bir bağlam nesnesiyle
+      // gömülü görünümü oluşturun.
       $implicit: data,
     });
   }
@@ -119,17 +123,17 @@ export class SelectDirective {
 </docs-step>
 </docs-workflow>
 
-That's it - `SelectDirective` is up and running. A follow-up step might be to [add template type-checking support](#typing-the-directives-context).
+Hepsi bu - `SelectDirective` çalışır durumda. Bir sonraki adım [şablon tür denetimi desteği eklemek](#direktifin-bağlamını-türlendirme) olabilir.
 
-## Structural directive syntax reference
+## Yapısal direktif sözdizimi referansı
 
-When you write your own structural directives, use the following syntax:
+Kendi yapısal direktiflerinizi yazarken aşağıdaki sözdizimini kullanın:
 
 ```ts {hideCopy}
 _: prefix = "( :let | :expression ) (';' | ',')? ( :let | :as | :keyExp )_";
 ```
 
-The following patterns describe each portion of the structural directive grammar:
+Aşağıdaki desenler, yapısal direktif gramerinin her bölümünü tanımlar:
 
 ```ts
 as = :export "as" :local ";"?
@@ -137,27 +141,27 @@ keyExp = :key ":"? :expression ("as" :local)? ";"?
 let = "let" :local "=" :export ";"?
 ```
 
-| Keyword      | Details                                            |
-| :----------- | :------------------------------------------------- |
-| `prefix`     | HTML attribute key                                 |
-| `key`        | HTML attribute key                                 |
-| `local`      | Local variable name used in the template           |
-| `export`     | Value exported by the directive under a given name |
-| `expression` | Standard Angular expression                        |
+| Keyword      | Details                                                         |
+| :----------- | :-------------------------------------------------------------- |
+| `prefix`     | HTML nitelik anahtarı                                           |
+| `key`        | HTML nitelik anahtarı                                           |
+| `local`      | Şablonda kullanılan yerel değişken adı                          |
+| `export`     | Direktif tarafından belirli bir ad altında dışa aktarılan değer |
+| `expression` | Standart Angular ifadesi                                        |
 
-### How Angular translates shorthand
+### Angular kısaltılmış sözdizimini nasıl çevirir
 
-Angular translates structural directive shorthand into the normal binding syntax as follows:
+Angular, yapısal direktif kısaltılmış sözdizimini normal bağlama sözdizimine şu şekilde çevirir:
 
-| Shorthand                       | Translation                                                     |
-| :------------------------------ | :-------------------------------------------------------------- |
-| `prefix` and naked `expression` | `[prefix]="expression"`                                         |
-| `keyExp`                        | `[prefixKey]="expression"` (The `prefix` is added to the `key`) |
-| `let local`                     | `let-local="export"`                                            |
+| Shorthand                       | Translation                                            |
+| :------------------------------ | :----------------------------------------------------- |
+| `prefix` and naked `expression` | `[prefix]="expression"`                                |
+| `keyExp`                        | `[prefixKey]="expression"` (`prefix`, `key`'e eklenir) |
+| `let local`                     | `let-local="export"`                                   |
 
-### Shorthand examples
+### Kısaltılmış sözdizimi örnekleri
 
-The following table provides shorthand examples:
+Aşağıdaki tablo kısaltılmış örnekler sağlar:
 
 | Shorthand                                                             | How Angular interprets the syntax                                                                             |
 | :-------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
@@ -167,48 +171,48 @@ The following table provides shorthand examples:
 | `*ngComponentOutlet="componentClass; inputs: myInputs";`              | `<ng-template [ngComponentOutlet]="componentClass" [ngComponentOutletInputs]="myInputs">`                     |
 | `*myDir="exp as value"`                                               | `<ng-template [myDir]="exp" let-value="myDir">`                                                               |
 
-## Improving template type checking for custom directives
+## Özel direktifler için şablon tür denetimini iyileştirme
 
-You can improve template type checking for custom directives by adding template guards to your directive definition.
-These guards help the Angular template type checker find mistakes in the template at compile time, which can avoid runtime errors.
-Two different types of guards are possible:
+Direktif tanımınıza şablon korumaları ekleyerek özel direktifler için şablon tür denetimini iyileştirebilirsiniz.
+Bu korumalar, Angular şablon tür denetleyicisinin şablondaki hataları derleme zamanında bulmasına yardımcı olur ve çalışma zamanı hatalarından kaçınabilir.
+İki farklı koruma türü mümkündür:
 
-- `ngTemplateGuard_(input)` lets you control how an input expression should be narrowed based on the type of a specific input.
-- `ngTemplateContextGuard` is used to determine the type of the context object for the template, based on the type of the directive itself.
+- `ngTemplateGuard_(input)`, belirli bir girdinin türüne göre bir girdi ifadesinin nasıl daraltılacağını kontrol etmenize olanak tanır.
+- `ngTemplateContextGuard`, direktifin kendi türüne göre şablon için bağlam nesnesinin türünü belirlemek için kullanılır.
 
-This section provides examples of both kinds of guards.
-For more information, see [Template type checking](tools/cli/template-typecheck 'Template type-checking guide').
+Bu bölüm her iki koruma türü için örnekler sağlar.
+Daha fazla bilgi için [Şablon tür denetimi](tools/cli/template-typecheck 'Template type-checking guide') bölümüne bakın.
 
-### Type narrowing with template guards
+### Şablon korumaları ile tür daraltma
 
-A structural directive in a template controls whether that template is rendered at run time. Some structural directives want to perform type narrowing based on the type of input expression.
+Bir şablondaki yapısal direktif, o şablonun çalışma zamanında render edilip edilmeyeceğini kontrol eder. Bazı yapısal direktifler, girdi ifadesinin türüne göre tür daraltma yapmak ister.
 
-There are two narrowings which are possible with input guards:
+Girdi korumaları ile iki daraltma mümkündür:
 
-- Narrowing the input expression based on a TypeScript type assertion function.
-- Narrowing the input expression based on its truthiness.
+- Girdi ifadesini TypeScript tür doğrulama fonksiyonuna göre daraltma.
+- Girdi ifadesini doğruluk değerine göre daraltma.
 
-To narrow the input expression by defining a type assertion function:
+Bir tür doğrulama fonksiyonu tanımlayarak girdi ifadesini daraltmak için:
 
 ```ts
-// This directive only renders its template if the actor is a user.
-// You want to assert that within the template, the type of the `actor`
-// expression is narrowed to `User`.
+// Bu direktif şablonunu yalnızca aktör bir kullanıcı olduğunda render eder.
+// Şablon içinde `actor` ifadesinin türünün `User`'a
+// daraltıldığını doğrulamak istiyorsunuz.
 @Directive(...)
 class ActorIsUser {
   actor = input<User | Robot>();
 
   static ngTemplateGuard_actor(dir: ActorIsUser, expr: User | Robot): expr is User {
-    // The return statement is unnecessary in practice, but included to
-    // prevent TypeScript errors.
+    // Return ifadesi pratikte gereksizdir, ancak TypeScript hatalarını
+    // önlemek için dahil edilmiştir.
     return true;
   }
 }
 ```
 
-Type-checking will behave within the template as if the `ngTemplateGuard_actor` has been asserted on the expression bound to the input.
+Tür denetimi, şablonda `ngTemplateGuard_actor`'ın girdiye bağlanan ifade üzerinde doğrulandığı gibi davranacaktır.
 
-Some directives only render their templates when an input is truthy. It's not possible to capture the full semantics of truthiness in a type assertion function, so instead a literal type of `'binding'` can be used to signal to the template type-checker that the binding expression itself should be used as the guard:
+Bazı direktifler şablonlarını yalnızca bir girdi doğru (truthy) olduğunda render eder. Doğruluk değerinin tam semantiğini bir tür doğrulama fonksiyonunda yakalamak mümkün değildir, bu nedenle şablon tür denetleyicisine bağlama ifadesinin kendisinin koruma olarak kullanılması gerektiğini belirtmek için `'binding'` literal türü kullanılabilir:
 
 ```ts
 @Directive(...)
@@ -219,30 +223,30 @@ class CustomIf {
 }
 ```
 
-The template type-checker will behave as if the expression bound to `condition` was asserted to be truthy within the template.
+Şablon tür denetleyicisi, `condition`'a bağlanan ifadenin şablon içinde doğru olarak doğrulandığı gibi davranacaktır.
 
-### Typing the directive's context
+### Direktifin bağlamını türlendirme
 
-If your structural directive provides a context to the instantiated template, you can properly type it inside the template by providing a static `ngTemplateContextGuard` type assertion function. This function can use the type of the directive to derive the type of the context, which is useful when the type of the directive is generic.
+Yapısal direktifiniz örneklenen şablona bir bağlam sağlıyorsa, statik bir `ngTemplateContextGuard` tür doğrulama fonksiyonu sağlayarak şablon içinde doğru şekilde türlendirebilirsiniz. Bu fonksiyon, bağlamın türünü türetmek için direktifin türünü kullanabilir ve bu, direktifin türü generic olduğunda yararlıdır.
 
-For the `SelectDirective` described above, you can implement an `ngTemplateContextGuard` to correctly specify the data type, even if the data source is generic.
+Yukarıda açıklanan `SelectDirective` için, veri kaynağı generic olsa bile veri türünü doğru şekilde belirtmek üzere bir `ngTemplateContextGuard` uygulayabilirsiniz.
 
 ```ts
-// Declare an interface for the template context:
+// Şablon bağlamı için bir arayüz bildirin:
 export interface SelectTemplateContext<T> {
   $implicit: T;
 }
 
 @Directive(...)
 export class SelectDirective<T> {
-  // The directive's generic type `T` will be inferred from the `DataSource` type
-  // passed to the input.
+  // Direktifin generic türü `T`, girdiye iletilen `DataSource` türünden
+  // çıkarılacaktır.
   selectFrom = input.required<DataSource<T>>();
 
-  // Narrow the type of the context using the generic type of the directive.
+  // Direktifin generic türünü kullanarak bağlamın türünü daraltın.
   static ngTemplateContextGuard<T>(dir: SelectDirective<T>, ctx: any): ctx is SelectTemplateContext<T> {
-    // As before the guard body is not used at runtime, and included only to avoid
-    // TypeScript errors.
+    // Daha önce olduğu gibi koruma gövdesi çalışma zamanında kullanılmaz ve yalnızca
+    // TypeScript hatalarını önlemek için dahil edilmiştir.
     return true;
   }
 }

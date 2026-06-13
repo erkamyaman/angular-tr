@@ -1,47 +1,47 @@
-# Angular CLI MCP Server setup
+# Angular CLI MCP Sunucusu kurulumu
 
-The Angular CLI includes an experimental [Model Context Protocol (MCP) server](https://modelcontextprotocol.io/) enabling AI assistants in your development environment to interact with the Angular CLI. We've included support for CLI powered code generation, adding packages, and more.
+Angular CLI, geliştirme ortamınızdaki yapay zeka asistanlarının Angular CLI ile etkileşime geçmesini sağlayan deneysel bir [Model Context Protocol (MCP) sunucusu](https://modelcontextprotocol.io/) içerir. CLI destekli kod üretimi, paket ekleme ve daha fazlası için destek ekledik.
 
-## Available Tools
+## Mevcut Araçlar
 
-The Angular CLI MCP server provides several tools to assist you in your development workflow. By default, the following tools are enabled:
+Angular CLI MCP sunucusu, geliştirme iş akışınızda size yardımcı olmak için çeşitli araçlar sağlar. Varsayılan olarak, aşağıdaki araçlar etkindir:
 
-| Name                        | Description                                                                                                                                                                                        | `local-only` | `read-only` |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
-| `ai_tutor`                  | Launches an interactive AI-powered Angular tutor. Recommended to run from a new Angular project using v20 or later. [Learn more](ai/ai-tutor).                                                     |      ✅      |     ✅      |
-| `find_examples`             | Finds authoritative code examples from a curated database of official, best-practice examples, focusing on **modern, new, and recently updated** Angular features.                                 |      ✅      |     ✅      |
-| `get_best_practices`        | Retrieves the Angular Best Practices Guide. This guide is essential for ensuring that all code adheres to modern standards, including standalone components, typed forms, and modern control flow. |      ✅      |     ✅      |
-| `list_projects`             | Lists the names of all applications and libraries defined within an Angular workspace. It reads the `angular.json` configuration file to identify the projects.                                    |      ✅      |     ✅      |
-| `onpush_zoneless_migration` | Analyzes Angular code and provides a step-by-step, iterative plan to migrate it to `OnPush` change detection, a prerequisite for a zoneless application.                                           |      ✅      |     ✅      |
-| `search_documentation`      | Searches the official Angular documentation at <https://angular.dev>. This tool should be used to answer any questions about Angular, such as for APIs, tutorials, and best practices.             |      ❌      |     ✅      |
+| Ad                          | Açıklama                                                                                                                                                                                       | `local-only` | `read-only` |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
+| `ai_tutor`                  | Etkileşimli, yapay zeka destekli bir Angular eğitmeni başlatır. v20 veya sonraki bir sürümü kullanan yeni bir Angular projesinden çalıştırılması önerilir. [Daha fazla bilgi](ai/ai-tutor).    |      ✅      |     ✅      |
+| `find_examples`             | Resmi, en iyi uygulama örneklerinden oluşan küratörlü bir veritabanından yetkili kod örnekleri bulur. **Modern, yeni ve yakın zamanda güncellenen** Angular özelliklerine odaklanır.           |      ✅      |     ✅      |
+| `get_best_practices`        | Angular En İyi Uygulamalar Kılavuzunu getirir. Bu kılavuz, tüm kodun standalone bileşenler, tipli formlar ve modern kontrol akışı dahil modern standartlara uymasını sağlamak için gereklidir. |      ✅      |     ✅      |
+| `list_projects`             | Bir Angular çalışma alanında tanımlanan tüm uygulama ve kütüphanelerin adlarını listeler. Projeleri belirlemek için `angular.json` yapılandırma dosyasını okur.                                |      ✅      |     ✅      |
+| `onpush_zoneless_migration` | Angular kodunu analiz eder ve zone'suz bir uygulama için ön koşul olan `OnPush` değişiklik algılamaya geçiş için adım adım, yinelemeli bir plan sunar.                                         |      ✅      |     ✅      |
+| `search_documentation`      | <https://angular.dev> adresindeki resmi Angular dokümantasyonunu arar. Bu araç, API'ler, eğitimler ve en iyi uygulamalar gibi Angular hakkındaki tüm soruları yanıtlamak için kullanılmalıdır. |      ❌      |     ✅      |
 
-### Experimental Tools
+### Deneysel Araçlar
 
-Some tools are provided in experimental / preview status since they are new or not fully tested. Enable them individually with the [`--experimental-tool`](#command-options) option and use them with caution.
+Bazı araçlar, yeni oldukları veya tam olarak test edilmedikleri için deneysel / önizleme durumunda sunulmaktadır. Bunları [`--experimental-tool`](#komut-seçenekleri) seçeneğiyle ayrı ayrı etkinleştirin ve dikkatli kullanın.
 
-| Name                       | Description                                                                                                                                                                                                                                                         | `local-only` | `read-only` |
-| :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------: | :---------: |
-| `build`                    | Perform a one-off, non-watched build using `ng build`.                                                                                                                                                                                                              |      ✅      |     ❌      |
-| `devserver.start`          | Asynchronously starts a development server that watches the workspace for changes, similar to running `ng serve`. Since this is asynchronous it returns immediately. To manage the resulting server, use the `devserver.stop` and `devserver.wait_for_build` tools. |      ✅      |     ✅      |
-| `devserver.stop`           | Stops a development server started by `devserver.start`.                                                                                                                                                                                                            |      ✅      |     ✅      |
-| `devserver.wait_for_build` | Returns the output logs of the most recent build in a running development server started by `devserver.start`. If a build is currently ongoing, it will first wait for that build to complete and then return the logs.                                             |      ✅      |     ✅      |
-| `e2e`                      | Executes the end-to-end tests configured in the project.                                                                                                                                                                                                            |      ✅      |     ✅      |
-| `modernize`                | Performs code migrations and provides further instructions on how to modernize Angular code to align with the latest best practices and syntax. [Learn more](https://angular.dev/reference/migrations)                                                              |      ✅      |     ❌      |
-| `test`                     | Runs the project's unit tests.                                                                                                                                                                                                                                      |      ✅      |     ✅      |
+| Ad                         | Açıklama                                                                                                                                                                                                                                                                       | `local-only` | `read-only` |
+| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
+| `build`                    | `ng build` kullanarak tek seferlik, izlenmesiz bir derleme gerçekleştirir.                                                                                                                                                                                                     |      ✅      |     ❌      |
+| `devserver.start`          | `ng serve` çalıştırmaya benzer şekilde, çalışma alanındaki değişiklikleri izleyen bir geliştirme sunucusunu asenkron olarak başlatır. Asenkron olduğu için hemen döner. Oluşturulan sunucuyu yönetmek için `devserver.stop` ve `devserver.wait_for_build` araçlarını kullanın. |      ✅      |     ✅      |
+| `devserver.stop`           | `devserver.start` tarafından başlatılan bir geliştirme sunucusunu durdurur.                                                                                                                                                                                                    |      ✅      |     ✅      |
+| `devserver.wait_for_build` | `devserver.start` tarafından başlatılan çalışan bir geliştirme sunucusundaki en son derlemenin çıktı günlüklerini döndürür. Bir derleme devam ediyorsa, önce bu derlemenin tamamlanmasını bekler ve ardından günlükleri döndürür.                                              |      ✅      |     ✅      |
+| `e2e`                      | Projede yapılandırılmış uçtan uca testleri çalıştırır.                                                                                                                                                                                                                         |      ✅      |     ✅      |
+| `modernize`                | Kod geçişleri gerçekleştirir ve Angular kodunu en son en iyi uygulamalar ve sözdizimi ile uyumlu hale getirmek için nasıl modernize edileceğine dair ek talimatlar sağlar. [Daha fazla bilgi](https://angular.dev/reference/migrations)                                        |      ✅      |     ❌      |
+| `test`                     | Projenin birim testlerini çalıştırır.                                                                                                                                                                                                                                          |      ✅      |     ✅      |
 
-## Get Started
+## Başlarken
 
-To get started, run the following command in your terminal:
+Başlamak için terminalinizde aşağıdaki komutu çalıştırın:
 
 ```bash
 ng mcp
 ```
 
-When run from an interactive terminal, this command displays instructions on how to configure a host environment to use the MCP server. The following sections provide example configurations for several popular editors and tools.
+Etkileşimli bir terminalden çalıştırıldığında, bu komut MCP sunucusunu kullanmak için bir ana bilgisayar ortamının nasıl yapılandırılacağına dair talimatlar görüntüler. Aşağıdaki bölümler, birçok popüler düzenleyici ve araç için örnek yapılandırmalar sağlar.
 
 ### Cursor
 
-Create a file named `.cursor/mcp.json` in your project's root and add the following configuration. You can also configure it globally in `~/.cursor/mcp.json`.
+Projenizin kök dizininde `.cursor/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. Ayrıca `~/.cursor/mcp.json` dosyasında global olarak da yapılandırabilirsiniz.
 
 ```json
 {
@@ -56,7 +56,7 @@ Create a file named `.cursor/mcp.json` in your project's root and add the follow
 
 ### Firebase Studio
 
-Create a file named `.idx/mcp.json` in your project's root and add the following configuration:
+Projenizin kök dizininde `.idx/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
 
 ```json
 {
@@ -71,7 +71,7 @@ Create a file named `.idx/mcp.json` in your project's root and add the following
 
 ### Gemini CLI
 
-Create a file named `.gemini/settings.json` in your project's root and add the following configuration:
+Projenizin kök dizininde `.gemini/settings.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
 
 ```json
 {
@@ -86,7 +86,7 @@ Create a file named `.gemini/settings.json` in your project's root and add the f
 
 ### JetBrains IDEs
 
-In JetBrains IDEs (like IntelliJ IDEA or WebStorm), after installing the JetBrains AI Assistant plugin, go to `Settings | Tools | AI Assistant | Model Context Protocol (MCP)`. Add a new server (`+`) and select `As JSON`. Then paste the following configuration:
+JetBrains IDE'lerinde (IntelliJ IDEA veya WebStorm gibi), JetBrains AI Assistant eklentisini yükledikten sonra `Settings | Tools | AI Assistant | Model Context Protocol (MCP)` yoluna gidin. Yeni bir sunucu ekleyin (`+`) ve `As JSON` seçeneğini seçin. Ardından aşağıdaki yapılandırmayı yapıştırın:
 
 ```json
 {
@@ -99,11 +99,11 @@ In JetBrains IDEs (like IntelliJ IDEA or WebStorm), after installing the JetBrai
 }
 ```
 
-For the most up-to-date instructions on configuring MCP servers, please refer to the JetBrains documentation: [Connect to an MCP server](https://www.jetbrains.com/help/ai-assistant/mcp.html#connect-to-an-mcp-server).
+MCP sunucularını yapılandırma hakkında en güncel talimatlar için lütfen JetBrains dokümantasyonuna bakın: [Connect to an MCP server](https://www.jetbrains.com/help/ai-assistant/mcp.html#connect-to-an-mcp-server).
 
 ### VS Code
 
-In your project's root, create a file named `.vscode/mcp.json` and add the following configuration. Note the use of the `servers` property.
+Projenizin kök dizininde `.vscode/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. `servers` özelliğinin kullanımına dikkat edin.
 
 ```json
 {
@@ -116,9 +116,9 @@ In your project's root, create a file named `.vscode/mcp.json` and add the follo
 }
 ```
 
-### Other IDEs
+### Diğer IDE'ler
 
-For other IDEs, check your IDE's documentation for the proper location of the MCP configuration file (often `mcp.json`). The configuration should contain the following snippet.
+Diğer IDE'ler için, MCP yapılandırma dosyasının (genellikle `mcp.json`) uygun konumu hakkında IDE'nizin dokümantasyonunu kontrol edin. Yapılandırma aşağıdaki snippet'i içermelidir.
 
 ```json
 {
@@ -131,17 +131,17 @@ For other IDEs, check your IDE's documentation for the proper location of the MC
 }
 ```
 
-## Command Options
+## Komut Seçenekleri
 
-The `mcp` command can be configured with the following options passed as arguments in your IDE's MCP configuration:
+`mcp` komutu, IDE'nizin MCP yapılandırmasında argüman olarak iletilen aşağıdaki seçeneklerle yapılandırılabilir:
 
-| Option                        | Type      | Description                                                                                                                                                               | Default |
-| :---------------------------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------ |
-| `--read-only`                 | `boolean` | Only register tools that do not make changes to the project. Your editor or coding agent may still perform edits.                                                         | `false` |
-| `--local-only`                | `boolean` | Only register tools that do not require an internet connection. Your editor or coding agent may still send data over the network.                                         | `false` |
-| `--experimental-tool`<br>`-E` | `string`  | Enable an [experimental tool](#experimental-tools). Separate multiple options by spaces, e.g. `-E tool_a tool_b`. Enable all `devserver.x` tools by using `-E devserver`. |         |
+| Seçenek                       | Tür       | Açıklama                                                                                                                                                                                 | Varsayılan |
+| :---------------------------- | :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
+| `--read-only`                 | `boolean` | Yalnızca projede değişiklik yapmayan araçları kaydeder. Düzenleyiciniz veya kodlama aracınız yine de düzenleme yapabilir.                                                                | `false`    |
+| `--local-only`                | `boolean` | Yalnızca internet bağlantısı gerektirmeyen araçları kaydeder. Düzenleyiciniz veya kodlama aracınız yine de ağ üzerinden veri gönderebilir.                                               | `false`    |
+| `--experimental-tool`<br>`-E` | `string`  | Bir [deneysel aracı](#deneysel-araçlar) etkinleştirir. Birden fazla seçeneği boşluklarla ayırın, örn. `-E tool_a tool_b`. Tüm `devserver.x` araçlarını `-E devserver` ile etkinleştirin. |            |
 
-For example, to run the server in read-only mode in VS Code, you would update your `mcp.json` like this:
+Örneğin, VS Code'da sunucuyu salt okunur modda çalıştırmak için `mcp.json` dosyanızı şu şekilde güncellersiniz:
 
 ```json
 {
@@ -154,6 +154,6 @@ For example, to run the server in read-only mode in VS Code, you would update yo
 }
 ```
 
-## Feedback and New Ideas
+## Geri Bildirim ve Yeni Fikirler
 
-The Angular team welcomes your feedback on the existing MCP capabilities and any ideas you have for new tools or features. Please share your thoughts by opening an issue on the [angular/angular GitHub repository](https://github.com/angular/angular/issues).
+Angular ekibi, mevcut MCP yetenekleri ve yeni araçlar veya özellikler için fikirleriniz hakkında geri bildirimlerinizi memnuniyetle karşılar. Lütfen [angular/angular GitHub deposunda](https://github.com/angular/angular/issues) bir sorun açarak düşüncelerinizi paylaşın.

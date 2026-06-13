@@ -7,6 +7,7 @@
 import { AfterContentInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentRef } from '@angular/core';
+import { DefaultExport } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
 import { EnvironmentProviders } from '@angular/core';
@@ -149,11 +150,11 @@ export type CanLoadFn = (route: Route, segments: UrlSegment[]) => MaybeAsync<Gua
 // @public
 export interface CanMatch {
     // (undocumented)
-    canMatch(route: Route, segments: UrlSegment[], currentSnapshot?: PartialMatchRouteSnapshot): MaybeAsync<GuardResult>;
+    canMatch(route: Route, segments: UrlSegment[], currentSnapshot: PartialMatchRouteSnapshot): MaybeAsync<GuardResult>;
 }
 
 // @public
-export type CanMatchFn = (route: Route, segments: UrlSegment[], currentSnapshot?: PartialMatchRouteSnapshot) => MaybeAsync<GuardResult>;
+export type CanMatchFn = (route: Route, segments: UrlSegment[], currentSnapshot: PartialMatchRouteSnapshot) => MaybeAsync<GuardResult>;
 
 // @public
 export class ChildActivationEnd {
@@ -199,6 +200,12 @@ export class ChildrenOutletContexts {
 export type ComponentInputBindingFeature = RouterFeature<RouterFeatureKind.ComponentInputBindingFeature>;
 
 // @public
+export interface ComponentInputBindingOptions {
+    queryParams?: boolean;
+    unmatchedInputBehavior?: 'alwaysUndefined' | 'undefinedIfStale';
+}
+
+// @public
 export function convertToParamMap(params: Params): ParamMap;
 
 // @public
@@ -212,10 +219,7 @@ export type Data = {
 // @public
 export type DebugTracingFeature = RouterFeature<RouterFeatureKind.DebugTracingFeature>;
 
-// @public
-export interface DefaultExport<T> {
-    default: T;
-}
+export { DefaultExport }
 
 // @public
 export class DefaultTitleStrategy extends TitleStrategy {
@@ -300,7 +304,7 @@ export enum EventType {
 
 // @public
 export interface ExtraOptions extends InMemoryScrollingOptions, RouterConfigOptions {
-    bindToComponentInputs?: boolean;
+    bindToComponentInputs?: boolean | ComponentInputBindingOptions;
     enableTracing?: boolean;
     enableViewTransitions?: boolean;
     errorHandler?: (error: any) => RedirectCommand | any;
@@ -1017,7 +1021,7 @@ export class Scroll {
 export abstract class TitleStrategy {
     // (undocumented)
     buildTitle(snapshot: RouterStateSnapshot): string | undefined;
-    getResolvedTitleForRoute(snapshot: ActivatedRouteSnapshot): any;
+    getResolvedTitleForRoute(snapshot: ActivatedRouteSnapshot): string | undefined;
     abstract updateTitle(snapshot: RouterStateSnapshot): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<TitleStrategy, never>;
@@ -1133,7 +1137,7 @@ export interface ViewTransitionsFeatureOptions {
 }
 
 // @public
-export function withComponentInputBinding(): ComponentInputBindingFeature;
+export function withComponentInputBinding(options?: ComponentInputBindingOptions): ComponentInputBindingFeature;
 
 // @public
 export function withDebugTracing(): DebugTracingFeature;

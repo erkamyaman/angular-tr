@@ -5,16 +5,17 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.dev/license
  */
+import {ChangeDetectionStrategy} from '@angular/compiler';
 import {Component, Renderer2, ViewEncapsulation} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {isNode} from '@angular/private/testing';
+import {expect} from '@angular/private/testing/matchers';
 import {By} from '../../src/dom/debug/by';
 import {
   addBaseHrefToCssSourceMap,
   NAMESPACE_URIS,
   REMOVE_STYLES_ON_COMPONENT_DESTROY,
 } from '../../src/dom/dom_renderer';
-import {expect} from '@angular/private/testing/matchers';
-import {isNode} from '@angular/private/testing';
 
 describe('DefaultDomRendererV2', () => {
   if (isNode) {
@@ -315,12 +316,9 @@ describe('DefaultDomRendererV2', () => {
     });
 
     it('should create MathML elements', () => {
-      // MathMLElement is fairly recent and doesn't exist on our Saucelabs test environments
-      if (typeof MathMLElement !== 'undefined') {
-        expect(
-          document.createElementNS(NAMESPACE_URIS['math'], 'math') instanceof MathMLElement,
-        ).toBeTrue();
-      }
+      expect(
+        document.createElementNS(NAMESPACE_URIS['math'], 'math') instanceof MathMLElement,
+      ).toBeTrue();
     });
   });
 
@@ -520,6 +518,7 @@ class CmpEncapsulationIsolatedShadowWithChildren {}
     <cmp-none></cmp-none>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SomeApp {}
 
@@ -527,6 +526,7 @@ export class SomeApp {}
   selector: 'shadow-parent-app-with-children',
   template: ` <cmp-shadow-children></cmp-shadow-children> `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class IsolatedShadowComponentParentApp {}
 
@@ -534,6 +534,7 @@ export class IsolatedShadowComponentParentApp {}
   selector: 'test-cmp',
   template: '',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class TestCmp {
   constructor(public renderer: Renderer2) {}
@@ -549,6 +550,7 @@ class TestCmp {
     <cmp-none *ngIf="!componentTwoInstanceHidden && !showEmulatedComponents"></cmp-none>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SomeAppForCleanUp {
   componentOneInstanceHidden = false;

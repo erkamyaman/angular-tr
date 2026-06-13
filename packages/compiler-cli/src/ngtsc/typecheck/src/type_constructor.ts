@@ -6,28 +6,30 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {R3Identifiers} from '@angular/compiler';
+import {
+  isUnsafeObjectKey,
+  R3Identifiers,
+  TcbExpr,
+  TcbTypeParameter,
+  TypeCtorMetadata,
+} from '@angular/compiler';
 import ts from 'typescript';
 
+import {Reference} from '../../imports';
 import {ClassDeclaration, ReflectionHost} from '../../reflection';
-import {TypeCtorMetadata, TcbTypeParameter} from '../api';
 
 import {ReferenceEmitEnvironment} from './reference_emit_environment';
 import {checkIfGenericTypeBoundsCanBeEmitted, generateTcbTypeParameters} from './tcb_util';
-import {quoteAndEscape, TcbExpr, tempPrint} from './ops/codegen';
 
 export function generateTypeCtorDeclarationFn(
   env: ReferenceEmitEnvironment,
   meta: TypeCtorMetadata,
-  nodeTypeRef: ts.EntityName,
+  nodeTypeRef: TcbExpr,
   typeParams: TcbTypeParameter[] | undefined,
 ): TcbExpr {
   const typeArgs = generateGenericArgs(typeParams);
-  const typeRef = ts.isIdentifier(nodeTypeRef)
-    ? nodeTypeRef.text
-    : tempPrint(nodeTypeRef, nodeTypeRef.getSourceFile());
-  const typeRefWithGenerics = `${typeRef}${typeArgs}`;
-  const initParam = constructTypeCtorParameter(env, meta, typeRef, typeRefWithGenerics);
+  const typeRefWithGenerics = `${nodeTypeRef.print()}${typeArgs}`;
+  const initParam = constructTypeCtorParameter(env, meta, nodeTypeRef.print(), typeRefWithGenerics);
   const typeParameters = typeParametersWithDefaultTypes(typeParams);
   let source: string;
 
@@ -127,16 +129,19 @@ function constructTypeCtorParameter(
 
   for (const {classPropertyName, transformType, isSignal} of meta.fields.inputs) {
     if (isSignal) {
-      signalInputKeys.push(quoteAndEscape(classPropertyName));
+      signalInputKeys.push(TcbExpr.quoteAndEscape(classPropertyName));
     } else if (!meta.coercedInputFields.has(classPropertyName)) {
-      plainKeys.push(quoteAndEscape(classPropertyName));
+      plainKeys.push(TcbExpr.quoteAndEscape(classPropertyName));
     } else {
+      const propName = `ngAcceptInputType_${classPropertyName}`;
+      const isUnsafe = isUnsafeObjectKey(classPropertyName);
+      const access = isUnsafe ? `[${TcbExpr.quoteAndEscape(propName)}]` : `.${propName}`;
       const coercionType =
-        transformType !== undefined
-          ? transformType
-          : `typeof ${typeRef}.ngAcceptInputType_${classPropertyName}`;
+        transformType !== undefined ? transformType : `typeof ${typeRef}${access}`;
 
-      coercedKeys.push(`${classPropertyName}: ${coercionType}`);
+      coercedKeys.push(
+        `${isUnsafe ? TcbExpr.quoteAndEscape(classPropertyName) : classPropertyName}: ${coercionType}`,
+      );
     }
   }
 
@@ -184,11 +189,11 @@ function generateGenericArgs(typeParameters: ReadonlyArray<TcbTypeParameter> | u
 export function requiresInlineTypeCtor(
   node: ClassDeclaration<ts.ClassDeclaration>,
   host: ReflectionHost,
-  env: ReferenceEmitEnvironment,
+  canReferenceType: (ref: Reference) => boolean,
 ): boolean {
   // The class requires an inline type constructor if it has generic type bounds that can not be
   // emitted into the provided type-check environment.
-  return !checkIfGenericTypeBoundsCanBeEmitted(node, host, env);
+  return !checkIfGenericTypeBoundsCanBeEmitted(node, host, canReferenceType);
 }
 
 /**

@@ -1,84 +1,76 @@
-# Angular coding style guide
+# Angular kodlama stil rehberi
 
-## Introduction
+## Giriş
 
-This guide covers a range of style conventions for Angular application code. These recommendations
-are not required for Angular to work, but instead establish a set of coding practices that promote
-consistency across the Angular ecosystem. A consistent set of practices makes it easier to share
-code and move between projects.
+Bu kılavuz, Angular uygulama kodu için bir dizi stil kuralını kapsamaktadır. Bu öneriler
+Angular'ın çalışması için gerekli değildir, bunun yerine Angular ekosisteminde tutarlılık sağlayan bir dizi kodlama pratiğidir. Tutarlı bir pratikler seti, kod paylaşımını ve projeler arası geçişi kolaylaştırır.
 
-This guide does _not_ cover TypeScript or general coding practices unrelated to Angular. For
-TypeScript, check
-out [Google's TypeScript style guide](https://google.github.io/styleguide/tsguide.html).
+Bu kılavuz, Angular ile ilgili olmayan TypeScript veya genel kodlama pratiklerini _kapsamaz_. TypeScript için
+[Google'ın TypeScript stil kılavuzuna](https://google.github.io/styleguide/tsguide.html) bakın.
 
-### When in doubt, prefer consistency
+### Şüpheye düştüğünüzde tutarlılığı tercih edin
 
-Whenever you encounter a situation in which these rules contradict the style of a particular file,
-prioritize maintaining consistency within a file. Mixing different style conventions in a single
-file creates more confusion than diverging from the recommendations in this guide.
+Bu kuralların belirli bir dosyanın stiliyle çeliştiği bir durumla karşılaştığınızda,
+dosya içindeki tutarlılığı korumaya öncelik verin. Tek bir
+dosyada farklı stil kurallarını karıştırmak, bu kılavuzdaki önerilerden sapmasından daha fazla karışıklığa neden olur.
 
-## Naming
+## İsimlendirme
 
-### Separate words in file names with hyphens
+### Dosya adlarında sözcükleri tire ile ayırın
 
-Separate words within a file name with hyphens (`-`). For example, a component named `UserProfile`
-has a file name `user-profile.ts`.
+Bir dosya adındaki sözcükleri tire (`-`) ile ayırın. Örneğin, `UserProfile` adında bir bileşen
+`user-profile.ts` dosya adına sahiptir.
 
-### Use the same name for a file's tests with `.spec` at the end
+### Dosya testleri için sonuna `.spec` ekleyerek aynı adı kullanın
 
-For unit tests, end file names with `.spec.ts`. For example, the unit test file for
-the `UserProfile` component has the file name `user-profile.spec.ts`.
+Birim testleri için dosya adlarını `.spec.ts` ile bitirin. Örneğin,
+`UserProfile` bileşeni için birim test dosyası `user-profile.spec.ts` dosya adına sahiptir.
 
-### Match file names to the TypeScript identifier within
+### Dosya adlarını içindeki TypeScript tanımlayıcısıyla eşleştirin
 
-File names should generally describe the contents of the code in the file. When the file contains a
-TypeScript class, the file name should reflect that class name. For example, a file containing a
-component named `UserProfile` has the name `user-profile.ts`.
+Dosya adları genellikle dosyadaki kodun içeriğini tanımlamalıdır. Dosya bir
+TypeScript sınıfı içerdiğinde, dosya adı o sınıf adını yansıtmalıdır. Örneğin,
+`UserProfile` adında bir bileşen içeren bir dosya `user-profile.ts` adına sahiptir.
 
-If the file contains more than one primary namable identifier, choose a name that describes the
-common theme to the code within. If the code in a file does not fit within a common theme or feature
-area, consider breaking the code up into different files. Avoid overly generic file names
-like `helpers.ts`, `utils.ts`, or `common.ts`.
+Dosya birden fazla birincil adlandırılabilir tanımlayıcı içeriyorsa, içerdeki kodun ortak temasını
+tanımlayan bir ad seçin. Dosyadaki kod ortak bir tema veya özellik
+alanı içinde uymuyorsa, kodu farklı dosyalara ayırmayı düşünün. `helpers.ts`, `utils.ts` veya `common.ts`
+gibi aşırı genel dosya adlarından kaçının.
 
-### Use the same file name for a component's TypeScript, template, and styles
+### Bileşenin TypeScript, şablon ve stil dosyaları için aynı dosya adını kullanın
 
-Components typically consist of one TypeScript file, one template file, and one style file. These
-files should share the same name with different file extensions. For example, a `UserProfile`
-component can have the files `user-profile.ts`, `user-profile.html`, and `user-profile.css`.
+Bileşenler tipik olarak bir TypeScript dosyası, bir şablon dosyası ve bir stil dosyasından oluşur. Bu
+dosyalar farklı dosya uzantılarıyla aynı adı paylaşmalıdır. Örneğin, bir `UserProfile`
+bileşeni `user-profile.ts`, `user-profile.html` ve `user-profile.css` dosyalarına sahip olabilir.
 
-If a component has more than one style file, append the name with additional words that describe the
-styles specific to that file. For example, `UserProfile` might have style
-files `user-profile-settings.css` and `user-profile-subscription.css`.
+Bir bileşenin birden fazla stil dosyası varsa, o dosyaya özgü stilleri tanımlayan ek sözcüklerle adı ekleyin. Örneğin, `UserProfile`'ın
+`user-profile-settings.css` ve `user-profile-subscription.css` stil dosyaları olabilir.
 
-## Project structure
+## Proje yapısı
 
-### All the application's code goes in a directory named `src`
+### Uygulamanın tüm kodu `src` adlı bir dizinde bulunur
 
-All of your Angular UI code (TypeScript, HTML, and styles) should live inside a directory
-named `src`. Code that's not related to UI, such as configuration files or scripts, should live
-outside the `src` directory.
+Tüm Angular UI kodunuz (TypeScript, HTML ve stiller) `src` adında bir dizinin
+içinde yaşamalıdır. Yapılandırma dosyaları veya betikler gibi UI ile ilgili olmayan kod, `src` dizininin dışında yaşamalıdır.
 
-This keeps the root application directory consistent between different Angular projects and creates
-a clear separation between UI code and other code in your project.
+Bu, kök uygulama dizinini farklı Angular projeleri arasında tutarlı tutar ve
+projenizde UI kodu ile diğer kod arasında net bir ayrım oluşturur.
 
-### Bootstrap your application in a file named `main.ts` directly inside `src`
+### Uygulamanızı doğrudan `src` içindeki `main.ts` dosyasında bootstrap edin
 
-The code to start up, or **bootstrap**, an Angular application should always live in a file
-named `main.ts`. This represents the primary entry point to the application.
+Bir Angular uygulamasını başlatmak veya **bootstrap** etmek için gereken kod her zaman
+`main.ts` adında bir dosyada yaşamalıdır. Bu, uygulamanın birincil giriş noktasını temsil eder.
 
-### Group closely related files together in the same directory
+### Yakından ilişkili dosyaları aynı dizinde gruplayın
 
-Angular components consist of a TypeScript file and, optionally, a template and one or more style
-files. You should group these together in the same directory.
+Angular bileşenleri bir TypeScript dosyası ve isteğe bağlı olarak bir şablon ve bir veya daha fazla stil
+dosyasından oluşur. Bunları aynı dizinde gruplamanız gerekir.
 
-Unit tests should live in the same directory as the code-under-test. Avoid collecting unrelated
-tests into a single `tests` directory.
+Birim testleri, test edilen kodla aynı dizinde yaşamalıdır. İlgisiz testleri tek bir `tests` dizininde toplamaktan kaçının.
 
-### Organize your project by feature areas
+### Projenizi özellik alanlarına göre organize edin
 
-Organize your project into subdirectories based on the features of your application or common themes
-to the code in those directories. For example, the project structure for a movie theater site,
-MovieReel, might look like this:
+Projenizi, uygulamanızın özelliklerine veya bu dizinlerdeki kodun ortak temalarına dayalı olarak alt dizinlere organize edin. Örneğin, bir sinema sitesi olan MovieReel'in proje yapısı şöyle görünebilir:
 
 ```
 src/
@@ -91,89 +83,73 @@ src/
 │ │ ├─ purchase-confirmation/
 ```
 
-Avoid creating subdirectories based on the type of code that lives in those directories. For
-example, avoid creating directories like `components`, `directives`, and `services`.
+Bu dizinlerde bulunan kod türüne dayalı alt dizinler oluşturmaktan kaçının. Örneğin,
+`components`, `directives` ve `services` gibi dizinler oluşturmaktan kaçının.
 
-Avoid putting so many files into one directory that it becomes hard to read or navigate. As the
-number of files in a directory grows, consider splitting further into additional sub-directories.
+Bir dizine okunması veya gezinilmesi zor olacak kadar çok dosya koymaktan kaçının. Bir dizindeki dosya sayısı arttıkça, ek alt dizinlere bölmeyi düşünün.
 
-### One concept per file
+### Dosya başına tek kavram
 
-Prefer focusing source files on a single _concept_. For Angular classes specifically, this usually
-means one component, directive, or service per file. However, it's okay if a file contains more than
-one component or directive if your classes are relatively small and they tie together as part of a
-single concept.
+Kaynak dosyaları tek bir _kavrama_ odaklanmayı tercih edin. Angular sınıfları için, bu genellikle
+dosya başına bir bileşen, direktif veya servis anlamına gelir. Ancak, sınıflarınız nispeten küçükse ve tek bir kavram olarak bir araya geliyorlarsa, bir dosyanın birden fazla bileşen veya direktif içermesi sorun değildir.
 
-When in doubt, go with the approach that leads to smaller files.
+Şüpheliyseniz, daha küçük dosyalara yol açan yaklaşımla gidin.
 
-## Dependency injection
+## Bağımlılık enjeksiyonu
 
-### Prefer the `inject` function over constructor parameter injection
+### `inject` fonksiyonunu constructor parametre enjeksiyonuna tercih edin
 
-Prefer using the [`inject`](/api/core/inject) function over injecting constructor parameters. The [`inject`](/api/core/inject) function works the same way as constructor parameter injection, but offers several style advantages:
+Constructor parametre enjeksiyonu yerine [`inject`](/api/core/inject) fonksiyonunu kullanmayı tercih edin. [`inject`](/api/core/inject) fonksiyonu constructor parametre enjeksiyonuyla aynı şekilde çalışır, ancak çeşitli stil avantajları sunar:
 
-- [`inject`](/api/core/inject) is generally more readable, especially when a class injects many dependencies.
-- It's more syntactically straightforward to add comments to injected dependencies
-- [`inject`](/api/core/inject) offers better type inference.
-- When targeting ES2022+ with [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig/#useDefineForClassFields), you can avoid separating field declaration and initialization when fields read on injected dependencies.
+- [`inject`](/api/core/inject), özellikle bir sınıf çok sayıda bağımlılık enjekte ettiğinde genellikle daha okunabilirdir.
+- Enjekte edilen bağımlılıklara yorum eklemek sözdizimsel olarak daha basittir
+- [`inject`](/api/core/inject) daha iyi tip çıkarımı sunar.
+- ES2022+ hedeflendiğinde [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig/#useDefineForClassFields) ile, enjekte edilen bağımlılıkları okuyan alanlarda alan bildirimi ve başlatma işlemini ayırmaktan kaçınabilirsiniz.
 
-[You can refactor existing code to `inject` with an automatic tool](reference/migrations/inject-function).
+[Mevcut kodu otomatik bir araçla `inject`'e yeniden düzenleyebilirsiniz](reference/migrations/inject-function).
 
-## Components and directives
+## Bileşenler ve direktifler
 
-### Choosing component selectors
+### Bileşen seçicilerini seçme
 
-See
-the [Components guide for details on choosing component selectors](guide/components/selectors#choosing-a-selector).
+Bileşen seçimleri hakkında ayrıntılar için
+[Bileşenler kılavuzuna](guide/components/selectors#seçici-seçme) bakın.
 
-### Naming component and directive members
+### Bileşen ve direktif üyelerini adlandırma
 
-See the Components guide for details
-on [naming input properties](guide/components/inputs#choosing-input-names)
-and [naming output properties](guide/components/outputs#choosing-event-names).
+Bileşenler kılavuzunda
+[giriş özelliklerini adlandırma](guide/components/inputs#girdi-adlarını-seçme)
+ve [çıkış özelliklerini adlandırma](guide/components/outputs#olay-adlarını-seçme) hakkında ayrıntılar için bakın.
 
-### Choosing directive selectors
+### Direktif seçicilerini seçme
 
-Directives should use the
-same [application-specific prefix](guide/components/selectors#selector-prefixes)
-as your components.
+Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#seçici-önekleri) kullanmalıdır.
 
-When using an attribute selector for a directive, use a camelCase attribute name. For example, if
-your application is named "MovieReel" and you build a directive that adds a tooltip to an element,
-you might use the selector `[mrTooltip]`.
+Bir direktif için özellik seçici kullanırken camelCase özellik adı kullanın. Örneğin,
+uygulamanız "MovieReel" olarak adlandırılıyorsa ve bir elemana araç ipucu ekleyen bir direktif oluşturuyorsanız, `[mrTooltip]` seçicisini kullanabilirsiniz.
 
-### Group Angular-specific properties before methods
+### Angular'a özgü özellikleri yöntemlerden önce gruplayın
 
-Components and directives should group Angular-specific properties together, typically near the top
-of the class declaration. This includes injected dependencies, inputs, outputs, and queries. Define
-these and other properties before the class's methods.
+Bileşenler ve direktifler, Angular'a özgü özellikleri genellikle sınıf bildiriminin üst kısımlarında birlikte gruplamalıdır. Bu, enjekte edilen bağımlılıkları, girişleri, çıkışları ve sorguları içerir. Bunları ve diğer özellikleri sınıfın yöntemlerinden önce tanımlayın.
 
-This practice makes it easier to find the class's template APIs and dependencies.
+Bu uygulama, sınıfın şablon API'lerini ve bağımlılıklarını bulmayı kolaylaştırır.
 
-### Keep components and directives focused on presentation
+### Bileşenleri ve direktifleri sunum odaklı tutun
 
-Code inside your components and directives should generally relate to the UI shown on the page. For
-code that makes sense on its own, decoupled from the UI, prefer refactoring to other files. For
-example, you can factor form validation rules or data transformations into separate functions or
-classes.
+Bileşenlerinizin ve direktiflerinizin içindeki kod genellikle sayfada gösterilen kullanıcı arayüzü ile ilgili olmalıdır. Kullanıcı arayüzünden bağımsız olarak kendi başına anlam ifade eden kod için, diğer dosyalara yeniden düzenlemeyi tercih edin. Örneğin, form doğrulama kurallarını veya veri dönüşümlerini ayrı fonksiyonlara veya sınıflara çıkarabilirsiniz.
 
-### Avoid overly complex logic in templates
+### Şablonlarda aşırı karmaşık mantıktan kaçının
 
-Angular templates are designed to
-accommodate [JavaScript-like expressions](guide/templates/expression-syntax).
-You should take advantage of these expressions to capture relatively straightforward logic directly
-in template expressions.
+Angular şablonları, [JavaScript benzeri ifadeleri](guide/templates/expression-syntax) barındırmak üzere tasarlanmıştır.
+Nispeten basit mantığı doğrudan şablon ifadelerinde yakalamak için bu ifadelerden yararlanmalısınız.
 
-When the code in a template gets too complex, though, refactor logic into the TypeScript code (typically with a [computed](guide/signals#computed-signals)).
+Şablondaki kod çok karmaşık hale geldiğinde, mantığı TypeScript koduna yeniden düzenleyin (tipik olarak bir [computed](guide/signals#computed-sinyaller) ile).
 
-There's no one hard-and-fast rule that determines what constitutes "complex". Use your best
-judgement.
+"Karmaşık"ın ne olduğunu belirleyen kesin ve değişmez bir kural yoktur. En iyi yargınızı kullanın.
 
-### Use `protected` on class members that are only used by a component's template
+### Yalnızca bileşenin şablonu tarafından kullanılan sınıf üyelerinde `protected` kullanın
 
-A component class's public members intrinsically define a public API that's accessible via
-dependency injection and [queries](guide/components/queries). Prefer `protected`
-access for any members that are meant to be read from the component's template.
+Bir bileşen sınıfının public üyeleri, bağımlılık enjeksiyonu ve [sorgular](guide/components/queries) aracılığıyla erişilebilir bir public API tanımlar. Bileşenin şablonundan okunması amaçlanan üyeler için `protected` erişimi tercih edin.
 
 ```ts
 @Component({
@@ -189,11 +165,10 @@ export class UserProfile {
 }
 ```
 
-### Use `readonly` for properties that shouldn't change
+### Değişmemesi gereken özellikler için `readonly` kullanın
 
-Mark component and directive properties initialized by Angular as `readonly`. This includes
-properties initialized by `input`, `model`, `output`, and queries. The readonly access modifier
-ensures that the value set by Angular is not overwritten.
+Angular tarafından başlatılan bileşen ve direktif özelliklerini `readonly` olarak işaretleyin. Bu,
+`input`, `model`, `output` ve sorgular tarafından başlatılan özellikleri içerir. readonly erişim değiştiricisi, Angular tarafından ayarlanan değerin üzerine yazılmamasını sağlar.
 
 ```ts
 @Component({
@@ -206,8 +181,8 @@ export class UserProfile {
 }
 ```
 
-For components and directives that use the decorator-based `@Input`, `@Output`, and query APIs, this
-advice applies to output properties and queries, but not input properties.
+Dekoratör tabanlı `@Input`, `@Output` ve sorgu API'lerini kullanan bileşenler ve direktifler için, bu
+tavsiye çıkış özelliklerine ve sorgulara uygulanır, ancak giriş özelliklerine uygulanmaz.
 
 ```ts
 @Component({
@@ -219,9 +194,9 @@ export class UserProfile {
 }
 ```
 
-### Prefer `class` and `style` over `ngClass` and `ngStyle`
+### `ngClass` ve `ngStyle` yerine `class` ve `style` tercih edin
 
-Prefer `class` and `style` bindings over using the [`NgClass`](/api/common/NgClass) and [`NgStyle`](/api/common/NgStyle) directives.
+[`NgClass`](/api/common/NgClass) ve [`NgStyle`](/api/common/NgStyle) direktiflerini kullanmak yerine `class` ve `style` bağlamalarını tercih edin.
 
 ```html {prefer}
 <div [class.admin]="isAdmin" [class.dense]="density === 'high'">
@@ -240,18 +215,15 @@ Prefer `class` and `style` bindings over using the [`NgClass`](/api/common/NgCla
 </div>
 ```
 
-Both `class` and `style` bindings use a more straightforward syntax that aligns closely with
-standard HTML attributes. This makes your templates easier to read and understand, especially for
-developers familiar with basic HTML.
+Hem `class` hem de `style` bağlamaları, standart HTML özelliklerine yakından uyum sağlayan daha basit bir sözdizimi kullanır. Bu, şablonlarınızı okumayı ve anlamayı kolaylaştırır, özellikle temel HTML'ye aşina geliştiriciler için.
 
-Additionally, the `NgClass` and `NgStyle` directives incur an additional performance cost compared
-to the built-in `class` and `style` binding syntax.
+Ek olarak, `NgClass` ve `NgStyle` direktifleri, yerleşik `class` ve `style` bağlama sözdizimine kıyasla ek bir performans maliyeti getirir.
 
-For more details, refer to the [bindings guide](/guide/templates/binding#css-class-and-style-property-bindings)
+Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) bakın.
 
-### Name event handlers for what they _do_, not for the triggering event
+### Olay işleyicilerini tetikleyen olay için değil, yaptıkları eylem için adlandırın
 
-Prefer naming event handlers for the action they perform rather than for the triggering event:
+Olay işleyicilerini tetikleyen olay için değil, gerçekleştirdikleri eylem için adlandırmayı tercih edin:
 
 ```html {prefer}
 <button (click)="saveUserData()">Save</button>
@@ -261,18 +233,15 @@ Prefer naming event handlers for the action they perform rather than for the tri
 <button (click)="handleClick()">Save</button>
 ```
 
-Using meaningful names like this makes it easier to tell what an event does from reading the
-template.
+Bunun gibi anlamlı adlar kullanmak, bir olayın ne yaptığını şablonu okuyarak anlamayı kolaylaştırır.
 
-For keyboard events, you can use Angular's key event modifiers with specific handler names:
+Klavye olayları için, belirli işleyici adlarıyla Angular'ın tuş olayı değiştiricilerini kullanabilirsiniz:
 
 ```html
 <textarea (keydown.control.enter)="commitNotes()" (keydown.control.space)="showSuggestions()">
 ```
 
-Sometimes, event handling logic is especially long or complex, making it impractical to declare a
-single well-named handler. In these cases, it's fine to fall back to a name like 'handleKeydown' and
-then delegate to more specific behaviors based on the event details:
+Bazen olay işleme mantığı özellikle uzun veya karmaşıktır, bu da tek bir iyi adlandırılmış işleyici bildirmeyi pratik olmaktan çıkarır. Bu durumlarda, 'handleKeydown' gibi bir ada geri dönmek ve ardından olay ayrıntılarına göre daha belirli davranışlara devretmek sorun değildir:
 
 ```ts
 @Component({
@@ -292,12 +261,10 @@ class RichText {
 }
 ```
 
-### Keep lifecycle methods simple
+### Yaşam döngüsü yöntemlerini basit tutun
 
-Avoid putting long or complex logic inside lifecycle hooks like `ngOnInit`. Instead, prefer creating
-well-named methods to contain that logic and then _call those methods_ in your lifecycle hooks.
-Lifecycle hook names describe _when_ they run, meaning that the code inside doesn't have a
-meaningful name that describes what the code inside is doing.
+`ngOnInit` gibi yaşam döngüsü kancalarına uzun veya karmaşık mantık koymaktan kaçının. Bunun yerine, bu mantığı içeren iyi adlandırılmış yöntemler oluşturmayı ve ardından yaşam döngüsü kancalarınızda _bu yöntemleri çağırmayı_ tercih edin.
+Yaşam döngüsü kanca adları _ne zaman_ çalıştıklarını tanımlar, yani içerdeki kodun ne yaptığını tanımlayan anlamlı bir adı yoktur.
 
 ```ts {prefer}
 ngOnInit() {
@@ -314,10 +281,9 @@ ngOnInit() {
 }
 ```
 
-### Use lifecycle hook interfaces
+### Yaşam döngüsü hook arayüzlerini kullanın
 
-Angular provides a TypeScript interface for each lifecycle method. When adding a lifecycle hook to
-your class, import and `implement` these interfaces to ensure that the methods are named correctly.
+Angular, her yaşam döngüsü yöntemi için bir TypeScript arayüzü sağlar. Sınıflarınıza bir yaşam döngüsü kancası eklerken, yöntemlerin doğru adlandırılmasını sağlamak için bu arayüzleri içeri aktarın ve `implement` edin.
 
 ```ts
 import {Component, OnInit} from '@angular/core';

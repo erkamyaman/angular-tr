@@ -1,33 +1,33 @@
-<docs-decorative-header title="Next Steps" imgSrc="adev/src/assets/images/roadmap.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Sonraki Adımlar" imgSrc="adev/src/assets/images/roadmap.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-Now that you have been introduced to the main concepts of Angular - you're ready to put what you learned into practice with our interactive tutorials and learn more with our in-depth guides.
+Angular'ın temel kavramlarıyla tanıştığınıza göre, öğrendiklerinizi interaktif eğitimlerimizle uygulamaya koymaya ve detaylı kılavuzlarımızla daha fazla bilgi edinmeye hazırsınız.
 
-## Playground
+## Oyun Alanı
 
-Try out Angular in an interactive code editor to further explore the concepts you've learned.
-
-<docs-pill-row>
-  <docs-pill title="Play with Angular!" href="playground" />
-</docs-pill-row>
-
-## Tutorials
-
-Put these main concepts into practice with our in-browser tutorial or build your first app locally with the Angular CLI.
+Öğrendiğiniz kavramları daha fazla keşfetmek için interaktif bir kod editöründe Angular'ı deneyin.
 
 <docs-pill-row>
-  <docs-pill title="Learn Angular's fundamentals" href="tutorials/learn-angular" />
-  <docs-pill title="Build your first Angular app" href="tutorials/first-app" />
+  <docs-pill title="Angular ile oynayın!" href="playground" />
 </docs-pill-row>
 
-## In-depth Guides
+## Eğitimler
 
-Here are some in-depth guides you might be interested in reading:
+Bu temel kavramları tarayıcı içi eğitimimizle uygulamaya koyun veya Angular CLI ile yerel olarak ilk uygulamanızı oluşturun.
 
 <docs-pill-row>
-  <docs-pill title="Components In-depth Guide" href="guide/components" />
-  <docs-pill title="Template In-depth Guide" href="guide/templates" />
-  <docs-pill title="Forms In-depth Guide" href="/guide/forms" />
+  <docs-pill title="Angular'ın temellerini öğrenin" href="tutorials/learn-angular" />
+  <docs-pill title="İlk Angular uygulamanızı oluşturun" href="tutorials/first-app" />
 </docs-pill-row>
 
-To see the rest of our in-depth guides, check out the main navigation.
+## Detaylı Kılavuzlar
+
+İşte ilginizi çekebilecek bazı detaylı kılavuzlar:
+
+<docs-pill-row>
+  <docs-pill title="Bileşenler Detaylı Kılavuz" href="guide/components" />
+  <docs-pill title="Şablonlar Detaylı Kılavuz" href="guide/templates" />
+  <docs-pill title="Formlar Detaylı Kılavuz" href="/guide/forms" />
+</docs-pill-row>
+
+Diğer detaylı kılavuzlarımızı görmek için ana navigasyona göz atın.

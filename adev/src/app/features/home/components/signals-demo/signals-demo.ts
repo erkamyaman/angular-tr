@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {CodeBlock} from '../code-block/code-block';
 
@@ -15,7 +15,6 @@ import {CodeBlock} from '../code-block/code-block';
   imports: [RouterLink, CodeBlock],
   templateUrl: './signals-demo.html',
   styleUrls: ['./signals-demo.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignalsDemo {
   tsExample = tsExample;
@@ -33,8 +32,8 @@ export class SignalsDemo {
   ]);
   searchTerm = signal('');
 
-  // A computed signal that derives the filtered list.
-  // It automatically re-runs when a dependency changes.
+  // Filtrelenmiş listeyi türeten bir computed sinyal.
+  // Bir bağımlılık değiştiğinde otomatik olarak yeniden çalışır.
   filteredItems = computed(() => {
     const lowerCaseSearchTerm = this.searchTerm().toLowerCase();
     return this.items().filter((item) => item.toLowerCase().includes(lowerCaseSearchTerm));
@@ -46,11 +45,11 @@ export class SignalsDemo {
 }
 
 const tsExample = `
-// Source signals for state.
+// Durum için kaynak sinyalleri.
 items = signal(['Apple', 'Banana', /*...*/ ]);
 searchTerm = signal('');
-// A computed signal that derives the filtered list.
-// It automatically re-runs when a dependency changes.
+// Filtrelenmiş listeyi türeten bir computed sinyal.
+// Bir bağımlılık değiştiğinde otomatik olarak yeniden çalışır.
 filteredItems = computed(() => {
   const lowerCaseSearchTerm = this.searchTerm().toLowerCase();
   return this.items().filter(item =>

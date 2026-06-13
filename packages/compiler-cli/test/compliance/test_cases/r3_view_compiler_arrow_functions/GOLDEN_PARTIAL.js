@@ -4,8 +4,10 @@
 import { Component, signal } from '@angular/core';
 import * as i0 from "@angular/core";
 export class TestComp {
-    sigA = signal(1, ...(ngDevMode ? [{ debugName: "sigA" }] : /* istanbul ignore next */ []));
-    sigB = signal(2, ...(ngDevMode ? [{ debugName: "sigB" }] : /* istanbul ignore next */ []));
+    sigA = signal(1, /* @ts-ignore */
+    ...(ngDevMode ? [{ debugName: "sigA" }] : /* istanbul ignore next */ []));
+    sigB = signal(2, /* @ts-ignore */
+    ...(ngDevMode ? [{ debugName: "sigB" }] : /* istanbul ignore next */ []));
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", type: TestComp, isStandalone: true, selector: "ng-component", ngImport: i0, template: `
     <button (click)="sigA.update(value => value + 1)">Increment A</button>
@@ -144,7 +146,8 @@ export declare class TestComp {
 import { Component, signal } from '@angular/core';
 import * as i0 from "@angular/core";
 export class TestComp {
-    someSignal = signal('', ...(ngDevMode ? [{ debugName: "someSignal" }] : /* istanbul ignore next */ []));
+    someSignal = signal('', /* @ts-ignore */
+    ...(ngDevMode ? [{ debugName: "someSignal" }] : /* istanbul ignore next */ []));
     componentProp = 0;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "0.0.0-PLACEHOLDER", type: TestComp, isStandalone: true, selector: "ng-component", ngImport: i0, template: `
@@ -272,7 +275,8 @@ export declare class TestDir {
 import { Directive, signal } from '@angular/core';
 import * as i0 from "@angular/core";
 export class TestDir {
-    someSignal = signal(0, ...(ngDevMode ? [{ debugName: "someSignal" }] : /* istanbul ignore next */ []));
+    someSignal = signal(0, /* @ts-ignore */
+    ...(ngDevMode ? [{ debugName: "someSignal" }] : /* istanbul ignore next */ []));
     componentProp = 1;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestDir, deps: [], target: i0.ɵɵFactoryTarget.Directive });
     static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", type: TestDir, isStandalone: true, host: { listeners: { "click": "someSignal.update(prev => prev + 1)", "mousedown": "someSignal.update(() => componentProp + 1)" } }, ngImport: i0 });
@@ -503,6 +507,47 @@ export declare class TestComp {
 }
 
 /****************************************************************************************************
+ * PARTIAL FILE: arrow_function_safe_access_use_null.js
+ ****************************************************************************************************/
+import { Component } from '@angular/core';
+import * as i0 from "@angular/core";
+export class TestComp {
+    componentProp = {};
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "0.0.0-PLACEHOLDER", type: TestComp, isStandalone: true, selector: "ng-component", ngImport: i0, template: `
+    {{(value => value?.a?.b?.c?.()?.()?.()?.())(componentProp)}}
+    <hr>
+    {{() => componentProp?.a?.b?.c?.()?.()?.()?.()}}
+  `, isInline: true });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, decorators: [{
+            type: Component,
+            args: [{
+                    template: `
+    {{(value => value?.a?.b?.c?.()?.()?.()?.())(componentProp)}}
+    <hr>
+    {{() => componentProp?.a?.b?.c?.()?.()?.()?.()}}
+  `
+                }]
+        }] });
+
+/****************************************************************************************************
+ * PARTIAL FILE: arrow_function_safe_access_use_null.d.ts
+ ****************************************************************************************************/
+import * as i0 from "@angular/core";
+export declare class TestComp {
+    componentProp: {
+        a?: {
+            b?: {
+                c?: () => () => () => () => string;
+            };
+        };
+    };
+    static ɵfac: i0.ɵɵFactoryDeclaration<TestComp, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TestComp, "ng-component", never, {}, {}, never, never, true, never>;
+}
+
+/****************************************************************************************************
  * PARTIAL FILE: arrow_function_safe_access_nested_views.js
  ****************************************************************************************************/
 import { Component } from '@angular/core';
@@ -537,6 +582,55 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 
 /****************************************************************************************************
  * PARTIAL FILE: arrow_function_safe_access_nested_views.d.ts
+ ****************************************************************************************************/
+import * as i0 from "@angular/core";
+export declare class TestComp {
+    componentProp: {
+        a?: {
+            b?: {
+                c?: () => () => () => () => string;
+            };
+        };
+    };
+    static ɵfac: i0.ɵɵFactoryDeclaration<TestComp, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TestComp, "ng-component", never, {}, {}, never, never, true, never>;
+}
+
+/****************************************************************************************************
+ * PARTIAL FILE: arrow_function_safe_access_nested_views_use_null.js
+ ****************************************************************************************************/
+import { Component } from '@angular/core';
+import * as i0 from "@angular/core";
+export class TestComp {
+    componentProp = {};
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "0.0.0-PLACEHOLDER", type: TestComp, isStandalone: true, selector: "ng-component", ngImport: i0, template: `
+    @if (true) {
+      @if (true) {
+        @if (true) {
+          {{() => componentProp?.a?.b?.c?.()?.()?.()?.()}}
+        }
+      }
+    }
+  `, isInline: true });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, decorators: [{
+            type: Component,
+            args: [{
+                    template: `
+    @if (true) {
+      @if (true) {
+        @if (true) {
+          {{() => componentProp?.a?.b?.c?.()?.()?.()?.()}}
+        }
+      }
+    }
+  `,
+                }]
+        }] });
+
+/****************************************************************************************************
+ * PARTIAL FILE: arrow_function_safe_access_nested_views_use_null.d.ts
  ****************************************************************************************************/
 import * as i0 from "@angular/core";
 export declare class TestComp {
@@ -611,7 +705,8 @@ import { Component, signal } from '@angular/core';
 import * as i0 from "@angular/core";
 export class TestComp {
     componentProp = 0;
-    result = signal('', ...(ngDevMode ? [{ debugName: "result" }] : /* istanbul ignore next */ []));
+    result = signal('', /* @ts-ignore */
+    ...(ngDevMode ? [{ debugName: "result" }] : /* istanbul ignore next */ []));
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDER", ngImport: i0, type: TestComp, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "0.0.0-PLACEHOLDER", type: TestComp, isStandalone: true, selector: "ng-component", ngImport: i0, template: `
     @let topLevelLet = 1;

@@ -1,12 +1,12 @@
-# Pipes
+# Pipe'lar
 
-## Overview
+## Genel Bakış
 
-Pipes are a special operator in Angular template expressions that allows you to transform data declaratively in your template. Pipes let you declare a transformation function once and then use that transformation across multiple templates. Angular pipes use the vertical bar character (`|`), inspired by the [Unix pipe](<https://en.wikipedia.org/wiki/Pipeline_(Unix)>).
+Pipe'lar, Angular şablon ifadelerinde verileri şablonunuzda bildirimsel olarak dönüştürmenize olanak tanıyan özel operatörlerdir. Pipe'lar, bir dönüşüm fonksiyonunu bir kez bildirmenize ve ardından bu dönüşümü birden fazla şablonda kullanmanıza imkan tanır. Angular pipe'ları, [Unix pipe](<https://en.wikipedia.org/wiki/Pipeline_(Unix)>)'ından esinlenerek dikey çizgi karakterini (`|`) kullanır.
 
-NOTE: Angular's pipe syntax deviates from standard JavaScript, which uses the vertical bar character for the [bitwise OR operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_OR). Angular template expressions do not support bitwise operators.
+NOTE: Angular'ın pipe sözdizimi, dikey çizgi karakterini [bitsel VEYA operatörü](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_OR) için kullanan standart JavaScript'ten sapma gösterir. Angular şablon ifadeleri bitsel operatörleri desteklemez.
 
-Here is an example using some built-in pipes that Angular provides:
+İşte Angular'ın sağladığı bazı yerleşik pipe'ları kullanan bir örnek:
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -17,11 +17,11 @@ import {CurrencyPipe, DatePipe, TitleCasePipe} from '@angular/common';
   imports: [CurrencyPipe, DatePipe, TitleCasePipe],
   template: `
     <main>
-      <!-- Transform the company name to title-case and
-       transform the purchasedOn date to a locale-formatted string -->
+      <!-- Şirket adını başlık durumuna dönüştür ve
+       purchasedOn tarihini yerel biçimlendirilmiş dizgeye dönüştür -->
       <h1>Purchases from {{ company | titlecase }} on {{ purchasedOn | date }}</h1>
 
-      <!-- Transform the amount to a currency-formatted string -->
+      <!-- Tutarı para birimi biçimlendirilmiş dizgeye dönüştür -->
       <p>Total: {{ amount | currency }}</p>
     </main>
   `,
@@ -33,7 +33,7 @@ export class ShoppingCart {
 }
 ```
 
-When Angular renders the component, it will ensure that the appropriate date format and currency is based on the locale of the user. If the user is in the United States, it would render:
+Angular bileşeni işlerken, uygun tarih formatı ve para biriminin kullanıcının yerel ayarına dayalı olmasını sağlar. Kullanıcı Amerika Birleşik Devletleri'nde ise, şu şekilde işlenecektir:
 
 ```angular-html
 <main>
@@ -42,69 +42,69 @@ When Angular renders the component, it will ensure that the appropriate date for
 </main>
 ```
 
-See the [in-depth guide on i18n](/guide/i18n) to learn more about how Angular localizes values.
+Angular'ın değerleri nasıl yerelleştirdiği hakkında daha fazla bilgi edinmek için [i18n derinlemesine rehberine](/guide/i18n) bakın.
 
-### Built-in Pipes
+### Yerleşik Pipe'lar
 
-Angular includes a set of built-in pipes in the `@angular/common` package:
+Angular, `@angular/common` paketinde bir dizi yerleşik pipe içerir:
 
-| Name                                          | Description                                                                                   |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [`AsyncPipe`](api/common/AsyncPipe)           | Read the value from a `Promise` or an RxJS `Observable`.                                      |
-| [`CurrencyPipe`](api/common/CurrencyPipe)     | Transforms a number to a currency string, formatted according to locale rules.                |
-| [`DatePipe`](api/common/DatePipe)             | Formats a `Date` value according to locale rules.                                             |
-| [`DecimalPipe`](api/common/DecimalPipe)       | Transforms a number into a string with a decimal point, formatted according to locale rules.  |
-| [`I18nPluralPipe`](api/common/I18nPluralPipe) | Maps a value to a string that pluralizes the value according to locale rules.                 |
-| [`I18nSelectPipe`](api/common/I18nSelectPipe) | Maps a key to a custom selector that returns a desired value.                                 |
-| [`JsonPipe`](api/common/JsonPipe)             | Transforms an object to a string representation via `JSON.stringify`, intended for debugging. |
-| [`KeyValuePipe`](api/common/KeyValuePipe)     | Transforms Object or Map into an array of key value pairs.                                    |
-| [`LowerCasePipe`](api/common/LowerCasePipe)   | Transforms text to all lower case.                                                            |
-| [`PercentPipe`](api/common/PercentPipe)       | Transforms a number to a percentage string, formatted according to locale rules.              |
-| [`SlicePipe`](api/common/SlicePipe)           | Creates a new Array or String containing a subset (slice) of the elements.                    |
-| [`TitleCasePipe`](api/common/TitleCasePipe)   | Transforms text to title case.                                                                |
-| [`UpperCasePipe`](api/common/UpperCasePipe)   | Transforms text to all upper case.                                                            |
+| Ad                                            | Açıklama                                                                             |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [`AsyncPipe`](api/common/AsyncPipe)           | Bir `Promise` veya RxJS `Observable`'dan değeri okur.                                |
+| [`CurrencyPipe`](api/common/CurrencyPipe)     | Bir sayıyı yerel kurallara göre biçimlenmiş para birimi dizgesine dönüştürür.        |
+| [`DatePipe`](api/common/DatePipe)             | Bir `Date` değerini yerel kurallara göre biçimlendirir.                              |
+| [`DecimalPipe`](api/common/DecimalPipe)       | Bir sayıyı yerel kurallara göre biçimlenmiş ondalık noktalı dizgeye dönüştürür.      |
+| [`I18nPluralPipe`](api/common/I18nPluralPipe) | Bir değeri yerel kurallara göre çoğulan bir dizgeye eşler.                           |
+| [`I18nSelectPipe`](api/common/I18nSelectPipe) | Bir anahtarı istenen değeri döndüren özel bir seçiciye eşler.                        |
+| [`JsonPipe`](api/common/JsonPipe)             | Bir nesneyi `JSON.stringify` ile dizge temsiline dönüştürür, hata ayıklama amacıyla. |
+| [`KeyValuePipe`](api/common/KeyValuePipe)     | Object veya Map'i anahtar-değer çifti dizisine dönüştürür.                           |
+| [`LowerCasePipe`](api/common/LowerCasePipe)   | Metni tamamen küçük harfe dönüştürür.                                                |
+| [`PercentPipe`](api/common/PercentPipe)       | Bir sayıyı yerel kurallara göre biçimlenmiş yüzde dizgesine dönüştürür.              |
+| [`SlicePipe`](api/common/SlicePipe)           | Elemanların bir alt kümesini (dilim) içeren yeni bir Dizi veya Dizge oluşturur.      |
+| [`TitleCasePipe`](api/common/TitleCasePipe)   | Metni başlık durumuna dönüştürür.                                                    |
+| [`UpperCasePipe`](api/common/UpperCasePipe)   | Metni tamamen büyük harfe dönüştürür.                                                |
 
-## Using pipes
+## Pipe'ları kullanma
 
-Angular's pipe operator uses the vertical bar character (`|`), within a template expression. The pipe operator is a binary operator– the left-hand operand is the value passed to the transformation function, and the right side operand is the name of the pipe and any additional arguments (described below).
+Angular'ın pipe operatörü, bir şablon ifadesi içinde dikey çizgi karakterini (`|`) kullanır. Pipe operatörü ikili (binary) bir operatördür -- sol taraftaki operand dönüşüm fonksiyonuna geçirilen değerdir, sağ taraftaki operand ise pipe'ın adı ve ek argümanlardır (aşağıda açıklanmıştır).
 
 ```angular-html
 <p>Total: {{ amount | currency }}</p>
 ```
 
-In this example, the value of `amount` is passed into the `CurrencyPipe` where the pipe name is `currency`. It then renders the default currency for the user’s locale.
+Bu örnekte, `amount` değeri pipe adı `currency` olan `CurrencyPipe`'a geçirilir. Ardından kullanıcının yerel ayarına göre varsayılan para birimini işler.
 
-### Combining multiple pipes in the same expression
+### Aynı ifadede birden fazla pipe'ı birleştirme
 
-You can apply multiple transformations to a value by using multiple pipe operators. Angular runs the pipes from left to right.
+Birden fazla pipe operatörü kullanarak bir değere birden fazla dönüşüm uygulayabilirsiniz. Angular pipe'ları soldan sağa doğru çalıştırır.
 
-The following example demonstrates a combination of pipes to display a localized date in all uppercase:
+Aşağıdaki örnek, yerelleştirilmiş bir tarihi tamamen büyük harfle göstermek için bir pipe kombinasyonunu gösterir:
 
 ```angular-html
 <p>The event will occur on {{ scheduledOn | date | uppercase }}.</p>
 ```
 
-### Passing parameters to pipes
+### Pipe'lara parametre geçirme
 
-Some pipes accept parameters to configure the transformation. To specify a parameter, append the pipe name with a colon (`:`) followed by the parameter value.
+Bazı pipe'lar dönüşümü yapılandırmak için parametreler kabul eder. Bir parametre belirtmek için, pipe adının ardından iki nokta (`:`) ve parametre değerini ekleyin.
 
-For example, the `DatePipe` is able to take parameters to format the date in a specific way.
+Örneğin, `DatePipe` tarihi belirli bir şekilde biçimlendirmek için parametreler alabilir.
 
 ```angular-html
 <p>The event will occur at {{ scheduledOn | date: 'hh:mm' }}.</p>
 ```
 
-Some pipes may accept multiple parameters. You can specify additional parameter values separated by the colon character (`:`).
+Bazı pipe'lar birden fazla parametre kabul edebilir. İki nokta karakteriyle (`:`) ayrılmış ek parametre değerleri belirtebilirsiniz.
 
-For example, we can also pass a second optional parameter to control the timezone.
+Örneğin, saat dilimini kontrol etmek için ikinci bir isteğe bağlı parametre de geçebiliriz.
 
 ```angular-html
 <p>The event will occur at {{ scheduledOn | date: 'hh:mm' : 'UTC' }}.</p>
 ```
 
-## How pipes work
+## Pipe'lar nasıl çalışır
 
-Conceptually, pipes are functions that accept an input value and return a transformed value.
+Kavramsal olarak, pipe'lar bir giriş değeri kabul eden ve dönüştürülmüş bir değer döndüren fonksiyonlardır.
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -124,58 +124,58 @@ export class AppComponent {
 }
 ```
 
-In this example:
+Bu örnekte:
 
-1. `CurrencyPipe` is imported from `@angular/common`
-1. `CurrencyPipe` is added to the `imports` array
-1. The `amount` data is passed to the `currency` pipe
+1. `CurrencyPipe`, `@angular/common`'dan içeri aktarılır
+1. `CurrencyPipe`, `imports` dizisine eklenir
+1. `amount` verisi `currency` pipe'ına geçirilir
 
-### Pipe operator precedence
+### Pipe operatörü önceliği
 
-The pipe operator has lower precedence than other binary operators, including `+`, `-`, `*`, `/`, `%`, `&&`, `||`, and `??`.
+Pipe operatörü, `+`, `-`, `*`, `/`, `%`, `&&`, `||` ve `??` dahil diğer ikili operatörlerden daha düşük önceliğe sahiptir.
 
 ```angular-html
-<!-- firstName and lastName are concatenated before the result is passed to the uppercase pipe -->
+<!-- firstName ve lastName birleştirilir, ardından sonuç uppercase pipe'ına geçirilir -->
 {{ firstName + lastName | uppercase }}
 ```
 
-The pipe operator has higher precedence than the conditional (ternary) operator.
+Pipe operatörü, koşullu (üçlü) operatörden daha yüksek önceliğe sahiptir.
 
 ```angular-html
 {{ (isAdmin ? 'Access granted' : 'Access denied') | uppercase }}
 ```
 
-If the same expression were written without parentheses:
+Aynı ifade parantez olmadan yazılsaydı:
 
 <!-- prettier-ignore -->
 ```angular-html
 {{ isAdmin ? 'Access granted' : 'Access denied' | uppercase }}
 ```
 
-It will be parsed instead as:
+Şu şekilde çözümlenecekti:
 
 ```angular-html
 {{ isAdmin ? 'Access granted' : ('Access denied' | uppercase) }}
 ```
 
-Always use parentheses in your expressions when operator precedence may be ambiguous.
+Operatör önceliği belirsiz olabilecek ifadelerinizde her zaman parantez kullanın.
 
-### Change detection with pipes
+### Pipe'larla değişiklik algılama
 
-By default, all pipes are considered `pure`, which means that it only executes when a primitive input value (such as a `String`, `Number`, `Boolean`, or `Symbol`) or a object reference (such as `Array`, `Object`, `Function`, or `Date`) is changed. Pure pipes offer a performance advantage because Angular can avoid calling the transformation function if the passed value has not changed.
+Varsayılan olarak, tüm pipe'lar `pure` (saf) olarak kabul edilir, yani yalnızca ilkel bir giriş değeri (`String`, `Number`, `Boolean` veya `Symbol` gibi) veya bir nesne referansı (`Array`, `Object`, `Function` veya `Date` gibi) değiştiğinde çalıştırılır. Saf pipe'lar, geçirilen değer değişmediyse Angular'ın dönüşüm fonksiyonunu çağırmaktan kaçınmasını sağlayarak bir performans avantajı sunar.
 
-As a result, this means that mutations to object properties or array items are not detected unless the entire object or array reference is replaced with a different instance. If you want this level of change detection, refer to [detecting changes within arrays or objects](#detecting-change-within-arrays-or-objects).
+Sonuç olarak bu, nesne özelliklerindeki veya dizi öğelerindeki mutasyonların, tüm nesne veya dizi referansı farklı bir örnekle değiştirilmedikçe algılanmadığı anlamına gelir. Bu düzey değişiklik algılaması istiyorsanız, [diziler veya nesneler içindeki değişiklikleri algılama](#diziler-veya-nesneler-içindeki-değişiklikleri-algılama) bölümüne bakın.
 
-## Creating custom pipes
+## Özel pipe'lar oluşturma
 
-You can define a custom pipe by implementing a TypeScript class with the `@Pipe` decorator. A pipe must have two things:
+Özel bir pipe'ı, `@Pipe` dekoratörü ile bir TypeScript sınıfı uygulayarak tanımlayabilirsiniz. Bir pipe'ın iki şeye sahip olması gerekir:
 
-- A name, specified in the pipe decorator
-- A method named `transform` that performs the value transformation.
+- Pipe dekoratöründe belirtilen bir ad
+- Değer dönüşümünü gerçekleştiren `transform` adında bir yöntem.
 
-The TypeScript class should additionally implement the `PipeTransform` interface to ensure that it satisfies the type signature for a pipe.
+TypeScript sınıfı ayrıca bir pipe için tür imzasını karşıladığını garanti etmek için `PipeTransform` arayüzünü uygulamalıdır.
 
-Here is an example of a custom pipe that transforms strings to kebab case:
+İşte dizgeleri kebab-case'e dönüştüren özel bir pipe örneği:
 
 ```angular-ts
 // kebab-case.pipe.ts
@@ -191,9 +191,9 @@ export class KebabCasePipe implements PipeTransform {
 }
 ```
 
-### Using the `@Pipe` decorator
+### `@Pipe` dekoratörünü kullanma
 
-When creating a custom pipe, import `Pipe` from the `@angular/core` package and use it as a decorator for the TypeScript class.
+Özel bir pipe oluştururken, `@angular/core` paketinden `Pipe`'ı içeri aktarın ve TypeScript sınıfı için dekoratör olarak kullanın.
 
 ```angular-ts
 import {Pipe} from '@angular/core';
@@ -204,18 +204,18 @@ import {Pipe} from '@angular/core';
 export class MyCustomTransformationPipe {}
 ```
 
-The `@Pipe` decorator requires a `name` that controls how the pipe is used in a template.
+`@Pipe` dekoratörü, pipe'ın bir şablonda nasıl kullanılacağını kontrol eden bir `name` gerektirir.
 
-### Naming convention for custom pipes
+### Özel pipe'lar için adlandırma kuralı
 
-The naming convention for custom pipes consists of two conventions:
+Özel pipe'lar için adlandırma kuralı iki kuraldan oluşur:
 
-- `name` - camelCase is recommended. Do not use hyphens.
-- `class name` - PascalCase version of the `name` with `Pipe` appended to the end
+- `name` - camelCase önerilir. Tire kullanmayın.
+- `class name` - `name`'in PascalCase sürümü, sonuna `Pipe` eklenmiş halidir
 
-### Implement the `PipeTransform` interface
+### `PipeTransform` arayüzünü uygulama
 
-In addition to the `@Pipe` decorator, custom pipes should always implement the `PipeTransform` interface from `@angular/core`.
+`@Pipe` dekoratörüne ek olarak, özel pipe'lar her zaman `@angular/core`'dan `PipeTransform` arayüzünü uygulamalıdır.
 
 ```angular-ts
 import {Pipe, PipeTransform} from '@angular/core';
@@ -226,11 +226,11 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class MyCustomTransformationPipe implements PipeTransform {}
 ```
 
-Implementing this interface ensures that your pipe class has the correct structure.
+Bu arayüzü uygulamak, pipe sınıfınızın doğru yapıya sahip olmasını sağlar.
 
-### Transforming the value of a pipe
+### Pipe'ın değerini dönüştürme
 
-Every transformation is invoked by the `transform` method with the first parameter being the value being passed in and the return value being the transformed value.
+Her dönüşüm, `transform` yöntemi tarafından çağrılır; ilk parametre geçirilen değerdir ve dönüş değeri dönüştürülmüş değerdir.
 
 ```angular-ts
 import {Pipe, PipeTransform} from '@angular/core';
@@ -245,9 +245,9 @@ export class MyCustomTransformationPipe implements PipeTransform {
 }
 ```
 
-### Adding parameters to a custom pipe
+### Özel pipe'a parametre ekleme
 
-You can add parameters to your transformation by adding additional parameters to the `transform` method:
+`transform` yöntemine ek parametreler ekleyerek dönüşümünüze parametreler ekleyebilirsiniz:
 
 ```angular-ts
 import {Pipe, PipeTransform} from '@angular/core';
@@ -268,11 +268,11 @@ export class MyCustomTransformationPipe implements PipeTransform {
 }
 ```
 
-### Detecting change within arrays or objects
+### Diziler veya nesneler içindeki değişiklikleri algılama
 
-When you want a pipe to detect changes within arrays or objects, it must be marked as an impure function by passing the `pure` flag with a value of `false`.
+Bir pipe'ın diziler veya nesneler içindeki değişiklikleri algılamasını istediğinizde, `pure` bayrağı `false` değeriyle geçirilerek saf olmayan (impure) olarak işaretlenmelidir.
 
-IMPORTANT: Avoid creating impure pipes unless absolutely necessary, as they can incur a significant performance penalty if used without care.
+IMPORTANT: Kesinlikle gerekli olmadıkça saf olmayan pipe oluşturmaktan kaçının, çünkü dikkatsizce kullanılırsa önemli bir performans cezasına neden olabilir.
 
 ```angular-ts
 import {Pipe, PipeTransform} from '@angular/core';
@@ -288,4 +288,4 @@ export class JoinNamesImpurePipe implements PipeTransform {
 }
 ```
 
-Angular developers often adopt the convention of including `Impure` in the pipe `name` and class name to indicate the potential performance pitfall to other developers.
+Angular geliştiricileri, diğer geliştiricilere olası performans tuzağını belirtmek için genellikle pipe `name`'ine ve sınıf adına `Impure` ekleme kuralını benimser.

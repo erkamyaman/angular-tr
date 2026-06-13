@@ -1,5 +1,5 @@
 {
   "openFiles": ["src/app/app.ts", "src/app/app.css"],
   "type": "editor",
-  "title": "Reacting to signal changes with effects"
+  "title": "Effect ile sinyal değişikliklerine tepki verme"
 }

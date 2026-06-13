@@ -6,9 +6,9 @@
   <docs-pill href="/api?query=accordion#angular_aria_accordion" title="Accordion API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-An accordion organizes related content into expandable and collapsible sections, reducing page scrolling and helping users focus on relevant information. Each section has a trigger button and a content panel. Clicking a trigger toggles the visibility of its associated panel.
+Bir akordeon, ilgili içeriği genişletilebilir ve daraltılabilir bölümlere düzenleyerek sayfa kaydırmayı azaltır ve kullanıcıların ilgili bilgilere odaklanmasına yardımcı olur. Her bölümün bir tetikleyici butonu ve bir içerik paneli vardır. Bir tetikleyiciye tıklamak, ilişkili panelin görünürlüğünü değiştirir.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.ts"/>
@@ -16,39 +16,39 @@ An accordion organizes related content into expandable and collapsible sections,
   <docs-code header="CSS" path="adev/src/content/examples/aria/accordion/src/single-expansion/basic/app/app.css"/>
 </docs-code-multifile>
 
-## Usage
+## Kullanım
 
-Accordions work well for organizing content into logical groups where users typically need to view one section at a time.
+Akordeonlar, kullanıcıların genellikle aynı anda bir bölümü görüntülemeye ihtiyaç duydukları mantıksal gruplara içerik düzenleme için iyi çalışır.
 
-**Use accordions when:**
+**Akordeon kullanin:**
 
-- Displaying FAQs with multiple questions and answers
-- Organizing long forms into manageable sections
-- Reducing scrolling on content-heavy pages
-- Progressively disclosing related information
+- Birden fazla soru ve yanıt içeren SSS gösterimi
+- Uzun formları yönetilebilir bölümlere düzenleme
+- İçerik ağırlıklı sayfalarda kaydırmayı azaltma
+- İlgili bilgileri kademeli olarak açıklama
 
-**Avoid accordions when:**
+**Akordeondan kacinin:**
 
-- Building navigation menus (use the [Menu](guide/aria/menu) component instead)
-- Creating tabbed interfaces (use the [Tabs](guide/aria/tabs) component instead)
-- Showing a single collapsible section (use a disclosure pattern instead)
-- Users need to see multiple sections simultaneously (consider a different layout)
+- Navigasyon menüleri oluştururken (bunun yerine [Menu](guide/aria/menu) bileşenini kullanın)
+- Sekmeli arayüzler oluştururken (bunun yerine [Tabs](guide/aria/tabs) bileşenini kullanın)
+- Tek bir daraltılabilir bölüm gösterirken (bunun yerine bir açıklama kalıbı kullanın)
+- Kullanıcıların aynı anda birden fazla bölümü görmesi gerektiğinde (farklı bir yerleşim düşünün)
 
-## Features
+## Özellikler
 
-- **Expansion modes** - Control whether one or multiple panels can be open at the same time
-- **Keyboard navigation** - Navigate between triggers using arrow keys, Home, and End
-- **Lazy rendering** - Content is only created when a panel first expands, improving initial load performance
-- **Disabled states** - Disable the entire group or individual triggers
-- **Focus management** - Control whether disabled items can receive keyboard focus
-- **Programmatic control** - Expand, collapse, or toggle panels from your component code
-- **RTL support** - Automatic support for right-to-left languages
+- **Genişleme modları** - Aynı anda bir veya birden fazla panelin açık olup olmayacağını kontrol edin
+- **Klavye navigasyonu** - Ok tuşları, Home ve End ile tetikleyiciler arasında gezinin
+- **Tembel render** - İçerik yalnızca bir panel ilk kez genişletildiğinde oluşturulur, ilk yükleme performansını iyileştirir
+- **Devre dışı durumlar** - Tüm grubu veya bireysel tetikleyicileri devre dışı bırakın
+- **Odak yönetimi** - Devre dışı bırakılan öğelerin klavye odağı alıp alamayacağını kontrol edin
+- **Programatik kontrol** - Bileşen kodunuzdan panelleri genişletin, daraltın veya değiştirin
+- **RTL desteği** - Sağdan sola diller için otomatik destek
 
-## Examples
+## Örnekler
 
-### Single expansion mode
+### Tekli genişleme modu
 
-Set `[multiExpandable]="false"` to allow only one panel to be open at a time. Opening a new panel automatically closes any previously open panel.
+Aynı anda yalnızca bir panelin açık olmasına izin vermek için `[multiExpandable]="false"` ayarlayın. Yeni bir panel açmak, daha önce açık olan paneli otomatik olarak kapatır.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -74,11 +74,11 @@ Set `[multiExpandable]="false"` to allow only one panel to be open at a time. Op
   </docs-tab>
 </docs-tab-group>
 
-This mode works well for FAQs or situations where you want users to focus on one answer at a time.
+Bu mod, SSS'ler veya kullanıcıların aynı anda bir yanıta odaklanmasını istediğiniz durumlar için iyi çalışır.
 
-### Multiple expansion mode
+### Çoklu genişleme modu
 
-Set `[multiExpandable]="true"` to allow multiple panels to be open simultaneously. Users can expand as many panels as needed without closing others.
+Birden fazla panelin aynı anda açık olmasına izin vermek için `[multiExpandable]="true"` ayarlayın. Kullanıcılar diğerlerini kapatmadan ihtiyaç duyduğu kadar panel genişletebilir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -104,13 +104,13 @@ Set `[multiExpandable]="true"` to allow multiple panels to be open simultaneousl
   </docs-tab>
 </docs-tab-group>
 
-This mode is useful for form sections or when users need to compare content across multiple panels.
+Bu mod, form bölümleri veya kullanıcıların birden fazla panel arasında içeriği karşılaştırması gerektiğinde kullanışlıdır.
 
-NOTE: The `multiExpandable` input defaults to `true`. Set it to `false` explicitly if you want single expansion behavior.
+NOTE: `multiExpandable` girdisi varsayılan olarak `true`'dur. Tek genişleme davranışı istiyorsanız açıkça `false` olarak ayarlayın.
 
-### Disabled accordion items
+### Devre dışı akordeon öğeleri
 
-Disable specific triggers using the `disabled` input. Control how disabled items behave during keyboard navigation using the `softDisabled` input on the accordion group.
+`disabled` girdisini kullanarak belirli tetikleyicileri devre dışı bırakın. Devre dışı bırakılan öğelerin klavye navigasyonu sırasındaki davranışını akordeon grubundaki `softDisabled` girdisi ile kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -136,19 +136,19 @@ Disable specific triggers using the `disabled` input. Control how disabled items
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` (the default), disabled items can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled items are skipped entirely during keyboard navigation.
+`[softDisabled]="true"` olduğunda (varsayılan), devre dışı bırakılan öğeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı bırakılan öğeler klavye navigasyonu sırasında tamamen atlanır.
 
-### Lazy content rendering
+### Tembel içerik render etme
 
-Use the `ngAccordionContent` directive on an `ng-template` to defer rendering content until the panel first expands. This improves performance for accordions with heavy content like images, charts, or complex components.
+Panel ilk kez genişletilene kadar içerik render etmeyi ertelemek için bir `ng-template` üzerinde `ngAccordionContent` yönergesini kullanın. Bu, resimler, grafikler veya karmaşık bileşenler gibi ağır içerikli akordeonlar için performansı iyileştirir.
 
 ```angular-html
 <div ngAccordionGroup>
   <div>
-    <button ngAccordionTrigger panelId="item-1">Trigger Text</button>
-    <div ngAccordionPanel panelId="item-1">
+    <button ngAccordionTrigger [panel]="panel1">Trigger Text</button>
+    <div ngAccordionPanel #panel1="ngAccordionPanel">
       <ng-template ngAccordionContent>
-        <!-- This content only renders when the panel first opens -->
+        <!-- Bu içerik yalnızca panel ilk açıldığında render edilir -->
         <img src="large-image.jpg" alt="Description" />
         <app-expensive-component />
       </ng-template>
@@ -157,93 +157,141 @@ Use the `ngAccordionContent` directive on an `ng-template` to defer rendering co
 </div>
 ```
 
-By default, content remains in the DOM after the panel collapses. Set `[preserveContent]="false"` to remove the content from the DOM when the panel closes.
+Varsayılan olarak, panel daraltıldıktan sonra içerik DOM'da kalır. Panel kapatıldığında içeriği DOM'dan kaldırmak için `[preserveContent]="false"` ayarlayın.
 
-## APIs
+## Test etme
+
+Angular Aria, akordeon bileşenlerini test etmek için bileşen harness'leri sağlar.
+İşte harness'lerin bir bileşen testinde nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {AccordionGroupHarness} from '@angular/aria/accordion/testing';
+import {MyAccordionComponent} from './my-accordion'; // Sizin bileşeniniz
+
+describe('MyAccordionComponent', () => {
+  let fixture: ComponentFixture<MyAccordionComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyAccordionComponent],
+    });
+
+    fixture = TestBed.createComponent(MyAccordionComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should allow expanding panels', async () => {
+    // Akordeon grubu harness'ini yükle
+    const group = await loader.getHarness(AccordionGroupHarness);
+
+    // Gruptaki tüm bireysel akordeonları (öğeleri) al
+    const accordions = await group.getAccordions();
+    expect(accordions.length).toBe(3);
+
+    // Başlangıç durumunu doğrula (ilki genişletilmiş, diğerleri daraltılmış)
+    expect(await accordions[0].isExpanded()).toBe(true);
+    expect(await accordions[1].isExpanded()).toBe(false);
+
+    // İkinci paneli genişlet
+    await accordions[1].expand();
+
+    // Güncellenmiş durumu doğrula
+    expect(await accordions[1].isExpanded()).toBe(true);
+    // multiExpandable false ise, ilki artık daraltılmış olmalı
+    expect(await accordions[0].isExpanded()).toBe(false);
+  });
+});
+```
+
+## API'ler
 
 ### AccordionGroup
 
-The container directive that manages keyboard navigation and expansion behavior for a group of accordion items.
+Bir grup akordeon öğesi için klavye navigasyonunu ve genişleme davranışını yöneten kapsayıcı yönerge.
 
-#### Inputs
+#### Girdiler
 
-| Property          | Type      | Default | Description                                                               |
-| ----------------- | --------- | ------- | ------------------------------------------------------------------------- |
-| `disabled`        | `boolean` | `false` | Disables all triggers in the group                                        |
-| `multiExpandable` | `boolean` | `true`  | Whether multiple panels can be expanded simultaneously                    |
-| `softDisabled`    | `boolean` | `true`  | When `true`, disabled items are focusable. When `false`, they are skipped |
-| `wrap`            | `boolean` | `false` | Whether keyboard navigation wraps from last to first item and vice versa  |
+| Property          | Type      | Default | Description                                                                     |
+| ----------------- | --------- | ------- | ------------------------------------------------------------------------------- |
+| `disabled`        | `boolean` | `false` | Gruptaki tüm tetikleyicileri devre dışı bırakır                                 |
+| `multiExpandable` | `boolean` | `true`  | Birden fazla panelin aynı anda genişletilip genişletilemeyeceği                 |
+| `softDisabled`    | `boolean` | `true`  | `true` olduğunda, devre dışı öğelere odaklanılabilir. `false` olduğunda atlanır |
+| `wrap`            | `boolean` | `false` | Klavye navigasyonunun son öğeden ilk öğeye ve tam tersi dönüp dönmeyeceği       |
 
-#### Methods
+#### Yöntemler
 
-| Method        | Parameters | Description                                                      |
-| ------------- | ---------- | ---------------------------------------------------------------- |
-| `expandAll`   | none       | Expands all panels (only works when `multiExpandable` is `true`) |
-| `collapseAll` | none       | Collapses all panels                                             |
+| Method        | Parameters | Description                                                                    |
+| ------------- | ---------- | ------------------------------------------------------------------------------ |
+| `expandAll`   | none       | Tüm panelleri genişletir (yalnızca `multiExpandable` `true` olduğunda çalışır) |
+| `collapseAll` | none       | Tüm panelleri daraltır                                                         |
 
 ### AccordionTrigger
 
-The directive applied to the button element that toggles panel visibility.
+Panel görünürlüğünü değiştiren buton elemanına uygulanan yönerge.
 
-#### Inputs
+#### Girdiler
 
-| Property   | Type      | Default | Description                                                    |
-| ---------- | --------- | ------- | -------------------------------------------------------------- |
-| `id`       | `string`  | auto    | Unique identifier for the trigger                              |
-| `panelId`  | `string`  | —       | **Required.** Must match the `panelId` of the associated panel |
-| `disabled` | `boolean` | `false` | Disables this trigger                                          |
-| `expanded` | `boolean` | `false` | Whether the panel is expanded (supports two-way binding)       |
+| Property   | Type             | Default | Description                                                       |
+| ---------- | ---------------- | ------- | ----------------------------------------------------------------- |
+| `panel`    | `AccordionPanel` | —       | **Zorunlu.** Kontrol edilen akordeon panelinin referansı.         |
+| `id`       | `string`         | auto    | Tetikleyici için benzersiz tanımlayıcı                            |
+| `disabled` | `boolean`        | `false` | Bu tetikleyiciyi devre dışı bırakır                               |
+| `expanded` | `boolean`        | `false` | Panelin genişletilmiş olup olmadığı (iki yönlü bağlama destekler) |
 
-#### Signals
+#### Sinyaller
 
-| Property | Type              | Description                             |
-| -------- | ----------------- | --------------------------------------- |
-| `active` | `Signal<boolean>` | Whether the trigger currently has focus |
+| Property | Type              | Description                                 |
+| -------- | ----------------- | ------------------------------------------- |
+| `active` | `Signal<boolean>` | Tetikleyicinin şu anda odakta olup olmadığı |
 
-#### Methods
+#### Yöntemler
 
-| Method     | Parameters | Description                       |
-| ---------- | ---------- | --------------------------------- |
-| `expand`   | none       | Expands the associated panel      |
-| `collapse` | none       | Collapses the associated panel    |
-| `toggle`   | none       | Toggles the panel expansion state |
+| Method     | Parameters | Description                         |
+| ---------- | ---------- | ----------------------------------- |
+| `expand`   | none       | İlişkili paneli genişletir          |
+| `collapse` | none       | İlişkili paneli daraltır            |
+| `toggle`   | none       | Panel genişleme durumunu değiştirir |
 
 ### AccordionPanel
 
-The directive applied to the element containing the collapsible content.
+Daraltılabilir içeriği içeren elemana uygulanan yönerge.
 
-#### Inputs
+#### Girdiler
 
 | Property          | Type      | Default | Description                                                      |
 | ----------------- | --------- | ------- | ---------------------------------------------------------------- |
-| `id`              | `string`  | auto    | Unique identifier for the panel                                  |
-| `panelId`         | `string`  | —       | **Required.** Must match the `panelId` of the associated trigger |
-| `preserveContent` | `boolean` | `true`  | Whether to keep content in DOM after panel collapses             |
+| `id`              | `string`  | auto    | Panel için benzersiz tanımlayıcı                                 |
+| `preserveContent` | `boolean` | `true`  | Panel daraltıldıktan sonra içeriğin DOM'da tutulup tutulmayacağı |
 
-#### Signals
+#### Sinyaller
 
-| Property  | Type              | Description                             |
-| --------- | ----------------- | --------------------------------------- |
-| `visible` | `Signal<boolean>` | Whether the panel is currently expanded |
+| Property  | Type              | Description                                 |
+| --------- | ----------------- | ------------------------------------------- |
+| `visible` | `Signal<boolean>` | Panelin şu anda genişletilmiş olup olmadığı |
 
-#### Methods
+#### Yöntemler
 
-| Method     | Parameters | Description                 |
-| ---------- | ---------- | --------------------------- |
-| `expand`   | none       | Expands this panel          |
-| `collapse` | none       | Collapses this panel        |
-| `toggle`   | none       | Toggles the expansion state |
+| Method     | Parameters | Description                   |
+| ---------- | ---------- | ----------------------------- |
+| `expand`   | none       | Bu paneli genişletir          |
+| `collapse` | none       | Bu paneli daraltır            |
+| `toggle`   | none       | Genişleme durumunu değiştirir |
 
 ### AccordionContent
 
-The structural directive applied to an `ng-template` inside an accordion panel to enable lazy rendering.
+Tembel render etmeyi etkinleştirmek için akordeon paneli içindeki `ng-template`'e uygulanan yapısal yönerge.
 
-This directive has no inputs, outputs, or methods. Apply it to an `ng-template` element:
+Bu yönergenin girdisi, çıktısı veya yöntemi yoktur. Bir `ng-template` elemanına uygulayın:
 
 ```angular-html
-<div ngAccordionPanel panelId="item-1">
+<div ngAccordionPanel #panel1="ngAccordionPanel">
   <ng-template ngAccordionContent>
-    <!-- Content here is lazily rendered -->
+    <!-- Buradaki içerik tembel olarak render edilir -->
   </ng-template>
 </div>
 ```

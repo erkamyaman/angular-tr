@@ -43,7 +43,7 @@ export function HeaderApi(props: {
           </div>
           {statusTag(entry)}
           {entry.entryType === EntryType.Pipe && !(entry as PipeEntry).isPure && (
-            <div className={`${HEADER_ENTRY_LABEL} type-impure-pipe full`}>Impure</div>
+            <div className={`${HEADER_ENTRY_LABEL} type-impure-pipe full`}>Saf Olmayan</div>
           )}
         </div>
         {sourceUrl && (
@@ -51,8 +51,8 @@ export function HeaderApi(props: {
             class="docs-github-links"
             target="_blank"
             href={sourceUrl}
-            title="View source"
-            aria-label="View source"
+            title="Kaynağı görüntüle"
+            aria-label="Kaynağı görüntüle"
           >
             <i role="presentation" aria-hidden="true" class="material-symbols-outlined">
               code
@@ -83,20 +83,20 @@ function statusTag(entry: DocEntryRenderable) {
   if (entry.deprecated) {
     tag = (
       <div className={`${HEADER_ENTRY_LABEL} type-stable full`}>
-        {tagInVersionString('deprecated', entry.deprecated)}
+        {tagInVersionString('kullanımdan kaldırılmış', entry.deprecated)}
       </div>
     );
   } else if (entry.stable) {
     tag = (
       <div className={`${HEADER_ENTRY_LABEL} type-stable full`}>
-        {tagInVersionString('stable', entry.stable)}
+        {tagInVersionString('kararlı', entry.stable)}
       </div>
     );
   } else if (entry.developerPreview) {
     tag = (
       <div className={`${HEADER_ENTRY_LABEL} type-developer_preview full`}>
         <a href="/reference/releases#developer-preview">
-          {tagInVersionString('developer preview', entry.developerPreview)}
+          {tagInVersionString('geliştirici önizlemesi', entry.developerPreview)}
         </a>
       </div>
     );
@@ -104,7 +104,7 @@ function statusTag(entry: DocEntryRenderable) {
     tag = (
       <div className={`${HEADER_ENTRY_LABEL} type-experimental full`}>
         <a href="/reference/releases#experimental">
-          {tagInVersionString('experimental', entry.experimental)}
+          {tagInVersionString('deneysel', entry.experimental)}
         </a>
       </div>
     );
@@ -118,7 +118,7 @@ function tagInVersionString(label: string, tag: {version: string | undefined} | 
     return (
       <>
         <span className="status-label">{label}</span>
-        <span className="status-version">since v{tag.version}</span>
+        <span className="status-version">v{tag.version}'den beri</span>
       </>
     );
   }
@@ -131,11 +131,11 @@ function getEntryTypeDisplayName(entryType: EntryType | string): string {
     case EntryType.NgModule:
       return 'NgModule';
     case EntryType.TypeAlias:
-      return 'Type Alias';
+      return 'Tür Takma Adı';
     case EntryType.UndecoratedClass:
-      return 'Class';
+      return 'Sınıf';
     case EntryType.InitializerApiFunction:
-      return 'Initializer API';
+      return 'Başlatıcı API';
   }
   return entryType;
 }

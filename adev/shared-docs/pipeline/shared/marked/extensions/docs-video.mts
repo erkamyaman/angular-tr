@@ -62,7 +62,7 @@ export const docsVideoExtension = {
       allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
       credentialless
-      title="Video player"
+      title="Video oynatıcı"
       ></iframe>
     </div>
     `;

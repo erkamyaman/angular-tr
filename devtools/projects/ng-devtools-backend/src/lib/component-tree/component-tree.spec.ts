@@ -6,14 +6,19 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {Injector, ɵGlobalDevModeUtils} from '@angular/core';
+import {
+  Injector,
+  ɵExternalCoreGlobalUtils,
+  ɵProviderRecord as ProviderRecord,
+  InjectionToken,
+} from '@angular/core';
 import {
   getInjectorFromElementNode,
   getRootElements,
   serializeProviderRecord,
 } from './component-tree';
 
-type Ng = ɵGlobalDevModeUtils['ng'];
+type Ng = ɵExternalCoreGlobalUtils;
 const NG_VERSION = 'ng-version';
 const VERSION = '0.0.0-PLACEHOLDER';
 
@@ -59,7 +64,13 @@ describe('component-tree', () => {
   describe('getRootElements', () => {
     beforeEach(() => {
       const ng: Partial<Ng> = {
-        getComponent: jasmine.createSpy('getComponent').and.returnValue({}),
+        getComponent: jasmine.createSpy('getComponent').and.callFake((element: HTMLElement) => {
+          // Will treat only `ng-*` elements as Angular components.
+          if (element.tagName.toLowerCase().startsWith('ng-')) {
+            return element;
+          }
+          return null;
+        }),
       };
       (window as any).ng = ng;
     });
@@ -105,6 +116,21 @@ describe('component-tree', () => {
       expect(roots.length).toEqual(1);
       expect(roots).toContain(document.body);
     });
+
+    it('should return all root elements with all non-application root components', () => {
+      const rootElement = createRoot();
+      const childElement = createRoot();
+      const nonAppRootCmp = document.createElement('ng-cmp');
+
+      rootElement.appendChild(childElement);
+      document.body.appendChild(rootElement);
+      document.body.appendChild(nonAppRootCmp);
+
+      const roots = getRootElements();
+
+      expect(roots.length).toEqual(2);
+      expect(roots).toEqual([rootElement, nonAppRootCmp]);
+    });
   });
 
   describe('serializeProviderRecord', () => {
@@ -143,6 +169,18 @@ describe('component-tree', () => {
       const result = serializeProviderRecord(providerRecord, 0);
       expect(result.type).toBe('type');
       expect(result.token).toBe('MyCustomService');
+    });
+
+    it('should handle injection tokens', () => {
+      const result = serializeProviderRecord(
+        {
+          token: new InjectionToken('FOO'),
+          isViewProvider: false,
+        } as ProviderRecord,
+        0,
+      );
+
+      expect(result.token).toBe('InjectionToken (FOO)');
     });
   });
 });

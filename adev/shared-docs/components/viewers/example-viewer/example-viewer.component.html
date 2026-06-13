@@ -20,13 +20,13 @@
         class="docs-example-code-toggle"
         [class.docs-example-code-toggle__show]="!showCode()"
         [attr.aria-checked]="showCode()"
-        [attr.aria-label]="showCode() ? 'Hide code' : 'Show code'"
+        [attr.aria-label]="showCode() ? 'Kodu gizle' : 'Kodu göster'"
         (click)="showCode.set(!showCode())"
-        [matTooltip]="showCode() ? 'Hide code' : 'Show code'"
+        [matTooltip]="showCode() ? 'Kodu gizle' : 'Kodu göster'"
         matTooltipPosition="above"
       >
         @if (!showCode()) {
-          <span class="docs-example-show-code"><docs-icon>code</docs-icon> Show Code</span>
+          <span class="docs-example-show-code"><docs-icon>code</docs-icon> Kodu Göster</span>
         } @else {
           <docs-icon>code_off</docs-icon>
         }
@@ -34,9 +34,9 @@
       <button
         type="button"
         class="docs-example-copy-link"
-        [attr.aria-label]="'Copy link to ' + exampleMetadata()?.title + ' example to the clipboard'"
+        [attr.aria-label]="exampleMetadata()?.title + ' örneğinin bağlantısını panoya kopyala'"
         (click)="copyLink()"
-        matTooltip="Copy link to example"
+        matTooltip="Örnek bağlantısını kopyala"
         matTooltipPosition="above"
       >
         <i aria-hidden="true">
@@ -61,8 +61,8 @@
         <button
           type="button"
           (click)="toggleExampleVisibility()"
-          [attr.aria-label]="(expanded() ? 'Collapse' : 'Expand') + ' code example'"
-          matTooltip="{{ expanded() ? 'Collapse' : 'Expand' }} example"
+          [attr.aria-label]="(expanded() ? 'Daralt' : 'Genişlet') + ' kod örneği'"
+          matTooltip="{{ expanded() ? 'Daralt' : 'Genişlet' }}"
           matTooltipPosition="above"
         >
           <i aria-hidden="true">
@@ -120,8 +120,8 @@
           [href]="githubUrl()"
           target="_blank"
           class="docs-example-github-link"
-          aria-label="Open example on GitHub"
-          matTooltip="Open example on GitHub"
+          aria-label="Örneği GitHub'da aç"
+          matTooltip="Örneği GitHub'da aç"
           matTooltipPosition="above"
         >
           <i aria-hidden="true">
@@ -148,8 +148,8 @@
           [href]="stackblitzUrl()"
           target="_blank"
           class="docs-example-stackblitz-link"
-          aria-label="Edit example in StackBlitz"
-          matTooltip="Edit example in StackBlitz"
+          aria-label="Örneği StackBlitz'de düzenle"
+          matTooltip="Örneği StackBlitz'de düzenle"
           matTooltipPosition="above"
         >
           <i aria-hidden="true">

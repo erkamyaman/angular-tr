@@ -1,9 +1,8 @@
-# Content projection with ng-content
+# ng-content ile içerik yansıtma
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-You often need to create components that act as containers for different types of content. For
-example, you may want to create a custom card component:
+Farklı içerik türleri için kapsayıcı görevi gören bileşenlere sıklıkla ihtiyaç duyarsınız. Örneğin, özel bir kart bileşeni oluşturmak isteyebilirsiniz:
 
 ```angular-ts
 @Component({
@@ -15,7 +14,7 @@ export class CustomCard {
 }
 ```
 
-**You can use the `<ng-content>` element as a placeholder to mark where content should go**:
+**İçeriğin nereye yerleştirileceğini belirtmek için `<ng-content>` elemanını yer tutucu olarak kullanabilirsiniz**:
 
 ```angular-ts
 @Component({
@@ -27,15 +26,12 @@ export class CustomCard {
 }
 ```
 
-TIP: `<ng-content>` works similarly
-to [the native `<slot>` element](https://developer.mozilla.org/docs/Web/HTML/Element/slot),
-but with some Angular-specific functionality.
+TIP: `<ng-content>`, [yerel `<slot>` elemanı](https://developer.mozilla.org/docs/Web/HTML/Element/slot) ile benzer şekilde çalışır, ancak bazı Angular'a özgü işlevselliklerle birlikte.
 
-When you use a component with `<ng-content>`, any children of the component host element are
-rendered, or **projected**, at the location of that `<ng-content>`:
+`<ng-content>` içeren bir bileşen kullandığınızda, bileşen host elemanının tüm alt elemanları o `<ng-content>` konumunda render edilir veya **yansıtılır** (project):
 
 ```angular-ts
-// Component source
+// Bileşen kaynağı
 @Component({
   selector: 'custom-card',
   template: `
@@ -50,14 +46,14 @@ export class CustomCard {
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <p>This is the projected content</p>
 </custom-card>
 ```
 
 ```angular-html
-<!-- The rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <p>This is the projected content</p>
@@ -65,25 +61,15 @@ export class CustomCard {
 </custom-card>
 ```
 
-Angular refers to any children of a component passed this way as that component's **content**. This
-is distinct from the component's **view**, which refers to the elements defined in the component's
-template.
+Angular, bu şekilde iletilen bir bileşenin tüm alt elemanlarını o bileşenin **içeriği** olarak adlandırır. Bu, bileşenin şablonunda tanımlanan elemanlara karşılık gelen bileşenin **görünümü**nden (view) farklıdır.
 
-**The `<ng-content>` element is neither a component nor DOM element**. Instead, it is a special
-placeholder that tells Angular where to render content. Angular's compiler processes
-all `<ng-content>` elements at build-time. You cannot insert, remove, or modify `<ng-content>` at
-run time. You cannot add directives, styles, or arbitrary attributes to `<ng-content>`.
+**`<ng-content>` elemanı ne bir bileşen ne de bir DOM elemanıdır**. Bunun yerine, Angular'a içeriği nerede render edeceğini söyleyen özel bir yer tutucudur. Angular'ın derleyicisi tüm `<ng-content>` elemanlarını derleme zamanında işler. `<ng-content>` elemanını çalışma zamanında ekleyemez, kaldıramazsınız veya değiştiremezsiniz. `<ng-content>` üzerine direktifler, stiller veya rastgele nitelikler ekleyemezsiniz.
 
-IMPORTANT: You should not conditionally include `<ng-content>` with `@if`, `@for`, or `@switch`. Angular always
-instantiates and creates DOM nodes for content rendered to a `<ng-content>` placeholder, even if
-that `<ng-content>` placeholder is hidden. For conditional rendering of component content,
-see [Template fragments](api/core/ng-template).
+IMPORTANT: `<ng-content>` elemanını `@if`, `@for` veya `@switch` ile koşullu olarak dahil etmemelisiniz. Angular, `<ng-content>` yer tutucusu gizli olsa bile, o yer tutucuya render edilen içerik için her zaman DOM düğümlerini oluşturur ve başlatır. Bileşen içeriğinin koşullu render edilmesi için [Şablon parçaları](api/core/ng-template) belgesine bakın.
 
-## Multiple content placeholders
+## Birden fazla içerik yer tutucusu
 
-Angular supports projecting multiple different elements into different `<ng-content>` placeholders
-based on CSS selector. Expanding the card example from above, you could create two placeholders for
-a card title and a card body by using the `select` attribute:
+Angular, CSS seçicisine dayalı olarak farklı `<ng-content>` yer tutucularına farklı elemanların yansıtılmasını destekler. Yukarıdaki kart örneğini genişleterek, `select` niteliği kullanarak kart başlığı ve kart gövdesi için iki yer tutucu oluşturabilirsiniz:
 
 ```angular-ts
 @Component({
@@ -100,7 +86,7 @@ export class CardBody {}
 ```
 
 ```angular-ts
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 @Component({
   selector: 'custom-card',
   template: `
@@ -115,7 +101,7 @@ export class CustomCard {}
 ```
 
 ```angular-ts
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 @Component({
   selector: 'app-root',
   imports: [CustomCard, CardTitle, CardBody],
@@ -130,7 +116,7 @@ export class App {}
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -140,25 +126,22 @@ export class App {}
 </custom-card>
 ```
 
-The `<ng-content>` placeholder supports the same CSS selectors
-as [component selectors](guide/components/selectors).
+`<ng-content>` yer tutucusu, [bileşen seçicileri](guide/components/selectors) ile aynı CSS seçicilerini destekler.
 
-If you include one or more `<ng-content>` placeholders with a `select` attribute and
-one `<ng-content>` placeholder without a `select` attribute, the latter captures all elements that
-did not match a `select` attribute:
+`select` niteliği olan bir veya daha fazla `<ng-content>` yer tutucusu ve `select` niteliği olmayan bir `<ng-content>` yer tutucusu eklerseniz, ikincisi herhangi bir `select` niteliği ile eşleşmeyen tüm elemanları yakalar:
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title"></ng-content>
   <div class="card-divider"></div>
-  <!-- capture anything except "card-title" -->
+  <!-- "card-title" dışındaki her şeyi yakala -->
   <ng-content></ng-content>
 </div>
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <card-title>Hello</card-title>
   <img src="..." />
@@ -167,7 +150,7 @@ did not match a `select` attribute:
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -178,15 +161,14 @@ did not match a `select` attribute:
 </custom-card>
 ```
 
-If a component does not include an `<ng-content>` placeholder without a `select` attribute, any
-elements that don't match one of the component's placeholders do not render into the DOM.
+Bir bileşen, `select` niteliği olmayan bir `<ng-content>` yer tutucusu içermiyorsa, bileşenin yer tutucularıyla eşleşmeyen elemanlar DOM'a render edilmez.
 
-## Fallback content
+## Yedek içerik
 
-Angular can show _fallback content_ for a component's `<ng-content>` placeholder if that component doesn't have any matching child content. You can specify fallback content by adding child content to the `<ng-content>` element itself.
+Angular, bir bileşenin `<ng-content>` yer tutucusu için eşleşen alt içerik yoksa _yedek içerik_ gösterebilir. `<ng-content>` elemanının kendisine alt içerik ekleyerek yedek içerik belirtebilirsiniz.
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title">Default Title</ng-content>
   <div class="card-divider"></div>
@@ -195,15 +177,15 @@ Angular can show _fallback content_ for a component's `<ng-content>` placeholder
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <card-title>Hello</card-title>
-  <!-- No card-body provided -->
+  <!-- card-body sağlanmadı -->
 </custom-card>
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <card-title>Hello</card-title>
@@ -213,14 +195,12 @@ Angular can show _fallback content_ for a component's `<ng-content>` placeholder
 </custom-card>
 ```
 
-## Aliasing content for projection
+## Yansıtma için içerik takma adı verme
 
-Angular supports a special attribute, `ngProjectAs`, that allows you to specify a CSS selector on
-any element. Whenever an element with `ngProjectAs` is checked against an `<ng-content>`
-placeholder, Angular compares against the `ngProjectAs` value instead of the element's identity:
+Angular, herhangi bir eleman üzerinde bir CSS seçici belirtmenize olanak tanıyan özel bir `ngProjectAs` niteliği destekler. `ngProjectAs` niteliği olan bir eleman `<ng-content>` yer tutucusuyla kontrol edildiğinde, Angular elemanın kimliği yerine `ngProjectAs` değerini karşılaştırır:
 
 ```angular-html
-<!-- Component template -->
+<!-- Bileşen şablonu -->
 <div class="card-shadow">
   <ng-content select="card-title"></ng-content>
   <div class="card-divider"></div>
@@ -229,7 +209,7 @@ placeholder, Angular compares against the `ngProjectAs` value instead of the ele
 ```
 
 ```angular-html
-<!-- Using the component -->
+<!-- Bileşeni kullanma -->
 <custom-card>
   <h3 ngProjectAs="card-title">Hello</h3>
 
@@ -238,7 +218,7 @@ placeholder, Angular compares against the `ngProjectAs` value instead of the ele
 ```
 
 ```angular-html
-<!-- Rendered DOM -->
+<!-- Render edilmiş DOM -->
 <custom-card>
   <div class="card-shadow">
     <h3>Hello</h3>
@@ -248,4 +228,30 @@ placeholder, Angular compares against the `ngProjectAs` value instead of the ele
 </custom-card>
 ```
 
-`ngProjectAs` supports only static values and cannot be bound to dynamic expressions.
+`ngProjectAs` yalnızca statik değerleri destekler ve dinamik ifadelere bağlanamaz.
+
+## Dikkat edilmesi gerekenler
+
+### Projeksiyonlanan içerik, üst bileşenin görünümünde yaşar
+
+Projeksiyonlanan içerik, alıcı bileşenin içinde _render edilse_ de, onu bildiren bileşene aittir. Angular onu üst bileşenin görünümünün bir parçası olarak izler ve bunun bilinmesi gereken birkaç yan etkisi vardır.
+
+**Değişiklik algılama:** Projeksiyonlanan içerik, _üst_ bileşen değişiklik algılaması çalıştırdığında kontrol edilir. Alıcı bileşen `OnPush` kullanıyorsa, Angular o bileşenin kendi şablonunu kontrol etmeyi atlayabilir, ancak projeksiyonlanan içeriği atlamaz çünkü o içerik üst bileşene aittir.
+
+```angular-html
+<!-- Üst şablon (varsayılan değişiklik algılama) -->
+<onpush-wrapper>
+  <!-- Her üst döngüde hâlâ kontrol edilir, OnPush burada yardımcı olmaz -->
+  <expensive-component />
+</onpush-wrapper>
+```
+
+**Bağımlılık enjeksiyonu:** Projeksiyonlanan içerik bağımlılıklarını, alıcı bileşenin `viewProviders`'ından değil, üst bileşenin enjektöründen alır. Ayrıntılar için [Providers ve viewProviders](guide/di/hierarchical-dependency-injection) belgesine bakın.
+
+### Bazı kütüphane bileşenleri projeksiyonlanan alt elemanları desteklemez
+
+Bazı bileşenler (menüler, sekmeler, listeler) alt elemanlarını bulmak ve klavye navigasyonu, odak yönetimi veya ARIA öznitelikleri gibi davranışları kurmak için `ContentChildren` kullanır. Bu bileşenler, alt elemanlarına doğrudan sahip olduklarını varsayarak yazılmıştır, bu nedenle içlerine dışarıdan içerik projeksiyonlamak genellikle işleri ince yollarla bozar.
+
+Örneğin, `<mat-menu-item>` elemanlarını ekstra bir katmanla sarıp `<mat-menu>` içine projeksiyonlamak, klavye navigasyonunu ve ekran okuyucu desteğini sessizce bozabilir. Sorgu, elemanları yine de bulur, ancak elemanlar farklı bir görünüm bağlamından geldiğinde, onları etkileşimli kılan iç kurulum doğru çalışmayabilir.
+
+Bir kütüphane bileşeni alt elemanlarının davranışını yönetiyorsa, içerik projeksiyonuna başvurmadan önce belgelerini kontrol edin, desteklenmiyor olabilir.

@@ -4,6 +4,7 @@
 
 ```ts
 
+import * as _angular_core from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -132,9 +133,13 @@ export class ApplicationModule {
 export class ApplicationRef {
     constructor();
     attachView(viewRef: ViewRef): void;
-    bootstrap<C>(component: Type<C>, rootSelectorOrNode?: string | any): ComponentRef<C>;
-    // @deprecated
-    bootstrap<C>(componentFactory: ComponentFactory<C>, rootSelectorOrNode?: string | any): ComponentRef<C>;
+    bootstrap<C>(component: Type<C>, options?: {
+        hostElement?: Element | string;
+        directives?: (Type<unknown> | DirectiveWithBindings<unknown>)[];
+        bindings?: Binding[];
+    }): ComponentRef<C>;
+    // (undocumented)
+    bootstrap<C>(component: Type<C>, hostElement?: Element | string): ComponentRef<C>;
     readonly components: ComponentRef<any>[];
     readonly componentTypes: Type<any>[];
     destroy(): void;
@@ -184,6 +189,7 @@ export interface AttributeDecorator {
 export interface BaseResourceOptions<T, R> {
     defaultValue?: NoInfer<T>;
     equal?: ValueEqualityFn<T>;
+    id?: string;
     injector?: Injector;
     params?: (ctx: ResourceParamsContext) => R;
 }
@@ -217,8 +223,6 @@ export enum ChangeDetectionStrategy {
 
 // @public
 export abstract class ChangeDetectorRef {
-    // @deprecated
-    abstract checkNoChanges(): void;
     abstract detach(): void;
     abstract detectChanges(): void;
     abstract markForCheck(): void;
@@ -240,8 +244,6 @@ export interface ClassSansProvider {
 export class Compiler {
     clearCache(): void;
     clearCacheFor(type: Type<any>): void;
-    compileModuleAndAllComponentsAsync<T>(moduleType: Type<T>): Promise<ModuleWithComponentFactories<T>>;
-    compileModuleAndAllComponentsSync<T>(moduleType: Type<T>): ModuleWithComponentFactories<T>;
     compileModuleAsync<T>(moduleType: Type<T>): Promise<NgModuleFactory<T>>;
     compileModuleSync<T>(moduleType: Type<T>): NgModuleFactory<T>;
     getModuleId(moduleType: Type<any>): string | undefined;
@@ -292,31 +294,6 @@ export const Component: ComponentDecorator;
 export interface ComponentDecorator {
     (obj: Component): TypeDecorator;
     new (obj: Component): Component;
-}
-
-// @public @deprecated
-export abstract class ComponentFactory<C> {
-    abstract get componentType(): Type<any>;
-    abstract create(injector: Injector, projectableNodes?: any[][], rootSelectorOrNode?: string | any, environmentInjector?: EnvironmentInjector | NgModuleRef<any>, directives?: (Type<unknown> | DirectiveWithBindings<unknown>)[], bindings?: Binding[]): ComponentRef<C>;
-    abstract get inputs(): {
-        propName: string;
-        templateName: string;
-        transform?: (value: any) => any;
-        isSignal: boolean;
-    }[];
-    abstract get ngContentSelectors(): string[];
-    abstract get outputs(): {
-        propName: string;
-        templateName: string;
-    }[];
-    abstract get selector(): string;
-}
-
-// @public @deprecated
-export abstract class ComponentFactoryResolver {
-    // (undocumented)
-    static NULL: ComponentFactoryResolver;
-    abstract resolveComponentFactory<T>(component: Type<T>): ComponentFactory<T>;
 }
 
 // @public
@@ -499,6 +476,18 @@ export const CSP_NONCE: InjectionToken<string | null>;
 // @public
 export const CUSTOM_ELEMENTS_SCHEMA: SchemaMetadata;
 
+// @public
+export function debounced<T>(source: () => T, wait: NoInfer<DebounceTimer<T>>, options?: NoInfer<DebouncedOptions<T>>): Resource<T>;
+
+// @public
+export interface DebouncedOptions<T> {
+    equal?: ValueEqualityFn<T>;
+    injector?: Injector;
+}
+
+// @public
+export type DebounceTimer<T> = number | ((value: T, lastValue: ResourceSnapshot<T>) => Promise<void> | void);
+
 // @public (undocumented)
 export class DebugElement extends DebugNode {
     constructor(nativeNode: Element);
@@ -552,7 +541,15 @@ export class DebugNode {
 }
 
 // @public
+export function declareExperimentalWebMcpTool<const InputSchema extends JsonSchemaForInference>(tool: WebMcpToolDescriptor<InputSchema>, injector?: Injector): void;
+
+// @public
 export const DEFAULT_CURRENCY_CODE: InjectionToken<string>;
+
+// @public
+export interface DefaultExport<T> {
+    default: T;
+}
 
 // @public @deprecated (undocumented)
 export class DefaultIterableDiffer<V> implements IterableDiffer<V>, IterableChanges<V> {
@@ -920,6 +917,17 @@ export interface InjectableType<T> extends Type<T> {
 }
 
 // @public
+export function injectAsync<T>(loader: () => Promise<ProviderToken<T>>, options?: InjectAsyncOptions): () => Promise<T>;
+
+// @public (undocumented)
+export function injectAsync<T>(loader: () => Promise<DefaultExport<ProviderToken<T>>>, options?: InjectAsyncOptions): () => Promise<T>;
+
+// @public
+export interface InjectAsyncOptions {
+    prefetch?: PrefetchTrigger;
+}
+
+// @public
 export interface InjectDecorator {
     (token: string): any;
     (token: any): any;
@@ -980,7 +988,7 @@ export abstract class Injector {
     // (undocumented)
     static THROW_IF_NOT_FOUND: {};
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<Injector>;
 }
 
 // @public
@@ -1021,6 +1029,8 @@ export interface InputFunction {
     <T>(initialValue: undefined, opts: InputOptionsWithoutTransform<T>): InputSignal<T | undefined>;
     <T, TransformT>(initialValue: T, opts: InputOptionsWithTransform<T, TransformT>): InputSignalWithTransform<T, TransformT>;
     <T, TransformT>(initialValue: undefined, opts: InputOptionsWithTransform<T | undefined, TransformT>): InputSignalWithTransform<T | undefined, TransformT>;
+    <T>(initialValue: T, opts: InputOptionsWithTransform<T, unknown>): InputSignalWithTransform<T, T>;
+    <T>(initialValue: undefined, opts: InputOptionsWithTransform<T | undefined, unknown>): InputSignalWithTransform<T | undefined, T | undefined>;
     required: {
         <T>(opts?: InputOptionsWithoutTransform<T>): InputSignal<T>;
         <T, TransformT>(opts: InputOptionsWithTransform<T, TransformT>): InputSignalWithTransform<T, TransformT>;
@@ -1109,7 +1119,7 @@ export class IterableDiffers {
     // (undocumented)
     find(iterable: any): IterableDifferFactory;
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<IterableDiffers>;
 }
 
 // @public
@@ -1146,18 +1156,19 @@ export interface KeyValueDifferFactory {
 export class KeyValueDiffers {
     constructor(factories: KeyValueDifferFactory[]);
     // (undocumented)
-    static create<S>(factories: KeyValueDifferFactory[], parent?: KeyValueDiffers): KeyValueDiffers;
-    static extend<S>(factories: KeyValueDifferFactory[]): StaticProvider;
+    static create(factories: KeyValueDifferFactory[], parent?: KeyValueDiffers): KeyValueDiffers;
+    static extend(factories: KeyValueDifferFactory[]): StaticProvider;
     // (undocumented)
     find(kv: any): KeyValueDifferFactory;
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<KeyValueDiffers>;
 }
 
 // @public
 export function linkedSignal<D>(computation: () => D, options?: {
     equal?: ValueEqualityFn<NoInfer<D>>;
     debugName?: string;
+    set?: (value: NoInfer<D>, rawSet: (value: NoInfer<D>) => void) => void;
 }): WritableSignal<D>;
 
 // @public
@@ -1169,6 +1180,7 @@ export function linkedSignal<S, D>(options: {
     }) => D;
     equal?: ValueEqualityFn<NoInfer<D>>;
     debugName?: string;
+    set?: (value: NoInfer<D>, rawSet: (value: NoInfer<D>) => void) => void;
 }): WritableSignal<D>;
 
 // @public
@@ -1231,15 +1243,6 @@ export interface ModelSignal<T> extends WritableSignal<T>, InputSignal<T>, Outpu
     [SIGNAL]: InputSignalNode<T, T>;
 }
 
-// @public @deprecated
-export class ModuleWithComponentFactories<T> {
-    constructor(ngModuleFactory: NgModuleFactory<T>, componentFactories: ComponentFactory<any>[]);
-    // (undocumented)
-    componentFactories: ComponentFactory<any>[];
-    // (undocumented)
-    ngModuleFactory: NgModuleFactory<T>;
-}
-
 // @public
 export interface ModuleWithProviders<T> {
     // (undocumented)
@@ -1283,8 +1286,6 @@ export abstract class NgModuleFactory<T> {
 
 // @public
 export abstract class NgModuleRef<T> {
-    // @deprecated
-    abstract get componentFactoryResolver(): ComponentFactoryResolver;
     abstract destroy(): void;
     abstract get injector(): EnvironmentInjector;
     abstract get instance(): T;
@@ -1337,6 +1338,11 @@ export interface OnChanges {
 export interface OnDestroy {
     ngOnDestroy(): void;
 }
+
+// @public
+export function onIdle(options?: {
+    timeout?: number;
+}): Promise<void>;
 
 // @public
 export interface OnInit {
@@ -1408,7 +1414,7 @@ export class PendingTasks {
     add(): () => void;
     run(fn: () => Promise<unknown>): void;
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<PendingTasks>;
 }
 
 // @public
@@ -1467,6 +1473,9 @@ export class PlatformRef {
 export type Predicate<T> = (value: T) => boolean;
 
 // @public
+export type PrefetchTrigger = () => Promise<void>;
+
+// @public
 export interface PromiseResourceOptions<T, R> extends BaseResourceOptions<T, R> {
     loader: ResourceLoader<T, R>;
     stream?: never;
@@ -1491,6 +1500,9 @@ export function provideCheckNoChangesConfig(options: {
 
 // @public
 export function provideEnvironmentInitializer(initializerFn: () => void): EnvironmentProviders;
+
+// @public
+export function provideExperimentalWebMcpTools<const InputSchema extends JsonSchemaForInference>(tools: WebMcpToolDescriptor<InputSchema>[]): EnvironmentProviders;
 
 // @public
 export function provideIdleServiceWith(useExisting: AbstractType<IdleService> | InjectionToken<IdleService>): EnvironmentProviders;
@@ -1678,7 +1690,7 @@ export interface ResourceLoaderParams<R> {
     };
 }
 
-// @public (undocumented)
+// @public
 export type ResourceOptions<T, R> = (PromiseResourceOptions<T, R> | StreamingResourceOptions<T, R>) & {
     debugName?: string;
 };
@@ -1722,9 +1734,9 @@ export type ResourceSnapshot<T> = {
 export type ResourceStatus = 'idle' | 'error' | 'loading' | 'reloading' | 'resolved' | 'local';
 
 // @public
-export type ResourceStreamingLoader<T, R> = (param: ResourceLoaderParams<R>) => PromiseLike<Signal<ResourceStreamItem<T>>>;
+export type ResourceStreamingLoader<T, R> = (param: ResourceLoaderParams<R>) => Signal<ResourceStreamItem<T>> | PromiseLike<Signal<ResourceStreamItem<T>>> | undefined;
 
-// @public (undocumented)
+// @public
 export type ResourceStreamItem<T> = {
     value: T;
 } | {
@@ -1748,7 +1760,7 @@ export abstract class Sanitizer {
     // (undocumented)
     abstract sanitize(context: SecurityContext, value: {} | string | null): string | null;
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<null>;
 }
 
 // @public
@@ -1759,6 +1771,8 @@ export interface SchemaMetadata {
 
 // @public
 export enum SecurityContext {
+    // (undocumented)
+    ATTRIBUTE_NO_BINDING = 6,
     // (undocumented)
     HTML = 1,
     // (undocumented)
@@ -1785,6 +1799,30 @@ export interface SelfDecorator {
     (): any;
     // (undocumented)
     new (): Self;
+}
+
+// @public
+export interface Service {
+    autoProvided?: boolean;
+    factory?: () => unknown;
+}
+
+// @public
+export const Service: ServiceDecorator;
+
+// @public
+export interface ServiceDecorator {
+    (): TypeDecorator;
+    (options: {
+        autoProvided: false;
+    }): TypeDecorator;
+    <T>(options: {
+        autoProvided?: true;
+        factory: () => T;
+    }): <C extends Type<unknown> | AbstractType<unknown>>(target: C) => C extends Type<unknown> ? Type<T> : abstract new (...args: any[]) => T;
+    (options?: {
+        autoProvided?: true;
+    }): TypeDecorator;
 }
 
 // @public
@@ -1909,7 +1947,7 @@ export class TransferState {
     set<T>(key: StateKey<T>, value: T): void;
     toJson(): string;
     // (undocumented)
-    static ɵprov: unknown;
+    static ɵprov: _angular_core.ɵɵInjectableDeclaration<TransferState>;
 }
 
 // @public
@@ -2061,8 +2099,6 @@ export abstract class ViewContainerRef {
         directives?: (Type<unknown> | DirectiveWithBindings<unknown>)[];
         bindings?: Binding[];
     }): ComponentRef<C>;
-    // @deprecated
-    abstract createComponent<C>(componentFactory: ComponentFactory<C>, index?: number, injector?: Injector, projectableNodes?: any[][], environmentInjector?: EnvironmentInjector | NgModuleRef<any>, directives?: (Type<unknown> | DirectiveWithBindings<unknown>)[], bindings?: Binding[]): ComponentRef<C>;
     abstract createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C, options?: {
         index?: number;
         injector?: Injector;
@@ -2095,6 +2131,22 @@ export abstract class ViewRef extends ChangeDetectorRef {
     abstract get destroyed(): boolean;
     abstract onDestroy(callback: Function): void;
 }
+
+// @public
+export interface WebMcpClient {
+    signal: AbortSignal;
+}
+
+// @public
+export interface WebMcpToolDescriptor<InputSchema extends JsonSchemaForInference> {
+    description: string;
+    execute: WebMcpToolExecute<InputSchema>;
+    inputSchema: InputSchema;
+    name: string;
+}
+
+// @public
+export type WebMcpToolExecute<InputSchema extends JsonSchemaForInference> = (args: InferArgsFromInputSchema<InputSchema>, client: WebMcpClient) => unknown;
 
 // @public
 export interface WritableResource<T> extends Resource<T> {

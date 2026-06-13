@@ -1,10 +1,10 @@
-# Read route state
+# Route Durumunu Okuma
 
-Angular Router allows you to read and use information associated with a route to create responsive and context-aware components.
+Angular Router, duyarlı ve bağlama duyarlı bileşenler oluşturmak için bir rotayla ilişkili bilgileri okumanıza ve kullanmanıza olanak tanır.
 
-## Get information about the current route with ActivatedRoute
+## ActivatedRoute ile geçerli rota hakkında bilgi alma
 
-`ActivatedRoute` is a service from `@angular/router` that provides all the information associated with the current route.
+`ActivatedRoute`, `@angular/router`'dan gelen ve geçerli rotayla ilişkili tüm bilgileri sağlayan bir servistir.
 
 ```angular-ts
 import {Component} from '@angular/core';
@@ -22,24 +22,24 @@ export class Product {
 }
 ```
 
-The `ActivatedRoute` can provide different information about the route. Some common properties include:
+`ActivatedRoute`, rota hakkında farklı bilgiler sağlayabilir. Bazı yaygın özellikler şunlardır:
 
-| Property      | Details                                                                                                                           |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------------------- |
-| `url`         | An `Observable` of the route paths, represented as an array of strings for each part of the route path.                           |
-| `data`        | An `Observable` that contains the `data` object provided for the route. Also contains any resolved values from the resolve guard. |
-| `params`      | An `Observable` that contains the required and optional parameters specific to the route.                                         |
-| `queryParams` | An `Observable` that contains the query parameters available to all routes.                                                       |
+| Özellik       | Ayrıntılar                                                                                                            |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------- |
+| `url`         | Rota yolunun her bir parçası için dize dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır.            |
+| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir. |
+| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                            |
+| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                        |
 
-Check out the [`ActivatedRoute` API docs](/api/router/ActivatedRoute) for a complete list of what you can access with in the route.
+Rotada erişebileceğiniz şeylerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) göz atın.
 
-## Understanding route snapshots
+## Route anlık görüntülerini anlama
 
-Page navigations are events over time, and you can access the router state at a given time by retrieving a route snapshot.
+Sayfa navigasyonları zaman içindeki olaylardır ve belirli bir zamanda yönlendirici durumuna bir rota anlık görüntüsü alarak erişebilirsiniz.
 
-Route snapshots contain essential information about the route, including its parameters, data, and child routes. In addition, snapshots are static and will not reflect future changes.
+Rota anlık görüntüleri, parametreleri, verileri ve alt rotaları dahil olmak üzere rota hakkında temel bilgiler içerir. Ayrıca anlık görüntüler statiktir ve gelecekteki değişiklikleri yansıtmaz.
 
-Here’s an example of how you’d access a route snapshot:
+İşte bir rota anlık görüntüsüne nasıl erişeceğinize dair bir örnek:
 
 ```angular-ts
 import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
@@ -52,35 +52,35 @@ export class UserProfile {
   private route = inject(ActivatedRoute);
 
   constructor() {
-    // Example URL: https://www.angular.dev/users/123?role=admin&status=active#contact
+    // Örnek URL: https://www.angular.dev/users/123?role=admin&status=active#contact
 
-    // Access route parameters from snapshot
+    // Anlık görüntüden rota parametrelerine erişim
     this.userId = this.route.snapshot.paramMap.get('id');
 
-    // Access multiple route elements
+    // Birden fazla rota öğesine erişim
     const snapshot = this.route.snapshot;
     console.log({
       url: snapshot.url, // https://www.angular.dev
-      // Route parameters object: {id: '123'}
+      // Rota parametreleri nesnesi: {id: '123'}
       params: snapshot.params,
-      // Query parameters object: {role: 'admin', status: 'active'}
-      queryParams: snapshot.queryParams, // Query parameters
+      // Sorgu parametreleri nesnesi: {role: 'admin', status: 'active'}
+      queryParams: snapshot.queryParams, // Sorgu parametreleri
     });
   }
 }
 ```
 
-Check out the [`ActivatedRoute` API docs](/api/router/ActivatedRoute) and [`ActivatedRouteSnapshot` API docs](/api/router/ActivatedRouteSnapshot) for a complete list of all properties you can access.
+Erişebileceğiniz tüm özelliklerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) ve [`ActivatedRouteSnapshot` API dokümanlarına](/api/router/ActivatedRouteSnapshot) göz atın.
 
-## Reading parameters on a route
+## Bir route üzerindeki parametreleri okuma
 
-There are two types of parameters that developers can utilize from a route: route and query parameters.
+Geliştiricilerin bir rotadan kullanabileceği iki tür parametre vardır: rota ve sorgu parametreleri.
 
-### Route Parameters
+### Route Parametreleri
 
-Route parameters allow you to pass data to a component through the URL. This is useful when you want to display specific content based on an identifier in the URL, like a user ID or a product ID.
+Rota parametreleri, URL aracılığıyla bir bileşene veri aktarmanıza olanak tanır. Bu, URL'deki bir kullanıcı kimliği veya ürün kimliği gibi bir tanımlayıcıya göre belirli içerik görüntülemek istediğinizde kullanışlıdır.
 
-You can [define route parameters](/guide/routing/define-routes#define-url-paths-with-route-parameters) by prefixing the parameter name with a colon (`:`).
+Parametre adını iki nokta üst üste (`:`) ile ön ekleyerek [rota parametreleri tanımlayabilirsiniz](/guide/routing/define-routes#route-parametreleri-ile-url-yolları-tanımlama).
 
 ```angular-ts
 import {Routes} from '@angular/router';
@@ -89,7 +89,7 @@ import {Product} from './product';
 const routes: Routes = [{path: 'product/:id', component: Product}];
 ```
 
-You can access parameters by subscribing to `route.params`.
+`route.params`'a abone olarak parametrelere erişebilirsiniz.
 
 ```angular-ts
 import {Component, inject, signal} from '@angular/core';
@@ -104,7 +104,7 @@ export class ProductDetail {
   private activatedRoute = inject(ActivatedRoute);
 
   constructor() {
-    // Access route parameters
+    // Rota parametrelerine erişim
     this.activatedRoute.params.subscribe((params) => {
       this.productId.set(params['id']);
     });
@@ -112,18 +112,18 @@ export class ProductDetail {
 }
 ```
 
-### Query Parameters
+### Sorgu Parametreleri
 
-[Query parameters](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) provide a flexible way to pass optional data through URLs without affecting the route structure. Unlike route parameters, query parameters can persist across navigation events and are perfect for handling filtering, sorting, pagination, and other stateful UI elements.
+[Sorgu parametreleri](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams), rota yapısını etkilemeden URL'ler aracılığıyla isteğe bağlı veri aktarmanın esnek bir yolunu sağlar. Rota parametrelerinin aksine, sorgu parametreleri navigasyon olayları arasında kalıcı olabilir ve filtreleme, sıralama, sayfalama ve diğer durumlu UI öğelerini yönetmek için mükemmeldir.
 
 ```angular-ts
-// Single parameter structure
+// Tek parametre yapısı
 // /products?category=electronics
 router.navigate(['/products'], {
   queryParams: {category: 'electronics'},
 });
 
-// Multiple parameters
+// Birden fazla parametre
 // /products?category=electronics&sort=price&page=1
 router.navigate(['/products'], {
   queryParams: {
@@ -134,9 +134,9 @@ router.navigate(['/products'], {
 });
 ```
 
-You can access query parameters with `route.queryParams`.
+`route.queryParams` ile sorgu parametrelerine erişebilirsiniz.
 
-Here is an example of a `ProductList` that updates the query parameters that affect how it displays a list of products:
+İşte bir ürün listesinin nasıl görüntüleneceğini etkileyen sorgu parametrelerini güncelleyen bir `ProductList` örneği:
 
 ```angular-ts
 import {ActivatedRoute, Router} from '@angular/router';
@@ -158,7 +158,7 @@ export class ProductList {
   private router = inject(Router);
 
   constructor() {
-    // Access query parameters reactively
+    // Sorgu parametrelerine reaktif olarak erişim
     this.route.queryParams.subscribe((params) => {
       const sort = params['sort'] || 'price';
       const page = Number(params['page']) || 1;
@@ -168,35 +168,35 @@ export class ProductList {
 
   updateSort(event: Event) {
     const sort = (event.target as HTMLSelectElement).value;
-    // Update URL with new query parameter
+    // URL'yi yeni sorgu parametresi ile güncelle
     this.router.navigate([], {
       queryParams: {sort},
-      queryParamsHandling: 'merge', // Preserve other query parameters
+      queryParamsHandling: 'merge', // Diğer sorgu parametrelerini koru
     });
   }
 }
 ```
 
-In this example, users can use a select element to sort the product list by name or price. The associated change handler updates the URL’s query parameters, which in turn triggers a change event that can read the updated query parameters and update the product list.
+Bu örnekte, kullanıcılar ürün listesini ada veya fiyata göre sıralamak için bir select öğesi kullanabilir. İlişkili değişiklik işleyicisi URL'nin sorgu parametrelerini günceller, bu da güncellenmiş sorgu parametrelerini okuyabilen ve ürün listesini güncelleyebilen bir değişiklik olayını tetikler.
 
-For more information, check out the [official docs on QueryParamsHandling](/api/router/QueryParamsHandling).
+Daha fazla bilgi için [QueryParamsHandling hakkındaki resmi dokümanlara](/api/router/QueryParamsHandling) göz atın.
 
-### Matrix Parameters
+### Matris Parametreleri
 
-Matrix parameters are optional parameters that belong to a specific URL segment, rather than applying to the entire route. Unlike query parameters which appear after a `?` and apply globally, matrix parameters use semicolons (`;`) and are scoped to individual path segments.
+Matris parametreleri, tüm rotaya uygulanmak yerine belirli bir URL segmentine ait olan isteğe bağlı parametrelerdir. Bir `?` sonrasında görünen ve genel olarak uygulanan sorgu parametrelerinin aksine, matris parametreleri noktalı virgül (`;`) kullanır ve bireysel yol segmentlerine kapsamlandırılmıştır.
 
-Matrix parameters are useful when you need to pass auxiliary data to a specific route segment without affecting the route definition or matching behavior. Like query parameters, they don't need to be defined in your route configuration.
+Matris parametreleri, rota tanımını veya eşleştirme davranışını etkilemeden belirli bir rota segmentine yardımcı veri aktarmanız gerektiğinde kullanışlıdır. Sorgu parametreleri gibi, rota yapılandırmanızda tanımlanmaları gerekmez.
 
 ```ts
-// URL format: /path;key=value
-// Multiple parameters: /path;key1=value1;key2=value2
+// URL formatı: /path;key=value
+// Birden fazla parametre: /path;key1=value1;key2=value2
 
-// Navigate with matrix parameters
+// Matris parametreleri ile navigasyon
 this.router.navigate(['/awesome-products', {view: 'grid', filter: 'new'}]);
-// Results in URL: /awesome-products;view=grid;filter=new
+// Sonuç URL: /awesome-products;view=grid;filter=new
 ```
 
-**Using ActivatedRoute**
+**ActivatedRoute Kullanarak**
 
 ```ts
 import {Component, inject} from '@angular/core';
@@ -207,7 +207,7 @@ export class AwesomeProducts {
   private route = inject(ActivatedRoute);
 
   constructor() {
-    // Access matrix parameters via params
+    // Matris parametrelerine params aracılığıyla erişim
     this.route.params.subscribe((params) => {
       const view = params['view']; // e.g., 'grid'
       const filter = params['filter']; // e.g., 'new'
@@ -216,11 +216,11 @@ export class AwesomeProducts {
 }
 ```
 
-NOTE: As an alternative to using `ActivatedRoute`, matrix parameters are also bound to component inputs when using the `withComponentInputBinding`.
+NOTE: `ActivatedRoute` kullanmaya alternatif olarak, `withComponentInputBinding` kullanıldığında matris parametreleri bileşen girişlerine de bağlanır.
 
-## Detect active current route with RouterLinkActive
+## RouterLinkActive ile aktif geçerli route'u tespit etme
 
-You can use the `RouterLinkActive` directive to dynamically style navigation elements based on the current active route. This is common in navigation elements to inform users what the active route is.
+Geçerli aktif rotaya göre navigasyon öğelerini dinamik olarak stilize etmek için `RouterLinkActive` direktifini kullanabilirsiniz. Bu, kullanıcıları aktif rotanın hangisi olduğu hakkında bilgilendirmek için navigasyon öğelerinde yaygın olarak kullanılır.
 
 ```angular-html
 <nav>
@@ -244,36 +244,36 @@ You can use the `RouterLinkActive` directive to dynamically style navigation ele
 </nav>
 ```
 
-In this example, Angular Router will apply the `active-button` class to the correct anchor link and `ariaCurrentWhenActive` to `page` when the URL matches the corresponding `routerLink`.
+Bu örnekte, Angular Router URL ilgili `routerLink` ile eşleştiğinde doğru bağlantı öğesine `active-button` sınıfını ve `ariaCurrentWhenActive` özelliğine `page` değerini uygular.
 
-If you need to add multiple classes onto the element, you can use either a space-separated string or an array:
+Öğeye birden fazla sınıf eklemeniz gerekiyorsa, boşlukla ayrılmış bir dize veya bir dizi kullanabilirsiniz:
 
 ```angular-html
-<!-- Space-separated string syntax -->
+<!-- Boşlukla ayrılmış dize söz dizimi -->
 <a routerLink="/user/bob" routerLinkActive="class1 class2">Bob</a>
 
-<!-- Array syntax -->
+<!-- Dizi söz dizimi -->
 <a routerLink="/user/bob" [routerLinkActive]="['class1', 'class2']">Bob</a>
 ```
 
-When you specify a value for routerLinkActive, you are also defining the same value for `ariaCurrentWhenActive`. This makes sure that visually impaired users (which may not perceive the different styling being applied) can also identify the active button.
+routerLinkActive için bir değer belirttiğinizde, `ariaCurrentWhenActive` için de aynı değeri tanımlamış olursunuz. Bu, görme engelli kullanıcıların (uygulanan farklı stili algılayamayabilecek) aktif düğmeyi de tanımlayabilmesini sağlar.
 
-If you want to define a different value for aria, you’ll need to explicitly set the value using the `ariaCurrentWhenActive` directive.
+aria için farklı bir değer tanımlamak istiyorsanız, `ariaCurrentWhenActive` direktifini kullanarak değeri açıkça ayarlamanız gerekir.
 
-### Route matching strategy
+### Route eşleştirme stratejisi
 
-By default, `RouterLinkActive` considers any ancestors in the route a match.
+Varsayılan olarak, `RouterLinkActive` rotadaki herhangi bir üst öğeyi eşleşme olarak kabul eder.
 
 ```angular-html
 <a [routerLink]="['/user/jane']" routerLinkActive="active-link"> User </a>
 <a [routerLink]="['/user/jane/role/admin']" routerLinkActive="active-link"> Role </a>
 ```
 
-When the user visits `/user/jane/role/admin`, both links would have the `active-link` class.
+Kullanıcı `/user/jane/role/admin` adresini ziyaret ettiğinde, her iki bağlantı da `active-link` sınıfına sahip olur.
 
-### Only apply RouterLinkActive on exact route matches
+### RouterLinkActive'i yalnızca tam route eşleşmelerinde uygulama
 
-If you only want to apply the class on an exact match, you need to provide the `routerLinkActiveOptions` directive with a configuration object that contains the value `exact: true`.
+Sınıfı yalnızca tam eşleşmede uygulamak istiyorsanız, `exact: true` değerini içeren bir yapılandırma nesnesiyle `routerLinkActiveOptions` direktifini sağlamanız gerekir.
 
 ```angular-html
 <a
@@ -292,10 +292,10 @@ If you only want to apply the class on an exact match, you need to provide the `
 </a>
 ```
 
-If you want to be more precise in how a route is matched, it’s worth noting that `exact: true` is actually syntactic sugar for the full set of matching options:
+Bir rotanın nasıl eşleştirileceği konusunda daha hassas olmak istiyorsanız, `exact: true` ifadesinin aslında eşleştirme seçeneklerinin tam seti için sözdizimsel şeker olduğunu belirtmek gerekir:
 
 ```angular-ts
-// `exact: true` is equivalent to
+// `exact: true` şuna eşdeğerdir
 {
   paths: 'exact',
   fragment: 'ignored',
@@ -303,7 +303,7 @@ If you want to be more precise in how a route is matched, it’s worth noting th
   queryParams: 'exact',
 }
 
-// `exact: false` is equivalent
+// `exact: false` şuna eşdeğerdir
 {
   paths: 'subset',
   fragment: 'ignored',
@@ -312,11 +312,11 @@ If you want to be more precise in how a route is matched, it’s worth noting th
 }
 ```
 
-For more information, check out the official docs for [isActiveMatchOptions](/api/router/IsActiveMatchOptions).
+Daha fazla bilgi için [isActiveMatchOptions](/api/router/IsActiveMatchOptions) resmi dokümanlarına göz atın.
 
-### Apply RouterLinkActive to an ancestor
+### RouterLinkActive'i bir üst öğeye uygulama
 
-The RouterLinkActive directive can also be applied to an ancestor element in order to allow developers to style the elements as desired.
+RouterLinkActive direktifi, geliştiricilerin öğeleri istedikleri gibi stilize etmelerine olanak tanımak için bir üst öğeye de uygulanabilir.
 
 ```angular-html
 <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
@@ -325,11 +325,11 @@ The RouterLinkActive directive can also be applied to an ancestor element in ord
 </div>
 ```
 
-For more information, check out the [API docs for RouterLinkActive](/api/router/RouterLinkActive).
+Daha fazla bilgi için [RouterLinkActive API dokümanlarına](/api/router/RouterLinkActive) göz atın.
 
-## Check if a URL is active
+## Bir URL'nin aktif olup olmadığını kontrol etme
 
-The `isActive` function returns a computed signal that tracks whether a given URL is currently active in the router. The signal automatically updates as the router state changes.
+`isActive` fonksiyonu, belirli bir URL'nin yönlendiricide şu anda aktif olup olmadığını izleyen hesaplanmış bir sinyal döndürür. Sinyal, yönlendirici durumu değiştikçe otomatik olarak güncellenir.
 
 ```angular-ts
 import {Component, inject} from '@angular/core';

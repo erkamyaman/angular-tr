@@ -1,15 +1,15 @@
-<docs-decorative-header title="Anatomy of a component" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Bir bileşenin anatomisi" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Every component must have:
+Her bileşen şunlara sahip olmalıdır:
 
-- A TypeScript class with _behaviors_ such as handling user input and fetching data from a server
-- An HTML template that controls what renders into the DOM
-- A [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) that defines how the component is used in HTML
+- Kullanıcı girdisini işleme ve sunucudan veri getirme gibi _davranışlara_ sahip bir TypeScript sınıfı
+- DOM'a neyin render edileceğini kontrol eden bir HTML şablonu
+- Bileşenin HTML'de nasıl kullanılacağını tanımlayan bir [CSS seçici](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors)
 
-You provide Angular-specific information for a component by adding a `@Component` [decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) on top of the TypeScript class:
+TypeScript sınıfının üzerine bir `@Component` [dekoratörü](https://www.typescriptlang.org/docs/handbook/decorators.html) ekleyerek Angular'a özgü bilgileri sağlarsınız:
 
 ```angular-ts {highlight: [1, 2, 3, 4]}
 @Component({
@@ -19,11 +19,11 @@ You provide Angular-specific information for a component by adding a `@Component
 export class ProfilePhoto {}
 ```
 
-For full details on writing Angular templates, including data binding, event handling, and control flow, see the [Templates guide](guide/templates).
+Veri bağlama, olay işleme ve kontrol akışı dahil olmak üzere Angular şablonları yazma hakkında tüm ayrıntılar için [Şablonlar rehberi](guide/templates)'ne bakın.
 
-The object passed to the `@Component` decorator is called the component's **metadata**. This includes the `selector`, `template`, and other properties described throughout this guide.
+`@Component` dekoratörüne iletilen nesne, bileşenin **meta verisi** olarak adlandırılır. Bu, `selector`, `template` ve bu rehber boyunca açıklanan diğer özellikleri içerir.
 
-Components can optionally include a list of CSS styles that apply to that component's DOM:
+Bileşenlerin isteğe bağlı olarak o bileşenin DOM'una uygulanan CSS stilleri listesi içerebilir:
 
 ```angular-ts {highlight: [4]}
 @Component({
@@ -38,9 +38,9 @@ Components can optionally include a list of CSS styles that apply to that compon
 export class ProfilePhoto {}
 ```
 
-By default, a component's styles only affect elements defined in that component's template. See [Styling Components](guide/components/styling) for details on Angular's approach to styling.
+Varsayılan olarak, bir bileşenin stilleri yalnızca o bileşenin şablonunda tanımlanan elemanları etkiler. Angular'ın stillendirme yaklaşımı hakkında ayrıntılar için [Bileşen Stillendirme](guide/components/styling) belgesine bakın.
 
-You can alternatively choose to write your template and styles in separate files:
+Alternatif olarak şablon ve stillerinizi ayrı dosyalarda yazmayı seçebilirsiniz:
 
 ```ts {highlight: [3,4]}
 @Component({
@@ -51,36 +51,35 @@ You can alternatively choose to write your template and styles in separate files
 export class ProfilePhoto {}
 ```
 
-This can help separate the concerns of _presentation_ from _behavior_ in your project. You can choose one approach for your entire project, or you decide which to use for each component.
+Bu, projenizdeki _sunum_ ve _davranış_ kaygılarını ayırmaya yardımcı olabilir. Tüm projeniz için tek bir yaklaşım seçebilir veya her bileşen için hangisini kullanacağınıza karar verebilirsiniz.
 
-Both `templateUrl` and `styleUrl` are relative to the directory in which the component resides.
+Hem `templateUrl` hem de `styleUrl`, bileşenin bulunduğu dizine göredir.
 
-## Using components
+## Bileşenleri kullanma
 
-### Imports in the `@Component` decorator
+### `@Component` dekoratöründe import'lar
 
-To use a component, [directive](guide/directives), or [pipe](guide/templates/pipes), you must add
-it to the `imports` array in the `@Component` decorator:
+Bir bileşen, [direktif](guide/directives) veya [pipe](guide/templates/pipes) kullanmak için, onu `@Component` dekoratöründeki `imports` dizisine eklemeniz gerekir:
 
 ```ts
 import {ProfilePhoto} from './profile-photo';
 
 @Component({
-  // Import the `ProfilePhoto` component in
-  // order to use it in this component's template.
+  // Bu bileşenin şablonunda kullanmak için
+  // `ProfilePhoto` bileşenini import edin.
   imports: [ProfilePhoto],
   /* ... */
 })
 export class UserProfile {}
 ```
 
-By default, Angular components are _standalone_, meaning that you can directly add them to the `imports` array of other components. Components created with an earlier version of Angular may instead specify `standalone: false` in their `@Component` decorator. For these components, you instead import the `NgModule` in which the component is defined. See the full [`NgModule` guide](guide/ngmodules/overview) for details.
+Varsayılan olarak, Angular bileşenleri _bağımsızdır_ (standalone), yani onları doğrudan diğer bileşenlerin `imports` dizisine ekleyebilirsiniz. Angular'ın daha eski bir sürümü ile oluşturulan bileşenlerde bunun yerine `@Component` dekoratöründe `standalone: false` belirtilebilir. Bu bileşenlerde, bileşenin tanımlandığı `NgModule`'u içerir (import edersiniz). Ayrıntılar için tam [`NgModule` rehberi](guide/ngmodules/overview)'ne bakın.
 
-Important: In Angular versions before 19.0.0, the `standalone` option defaults to `false`.
+IMPORTANT: 19.0.0 öncesi Angular sürümlerinde `standalone` seçeneği varsayılan olarak `false` değerindedir.
 
-### Showing components in a template
+### Bir şablonda bileşenleri gösterme
 
-Every component defines a [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors):
+Her bileşen bir [CSS seçici](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) tanımlar:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -90,9 +89,9 @@ Every component defines a [CSS selector](https://developer.mozilla.org/docs/Lear
 export class ProfilePhoto { }
 ```
 
-See [Component Selectors](guide/components/selectors) for details about which types of selectors Angular supports and guidance on choosing a selector.
+Angular'ın hangi seçici türlerini desteklediği ve seçici seçme rehberliği hakkında ayrıntılar için [Bileşen Seçicileri](guide/components/selectors) belgesine bakın.
 
-You show a component by creating a matching HTML element in the template of _other_ components:
+_Diğer_ bileşenlerin şablonunda eşleşen bir HTML elemanı oluşturarak bir bileşeni gösterirsiniz:
 
 ```angular-ts {highlight: [8]}
 @Component({
@@ -107,12 +106,11 @@ export class ProfilePhoto {}
 export class UserProfile {}
 ```
 
-Angular creates an instance of the component for every matching HTML element it encounters. The DOM element that matches a component's selector is referred to as that component's **host element**. The contents of a component's template are rendered inside its host element.
+Angular, karşılaştığı her eşleşen HTML elemanı için bileşenin bir örneğini oluşturur. Bir bileşenin seçicisiyle eşleşen DOM elemanı, o bileşenin **host elemanı** olarak adlandırılır. Bir bileşenin şablonunun içeriği, host elemanı içerisinde render edilir.
 
-The DOM rendered by a component, corresponding to that component's template, is called that
-component's **view**.
+Bir bileşen tarafından render edilen, o bileşenin şablonuna karşılık gelen DOM, o bileşenin **görünümü** (view) olarak adlandırılır.
 
-In composing components in this way, **you can think of your Angular application as a tree of components**.
+Bileşenleri bu şekilde birleştirirken, **Angular uygulamanızı bir bileşen ağacı olarak düşünebilirsiniz**.
 
 ```mermaid
 flowchart TD
@@ -125,4 +123,4 @@ flowchart TD
     E[UserBio]
 ```
 
-This tree structure is important to understanding several other Angular concepts, including [dependency injection](guide/di) and [child queries](guide/components/queries).
+Bu ağaç yapısı, [bağımlılık enjeksiyonu](guide/di) ve [alt sorgular](guide/components/queries) dahil olmak üzere birçok Angular kavramını anlamak için önemlidir.

@@ -1,14 +1,14 @@
-# Expression Syntax
+# İfade Sözdizimi
 
-Angular expressions are based on JavaScript, but differ in some key ways. This guide walks through the similarities and differences between Angular expressions and standard JavaScript.
+Angular ifadeleri JavaScript'e dayalıdır, ancak bazı önemli yönlerden farklılık gösterir. Bu rehber, Angular ifadeleri ile standart JavaScript arasındaki benzerlikleri ve farklılıkları açıklar.
 
-## Value literals
+## Değer literalleri
 
-Angular supports a subset of [literal values](https://developer.mozilla.org/en-US/docs/Glossary/Literal) from JavaScript.
+Angular, JavaScript'ten bir [literal değer](https://developer.mozilla.org/en-US/docs/Glossary/Literal) alt kümesini destekler.
 
-### Supported value literals
+### Desteklenen değer literalleri
 
-| Literal type           | Example values                  |
+| Literal türü           | Örnek değerler                  |
 | ---------------------- | ------------------------------- |
 | String                 | `'Hello'`, `"World"`            |
 | Boolean                | `true`, `false`                 |
@@ -20,34 +20,34 @@ Angular supports a subset of [literal values](https://developer.mozilla.org/en-U
 | Template string        | `` `Hello ${name}` ``           |
 | Tagged template string | `` tag`Hello ${name}` ``        |
 
-### Unsupported value literals
+### Desteklenmeyen değer literalleri
 
-| Literal type | Example values |
+| Literal türü | Örnek değerler |
 | ------------ | -------------- |
 | BigInt       | `1n`           |
 
-## Globals
+## Global değişkenler
 
-Angular expressions support the following [globals](https://developer.mozilla.org/en-US/docs/Glossary/Global_object):
+Angular ifadeleri aşağıdaki [global değişkenleri](https://developer.mozilla.org/en-US/docs/Glossary/Global_object) destekler:
 
 - [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)
 - [$any](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
 
-No other JavaScript globals are supported. Common JavaScript globals include `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt`, and more.
+Başka hiçbir JavaScript global değişkeni desteklenmez. Yaygın JavaScript global değişkenleri arasında `Number`, `Boolean`, `NaN`, `Infinity`, `parseInt` ve daha fazlası bulunur.
 
-## Local variables
+## Yerel değişkenler
 
-Angular automatically makes special local variables available for use in expressions in specific contexts. These special variables always start with the dollar sign character (`$`).
+Angular, belirli bağlamlarda ifadelerde kullanılmak üzere özel yerel değişkenleri otomatik olarak kullanılabilir hale getirir. Bu özel değişkenler her zaman dolar işareti karakteri (`$`) ile başlar.
 
-For example, `@for` blocks make several local variables corresponding to information about the loop, such as `$index`.
+Örneğin, `@for` blokları döngü hakkında bilgi içeren `$index` gibi birkaç yerel değişken sağlar.
 
-## What operators are supported?
+## Hangi operatörler desteklenir?
 
-### Supported operators
+### Desteklenen operatörler
 
-Angular supports the following operators from standard JavaScript.
+Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 
-| Operator                      | Example(s)                                     |
+| Operatör                      | Örnek(ler)                                     |
 | ----------------------------- | ---------------------------------------------- |
 | Add / Concatenate             | `1 + 2`                                        |
 | Subtract                      | `52 - 3`                                       |
@@ -83,19 +83,19 @@ Angular supports the following operators from standard JavaScript.
 | Spread in array literals      | `[...arr, 1, 2, 3]`                            |
 | Rest in function calls        | `fn(...args)`                                  |
 
-Angular expressions additionally also support the following non-standard operators:
+Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekler:
 
-| Operator                        | Example(s)                     |
+| Operatör                        | Örnek(ler)                     |
 | ------------------------------- | ------------------------------ |
 | [Pipe](/guide/templates/pipes)  | `{{ total \| currency }}`      |
 | Optional chaining\*             | `someObj.someProp?.nestedProp` |
 | Non-null assertion (TypeScript) | `someObj!.someProp`            |
 
-NOTE: Optional chaining behaves differently from the standard JavaScript version in that if the left side of Angular’s optional chaining operator is `null` or `undefined`, it returns `null` instead of `undefined`.
+NOTE: Optional chaining, standart JavaScript sürümünden farklı davranır; Angular'ın optional chaining operatörünün sol tarafı `null` veya `undefined` ise, `undefined` yerine `null` döndürür.
 
-### Unsupported operators
+### Desteklenmeyen operatörler
 
-| Operator              | Example(s)                        |
+| Operatör              | Örnek(ler)                        |
 | --------------------- | --------------------------------- |
 | All bitwise operators | `&`, `&=`, `~`, `\|=`, `^=`, etc. |
 | Object destructuring  | `const { name } = person`         |
@@ -103,26 +103,26 @@ NOTE: Optional chaining behaves differently from the standard JavaScript version
 | Comma operator        | `x = (x++, x)`                    |
 | new                   | `new Car()`                       |
 
-## Lexical context for expressions
+## İfadeler için sözcüksel bağlam
 
-Angular expressions are evaluated within the context of the component class as well as any relevant [template variables](/guide/templates/variables), locals, and globals.
+Angular ifadeleri, bileşen sınıfının bağlamı içinde ve ayrıca ilgili [şablon değişkenleri](/guide/templates/variables), yerel değişkenler ve global değişkenler içinde değerlendirilir.
 
-When referring to component class members, `this` is always implied. However, if a template declares a [template variables](guide/templates/variables) with the same name as a member, the variable shadows that member. You can unambiguously reference such a class member by explicitly using `this.`. This can be useful when creating an `@let` declaration that shadows a class member, e.g. for signal narrowing purposes.
+Bileşen sınıf üyelerine referans verirken `this` her zaman ima edilir. Ancak, bir şablon aynı adla bir [şablon değişkeni](guide/templates/variables) bildirirse, değişken o üyeyi gölgeler. Bu tür bir sınıf üyesine belirsizlik olmadan referans vermek için açıkça `this.` kullanabilirsiniz. Bu, bir sınıf üyesini gölgeleyen bir `@let` bildirimi oluştururken, örneğin signal daraltma amaçları için faydalı olabilir.
 
-## Declarations
+## Bildirimler
 
-Generally speaking, declarations are not supported in Angular expressions. This includes, but is not limited to:
+Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasında şu durumlar yer alır ancak bunlarla sınırlı değildir:
 
-| Declarations    | Example(s)                                  |
+| Bildirimler     | Örnek(ler)                                  |
 | --------------- | ------------------------------------------- |
 | Variables       | `let label = 'abc'`, `const item = 'apple'` |
 | Functions       | `function myCustomFunction() { }`           |
 | Arrow Functions | `() => { }`                                 |
 | Classes         | `class Rectangle { }`                       |
 
-# Event listener statements
+# Olay dinleyici ifadeleri
 
-Event handlers are **statements** rather than expressions. While they support all of the same syntax as Angular expressions, there are two key differences:
+Olay işleyicileri ifadeler değil **ifadeler (statements)** dir. Angular ifadelerinin tüm sözdizimini desteklemelerine rağmen, iki temel fark vardır:
 
-1. Statements **do support** assignment operators (but not destructing assignments)
-1. Statements **do not support** pipes
+1. İfadeler atama operatörlerini **destekler** (ancak yapısal atama işlemlerini desteklemez)
+1. İfadeler pipe'ları **desteklemez**

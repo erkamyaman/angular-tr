@@ -7,7 +7,7 @@
  */
 
 import {NgTemplateOutlet} from '@angular/common';
-import {ChangeDetectionStrategy, Component, inject, input, output} from '@angular/core';
+import {Component, inject, input, output} from '@angular/core';
 import {MatTooltip} from '@angular/material/tooltip';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NavigationItem} from '../../interfaces/index';
@@ -27,7 +27,6 @@ import {IconComponent} from '../icon/icon.component';
   ],
   templateUrl: './navigation-list.component.html',
   styleUrls: ['./navigation-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationList {
   readonly navigationItems = input.required<NavigationItem[]>();
@@ -39,7 +38,10 @@ export class NavigationList {
 
   readonly linkClicked = output<void>();
 
+  protected readonly labelTruncationThreshold = 27;
+
   private readonly navigationState = inject(NavigationState);
+  private readonly crossCategoryOrigin = this.navigationState.crossCategoryOrigin;
 
   readonly activeItem = this.navigationState.activeNavigationItem;
 
@@ -51,10 +53,19 @@ export class NavigationList {
     ) {
       return;
     }
+    const prevParentItem = this.crossCategoryOrigin();
+    if (prevParentItem) {
+      this.crossCategoryOrigin.set(undefined);
+      this.navigationState.toggleItem(prevParentItem);
+      return;
+    }
     this.navigationState.toggleItem(item);
   }
 
-  emitClickOnLink(): void {
+  emitClickOnLink(item: NavigationItem): void {
+    if (item.isCrossReferenced) {
+      this.crossCategoryOrigin.set(item.parent);
+    }
     this.linkClicked.emit();
   }
 
@@ -62,14 +73,27 @@ export class NavigationList {
     return items.some((item) => !!item.category);
   }
 
+  private getCategoryStatus(item: NavigationItem, category: string): 'new' | 'updated' | undefined {
+    const categoriesStatus = item.parent?.categoriesStatus;
+
+    if (!categoriesStatus) {
+      return undefined;
+    }
+
+    return categoriesStatus.find((status) => status[category])?.[category];
+  }
+
   protected groupItems(
     items: NavigationItem[],
     preserveOtherCategoryOrder: boolean,
-  ): Map<string, NavigationItem[]> {
+  ): Map<string, {items: NavigationItem[]; status: 'new' | 'updated' | undefined}> {
     const hasCategories = this.hasCategories(items);
     if (hasCategories) {
       const others: NavigationItem[] = [];
-      const categorizedItems = new Map<string, NavigationItem[]>();
+      const categorizedItems = new Map<
+        string,
+        {items: NavigationItem[]; status: 'new' | 'updated' | undefined}
+      >();
       for (const item of items) {
         const category = item.category || 'Other';
         if (!preserveOtherCategoryOrder && category === 'Other') {
@@ -77,16 +101,20 @@ export class NavigationList {
           continue;
         }
         if (!categorizedItems.has(category)) {
-          categorizedItems.set(category, []);
+          categorizedItems.set(category, {
+            items: [],
+            status: this.getCategoryStatus(item, category),
+          });
         }
-        categorizedItems.get(category)!.push(item);
+        categorizedItems.get(category)!.items.push(item);
       }
       if (others.length) {
-        categorizedItems.set('Other', others);
+        categorizedItems.set('Other', {items: others, status: undefined});
       }
+
       return categorizedItems;
     } else {
-      return new Map([['', items]]);
+      return new Map([['', {items, status: undefined}]]);
     }
   }
 }

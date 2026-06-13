@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {DOCUMENT, Injectable, VERSION, computed, inject} from '@angular/core';
 import {httpResource} from '@angular/common/http';
+import {DOCUMENT, Service, VERSION, computed, inject} from '@angular/core';
 
 import versionJson from '../../../assets/others/versions.json';
 
@@ -30,9 +30,7 @@ type VersionJson = {version: string; url: string};
  * To have an up-to-date list of versions, it will fetch a json from the deployed website.
  * As fallback it will use a local json file that is bundled with the app.
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class VersionManager {
   private document = inject(DOCUMENT);
 
@@ -62,7 +60,7 @@ export class VersionManager {
   // which is the most up-to-date anyway.
   remoteVersions = httpResource(
     () => ({
-      url: 'https://angular.dev/assets/others/versions.json',
+      url: '/assets/others/versions.json',
       transferCache: false,
       cache: 'no-cache',
     }),
@@ -94,11 +92,16 @@ export class VersionManager {
   );
 
   readonly currentDocsVersion = computed(() => {
-    // In devmode the version is 0, so we'll target next (which is first on the list)
+    const versions = this.versions();
+
+    // Default to v22 if available
+    const v22 = versions.find((v) => v.displayName === 'v22');
+
+    // In devmode the version is 0, so we'll target v22
     if (VERSION.major === '0' || VERSION.patch.includes('next')) {
-      return this.versions()[0];
+      return v22 ?? versions[0];
     }
 
-    return this.versions().find((v) => v.displayName.includes(VERSION.major)) ?? this.versions()[0];
+    return versions.find((v) => v.displayName.includes(VERSION.major)) ?? v22 ?? versions[0];
   });
 }

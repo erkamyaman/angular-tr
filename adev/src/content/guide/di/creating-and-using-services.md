@@ -1,26 +1,25 @@
-# Creating and using services
+# Service'ler oluşturma ve kullanma
 
-Services are reusable pieces of code that can be shared across your Angular application. They typically handle data fetching, business logic, or other functionality that multiple components need to access.
+Servisler, Angular uygulamanız genelinde paylaşabileceğiniz yeniden kullanılabilir kod parçalarıdır. Bunları genellikle veri getirme, iş mantığı veya birden fazla bileşenin erişmesi gereken diğer işlevleri yönetmek için kullanırsınız.
 
-## Creating a service
+## Bir service oluşturma
 
-You can create a service with the [Angular CLI](tools/cli) with the following command:
+[Angular CLI](tools/cli) kullanarak aşağıdaki komutla bir servis oluşturabilirsiniz:
 
 ```bash
 ng generate service CUSTOM_NAME
 ```
 
-This creates a dedicated `CUSTOM_NAME.ts` file in your `src` directory.
+Bu komut, `src` dizininizde özel bir `CUSTOM_NAME.ts` dosyası oluşturur.
 
-You can also manually create a service by adding the `@Injectable()` decorator to a TypeScript class. This tells Angular that the service can be injected as a dependency.
+Ayrıca bir TypeScript sınıfına `@Service()` dekoratörünü ekleyerek manuel olarak bir servis oluşturabilirsiniz. Bu, Angular'a sınıfı enjekte edilebilir bir bağımlılık olarak kullanabileceğinizi söyler.
 
-Here is an example of a service that allows users to add and request data:
+Aşağıdaki örnek, kullanıcıların veri eklemesine ve veri almasına olanak tanıyan bir servis tanımlar:
 
-```ts
-// 📄 src/app/basic-data-store.ts
-import {Injectable} from '@angular/core';
+```ts {header: "src/app/basic-data-store.ts"}
+import {Service} from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class BasicDataStore {
   private data: string[] = [];
 
@@ -34,21 +33,101 @@ export class BasicDataStore {
 }
 ```
 
-## How services become available
+## Service'ler nasıl kullanılabilir hale gelir
 
-When you use `@Injectable({ providedIn: 'root' })` in your service, Angular:
+Servisinizde `@Injectable({ providedIn: 'root' })` kullandığınızda, Angular:
 
-- **Creates a single instance** (singleton) for your entire application
-- **Makes it available everywhere** without any additional configuration
-- **Enables tree-shaking** so the service is only included in your JavaScript bundle if it's actually used
+- Tüm uygulama için **tek bir örnek** (bir singleton) oluşturur
+- Ek yapılandırma olmadan **uygulamanız genelinde kullanılabilir** hale getirir
+- **Tree-shaking'i etkinleştirir**, böylece Angular servisi yalnızca gerçekten kullanırsanız JavaScript paketinize dahil eder
 
-This is the recommended approach for most services.
+Bu, çoğu servis için önerilen yaklaşımdır.
 
-## Injecting a service
+## `@Service` dekoratörünü kullanma
 
-Once you've created a service with `providedIn: 'root'`, you can inject it anywhere in your application using the `inject()` function from `@angular/core`.
+Uygulamanız genelinde kullanılabilen bir singleton servisin yaygın durumu için Angular, `@Injectable({providedIn: 'root'})` ifadesine daha ergonomik bir alternatif olarak `@Service` dekoratörünü sunar.
 
-### Injecting into a component
+Önceki `BasicDataStore` örneği `@Service` ile yeniden yazılabilir:
+
+```ts {header: "src/app/basic-data-store.ts"}
+import {Service} from '@angular/core';
+
+@Service()
+export class BasicDataStore {
+  private data: string[] = [];
+
+  addData(item: string): void {
+    this.data.push(item);
+  }
+
+  getData(): string[] {
+    return [...this.data];
+  }
+}
+```
+
+Bu, yukarıdaki `@Injectable({providedIn: 'root'})` sürümüyle aynı şekilde davranır: Angular tek bir örnek oluşturur, her yerde kullanılabilir hale getirir ve hiç enjekte edilmezse paketten tree-shake eder.
+
+### Uygulamayı bir factory ile değiştirme
+
+Singleton'ın nasıl oluşturulduğunu kontrol etmeniz gerekiyorsa, örneğin ortama bağlı olarak farklı bir uygulamayı devreye almak için, bir `factory` fonksiyonu geçirin.
+
+Factory bir [enjeksiyon bağlamında](guide/di/dependency-injection-context) çalışır, böylece diğer bağımlılıkları okumak için içinde [`inject()`](api/core/inject) kullanabilirsiniz.
+
+Aşağıdaki `Analytics` servisi yerelde bir no-op'tur, böylece olaylar geliştirme sırasında konsolu kirletmez. Üretimde factory bir `ANALYTICS_ENABLED` token'ını okur ve olayları gerçek izleyiciye ileten bir `GoogleAnalytics` alt sınıfı döndürür:
+
+```ts {header: "src/app/analytics.ts"}
+import {inject, InjectionToken, Service} from '@angular/core';
+import {ANALYTICS_ENABLED} from './token';
+
+@Service({
+  factory: () => (inject(ANALYTICS_ENABLED) ? new GoogleAnalytics() : new Analytics()),
+})
+export class Analytics {
+  track(event: string, payload?: Record<string, unknown>) {
+    // Varsayılan olarak no-op.
+  }
+}
+
+class GoogleAnalytics extends Analytics {
+  override track(event: string, payload?: Record<string, unknown>) {
+    // Google Analytics'e bir analitik olayı gönderir
+  }
+}
+```
+
+NOTE: `factory` seçeneği, `@Injectable`'ın `useClass`, `useValue`, `useExisting` ve `useFactory` seçeneklerinin yerini alır. Bunlardan herhangi birine ihtiyacınız varsa `@Injectable` kullanmaya devam edin.
+
+### Otomatik sağlamadan vazgeçme
+
+Varsayılan olarak `@Service`, sınıfı kök enjektörde sağlar. Onu manuel olarak sağlamak isterseniz, örneğin belirli bir route'a veya bileşene kapsamlamak için, `autoProvided: false` olarak ayarlayın:
+
+```ts {header: "src/app/analytics-logger.ts"}
+import {Service} from '@angular/core';
+
+@Service({autoProvided: false})
+export class AnalyticsLogger {
+  trackEvent(name: string) {
+    console.log('event:', name);
+  }
+}
+```
+
+Bu durumda, tıpkı düz bir `@Injectable()` ile olduğu gibi, servisi bir `providers` dizisine eklemekten siz sorumlu olursunuz:
+
+### `@Service` mi `@Injectable` mı kullanmalı
+
+`inject()` fonksiyonunu bağımlılıkları için kullanan yeni bir singleton sınıfı oluşturuyorsanız `@Service`'e başvurun. Aşağıdakilerden herhangi birine ihtiyacınız olduğunda `@Injectable` kullanmaya devam edin:
+
+- **Constructor tabanlı bağımlılık enjeksiyonu.** `@Service` yalnızca [`inject()`](api/core/inject) fonksiyonunu destekler.
+- **Gelişmiş sağlayıcı yapılandırması** örneğin `useClass`, `useValue`, `useExisting` veya `useFactory`. `@Service` bunun yerine tek bir `factory` seçeneği sunar.
+- **Kök dışı kapsamlar** örneğin `providedIn: 'platform'`.
+
+## Bir service'i enjekte etme
+
+`providedIn: 'root'` ile bir servis oluşturduktan sonra, `@angular/core`'dan `inject()` fonksiyonunu kullanarak uygulamanızın herhangi bir yerinde enjekte edebilirsiniz.
+
+### Bir bileşene enjekte etme
 
 ```angular-ts
 import {Component, inject} from '@angular/core';
@@ -68,15 +147,13 @@ export class Example {
 }
 ```
 
-### Injecting into another service
+### Başka bir service'e enjekte etme
 
 ```ts
-import {inject, Injectable} from '@angular/core';
+import {inject, Service} from '@angular/core';
 import {AdvancedDataStore} from './advanced-data-store';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class BasicDataStore {
   private advancedDataStore = inject(AdvancedDataStore);
   private data: string[] = [];
@@ -91,13 +168,13 @@ export class BasicDataStore {
 }
 ```
 
-## Next steps
+## Sonraki adımlar
 
-While `providedIn: 'root'` covers most use cases, Angular offers additional ways to provide services for specialized scenarios:
+`providedIn: 'root'` çoğu kullanım durumunu karşılarken, Angular ayrıca daha özel senaryolar için servisleri yapılandırabileceğiniz ek yollar da sunar:
 
-- **Component-specific instances** - When components need their own isolated service instances
-- **Manual configuration** - For services that require runtime configuration
-- **Factory providers** - For dynamic service creation based on runtime conditions
-- **Value providers** - For providing configuration objects or constants
+- **Bileşene özgü örnekler** - Bileşenlerin kendi izole servis örneklerine ihtiyaç duyması durumunda
+- **Manuel yapılandırma** - Çalışma zamanı yapılandırması gerektiren servisler için
+- **Fabrika sağlayıcıları** - Çalışma zamanı koşullarına göre dinamik servis oluşturma için
+- **Değer sağlayıcıları** - Yapılandırma nesneleri veya sabitler sağlamak için
 
-You can learn more about these advanced patterns in the next guide: [defining dependency providers](/guide/di/defining-dependency-providers).
+Bu gelişmiş desenler hakkında daha fazla bilgiyi sonraki kılavuzda bulabilirsiniz: [bağımlılık sağlayıcılarını tanımlama](/guide/di/defining-dependency-providers).

@@ -240,6 +240,9 @@ export class ActivatedRoute {
 
 export type ParamsInheritanceStrategy = 'emptyOnly' | 'always';
 
+// g3-only export const DEFAULT_PARAMS_INHERITANCE_STRATEGY: ParamsInheritanceStrategy = 'emptyOnly';
+export const DEFAULT_PARAMS_INHERITANCE_STRATEGY: ParamsInheritanceStrategy = 'always'; // 3p-only
+
 /** @internal */
 export type Inherited = {
   params: Params;
@@ -256,7 +259,7 @@ export type Inherited = {
 export function getInherited(
   route: ActivatedRouteSnapshot,
   parent: ActivatedRouteSnapshot | null,
-  paramsInheritanceStrategy: ParamsInheritanceStrategy = 'emptyOnly',
+  paramsInheritanceStrategy: ParamsInheritanceStrategy,
 ): Inherited {
   let inherited: Inherited;
   const {routeConfig} = route;

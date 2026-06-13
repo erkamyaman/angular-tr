@@ -1,15 +1,15 @@
-# DI in action
+# DI uygulamada
 
-This guide explores additional features of dependency injection in Angular.
+Bu kılavuz, Angular'da bağımlılık enjeksiyonunun (DI) ek özelliklerini inceler.
 
-NOTE: For comprehensive coverage of InjectionToken and custom providers, see the [defining dependency providers guide](guide/di/defining-dependency-providers#injection-tokens).
+NOTE: InjectionToken ve özel sağlayıcıların kapsamlı açıklaması için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injection-tokenlar) bakın.
 
-## Inject the component's DOM element
+## Bileşenin DOM elemanını enjekte etme
 
-Although developers strive to avoid it, some visual effects and third-party tools require direct DOM access.
-As a result, you might need to access a component's DOM element.
+Geliştiriciler genellikle bundan kaçınsa da, bazı görsel efektler ve üçüncü taraf araçlar DOM'a doğrudan erişmenizi gerektirir.
+Bu gibi durumlarda, bir bileşenin DOM elemanına erişmeniz gerekebilir.
 
-Angular exposes the underlying element of a `@Component` or `@Directive` via injection using the `ElementRef` injection token:
+Angular, `ElementRef` token'ını kullanarak bir `@Component` veya `@Directive`'in temel DOM elemanını enjeksiyon yoluyla sunar:
 
 ```ts {highlight:[7]}
 import {Directive, ElementRef, inject} from '@angular/core';
@@ -26,9 +26,9 @@ export class HighlightDirective {
 }
 ```
 
-## Inject the host element's tag name
+## Ana elemanın etiket adını enjekte etme
 
-When you need the tag name of a host element, inject it using the `HOST_TAG_NAME` token.
+Bir ana elemanın etiket adını almak için, `HOST_TAG_NAME` token'ını kullanarak enjekte edin.
 
 ```ts
 import {Directive, HOST_TAG_NAME, inject} from '@angular/core';
@@ -42,36 +42,36 @@ export class RoleButtonDirective {
   onAction() {
     switch (this.tagName) {
       case 'button':
-        // Handle button action
+        // Buton eylemini işle
         break;
       case 'a':
-        // Handle anchor action
+        // Bağlantı eylemini işle
         break;
       default:
-        // Handle other elements
+        // Diğer elemanları işle
         break;
     }
   }
 }
 ```
 
-NOTE: If the host element might not have a tag name (e.g., `ng-container` or `ng-template`), make the injection optional.
+NOTE: Ana elemanın etiket adı olmayabilirse (örneğin `ng-container` veya `ng-template`), enjeksiyonu isteğe bağlı yapın.
 
-## Resolve circular dependencies with a forward reference
+## İleri referans ile döngüsel bağımlılıkları çözme
 
-The order of class declaration matters in TypeScript.
-You can't refer directly to a class until it's been defined.
+TypeScript'te sınıf bildirimlerinin sırası önemlidir.
+Bir sınıfı tanımlamadan önce doğrudan ona referans veremezsiniz.
 
-This isn't usually a problem, especially if you adhere to the recommended _one class per file_ rule.
-But sometimes circular references are unavoidable.
-For example, when class 'A' refers to class 'B' and 'B' refers to 'A', one of them has to be defined first.
+Bu genellikle bir sorun değildir, özellikle önerilen _dosya başına bir sınıf_ kuralına uyarsanız.
+Ancak bazı durumlarda döngüsel referanslar kaçınılmazdır.
+Örneğin, 'A' sınıfı 'B' sınıfına ve 'B' sınıfı da 'A' sınıfına referans verdiğinde, birinin önce tanımlanması gerekir.
 
-The Angular `forwardRef()` function creates an _indirect_ reference that Angular can resolve later.
+Angular `forwardRef()` fonksiyonu, Angular'ın daha sonra çözebileceği _dolaylı_ bir referans oluşturur.
 
-You face a similar problem when a class makes _a reference to itself_.
-For example, in its `providers` array.
-The `providers` array is a property of the `@Component()` decorator function, which must appear before the class definition.
-You can break such circular references by using `forwardRef`.
+Bir sınıfın _kendisine referans vermesi_ gerektiğinde benzer bir sorunla karşılaşırsınız.
+Örneğin, `providers` dizisinde.
+`providers` dizisi, sınıf tanımından önce görünmesi gereken `@Component()` dekoratör fonksiyonunun bir özelliğidir.
+Bu tür döngüsel referanslar `forwardRef` kullanılarak çözülebilir.
 
 ```typescript {header: 'app.component.ts', highlight: [4]}
 providers: [

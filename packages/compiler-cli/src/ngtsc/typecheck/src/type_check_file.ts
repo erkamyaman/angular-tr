@@ -5,22 +5,27 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.dev/license
  */
+import {
+  DomSchemaChecker,
+  generateTypeCheckBlock,
+  OutOfBandDiagnosticRecorder,
+  TcbExpr,
+  TcbGenericContextBehavior,
+  TypeCheckingConfig,
+} from '@angular/compiler';
 import ts from 'typescript';
 
-import {AbsoluteFsPath, join} from '../../file_system';
+import {AbsoluteFsPath} from '../../file_system';
 import {Reference, ReferenceEmitter} from '../../imports';
 import {ClassDeclaration, ReflectionHost} from '../../reflection';
 import {ImportManager} from '../../translator';
-import {TypeCheckBlockMetadata, TypeCheckingConfig} from '../api';
+import {TypeCheckBlockMetadata} from '../api';
 
-import {DomSchemaChecker} from './dom';
 import {Environment} from './environment';
-import {OutOfBandDiagnosticRecorder} from './oob';
 import {ensureTypeCheckFilePreparationImports} from './tcb_util';
-import {generateTypeCheckBlock} from './type_check_block';
 import {adaptTypeCheckBlockMetadata} from './tcb_adapter';
-import {TcbGenericContextBehavior} from './ops/context';
-import {getStatementsBlock, TcbExpr} from './ops/codegen';
+
+export const TCB_FUNCTION_PREFIX = '_tcb';
 
 /**
  * An `Environment` representing the single type-checking file into which most (if not all) Type
@@ -34,12 +39,19 @@ export class TypeCheckFile extends Environment {
   readonly isTypeCheckFile = true;
   private nextTcbId = 1;
   private tcbStatements: string[] = [];
+  private sourceContent: string = '';
+  get hasCopiedSource() {
+    return this.copiedSourceOriginPath !== undefined;
+  }
+
+  setSourceContent(text: string) {
+    this.sourceContent = text;
+  }
 
   constructor(
     readonly fileName: AbsoluteFsPath,
     config: TypeCheckingConfig,
     refEmitter: ReferenceEmitter,
-    reflector: ReflectionHost,
     compilerHost: Pick<ts.CompilerHost, 'getCanonicalFileName'>,
   ) {
     super(
@@ -52,7 +64,6 @@ export class TypeCheckFile extends Environment {
         shouldUseSingleQuotes: () => true,
       }),
       refEmitter,
-      reflector,
       ts.createSourceFile(
         compilerHost.getCanonicalFileName(fileName),
         '',
@@ -65,12 +76,19 @@ export class TypeCheckFile extends Environment {
   addTypeCheckBlock(
     ref: Reference<ClassDeclaration<ts.ClassDeclaration>>,
     meta: TypeCheckBlockMetadata,
-    domSchemaChecker: DomSchemaChecker,
-    oobRecorder: OutOfBandDiagnosticRecorder,
+    domSchemaChecker: DomSchemaChecker<unknown>,
+    oobRecorder: OutOfBandDiagnosticRecorder<unknown>,
     genericContextBehavior: TcbGenericContextBehavior,
+    reflector: ReflectionHost,
   ): void {
-    const fnId = ts.factory.createIdentifier(`_tcb${this.nextTcbId++}`);
-    const {tcbMeta, component} = adaptTypeCheckBlockMetadata(ref, meta, this);
+    const fnId = `${TCB_FUNCTION_PREFIX}${this.nextTcbId++}`;
+    const {tcbMeta, component} = adaptTypeCheckBlockMetadata(
+      ref,
+      meta,
+      this,
+      reflector,
+      genericContextBehavior,
+    );
     const fn = generateTypeCheckBlock(
       this,
       component,
@@ -78,7 +96,6 @@ export class TypeCheckFile extends Environment {
       tcbMeta,
       domSchemaChecker,
       oobRecorder,
-      genericContextBehavior,
     );
     this.tcbStatements.push(fn);
   }
@@ -98,18 +115,28 @@ export class TypeCheckFile extends Environment {
     }
 
     const printer = ts.createPrinter();
-    let source = '';
+    let source = this.sourceContent;
 
     const newImports = importChanges.newImports.get(this.contextFile.fileName);
     if (newImports !== undefined) {
+      if (source.length > 0 && !source.endsWith('\n')) {
+        source += '\n';
+      }
       source += newImports
         .map((i) => printer.printNode(ts.EmitHint.Unspecified, i, this.contextFile))
         .join('\n');
     }
 
     source += '\n';
-    source += getStatementsBlock(this.pipeInstStatements);
-    source += getStatementsBlock(this.typeCtorStatements);
+
+    for (const expr of this.pipeInstStatements) {
+      source += `${expr.print()};\n`;
+    }
+
+    for (const expr of this.typeCtorStatements) {
+      source += `${expr.print()};\n`;
+    }
+
     source += '\n';
 
     for (const stmt of this.tcbStatements) {
@@ -127,9 +154,4 @@ export class TypeCheckFile extends Environment {
   override getPreludeStatements(): TcbExpr[] {
     return [];
   }
-}
-
-export function typeCheckFilePath(rootDirs: AbsoluteFsPath[]): AbsoluteFsPath {
-  const shortest = rootDirs.concat([]).sort((a, b) => a.length - b.length)[0];
-  return join(shortest, '__ng_typecheck__.ts');
 }

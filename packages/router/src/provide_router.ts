@@ -31,7 +31,7 @@ import {
   Provider,
   runInInjectionContext,
   Type,
-  ɵpublishExternalGlobalUtil,
+  ɵpublishNonCoreGlobalUtil,
 } from '@angular/core';
 import {of, Subject} from 'rxjs';
 
@@ -41,7 +41,12 @@ import {RedirectCommand, Routes} from './models';
 import {NAVIGATION_ERROR_HANDLER, NavigationTransitions} from './navigation_transition';
 import {ROUTE_INJECTOR_CLEANUP, routeInjectorCleanup} from './route_injector_cleanup';
 import {Router} from './router';
-import {InMemoryScrollingOptions, ROUTER_CONFIGURATION, RouterConfigOptions} from './router_config';
+import {
+  ComponentInputBindingOptions,
+  InMemoryScrollingOptions,
+  ROUTER_CONFIGURATION,
+  RouterConfigOptions,
+} from './router_config';
 import {ROUTES} from './router_config_loader';
 import {PreloadingStrategy, RouterPreloader} from './router_preloader';
 
@@ -99,9 +104,9 @@ import {
 export function provideRouter(routes: Routes, ...features: RouterFeatures[]): EnvironmentProviders {
   if (typeof ngDevMode === 'undefined' || ngDevMode) {
     // Publish this util when the router is provided so that the devtools can use it.
-    ɵpublishExternalGlobalUtil('ɵgetLoadedRoutes', getLoadedRoutes);
-    ɵpublishExternalGlobalUtil('ɵgetRouterInstance', getRouterInstance);
-    ɵpublishExternalGlobalUtil('ɵnavigateByUrl', navigateByUrl);
+    ɵpublishNonCoreGlobalUtil('ɵgetLoadedRoutes', getLoadedRoutes);
+    ɵpublishNonCoreGlobalUtil('ɵgetRouterInstance', getRouterInstance);
+    ɵpublishNonCoreGlobalUtil('ɵnavigateByUrl', navigateByUrl);
   }
 
   return makeEnvironmentProviders([
@@ -745,7 +750,8 @@ export type ExperimentalAutoCleanupInjectorsFeature =
  *
  * This feature is opt-in and requires `RouteReuseStrategy.shouldDestroyInjector` to return `true`
  * for the routes that should be destroyed. If the `RouteReuseStrategy` uses stored handles, it
- * should also implement `retrieveStoredHandle` to ensure we don't destroy injectors for handles that will be reattached.
+ * should also implement `retrieveStoredRouteHandles` to ensure injectors for handles that will be
+ * reattached are not destroyed.
  *
  * @experimental 21.1
  */
@@ -778,7 +784,8 @@ export type ViewTransitionsFeature = RouterFeature<RouterFeatureKind.ViewTransit
 
 /**
  * Enables binding information from the `Router` state directly to the inputs of the component in
- * `Route` configurations.
+ * `Route` configurations. Can also accept an `ComponentInputBindingOptions` object to set which
+ * sources are allowed to bind.
  *
  * @usageNotes
  *
@@ -811,13 +818,27 @@ export type ViewTransitionsFeature = RouterFeature<RouterFeatureKind.ViewTransit
  * Default values can be provided with a resolver on the route to ensure the value is always present
  * or an input and use an input transform in the component.
  *
+ * Advanced example of how you can disable binding from certain sources:
+ * ```ts
+ * const appRoutes: Routes = [];
+ * bootstrapApplication(AppComponent,
+ *   {
+ *     providers: [
+ *       provideRouter(appRoutes, withComponentInputBinding({queryParams: false}))
+ *     ]
+ *   }
+ * );
+ * ```
+ *
  * @see {@link /guide/components/inputs#input-transforms Input Transforms}
+ * @see {@link ComponentInputBindingOptions}
  * @returns A set of providers for use with `provideRouter`.
  */
-export function withComponentInputBinding(): ComponentInputBindingFeature {
+export function withComponentInputBinding(
+  options: ComponentInputBindingOptions = {},
+): ComponentInputBindingFeature {
   const providers = [
-    RoutedComponentInputBinder,
-    {provide: INPUT_BINDER, useExisting: RoutedComponentInputBinder},
+    {provide: INPUT_BINDER, useFactory: () => new RoutedComponentInputBinder(options)},
   ];
 
   return routerFeature(RouterFeatureKind.ComponentInputBindingFeature, providers);

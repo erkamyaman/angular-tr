@@ -33,6 +33,7 @@ import {
   isConnectedIfLoopBlock,
 } from './r3_control_flow';
 import {createDeferredBlock, isConnectedDeferLoopBlock} from './r3_deferred_blocks';
+import {createContentBlock} from './r3_content_blocks';
 import {I18N_ICU_VAR_PREFIX} from './view/i18n/util';
 
 const BIND_NAME_REGEXP = /^(?:(bind-)|(let-)|(ref-|#)|(on-)|(bindon-)|(@))(.*)$/;
@@ -485,6 +486,10 @@ class HtmlAstToIvyAst implements html.Visitor {
         result = createSwitchBlock(block, this, this.bindingParser);
         break;
 
+      case 'content':
+        result = createContentBlock(block, this);
+        break;
+
       case 'for':
         result = createForLoop(
           block,
@@ -591,10 +596,11 @@ class HtmlAstToIvyAst implements html.Visitor {
         // Note that validation is skipped and property mapping is disabled
         // due to the fact that we need to make sure a given prop is not an
         // input of a directive and directive matching happens at runtime.
+        const isAttrOn = prop.name.toLowerCase().startsWith('attr.on');
         const bep = this.bindingParser.createBoundElementProperty(
           elementName,
           prop,
-          /* skipValidation */ true,
+          /* skipValidation */ !isAttrOn,
           /* mapPropertyName */ false,
         );
         bound.push(t.BoundAttribute.fromBoundElementProperty(bep, i18n));

@@ -1,10 +1,10 @@
-# Whitespace in templates
+# Şablonlarda boşluk
 
-By default, Angular templates do not preserve whitespace that the framework considers unnecessary. This commonly occurs in two situations: whitespace between elements, and collapsible whitespace inside of text.
+Varsayılan olarak, Angular şablonları çerçevenin gereksiz kabul ettiği boşlukları korumaz. Bu genellikle iki durumda gerçekleşir: elemanlar arasındaki boşluk ve metin içindeki daraltılabilir boşluk.
 
-## Whitespace between elements
+## Elemanlar arasındaki boşluk
 
-Most developers prefer to format their templates with newlines and indentation to make the template readable:
+Çoğu geliştirici şablonlarını okunabilir kılmak için yeni satırlar ve girintilerle biçimlendirmeyi tercih eder:
 
 ```html
 <section>
@@ -16,40 +16,40 @@ Most developers prefer to format their templates with newlines and indentation t
 </section>
 ```
 
-This template contains whitespace between all of the elements. The following snippet shows the same HTML with each whitespace character replaced with the hash (`#`) character to highlight how much whitespace is present:
-
-<!-- prettier-ignore>
-```html
-<!-- Total Whitespace: 20 -->
-<section>###<h3>User profile</h3>###<label>#####User name#####<input>###</label>#</section>
-```
-
-Preserving the whitespace as written in the template would result in many unnecessary [text nodes](https://developer.mozilla.org/en-US/docs/Web/API/Text) and increase page rendering overhead. By ignoring this whitespace between elements, Angular performs less work when rendering the template on the page, improving overall performance.
-
-## Collapsible whitespace inside text
-
-When your web browser renders HTML on a page, it collapses multiple consecutive whitespace characters to a single character:
+Bu şablon tüm elemanlar arasında boşluk içerir. Aşağıdaki parça, ne kadar boşluk bulunduğunu vurgulamak için her boşluk karakterinin diyez (`#`) karakteriyle değiştirildiği aynı HTML'i göstermektedir:
 
 <!-- prettier-ignore -->
 ```html
-<!-- What it looks like in the template -->
+<!-- Toplam Boşluk: 20 -->
+<section>###<h3>User profile</h3>###<label>#####User name#####<input>###</label>#</section>
+```
+
+Boşluğu şablonda yazıldığı gibi korumak, birçok gereksiz [metin düğümüne](https://developer.mozilla.org/en-US/docs/Web/API/Text) yol açar ve sayfa işleme yükünü artırır. Elemanlar arasındaki bu boşluğu yok sayarak, Angular şablonu sayfada işlerken daha az iş yapar ve genel performansı iyileştirir.
+
+## Metin içindeki daraltılabilir boşluk
+
+Web tarayıcınız HTML'i sayfada işlerken, art arda gelen birden fazla boşluk karakterini tek bir karaktere daraltır:
+
+<!-- prettier-ignore -->
+```html
+<!-- Şablonda nasıl göründüğü -->
 <p>Hello         world</p>
 ```
 
-In this example, the browser displays only a single space between "Hello" and "world".
+Bu örnekte, tarayıcı "Hello" ile "world" arasında yalnızca tek bir boşluk görüntüler.
 
 ```angular-html
-<!-- What shows up in the browser -->
+<!-- Tarayıcıda ne göründüğü -->
 <p>Hello world</p>
 ```
 
-See [How whitespace is handled by HTML, CSS, and in the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace) for more context on how this works.
+Bu nasıl çalışır hakkında daha fazla bağlam için [Boşluk HTML, CSS ve DOM'da nasıl işlenir](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace) konusuna bakın.
 
-Angular avoids sending these unnecessary whitespace characters to the browser in the first place by collapsing them to a single character when it compiles the template.
+Angular, şablonu derlerken bu gereksiz boşluk karakterlerini tek bir karaktere daraltarak tarayıcıya göndermekten kaçınır.
 
-## Preserving whitespace
+## Boşluğu koruma
 
-You can tell Angular to preserve whitespace in a template by specifying `preserveWhitespaces: true` in the `@Component` decorator for a template.
+Angular'a bir şablondaki boşluğu korumasını, bileşen için `@Component` dekoratöründe `preserveWhitespaces: true` belirterek söyleyebilirsiniz.
 
 ```angular-ts
 @Component({
@@ -61,6 +61,6 @@ You can tell Angular to preserve whitespace in a template by specifying `preserv
 })
 ```
 
-Avoid setting this option unless absolutely necessary. Preserving whitespace can cause Angular to produce significantly more nodes while rendering, slowing down your application.
+Kesinlikle gerekli olmadıkça bu seçeneği ayarlamaktan kaçının. Boşluğu korumak, Angular'ın işleme sırasında önemli ölçüde daha fazla düğüm üretmesine neden olarak uygulamanızı yavaşlatabilir.
 
-You can additionally use a special HTML entity unique to Angular, `&ngsp;`. This entity produces a single space character that's preserved in the compiled output.
+Ek olarak, Angular'a özgü özel bir HTML varlığı olan `&ngsp;` kullanabilirsiniz. Bu varlık, derlenmiş çıktıda korunan tek bir boşluk karakteri üretir.

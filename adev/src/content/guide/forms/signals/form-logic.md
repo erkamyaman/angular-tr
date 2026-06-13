@@ -1,46 +1,46 @@
-# Adding form logic
+# Form mantığı ekleme
 
-Signal Forms allow you to add logic to your form using schemas. Validation logic is covered in the [Validation guide](guide/forms/signals/validation), and this guide discusses other rules available in schemas. You can disable fields conditionally, hide them based on other values, make them readonly, debounce user input, and attach metadata for custom controls.
+Signal Forms, şemalar kullanarak formunuza mantık eklemenize olanak tanır. Doğrulama mantığı [Doğrulama kılavuzunda](guide/forms/signals/validation) ele alınmaktadır ve bu kılavuz şemalarda mevcut olan diğer kuralları tartışır. Alanları koşullu olarak devre dışı bırakabilir, diğer değerlere göre gizleyebilir, salt okunur yapabilir, kullanıcı girdisini geciktirebilir ve özel kontroller için meta veri ekleyebilirsiniz.
 
-This guide shows you how to use rules like `disabled()`, `hidden()`, `readonly()`, `debounce()`, and `metadata()` to control field behavior.
+Bu kılavuz, alan davranışını kontrol etmek için `disabled()`, `hidden()`, `readonly()`, `debounce()` ve `metadata()` gibi kuralların nasıl kullanılacağını gösterir.
 
-## When to add form logic
+## Form mantığı ne zaman eklenmeli
 
-Use rules when field behavior depends on other field values or needs to update reactively. For example:
+Alan davranışı diğer alan değerlerine bağlı olduğunda veya reaktif olarak güncellenmesi gerektiğinde kuralları kullanın. Örneğin:
 
-- A coupon code field that's disabled when the order total is too low
-- An address field that's hidden unless shipping is required
-- A search field that debounces to reduce API calls
+- Sipariş toplamı çok düşük olduğunda devre dışı bırakılan bir kupon kodu alanı
+- Kargo gerekmedikçe gizlenen bir adres alanı
+- API çağrılarını azaltmak için geciktirilen bir arama alanı
 
-## How rules work
+## Kurallar nasıl çalışır
 
-Rules bind reactive logic to specific fields in your form. Most rules accept a reactive logic function as an optional argument. The reactive logic function automatically recomputes whenever the signals it references change, just like a `computed`.
+Kurallar, formunuzdaki belirli alanlara reaktif mantık bağlar. Çoğu koşullu kural, bir `when` fonksiyonu içeren bir seçenekler nesnesi kabul eder. `when` fonksiyonu, referans verdiği sinyaller değiştiğinde otomatik olarak yeniden hesaplanır, tıpkı bir `computed` gibi.
 
 ```ts
 const orderForm = form(this.orderModel, (schemaPath) => {
-  disabled(schemaPath.couponCode, ({valueOf}) => valueOf(schemaPath.total) < 50);
-  //~~~~~~ ~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //rule     path                   reactive logic function
+  disabled(schemaPath.couponCode, {when: ({valueOf}) => valueOf(schemaPath.total) < 50});
+  //~~~~~~ ~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //kural    yol                   reaktif mantık fonksiyonu
 });
 ```
 
-Reactive logic functions receive a `FieldContext` object that provides access to field values and state through helper functions like `valueOf()` and `stateOf()`. It is often destructured to access these helpers directly.
+Reaktif mantık fonksiyonları, `valueOf()` ve `stateOf()` gibi yardımcı fonksiyonlar aracılığıyla alan değerlerine ve durumuna erişim sağlayan bir `FieldContext` nesnesi alır. Bu yardımcılara doğrudan erişmek için genellikle parçalama yapılır.
 
-NOTE: The schema callback parameter (`schemaPath` in these examples) is a `SchemaPathTree` object that provides paths to all fields in your form. You can name this parameter anything you like.
+NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`) formunuzdaki tüm alanlara yollar sağlayan bir `SchemaPathTree` nesnesidir. Bu parametreyi istediğiniz gibi adlandırabilirsiniz.
 
-For complete details on `FieldContext` properties and methods, see the [Validation guide](guide/forms/signals/validation).
+`FieldContext` özellikleri ve yöntemleri hakkında tam ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-## Prevent field updates with `disabled()`
+## `disabled()` ile alan güncellemelerini engelleme
 
-The `disabled()` rule configures a field's disabled state.
+`disabled()` kuralı bir alanın devre dışı durumunu yapılandırır.
 
-It works with the `[formField]` directive to automatically bind the `disabled` attribute based on the field's state, so you don't need to manually add `[disabled]="yourForm.fieldName().disabled()"` to your template.
+Alanın durumuna göre `disabled` niteliğini otomatik olarak bağlamak için `[formField]` direktifiyle çalışır, bu nedenle şablonunuza manuel olarak `[disabled]="yourForm.fieldName().disabled()"` eklemenize gerek yoktur.
 
-NOTE: Disabled fields skip validation - they don't participate in form validation checks. The field's value is preserved but not validated. For details on validation behavior, see the [Validation guide](guide/forms/signals/validation).
+NOTE: Devre dışı alanlar doğrulamayı atlar -- form doğrulama kontrollerine katılmazlar. Alanın değeri korunur ancak doğrulanmaz. Doğrulama davranışı hakkında ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-### Always disabled
+### Her zaman devre dışı
 
-To disable a field permanently, call `disabled()` with just the field path:
+Bir alanı kalıcı olarak devre dışı bırakmak için `disabled()`'ı yalnızca alan yoluyla çağırın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -68,9 +68,9 @@ export class Settings {
 }
 ```
 
-### Conditional disabling
+### Koşullu devre dışı bırakma
 
-To disable a field based on conditions, provide a reactive logic function that returns `true` (disabled) or `false` (enabled):
+Koşullara göre bir alanı devre dışı bırakmak için, `true` (devre dışı) veya `false` (etkin) döndüren bir `when` fonksiyonu sağlayın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -98,16 +98,16 @@ export class Order {
   });
 
   orderForm = form(this.orderModel, (schemaPath) => {
-    disabled(schemaPath.couponCode, ({valueOf}) => valueOf(schemaPath.total) < 50);
+    disabled(schemaPath.couponCode, {when: ({valueOf}) => valueOf(schemaPath.total) < 50});
   });
 }
 ```
 
-In this example, when the order total is less than $50, the coupon code field is disabled.
+Bu örnekte, sipariş toplamı 50$'dan az olduğunda kupon kodu alanı devre dışı bırakılır.
 
-### Disabled reasons
+### Devre dışı bırakma nedenleri
 
-When you disable a field, provide user-facing explanations by returning a string instead of `true`:
+Bir alanı devre dışı bıraktığınızda, `true` yerine bir dize döndürerek kullanıcıya yönelik açıklamalar sağlayın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -143,48 +143,50 @@ export class Order {
   });
 
   orderForm = form(this.orderModel, (schemaPath) => {
-    disabled(schemaPath.couponCode, ({valueOf}) =>
-      valueOf(schemaPath.total) < 50 ? 'Order must be $50 or more to use a coupon' : false,
-    );
+    disabled(schemaPath.couponCode, {
+      when: ({valueOf}) =>
+        valueOf(schemaPath.total) < 50 ? 'Order must be $50 or more to use a coupon' : false,
+    });
   });
 }
 ```
 
-The reactive logic function returns:
+`when` fonksiyonu şunları döndürür:
 
-- A **string** to disable the field with a reason
-- `false` to enable the field (not just any falsy value - use `false` explicitly)
+- Alanı bir nedenle devre dışı bırakmak için bir **dize**
+- Alanı etkinleştirmek için `false` (herhangi bir falsy değer değil - açıkça `false` kullanın)
 
-Access the reasons through the `disabledReasons()` signal on the field state. Each reason has a `message` property containing the string you returned.
+Nedenlere alan durumundaki `disabledReasons()` sinyali aracılığıyla erişin. Her nedenin döndürdüğünüz dizeyi içeren bir `message` özelliği vardır.
 
-#### Multiple disabled reasons
+#### Birden fazla devre dışı bırakma nedeni
 
-You can also call `disabled()` multiple times on the same field, and all of the returned reasons accumulate:
+Aynı alanda `disabled()`'ı birden fazla kez de çağırabilirsiniz ve döndürülen tüm nedenler birikir:
 
 ```angular-ts
 orderForm = form(this.orderModel, (schemaPath) => {
-  disabled(schemaPath.promoCode, ({valueOf}) =>
-    !valueOf(schemaPath.hasAccount) ? 'You must have an account to use promo codes' : false,
-  );
-  disabled(schemaPath.promoCode, ({valueOf}) =>
-    valueOf(schemaPath.total) < 25 ? 'Order must be at least $25' : false,
-  );
+  disabled(schemaPath.promoCode, {
+    when: ({valueOf}) =>
+      !valueOf(schemaPath.hasAccount) ? 'You must have an account to use promo codes' : false,
+  });
+  disabled(schemaPath.promoCode, {
+    when: ({valueOf}) => (valueOf(schemaPath.total) < 25 ? 'Order must be at least $25' : false),
+  });
 });
 ```
 
-If both conditions are true, the field shows both disabled reasons. This pattern is useful for complex availability rules that you want to keep separate.
+Her iki koşul da doğruysa, alan her iki devre dışı nedenini gösterir. Bu kalıp, ayrı tutmak istediğiniz karmaşık kullanılabilirlik kuralları için yararlıdır.
 
-## Configuring `hidden()` state on fields
+## Alanlarda `hidden()` durumunu yapılandırma
 
-The `hidden()` rule configures a field's hidden state. However, this only sets a programmatic state. **You control whether the field appears in the UI**.
+`hidden()` kuralı bir alanın gizli durumunu yapılandırır. Ancak bu yalnızca programatik bir durum ayarlar. **Alanın kullanıcı arayüzünde görünüp görünmeyeceğini siz kontrol edersiniz**.
 
-IMPORTANT: Unlike `disabled` and `readonly`, there is no native DOM property for `hidden` state. The `[formField]` directive does not apply a `hidden` attribute to elements. You must use `@if` or CSS in your template to conditionally render fields based on the `hidden()` state.
+IMPORTANT: `disabled` ve `readonly`'den farklı olarak, `hidden` durumu için yerel bir DOM özelliği yoktur. `[formField]` direktifi öğelere `hidden` niteliği uygulamaz. `hidden()` durumuna göre alanları koşullu olarak oluşturmak için şablonunuzda `@if` veya CSS kullanmalısınız.
 
-NOTE: Like disabled fields, hidden fields also skip validation. See the [Validation guide](guide/forms/signals/validation) for details.
+NOTE: Devre dışı alanlar gibi, gizli alanlar da doğrulamayı atlar. Ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-### Basic field hiding
+### Temel alan gizleme
 
-Use `hidden()` with a reactive logic function that returns `true` (hidden) or `false` (visible):
+`true` (gizli) veya `false` (görünür) döndüren bir `when` fonksiyonuyla `hidden()` kullanın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -214,20 +216,20 @@ export class Profile {
   });
 
   profileForm = form(this.profileModel, (schemaPath) => {
-    hidden(schemaPath.publicUrl, ({valueOf}) => !valueOf(schemaPath.isPublic));
+    hidden(schemaPath.publicUrl, {when: ({valueOf}) => !valueOf(schemaPath.isPublic)});
   });
 }
 ```
 
-## Display uneditable fields with `readonly()`
+## `readonly()` ile düzenlenemez alanları görüntüleme
 
-The `readonly()` rule prevents users from updating a field. The `[FormField]` directive automatically binds this state to the HTML `readonly` attribute, which prevents editing while still allowing users to focus and select text.
+`readonly()` kuralı kullanıcıların bir alanı güncellemesini engeller. `[FormField]` direktifi, bu durumu HTML `readonly` niteliğine otomatik olarak bağlar ve bu, düzenlemeyi engellerken kullanıcıların odaklanmasına ve metin seçmesine izin verir.
 
-NOTE: Readonly fields skip [validation](guide/forms/signals/validation).
+NOTE: Salt okunur alanlar [doğrulamayı](guide/forms/signals/validation) atlar.
 
-### Always readonly
+### Her zaman salt okunur
 
-To make a field permanently readonly, call `readonly()` with just the field path:
+Bir alanı kalıcı olarak salt okunur yapmak için `readonly()`'yi yalnızca alan yoluyla çağırın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -260,11 +262,11 @@ export class Account {
 }
 ```
 
-The `[FormField]` directive automatically binds the `readonly` attribute based on the field's state.
+`[FormField]` direktifi, alanın durumuna göre `readonly` niteliğini otomatik olarak bağlar.
 
-### Conditional readonly
+### Koşullu salt okunur
 
-To make a field readonly based on conditions, provide a reactive logic function:
+Koşullara göre bir alanı salt okunur yapmak için bir `when` fonksiyonu sağlayın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -292,62 +294,62 @@ export class Document {
   });
 
   documentForm = form(this.documentModel, (schemaPath) => {
-    readonly(schemaPath.title, ({valueOf}) => valueOf(schemaPath.isLocked));
+    readonly(schemaPath.title, {when: ({valueOf}) => valueOf(schemaPath.isLocked)});
   });
 }
 ```
 
-When `isLocked` is true, the title field becomes readonly.
+`isLocked` doğru olduğunda, başlık alanı salt okunur olur.
 
-## Choose between hidden, disabled, and readonly
+## hidden, disabled ve readonly arasında seçim yapma
 
-These three configuration functions control field availability in different ways:
+Bu üç yapılandırma fonksiyonu alan kullanılabilirliğini farklı şekillerde kontrol eder:
 
-Choose `hidden()` when the field:
+Alan şu durumlarda `hidden()` seçin:
 
-- Should not appear in the UI at all
-- Is irrelevant to the current form state
-- Example: Shipping address fields when "same as billing" is checked
+- Kullanıcı arayüzünde hiç görünmemeli
+- Mevcut form durumuyla ilgisiz
+- Örnek: "Faturayla aynı" işaretlendiğinde kargo adresi alanları
 
-Choose `disabled()` when the field:
+Alan şu durumlarda `disabled()` seçin:
 
-- Should be visible but not editable
-- Needs to show why it's unavailable (using disabled reasons)
-- Should be excluded from HTML form submission
-- Example: Submit button disabled until form is valid, approval fields disabled for non-admin users
+- Görünür ama düzenlenemez olmalı
+- Neden kullanılamadığını göstermesi gerekiyor (devre dışı nedenleri kullanarak)
+- HTML form gönderiminden hariç tutulmalı
+- Örnek: Form geçerli olana kadar devre dışı gönder düğmesi, yönetici olmayan kullanıcılar için devre dışı onay alanları
 
-Choose `readonly()` when the field:
+Alan şu durumlarda `readonly()` seçin:
 
-- Should be visible but not editable
-- Contains data users need to see, select, or copy
-- Should be included in HTML form submission
-- Example: Order confirmation number, system-generated reference codes
+- Görünür ama düzenlenemez olmalı
+- Kullanıcıların görmesi, seçmesi veya kopyalaması gereken veriler içeriyor
+- HTML form gönderime dahil edilmeli
+- Örnek: Sipariş onay numarası, sistem tarafından oluşturulan referans kodları
 
-All three skip validation and prevent user editing while active. The key differences:
+Üçü de aktifken doğrulamayı atlar ve kullanıcı düzenlemeyi engeller. Temel farklar:
 
-| Feature                          | `hidden()` | `disabled()` | `readonly()` |
-| -------------------------------- | ---------- | ------------ | ------------ |
-| Visible in UI                    | No         | Yes          | Yes          |
-| Users can focus/select           | No         | No           | Yes          |
-| Included in HTML form submission | No         | No           | Yes          |
+| Özellik                              | `hidden()` | `disabled()` | `readonly()` |
+| ------------------------------------ | ---------- | ------------ | ------------ |
+| Kullanıcı arayüzünde görünür         | Hayır      | Evet         | Evet         |
+| Kullanıcılar odaklanabilir/seçebilir | Hayır      | Hayır        | Evet         |
+| HTML form gönderime dahil            | Hayır      | Hayır        | Evet         |
 
-## Delay input operations with `debounce()`
+## `debounce()` ile girdi işlemlerini geciktirme
 
-The `debounce()` rule delays updating the form model. This is useful for performance optimization and reducing unnecessary operations during rapid input.
+`debounce()` kuralı form modelinin güncellenmesini geciktirir. Bu, performans optimizasyonu ve hızlı girdi sırasında gereksiz işlemleri azaltmak için kullanışlıdır.
 
-### What debouncing does
+### Geciktirme ne yapar
 
-Without debouncing, every keystroke immediately updates the form model. This can trigger:
+Geciktirme olmadan, her tuş vuruşu form modelini anında günceller. Bu şunları tetikleyebilir:
 
-- Expensive computed signals that recalculate on every change
-- Validation checks after each character
-- API calls or other side effects tied to the model value
+- Her değişiklikte yeniden hesaplanan pahalı computed sinyaller
+- Her karakterden sonra doğrulama kontrolleri
+- Model değerine bağlı API çağrıları veya diğer yan etkiler
 
-Debouncing delays these updates and reduces unnecessary work.
+Geciktirme bu güncellemeleri erteler ve gereksiz işleri azaltır.
 
-### Basic debouncing
+### Temel geciktirme
 
-You can debounce a field by specifying a delay in milliseconds:
+Milisaniye cinsinden bir gecikme belirterek bir alanı geciktirebilirsiniz:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -376,25 +378,25 @@ export class Search {
 }
 ```
 
-With a 300ms debounce:
+300ms geciktirme ile:
 
-- User types in the input field
-- Form model updates only after 300ms of typing inactivity
-- If user keeps typing, the timer resets with each keystroke
-- Once user pauses for 300ms, the model updates with the final value
+- Kullanıcı girdi alanına yazar
+- Form modeli yalnızca 300ms yazma hareketsizliğinden sonra güncellenir
+- Kullanıcı yazmaya devam ederse, zamanlayıcı her tuş vuruşuyla sıfırlanır
+- Kullanıcı 300ms durduğunda, model son değerle güncellenir
 
-### Timing guarantees
+### Zamanlama garantileri
 
-The `debounce()` function ensures users don't lose data through these mechanisms:
+`debounce()` fonksiyonu, kullanıcıların bu mekanizmalar aracılığıyla veri kaybetmemesini sağlar:
 
-- **When marked as touched:** The value syncs immediately, aborting any pending debounce delay. This happens when the field loses focus (blur) or when explicitly marked as touched.
-- **On form submission:** All fields are marked as touched before validation, which ensures all debounced values sync immediately.
+- **Dokunulmuş olarak işaretlendiğinde:** Değer anında senkronize olur ve bekleyen geciktirme gecikmesini iptal eder. Bu, alan odağını kaybettiğinde (blur) veya açıkça dokunulmuş olarak işaretlendiğinde gerçekleşir.
+- **Form gönderiminde:** Tüm alanlar doğrulamadan önce dokunulmuş olarak işaretlenir ve bu, tüm geciktirilmiş değerlerin anında senkronize olmasını sağlar.
 
-This means users can type quickly, tab away, or submit the form without waiting for debounce delays to expire.
+Bu, kullanıcıların geciktirme gecikmelerinin sona ermesini beklemeden hızlı yazabilecekleri, sekmeyle geçebilecekleri veya formu gönderebilecekleri anlamına gelir.
 
-### Custom debounce logic
+### Özel geciktirme mantığı
 
-For advanced control, provide a debouncer function that controls when to synchronize the value. This function is called every time the control value is updated and can return either `undefined` to synchronize immediately, or a Promise that prevents synchronization until it resolves:
+Gelişmiş kontrol için, değerin ne zaman senkronize edileceğini kontrol eden bir geciktirici fonksiyon sağlayın. Bu fonksiyon, kontrol değeri her güncellendiğinde çağrılır ve anında senkronize etmek için `undefined` veya çözülene kadar senkronizasyonu engelleyen bir Promise döndürebilir:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -417,7 +419,7 @@ export class Search {
 
   searchForm = form(this.searchModel, (schemaPath) => {
     debounce(schemaPath.query, () => {
-      // Return a promise that resolves after 500ms
+      // 500ms sonra çözümlenen bir promise döndür
       return new Promise<void>((resolve) => {
         setTimeout(() => resolve(), 500);
       });
@@ -426,52 +428,48 @@ export class Search {
 }
 ```
 
-The debouncer function can return:
+Geciktirici fonksiyon şunları döndürebilir:
 
-- `undefined` to synchronize the value immediately
-- A `Promise<void>` that prevents synchronization until it resolves
+- Değeri anında senkronize etmek için `undefined`
+- Çözülene kadar senkronizasyonu engelleyen bir `Promise<void>`
 
-Use cases for custom debounce logic:
+Özel geciktirme mantığı için kullanım durumları:
 
-- Implementing custom timing logic beyond simple delays
-- Coordinating synchronization with external events
-- Conditional debouncing based on application state
+- Basit gecikmelerin ötesinde özel zamanlama mantığı uygulama
+- Senkronizasyonu harici olaylarla koordine etme
+- Uygulama durumuna göre koşullu geciktirme
 
-### When to use debouncing
+### Geciktirme ne zaman kullanılmalı
 
-Debouncing is most useful when:
+Geciktirme en çok şu durumlarda kullanışlıdır:
 
-- You have expensive computed signals that depend on the field value
-- The field triggers API calls or other side effects
-- You want to reduce validation overhead during rapid typing
-- Performance profiling shows model updates are causing slowdowns
+- Alan değerine bağlı pahalı computed sinyalleriniz varsa
+- Alan API çağrıları veya diğer yan etkileri tetikliyorsa
+- Hızlı yazma sırasında doğrulama yükünü azaltmak istiyorsanız
+- Performans profilleme, model güncellemelerinin yavaşlamalara neden olduğunu gösteriyorsa
 
-Don't use debouncing if:
+Şu durumlarda geciktirme kullanmayın:
 
-- The field needs immediate updates for good UX (such as calculator inputs)
-- The performance benefit is negligible
-- Users expect real-time feedback
+- Alan iyi kullanıcı deneyimi için anında güncellemelere ihtiyaç duyuyorsa (hesap makinesi girdileri gibi)
+- Performans faydası ihmal edilebilirse
+- Kullanıcılar gerçek zamanlı geri bildirim bekliyorsa
 
-## Associate data with a field using `metadata()`
+## `metadata()` kullanarak bir alana veri ilişkilendirme
 
-Metadata allows you to attach computed information to fields that can be read by [custom controls](guide/forms/signals/custom-controls) or form logic. Common use cases include HTML input attributes (min, max, maxlength, pattern), custom UI hints (placeholder text, help text), and accessibility information.
+Meta veri, bir alana reaktif veri ekler. Doğrulama kuralları bu sistemi dahili olarak kullanır ve yardım metni, yapılandırma veya hesaplanmış görüntüleme değerleri gibi uygulamaya özgü bilgiler için kendi anahtarlarınızı yayınlayabilirsiniz.
 
-### Pre-defined metadata keys
+Signal Forms, yerleşik doğrulayıcıların otomatik olarak doldurduğu altı önceden tanımlanmış meta veri anahtarı sağlar:
 
-Signal Forms provides six pre-defined metadata keys that validation rules automatically populate:
+| Anahtar      | Dolduran      | Okuma yolu            |
+| ------------ | ------------- | --------------------- |
+| `REQUIRED`   | `required()`  | `field().required()`  |
+| `MIN`        | `min()`       | `field().min()`       |
+| `MAX`        | `max()`       | `field().max()`       |
+| `MIN_LENGTH` | `minLength()` | `field().minLength()` |
+| `MAX_LENGTH` | `maxLength()` | `field().maxLength()` |
+| `PATTERN`    | `pattern()`   | `field().pattern()`   |
 
-- `REQUIRED` - Whether the field is required (`boolean`)
-- `MIN` - Minimum numeric value (`number | undefined`)
-- `MAX` - Maximum numeric value (`number | undefined`)
-- `MIN_LENGTH` - Minimum string/array length (`number | undefined`)
-- `MAX_LENGTH` - Maximum string/array length (`number | undefined`)
-- `PATTERN` - Regular expression pattern (`RegExp[]` - array to support multiple patterns)
-
-When you use validation rules like `required()` or `min()`, they automatically set the corresponding metadata. The `metadata()` function provides a way to publish additional data associated with a field.
-
-### Reading pre-defined metadata
-
-The `[FormField]` directive automatically binds built-in metadata to HTML attributes. You can also read metadata directly using the built-in accessors on field state:
+`[formField]` direktifi bunlardan beşini (`REQUIRED`, `MIN`, `MAX`, `MIN_LENGTH` ve `MAX_LENGTH`) yerel bir form kontrolündeki ilgili HTML niteliğine otomatik olarak bağlar. `PATTERN` istisnadır, çünkü Signal Forms alan başına birden fazla kalıbı destekler ancak HTML `pattern` niteliği yalnızca tek bir düzenli ifade kabul eder.
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -482,7 +480,7 @@ import {form, FormField, required, min, max} from '@angular/forms/signals';
   imports: [FormField],
   template: `
     <label>
-      Age (between {{ ageForm.age().min() }} and {{ ageForm.age().max() }})
+      Age (between {{ ageForm.age().min?.() }} and {{ ageForm.age().max?.() }})
       <input type="number" [formField]="ageForm.age" />
     </label>
 
@@ -492,9 +490,7 @@ import {form, FormField, required, min, max} from '@angular/forms/signals';
   `,
 })
 export class Age {
-  ageModel = signal({
-    age: 0,
-  });
+  ageModel = signal({age: 0});
 
   ageForm = form(this.ageModel, (schemaPath) => {
     required(schemaPath.age);
@@ -504,138 +500,9 @@ export class Age {
 }
 ```
 
-The `[formField]` directive automatically binds `required`, `min`, and `max` attributes to the input. You can read these values using `field().required()`, `field().min()`, and `field().max()` for display or logic purposes.
+### Reaktif meta veri
 
-### Setting metadata manually
-
-Use the `metadata()` function to set metadata values when validation rules don't automatically set them. For built-in metadata like `MIN` and `MAX`, prefer using the validation rules:
-
-```angular-ts
-import {Component, signal} from '@angular/core';
-import {form, FormField, min, max, validate} from '@angular/forms/signals';
-
-@Component({
-  selector: 'app-custom',
-  imports: [formField],
-  template: ` <input [formField]="customForm.score" /> `,
-})
-export class Custom {
-  customModel = signal({score: 0});
-
-  customForm = form(this.customModel, (schemaPath) => {
-    // Use built-in validation rules - they automatically set metadata
-    min(schemaPath.score, 0);
-    max(schemaPath.score, 100);
-
-    // Add custom validation logic if needed
-    validate(schemaPath.score, ({value}) => {
-      const score = value();
-      // Custom validation beyond min/max (e.g., must be multiple of 5)
-      if (score % 5 !== 0) {
-        return {kind: 'increment', message: 'Score must be a multiple of 5'};
-      }
-      return null;
-    });
-  });
-}
-```
-
-### Creating custom metadata keys
-
-Create your own metadata keys for application-specific information:
-
-```angular-ts
-import {createMetadataKey, metadata} from '@angular/forms/signals';
-
-// Define at module level (not inside components)
-export const PLACEHOLDER = createMetadataKey<string>();
-export const HELP_TEXT = createMetadataKey<string>();
-
-// Use in schema
-form(model, (schemaPath) => {
-  metadata(schemaPath.email, PLACEHOLDER, () => 'user@example.com');
-  metadata(schemaPath.email, HELP_TEXT, () => 'We will never share your email');
-});
-
-// Read in component
-const placeholderText = myForm.email().metadata(PLACEHOLDER);
-const helpText = myForm.email().metadata(HELP_TEXT);
-```
-
-By default, custom metadata keys use a "last write wins" strategy - if you call `metadata()` multiple times with the same key, only the last value is kept.
-
-**Important:** Always define metadata keys at module level, never inside components. Metadata keys rely on object identity, and recreating them loses that identity.
-
-### Accumulating metadata with reducers
-
-By default, calling `metadata()` multiple times with the same key uses "last write wins" - only the final value is kept. To accumulate values instead, pass a reducer to `createMetadataKey()`:
-
-```angular-ts
-import {createMetadataKey, metadata, MetadataReducer} from '@angular/forms/signals';
-
-// Create a key that accumulates values into an array
-export const HINTS = createMetadataKey<string, string[]>(MetadataReducer.list());
-
-// Multiple calls accumulate values
-form(model, (schemaPath) => {
-  metadata(schemaPath.password, HINTS, () => 'At least 8 characters');
-  metadata(schemaPath.password, HINTS, () => 'Include a number');
-  metadata(schemaPath.password, HINTS, () => 'Include a special character');
-});
-
-// Result: Signal containing the accumulated array
-const passwordHints = passwordForm.password().metadata(HINTS)();
-// ['At least 8 characters', 'Include a number', 'Include a special character']
-```
-
-Angular provides built-in reducers through `MetadataReducer`:
-
-- `MetadataReducer.list()` - Accumulates values into an array
-- `MetadataReducer.min()` - Keeps the minimum value
-- `MetadataReducer.max()` - Keeps the maximum value
-- `MetadataReducer.or()` - Logical OR of boolean values
-- `MetadataReducer.and()` - Logical AND of boolean values
-
-### Managed metadata keys
-
-Use `createManagedMetadataKey()` when you need to compute a new value from the accumulated result. The transform function receives a signal of the reduced value and returns the computed result:
-
-```angular-ts
-import {createManagedMetadataKey, metadata, MetadataReducer} from '@angular/forms/signals';
-
-// Accumulate hints and compute additional data from the result
-export const HINTS = createManagedMetadataKey(
-  (signal) =>
-    computed(() => {
-      const hints = signal();
-      return {
-        messages: hints,
-        count: hints?.length ?? 0,
-      };
-    }),
-  MetadataReducer.list(),
-);
-
-// Multiple calls accumulate values
-form(model, (schemaPath) => {
-  metadata(schemaPath.password, HINTS, () => 'At least 8 characters');
-  metadata(schemaPath.password, HINTS, () => 'Include a number');
-  metadata(schemaPath.password, HINTS, () => 'Include a special character');
-});
-
-// Result: Signal with transformed value
-const passwordHints = passwordForm.password().metadata(HINTS)();
-// { messages: ['At least 8 characters', 'Include a number', 'Include a special character'], count: 3 }
-```
-
-The managed metadata key takes two arguments:
-
-1. **Transform function** - Computes a new value from the accumulated result (receives a signal of the reduced value)
-2. **Reducer** - Determines how values accumulate (optional - defaults to "last write wins")
-
-### Reactive metadata
-
-Make metadata reactive to other field values:
+Doğrulama kuralları, kısıtlamalarını diğer alanlardan türetebilir ve böylece yayınlanan meta veriyi reaktif hale getirebilir:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -643,7 +510,7 @@ import {form, FormField, max} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-inventory',
-  imports: [formField],
+  imports: [FormField],
   template: `
     <label>
       Item
@@ -654,12 +521,8 @@ import {form, FormField, max} from '@angular/forms/signals';
     </label>
 
     <label>
-      Quantity (max: {{ inventoryForm.quantity().max() }})
-      <input
-        type="number"
-        [formField]="inventoryForm.quantity"
-        [max]="inventoryForm.quantity().max()"
-      />
+      Quantity (max: {{ inventoryForm.quantity().max?.() }})
+      <input type="number" [formField]="inventoryForm.quantity" />
     </label>
   `,
 })
@@ -678,71 +541,26 @@ export class Inventory {
 }
 ```
 
-The `max()` validation rule sets the `MAX` metadata reactively based on the selected item. This demonstrates how validation rules can have conditional values that change when other fields update.
+`max()` doğrulama kuralı, seçilen öğeye göre `MAX` meta verisini reaktif olarak ayarlar, böylece `field().max()`'ı okuyan herhangi bir şablon veya kontrol, öğe değiştiğinde güncellenir.
 
-### Using metadata in custom controls
+Özel anahtarların nasıl tanımlanacağı, katkıların indirgeyicilerle nasıl birleştirileceği ve yaşam döngüsü farkındalığına sahip nesneler için yönetilen meta verinin nasıl kullanılacağı dahil olmak üzere daha derin bir kapsam için [Alan meta verisi kılavuzuna](guide/forms/signals/field-metadata) bakın.
 
-Custom controls can read metadata to configure their HTML attributes and behavior:
+## Kuralları birleştirme
 
-```angular-ts
-import {Component, input, computed, model} from '@angular/core';
-import {FormValueControl, Field, PLACEHOLDER} from '@angular/forms/signals';
+Aynı alana birden fazla kural uygulayabilir ve form durumuna göre tüm kural gruplarını uygulamak için koşullu mantık kullanabilirsiniz.
 
-@Component({
-  selector: 'custom-input',
-  template: `
-    <input
-      type="number"
-      [value]="state().value()"
-      (input)="state().value.set(($event.target as HTMLInputElement).valueAsNumber)"
-      [min]="state().min()"
-      [max]="state().max()"
-      [required]="state().required()"
-      [placeholder]="placeholderText()"
-    />
-  `,
-})
-export class CustomInput implements FormValueControl<number> {
-  // Bind to the form field.
-  formField = input.required<Field<number>>();
+### Bir alanda birden fazla kural
 
-  // Compute the current field state.
-  state = computed(() => this.formField()());
-
-  // Required property of the FormValueControl interface.
-  value = model(0);
-
-  placeholderText = computed(() => this.state().metadata(PLACEHOLDER)() ?? '');
-}
-```
-
-This pattern allows custom controls to automatically configure themselves based on the validation rules and metadata defined in the schema.
-
-TIP: For more information on creating custom controls, see the [Custom Controls guide](guide/forms/signals/custom-controls).
-
-## Combining rules
-
-You can apply multiple rules to the same field, and you can use conditional logic to apply entire groups of rules based on form state.
-
-### Multiple rules on one field
-
-Apply multiple rules to configure all aspects of a field's behavior:
+Bir alanın davranışının tüm yönlerini yapılandırmak için birden fazla kural uygulayın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
-import {
-  form,
-  FormField,
-  disabled,
-  hidden,
-  debounce,
-  metadata,
-  PLACEHOLDER,
-} from '@angular/forms/signals';
+import {form, FormField, disabled, hidden, debounce, metadata} from '@angular/forms/signals';
+import {PLACEHOLDER} from './metadata-keys';
 
 @Component({
   selector: 'app-promo',
-  imports: [formField],
+  imports: [FormField],
   template: `
     @if (!promoForm.promoCode().hidden()) {
       <label>
@@ -760,26 +578,28 @@ export class Promo {
   });
 
   promoForm = form(this.promoModel, (schemaPath) => {
-    disabled(schemaPath.promoCode, ({valueOf}) =>
-      !valueOf(schemaPath.hasAccount) ? 'You must have an account' : false,
-    );
-    hidden(schemaPath.promoCode, ({valueOf}) => valueOf(schemaPath.subscriptionType) === 'free');
+    disabled(schemaPath.promoCode, {
+      when: ({valueOf}) => (!valueOf(schemaPath.hasAccount) ? 'You must have an account' : false),
+    });
+    hidden(schemaPath.promoCode, {
+      when: ({valueOf}) => valueOf(schemaPath.subscriptionType) === 'free',
+    });
     debounce(schemaPath.promoCode, 300);
     metadata(schemaPath.promoCode, PLACEHOLDER, () => 'Enter promo code');
   });
 }
 ```
 
-These rules work together:
+Bu kurallar birlikte çalışır:
 
-- Hidden takes precedence - if the field is hidden, disabled state doesn't matter
-- Disabled prevents editing regardless of readonly state
-- Debouncing affects model updates regardless of other state
-- Metadata is independent and always available
+- Gizli öncelik alır - alan gizliyse devre dışı durumunun önemi yoktur
+- Devre dışı, salt okunur durumdan bağımsız olarak düzenlemeyi engeller
+- Geciktirme, diğer durumdan bağımsız olarak model güncellemelerini etkiler
+- Meta veri bağımsızdır ve her zaman kullanılabilir
 
-### Conditional logic with applyWhen
+### applyWhen ile koşullu mantık
 
-Use `applyWhen()` to conditionally apply entire groups of rules:
+Tüm kural gruplarını koşullu olarak uygulamak için `applyWhen()` kullanın:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';
@@ -787,7 +607,7 @@ import {form, FormField, applyWhen, required, pattern} from '@angular/forms/sign
 
 @Component({
   selector: 'app-address',
-  imports: [formField],
+  imports: [FormField],
   template: `
     <label>
       Country
@@ -814,7 +634,7 @@ export class Address {
       schemaPath,
       ({valueOf}) => valueOf(schemaPath.country) === 'US',
       (schemaPath) => {
-        // Only applied when country is US
+        // Yalnızca ülke US olduğunda uygulanır
         required(schemaPath.zipCode);
         pattern(schemaPath.zipCode, /^\d{5}(-\d{4})?$/);
       },
@@ -823,20 +643,21 @@ export class Address {
 }
 ```
 
-The `applyWhen()` function receives:
+`applyWhen()` fonksiyonu şunları alır:
 
-1. A path to apply logic to (often the root form path)
-2. A reactive logic function that returns `true` (apply) or `false` (don't apply)
-3. A schema function that defines the conditional rules
+1. Mantık uygulanacak yol (genellikle kök form yolu)
+2. `true` (uygula) veya `false` (uygulama) döndüren reaktif mantık fonksiyonu
+3. Koşullu kuralları tanımlayan şema fonksiyonu
 
-The conditional rules only run when the condition is true. This is useful for complex forms where validation rules or behavior changes based on user choices.
+Koşullu kurallar yalnızca koşul doğru olduğunda çalışır. Bu, doğrulama kurallarının veya davranışın kullanıcı seçimlerine göre değiştiği karmaşık formlar için kullanışlıdır.
 
-### Reusable schema functions
+### Yeniden kullanılabilir şema fonksiyonları
 
-Extract common rule configurations into reusable functions:
+Yaygın kural yapılandırmalarını yeniden kullanılabilir fonksiyonlara çıkarın:
 
-```angular-ts
-import {SchemaPath, debounce, metadata, maxLength, PLACEHOLDER} from '@angular/forms/signals';
+```ts
+import {SchemaPath, debounce, metadata, maxLength} from '@angular/forms/signals';
+import {PLACEHOLDER} from './metadata-keys';
 
 function emailFieldConfig(path: SchemaPath<string>) {
   debounce(path, 300);
@@ -844,7 +665,7 @@ function emailFieldConfig(path: SchemaPath<string>) {
   maxLength(path, 255);
 }
 
-// Use in multiple forms
+// Birden fazla formda kullanın
 const contactForm = form(contactModel, (schemaPath) => {
   emailFieldConfig(schemaPath.email);
   emailFieldConfig(schemaPath.alternateEmail);
@@ -855,12 +676,12 @@ const registrationForm = form(registrationModel, (schemaPath) => {
 });
 ```
 
-This pattern is useful when you have standard field configurations that you use across multiple forms in your application.
+Bu kalıp, uygulamanızda birden fazla formda kullandığınız standart alan yapılandırmalarınız olduğunda yararlıdır.
 
-## Next steps
+## Sonraki adımlar
 
-To learn more about Signal Forms, check out these related guides:
+Signal Forms hakkında daha fazla bilgi edinmek için şu ilgili kılavuzlara göz atın:
 
-- [Field State Management](guide/forms/signals/field-state-management) - Learn how to use the state signals created by these functions in your templates and component logic
-- [Validation](guide/forms/signals/validation) - Learn about validation rules and error handling
-- [Custom Controls](guide/forms/signals/custom-controls) - Learn how custom controls can read metadata and state to configure themselves automatically
+- [Field State Management](guide/forms/signals/field-state-management) - Bu fonksiyonlar tarafından oluşturulan durum sinyallerini şablonlarınızda ve bileşen mantığınızda nasıl kullanacağınızı öğrenin
+- [Validation](guide/forms/signals/validation) - Doğrulama kuralları ve hata yönetimi hakkında bilgi edinin
+- [Custom Controls](guide/forms/signals/custom-controls) - Özel kontrollerin kendilerini otomatik olarak yapılandırmak için meta verileri ve durumu nasıl okuyabileceğini öğrenin

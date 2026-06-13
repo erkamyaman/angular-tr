@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {ChangeDetectionStrategy, Component, signal, WritableSignal} from '@angular/core';
+import {Component, signal, WritableSignal} from '@angular/core';
 import {IconComponent} from '@angular/docs';
 import {RouterLink} from '@angular/router';
 
@@ -27,14 +27,13 @@ interface SimulationCard {
   imports: [RouterLink, IconComponent],
   templateUrl: './hydration-example.html',
   styleUrls: ['./hydration-example.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HydrationExample {
   latency = signal(500);
   progress = signal(0);
   currentState = signal<
-    'Server-Side Rendering...' | 'Initial Paint' | 'Loading Bundle' | 'Hydrated'
-  >('Server-Side Rendering...');
+    'Sunucu Tarafı Render...' | 'İlk Boyama' | 'Bundle Yükleniyor' | 'Hydrated'
+  >('Sunucu Tarafı Render...');
   isInteractive = signal(false);
   eventQueue = signal<string[]>([]);
   isSimulationRunning = signal(false);
@@ -45,8 +44,8 @@ export class HydrationExample {
     penddingEvents: 0,
     isHydrated: false,
     isHydrating: true,
-    title: 'Eager Module',
-    description: 'Part of initial bundle.',
+    title: 'Eager Modül',
+    description: "İlk bundle'ın parçası.",
   });
   card2 = signal<SimulationCard>({
     id: 2,
@@ -54,8 +53,8 @@ export class HydrationExample {
     penddingEvents: 0,
     isHydrated: false,
     isHydrating: true,
-    title: 'Eager Module',
-    description: 'Part of initial bundle.',
+    title: 'Eager Modül',
+    description: "İlk bundle'ın parçası.",
   });
   card3 = signal<SimulationCard>({
     id: 3,
@@ -65,8 +64,8 @@ export class HydrationExample {
     isHydrating: false,
     strategy: 'on-interaction',
     syntax: '@defer (hydrate on interaction)',
-    title: 'Interaction Module',
-    description: 'Logic loads on click.',
+    title: 'Etkileşim Modülü',
+    description: 'Tıklamada yüklenir.',
   });
   card4 = signal<SimulationCard>({
     id: 4,
@@ -76,8 +75,8 @@ export class HydrationExample {
     isHydrating: false,
     strategy: 'on-timer',
     syntax: '@defer (hydrate on timer(2s))',
-    title: 'Timer Module',
-    description: 'Hydrates after 2s delay.',
+    title: 'Zamanlayıcı Modülü',
+    description: '2 saniye gecikmeden sonra hydrate olur.',
   });
 
   constructor() {
@@ -87,7 +86,7 @@ export class HydrationExample {
   protected async startLifecycle() {
     if (this.isSimulationRunning()) return;
     this.isSimulationRunning.set(true);
-    this.currentState.set('Server-Side Rendering...');
+    this.currentState.set('Sunucu Tarafı Render...');
     this.progress.set(0);
     this.isInteractive.set(false);
     this.eventQueue.set([]);
@@ -107,12 +106,12 @@ export class HydrationExample {
 
     await this.wait(1000);
 
-    this.currentState.set('Initial Paint');
+    this.currentState.set('İlk Boyama');
     this.progress.set(20);
 
     await this.wait(300);
 
-    this.currentState.set('Loading Bundle');
+    this.currentState.set('Bundle Yükleniyor');
     let currentP = 20;
     const interval = setInterval(
       () => {
@@ -138,7 +137,7 @@ export class HydrationExample {
     const pendingEvents = this.card1().penddingEvents + this.card2().penddingEvents;
     await this.wait(800);
     if (pendingEvents > 0) {
-      this.logEvent(`Replaying ${pendingEvents} queued event(s)...`);
+      this.logEvent(`${pendingEvents} sıradaki olay yeniden oynatılıyor...`);
       this.processPendingEvents(this.card1);
       this.processPendingEvents(this.card2);
     }
@@ -152,13 +151,13 @@ export class HydrationExample {
     await this.wait(2000);
 
     if (!this.card4().isHydrated) {
-      this.logEvent(`Timer fired: Hydrating Module#4`);
+      this.logEvent(`Zamanlayıcı tetiklendi: Modül#4 hydrate ediliyor`);
       cardSignal.update((c) => ({...c, isHydrating: true}));
       await this.wait(800);
       this.card4.update((c) => ({...c, isHydrating: false, isHydrated: true}));
 
       if (cardSignal().penddingEvents > 0) {
-        this.logEvent(`Replaying ${cardSignal().penddingEvents} queued event(s)...`);
+        this.logEvent(`${cardSignal().penddingEvents} sıradaki olay yeniden oynatılıyor...`);
         await this.wait(600);
         this.processPendingEvents(cardSignal);
       }
@@ -174,12 +173,12 @@ export class HydrationExample {
 
     if (card().strategy === 'on-interaction' && !card().isHydrated) {
       if (!card().isHydrating) {
-        this.logEvent(`Manual trigger: Hydrating Module#${card().id}`);
-        this.logEvent(`Queued click for Module#${card().id}`);
+        this.logEvent(`Manuel tetikleme: Modül#${card().id} hydrate ediliyor`);
+        this.logEvent(`Modül#${card().id} için tıklama sıraya alındı`);
         card.update((c) => ({...c, isHydrating: true, penddingEvents: 1}));
         await this.wait(600);
         if (card().penddingEvents > 0) {
-          this.logEvent(`Replaying ${card().penddingEvents} queued event(s)...`);
+          this.logEvent(`${card().penddingEvents} sıradaki olay yeniden oynatılıyor...`);
         }
         this.processPendingEvents(card);
         card.update((c) => ({...c, isHydrating: false, isHydrated: true}));
@@ -203,7 +202,7 @@ export class HydrationExample {
 
   private async queueClick(card: WritableSignal<SimulationCard>) {
     card.update((c) => ({...c, penddingEvents: c.penddingEvents + 1}));
-    this.logEvent(`Queued click for Module#${card().id}`);
+    this.logEvent(`Modül#${card().id} için tıklama sıraya alındı`);
   }
 
   private processAction(card: WritableSignal<SimulationCard>) {

@@ -6,5 +6,5 @@
     "src/app/app.css"
   ],
   "type": "editor",
-  "title": "Passing data to components with input signals"
+  "title": "Giriş sinyalleriyle bileşenlere veri aktarma"
 }

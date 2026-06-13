@@ -36,6 +36,15 @@ $code-font-size: 0.875rem;
     }
   }
 
+  .shiki.line.cli {
+    span {
+      color: var(--quaternary-contrast);
+      font-family: var(--inter-font);
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+
   .docs-light-mode .shiki {
     color: var(--shiki-light);
     background-color: var(--shiki-light-bg);
@@ -46,7 +55,6 @@ $code-font-size: 0.875rem;
       /* Optional, if you also want font styles */
       font-style: var(--shiki-light-font-style);
       font-weight: var(--shiki-light-font-weight);
-      text-decoration: var(--shiki-light-text-decoration);
     }
 
     .shiki-ln-line-highlighted,
@@ -72,26 +80,11 @@ $code-font-size: 0.875rem;
     &:not(pre *) {
       position: relative;
       padding: 0 0.3rem;
-      // Fallback for older browsers
-      background: #e62600;
-      background: var(--red-to-orange-horizontal-gradient);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
+      background: var(--subtle-purple);
+      color: var(--hot-pink);
       max-width: max-content;
+      border-radius: 0.25rem;
       width: 100%;
-      display: inline-block;
-
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--subtle-purple);
-        border-radius: 0.25rem;
-        z-index: -1;
-      }
 
       a:not(.docs-anchor) > & {
         position: relative;
@@ -235,11 +228,14 @@ $code-font-size: 0.875rem;
     border-radius: 0.25rem;
     cursor: pointer;
     z-index: var(--z-index-icon);
+    opacity: 0;
+    pointer-events: none;
     background-color: var(--octonary-contrast);
     border: 1px solid var(--senary-contrast);
     transition:
       background-color 0.3s ease,
-      border-color 0.3s ease;
+      border-color 0.3s ease,
+      opacity 0.3s ease;
 
     .docs-icon {
       transition: opacity 0.3s ease-out;
@@ -263,6 +259,9 @@ $code-font-size: 0.875rem;
     }
 
     &.docs-copy-source-code-button-success {
+      opacity: 1;
+      pointer-events: auto;
+
       .docs-copy {
         opacity: 0;
       }
@@ -277,6 +276,32 @@ $code-font-size: 0.875rem;
           fill: var(--primary-contrast);
         }
       }
+    }
+  }
+
+  .docs-code:hover,
+  .docs-code:focus-within,
+  .docs-example-viewer-code-wrapper:hover,
+  .docs-example-viewer-code-wrapper:focus-within {
+    > button[docs-copy-source-code] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  button[docs-copy-source-code]:focus-visible,
+  button[docs-copy-source-code].docs-copy-source-code-button-failed {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .docs-code:has(.docs-code-header) {
+    button[docs-copy-source-code] {
+      top: 0.45rem;
+    }
+
+    .docs-code-header {
+      padding-inline-end: 3rem;
     }
   }
 

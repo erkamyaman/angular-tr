@@ -18,7 +18,7 @@ import {
   type ValidationErrors,
   type ValidatorFn,
 } from '@angular/forms';
-import type {FieldState} from '../api/types';
+import type {ReadonlyFieldState} from '../api/types';
 
 // TODO: Also consider supporting (if possible):
 // - hasError
@@ -36,7 +36,7 @@ import type {FieldState} from '../api/types';
  * because it confuses the internal JS minifier which can cause collisions in field names.
  */
 interface CombinedControl {
-  value: any;
+  value: unknown;
   valid: boolean;
   invalid: boolean;
   touched: boolean;
@@ -61,12 +61,13 @@ interface CombinedControl {
  * equivalent in signal forms.
  */
 export class InteropNgControl implements CombinedControl {
-  constructor(protected field: () => FieldState<unknown>) {}
+  constructor(protected field: () => ReadonlyFieldState<unknown>) {}
 
   readonly control: AbstractControl<any, any> = this as unknown as AbstractControl<any, any>;
 
-  get value(): any {
-    return this.field().value();
+  get value(): unknown {
+    // CVA controls are not aware of user debouncing and will expect `NgControl.value` to reflect their latest writes.
+    return this.field().controlValue();
   }
 
   get valid(): boolean {

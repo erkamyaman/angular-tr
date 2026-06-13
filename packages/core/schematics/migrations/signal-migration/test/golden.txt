@@ -1212,6 +1212,24 @@ import {Component, input} from '@angular/core';
 export class WithConcatTemplate {
   readonly bla = input(true);
 }
+@@@@@@ template_icu.ts @@@@@@
+
+// tslint:disable
+
+import {Component, input} from '@angular/core';
+
+@Component({
+  template: `
+    {foo(), plural,
+      =0 {{bar(), plural, =0 {zero} other {zero, <b>bar is {{ bar() }}</b>}}}
+      other {foo is {{ foo() }}}
+    }
+  `,
+})
+export class MyComp {
+  readonly foo = input(0);
+  readonly bar = input(0);
+}
 @@@@@@ template_ng_if.ts @@@@@@
 
 // tslint:disable
@@ -1256,6 +1274,24 @@ export class MyComp {
   @Input() third = true;
   readonly fourth = input(true);
   readonly fifth = input(true);
+}
+@@@@@@ template_ng_let.ts @@@@@@
+
+// tslint:disable
+
+import {Component, input} from '@angular/core';
+
+@Component({
+  template: `
+    @let sum = one() + two();
+    @let three = this.three();
+    {{ sum }} {{ three }}
+  `,
+})
+export class MyComp {
+  readonly one = input(1);
+  readonly two = input(2);
+  readonly three = input(3);
 }
 @@@@@@ template_object_shorthand.ts @@@@@@
 

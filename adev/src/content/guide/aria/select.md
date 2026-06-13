@@ -1,9 +1,9 @@
 <docs-decorative-header title="Select">
 </docs-decorative-header>
 
-## Overview
+## Genel Bakış
 
-A pattern that combines readonly combobox with listbox to create single-selection dropdowns with keyboard navigation and screen reader support.
+Klavye navigasyonu ve ekran okuyucu desteği ile tek seçimli açılır menüler oluşturmak için bir combobox'ı listbox ile birleştiren bir kalıp.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -31,41 +31,41 @@ A pattern that combines readonly combobox with listbox to create single-selectio
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım
 
-The select pattern works best when users need to choose a single value from a familiar set of options.
+Select kalıbı, kullanıcıların bilinen bir seçenek kümesinden tek bir değer seçmesi gerektiğinde en iyi çalışır.
 
-Consider using this pattern when:
+Şu durumlarda bu kalıbı kullanmayı düşünün:
 
-- **The option list is fixed** (fewer than 20 items) - Users can scan and choose without filtering
-- **Options are familiar** - Users recognize the choices without needing to search
-- **Forms need standard fields** - Country, state, category, or status selection
-- **Settings and configuration** - Dropdown menus for preferences or options
-- **Clear option labels** - Each choice has a distinct, scannable name
+- **Seçenek listesi sabit** (20'den az öğe) - Kullanıcılar filtrelemeye gerek kalmadan tarayıp seçebilir
+- **Seçenekler bilinir** - Kullanıcılar arama yapmadan seçimleri tanır
+- **Formlar standart alanlar gerektiriyor** - Ülke, il, kategori veya durum seçimi
+- **Ayarlar ve yapılandırma** - Tercihler veya seçenekler için açılır menüler
+- **Açık seçenek etiketleri** - Her seçimin belirgin, taranabilir bir adı var
 
-Avoid this pattern when:
+Şu durumlarda bu kalıptan kaçının:
 
-- **The list has more than 20 items** - Use the [Autocomplete pattern](guide/aria/autocomplete) for better filtering
-- **Users need to search options** - [Autocomplete](guide/aria/autocomplete) provides text input and filtering
-- **Multiple selection is needed** - Use the [Multiselect pattern](guide/aria/multiselect) instead
-- **Very few options exist (2-3)** - Radio buttons provide better visibility of all choices
+- **Liste 20'den fazla öğe içerir** - Daha iyi filtreleme için [Autocomplete kalıbını](guide/aria/autocomplete) kullanın
+- **Kullanıcıların seçenekleri araması gerekiyor** - [Autocomplete](guide/aria/autocomplete) metin girişi ve filtreleme sağlar
+- **Çoklu seçim gerekli** - Bunun yerine [Multiselect kalıbını](guide/aria/multiselect) kullanın
+- **Çok az seçenek var (2-3)** - Radyo butonları tüm seçimlerin daha iyi görünürlüğünü sağlar
 
-## Features
+## Özellikler
 
-The select pattern combines [Combobox](guide/aria/combobox) and [Listbox](guide/aria/listbox) directives to provide a fully accessible dropdown with:
+Select kalıbı, tam erişilebilir bir açılır menü sağlamak için [Combobox](guide/aria/combobox) ve [Listbox](guide/aria/listbox) yönergelerini birleştirir:
 
-- **Keyboard Navigation** - Navigate options with arrow keys, select with Enter, close with Escape
-- **Screen Reader Support** - Built-in ARIA attributes for assistive technologies
-- **Custom Display** - Show selected values with icons, formatting, or rich content
-- **Signal-Based Reactivity** - Reactive state management using Angular signals
-- **Smart Positioning** - CDK Overlay handles viewport edges and scrolling
-- **Bidirectional Text Support** - Automatically handles right-to-left (RTL) languages
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Enter ile seçin, Escape ile kapatın
+- **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA nitelikleri
+- **Özel Görünüm** - Seçili değerleri simgeler, biçimlendirme veya zengin içerikle gösterin
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+- **Akıllı Konumlandırma** - CDK Overlay görünüm alanı kenarlarını ve kaydırmayı yönetir
+- **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak işler
 
-## Examples
+## Örnekler
 
-### Basic select
+### Temel select
 
-Users need a standard dropdown to choose from a list of values. A readonly combobox paired with a listbox provides the familiar select experience with full accessibility support.
+Kullanıcıların bir değerler listesinden seçim yapmak için standart bir açılır menüye ihtiyacı vardır. Bir combobox, listbox ile eşleştirildiğinde, tam erişilebilirlik desteği ile tanıdık select deneyimi sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -93,11 +93,11 @@ Users need a standard dropdown to choose from a list of values. A readonly combo
   </docs-tab>
 </docs-tab-group>
 
-The `readonly` attribute on `ngCombobox` prevents text input while preserving keyboard navigation. Users interact with the dropdown using arrow keys and Enter, just like a native select element.
+Metin girişi, `ngCombobox` yönergesinin bir `<input>` yerine doğrudan etkileşimli olmayan bir host elemanına (örneğin bir `div` veya bir `button`) uygulanmasıyla engellenir. Kullanıcılar, yerel select elemanı gibi ok tuşları ve Enter kullanarak açılır menüyle etkileşir.
 
-### Select with custom display
+### Özel görünümlü select
 
-Options often need visual indicators like icons or badges to help users identify choices quickly. Custom templates within options allow rich formatting while maintaining accessibility.
+Seçeneklerin genellikle kullanıcıların seçimleri hızla tanımasına yardımcı olacak simgeler veya rozetler gibi görsel göstergelere ihtiyacı vardır. Seçenekler içindeki özel şablonlar, erişilebilirliği korurken zengin biçimlendirme sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -125,11 +125,11 @@ Options often need visual indicators like icons or badges to help users identify
   </docs-tab>
 </docs-tab-group>
 
-Each option displays an icon alongside the label. The selected value updates to show the chosen option's icon and text, providing clear visual feedback.
+Her seçenek etiketin yanında bir simge gösterir. Seçili değer, seçilen seçeneğin simgesini ve metnini göstermek üzere güncellenir ve net görsel geri bildirim sağlar.
 
-### Disabled select
+### Devre dışı select
 
-Selects can be disabled to prevent user interaction when certain form conditions aren't met. The disabled state provides visual feedback and prevents keyboard interaction.
+Belirli form koşulları karşılanmadığında kullanıcı etkileşimini engellemek için select'ler devre dışı bırakılabilir. Devre dışı durumu görsel geri bildirim sağlar ve klavye etkileşimini engeller.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -157,37 +157,112 @@ Selects can be disabled to prevent user interaction when certain form conditions
   </docs-tab>
 </docs-tab-group>
 
-When disabled, the select shows a disabled visual state and blocks all user interaction. Screen readers announce the disabled state to assistive technology users.
+Devre dışı bırakıldığında, select devre dışı görsel durum gösterir ve tüm kullanıcı etkileşimini engeller. Ekran okuyucuları yardımcı teknoloji kullanıcılarına devre dışı durumunu duyurur.
 
-## APIs
+## Test etme
 
-The select pattern uses the following directives from Angular's Aria library. See the full API documentation in the linked guides.
+Select kalıbı, `@angular/aria/combobox/testing` ve `@angular/aria/listbox/testing` paketlerindeki `ComboboxHarness` ve `ListboxHarness` kombinasyonu kullanılarak test edilebilir.
+Harness'leri kullanarak bir select bileşenini nasıl test edeceğinize dair bir örnek aşağıdadır:
 
-### Combobox Directives
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {ComboboxHarness} from '@angular/aria/combobox/testing';
+import {ListboxHarness} from '@angular/aria/listbox/testing';
+import {MySelectComponent} from './my-select'; // Bileşeniniz
 
-The select pattern uses `ngCombobox` with the `readonly` attribute to prevent text input while preserving keyboard navigation.
+describe('MySelectComponent', () => {
+  let fixture: ComponentFixture<MySelectComponent>;
+  let loader: HarnessLoader;
 
-#### Inputs
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MySelectComponent],
+    });
 
-| Property   | Type      | Default | Description                               |
-| ---------- | --------- | ------- | ----------------------------------------- |
-| `readonly` | `boolean` | `false` | Set to `true` to create dropdown behavior |
-| `disabled` | `boolean` | `false` | Disables the entire select                |
+    fixture = TestBed.createComponent(MySelectComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
 
-See the [Combobox API documentation](guide/aria/combobox#apis) for complete details on all available inputs and signals.
+  it('should allow selecting an option', async () => {
+    // Combobox harness'ini yükle (select tetikleyicisi olarak davranır)
+    const select = await loader.getHarness(ComboboxHarness);
 
-### Listbox Directives
+    // Başlangıçta kapalı olduğunu doğrula
+    expect(await select.isOpen()).toBe(false);
 
-The select pattern uses `ngListbox` for the dropdown list and `ngOption` for each selectable item.
+    // Açılır menüyü aç
+    await select.open();
+    expect(await select.isOpen()).toBe(true);
+
+    // Açılır pencereden listbox harness'ini al
+    const listbox = await select.getPopupWidget(ListboxHarness);
+    const options = await listbox.getOptions();
+    expect(options.length).toBe(3);
+
+    // İkinci seçeneğe tıkla
+    await options[1].click();
+
+    // Açılır menünün kapandığını ve değerin güncellendiğini doğrula
+    expect(await select.isOpen()).toBe(false);
+    expect(await (await select.host()).text()).toContain('Option 2');
+  });
+});
+```
+
+## API'ler
+
+Select kalıbı, Angular'ın Aria kütüphanesindeki aşağıdaki yönergeleri kullanır. Bağlantılı rehberlerdeki tam API dokümantasyonuna bakın.
+
+### Combobox Yönergeleri
+
+Select kalıbı, klavye navigasyonunu korurken metin girişini engellemek için `ngCombobox`'ı doğrudan etkileşimli olmayan bir host elemanına (örneğin bir `div` veya bir `button`) uygular.
+
+#### Girişler
+
+| Property   | Type                   | Default | Description                     |
+| ---------- | ---------------------- | ------- | ------------------------------- |
+| `disabled` | `boolean`              | `false` | Tüm select'i devre dışı bırakır |
+| `expanded` | `ModelSignal<boolean>` | `false` | Select'in genişletilmiş durumu  |
+
+Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Combobox API dokümantasyonuna](guide/aria/combobox#apiler) bakın.
+
+#### Popup Yönergeleri
+
+Yapısal `ngComboboxPopup` yönergesi, overlay şablonunu işaretler ve üst combobox'a bir referans gerektirir:
+
+| Property   | Type       | Description                            |
+| ---------- | ---------- | -------------------------------------- |
+| `combobox` | `Combobox` | Üst `Combobox`'a gerekli olan referans |
+
+#### ComboboxWidget Yönergesi
+
+`ngComboboxWidget` yönergesi, active-descendant odak takibini desteklemek için listbox'ı combobox tetikleyicisiyle köprüler.
+
+| Property           | Type                  | Description                                                                                                                                            |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `activeDescendant` | `string \| undefined` | Tetikleyicideki `aria-activedescendant` niteliğini güncellemek için o anda aktif olan seçeneğin ID'si (`listbox.activeDescendant()` değerine bağlanır) |
+
+### Listbox Yönergeleri
+
+Select kalıbı, açılır liste için `ngListbox` ve her seçilebilir öğe için `ngOption` kullanır.
+
+#### Girişler
+
+| Property        | Type                               | Default      | Description                                                                                                                                    |
+| --------------- | ---------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `selectionMode` | `'follow'` \| `'explicit'`         | `'explicit'` | Seçeneklerin aktif odağı izlemek yerine tıklama/Enter ile açıkça değiştirilmesi için `'explicit'` olarak ayarlayın                             |
+| `focusMode`     | `'roving'` \| `'activedescendant'` | `'roving'`   | Listbox tarafından kullanılan odak stratejisi. Tarayıcı odağının combobox tetikleyicisinde kalması için `'activedescendant'` olarak ayarlayın. |
+| `tabIndex`      | `number`                           | `0`          | Listbox'ın tabindex'i. Active-descendant modunda klavye odağının açılır pencere kabına girmesini önlemek için `-1` olarak ayarlayın.           |
 
 #### Model
 
-| Property | Type    | Description                                                                  |
-| -------- | ------- | ---------------------------------------------------------------------------- |
-| `values` | `any[]` | Two-way bindable array of selected values (contains single value for select) |
+| Property | Type                 | Description                                                                    |
+| -------- | -------------------- | ------------------------------------------------------------------------------ |
+| `value`  | `ModelSignal<any[]>` | Seçili değerlerin iki yönlü bağlanabilir dizisi (select için tek değer içerir) |
 
-See the [Listbox API documentation](guide/aria/listbox#apis) for complete details on listbox configuration, selection modes, and option properties.
+### Konumlandırma
 
-### Positioning
-
-The select pattern integrates with [CDK Overlay](api/cdk/overlay/CdkConnectedOverlay) for smart positioning. Use `cdkConnectedOverlay` to handle viewport edges and scrolling automatically.
+Select kalıbı, akıllı konumlandırma için [CDK Overlay](https://material.angular.io/cdk/overlay/overview) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak yönetmek için `cdkConnectedOverlay` kullanın.

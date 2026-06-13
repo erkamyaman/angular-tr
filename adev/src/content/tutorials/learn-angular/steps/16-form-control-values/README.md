@@ -1,18 +1,18 @@
-# Getting form control value
+# Form kontrol değerlerini alma
 
-Now that your forms are set up with Angular, the next step is to access the values from the form controls.
+Formlarınız Angular ile kurulduğuna göre, bir sonraki adım form kontrollerindeki değerlere erişmektir.
 
-NOTE: Learn more about [adding a basic form control in the in-depth guide](/guide/forms/reactive-forms#adding-a-basic-form-control).
+NOTE: [Detaylı kılavuzda temel form kontrolü ekleme](/guide/forms/reactive-forms#temel-bir-form-kontrolü-ekleme) hakkında daha fazla bilgi edinin.
 
-In this activity, you'll learn how to get the value from your form input.
+Bu aktivitede, form giriş alanınızdan değeri nasıl alacağınızı öğreneceksiniz.
 
 <hr>
 
 <docs-workflow>
 
-<docs-step title="Show the value of the input field in the template">
+<docs-step title="Giriş alanının değerini şablonda gösterin">
 
-To display the input value in a template, you can use the interpolation syntax `{{}}` just like any other class property of the component:
+Giriş değerini bir şablonda görüntülemek için, bileşenin herhangi bir sınıf özelliğinde olduğu gibi `{{}}` interpolasyon sözdizimini kullanabilirsiniz:
 
 ```angular-ts {highlight:[5]}
 @Component({
@@ -33,9 +33,9 @@ export class User {
 
 </docs-step>
 
-<docs-step title="Retrieve the value of an input field">
+<docs-step title="Bir giriş alanının değerini alın">
 
-When you need to reference the input field value in the component class, you can do so by accessing the class property with the `this` syntax.
+Bileşen sınıfında giriş alanı değerine referans vermeniz gerektiğinde, bunu `this` sözdizimi ile sınıf özelliğine erişerek yapabilirsiniz.
 
 ```angular-ts {highlight:[15]}
 ...
@@ -61,6 +61,6 @@ export class User {
 
 </docs-workflow>
 
-Great job learning how to display the input values in your template and access them programmatically.
+Giriş değerlerini şablonunuzda görüntülemeyi ve programatik olarak erişmeyi öğrendiğiniz için harika iş.
 
-Time to progress onto the next way of managing forms with Angular: reactive forms. If you'd like to learn more about template-driven forms, please refer to the [Angular forms documentation](guide/forms/template-driven-forms).
+Angular ile formları yönetmenin bir sonraki yoluna geçme zamanı: reaktif formlar. Şablon odaklı formlar hakkında daha fazla bilgi edinmek isterseniz, lütfen [Angular form belgelerine](guide/forms/template-driven-forms) bakın.

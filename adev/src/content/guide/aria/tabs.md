@@ -6,70 +6,9 @@
   <docs-pill href="/api/aria/tabs/Tabs" title="Tabs API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-Tabs display layered content sections where only one panel is visible at a time. Users switch between panels by clicking tab buttons or using arrow keys to navigate the tab list.
-
-<docs-tab-group>
-  <docs-tab label="Basic">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Material">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Retro">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-</docs-tab-group>
-
-## Usage
-
-Tabs work well for organizing related content into distinct sections where users switch between different views or categories.
-
-**Use tabs when:**
-
-- Organizing related content into distinct sections
-- Creating settings panels with multiple categories
-- Building documentation with multiple topics
-- Implementing dashboards with different views
-- Showing content where users need to switch contexts
-
-**Avoid tabs when:**
-
-- Building sequential forms or wizards (use a stepper pattern)
-- Navigating between pages (use router navigation)
-- Showing single content sections (no need for tabs)
-- Having more than 7-8 tabs (consider a different layout)
-
-## Features
-
-- **Selection modes** - Tabs activate automatically on focus or require manual activation
-- **Keyboard navigation** - Arrow keys, Home, and End for efficient tab navigation
-- **Orientation** - Horizontal or vertical tab list layouts
-- **Lazy content** - Tab panels render only when first activated
-- **Disabled tabs** - Disable individual tabs with focus management
-- **Focus modes** - Roving tabindex or activedescendant focus strategies
-- **RTL support** - Right-to-left language navigation
-
-## Examples
-
-### Selection follows focus
-
-When selection follows focus, tabs activate immediately as you navigate with arrow keys. This provides instant feedback and works well for lightweight content.
+Sekmeler, aynı anda yalnızca bir panelin görünebildiği katmanlı içerik bölümleri gösterir. Kullanıcılar sekme butonlarına tıklayarak veya sekme listesinde gezinmek için ok tuşları kullanarak paneller arasında geçiş yapar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -97,11 +36,72 @@ When selection follows focus, tabs activate immediately as you navigate with arr
   </docs-tab>
 </docs-tab-group>
 
-Set `[selectionMode]="'follow'"` on the tab list to enable this behavior.
+## Kullanım
 
-### Manual activation
+Sekmeler, kullanıcıların farklı görünümler veya kategoriler arasında geçiş yaptığı, ilişkili içeriği farklı bölümlere düzenlemek için iyi çalışır.
 
-With manual activation, arrow keys move focus between tabs without changing the selected tab. Users press Space or Enter to activate the focused tab.
+**Sekmeleri kullanın:**
+
+- İlişkili içeriği farklı bölümlere düzenlerken
+- Birden fazla kategoriye sahip ayar panelleri oluştururken
+- Birden fazla konuya sahip dokümantasyon oluştururken
+- Farklı görünümlere sahip kontrol panelleri uygularken
+- Kullanıcıların bağlam değiştirmesi gerektiği içeriği gösterirken
+
+**Sekmelerden kaçının:**
+
+- Sıralı formlar veya sihirbazlar oluştururken (bir adım kalıbı kullanın)
+- Sayfalar arasında gezinirken (yönlendirici navigasyonu kullanın)
+- Tek içerik bölümleri gösterirken (sekmelere gerek yok)
+- 7-8'den fazla sekme olduğunda (farklı bir yerleşim düşünün)
+
+## Özellikler
+
+- **Seçim modları** - Sekmeler odaklandığında otomatik olarak etkinleşir veya manuel etkinleştirme gerektirir
+- **Klavye navigasyonu** - Ok tuşları, Home ve End ile verimli sekme navigasyonu
+- **Yön** - Yatay veya dikey sekme listesi yerleşimi
+- **Tembel içerik** - Sekme panelleri yalnızca ilk etkinleştirildiğinde oluşturulur
+- **Devre dışı sekmeler** - Odak yönetimiyle bireysel sekmeleri devre dışı bırakın
+- **Odak modları** - Dolaşan tabindex veya activedescendant odak stratejileri
+- **RTL desteği** - Sağdan sola dil navigasyonu
+
+## Örnekler
+
+### Seçim odağı takip eder
+
+Seçim odağı takip ettiğinde, ok tuşlarıyla gezindikçe sekmeler anında etkinleşir. Bu anında geri bildirim sağlar ve hafif içerik için iyi çalışır.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/tabs/src/selection-follows-focus/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+Bu davranışı etkinleştirmek için sekme listesinde `[selectionMode]="'follow'"` ayarlayın.
+
+### Manuel etkinleştirme
+
+Manuel etkinleştirmede, ok tuşları seçili sekmeyi değiştirmeden sekmeler arasında odak taşır. Kullanıcılar odaklanan sekmeyi etkinleştirmek için Boşluk veya Enter'a basar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -129,11 +129,11 @@ With manual activation, arrow keys move focus between tabs without changing the 
   </docs-tab>
 </docs-tab-group>
 
-Use `[selectionMode]="'explicit'"` for heavy content panels to avoid unnecessary rendering.
+Gereksiz render'ı önlemek için ağır içerik panellerinde `[selectionMode]="'explicit'"` kullanın.
 
-### Vertical tabs
+### Dikey sekmeler
 
-Arrange tabs vertically for interfaces like settings panels or navigation sidebars.
+Ayar panelleri veya navigasyon kenar çubukları gibi arayüzler için sekmeleri dikey olarak düzenleyin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -161,11 +161,11 @@ Arrange tabs vertically for interfaces like settings panels or navigation sideba
   </docs-tab>
 </docs-tab-group>
 
-Set `[orientation]="'vertical'"` on the tab list. Navigation changes to Up/Down arrow keys.
+Sekme listesinde `[orientation]="'vertical'"` ayarlayın. Navigasyon Yukarı/Aşağı ok tuşlarına değişir.
 
-### Lazy content rendering
+### Tembel içerik render'ı
 
-Use the `ngTabContent` directive on an `ng-template` to defer rendering tab panels until they're first shown.
+Sekme panellerinin ilk gösterilene kadar render edilmesini ertelemek için bir `ng-template` üzerinde `ngTabContent` yönergesini kullanın.
 
 ```angular-html
 <div ngTabs>
@@ -176,25 +176,25 @@ Use the `ngTabContent` directive on an `ng-template` to defer rendering tab pane
 
   <div ngTabPanel value="tab1">
     <ng-template ngTabContent>
-      <!-- This content only renders when Tab 1 is first shown -->
+      <!-- Bu içerik yalnızca Sekme 1 ilk gösterildiğinde render edilir -->
       <app-heavy-component />
     </ng-template>
   </div>
 
   <div ngTabPanel value="tab2">
     <ng-template ngTabContent>
-      <!-- This content only renders when Tab 2 is first shown -->
+      <!-- Bu içerik yalnızca Sekme 2 ilk gösterildiğinde render edilir -->
       <app-another-component />
     </ng-template>
   </div>
 </div>
 ```
 
-By default, content remains in the DOM after the panel is hidden. Set `[preserveContent]="false"` to remove content when the panel is deactivated.
+Varsayılan olarak, panel gizlendikten sonra içerik DOM'da kalır. Panel devre dışı bırakıldığında içeriği DOM'dan kaldırmak için `[preserveContent]="false"` ayarlayın.
 
-### Disabled tabs
+### Devre dışı sekmeler
 
-Disable specific tabs to prevent user interaction. Control whether disabled tabs can receive keyboard focus.
+Kullanıcı etkileşimini engellemek için belirli sekmeleri devre dışı bırakın. Devre dışı sekmelerin klavye odağı alıp alamayacağını kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -222,75 +222,136 @@ Disable specific tabs to prevent user interaction. Control whether disabled tabs
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` on the tab list, disabled tabs can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled tabs are skipped during keyboard navigation.
+Sekme listesinde `[softDisabled]="true"` olduğunda, devre dışı sekmeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı sekmeler klavye navigasyonu sırasında atlanır.
 
-## APIs
+## Test etme
+
+Angular Aria, sekme bileşenlerini test etmek için bileşen harness'leri sağlar.
+İşte bir bileşen testinde harness'lerin nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {ComponentHarness, HarnessLoader} from '@angular/cdk/testing';
+import {TabsHarness} from '@angular/aria/tabs/testing';
+import {MyTabsComponent} from './my-tabs'; // Sizin bileşeniniz
+
+// Sekme paneli içindeki içeriği sorgulamaya yardımcı olan basit bir harness
+class TestContentHarness extends ComponentHarness {
+  static hostSelector = '.test-content';
+  async getText(): Promise<string> {
+    return (await this.host()).text();
+  }
+}
+
+describe('MyTabsComponent', () => {
+  let fixture: ComponentFixture<MyTabsComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyTabsComponent],
+    });
+
+    fixture = TestBed.createComponent(MyTabsComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should switch tabs and scope panel queries', async () => {
+    const tabs = await loader.getHarness(TabsHarness);
+
+    // Tüm sekmeleri al
+    const tabItems = await tabs.getTabs();
+    expect(tabItems.length).toBe(3);
+
+    // İlk seçimi doğrula
+    expect(await tabItems[0].isSelected()).toBe(true);
+    expect(await tabItems[1].isSelected()).toBe(false);
+
+    // Etkin sekme paneli içindeki içeriği sorgula
+    // TabHarness, sorguları otomatik olarak ilişkili paneliyle sınırlandırır
+    const content = await tabItems[0].getHarness(TestContentHarness);
+    expect(await content.getText()).toBe('Content 1');
+
+    // İkinci sekmeye geç
+    await tabItems[1].select();
+
+    // Seçimin güncellendiğini doğrula
+    expect(await tabItems[0].isSelected()).toBe(false);
+    expect(await tabItems[1].isSelected()).toBe(true);
+  });
+});
+```
+
+## API'ler
 
 ### Tabs
 
-The container directive that coordinates tab lists and panels.
+Sekme listeleri ve panelleri koordine eden kapsayıcı yönerge.
 
-This directive has no inputs or outputs. It serves as the root container for `ngTabList`, `ngTab`, and `ngTabPanel` directives.
+Bu yönergenin girişi veya çıktısı yoktur. `ngTabList`, `ngTab` ve `ngTabPanel` yönergeleri için kök kapsayıcı görevi görür.
 
 ### TabList
 
-The container for tab buttons that manages selection and keyboard navigation.
+Seçim ve klavye navigasyonunu yöneten sekme butonları için kapsayıcı.
 
-#### Inputs
+#### Girişler
 
-| Property        | Type                         | Default        | Description                                                        |
-| --------------- | ---------------------------- | -------------- | ------------------------------------------------------------------ |
-| `orientation`   | `'horizontal' \| 'vertical'` | `'horizontal'` | Tab list layout direction                                          |
-| `wrap`          | `boolean`                    | `false`        | Whether keyboard navigation wraps from last to first tab           |
-| `softDisabled`  | `boolean`                    | `true`         | When `true`, disabled tabs are focusable but not activatable       |
-| `selectionMode` | `'follow' \| 'explicit'`     | `'follow'`     | Whether tabs activate on focus or require explicit activation      |
-| `selectedTab`   | `any`                        | —              | The value of the currently selected tab (supports two-way binding) |
+| Property        | Type                             | Default        | Description                                                                 |
+| --------------- | -------------------------------- | -------------- | --------------------------------------------------------------------------- |
+| `orientation`   | `'horizontal' \| 'vertical'`     | `'horizontal'` | Sekme listesi yerleşim yönü                                                 |
+| `wrap`          | `boolean`                        | `true`         | Klavye navigasyonunun son sekmeden ilk sekmeye sarılıp sarılmadığı          |
+| `softDisabled`  | `boolean`                        | `true`         | `true` olduğunda, devre dışı sekmeler odaklanabilir ancak etkinleştirilemez |
+| `selectionMode` | `'follow' \| 'explicit'`         | `'follow'`     | Sekmelerin odaklandığında mı yoksa açık etkinleştirme mi gerektirdiği       |
+| `focusMode`     | `'roving' \| 'activedescendant'` | `'roving'`     | Odak yönetimi stratejisi                                                    |
+| `selectedTab`   | `any`                            | —              | Şu anda seçili sekmenin değeri (iki yönlü bağlama destekler)                |
 
 ### Tab
 
-An individual tab button.
+Bireysel bir sekme butonu.
 
-#### Inputs
+#### Girişler
 
-| Property   | Type      | Default | Description                             |
-| ---------- | --------- | ------- | --------------------------------------- |
-| `value`    | `any`     | —       | **Required.** Unique value for this tab |
-| `disabled` | `boolean` | `false` | Disables this tab                       |
+| Property   | Type      | Default | Description                                |
+| ---------- | --------- | ------- | ------------------------------------------ |
+| `value`    | `any`     | —       | **Zorunlu.** Bu sekme için benzersiz değer |
+| `disabled` | `boolean` | `false` | Bu sekmeyi devre dışı bırakır              |
 
-#### Signals
+#### Sinyaller
 
 | Property   | Type              | Description                           |
 | ---------- | ----------------- | ------------------------------------- |
-| `selected` | `Signal<boolean>` | Whether the tab is currently selected |
-| `active`   | `Signal<boolean>` | Whether the tab currently has focus   |
+| `selected` | `Signal<boolean>` | Sekmenin şu anda seçili olup olmadığı |
+| `active`   | `Signal<boolean>` | Sekmenin şu anda odakta olup olmadığı |
 
 ### TabPanel
 
-The content panel associated with a tab.
+Bir sekmeyle ilişkili içerik paneli.
 
-#### Inputs
+#### Girişler
 
-| Property          | Type      | Default | Description                                                |
-| ----------------- | --------- | ------- | ---------------------------------------------------------- |
-| `value`           | `any`     | —       | **Required.** Must match the `value` of the associated tab |
-| `preserveContent` | `boolean` | `true`  | Whether to keep panel content in DOM after deactivation    |
+| Property          | Type      | Default | Description                                                                 |
+| ----------------- | --------- | ------- | --------------------------------------------------------------------------- |
+| `value`           | `any`     | —       | **Zorunlu.** İlişkili sekmenin `value` değeri ile eşleşmelidir              |
+| `preserveContent` | `boolean` | `true`  | Devre dışı bırakılmadan sonra panel içeriğinin DOM'da tutulup tutulmayacağı |
 
-#### Signals
+#### Sinyaller
 
-| Property  | Type              | Description                            |
-| --------- | ----------------- | -------------------------------------- |
-| `visible` | `Signal<boolean>` | Whether the panel is currently visible |
+| Property  | Type              | Description                           |
+| --------- | ----------------- | ------------------------------------- |
+| `visible` | `Signal<boolean>` | Panelin şu anda görünür olup olmadığı |
 
 ### TabContent
 
-A structural directive for lazy rendering tab panel content.
+Sekme panel içeriğini tembel render etmek için yapısal yönerge.
 
-This directive has no inputs, outputs, or methods. Apply it to an `ng-template` element inside a tab panel:
+Bu yönergenin girişi, çıktısı veya yöntemi yoktur. Bir sekme paneli içindeki `ng-template` elemanına uygulayın:
 
 ```angular-html
 <div ngTabPanel value="tab1">
   <ng-template ngTabContent>
-    <!-- Content here is lazily rendered -->
+    <!-- Buradaki içerik tembel olarak render edilir -->
   </ng-template>
 </div>
 ```

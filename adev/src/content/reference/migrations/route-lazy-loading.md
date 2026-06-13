@@ -1,35 +1,35 @@
-# Migration to lazy-loaded routes
+# Tembel yüklenen rotalara geçiş
 
-This schematic helps developers to convert eagerly loaded component routes to lazy loaded routes. This allows the build process to split the production bundle into smaller chunks, to avoid big JS bundle that includes all routes, which negatively affects initial page load of an application.
+Bu şematik, geliştiricilerin hevesli yüklenen bileşen rotalarını tembel yüklenen rotalara dönüştürmelerine yardımcı olur. Bu, derleme sürecinin üretim paketini daha küçük parçalara bölmesine olanak tanıyarak, tüm rotaları içeren büyük JS paketini önler, bu da bir uygulamanın ilk sayfa yüklemesini olumsuz etkiler.
 
-Run the schematic using the following command:
+Şematiği aşağıdaki komutu kullanarak çalıştırın:
 
 ```shell
 ng generate @angular/core:route-lazy-loading
 ```
 
-### `path` config option
+### `path` yapılandırma seçeneği
 
-By default, migration will go over the entire application. If you want to apply this migration to a subset of the files, you can pass the path argument as shown below:
+Varsayılan olarak, geçiş tüm uygulamayı tarayacaktır. Bu geçişi dosyaların bir alt kümesine uygulamak istiyorsanız, aşağıda gösterildiği gibi path argümanını iletebilirsiniz:
 
 ```shell
 ng generate @angular/core:route-lazy-loading --path src/app/sub-component
 ```
 
-The value of the path parameter is a relative path within the project.
+path parametresinin değeri, proje içindeki göreli bir yoldur.
 
-### How does it work?
+### Nasıl çalışır?
 
-The schematic will attempt to find all the places where the application routes as defined:
+Şematik, uygulama rotalarının tanımlandığı tüm yerleri bulmaya çalışacaktır:
 
-- `RouterModule.forRoot` and `RouterModule.forChild`
+- `RouterModule.forRoot` ve `RouterModule.forChild`
 - `Router.resetConfig`
 - `provideRouter`
-- variables of type `Routes` or `Route[]` (e.g. `const routes: Routes = [{...}]`)
+- `Routes` veya `Route[]` türünde değişkenler (örn. `const routes: Routes = [{...}]`)
 
-The migration will check all the components in the routes, check if they are standalone and eagerly loaded, and if so, it will convert them to lazy loaded routes.
+Geçiş, rotalardaki tüm bileşenleri kontrol edecek, standalone ve hevesli yüklenen olup olmadıklarını kontrol edecek ve öyleyse bunları tembel yüklenen rotalara dönüştürecektir.
 
-#### Before
+#### Önce
 
 ```typescript
 // app.module.ts
@@ -40,7 +40,7 @@ import {Home} from './home';
     RouterModule.forRoot([
       {
         path: 'home',
-        // Home is standalone and eagerly loaded
+        // Home standalone ve hevesli yüklenen
         component: Home,
       },
     ]),
@@ -49,7 +49,7 @@ import {Home} from './home';
 export class AppModule {}
 ```
 
-#### After
+#### Sonra
 
 ```typescript
 // app.module.ts
@@ -58,7 +58,7 @@ export class AppModule {}
     RouterModule.forRoot([
       {
         path: 'home',
-        // ↓ Home is now lazy loaded
+        // ↓ Home artık tembel yükleniyor
         loadComponent: () => import('./home').then((m) => m.Home),
       },
     ]),
@@ -67,4 +67,4 @@ export class AppModule {}
 export class AppModule {}
 ```
 
-This migration will also collect information about all the components declared in NgModules and output the list of routes that use them (including corresponding location of the file). Consider making those components standalone and run this migration again. You can use an existing migration ([see](reference/migrations/standalone)) to convert those components to standalone.
+Bu geçiş ayrıca NgModule'lerde bildirilen tüm bileşenler hakkında bilgi toplayacak ve bunları kullanan rotaların listesini (dosyanın karşılık gelen konumu dahil) çıktılayacaktır. Bu bileşenleri standalone yapmayı ve bu geçişi tekrar çalıştırmayı düşünün. Bu bileşenleri standalone'a dönüştürmek için mevcut bir geçişi ([bakın](reference/migrations/standalone)) kullanabilirsiniz.

@@ -1,13 +1,13 @@
-# Configuring application environments
+# Uygulama Ortamlarını Yapılandırma
 
-You can define different named build configurations for your project, such as `development` and `staging`, with different defaults.
+Projeniz için `development` ve `staging` gibi farklı varsayılan değerlere sahip, farklı adlandırılmış derleme yapılandırmaları tanımlayabilirsiniz.
 
-Each named configuration can have defaults for any of the options that apply to the various builder targets, such as `build`, `serve`, and `test`.
-The [Angular CLI](tools/cli) `build`, `serve`, and `test` commands can then replace files with appropriate versions for your intended target environment.
+Her adlandırılmış yapılandırma, `build`, `serve` ve `test` gibi çeşitli builder hedeflerine uygulanan seçenekler için varsayılan değerlere sahip olabilir.
+[Angular CLI](tools/cli) `build`, `serve` ve `test` komutları, hedeflenen ortamınız için dosyaları uygun sürümlerle değiştirebilir.
 
-## Angular CLI configurations
+## Angular CLI Yapılandırmaları
 
-Angular CLI builders support a `configurations` object, which allows overwriting specific options for a builder based on the configuration provided on the command line.
+Angular CLI builder'ları, komut satırında sağlanan yapılandırmaya göre bir builder'ın belirli seçeneklerinin üzerine yazmaya olanak tanıyan bir `configurations` nesnesini destekler.
 
 ```json
 
@@ -16,13 +16,13 @@ Angular CLI builders support a `configurations` object, which allows overwriting
     "my-app": {
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            // By default, disable source map generation.
+            // Varsayılan olarak, kaynak harita oluşturmayı devre dışı bırak.
             "sourceMap": false
           },
           "configurations": {
-            // For the `debug` configuration, enable source maps.
+            // `debug` yapılandırması için kaynak haritaları etkinleştir.
             "debug": {
               "sourceMap": true
             }
@@ -36,7 +36,7 @@ Angular CLI builders support a `configurations` object, which allows overwriting
 
 ```
 
-You can choose which configuration to use with the `--configuration` option.
+`--configuration` seçeneği ile hangi yapılandırmayı kullanacağınızı seçebilirsiniz.
 
 ```shell
 
@@ -44,7 +44,7 @@ ng build --configuration debug
 
 ```
 
-Configurations can be applied to any Angular CLI builder. Multiple configurations can be specified with a comma separator. The configurations are applied in order, with conflicting options using the value from the last configuration.
+Yapılandırmalar herhangi bir Angular CLI builder'ına uygulanabilir. Virgülle ayırarak birden fazla yapılandırma belirtilebilir. Yapılandırmalar sırayla uygulanır ve çakışan seçenekler son yapılandırmanın değerini kullanır.
 
 ```shell
 
@@ -52,12 +52,12 @@ ng build --configuration debug,production,customer-facing
 
 ```
 
-## Configure environment-specific defaults
+## Ortama Özgü Varsayılan Değerleri Yapılandırma
 
-`@angular-devkit/build-angular:browser` supports file replacements, an option for substituting source files before executing a build.
-Using this in combination with `--configuration` provides a mechanism for configuring environment-specific data in your application.
+`@angular/build:application`, bir derleme çalıştırılmadan önce kaynak dosyaların değiştirilmesi için bir seçenek olan dosya değiştirmelerini destekler.
+Bunu `--configuration` ile birlikte kullanmak, uygulamanızda ortama özgü verileri yapılandırmak için bir mekanizma sağlar.
 
-Start by [generating environments](cli/generate/environments) to create the `src/environments/` directory and configure the project to use file replacements.
+`src/environments/` dizinini oluşturmak ve projeyi dosya değiştirmelerini kullanacak şekilde yapılandırmak için [ortam oluşturma](cli/generate/environments) komutunu çalıştırarak başlayın.
 
 ```shell
 
@@ -65,10 +65,10 @@ ng generate environments
 
 ```
 
-The project's `src/environments/` directory contains the base configuration file, `environment.ts`, which provides the default configuration for production.
-You can override default values for additional environments, such as `development` and `staging`, in target-specific configuration files.
+Projenin `src/environments/` dizini, üretim için varsayılan yapılandırmayı sağlayan temel yapılandırma dosyası `environment.ts`'yi içerir.
+`development` ve `staging` gibi ek ortamlar için hedefe özgü yapılandırma dosyalarında varsayılan değerleri geçersiz kılabilirsiniz.
 
-For example:
+Örneğin:
 
 ```text
 
@@ -79,8 +79,8 @@ my-app/src/environments
 
 ```
 
-The base file `environment.ts`, contains the default environment settings.
-For example:
+Temel dosya `environment.ts`, varsayılan ortam ayarlarını içerir.
+Örneğin:
 
 ```ts
 export const environment = {
@@ -88,9 +88,9 @@ export const environment = {
 };
 ```
 
-The `build` command uses this as the build target when no environment is specified.
-You can add further variables, either as additional properties on the environment object, or as separate objects.
-For example, the following adds a default for a variable to the default environment:
+`build` komutu, hiçbir ortam belirtilmediğinde bunu derleme hedefi olarak kullanır.
+Ortam nesnesinde ek özellikler olarak veya ayrı nesneler olarak daha fazla değişken ekleyebilirsiniz.
+Örneğin, aşağıdaki varsayılan ortama bir değişken için varsayılan değer ekler:
 
 ```ts
 export const environment = {
@@ -99,8 +99,10 @@ export const environment = {
 };
 ```
 
-You can add target-specific configuration files, such as `environment.development.ts`.
-The following content sets default values for the development build target:
+CRITICAL: `src/environments/` dizinindeki dosyalar istemci tarafı uygulamanızla birlikte paketlenir ve sayfayı yükleyen herkes tarafından görülebilir. API anahtarları gibi gizli bilgileri asla burada saklamayın. Bunun yerine sunucu tarafında bir proxy veya bir gizli bilgi yöneticisi (secrets manager) kullanın.
+
+`environment.development.ts` gibi hedefe özgü yapılandırma dosyaları ekleyebilirsiniz.
+Aşağıdaki içerik, geliştirme derleme hedefi için varsayılan değerleri ayarlar:
 
 ```ts
 export const environment = {
@@ -109,30 +111,30 @@ export const environment = {
 };
 ```
 
-## Using environment-specific variables in your app
+## Uygulamanızda Ortama Özgü Değişkenleri Kullanma
 
-To use the environment configurations you have defined, your components must import the original environments file:
+Tanımladığınız ortam yapılandırmalarını kullanmak için bileşenlerinizin orijinal ortam dosyasını içe aktarması gerekir:
 
 ```ts
 import {environment} from './environments/environment';
 ```
 
-This ensures that the build and serve commands can find the configurations for specific build targets.
+Bu, build ve serve komutlarının belirli derleme hedefleri için yapılandırmaları bulabilmesini sağlar.
 
-The following code in the component file (`app.ts`) uses an environment variable defined in the configuration files.
+Bileşen dosyasındaki (`app.ts`) aşağıdaki kod, yapılandırma dosyalarında tanımlanan bir ortam değişkenini kullanır.
 
 ```ts
 import {environment} from './../environments/environment';
 
-// Fetches from `http://my-prod-url` in production, `http://my-dev-url` in development.
+// Üretimde `http://my-prod-url`'den, geliştirmede `http://my-dev-url`'den veri çeker.
 fetch(environment.apiUrl);
 ```
 
-The main CLI configuration file, `angular.json`, contains a `fileReplacements` section in the configuration for each build target, which lets you replace any file in the TypeScript program with a target-specific version of that file.
-This is useful for including target-specific code or variables in a build that targets a specific environment, such as production or staging.
+Ana CLI yapılandırma dosyası `angular.json`, her derleme hedefinin yapılandırmasında TypeScript programındaki herhangi bir dosyayı o dosyanın hedefe özgü bir sürümüyle değiştirmenize olanak tanıyan bir `fileReplacements` bölümü içerir.
+Bu, üretim veya staging gibi belirli bir ortamı hedefleyen bir derlemede hedefe özgü kod veya değişkenler dahil etmek için kullanışlıdır.
 
-By default no files are replaced, however `ng generate environments` sets up this configuration automatically.
-You can change or add file replacements for specific build targets by editing the `angular.json` configuration directly.
+Varsayılan olarak hiçbir dosya değiştirilmez, ancak `ng generate environments` bu yapılandırmayı otomatik olarak ayarlar.
+Belirli derleme hedefleri için dosya değiştirmelerini `angular.json` yapılandırmasını doğrudan düzenleyerek değiştirebilir veya ekleyebilirsiniz.
 
 ```json
 
@@ -148,9 +150,9 @@ You can change or add file replacements for specific build targets by editing th
 
 ```
 
-This means that when you build your development configuration with `ng build --configuration development`, the `src/environments/environment.ts` file is replaced with the target-specific version of the file, `src/environments/environment.development.ts`.
+Bu, `ng build --configuration development` ile geliştirme yapılandırmanızı derlediğinizde, `src/environments/environment.ts` dosyasının hedefe özgü sürüm olan `src/environments/environment.development.ts` ile değiştirildiği anlamına gelir.
 
-To add a staging environment, create a copy of `src/environments/environment.ts` called `src/environments/environment.staging.ts`, then add a `staging` configuration to `angular.json`:
+Bir staging ortamı eklemek için `src/environments/environment.ts` dosyasının `src/environments/environment.staging.ts` adlı bir kopyasını oluşturun, ardından `angular.json`'a bir `staging` yapılandırması ekleyin:
 
 ```json
 
@@ -169,10 +171,10 @@ To add a staging environment, create a copy of `src/environments/environment.ts`
 
 ```
 
-You can add more configuration options to this target environment as well.
-Any option that your build supports can be overridden in a build target configuration.
+Bu hedef ortamına daha fazla yapılandırma seçeneği de ekleyebilirsiniz.
+Derlemenizin desteklediği herhangi bir seçenek, derleme hedef yapılandırmasında geçersiz kılınabilir.
 
-To build using the staging configuration, run the following command:
+Staging yapılandırmasını kullanarak derlemek için aşağıdaki komutu çalıştırın:
 
 ```shell
 
@@ -180,21 +182,21 @@ ng build --configuration staging
 
 ```
 
-By default, the `build` target includes `production` and `development` configurations and `ng serve` uses the development build of the application.
-You can also configure `ng serve` to use the targeted build configuration if you set the `buildTarget` option:
+Varsayılan olarak, `build` hedefi `production` ve `development` yapılandırmalarını içerir ve `ng serve` uygulamanın geliştirme derlemesini kullanır.
+`buildTarget` seçeneğini ayarlayarak `ng serve`'i hedeflenen derleme yapılandırmasını kullanacak şekilde de yapılandırabilirsiniz:
 
 ```json
 
   "serve": {
-    "builder": "@angular-devkit/build-angular:dev-server",
+    "builder": "@angular/build:dev-server",
     "options": { … },
     "configurations": {
       "development": {
-        // Use the `development` configuration of the `build` target.
+        // `build` hedefinin `development` yapılandırmasını kullan.
         "buildTarget": "my-app:build:development"
       },
       "production": {
-        // Use the `production` configuration of the `build` target.
+        // `build` hedefinin `production` yapılandırmasını kullan.
         "buildTarget": "my-app:build:production"
       }
     },
@@ -203,5 +205,5 @@ You can also configure `ng serve` to use the targeted build configuration if you
 
 ```
 
-The `defaultConfiguration` option specifies which configuration is used by default.
-When `defaultConfiguration` is not set, `options` are used directly without modification.
+`defaultConfiguration` seçeneği, hangi yapılandırmanın varsayılan olarak kullanılacağını belirtir.
+`defaultConfiguration` ayarlanmadığında, `options` doğrudan değiştirilmeden kullanılır.

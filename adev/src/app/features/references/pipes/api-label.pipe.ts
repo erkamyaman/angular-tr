@@ -36,17 +36,17 @@ export const shortLabelsMap: Record<ApiItemType, string> = {
 };
 
 export const fullLabelsMap: Record<ApiItemType, string> = {
-  [ApiItemType.BLOCK]: 'Block',
-  [ApiItemType.CLASS]: 'Class',
-  [ApiItemType.CONST]: 'Const',
-  [ApiItemType.DECORATOR]: 'Decorator',
-  [ApiItemType.DIRECTIVE]: 'Directive',
-  [ApiItemType.ELEMENT]: 'Element',
+  [ApiItemType.BLOCK]: 'Blok',
+  [ApiItemType.CLASS]: 'Sınıf',
+  [ApiItemType.CONST]: 'Sabit',
+  [ApiItemType.DECORATOR]: 'Dekoratör',
+  [ApiItemType.DIRECTIVE]: 'Direktif',
+  [ApiItemType.ELEMENT]: 'Eleman',
   [ApiItemType.ENUM]: 'Enum',
-  [ApiItemType.FUNCTION]: 'Function',
-  [ApiItemType.INTERFACE]: 'Interface',
+  [ApiItemType.FUNCTION]: 'Fonksiyon',
+  [ApiItemType.INTERFACE]: 'Arayüz',
   [ApiItemType.PIPE]: 'Pipe',
-  [ApiItemType.NG_MODULE]: 'Module',
-  [ApiItemType.TYPE_ALIAS]: 'Type Alias',
-  [ApiItemType.INITIALIZER_API_FUNCTION]: 'Initializer API',
+  [ApiItemType.NG_MODULE]: 'Modül',
+  [ApiItemType.TYPE_ALIAS]: 'Tür Takma Adı',
+  [ApiItemType.INITIALIZER_API_FUNCTION]: 'Başlatıcı API',
 };

@@ -1,6 +1,6 @@
 <div class="adev-playground-header">
   <header>
-    <h1 tabindex="-1">Angular Playground</h1>
+    <h1 tabindex="-1">Angular Oyun Alanı</h1>
   </header>
   <div class="adev-template-select">
     <button type="button" [cdkMenuTriggerFor]="templatesMenu">
@@ -10,9 +10,9 @@
   </div>
 </div>
 
-@if (embeddedEditorComponent) {
+@if (embeddedEditorComponent()) {
   <div class="adev-embedded-editor-wrapper">
-    <ng-container *ngComponentOutlet="embeddedEditorComponent" />
+    <ng-container *ngComponentOutlet="embeddedEditorComponent()" />
   </div>
 }
 

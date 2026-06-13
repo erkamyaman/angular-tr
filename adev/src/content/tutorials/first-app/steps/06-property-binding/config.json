@@ -1,5 +1,5 @@
 {
-  "title": "Add property binding to components",
+  "title": "Bileşenlere özellik bağlama ekleme",
   "type": "editor",
   "answerSrc": "../07-dynamic-template-values/src",
   "answerRootDir": "../07-dynamic-template-values",

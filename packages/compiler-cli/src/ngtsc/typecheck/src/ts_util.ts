@@ -17,20 +17,6 @@ export function isAccessExpression(
 }
 
 /**
- * Creates a TypeScript node representing a numeric value.
- */
-export function tsNumericExpression(value: number): ts.NumericLiteral | ts.PrefixUnaryExpression {
-  // As of TypeScript 5.3 negative numbers are represented as `prefixUnaryOperator` and passing a
-  // negative number (even as a string) into `createNumericLiteral` will result in an error.
-  if (value < 0) {
-    const operand = ts.factory.createNumericLiteral(Math.abs(value));
-    return ts.factory.createPrefixUnaryExpression(ts.SyntaxKind.MinusToken, operand);
-  }
-
-  return ts.factory.createNumericLiteral(value);
-}
-
-/**
  * Check if a node represents a directive declaration in a TypeCheck Block.
  * Directive declarations can be either:
  * - var _t1: TestDir /*T:D*\/ = null! as TestDir;
@@ -41,7 +27,8 @@ export function isDirectiveDeclaration(node: ts.Node): node is ts.TypeNode | ts.
   return (
     (ts.isTypeNode(node) || ts.isIdentifier(node)) &&
     ts.isVariableDeclaration(node.parent) &&
-    hasExpressionIdentifier(sourceFile, node, ExpressionIdentifier.DIRECTIVE)
+    (hasExpressionIdentifier(sourceFile, node, ExpressionIdentifier.DIRECTIVE) ||
+      hasExpressionIdentifier(sourceFile, node, ExpressionIdentifier.HOST_DIRECTIVE))
   );
 }
 
@@ -94,4 +81,13 @@ export function isSymbolAliasOf(
   }
 
   return false;
+}
+
+/**
+ * Check if a node is a class declaration or the identifier of a class declaration.
+ */
+export function isClassDeclarationOrName(node: ts.Node): boolean {
+  return (
+    ts.isClassDeclaration(node) || (ts.isIdentifier(node) && ts.isClassDeclaration(node.parent))
+  );
 }

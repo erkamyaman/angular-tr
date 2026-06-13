@@ -1,10 +1,8 @@
-# Component selectors
+# Bileşen seçicileri
 
-TIP: This guide assumes you've already read the [Essentials Guide](essentials). Read that first if you're new to Angular.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
 
-Every component defines
-a [CSS selector](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) that determines how
-the component is used:
+Her bileşen, bileşenin nasıl kullanılacağını belirleyen bir [CSS seçici](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) tanımlar:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -14,7 +12,7 @@ the component is used:
 export class ProfilePhoto { }
 ```
 
-You use a component by creating a matching HTML element in the templates of _other_ components:
+_Diğer_ bileşenlerin şablonlarında eşleşen bir HTML elemanı oluşturarak bileşeni kullanırsınız:
 
 ```angular-ts {highlight: [3]}
 @Component({
@@ -26,42 +24,31 @@ You use a component by creating a matching HTML element in the templates of _oth
 export class UserProfile { }
 ```
 
-**Angular matches selectors statically at compile-time**. Changing the DOM at run-time, either via
-Angular bindings or with DOM APIs, does not affect the components rendered.
+**Angular, seçicileri derleme zamanında statik olarak eşleştirir**. DOM'u çalışma zamanında, Angular bağlamaları veya DOM API'leri aracılığıyla değiştirmek, render edilen bileşenleri etkilemez.
 
-**An element can match exactly one component selector.** If multiple component selectors match a
-single element, Angular reports an error.
+**Bir eleman tam olarak bir bileşen seçicisiyle eşleşebilir.** Birden fazla bileşen seçicisi tek bir elemanla eşleşirse, Angular bir hata bildirir.
 
-**Component selectors are case-sensitive.**
+**Bileşen seçicileri büyük-küçük harf duyarlıdır.**
 
-## Types of selectors
+## Seçici türleri
 
-Angular supports a limited subset
-of [basic CSS selector types](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) in
-component selectors:
+Angular, bileşen seçicilerinde temel [CSS seçici türlerinin](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) sınırlı bir alt kümesini destekler:
 
-| **Selector type**  | **Description**                                                                                                 | **Examples**                  |
-| ------------------ | --------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| Type selector      | Matches elements based on their HTML tag name, or node name.                                                    | `profile-photo`               |
-| Attribute selector | Matches elements based on the presence of an HTML attribute and, optionally, an exact value for that attribute. | `[dropzone]` `[type="reset"]` |
-| Class selector     | Matches elements based on the presence of a CSS class.                                                          | `.menu-item`                  |
+| **Seçici türü** | **Açıklama**                                                                                               | **Örnekler**                  |
+| --------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Tür seçici      | Elemanları HTML etiket adına veya düğüm adına göre eşleştirir.                                             | `profile-photo`               |
+| Nitelik seçici  | Elemanları bir HTML niteliğinin varlığına ve isteğe bağlı olarak o niteliğin tam değerine göre eşleştirir. | `[dropzone]` `[type="reset"]` |
+| Sınıf seçici    | Elemanları bir CSS sınıfının varlığına göre eşleştirir.                                                    | `.menu-item`                  |
 
-For attribute values, Angular supports matching an exact attribute value with the equals (`=`)
-operator. Angular does not support other attribute value operators.
+Nitelik değerleri için Angular, eşittir (`=`) operatörü ile tam nitelik değeri eşleştirmeyi destekler. Angular diğer nitelik değeri operatörlerini desteklemez.
 
-Angular component selectors do not support combinators, including
-the [descendant combinator](https://developer.mozilla.org/docs/Web/CSS/Descendant_combinator)
-or [child combinator](https://developer.mozilla.org/docs/Web/CSS/Child_combinator).
+Angular bileşen seçicileri, [nesil birleştirici](https://developer.mozilla.org/docs/Web/CSS/Descendant_combinator) veya [alt birleştirici](https://developer.mozilla.org/docs/Web/CSS/Child_combinator) dahil olmak üzere birleştiricileri desteklemez.
 
-Angular component selectors do not support
-specifying [namespaces](https://developer.mozilla.org/docs/Web/SVG/Namespaces_Crash_Course).
+Angular bileşen seçicileri [ad alanlarının](https://developer.mozilla.org/docs/Web/SVG/Namespaces_Crash_Course) belirtilmesini desteklemez.
 
-### The `:not` pseudo-class
+### `:not` sahte sınıfı
 
-Angular supports [the `:not` pseudo-class](https://developer.mozilla.org/docs/Web/CSS/:not).
-You can append this pseudo-class to any other selector to narrow which elements a component's
-selector matches. For example, you could define a `[dropzone]` attribute selector and prevent
-matching `textarea` elements:
+Angular [:not sahte sınıfını](https://developer.mozilla.org/docs/Web/CSS/:not) destekler. Bir bileşenin seçicisinin hangi elemanlarla eşleşeceğini daraltmak için bu sahte sınıfı herhangi bir başka seçiciye ekleyebilirsiniz. Örneğin, bir `[dropzone]` nitelik seçicisi tanımlayabilir ve `textarea` elemanlarının eşleşmesini önleyebilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -71,12 +58,11 @@ matching `textarea` elements:
 export class DropZone { }
 ```
 
-Angular does not support any other pseudo-classes or pseudo-elements in component selectors.
+Angular, bileşen seçicilerinde başka hiçbir sahte sınıf veya sahte eleman desteklemez.
 
-### Combining selectors
+### Seçicileri birleştirme
 
-You can combine multiple selectors by concatenating them. For example, you can match `<button>`
-elements that specify `type="reset"`:
+Birden fazla seçiciyi birleştirerek birleştirebilirsiniz. Örneğin, `type="reset"` belirten `<button>` elemanlarını eşleştirebilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -86,7 +72,7 @@ elements that specify `type="reset"`:
 export class ResetButton { }
 ```
 
-You can also define multiple selectors with a comma-separated list:
+Ayrıca virgüle ayrılmış bir liste ile birden fazla seçici tanımlayabilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -96,35 +82,23 @@ You can also define multiple selectors with a comma-separated list:
 export class DropZone { }
 ```
 
-Angular creates a component for each element that matches _any_ of the selectors in the list.
+Angular, listedeki seçicilerden _herhangi biriyle_ eşleşen her eleman için bir bileşen oluşturur.
 
-## Choosing a selector
+## Seçici seçme
 
-The vast majority of components should use a custom element name as their selector. All custom
-element names should include a hyphen as described
-by [the HTML specification](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name).
-By default, Angular reports an error if it encounters a custom tag name that does not match any
-available components, preventing bugs due to mistyped component names.
+Bileşenlerin büyük çoğunluğu, seçicileri olarak özel bir eleman adı kullanmalıdır. Tüm özel eleman adları, [HTML spesifikasyonu](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name) tarafından açıklandığı gibi bir tire içermelidir. Varsayılan olarak Angular, mevcut hiçbir bileşen ile eşleşmeyen özel bir etiket adıyla karşılaştığında hata bildirir ve yanlış yazılmış bileşen adlarından kaynaklanan hataları önler.
 
-See [Advanced component configuration](guide/components/advanced-configuration) for details on
-using [native custom elements](https://developer.mozilla.org/docs/Web/Web_Components) in
-Angular templates.
+Yerel özel elemanları Angular şablonlarında kullanma hakkında ayrıntılar için [Gelişmiş bileşen yapılandırması](guide/components/advanced-configuration) belgesine bakın.
 
-### Selector prefixes
+### Seçici önekleri
 
-The Angular team recommends using a short, consistent prefix for all the custom components
-defined inside your project. For example, if you were to build YouTube with Angular, you might
-prefix your components with `yt-`, with components like `yt-menu`, `yt-player`, etc. Namespacing
-your selectors like this makes it immediately clear where a particular component comes from. By
-default, the Angular CLI uses `app-`.
+Angular ekibi, projenizde tanımlanan tüm özel bileşenlerin kısa ve tutarlı bir önek kullanmasını önerir. Örneğin, YouTube'u Angular ile yapacak olsanız, bileşenlerinizi `yt-` öneki ile adlandırır, `yt-menu`, `yt-player` gibi bileşenler oluştururdunuz. Seçicilerinizi bu şekilde ad alanı altında toplamak, belirli bir bileşenin nereden geldiğini hemen anlaşılır kılar. Varsayılan olarak Angular CLI `app-` önekini kullanır.
 
-IMPORTANT: Angular uses the `ng` selector prefix for its own framework APIs. Never use `ng` as a selector prefix for your own custom components.
+IMPORTANT: Angular kendi framework API'leri için `ng` seçici önekini kullanır. Kendi özel bileşenleriniz için seçici öneki olarak asla `ng` kullanmayın.
 
-### When to use an attribute selector
+### Nitelik seçici ne zaman kullanılır
 
-You should consider an attribute selector when you want to create a component on a standard native
-element. For example, if you want to create a custom button component, you can take advantage of the
-standard `<button>` element by using an attribute selector:
+Standart bir yerel eleman üzerinde bileşen oluşturmak istediğinizde nitelik seçici kullanmayı düşünmelisiniz. Örneğin, özel bir buton bileşeni oluşturmak istiyorsanız, nitelik seçicisi kullanarak standart `<button>` elemanının avantajlarından yararlanabilirsiniz:
 
 ```angular-ts {highlight: [2]}
 @Component({
@@ -134,13 +108,9 @@ standard `<button>` element by using an attribute selector:
 export class YouTubeUploadButton { }
 ```
 
-This approach allows consumers of the component to directly use all the element's standard APIs
-without extra work. This is especially valuable for ARIA attributes such as `aria-label`.
+Bu yaklaşım, bileşenin tüketicilerinin ek çaba harcamadan elemanın tüm standart API'lerini doğrudan kullanmalarına olanak tanır. Bu özellikle `aria-label` gibi ARIA nitelikleri için değerlidir.
 
-Angular does not report errors when it encounters custom attributes that don't match an available
-component. When using components with attribute selectors, consumers may forget to import the
-component or its NgModule, resulting in the component not rendering.
-See [Importing and using components](guide/components#imports-in-the-component-decorator) for more information.
+Angular, mevcut bir bileşenle eşleşmeyen özel niteliklerle karşılaştığında hata bildirmez. Nitelik seçicileri kullanan bileşenlerde, tüketiciler bileşeni veya NgModule'unu içerir (import) etmeyi unutabilir ve bileşen render edilmeyebilir.
+Daha fazla bilgi için [Bileşenleri içeri aktarma ve kullanma](guide/components#component-dekoratöründe-importlar) belgesine bakın.
 
-Components that define attribute selectors should use lowercase, dash-case attributes. You can
-follow the same prefixing recommendation described above.
+Nitelik seçicileri tanımlayan bileşenler küçük harf, tire ile ayrılmış nitelikler kullanmalıdır. Yukarıda açıklanan aynı önek önerilerini takip edebilirsiniz.

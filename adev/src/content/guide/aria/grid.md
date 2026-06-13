@@ -6,9 +6,9 @@
   <docs-pill href="/api?query=grid#angular_aria_grid" title="Grid API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-A grid enables users to navigate two-dimensional data or interactive elements using directional arrow keys, Home, End, and Page Up/Down. Grids work for data tables, calendars, spreadsheets, and layout patterns that group related interactive elements.
+Bir grid, kullanıcıların yönlü ok tuşları, Home, End ve Page Up/Down kullanarak iki boyutlu veriler veya etkileşimli elemanlar arasında gezinmesini sağlar. Gridler veri tabloları, takvimler, hesap tabloları ve ilişkili etkileşimli elemanları gruplayan yerleşim kalıpları için çalışır.
 
 <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.ts">
   <docs-code header="TS" path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.ts"/>
@@ -16,40 +16,40 @@ A grid enables users to navigate two-dimensional data or interactive elements us
   <docs-code header="CSS" path="adev/src/content/examples/aria/grid/src/overview/basic/app/app.css"/>
 </docs-code-multifile>
 
-## Usage
+## Kullanım
 
-Grids work well for data or interactive elements organized in rows and columns where users need keyboard navigation in multiple directions.
+Gridler, satırlar ve sütunlar halinde düzenlenmiş ve kullanıcıların birden fazla yönde klavye navigasyonuna ihtiyaç duydukları veriler veya etkileşimli elemanlar için iyi çalışır.
 
-**Use grids when:**
+**Grid kullanın:**
 
-- Building interactive data tables with editable or selectable cells
-- Creating calendars or date pickers
-- Implementing spreadsheet-like interfaces
-- Grouping interactive elements (buttons, checkboxes) to reduce tab stops on a page
-- Building interfaces requiring two-dimensional keyboard navigation
+- Düzenlenebilir veya seçilebilir hücrelere sahip etkileşimli veri tabloları oluştururken
+- Takvim veya tarih seçiciler oluştururken
+- Hesap tablosu benzeri arayüzler uygularken
+- Bir sayfadaki sekme duraklarını azaltmak için etkileşimli elemanları (butonlar, onay kutuları) gruplarken
+- İki boyutlu klavye navigasyonu gerektiren arayüzler oluştururken
 
-**Avoid grids when:**
+**Gridlerden kaçının:**
 
-- Displaying simple read-only tables (use semantic HTML `<table>` instead)
-- Showing single-column lists (use [Listbox](guide/aria/listbox) instead)
-- Displaying hierarchical data (use [Tree](guide/aria/tree) instead)
-- Building forms without tabular layout (use standard form controls)
+- Basit salt okunur tablolar gösterirken (bunun yerine semantik HTML `<table>` kullanın)
+- Tek sütunlu listeler gösterirken (bunun yerine [Listbox](guide/aria/listbox) kullanın)
+- Hiyerarşik veri gösterirken (bunun yerine [Tree](guide/aria/tree) kullanın)
+- Tablo yerleşimi olmayan formlar oluştururken (standart form kontrolleri kullanın)
 
-## Features
+## Özellikler
 
-- **Two-dimensional navigation** - Arrow keys move between cells in all directions
-- **Focus modes** - Choose between roving tabindex or activedescendant focus strategies
-- **Selection support** - Optional cell selection with single or multi-select modes
-- **Wrapping behavior** - Configure how navigation wraps at grid edges (continuous, loop, or nowrap)
-- **Range selection** - Select multiple cells with modifier keys or dragging
-- **Disabled states** - Disable the entire grid or individual cells
-- **RTL support** - Automatic right-to-left language navigation
+- **İki boyutlu navigasyon** - Ok tuşları tüm yönlerde hücreler arasında hareket eder
+- **Odak modları** - Dolaşan tabindex veya activedescendant odak stratejileri arasında seçim yapın
+- **Seçim desteği** - Tekli veya çoklu seçim modlarıyla isteğe bağlı hücre seçimi
+- **Sarma davranışı** - Grid kenarlarında navigasyonun nasıl sarılacağını yapılandırın (sürekli, döngü veya sarmasız)
+- **Aralık seçimi** - Değiştirici tuşlar veya sürüklemeyle birden fazla hücre seçin
+- **Devre dışı durumlar** - Tüm gridi veya bireysel hücreleri devre dışı bırakın
+- **RTL desteği** - Otomatik sağdan sola dil navigasyonu
 
-## Examples
+## Örnekler
 
-### Data table grid
+### Veri Tablosu Gridi
 
-Use a grid for interactive tables where users need to navigate between cells using arrow keys. This example shows a basic data table with keyboard navigation.
+Kullanıcıların ok tuşlarıyla hücreler arasında gezinmesi gereken etkileşimli tablolar için grid kullanın. Bu örnek, klavye navigasyonlu temel bir veri tablosunu gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -68,11 +68,11 @@ Use a grid for interactive tables where users need to navigate between cells usi
   </docs-tab>
 </docs-tab-group>
 
-Apply the `ngGrid` directive to the table element, `ngGridRow` to each row, and `ngGridCell` to each cell.
+`ngGrid` yönergesini tablo elemanına, `ngGridRow`'u her satıra ve `ngGridCell`'i her hücreye uygulayın.
 
-### Calendar grid
+### Takvim Gridi
 
-Calendars are a common use case for grids. This example shows a month view where users navigate dates using arrow keys.
+Takvimler, gridler için yaygın bir kullanım durumudur. Bu örnek, kullanıcıların ok tuşlarıyla tarihler arasında gezdiği bir ay görünümünü gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -98,11 +98,11 @@ Calendars are a common use case for grids. This example shows a month view where
   </docs-tab>
 </docs-tab-group>
 
-Users can activate a date by pressing Enter or Space when focused on a cell.
+Kullanıcılar bir hücreye odaklandığında Enter veya Boşluk tuşuna basarak bir tarihi etkinleştirebilir.
 
-### Layout grid
+### Yerleşim Gridi
 
-Use a layout grid to group interactive elements and reduce tab stops. This example shows a grid of pill buttons.
+Etkileşimli elemanları gruplamak ve sekme duraklarını azaltmak için yerleşim gridi kullanın. Bu örnek, hap butonlarından oluşan bir gridi gösterir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -128,11 +128,11 @@ Use a layout grid to group interactive elements and reduce tab stops. This examp
   </docs-tab>
 </docs-tab-group>
 
-Instead of tabbing through each button, users navigate with arrow keys and only one button receives tab focus.
+Her buton arasında sekme tuşuna basmak yerine, kullanıcılar ok tuşlarıyla gezinir ve yalnızca bir buton sekme odağını alır.
 
-### Selection and focus modes
+### Seçim ve Odak Modları
 
-Enable selection with `[enableSelection]="true"` and configure how focus and selection interact.
+`[enableSelection]="true"` ile seçimi etkinleştirin ve odak ile seçimin nasıl etkileşeceğini yapılandırın.
 
 ```angular-html
 <table
@@ -149,68 +149,148 @@ Enable selection with `[enableSelection]="true"` and configure how focus and sel
 </table>
 ```
 
-**Selection modes:**
+**Seçim modları:**
 
-- `follow`: Focused cell is automatically selected
-- `explicit`: Users select cells with Space or click
+- `follow`: Odaklanan hücre otomatik olarak seçilir
+- `explicit`: Kullanıcılar hücreleri Boşluk veya tıklama ile seçer
 
-**Focus modes:**
+**Odak modları:**
 
-- `roving`: Focus moves to cells using `tabindex` (better for simple grids)
-- `activedescendant`: Focus stays on grid container, `aria-activedescendant` indicates active cell (better for virtual scrolling)
+- `roving`: Odak, `tabindex` kullanılarak hücrelere hareket eder (basit gridler için daha iyidir)
+- `activedescendant`: Odak grid kapsayıcısında kalır, `aria-activedescendant` aktif hücreyi gösterir (sanal kaydırma için daha iyidir)
 
-## APIs
+## Test Etme
+
+Angular Aria, grid bileşenlerini test etmek için bileşen harness'leri sağlar.
+Harness'lerin bir bileşen testinde nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {GridHarness} from '@angular/aria/grid/testing';
+import {MyGridComponent} from './my-grid'; // Bileşeniniz
+
+describe('MyGridComponent', () => {
+  let fixture: ComponentFixture<MyGridComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyGridComponent],
+    });
+
+    fixture = TestBed.createComponent(MyGridComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should read cell values and focus cells', async () => {
+    const grid = await loader.getHarness(GridHarness);
+
+    // Satırlara göre düzenlenmiş 2 boyutlu bir dizide tüm hücre metinlerini al
+    const cellTexts = await grid.getCellTextByIndex();
+    expect(cellTexts).toEqual([
+      ['Cell 1.1', 'Cell 1.2'],
+      ['Cell 2.1', 'Cell 2.2'],
+    ]);
+
+    // Metnine göre belirli bir hücreyi al
+    const cells = await grid.getCells({text: 'Cell 1.1'});
+    expect(cells.length).toBe(1);
+    const cell = cells[0];
+
+    // Hücre durumunu doğrula
+    expect(await cell.isSelected()).toBe(true);
+    expect(await cell.isActive()).toBe(true);
+
+    // Hücreye odaklan
+    await cell.focus();
+    expect(await cell.isFocused()).toBe(true);
+  });
+});
+```
+
+## API'ler
 
 ### Grid
 
-The container directive that provides keyboard navigation and focus management for rows and cells.
+Satırlar ve hücreler için klavye navigasyonu ve odak yönetimi sağlayan kapsayıcı yönerge.
 
-#### Inputs
+#### Girdiler
 
-| Property               | Type                                 | Default    | Description                                                   |
-| ---------------------- | ------------------------------------ | ---------- | ------------------------------------------------------------- |
-| `enableSelection`      | `boolean`                            | `false`    | Whether selection is enabled for the grid                     |
-| `disabled`             | `boolean`                            | `false`    | Disables the entire grid                                      |
-| `softDisabled`         | `boolean`                            | `true`     | When `true`, disabled cells are focusable but not interactive |
-| `focusMode`            | `'roving' \| 'activedescendant'`     | `'roving'` | Focus strategy used by the grid                               |
-| `rowWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Navigation wrapping behavior along rows                       |
-| `colWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Navigation wrapping behavior along columns                    |
-| `multi`                | `boolean`                            | `false`    | Whether multiple cells can be selected                        |
-| `selectionMode`        | `'follow' \| 'explicit'`             | `'follow'` | Whether selection follows focus or requires explicit action   |
-| `enableRangeSelection` | `boolean`                            | `false`    | Enable range selections with modifier keys or dragging        |
+| Property               | Type                                 | Default    | Description                                                                    |
+| ---------------------- | ------------------------------------ | ---------- | ------------------------------------------------------------------------------ |
+| `enableSelection`      | `boolean`                            | `false`    | Grid için seçimin etkin olup olmadığı                                          |
+| `disabled`             | `boolean`                            | `false`    | Tüm gridi devre dışı bırakır                                                   |
+| `softDisabled`         | `boolean`                            | `true`     | `true` olduğunda, devre dışı hücreler odaklanabilir ancak etkileşimli değildir |
+| `focusMode`            | `'roving' \| 'activedescendant'`     | `'roving'` | Grid tarafından kullanılan odak stratejisi                                     |
+| `rowWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Satırlar boyunca navigasyon sarma davranışı                                    |
+| `colWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Sütunlar boyunca navigasyon sarma davranışı                                    |
+| `multi`                | `boolean`                            | `false`    | Birden fazla hücrenin seçilebilip seçilemeyeceği                               |
+| `selectionMode`        | `'follow' \| 'explicit'`             | `'follow'` | Seçimin odağı takip edip etmediği veya açık eylem gerektirip gerektirmediği    |
+| `enableRangeSelection` | `boolean`                            | `false`    | Değiştirici tuşlar veya sürüklemeyle aralık seçimlerini etkinleştirir          |
 
 ### GridRow
 
-Represents a row within a grid and serves as a container for grid cells.
+Bir grid içindeki bir satırı temsil eder ve grid hücreleri için kapsayıcı görevi görür.
 
-#### Inputs
+#### Girdiler
 
-| Property   | Type     | Default | Description                           |
-| ---------- | -------- | ------- | ------------------------------------- |
-| `rowIndex` | `number` | auto    | The index of this row within the grid |
+| Property   | Type     | Default | Description                      |
+| ---------- | -------- | ------- | -------------------------------- |
+| `rowIndex` | `number` | auto    | Bu satırın grid içindeki indeksi |
 
 ### GridCell
 
-Represents an individual cell within a grid row.
+Bir grid satırındaki bireysel bir hücreyi temsil eder.
 
-#### Inputs
+#### Girdiler
 
-| Property      | Type                         | Default        | Description                                             |
-| ------------- | ---------------------------- | -------------- | ------------------------------------------------------- |
-| `id`          | `string`                     | auto           | Unique identifier for the cell                          |
-| `role`        | `string`                     | `'gridcell'`   | Cell role: `gridcell`, `columnheader`, or `rowheader`   |
-| `disabled`    | `boolean`                    | `false`        | Disables this cell                                      |
-| `selected`    | `boolean`                    | `false`        | Whether the cell is selected (supports two-way binding) |
-| `selectable`  | `boolean`                    | `true`         | Whether the cell can be selected                        |
-| `rowSpan`     | `number`                     | —              | Number of rows the cell spans                           |
-| `colSpan`     | `number`                     | —              | Number of columns the cell spans                        |
-| `rowIndex`    | `number`                     | —              | Row index of the cell                                   |
-| `colIndex`    | `number`                     | —              | Column index of the cell                                |
-| `orientation` | `'vertical' \| 'horizontal'` | `'horizontal'` | Orientation for widgets within the cell                 |
-| `wrap`        | `boolean`                    | `true`         | Whether widget navigation wraps within the cell         |
+| Property      | Type                         | Default        | Description                                                 |
+| ------------- | ---------------------------- | -------------- | ----------------------------------------------------------- |
+| `id`          | `string`                     | auto           | Hücre için benzersiz tanımlayıcı                            |
+| `role`        | `string`                     | `'gridcell'`   | Hücre rolü: `gridcell`, `columnheader` veya `rowheader`     |
+| `disabled`    | `boolean`                    | `false`        | Bu hücreyi devre dışı bırakır                               |
+| `selected`    | `boolean`                    | `false`        | Hücrenin seçili olup olmadığı (iki yönlü bağlama destekler) |
+| `selectable`  | `boolean`                    | `true`         | Hücrenin seçilebilir olup olmadığı                          |
+| `rowSpan`     | `number`                     | —              | Hücrenin kapladığı satır sayısı                             |
+| `colSpan`     | `number`                     | —              | Hücrenin kapladığı sütun sayısı                             |
+| `rowIndex`    | `number`                     | —              | Hücrenin satır indeksi                                      |
+| `colIndex`    | `number`                     | —              | Hücrenin sütun indeksi                                      |
+| `orientation` | `'vertical' \| 'horizontal'` | `'horizontal'` | Hücre içindeki widget'lar için yön                          |
+| `wrap`        | `boolean`                    | `true`         | Widget navigasyonunun hücre içinde sarılıp sarılmadığı      |
 
-#### Signals
+#### Sinyaller
 
-| Property | Type              | Description                          |
-| -------- | ----------------- | ------------------------------------ |
-| `active` | `Signal<boolean>` | Whether the cell currently has focus |
+| Property | Type              | Description                           |
+| -------- | ----------------- | ------------------------------------- |
+| `active` | `Signal<boolean>` | Hücrenin şu anda odakta olup olmadığı |
+
+### GridCellWidget
+
+Grid navigasyonunun duraklatılmasına izin vermek için bir grid hücresi içindeki etkileşimli bir öğeye uygulanır.
+
+#### Girdiler
+
+| Property      | Type                                  | Default    | Description                                                   |
+| ------------- | ------------------------------------- | ---------- | ------------------------------------------------------------- |
+| `id`          | `string`                              | auto       | Widget için benzersiz tanımlayıcı                             |
+| `widgetType`  | `'simple' \| 'complex' \| 'editable'` | `'simple'` | Etkinleştirmenin nasıl davranacağını kontrol eden widget türü |
+| `disabled`    | `boolean`                             | `false`    | Bu hücre widget'ını devre dışı bırakır                        |
+| `focusTarget` | `ElementResolver<HTMLElement>`        | —          | Etkinleştirmede odağı alacak isteğe bağlı öğe referansı       |
+| `tabindex`    | `number`                              | —          | Widget için tabindex geçersiz kılması                         |
+
+#### Çıktılar
+
+| Property      | Type                                                     | Description                                  |
+| ------------- | -------------------------------------------------------- | -------------------------------------------- |
+| `activated`   | `EventEmitter<KeyboardEvent \| FocusEvent \| undefined>` | Hücre widget'ı etkinleştiğinde yayılır       |
+| `deactivated` | `EventEmitter<KeyboardEvent \| FocusEvent \| undefined>` | Hücre widget'ı devre dışı kaldığında yayılır |
+
+#### Yöntemler
+
+| Method       | Parameters | Description                       |
+| ------------ | ---------- | --------------------------------- |
+| `activate`   | none       | Widget'ı zorla etkinleştirir      |
+| `deactivate` | none       | Widget'ı zorla devre dışı bırakır |

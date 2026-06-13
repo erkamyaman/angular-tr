@@ -13,9 +13,9 @@ import {
   ENVIRONMENT_INITIALIZER,
   EnvironmentProviders,
   inject,
-  Injectable,
   InjectionToken,
   makeEnvironmentProviders,
+  Service,
   StaticProvider,
 } from '../../di';
 import {RuntimeError, RuntimeErrorCode} from '../../errors';
@@ -33,7 +33,7 @@ import {
   ZONELESS_ENABLED,
 } from './zoneless_scheduling';
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class NgZoneChangeDetectionScheduler implements OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly changeDetectionScheduler = inject(ChangeDetectionScheduler);
@@ -134,8 +134,8 @@ export function internalProvideZoneChangeDetection({
  * Provides `NgZone`-based change detection for the application bootstrapped using
  * `bootstrapApplication`.
  *
- * `NgZone` is already provided in applications by default. This provider allows you to configure
- * options like `eventCoalescing` in the `NgZone`.
+ * Add this provider to use `NgZone`/ZoneJS-based change detection and configure options like
+ * `eventCoalescing` in the `NgZone`.
  *
  * If you need this provider function in an NgModule-based application, pass it as `applicationProviders` to `bootstrapModule()`.
  *
@@ -228,7 +228,7 @@ export function getNgZoneOptions(options?: NgZoneOptions): InternalNgZoneOptions
   };
 }
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class ZoneStablePendingTask {
   private readonly subscription = new Subscription();
   private initialized = false;

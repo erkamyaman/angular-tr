@@ -5,15 +5,13 @@
 ```ts
 
 import { AbstractControl } from '@angular/forms';
-import { ControlValueAccessor } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { FormControlState } from '@angular/forms';
 import { FormControlStatus } from '@angular/forms';
 import * as i0 from '@angular/core';
 import { Injector } from '@angular/core';
 import { Signal } from '@angular/core';
-import { ValidationErrors } from '@angular/forms';
-import { ValidatorFn } from '@angular/forms';
+import { StandardSchemaV1 } from '@standard-schema/spec';
 import { WritableSignal } from '@angular/core';
 
 // @public
@@ -40,12 +38,18 @@ export class CompatValidationError<T = unknown> implements ValidationError {
     // (undocumented)
     readonly control: AbstractControl;
     // (undocumented)
-    readonly fieldTree: FieldTree<unknown>;
+    readonly fieldTree: ReadonlyFieldTree<unknown>;
     // (undocumented)
     readonly kind: string;
     // (undocumented)
     readonly message?: string;
 }
+
+// @public
+export function extractValue<T>(field: FieldTree<T>): RawValue<T>;
+
+// @public
+export function extractValue<T>(field: FieldTree<T>, filter: ExtractFilter): DeepPartial<RawValue<T>>;
 
 // @public
 export const NG_STATUS_CLASSES: SignalFormsConfig['classes'];

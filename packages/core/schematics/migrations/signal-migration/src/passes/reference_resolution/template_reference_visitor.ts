@@ -25,7 +25,9 @@ import {
   TmplAstBoundText,
   TmplAstDeferredBlock,
   TmplAstForLoopBlock,
+  TmplAstIcu,
   TmplAstIfBlockBranch,
+  TmplAstLetDeclaration,
   TmplAstNode,
   TmplAstRecursiveVisitor,
   TmplAstSwitchBlock,
@@ -174,7 +176,11 @@ export class TemplateReferenceVisitor<
 
   override visitForLoopBlock(block: TmplAstForLoopBlock): void {
     this.checkExpressionForReferencedFields(block, block.expression);
-    this.checkExpressionForReferencedFields(block, block.trackBy);
+
+    if (block.trackBy !== null) {
+      this.checkExpressionForReferencedFields(block, block.trackBy);
+    }
+
     super.visitForLoopBlock(block);
   }
 
@@ -221,6 +227,21 @@ export class TemplateReferenceVisitor<
     // keep track of all referenced inputs to see if they actually are.
     if (this.templateAttributeReferencedFields !== null) {
       this.templateAttributeReferencedFields.push(...referencedFields);
+    }
+  }
+
+  override visitLetDeclaration(decl: TmplAstLetDeclaration): void {
+    this.checkExpressionForReferencedFields(decl, decl.value);
+  }
+
+  override visitIcu(icu: TmplAstIcu): void {
+    for (const v of Object.values(icu.vars)) {
+      this.checkExpressionForReferencedFields(icu, v.value);
+    }
+    for (const p of Object.values(icu.placeholders)) {
+      if (p instanceof TmplAstBoundText) {
+        this.checkExpressionForReferencedFields(icu, p.value);
+      }
     }
   }
 }
@@ -340,14 +361,19 @@ export class TemplateExpressionReferenceVisitor<
     }
 
     const symbol = this.templateTypeChecker.getSymbolOfNode(ast, this.componentClass);
-    if (symbol?.kind !== SymbolKind.Expression || symbol.tsSymbol === null) {
+    if (symbol?.kind !== SymbolKind.Expression) {
+      return false;
+    }
+
+    const tsSymbol = this.templateTypeChecker.getTsSymbolOfSymbol(symbol);
+    if (tsSymbol === null) {
       return false;
     }
 
     // Dangerous: Type checking symbol retrieval is a totally different `ts.Program`,
     // than the one where we analyzed `knownInputs`.
     // --> Find the input via its input id.
-    const targetInput = this.knownFields.attemptRetrieveDescriptorFromSymbol(symbol.tsSymbol);
+    const targetInput = this.knownFields.attemptRetrieveDescriptorFromSymbol(tsSymbol);
 
     if (targetInput === null) {
       return false;

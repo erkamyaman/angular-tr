@@ -1,9 +1,9 @@
 # The MIT License
 
-Copyright (c) 2010-2026 Google LLC. [https://angular.dev/license](/license)
+Telif Hakkı (c) 2010-2026 Google LLC. [https://angular.dev/license](/license)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Bu yazılımın ve ilişkili dokümantasyon dosyalarının ("Yazılım") bir kopyasını edinen herhangi bir kişiye, Yazılım'ı kısıtlama olmaksızın kullanma, kopyalama, değiştirme, birleştirme, yayımlama, dağıtma, alt lisanslama ve/veya satma hakları dahil ancak bunlarla sınırlı olmaksızın Yazılım'da herhangi bir kısıtlama olmaksızın işlem yapma ve Yazılım'ın sağlandığı kişilere aynısını yapma izni verilmiştir; aşağıdaki koşullara tabi olarak:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+Yukarıdaki telif hakkı bildirimi ve bu izin bildirimi, Yazılım'ın tüm kopyalarına veya önemli bölümlerine dahil edilecektir.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+YAZILIM "OLDUĞU GİBİ" SAĞLANMAKTADIR, TİCARİ ELVERİŞLİLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME GARANTİLERİ DAHİL ANCAK BUNLARLA SINIRLI OLMAMAK ÜZERE, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ VERİLMEMEKTEDİR. HİÇBİR DURUMDA YAZARLAR VEYA TELİF HAKKI SAHİPLERİ, YAZILIM'DAN VEYA YAZILIM'IN KULLANIMINDAN YA DA YAZILIM'DAKİ DİĞER İŞLEMLERDEN KAYNAKLANAN VEYA BUNLARLA BAĞLANTILI HERHANGİ BİR TALEP, HASAR VEYA DİĞER YÜKÜMLÜLÜKLERDEN, BİR SÖZLEŞME DAVASI, HAKSIZ FİİL VEYA BAŞKA BİR ŞEKİLDE OLSUN, SORUMLU OLMAYACAKTIR.

@@ -1,19 +1,19 @@
-<docs-decorative-header title="Components" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
-The fundamental building block for creating applications in Angular.
+<docs-decorative-header title="Bileşenler" imgSrc="adev/src/assets/images/components.svg"> <!-- markdownlint-disable-line -->
+Angular'da uygulama oluşturmanın temel yapı taşı.
 </docs-decorative-header>
 
-Components are the main building blocks of Angular applications. Each component represents a part of a larger web page. Organizing an application into components helps provide structure to your project, clearly separating code into specific parts that are easy to maintain and grow over time.
+Bileşenler, Angular uygulamalarının ana yapı taşlarıdır. Her bileşen, daha büyük bir web sayfasının bir parçasını temsil eder. Bir uygulamayı bileşenlere göre düzenlemek, projenize yapı kazandırmaya yardımcı olarak kodu bakımı kolay ve zamanla büyüyebilen belirli parçalara net bir şekilde ayırır.
 
-## Defining a component
+## Bir Bileşen Tanımlama
 
-Every component has a few main parts:
+Her bileşenin birkaç ana parçası vardır:
 
-1. A `@Component`[decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) that contains some configuration used by Angular.
-2. An HTML template that controls what renders into the DOM.
-3. A [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) that defines how the component is used in HTML.
-4. A TypeScript class with behaviors, such as handling user input or making requests to a server.
+1. Angular tarafından kullanılan bazı yapılandırmaları içeren bir `@Component` [dekoratörü](https://www.typescriptlang.org/docs/handbook/decorators.html).
+2. DOM'a ne render edileceğini kontrol eden bir HTML şablonu.
+3. Bileşenin HTML'de nasıl kullanılacağını tanımlayan bir [CSS seçici](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors).
+4. Kullanıcı girdisini işleme veya sunucuya istek gönderme gibi davranışlara sahip bir TypeScript sınıfı.
 
-Here is a simplified example of a `UserProfile` component.
+İşte basitleştirilmiş bir `UserProfile` bileşeni örneği.
 
 ```angular-ts
 // user-profile.ts
@@ -25,11 +25,11 @@ Here is a simplified example of a `UserProfile` component.
   `,
 })
 export class UserProfile {
-  /* Your component code goes here */
+  /* Bileşen kodunuz buraya gelecek */
 }
 ```
 
-The `@Component` decorator also optionally accepts a `styles` property for any CSS you want to apply to your template:
+`@Component` dekoratörü ayrıca isteğe bağlı olarak şablonunuza uygulamak istediğiniz CSS için bir `styles` özelliğini de kabul eder:
 
 ```angular-ts
 // user-profile.ts
@@ -46,13 +46,13 @@ The `@Component` decorator also optionally accepts a `styles` property for any C
   `,
 })
 export class UserProfile {
-  /* Your component code goes here */
+  /* Bileşen kodunuz buraya gelecek */
 }
 ```
 
-### Separating HTML and CSS into separate files
+### HTML ve CSS'i Ayrı Dosyalara Ayırma
 
-You can define a component's HTML and CSS in separate files using `templateUrl` and `styleUrl`:
+Bir bileşenin HTML ve CSS'ini `templateUrl` ve `styleUrl` kullanarak ayrı dosyalarda tanımlayabilirsiniz:
 
 ```angular-ts
 // user-profile.ts
@@ -62,7 +62,7 @@ You can define a component's HTML and CSS in separate files using `templateUrl` 
   styleUrl: 'user-profile.css',
 })
 export class UserProfile {
-  // Component behavior is defined in here
+  // Bileşen davranışı burada tanımlanır
 }
 ```
 
@@ -79,9 +79,9 @@ h1 {
 }
 ```
 
-## Using components
+## Bileşenleri Kullanma
 
-You build an application by composing multiple components together. For example, if you are building a user profile page, you might break the page up into several components like this:
+Birden fazla bileşeni bir araya getirerek bir uygulama oluşturursunuz. Örneğin, bir kullanıcı profili sayfası oluşturuyorsanız, sayfayı şu şekilde birkaç bileşene ayırabilirsiniz:
 
 ```mermaid
 flowchart TD
@@ -92,15 +92,15 @@ flowchart TD
     D[UserAddress]
 ```
 
-Here, the `UserProfile` component uses several other components to produce the final page.
+Burada `UserProfile` bileşeni, son sayfayı oluşturmak için birkaç başka bileşeni kullanır.
 
-To import and use a component, you need to:
+Bir bileşeni içe aktarmak ve kullanmak için şunları yapmanız gerekir:
 
-1. In your component's TypeScript file, add an `import` statement for the component you want to use.
-2. In your `@Component` decorator, add an entry to the `imports` array for the component you want to use.
-3. In your component's template, add an element that matches the selector of the component you want to use.
+1. Bileşeninizin TypeScript dosyasında, kullanmak istediğiniz bileşen için bir `import` ifadesi ekleyin.
+2. `@Component` dekoratörünüzde, kullanmak istediğiniz bileşen için `imports` dizisine bir giriş ekleyin.
+3. Bileşeninizin şablonunda, kullanmak istediğiniz bileşenin seçicisiyle eşleşen bir eleman ekleyin.
 
-Here's an example of a `UserProfile` component importing a `ProfilePhoto` component:
+İşte bir `ProfilePhoto` bileşenini içe aktaran bir `UserProfile` bileşeni örneği:
 
 ```angular-ts
 // user-profile.ts
@@ -116,17 +116,17 @@ import {ProfilePhoto} from 'profile-photo.ts';
   `,
 })
 export class UserProfile {
-  // Component behavior is defined in here
+  // Bileşen davranışı burada tanımlanır
 }
 ```
 
-TIP: Want to know more about Angular components? See the [In-depth Components guide](guide/components) for the full details.
+TIP: Angular bileşenleri hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Bileşenler kılavuzuna](guide/components) bakın.
 
-## Next Step
+## Sonraki Adım
 
-Now that you know how components work in Angular, it's time to learn how we add and manage dynamic data in our application.
+Angular'da bileşenlerin nasıl çalıştığını öğrendiğinize göre, uygulamamızda dinamik verileri nasıl ekleyip yöneteceğimizi öğrenmenin zamanı geldi.
 
 <docs-pill-row>
-  <docs-pill title="Reactivity with signals" href="essentials/signals" />
-  <docs-pill title="In-depth components guide" href="guide/components" />
+  <docs-pill title="Sinyallerle reaktivite" href="essentials/signals" />
+  <docs-pill title="Detaylı bileşenler kılavuzu" href="guide/components" />
 </docs-pill-row>

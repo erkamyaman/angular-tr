@@ -12,7 +12,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {disabled} from '@angular/forms/signals';
 
 import {SignalFormControl} from '../../compat';
-import {FormField} from '../../src/directive/form_field_directive';
+import {FormField} from '../../src/directive/form_field';
 
 describe('SignalFormControl (web)', () => {
   beforeEach(() => {
@@ -103,7 +103,7 @@ describe('SignalFormControl (web)', () => {
       readonly signalControl = new SignalFormControl(
         10,
         (p) => {
-          disabled(p, ({value}) => value() > 15);
+          disabled(p, {when: ({value}) => value() > 15});
         },
         {injector: inject(Injector)},
       );

@@ -8,6 +8,7 @@
 
 import * as o from '../../../../output/output_ast';
 import {CONTEXT_NAME} from '../../../../render3/view/util';
+import {isUnsafeObjectKey} from '../../../../render3/util';
 import {Identifiers} from '../../../../render3/r3_identifiers';
 import * as ir from '../../ir';
 import {
@@ -140,6 +141,22 @@ function reifyCreateOperations(unit: CompilationUnit, ops: ir.OpList<ir.CreateOp
                 op.localRefs as number | null,
                 op.wholeSourceSpan,
               ),
+        );
+        break;
+      case ir.OpKind.ForeignComponent:
+        const propsExpr =
+          op.props.size > 0
+            ? o.literalMap(
+                Array.from(op.props.entries()).map(([key, value]) => ({
+                  key,
+                  value,
+                  quoted: isUnsafeObjectKey(key),
+                })),
+              )
+            : null;
+        ir.OpList.replace(
+          op,
+          ng.foreignComponent(op.handle.slot!, o.literal(op.constIndex), propsExpr, op.sourceSpan),
         );
         break;
       case ir.OpKind.ElementEnd:
@@ -342,7 +359,12 @@ function reifyCreateOperations(unit: CompilationUnit, ops: ir.OpList<ir.CreateOp
         ir.OpList.replace<ir.CreateOp>(
           op,
           ir.createStatementOp(
-            new o.DeclareVarStmt(op.variable.name, op.initializer, undefined, o.StmtModifier.Final),
+            new o.DeclareVarStmt(
+              op.variable.name,
+              op.initializer,
+              o.DYNAMIC_TYPE,
+              o.StmtModifier.Final,
+            ),
           ),
         );
         break;
@@ -436,6 +458,9 @@ function reifyCreateOperations(unit: CompilationUnit, ops: ir.OpList<ir.CreateOp
         break;
       case ir.OpKind.ProjectionDef:
         ir.OpList.replace<ir.CreateOp>(op, ng.projectionDef(op.def));
+        break;
+      case ir.OpKind.EnableIncrementalHydrationRuntime:
+        ir.OpList.replace<ir.CreateOp>(op, ng.enableIncrementalHydrationRuntime(op.sourceSpan));
         break;
       case ir.OpKind.Projection:
         if (op.handle.slot === null) {
@@ -693,7 +718,12 @@ function reifyUpdateOperations(unit: CompilationUnit, ops: ir.OpList<ir.UpdateOp
         ir.OpList.replace<ir.UpdateOp>(
           op,
           ir.createStatementOp(
-            new o.DeclareVarStmt(op.variable.name, op.initializer, undefined, o.StmtModifier.Final),
+            new o.DeclareVarStmt(
+              op.variable.name,
+              op.initializer,
+              o.DYNAMIC_TYPE,
+              o.StmtModifier.Final,
+            ),
           ),
         );
         break;
@@ -769,6 +799,17 @@ function reifyIrExpression(unit: CompilationUnit, expr: o.Expression): o.Express
       return ng.nextContext(expr.steps);
     case ir.ExpressionKind.Reference:
       return ng.reference(expr.targetSlot.slot! + 1 + expr.offset);
+    case ir.ExpressionKind.ForeignContent:
+      if (!(unit instanceof ViewCompilationUnit)) {
+        throw new Error(`AssertionError: must be compiling a component`);
+      }
+      const isFn = unit.job.views.get(expr.childrenViewXref)!.contextVariables.size > 0;
+      const slot = o.literal(expr.childrenViewHandle.slot!);
+      return isFn
+        ? o
+            .importExpr(Identifiers.foreignContentFn)
+            .callFn([slot, o.literal(expr.foreignComponentConstIndex)])
+        : o.importExpr(Identifiers.foreignContent).callFn([slot]);
     case ir.ExpressionKind.LexicalRead:
       throw new Error(`AssertionError: unresolved LexicalRead of ${expr.name}`);
     case ir.ExpressionKind.TwoWayBindingSet:
@@ -863,7 +904,7 @@ function reifyListenerHandler(
   const params: o.FnParam[] = [];
   if (consumesDollarEvent) {
     // We need the `$event` parameter.
-    params.push(new o.FnParam('$event'));
+    params.push(new o.FnParam('$event', o.DYNAMIC_TYPE));
   }
 
   return o.fn(params, handlerStmts, undefined, undefined, name);
@@ -876,7 +917,10 @@ function reifyTrackBy(unit: CompilationUnit, op: ir.RepeaterCreateOp): o.Express
     return op.trackByFn;
   }
 
-  const params: o.FnParam[] = [new o.FnParam('$index'), new o.FnParam('$item')];
+  const params: o.FnParam[] = [
+    new o.FnParam('$index', o.NUMBER_TYPE),
+    new o.FnParam('$item', o.DYNAMIC_TYPE),
+  ];
   let fn: o.FunctionExpr | o.ArrowFunctionExpr;
 
   if (op.trackByOps === null) {
@@ -936,7 +980,10 @@ function getArrowFunctionFactory(
       : statements;
 
   return o.arrowFn(
-    [new o.FnParam(expr.contextName), new o.FnParam(expr.currentViewName)],
+    [
+      new o.FnParam(expr.contextName, o.DYNAMIC_TYPE),
+      new o.FnParam(expr.currentViewName, o.DYNAMIC_TYPE),
+    ],
     o.arrowFn(expr.parameters, body),
   );
 }

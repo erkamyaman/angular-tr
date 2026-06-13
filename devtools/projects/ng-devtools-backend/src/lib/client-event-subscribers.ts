@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
+import {ɵDebugSignalGraph as InternalDebugSignalGraph} from '@angular/core';
+import {debounceTime} from 'rxjs/operators';
 import {
   ComponentExplorerViewQuery,
   ComponentType,
@@ -23,7 +25,6 @@ import {
   SignalNodePosition,
   TransferStateValue,
 } from '../../../protocol';
-import {debounceTime} from 'rxjs/operators';
 import {
   appIsAngularInDevMode,
   appIsAngularIvy,
@@ -34,15 +35,14 @@ import {
 
 import {ComponentInspector} from './component-inspector/component-inspector';
 import {
+  getDirectiveCdStrategy,
   getElementInjectorElement,
   getInjectorFromElementNode,
   getInjectorProviders,
   getInjectorResolutionPath,
   getLatestComponentState,
   idToInjector,
-  injectorsSeen,
   isElementInjector,
-  isOnPushDirective,
   logValue,
   nodeInjectorToResolutionPath,
   queryDirectiveForest,
@@ -53,15 +53,16 @@ import {
 import {unHighlight} from './highlighter';
 import {disableTimingAPI, enableTimingAPI, initializeOrGetDirectiveForestHooks} from './hooks';
 import {start as startProfiling, stop as stopProfiling} from './hooks/capture';
+import {DirectiveForestHooks} from './hooks/hooks';
 import {ComponentTreeNode} from './interfaces';
-import {getRouterCallableConstructRef, parseRoutes, RoutePropertyType} from './router-tree';
 import {ngDebugClient, ngDebugDependencyInjectionApiIsSupported} from './ng-debug-api/ng-debug-api';
+import {getSupportedApis} from './ng-debug-api/supported-apis';
+import {getRouterCallableConstructRef, parseRoutes, RoutePropertyType} from './router-tree';
 import {setConsoleReference} from './set-console-reference';
 import {serializeDirectiveState, serializeValue} from './state-serializer/state-serializer';
-import {runOutsideAngular, unwrapSignal} from './utils';
-import {DirectiveForestHooks} from './hooks/hooks';
-import {getSupportedApis} from './ng-debug-api/supported-apis';
-import {sanitizeObject} from './serialization-utils';
+import {runOutsideAngular, unwrapSignal} from './utils/general';
+import {sanitizeObject} from './utils/serialization';
+import {SignalGraphRef} from './utils/signal-graph-ref';
 
 type InspectorRef = {ref: ComponentInspector | null};
 
@@ -105,8 +106,13 @@ export const subscribeToClientEvents = (
 
   messageBus.on('getTransferState', getTransferStateCallback(messageBus));
 
+  const SAFE_LOG_LEVELS = new Set(['log', 'info', 'warn', 'debug', 'error']);
   messageBus.on('log', ({message, level}) => {
-    console[level](`[Angular DevTools]: ${message}`);
+    if (SAFE_LOG_LEVELS.has(level)) {
+      console[level](`[Angular DevTools]: ${message}`);
+    } else {
+      console.warn(`[Angular DevTools]: Invalid log level attempted: ${level}`);
+    }
   });
 
   messageBus.on('getSignalGraph', getSignalGraphCallback(messageBus));
@@ -145,22 +151,6 @@ const getLatestComponentExplorerViewCallback =
       initializeOrGetDirectiveForestHooks().getIndexedDirectiveForest(),
       ngDebugDependencyInjectionApiIsSupported(),
     );
-
-    // cleanup injector id mappings
-    for (const injectorId of idToInjector.keys()) {
-      if (!injectorsSeen.has(injectorId)) {
-        const injector = idToInjector.get(injectorId)!;
-        if (isElementInjector(injector)) {
-          const element = getElementInjectorElement(injector);
-          if (element) {
-            nodeInjectorToResolutionPath.delete(element);
-          }
-        }
-
-        idToInjector.delete(injectorId);
-      }
-    }
-    injectorsSeen.clear();
 
     if (!query) {
       messageBus.emit('latestComponentExplorerView', [{forest}]);
@@ -241,7 +231,7 @@ const getNestedPropertiesCallback =
       return emitEmpty();
     }
     const current =
-      position.directive === undefined ? node.component : node.directives[position.directive];
+      position.directive === undefined ? node.component : node.directives?.[position.directive];
     if (!current) {
       return emitEmpty();
     }
@@ -268,23 +258,37 @@ const getSignalNestedPropertiesCallback =
       position.element,
       initializeOrGetDirectiveForestHooks().getIndexedDirectiveForest(),
     );
-    if (!node) {
+    if (!node || !node.nativeElement) {
       return emitEmpty();
     }
 
-    const injector = getInjectorFromElementNode(node.nativeElement!);
+    const injector = getInjectorFromElementNode(node.nativeElement);
     if (!injector) {
       return emitEmpty();
     }
 
     const ng = ngDebugClient();
 
-    const signalGraph = ng.ɵgetSignalGraph?.(injector);
+    let signalGraph: InternalDebugSignalGraph | undefined;
+
+    // Considering that the inspection of signal value nested properties
+    // usually involves multiple requests, we store the signal graph
+    // during the first call. We keep only the last requested signal graph
+    // to avoid filling the heap with graphs that may not be needed.
+    if (componentSignalGraphRef.exists(node.nativeElement)) {
+      signalGraph = componentSignalGraphRef.deref(node.nativeElement);
+    } else {
+      signalGraph = ng.ɵgetSignalGraph?.(injector);
+      if (signalGraph) {
+        componentSignalGraphRef.set(node.nativeElement, signalGraph);
+      }
+    }
+
     if (!signalGraph) {
       return emitEmpty();
     }
 
-    const current = signalGraph.nodes.find((node) => node.id === position.signalId);
+    const current = signalGraph.nodes.find((n) => n.id === position.signalId);
     if (!current) {
       return emitEmpty();
     }
@@ -387,8 +391,10 @@ export interface SerializableComponentInstanceType extends ComponentType {
   id: number;
 }
 
-export interface SerializableComponentTreeNode
-  extends DevToolsNode<SerializableDirectiveInstanceType, SerializableComponentInstanceType> {
+export interface SerializableComponentTreeNode extends DevToolsNode<
+  SerializableDirectiveInstanceType,
+  SerializableComponentInstanceType
+> {
   children: SerializableComponentTreeNode[];
   nativeElement?: never;
   // Since the nativeElement is not serializable, we will use this boolean as backup
@@ -422,7 +428,7 @@ const prepareForestForSerialization = (
   const serializedNodes: SerializableComponentTreeNode[] = [];
   for (const node of roots) {
     const serializedNode: SerializableComponentTreeNode = {
-      element: node.element,
+      tagName: node.tagName,
       component: node.component
         ? {
             name: node.component.name,
@@ -430,14 +436,14 @@ const prepareForestForSerialization = (
             id: initializeOrGetDirectiveForestHooks().getDirectiveId(node.component.instance)!,
           }
         : null,
-      directives: node.directives.map((d) => ({
+      directives: node.directives?.map((d) => ({
         name: d.name,
         id: initializeOrGetDirectiveForestHooks().getDirectiveId(d.instance)!,
       })),
       children: prepareForestForSerialization(node.children, includeResolutionPath),
       hydration: node.hydration,
-      defer: node.defer,
-      onPush: node.component ? isOnPushDirective(node.component) : false,
+      controlFlowBlock: node.controlFlowBlock,
+      changeDetection: node.component ? getDirectiveCdStrategy(node.component) : undefined,
 
       // native elements are not serializable
       hasNativeElement: !!node.nativeElement,
@@ -477,21 +483,17 @@ function getNodeDIResolutionPath(node: ComponentTreeNode): SerializedInjector[] 
     nodeInjectorToResolutionPath.set(element, serializeResolutionPath(resolutionPaths));
   }
 
-  const serializedPath = nodeInjectorToResolutionPath.get(element)!;
-  for (const injector of serializedPath) {
-    injectorsSeen.add(injector.id);
-  }
-
-  return serializedPath;
+  return nodeInjectorToResolutionPath.get(element)!;
 }
 
 const getInjectorProvidersCallback =
   (messageBus: MessageBus<Events>) => (injector: SerializedInjector) => {
-    if (!idToInjector.has(injector.id)) {
+    const resolvedInjector = idToInjector.get(injector.id)?.deref();
+    if (!resolvedInjector) {
       return;
     }
 
-    const providerRecords = getInjectorProviders(idToInjector.get(injector.id)!);
+    const providerRecords = getInjectorProviders(resolvedInjector);
     const allProviderRecords: SerializedProviderRecord[] = [];
 
     const tokenToRecords: Map<any, SerializedProviderRecord[]> = new Map();
@@ -512,7 +514,7 @@ const getInjectorProvidersCallback =
 
     const serializedProviderRecords: SerializedProviderRecord[] = [];
 
-    for (const [token, records] of tokenToRecords.entries()) {
+    for (const records of tokenToRecords.values()) {
       const multiRecords = records.filter((record) => record.multi);
       const nonMultiRecords = records.filter((record) => !record.multi);
 
@@ -542,11 +544,10 @@ const logProvider = (
   serializedInjector: SerializedInjector,
   serializedProvider: SerializedProviderRecord,
 ): void => {
-  if (!idToInjector.has(serializedInjector.id)) {
+  const injector = idToInjector.get(serializedInjector.id)?.deref();
+  if (!injector) {
     return;
   }
-
-  const injector = idToInjector.get(serializedInjector.id)!;
 
   const providerRecords = getInjectorProviders(injector);
 
@@ -587,43 +588,37 @@ const getTransferStateCallback = (messageBus: MessageBus<Events>) => () => {
     return;
   }
 
-  const rootNode = forest[0];
-  if (!rootNode || !rootNode.nativeElement) {
-    messageBus.emit('transferStateData', [null]);
-    return;
+  const merged: Record<string, TransferStateValue> = {};
+  let collected = false;
+
+  for (const rootNode of forest) {
+    if (!rootNode?.nativeElement) continue;
+
+    const injector = getInjectorFromElementNode(rootNode.nativeElement);
+    if (!injector) continue;
+
+    const rootData = ng.ɵgetTransferState?.(injector) as
+      | Record<string, TransferStateValue>
+      | null
+      | undefined;
+    if (rootData && typeof rootData === 'object') {
+      Object.assign(merged, rootData);
+      collected = true;
+    }
   }
 
-  const injector = getInjectorFromElementNode(rootNode.nativeElement);
-  if (!injector) {
-    messageBus.emit('transferStateData', [null]);
-    return;
-  }
-
-  const transferStateData = (ng.ɵgetTransferState?.(injector) ?? null) as Record<
-    string,
-    TransferStateValue
-  > | null;
-
-  if (
-    transferStateData &&
-    typeof transferStateData === 'object' &&
-    Object.keys(transferStateData).length > 0
-  ) {
-    messageBus.emit('transferStateData', [transferStateData]);
-  } else {
-    messageBus.emit('transferStateData', [null]);
-  }
+  messageBus.emit('transferStateData', [collected ? merged : null]);
 };
 
 const getInjectorInstance = (
   serializedInjector: SerializedInjector,
   serializedProvider: SerializedProviderRecord,
 ) => {
-  if (!idToInjector.has(serializedInjector.id)) {
+  const injector = idToInjector.get(serializedInjector.id)?.deref();
+  if (!injector) {
     return;
   }
 
-  const injector = idToInjector.get(serializedInjector.id)!;
   const providerRecords = getInjectorProviders(injector);
 
   if (typeof serializedProvider.index === 'number') {
@@ -637,6 +632,10 @@ const getInjectorInstance = (
 };
 
 const getSignalGraphCallback = (messageBus: MessageBus<Events>) => (element: ElementPosition) => {
+  // We assume that a new request for a signal graph
+  // should invalidate the current ref cache.
+  componentSignalGraphRef.clear();
+
   const ng = ngDebugClient();
 
   // get injector from position
@@ -649,7 +648,7 @@ const getSignalGraphCallback = (messageBus: MessageBus<Events>) => (element: Ele
     return;
   }
 
-  const injector = getInjectorFromElementNode(node.nativeElement!);
+  const injector = node.injector ?? getInjectorFromElementNode(node.nativeElement!);
 
   if (!injector) {
     messageBus.emit('latestSignalGraph', [null]);
@@ -684,3 +683,13 @@ export function sanitizeRouteData(route: Route): Route {
 
   return route;
 }
+
+/**
+ * Keeps a reference to the last requested signal graph.
+ * This should save us from needlessly calling `ng.ɵgetSignalGraph`
+ * when we are still managing the same/last graph (e.g. inspecting
+ * signal value nested properties). The ref is tied to the host element.
+ *
+ * Note: If the element is destroyed, the graph is garbage collected.
+ */
+const componentSignalGraphRef = new SignalGraphRef<Node>();

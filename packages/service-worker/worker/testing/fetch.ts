@@ -59,6 +59,20 @@ export class MockBody implements Body {
 export class MockHeaders implements Headers {
   map = new Map<string, string>();
 
+  constructor(headers?: HeadersInit) {
+    if (headers === undefined) {
+      return;
+    }
+
+    if (Array.isArray(headers)) {
+      headers.forEach(([name, value]) => this.set(name, value));
+    } else if (headers instanceof MockHeaders || headers instanceof Headers) {
+      headers.forEach((value, name) => this.set(name, value));
+    } else {
+      Object.entries(headers).forEach(([name, value]) => this.set(name, value));
+    }
+  }
+
   [Symbol.iterator]() {
     return this.map[Symbol.iterator]();
   }
@@ -115,7 +129,7 @@ export class MockRequest extends MockBody implements Request {
   readonly keepalive: boolean = true;
   readonly method: string = 'GET';
   readonly mode: RequestMode = 'cors';
-  readonly redirect: RequestRedirect = 'error';
+  readonly redirect: RequestRedirect = 'follow';
   readonly referrer: string = '';
   readonly referrerPolicy: ReferrerPolicy = 'no-referrer';
   readonly signal: AbortSignal = null as any;
@@ -131,15 +145,8 @@ export class MockRequest extends MockBody implements Request {
       throw 'Not implemented';
     }
     this.url = input;
-    const headers = init.headers as {[key: string]: string};
-    if (headers !== undefined) {
-      if (headers instanceof MockHeaders) {
-        this.headers = headers;
-      } else {
-        Object.keys(headers).forEach((header) => {
-          this.headers.set(header, headers[header]);
-        });
-      }
+    if (init.headers !== undefined) {
+      this.headers = new MockHeaders(init.headers);
     }
     if (init.cache !== undefined) {
       this.cache = init.cache;
@@ -153,6 +160,9 @@ export class MockRequest extends MockBody implements Request {
     if (init.method !== undefined) {
       this.method = init.method;
     }
+    if (init.redirect !== undefined) {
+      this.redirect = init.redirect;
+    }
     if (init.destination !== undefined) {
       this.destination = init.destination;
     }
@@ -164,9 +174,11 @@ export class MockRequest extends MockBody implements Request {
     }
     return new MockRequest(this.url, {
       body: this._body,
+      cache: this.cache,
       mode: this.mode,
       credentials: this.credentials,
       headers: this.headers,
+      redirect: this.redirect,
     });
   }
 }
@@ -190,15 +202,8 @@ export class MockResponse extends MockBody implements Response {
     super(typeof body === 'string' ? body : null);
     this.status = init.status !== undefined ? init.status : 200;
     this.statusText = init.statusText !== undefined ? init.statusText : 'OK';
-    const headers = init.headers as {[key: string]: string};
-    if (headers !== undefined) {
-      if (headers instanceof MockHeaders) {
-        this.headers = headers;
-      } else {
-        Object.keys(headers).forEach((header) => {
-          this.headers.set(header, headers[header]);
-        });
-      }
+    if (init.headers !== undefined) {
+      this.headers = new MockHeaders(init.headers);
     }
     if (init.type !== undefined) {
       this.type = init.type;

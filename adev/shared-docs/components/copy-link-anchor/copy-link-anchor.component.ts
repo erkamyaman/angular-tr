@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {ChangeDetectionStrategy, Component, inject, input, signal} from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {Component, inject, input, signal} from '@angular/core';
 import {MatTooltip} from '@angular/material/tooltip';
 import {IconComponent} from '../icon/icon.component';
 
@@ -39,13 +39,12 @@ export const CONFIRMATION_DISPLAY_TIME_MS = 1000;
     },
   ],
   host: {
-    '[ariaLabel]': '"Copy link to " + label()',
+    '[ariaLabel]': 'label() + " bölümüne bağlantıyı kopyala"',
     '(click)': 'copyLink()',
     'matTooltipPosition': 'above',
     '[class.docs-copy-link-success]': 'showCopySuccess()',
   },
   imports: [IconComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopyLinkButton {
   readonly href = input.required<string>();

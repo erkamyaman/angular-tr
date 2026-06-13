@@ -6,19 +6,28 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {ResourceRef, Signal} from '@angular/core';
+import {
+  computed,
+  DebounceTimer,
+  ResourceRef,
+  ResourceSnapshot,
+  Signal,
+  debounced,
+  ɵchain,
+} from '@angular/core';
 import {FieldNode} from '../../../field/node';
 import {addDefaultField} from '../../../field/validation';
 import {FieldPathNode} from '../../../schema/path_node';
 import {assertPathIsCurrent} from '../../../schema/schema';
 import {
   FieldContext,
+  LogicFn,
   PathKind,
   SchemaPath,
   SchemaPathRules,
   TreeValidationResult,
 } from '../../types';
-import {createManagedMetadataKey, metadata} from '../metadata';
+import {IS_ASYNC_VALIDATION_RESOURCE, createManagedMetadataKey, metadata} from '../metadata';
 
 /**
  * A function that takes the result of an async operation and the current field context, and maps it
@@ -34,7 +43,7 @@ import {createManagedMetadataKey, metadata} from '../metadata';
  * @template TResult The type of result returned by the async operation
  * @template TPathKind The kind of path being validated (a root path, child path, or item of an array)
  *
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export type MapToErrorsFn<TValue, TResult, TPathKind extends PathKind = PathKind.Root> = (
   result: TResult,
@@ -51,7 +60,7 @@ export type MapToErrorsFn<TValue, TResult, TPathKind extends PathKind = PathKind
  * @template TPathKind The kind of path being validated (a root path, child path, or item of an array)
  * @see [Signal Form Async Validation](guide/forms/signals/validation#async-validation)
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export interface AsyncValidatorOptions<
   TValue,
@@ -66,6 +75,12 @@ export interface AsyncValidatorOptions<
    * @returns The params for the resource.
    */
   readonly params: (ctx: FieldContext<TValue, TPathKind>) => TParams;
+
+  /**
+   * Duration in milliseconds to wait before triggering the async operation, or a function that
+   * returns a promise that resolves when the update should proceed.
+   */
+  readonly debounce?: DebounceTimer<TParams | undefined>;
 
   /**
    * A function that receives the resource params and returns a resource of the given params.
@@ -93,6 +108,10 @@ export interface AsyncValidatorOptions<
    *   If a field is not given, the error is assumed to apply to the field being validated.
    */
   readonly onSuccess: MapToErrorsFn<TValue, TResult, TPathKind>;
+  /**
+   * A function that receives the field context and returns true if the async validation should be run.
+   */
+  readonly when?: NoInfer<LogicFn<TValue, boolean, TPathKind>>;
 }
 
 /**
@@ -108,7 +127,7 @@ export interface AsyncValidatorOptions<
  *
  * @see [Signal Form Async Validation](guide/forms/signals/validation#async-validation)
  * @category validation
- * @experimental 21.0.0
+ * @publicApi 22.0
  */
 export function validateAsync<TValue, TParams, TResult, TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
@@ -118,12 +137,24 @@ export function validateAsync<TValue, TParams, TResult, TPathKind extends PathKi
   const pathNode = FieldPathNode.unwrapFieldPath(path);
 
   const RESOURCE = createManagedMetadataKey<ReturnType<typeof opts.factory>, TParams | undefined>(
-    opts.factory,
+    (_state, params) => {
+      if (opts.debounce !== undefined) {
+        const debouncedResource = debounced(() => params(), opts.debounce);
+        const wrappedParams = computed(() => ɵchain(debouncedResource));
+        return opts.factory(wrappedParams);
+      }
+      return opts.factory(params);
+    },
   );
+  RESOURCE[IS_ASYNC_VALIDATION_RESOURCE] = true;
+
   metadata(path, RESOURCE, (ctx) => {
     const node = ctx.stateOf(path) as FieldNode;
     const validationState = node.validationState;
     if (validationState.shouldSkipValidation() || !validationState.syncValid()) {
+      return undefined;
+    }
+    if (opts.when && !opts.when(ctx)) {
       return undefined;
     }
     return opts.params(ctx);

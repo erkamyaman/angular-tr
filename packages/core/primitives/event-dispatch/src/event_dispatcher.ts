@@ -14,7 +14,7 @@ import {UnrenamedEventContract} from './eventcontract';
 import {Restriction} from './restriction';
 
 // Necessary to make the `ngDevMode` global types available.
-import '../../../src/util/ng_dev_mode';
+import '../../../src/util/ng_dev_mode'; // 3p-only
 
 /**
  * A replayer is a function that is called when there are queued events, from the `EventContract`.
@@ -190,3 +190,6 @@ export function registerDispatcher(
     dispatcher.dispatch(eventInfo);
   }, Restriction.I_AM_THE_JSACTION_FRAMEWORK);
 }
+
+// This fixes the RollupError: Exported variable "global" is not defined.
+export {};

@@ -125,7 +125,9 @@ export function ɵɵclassProp(
  *
  * @codeGenApi
  */
-export function ɵɵstyleMap(styles: {[styleName: string]: any} | string | undefined | null): void {
+export function ɵɵstyleMap(
+  styles: {[styleName: string]: any} | string | undefined | null | NO_CHANGE,
+): void {
   checkStylingMap(styleKeyValueArraySet, styleStringParser, styles, false);
 }
 
@@ -169,7 +171,8 @@ export function ɵɵclassMap(
     | string[]
     | Set<string>
     | undefined
-    | null,
+    | null
+    | NO_CHANGE,
 ): void {
   checkStylingMap(classKeyValueArraySet, classStringParser, classes, true);
 }
@@ -698,7 +701,7 @@ export function toStylingKeyValueArray(
     }
   } else if (typeof unwrappedValue === 'object') {
     for (const key in unwrappedValue) {
-      if (unwrappedValue.hasOwnProperty(key)) {
+      if (Object.hasOwn(unwrappedValue, key)) {
         keyValueArraySet(styleKeyValueArray, key, unwrappedValue[key]);
       }
     }

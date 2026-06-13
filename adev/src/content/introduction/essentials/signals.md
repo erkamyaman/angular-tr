@@ -1,33 +1,33 @@
-<docs-decorative-header title="Signals" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
-Create and manage dynamic data.
+<docs-decorative-header title="Sinyaller" imgSrc="adev/src/assets/images/signals.svg"> <!-- markdownlint-disable-line -->
+Dinamik veri oluşturun ve yönetin.
 </docs-decorative-header>
 
-In Angular, you use _signals_ to create and manage state. A signal is a lightweight wrapper around a value.
+Angular'da durum oluşturmak ve yönetmek için _sinyaller_ kullanırsınız. Sinyal, bir değerin etrafındaki hafif bir sarmalayıcıdır.
 
-Use the `signal` function to create a signal for holding local state:
+Yerel durumu tutmak üzere bir sinyal oluşturmak için `signal` fonksiyonunu kullanın:
 
 ```typescript
 import {signal} from '@angular/core';
 
-// Create a signal with the `signal` function.
+// `signal` fonksiyonu ile bir sinyal oluşturun.
 const firstName = signal('Morgan');
 
-// Read a signal value by calling it— signals are functions.
+// Sinyal değerini çağırarak okuyun — sinyaller fonksiyondur.
 console.log(firstName());
 
-// Change the value of this signal by calling its `set` method with a new value.
+// Bu sinyalin değerini `set` metodunu yeni bir değerle çağırarak değiştirin.
 firstName.set('Jaime');
 
-// You can also use the `update` method to change the value
-// based on the previous value.
+// Değeri önceki değere göre değiştirmek için
+// `update` metodunu da kullanabilirsiniz.
 firstName.update((name) => name.toUpperCase());
 ```
 
-Angular tracks where signals are read and when they're updated. The framework uses this information to do additional work, such as updating the DOM with new state. This ability to respond to changing signal values over time is known as _reactivity_.
+Angular, sinyallerin nerede okunduğunu ve ne zaman güncellendiğini takip eder. Çerçeve, DOM'u yeni durumla güncellemek gibi ek işlemler yapmak için bu bilgiyi kullanır. Değişen sinyal değerlerine zaman içinde tepki verebilme yeteneği _reaktivite_ olarak bilinir.
 
-## Computed expressions
+## Hesaplanmış İfadeler
 
-A `computed` is a signal that produces its value based on other signals.
+`computed`, değerini diğer sinyallere göre üreten bir sinyaldir.
 
 ```typescript
 import {signal, computed} from '@angular/core';
@@ -38,7 +38,7 @@ const firstNameCapitalized = computed(() => firstName().toUpperCase());
 console.log(firstNameCapitalized()); // MORGAN
 ```
 
-A `computed` signal is read-only; it does not have a `set` or an `update` method. Instead, the value of the `computed` signal automatically changes when any of the signals it reads change:
+Bir `computed` sinyali salt okunurdur; `set` veya `update` metodu yoktur. Bunun yerine, `computed` sinyalinin değeri, okuduğu sinyallerden herhangi biri değiştiğinde otomatik olarak değişir:
 
 ```typescript
 import {signal, computed} from '@angular/core';
@@ -51,9 +51,9 @@ firstName.set('Jaime');
 console.log(firstNameCapitalized()); // JAIME
 ```
 
-## Using signals in components
+## Bileşenlerde Sinyal Kullanımı
 
-Use `signal` and `computed` inside your components to create and manage state:
+Durum oluşturmak ve yönetmek için bileşenlerinizin içinde `signal` ve `computed` kullanın:
 
 ```ts
 @Component({
@@ -70,13 +70,13 @@ export class UserProfile {
 }
 ```
 
-TIP: Want to know more about Angular Signals? See the [In-depth Signals guide](guide/signals) for the full details.
+TIP: Angular Sinyalleri hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Sinyaller kılavuzuna](guide/signals) bakın.
 
-## Next Step
+## Sonraki Adım
 
-Now that you have learned how to declare and manage dynamic data, it's time to learn how to use that data inside of templates.
+Dinamik verileri nasıl tanımlayacağınızı ve yöneteceğinizi öğrendiğinize göre, bu verileri şablonlar içinde nasıl kullanacağınızı öğrenmenin zamanı geldi.
 
 <docs-pill-row>
-  <docs-pill title="Dynamic interfaces with templates" href="essentials/templates" />
-  <docs-pill title="In-depth signals guide" href="guide/signals" />
+  <docs-pill title="Şablonlarla dinamik arayüzler" href="essentials/templates" />
+  <docs-pill title="Detaylı sinyaller kılavuzu" href="guide/signals" />
 </docs-pill-row>

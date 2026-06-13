@@ -68,6 +68,17 @@ describe('HtmlParser', () => {
         ]);
       });
 
+      it('should parse named HTML entities containing digits', () => {
+        expect(humanizeDom(parser.parse('<div>&sup1;</div>', 'TestComp'))).toEqual([
+          [html.Element, 'div', 0],
+          [html.Text, '\u00B9', 1, [''], ['\u00B9', '&sup1;'], ['']],
+        ]);
+        expect(humanizeDom(parser.parse('<div>&frac12;</div>', 'TestComp'))).toEqual([
+          [html.Element, 'div', 0],
+          [html.Text, '\u00BD', 1, [''], ['\u00BD', '&frac12;'], ['']],
+        ]);
+      });
+
       it('should normalize line endings within CDATA', () => {
         const parsed = parser.parse('<![CDATA[ line 1 \r\n line 2 ]]>', 'TestComp');
         expect(humanizeDom(parsed)).toEqual([
@@ -1272,7 +1283,7 @@ describe('HtmlParser', () => {
 
       it('should store the source location of a @let declaration', () => {
         expect(humanizeDomSourceSpans(parser.parse('@let foo = 123 + 456;', 'TestCmp'))).toEqual([
-          [html.LetDeclaration, 'foo', '123 + 456', '@let foo = 123 + 456', 'foo', '123 + 456'],
+          [html.LetDeclaration, 'foo', '123 + 456', '@let foo = 123 + 456;', 'foo', '123 + 456'],
         ]);
       });
 

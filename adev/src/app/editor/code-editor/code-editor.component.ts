@@ -8,7 +8,6 @@
 
 import {Location} from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -22,23 +21,22 @@ import {
   viewChild,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {MatTabGroup, MatTab, MatTabLabel} from '@angular/material/tabs';
+import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
 import {Title} from '@angular/platform-browser';
 import {debounceTime, from, map, switchMap} from 'rxjs';
 
 import {TerminalType} from '../terminal/terminal-handler.service';
 
-import {CodeMirrorEditor} from './code-mirror-editor.service';
-import {DiagnosticWithLocation, DiagnosticsState} from './services/diagnostics-state.service';
-import {DownloadManager} from '../download-manager.service';
-import {StackBlitzOpener} from '../stackblitz-opener.service';
-import {IconComponent} from '@angular/docs';
 import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
-import {FirebaseStudioLauncher} from '../firebase-studio-launcher.service';
+import {IconComponent} from '@angular/docs';
 import {MatTooltip} from '@angular/material/tooltip';
+import {DownloadManager} from '../download-manager.service';
+import {LoadingStep} from '../enums/loading-steps';
 import {injectEmbeddedTutorialManager} from '../inject-embedded-tutorial-manager';
 import {NodeRuntimeState} from '../node-runtime-state.service';
-import {LoadingStep} from '../enums/loading-steps';
+import {StackBlitzOpener} from '../stackblitz-opener.service';
+import {CodeMirrorEditor} from './code-mirror-editor.service';
+import {DiagnosticWithLocation, DiagnosticsState} from './services/diagnostics-state.service';
 
 export const REQUIRED_FILES = new Set([
   'src/main.ts',
@@ -52,7 +50,6 @@ const ANGULAR_DEV = 'https://angular.dev';
   selector: 'docs-tutorial-code-editor',
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatTabGroup,
     MatTab,
@@ -81,7 +78,6 @@ export class CodeEditor {
   private readonly diagnosticsState = inject(DiagnosticsState);
   private readonly downloadManager = inject(DownloadManager);
   private readonly stackblitzOpener = inject(StackBlitzOpener);
-  private readonly firebaseStudioLauncher = inject(FirebaseStudioLauncher);
   private readonly title = inject(Title);
   private readonly location = inject(Location);
   private readonly environmentInjector = inject(EnvironmentInjector);
@@ -191,10 +187,6 @@ export class CodeEditor {
     });
   }
 
-  protected openCurrentSolutionInFirebaseStudio(): void {
-    this.firebaseStudioLauncher.openCurrentSolutionInFirebaseStudio();
-  }
-
   protected async openCurrentCodeInStackBlitz(): Promise<void> {
     const title = this.title.getTitle();
 
@@ -269,7 +261,7 @@ export class CodeEditor {
       const newFile = 'src/' + renameFileInputValue;
 
       if (this.files().find(({filename}) => filename.includes(newFile))) {
-        alert('File name already exists');
+        alert('Dosya adı zaten mevcut');
         return;
       }
 
@@ -292,7 +284,7 @@ export class CodeEditor {
       const newFile = 'src/' + newFileInputValue;
 
       if (this.files().find(({filename}) => filename.includes(newFile))) {
-        alert('File already exists');
+        alert('Dosya zaten mevcut');
         return;
       }
 
@@ -307,11 +299,11 @@ export class CodeEditor {
       return false;
     }
     if (fileName.split('/').pop()?.indexOf('.') === 0) {
-      alert('File must contain a name.');
+      alert('Dosya bir ad içermelidir.');
       return false;
     }
     if (fileName.includes('..')) {
-      alert('File name can not contain ".."');
+      alert('Dosya adı ".." içeremez');
       return false;
     }
     return true;

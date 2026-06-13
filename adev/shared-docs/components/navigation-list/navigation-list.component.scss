@@ -6,7 +6,7 @@
   list-style: none;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100vh;
+  height: 100dvh;
   padding: 0;
   margin: 0;
   padding-block: 1.5rem;
@@ -188,8 +188,12 @@ a,
 }
 
 .docs-navigation-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   background: var(--septenary-contrast);
+
   &:not(:first-child) {
     margin-top: 2rem;
   }

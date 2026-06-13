@@ -6,71 +6,9 @@
   <docs-pill href="/api/aria/menu/MenuBar" title="Menubar API Reference"/>
 </docs-pill-row>
 
-## Overview
+## Genel Bakış
 
-The manubar is a horizontal navigation bar that provides persistent access to application menus. Menubars organize commands into logical categories like File, Edit, and View, helping users discover and execute application features through keyboard or mouse interaction.
-
-<docs-tab-group>
-  <docs-tab label="Basic">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Material">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-
-  <docs-tab label="Retro">
-    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts">
-      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts"/>
-      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.html"/>
-      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.css"/>
-    </docs-code-multifile>
-  </docs-tab>
-</docs-tab-group>
-
-## Usage
-
-Menubars work well for organizing application commands into persistent, discoverable navigation.
-
-**Use menubars when:**
-
-- Building application command bars (such as File, Edit, View, Insert, Format)
-- Creating persistent navigation that stays visible across the interface
-- Organizing commands into logical top-level categories
-- Need horizontal menu navigation with keyboard support
-- Building desktop-style application interfaces
-
-**Avoid menubars when:**
-
-- Building dropdown menus for individual actions (use [Menu with trigger](guide/aria/menu) instead)
-- Creating context menus (use [Menu](guide/aria/menu) guide pattern)
-- Simple standalone action lists (use [Menu](guide/aria/menu) instead)
-- Mobile interfaces where horizontal space is limited
-- Navigation belongs in a sidebar or header navigation pattern
-
-## Features
-
-- **Horizontal navigation** - Left/Right arrow keys move between top-level categories
-- **Persistent visibility** - Always visible, not modal or dismissable
-- **Hover-to-open** - Submenus open on hover after first keyboard or click interaction
-- **Nested submenus** - Support multiple levels of menu depth
-- **Keyboard navigation** - Arrow keys, Enter/Space, Escape, and typeahead search
-- **Disabled states** - Disable entire menubar or individual items
-- **RTL support** - Automatic right-to-left language navigation
-
-## Examples
-
-### Basic menubar
-
-A menubar provides persistent access to application commands organized into top-level categories. Users navigate between categories with Left/Right arrows and open menus with Enter or Down arrow.
+Menü çubuğu, uygulama menülerine kalıcı erişim sağlayan yatay bir navigasyon çubuğudur. Menü çubukları komutları Dosya, Düzenle ve Görüntüle gibi mantıksal kategorilere düzenleyerek kullanıcıların klavye veya fare etkileşimi aracılığıyla uygulama özelliklerini keşfetmesine ve çalıştırmasına yardımcı olur.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -98,11 +36,73 @@ A menubar provides persistent access to application commands organized into top-
   </docs-tab>
 </docs-tab-group>
 
-Press Right arrow to move between File, Edit, and View. Press Enter or Down arrow to open a menu and navigate submenu items with Up/Down arrows.
+## Kullanım
 
-### Disabled menubar items
+Menü çubukları, uygulama komutlarını kalıcı ve keşfedilebilir navigasyona düzenlemek için iyi çalışır.
 
-Disable specific menu items or the entire menubar to prevent interaction. Control whether disabled items can receive keyboard focus with the `softDisabled` input.
+**Menü çubuğu kullanın:**
+
+- Uygulama komut çubukları oluştururken (Dosya, Düzenle, Görüntüle, Ekle, Biçimlendir gibi)
+- Arayüz genelinde görünen kalıcı navigasyon oluştururken
+- Komutları mantıksal üst düzey kategorilere düzenlerken
+- Klavye destekli yatay menü navigasyonuna ihtiyaç duyulduğunda
+- Masaüstü tarzı uygulama arayüzleri oluştururken
+
+**Menü çubuğundan kaçının:**
+
+- Bireysel eylemler için açılır menüler oluştururken (bunun yerine [tetikleyicili Menu](guide/aria/menu) kullanın)
+- Bağlam menüleri oluştururken ([Menu](guide/aria/menu) rehber kalıbını kullanın)
+- Basit bağımsız eylem listeleri için (bunun yerine [Menu](guide/aria/menu) kullanın)
+- Yatay alanın sınırlı olduğu mobil arayüzlerde
+- Navigasyon bir kenar çubuğu veya başlık navigasyon kalıbına ait olduğunda
+
+## Özellikler
+
+- **Yatay navigasyon** - Sol/Sağ ok tuşları üst düzey kategoriler arasında hareket eder
+- **Kalıcı görünürlük** - Her zaman görünür, modal veya kapatılabilir değil
+- **Üzerine gelindiğinde açma** - İlk klavye veya tıklama etkileşiminden sonra alt menüler üzerine gelindiğinde açılır
+- **İç içe alt menüler** - Birden fazla menü derinlik seviyesini destekler
+- **Klavye navigasyonu** - Ok tuşları, Enter/Boşluk, Escape ve yazarak arama
+- **Devre dışı durumlar** - Tüm menü çubuğunu veya bireysel öğeleri devre dışı bırakın
+- **RTL desteği** - Otomatik sağdan sola dil navigasyonu
+
+## Örnekler
+
+### Temel menü çubuğu
+
+Bir menü çubuğu, üst düzey kategorilere düzenlenmiş uygulama komutlarına kalıcı erişim sağlar. Kullanıcılar kategoriler arasında Sol/Sağ ok tuşlarıyla gezinir ve menüleri Enter veya Aşağı ok tuşuyla açar.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+Dosya, Düzenle ve Görüntüle arasında hareket etmek için Sağ ok tuşuna basın. Bir menüyü açmak ve alt menü öğeleri arasında Yukarı/Aşağı ok tuşlarıyla gezinmek için Enter veya Aşağı ok tuşuna basın.
+
+### Devre dışı menü çubuğu öğeleri
+
+Etkileşimi engellemek için belirli menü öğelerini veya tüm menü çubuğunu devre dışı bırakın. Devre dışı öğelerin klavye navigasyonu sırasında klavye odağı alıp alamayacağını `softDisabled` girişi ile kontrol edin.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -130,11 +130,11 @@ Disable specific menu items or the entire menubar to prevent interaction. Contro
   </docs-tab>
 </docs-tab-group>
 
-When `[softDisabled]="true"` on the menubar, disabled items can receive focus but cannot be activated. When `[softDisabled]="false"`, disabled items are skipped during keyboard navigation.
+Menü çubuğunda `[softDisabled]="true"` olduğunda, devre dışı öğeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı öğeler klavye navigasyonu sırasında atlanır.
 
-### RTL support
+### RTL desteği
 
-Menubars automatically adapt to right-to-left (RTL) languages. Arrow key navigation reverses direction, and submenus position on the left side.
+Menü çubukları sağdan sola (RTL) dillere otomatik olarak uyum sağlar. Ok tuşu navigasyonu yönünü tersine çevirir ve alt menüler sol tarafa konumlanır.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -162,37 +162,89 @@ Menubars automatically adapt to right-to-left (RTL) languages. Arrow key navigat
   </docs-tab>
 </docs-tab-group>
 
-The `dir="rtl"` attribute enables RTL mode. Left arrow moves right, Right arrow moves left, maintaining natural navigation for RTL language users.
+`dir="rtl"` niteliği RTL modunu etkinleştirir. Sol ok sağa, sağ ok sola hareket eder ve RTL dil kullanıcıları için doğal navigasyonu korur.
 
-## APIs
+## Test etme
 
-The menubar pattern uses directives from Angular's Aria library. See the [Menu guide](guide/aria/menu) for complete API documentation.
+Angular Aria, menü çubuğu bileşenlerini test etmek için bileşen harness'leri sağlar.
+İşte harness'lerin bir bileşen testinde nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {MenuHarness} from '@angular/aria/menu/testing';
+import {MyMenubarComponent} from './my-menubar'; // Sizin bileşeniniz
+
+describe('MyMenubarComponent', () => {
+  let fixture: ComponentFixture<MyMenubarComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyMenubarComponent],
+    });
+
+    fixture = TestBed.createComponent(MyMenubarComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should interact with menubar items', async () => {
+    // Menü çubuğu harness'ini yükle ('[ngMenuBar]' seçicisine sahip bir MenuHarness'tir)
+    const menubar = await loader.getHarness(MenuHarness.with({selector: '[ngMenuBar]'}));
+
+    // Menü çubukları kalıcıdır ve her zaman "açık" durumdadır
+    expect(await menubar.isOpen()).toBe(true);
+    expect(await menubar.isMenuBar()).toBe(true);
+
+    // Üst düzey öğeleri al
+    const items = await menubar.getItems();
+    expect(items.length).toBe(2);
+    expect(await items[0].getText()).toBe('File');
+    expect(await items[1].getText()).toBe('Edit');
+
+    // Açılır menüsünü açmak için bir öğeye tıkla
+    await items[0].click();
+
+    const fileMenu = await items[0].getSubmenu();
+    expect(fileMenu).toBeTruthy();
+    expect(await fileMenu!.isOpen()).toBe(true);
+  });
+});
+```
+
+## API'ler
+
+Menü çubuğu kalıbı, Angular'ın Aria kütüphanesindeki yönergeleri kullanır. Eksiksiz API dokümantasyonu için [Menu rehberine](guide/aria/menu) bakın.
 
 ### MenuBar
 
-The horizontal container for top-level menu items.
+Üst düzey menü öğeleri için yatay kapsayıcı.
 
-#### Inputs
+#### Girişler
 
-| Property       | Type      | Default | Description                                                   |
-| -------------- | --------- | ------- | ------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Disables the entire menubar                                   |
-| `wrap`         | `boolean` | `true`  | Whether keyboard navigation wraps from last to first item     |
-| `softDisabled` | `boolean` | `true`  | When `true`, disabled items are focusable but not interactive |
+| Property         | Type      | Default | Description                                                                  |
+| ---------------- | --------- | ------- | ---------------------------------------------------------------------------- |
+| `disabled`       | `boolean` | `false` | Tüm menü çubuğunu devre dışı bırakır                                         |
+| `wrap`           | `boolean` | `true`  | Klavye navigasyonunun son öğeden ilk öğeye sarılıp sarılmadığı               |
+| `softDisabled`   | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
+| `value`          | `V[]`     | `[]`    | Seçili menü öğesi değerleri (iki yönlü bağlamayı destekler)                  |
+| `typeaheadDelay` | `number`  | `500`   | Yazarak arama arabelleği sıfırlanmadan önceki milisaniye süresi              |
 
-See the [Menu API documentation](guide/aria/menu#apis) for complete details on all available inputs and signals.
+Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Menu API dokümantasyonuna](guide/aria/menu#apiler) bakın.
 
 ### MenuItem
 
-Individual items within the menubar. Same API as Menu - see [MenuItem](guide/aria/menu#menuitem).
+Menü çubuğu içindeki bireysel öğeler. Menu ile aynı API - [MenuItem](guide/aria/menu#menuitem) sayfasına bakın.
 
-**Menubar-specific behavior:**
+**Menü çubuğuna özel davranış:**
 
-- Left/Right arrows navigate between menubar items (vs Up/Down in vertical menus)
-- First keyboard interaction or click enables hover-to-open for submenus
-- Enter or Down arrow opens the submenu and focuses the first item
-- `aria-haspopup="menu"` indicates items with submenus
+- Sol/Sağ ok tuşları menü çubuğu öğeleri arasında gezinir (dikey menülerdeki Yukarı/Aşağı yerine)
+- İlk klavye etkileşimi veya tıklama alt menüler için üzerine gelindiğinde açmayı etkinleştirir
+- Enter veya Aşağı ok tuşu alt menüyü açar ve ilk öğeye odaklanır
+- `aria-haspopup="menu"` alt menülere sahip öğeleri gösterir
 
 ### MenuTrigger
 
-Not typically used in menubars - MenuItem handles trigger behavior directly when it has an associated submenu. See [MenuTrigger](guide/aria/menu#menutrigger) for standalone menu trigger patterns.
+Menü çubuklarında genellikle kullanılmaz - MenuItem, ilişkili bir alt menüsü olduğunda tetikleyici davranışını doğrudan yönetir. Bağımsız menü tetikleyici kalıpları için [MenuTrigger](guide/aria/menu#menutrigger) sayfasına bakın.
