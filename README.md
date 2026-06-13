@@ -2,6 +2,8 @@
 
 <p align="center">
   <img src="adev/src/assets/images/press-kit/angular_icon_gradient.gif" alt="angular-logo" width="120px" height="120px"/>
+  &nbsp;&nbsp;
+  <img src="adev/src/assets/images/turkey-flag.svg" alt="Türk bayrağı" width="150px"/>
   <br>
   <em>Angular'ın resmi dokümantasyonunun topluluk tarafından sürdürülen Türkçe çevirisi.</em>
   <br>
