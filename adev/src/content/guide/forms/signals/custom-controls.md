@@ -245,7 +245,7 @@ Yukarıda gösterilen minimal kontroller çalışır, ancak form durumuna tepki 
 İşte yaygın durum özelliklerini uygulayan kapsamlı bir örnek:
 
 ```angular-ts
-import {Component, model, input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, model, input, output, ChangeDetectionStrategy} from '@angular/core';
 import {
   FormValueControl,
   WithOptionalFieldTree,
@@ -266,7 +266,7 @@ import {
           [readonly]="readonly()"
           [class.invalid]="invalid()"
           [attr.aria-invalid]="invalid()"
-          (blur)="touched.set(true)"
+          (blur)="touch.emit()"
         />
 
         @if (invalid()) {
@@ -293,7 +293,8 @@ export class StatefulInput implements FormValueControl<string> {
   value = model<string>('');
 
   // Yazılabilir etkileşim durumu - kontrol bunları günceller
-  touched = model<boolean>(false);
+  touched = input<boolean>(false);
+  touch = output<void>();
 
   // Salt okunur durum - form sistemi bunları yönetir
   disabled = input<boolean>(false);

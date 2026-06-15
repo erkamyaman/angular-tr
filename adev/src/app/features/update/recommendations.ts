@@ -3014,6 +3014,14 @@ export const RECOMMENDATIONS: Step[] = [
   {
     possibleIn: 2200,
     necessaryAsOf: 2200,
+    level: ApplicationComplexity.Medium,
+    step: '22.0.0-resource-stream-synchronous-resolution',
+    action:
+      '`Resource` üzerindeki `stream` özelliği, `rxResource` dahil, stream veya observable senkron olarak değer yaydığında artık senkron olarak çözümlenir. Asenkron çözümleme varsayan testlerin değeri hemen beklemesi gerekebilir.',
+  },
+  {
+    possibleIn: 2200,
+    necessaryAsOf: 2200,
     level: ApplicationComplexity.Advanced,
     step: '22.0.0-remove-in-expressions',
     action:
