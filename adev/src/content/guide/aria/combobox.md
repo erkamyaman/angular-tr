@@ -243,15 +243,16 @@ Etkileşimli bir tetikleyici eleman (metin girişi, buton veya div gibi) ile bir
 
 #### Girdiler / Model
 
-| Property           | Type                   | Default | Description                                                            |
-| ------------------ | ---------------------- | ------- | ---------------------------------------------------------------------- |
-| `value`            | `ModelSignal<string>`  | `''`    | Combobox'ın iki yönlü bağlanabilir metin değeri                        |
-| `expanded`         | `ModelSignal<boolean>` | `false` | Açılır pencerenin iki yönlü bağlanabilir açık/kapalı durumu            |
-| `disabled`         | `boolean`              | `false` | Combobox tetikleyici elemanını devre dışı bırakır                      |
-| `softDisabled`     | `boolean`              | `true`  | Elemanı klavyeyle odaklanabilir tutarken etkileşimi devre dışı bırakır |
-| `alwaysExpanded`   | `boolean`              | `false` | Açılır pencereyi her zaman açık kalmaya zorlar                         |
-| `inlineSuggestion` | `string \| undefined`  | -       | Girişin sonunda vurgulanacak satır içi bir öneri ayarlar               |
-| `tabIndex`         | `number \| undefined`  | -       | Combobox elemanının tabindex'i (`tabindex`'e takma ad)                 |
+| Property           | Type                   | Default | Description                                                                                                        |
+| ------------------ | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `value`            | `ModelSignal<string>`  | `''`    | Combobox'ın iki yönlü bağlanabilir metin değeri                                                                    |
+| `expanded`         | `ModelSignal<boolean>` | `false` | Açılır pencerenin iki yönlü bağlanabilir açık/kapalı durumu                                                        |
+| `disabled`         | `boolean`              | `false` | Combobox tetikleyici elemanını devre dışı bırakır                                                                  |
+| `softDisabled`     | `boolean`              | `true`  | Elemanı klavyeyle odaklanabilir tutarken etkileşimi devre dışı bırakır                                             |
+| `readonly`         | `boolean`              | `false` | Combobox'ı salt okunur yapar. Elemanı klavyeyle odaklanabilir tutarken kullanıcının değeri değiştirmesini engeller |
+| `alwaysExpanded`   | `boolean`              | `false` | Açılır pencereyi her zaman açık kalmaya zorlar                                                                     |
+| `inlineSuggestion` | `string \| undefined`  | -       | Girişin sonunda vurgulanacak satır içi bir öneri ayarlar                                                           |
+| `tabIndex`         | `number \| undefined`  | -       | Combobox elemanının tabindex'i (`tabindex`'e takma ad)                                                             |
 
 Tüm klavye olayları, odak koordinasyonu ve ARIA durum nitelikleri (`role="combobox"`, `aria-autocomplete` ve `aria-expanded` dahil) ana eleman üzerinde otomatik olarak yönetilir.
 
