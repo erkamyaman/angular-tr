@@ -10,31 +10,25 @@ Bu aktivitede, `injectable` (enjekte edilebilir) bir servis oluşturmayı öğre
 
 Bir servisi kullanmanın yollarından biri, veriler ve API'lerle etkileşim kurmak için bir aracı olarak görev yapmasıdır. Bir servisi yeniden kullanılabilir kılmak için mantığı servis içinde tutmalı ve ihtiyaç duyulduğunda uygulama genelinde paylaşmalısınız.
 
-Bir servisi DI sistemi tarafından enjekte edilmeye uygun hale getirmek için `@Injectable` dekoratörünü kullanın. Örneğin:
+Bir sınıfı DI sistemi tarafından enjekte edilmeye uygun hale getirmek için `@Service` dekoratörünü kullanın. Örneğin:
 
-```ts {highlight:[1,2,3]}
-@Injectable({
-  providedIn: 'root',
-})
+```ts {highlight:[1]}
+@Service()
 class UserService {
   // methods to retrieve and return data
 }
 ```
 
-`@Injectable` dekoratörü, DI sistemine `UserService`'in bir sınıfta talep edilmeye hazır olduğunu bildirir. `providedIn` bu kaynağın hangi kapsamda kullanılabilir olduğunu belirler. Şimdilik, `providedIn: 'root'` ifadesinin `UserService`'in tüm uygulama genelinde kullanılabilir olduğu anlamına geldiğini anlamak yeterlidir.
+`@Service` dekoratörü sınıfı bir servis olarak işaretler ve DI sistemine `UserService`'e uygulamanızın herhangi bir yerinden erişilebileceğini bildirir. Angular, servisi varsayılan olarak uygulamanızın tamamına sağlar, bu nedenle ek bir yapılandırma yazmanıza gerek yoktur.
+
+NOTE: `@Service` varsayılan olarak sınıfı kök enjektörde (root injector) sağlar. Servisi manuel olarak sağlamak isterseniz, örneğin belirli bir rota veya bileşenle sınırlandırmak için, `autoProvided: false` olarak ayarlayın. Daha fazla bilgi için [servis oluşturma ve kullanma kılavuzuna](guide/di/creating-and-using-services#service-dekoratörünü-kullanma) bakın.
 
 Pekala, siz deneyin:
 
 <docs-workflow>
 
-<docs-step title="`@Injectable` dekoratörünü ekleyin">
-`car.service.ts` dosyasındaki kodu `@Injectable` dekoratörünü ekleyerek güncelleyin.
-</docs-step>
-
-<docs-step title="Dekoratörü yapılandırın">
-Dekoratöre aktarılan nesnedeki değerler, dekoratörün yapılandırması olarak kabul edilir.
-<br>
-`car.service.ts` dosyasındaki `@Injectable` dekoratörünü `providedIn: 'root'` yapılandırmasını içerecek şekilde güncelleyin.
+<docs-step title="`@Service` dekoratörünü ekleyin">
+`car.service.ts` dosyasındaki kodu `CarService` sınıfına `@Service()` dekoratörünü ekleyerek güncelleyin.
 
 TIP: Doğru sözdizimini bulmak için yukarıdaki örneği kullanın.
 

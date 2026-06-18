@@ -1,3 +1,67 @@
+<a name="22.1.0-next.1"></a>
+# 22.1.0-next.1 (2026-06-17)
+### common
+| Commit | Type | Description |
+| -- | -- | -- |
+| [a69e56df71](https://github.com/angular/angular/commit/a69e56df718ccf139f0b3f8f528c87a6818d9ba2) | fix | escape anchor fragment in shadow DOM name selector |
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [417a4071a7](https://github.com/angular/angular/commit/417a4071a776464d549509ed3aec121dbd2fda5e) | fix | restrict possible event handler check to property names longer than 2 characters |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [98f42eaaae](https://github.com/angular/angular/commit/98f42eaaaeea9eb5ca5e8fc905a456df25b403e9) | fix | avoid caching missing locale data |
+| [ea1a3ed64c](https://github.com/angular/angular/commit/ea1a3ed64c538fa768fff586796ece6ffb8b6598) | fix | escape overlapping comment delimiters in escapeCommentText |
+| [8cf7731468](https://github.com/angular/angular/commit/8cf7731468f2afcfa03cbddefe90b57dff680d30) | fix | guard against DOM clobbering in declareExperimentalWebMcpTool |
+| [6b5616b2c7](https://github.com/angular/angular/commit/6b5616b2c7745ff4777f8d2ea038ebd297aeeb38) | fix | preserve leave animation for sibling instances sharing a TNode |
+| [28cb15a2bb](https://github.com/angular/angular/commit/28cb15a2bb79a072fce661b14e87954096ee9366) | fix | prevent unsubscribe during emit from throwing off other listeners |
+| [0152e3cbdf](https://github.com/angular/angular/commit/0152e3cbdf5d31a5283059374e4a6352782fcd0f) | fix | treat iframe credentialless as security-sensitive |
+| [327744ac17](https://github.com/angular/angular/commit/327744ac171b30e54ee46d20bb13482fd1904f9a) | perf | detect existing signal dependency without checking all producer links |
+### http
+| Commit | Type | Description |
+| -- | -- | -- |
+| [a6c7fc5c13](https://github.com/angular/angular/commit/a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c) | fix | distinguish repeated transfer cache params |
+### migrations
+| Commit | Type | Description |
+| -- | -- | -- |
+| [58efd86c78](https://github.com/angular/angular/commit/58efd86c78f244689b1bad5285aed9418a0772d1) | fix | migration skip any target are not build or test |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="22.0.2"></a>
+# 22.0.2 (2026-06-17)
+### common
+| Commit | Type | Description |
+| -- | -- | -- |
+| [94ea403563](https://github.com/angular/angular/commit/94ea4035638db37e938831e3cb0e9562ca399475) | fix | escape anchor fragment in shadow DOM name selector |
+| [6c1f3e9d49](https://github.com/angular/angular/commit/6c1f3e9d49907ef643f1bc5297ff404768017acf) | fix | skip transfer cache for uncacheable HTTP traffic ([#69316](https://github.com/angular/angular/pull/69316)) |
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [6f1171991a](https://github.com/angular/angular/commit/6f1171991a1262b5384470f34029f7312dc4fc53) | fix | restrict possible event handler check to property names longer than 2 characters |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [528a34f766](https://github.com/angular/angular/commit/528a34f766191da3fc684c6fac988b1bd2028f49) | fix | avoid caching missing locale data |
+| [e17e8d5422](https://github.com/angular/angular/commit/e17e8d542242333359946863d0272680c966325b) | fix | escape overlapping comment delimiters in escapeCommentText |
+| [59dea13f80](https://github.com/angular/angular/commit/59dea13f802f0bf43c4ee2b65c2a1aa0e59a2a15) | fix | guard against DOM clobbering in declareExperimentalWebMcpTool |
+| [3a48abc15c](https://github.com/angular/angular/commit/3a48abc15c038692a856c588c3037cd51e035f0b) | fix | preserve leave animation for sibling instances sharing a TNode |
+| [93d0a5f95c](https://github.com/angular/angular/commit/93d0a5f95c9376272b5ebf71e94ff3ddb25a294d) | fix | prevent unsubscribe during emit from throwing off other listeners |
+| [b32ee7ceb3](https://github.com/angular/angular/commit/b32ee7ceb3878d25ed58b7bbad58aaf3a01d9966) | fix | treat iframe credentialless as security-sensitive |
+| [f902d1d35e](https://github.com/angular/angular/commit/f902d1d35e90e9220e40581fa2d7c4463b2d1190) | perf | detect existing signal dependency without checking all producer links |
+### http
+| Commit | Type | Description |
+| -- | -- | -- |
+| [6867f77ec7](https://github.com/angular/angular/commit/6867f77ec779a0a24f6339ad6c775f444202103c) | fix | distinguish repeated transfer cache params |
+| [7ef1399068](https://github.com/angular/angular/commit/7ef139906802ddd98ce12ce99fdd8c11a684d87d) | fix | skip transfer cache for fetch credentialed requests ([#69316](https://github.com/angular/angular/pull/69316)) |
+### migrations
+| Commit | Type | Description |
+| -- | -- | -- |
+| [15314c1736](https://github.com/angular/angular/commit/15314c1736afd9cafb24518cd458768973169d24) | fix | migration skip any target are not build or test |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="22.1.0-next.0"></a>
 # 22.1.0-next.0 (2026-06-10)
 ## Deprecations
