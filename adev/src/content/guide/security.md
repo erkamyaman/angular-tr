@@ -369,15 +369,15 @@ Daha fazla bilgi için bu [Google web güvenliği blog yazısının](https://sec
 
 ## Sunucu Tarafı İstek Sahteciliğini (SSRF) Önleme
 
-Angular, başlık tabanlı [Sunucu Tarafı İstek Sahteciliğini (SSRF)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/SSRF) önlemek için istek işleme hattında `Host`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `X-Forwarded-Prefix` ve `X-Forwarded-Port` başlıkları için katı doğrulama içerir.
+Angular, başlık tabanlı [Sunucu Tarafı İstek Sahteciliğini (SSRF)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/SSRF) önlemek için istek işleme hattında `Host`, `Forwarded`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `X-Forwarded-Prefix` ve `X-Forwarded-Port` başlıkları için katı doğrulama içerir.
 
 Doğrulama kuralları şunlardır:
 
-- `Host` ve `X-Forwarded-Host` başlıkları katı bir izin listesine göre doğrulanır ve yol ayırıcıları içeremez.
+- `Host`, `X-Forwarded-Host` başlıkları ve `Forwarded` başlığının `host` parametresi katı bir izin listesine göre doğrulanır ve yol ayırıcıları içeremez.
 - `X-Forwarded-Port` başlığı sayısal olmalıdır.
-- `X-Forwarded-Proto` başlığı `http` veya `https` olmalıdır.
+- `X-Forwarded-Proto` başlığı ve `Forwarded` başlığının `proto` parametresi `http` veya `https` olmalıdır.
 - `X-Forwarded-Prefix` başlığı `/` ile başlamalı ve tek eğik çizgilerle ayrılmış yalnızca alfanümerik karakterler, tireler ve alt çizgiler içermelidir.
-- Varsayılan olarak, tüm `X-Forwarded-*` başlıkları güvenilmez kabul edilir ve istekten kaldırılır. Bunları korumak için, `trustProxyHeaders` yapılandırılarak açıkça izin verilmeleri gerekir.
+- Varsayılan olarak, `Forwarded` başlığı ve tüm `X-Forwarded-*` başlıkları güvenilmez kabul edilir ve istekten kaldırılır. Bunları korumak için, `trustProxyHeaders` yapılandırılarak açıkça izin verilmeleri gerekir.
 
 Geçersiz başlıklar bir hata günlüğü tetikler ve izin verilmeyen proxy başlıkları istekten kaldırılır. Tanınmayan ana bilgisayar adlarına sahip istekler `400 Bad Request` ile sonuçlanır.
 
@@ -436,17 +436,23 @@ IMPORTANT: Tüm ana bilgisayar adlarına izin vermek için `allowedHosts` içind
 
 ### Güvenilen proxy başlıklarını yapılandırma
 
-Varsayılan olarak, Angular tüm `X-Forwarded-*` başlıklarını yok sayar. Uygulamanız bu başlıkları ayarlayan güvenilen bir ters proxy'nin (yük dengeleyici gibi) arkasındaysa, Angular'ı bunlara güvenecek şekilde yapılandırabilirsiniz.
+Varsayılan olarak, Angular standart `Forwarded` başlığını ve tüm `X-Forwarded-*` başlıklarını yok sayar. Uygulamanız bu başlıkları ayarlayan güvenilen bir ters proxy'nin (yük dengeleyici gibi) arkasındaysa, Angular'ı bunlara güvenecek şekilde yapılandırabilirsiniz.
+
+`Forwarded` başlığına güveniliyorsa, `host` ve `proto` parametreleri ayıklanır ve karşılık gelen `x-forwarded-host` ve `x-forwarded-proto` başlıklarına göre önceliklidir.
 
 Uygulama motorunu başlatırken `trustProxyHeaders` yapılandırabilirsiniz:
 
 ```typescript
 const appEngine = new AngularAppEngine({
-  trustProxyHeaders: ['x-forwarded-host', 'x-forwarded-proto'], // Belirli başlıklara güven
+  trustProxyHeaders: ['forwarded'], // Standart Forwarded başlığına güven
+});
+
+const appEngine = new AngularAppEngine({
+  trustProxyHeaders: ['x-forwarded-host', 'x-forwarded-proto'], // Standart olmayan başlıklara güven
 });
 
 const nodeAppEngine = new AngularNodeAppEngine({
-  trustProxyHeaders: true, // Tüm X-Forwarded-* başlıklarına güven
+  trustProxyHeaders: true, // Standart Forwarded ve tüm X-Forwarded-* başlıklarına güven
 });
 ```
 

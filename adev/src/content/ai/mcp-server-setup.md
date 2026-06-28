@@ -1,159 +1,125 @@
-# Angular CLI MCP Sunucusu kurulumu
+# Angular CLI MCP Sunucusu
 
-Angular CLI, geliştirme ortamınızdaki yapay zeka asistanlarının Angular CLI ile etkileşime geçmesini sağlayan deneysel bir [Model Context Protocol (MCP) sunucusu](https://modelcontextprotocol.io/) içerir. CLI destekli kod üretimi, paket ekleme ve daha fazlası için destek ekledik.
+Angular CLI, yapay zeka asistanlarının (Cursor, Antigravity, JetBrains AI vb.) doğrudan Angular CLI ile etkileşime geçmesini sağlayan bir Model Context Protocol (MCP) sunucusu içerir. Kod üretimi, çalışma alanı analizi ve derleme/test çalıştırma için araçlar sağlar.
 
-## Mevcut Araçlar
-
-Angular CLI MCP sunucusu, geliştirme iş akışınızda size yardımcı olmak için çeşitli araçlar sağlar. Varsayılan olarak, aşağıdaki araçlar etkindir:
-
-| Ad                          | Açıklama                                                                                                                                                                                       | `local-only` | `read-only` |
-| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
-| `ai_tutor`                  | Etkileşimli, yapay zeka destekli bir Angular eğitmeni başlatır. v20 veya sonraki bir sürümü kullanan yeni bir Angular projesinden çalıştırılması önerilir. [Daha fazla bilgi](ai/ai-tutor).    |      ✅      |     ✅      |
-| `find_examples`             | Resmi, en iyi uygulama örneklerinden oluşan küratörlü bir veritabanından yetkili kod örnekleri bulur. **Modern, yeni ve yakın zamanda güncellenen** Angular özelliklerine odaklanır.           |      ✅      |     ✅      |
-| `get_best_practices`        | Angular En İyi Uygulamalar Kılavuzunu getirir. Bu kılavuz, tüm kodun standalone bileşenler, tipli formlar ve modern kontrol akışı dahil modern standartlara uymasını sağlamak için gereklidir. |      ✅      |     ✅      |
-| `list_projects`             | Bir Angular çalışma alanında tanımlanan tüm uygulama ve kütüphanelerin adlarını listeler. Projeleri belirlemek için `angular.json` yapılandırma dosyasını okur.                                |      ✅      |     ✅      |
-| `onpush_zoneless_migration` | Angular kodunu analiz eder ve zone'suz bir uygulama için ön koşul olan `OnPush` değişiklik algılamaya geçiş için adım adım, yinelemeli bir plan sunar.                                         |      ✅      |     ✅      |
-| `search_documentation`      | <https://angular.dev> adresindeki resmi Angular dokümantasyonunu arar. Bu araç, API'ler, eğitimler ve en iyi uygulamalar gibi Angular hakkındaki tüm soruları yanıtlamak için kullanılmalıdır. |      ❌      |     ✅      |
-
-### Deneysel Araçlar
-
-Bazı araçlar, yeni oldukları veya tam olarak test edilmedikleri için deneysel / önizleme durumunda sunulmaktadır. Bunları [`--experimental-tool`](#komut-seçenekleri) seçeneğiyle ayrı ayrı etkinleştirin ve dikkatli kullanın.
-
-| Ad                         | Açıklama                                                                                                                                                                                                                                                                       | `local-only` | `read-only` |
-| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------: | :---------: |
-| `build`                    | `ng build` kullanarak tek seferlik, izlenmesiz bir derleme gerçekleştirir.                                                                                                                                                                                                     |      ✅      |     ❌      |
-| `devserver.start`          | `ng serve` çalıştırmaya benzer şekilde, çalışma alanındaki değişiklikleri izleyen bir geliştirme sunucusunu asenkron olarak başlatır. Asenkron olduğu için hemen döner. Oluşturulan sunucuyu yönetmek için `devserver.stop` ve `devserver.wait_for_build` araçlarını kullanın. |      ✅      |     ✅      |
-| `devserver.stop`           | `devserver.start` tarafından başlatılan bir geliştirme sunucusunu durdurur.                                                                                                                                                                                                    |      ✅      |     ✅      |
-| `devserver.wait_for_build` | `devserver.start` tarafından başlatılan çalışan bir geliştirme sunucusundaki en son derlemenin çıktı günlüklerini döndürür. Bir derleme devam ediyorsa, önce bu derlemenin tamamlanmasını bekler ve ardından günlükleri döndürür.                                              |      ✅      |     ✅      |
-| `e2e`                      | Projede yapılandırılmış uçtan uca testleri çalıştırır.                                                                                                                                                                                                                         |      ✅      |     ✅      |
-| `modernize`                | Kod geçişleri gerçekleştirir ve Angular kodunu en son en iyi uygulamalar ve sözdizimi ile uyumlu hale getirmek için nasıl modernize edileceğine dair ek talimatlar sağlar. [Daha fazla bilgi](https://angular.dev/reference/migrations)                                        |      ✅      |     ❌      |
-| `test`                     | Projenin birim testlerini çalıştırır.                                                                                                                                                                                                                                          |      ✅      |     ✅      |
+<docs-callout title="Angular AI Agent Skills ile entegrasyon">
+  Ana bilgisayar ortamınız özel Agent Skills'i destekliyorsa (Antigravity gibi), Angular CLI MCP sunucusunu resmi [Angular AI Skills](https://angular.dev/ai/skills) ile birleştirebilirsiniz. Skills, ajana derin talimat düzeyinde rehberlik ve kodlama standartları sağlarken, MCP sunucusu bu yönergeleri uygulamak için eylem araçlarını (derleme, test çalıştırma ve çalışma alanı analizi gibi) sunar. Bu da eksiksiz ve güçlü bir geliştirme ajanı ortaya çıkarır.
+</docs-callout>
 
 ## Başlarken
 
-Başlamak için terminalinizde aşağıdaki komutu çalıştırın:
+MCP sunucusunu kullanmak için, ana bilgisayar ortamınızı (IDE veya CLI) `npx @angular/cli mcp` komutunu çalıştıracak şekilde yapılandırırsınız.
 
-```bash
-ng mcp
-```
+<docs-tab-group>
+  <docs-tab label="Antigravity IDE">
+    Projenizin kök dizininde `.antigravity/mcp.json` adında bir dosya oluşturun:
 
-Etkileşimli bir terminalden çalıştırıldığında, bu komut MCP sunucusunu kullanmak için bir ana bilgisayar ortamının nasıl yapılandırılacağına dair talimatlar görüntüler. Aşağıdaki bölümler, birçok popüler düzenleyici ve araç için örnek yapılandırmalar sağlar.
-
-### Cursor
-
-Projenizin kök dizininde `.cursor/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. Ayrıca `~/.cursor/mcp.json` dosyasında global olarak da yapılandırabilirsiniz.
-
-```json
-{
-  "mcpServers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
+    ```json
+    {
+      "mcpServers": {
+        "angular-cli": {
+          "command": "npx",
+          "args": ["-y", "@angular/cli", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
 
-### Firebase Studio
+  </docs-tab>
 
-Projenizin kök dizininde `.idx/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
+  <docs-tab label="Cursor">
+    Proje kök dizininde `.cursor/mcp.json` oluşturun (veya `~/.cursor/mcp.json` üzerinde global olarak):
 
-```json
-{
-  "mcpServers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
+    ```json
+    {
+      "mcpServers": {
+        "angular-cli": {
+          "command": "npx",
+          "args": ["-y", "@angular/cli", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
 
-### Gemini CLI
+  </docs-tab>
 
-Projenizin kök dizininde `.gemini/settings.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin:
+  <docs-tab label="VS Code">
+    `.vscode/mcp.json` oluşturun:
 
-```json
-{
-  "mcpServers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
+    ```json
+    {
+      "servers": {
+        "angular-cli": {
+          "command": "npx",
+          "args": ["-y", "@angular/cli", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
 
-### JetBrains IDEs
+  </docs-tab>
+</docs-tab-group>
 
-JetBrains IDE'lerinde (IntelliJ IDEA veya WebStorm gibi), JetBrains AI Assistant eklentisini yükledikten sonra `Settings | Tools | AI Assistant | Model Context Protocol (MCP)` yoluna gidin. Yeni bir sunucu ekleyin (`+`) ve `As JSON` seçeneğini seçin. Ardından aşağıdaki yapılandırmayı yapıştırın:
+## Mevcut Araçlar (Varsayılan)
 
-```json
-{
-  "mcpServers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
-    }
-  }
-}
-```
+MCP sunucusu etkinleştirildiğinde, yapay zeka ajanları aşağıdaki araçlara erişebilir:
 
-MCP sunucularını yapılandırma hakkında en güncel talimatlar için lütfen JetBrains dokümantasyonuna bakın: [Connect to an MCP server](https://www.jetbrains.com/help/ai-assistant/mcp.html#connect-to-an-mcp-server).
+| Ad                          | Açıklama                                                                                                 |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------- |
+| `ai_tutor`                  | Etkileşimli, yapay zeka destekli bir Angular eğitmeni başlatır.                                          |
+| `devserver.start`           | Bir geliştirme sunucusunu (`ng serve`) asenkron olarak başlatır. Hemen döner.                            |
+| `devserver.stop`            | Geliştirme sunucusunu durdurur.                                                                          |
+| `devserver.wait_for_build`  | Çalışan bir geliştirme sunucusundaki en son derlemenin günlüklerini döndürür.                            |
+| `get_best_practices`        | Angular En İyi Uygulamalar Kılavuzunu getirir (standalone bileşenler, tipli formlar vb. için kritiktir). |
+| `list_projects`             | `angular.json` dosyasını okuyarak çalışma alanındaki tüm uygulama ve kütüphaneleri listeler.             |
+| `onpush_zoneless_migration` | Kodu analiz eder ve `OnPush` değişiklik algılamaya (zone'suz için ön koşul) geçiş için bir plan sunar.   |
+| `run_target`                | Yapılandırılmış bir hedefi çalıştırır (ör. build, test, lint, e2e, deploy).                              |
+| `search_documentation`      | `https://angular.dev` adresindeki resmi dokümantasyonu arar.                                             |
 
-### VS Code
+## Yaygın İş Akışları
 
-Projenizin kök dizininde `.vscode/mcp.json` adında bir dosya oluşturun ve aşağıdaki yapılandırmayı ekleyin. `servers` özelliğinin kullanımına dikkat edin.
+Bu iş akışları, yapay zeka asistanlarının karmaşık geliştirici senaryolarını otomatik olarak gerçekleştirmek için farklı MCP araçlarını nasıl koordine ettiğini gösterir.
 
-```json
-{
-  "servers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
-    }
-  }
-}
-```
+### 1. Performans Ayarlaması: Zone'suz & OnPush Geçişi
 
-### Diğer IDE'ler
+Yapay zeka ajanı, değişiklik algılama performansını optimize eder ve bileşenleri zone'suza hazır bir duruma geçirir.
 
-Diğer IDE'ler için, MCP yapılandırma dosyasının (genellikle `mcp.json`) uygun konumu hakkında IDE'nizin dokümantasyonunu kontrol edin. Yapılandırma aşağıdaki snippet'i içermelidir.
+1. **Çalışma Alanını Keşfet**: Yapay zeka ajanı, çalışma alanındaki bileşenleri, projeleri ve stil/test yapılandırmalarını bulmak için `list_projects` çağırır.
+2. **Schematic Modernizasyonu (Ön Koşul)**: Yapay zeka ajanı, standart `ng generate` komutlarını kullanarak gerekli sinyal geçişlerini çalıştırır (ör. Signal Inputs, Signal Queries).
+3. **Geçişi Planla**: Yapay zeka ajanı, dizinin veya bileşen dosyasının mutlak yolu ile `onpush_zoneless_migration` çağırır.
+4. **Değişiklikleri Uygula**: Yapay zeka ajanı, aracın döndürdüğü tek uygulanabilir değişikliği otomatik olarak kod tabanına uygular.
+5. **Değişiklikleri Doğrula**: Yapay zeka ajanı, target parametresini `"test"` olarak ayarlayıp `run_target` çağırarak birim testlerini çalıştırır.
+6. **Tekrarla**: Yapay zeka ajanı, sonraki adımı almak için `onpush_zoneless_migration` çağırır ve araç geçişin tamamlandığını belirtene kadar bunu tekrarlar.
 
-```json
-{
-  "mcpServers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
-    }
-  }
-}
-```
+### 2. Özellik Geliştirme & TDD Döngüsü
+
+Yapay zeka ajanı, yeni özellikler geliştirirken araştırma, uygulama ve doğrulamayı otomatikleştirir.
+
+1. **API & Sözdizimi Araştırması**: Yapay zeka ajanı, Angular API'lerini veya sözdizimi kurallarını aramak için `search_documentation` kullanır (ör. `@defer` blok seçenekleri).
+2. **Kodlama Standartlarını Yükle**: Yapay zeka ajanı, Angular sürümüyle uyumlu kodlama kurallarını yüklemek için çalışma alanı yolu ile `get_best_practices` çağırır.
+3. **Yerel Geliştirme Sunucusunu Başlat**: Yapay zeka ajanı, `devserver.start` çağırarak arka planda bir sunucu başlatır.
+4. **Derlemeyi İzle**: Yapay zeka ajanı, kodu düzenlerken derleme günlüklerini izlemek ve derlemenin başarılı olduğundan emin olmak için `devserver.wait_for_build` kullanır.
+5. **Test Yaz ve Çalıştır**: Yapay zeka ajanı, `list_projects` aracılığıyla projenin test çerçevesini (ör. Jasmine, Jest, Vitest) belirler, ilgili test dosyasını yazar ve `run_target` ile `"test"` kullanarak testleri çalıştırır.
+6. **Geliştirme Sunucusunu Durdur**: İşi bittiğinde, yapay zeka ajanı `devserver.stop` çağırarak etkin geliştirme sunucusunu durdurur.
+
+### 3. Geliştirici Adaptasyonu ve Öğrenme
+
+Yapay zeka ajanı, geliştiriciyi etkileşimli bir sandbox içinde Angular kavramlarında yönlendirir.
+
+1. **Projeleri Keşfet**: Yapay zeka ajanı, çalışma alanını taramak ve kod tabanı yapısını belirlemek için `list_projects` çağırır.
+2. **Eğitmeni Başlat**: Yapay zeka ajanı, müfredat talimatlarını, personayı ve eğitim yönergelerini yüklemek için `ai_tutor` çalıştırır.
+3. **Müfredatı İzle**: Yapay zeka ajanı, kullanıcıyı müfredat boyunca yönlendirir, kavramları açıklar ve hangi bileşenleri oluşturacaklarını veya değiştireceklerini söyler.
+4. **Uygula & Doğrula**: Yapay zeka ajanı, sandbox kodunu uygulamaya yardımcı olur ve değişiklikleri `run_target` ile `"test"` veya `"build"` kullanarak doğrular.
 
 ## Komut Seçenekleri
 
-`mcp` komutu, IDE'nizin MCP yapılandırmasında argüman olarak iletilen aşağıdaki seçeneklerle yapılandırılabilir:
+Yapılandırmanızın `args` dizisinde MCP sunucusuna argümanlar iletebilirsiniz:
 
-| Seçenek                       | Tür       | Açıklama                                                                                                                                                                                 | Varsayılan |
-| :---------------------------- | :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
-| `--read-only`                 | `boolean` | Yalnızca projede değişiklik yapmayan araçları kaydeder. Düzenleyiciniz veya kodlama aracınız yine de düzenleme yapabilir.                                                                | `false`    |
-| `--local-only`                | `boolean` | Yalnızca internet bağlantısı gerektirmeyen araçları kaydeder. Düzenleyiciniz veya kodlama aracınız yine de ağ üzerinden veri gönderebilir.                                               | `false`    |
-| `--experimental-tool`<br>`-E` | `string`  | Bir [deneysel aracı](#deneysel-araçlar) etkinleştirir. Birden fazla seçeneği boşluklarla ayırın, örn. `-E tool_a tool_b`. Tüm `devserver.x` araçlarını `-E devserver` ile etkinleştirin. |            |
+- `--read-only`: Yalnızca projeyi değiştirmeyen araçları kaydeder.
+- `--local-only`: Yalnızca internet bağlantısı gerektirmeyen araçları kaydeder.
 
-Örneğin, VS Code'da sunucuyu salt okunur modda çalıştırmak için `mcp.json` dosyanızı şu şekilde güncellersiniz:
+Salt okunur mod için örnek:
 
 ```json
-{
-  "servers": {
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp", "--read-only"]
-    }
-  }
-}
+"args": ["-y", "@angular/cli", "mcp", "--read-only"]
 ```
-
-## Geri Bildirim ve Yeni Fikirler
-
-Angular ekibi, mevcut MCP yetenekleri ve yeni araçlar veya özellikler için fikirleriniz hakkında geri bildirimlerinizi memnuniyetle karşılar. Lütfen [angular/angular GitHub deposunda](https://github.com/angular/angular/issues) bir sorun açarak düşüncelerinizi paylaşın.

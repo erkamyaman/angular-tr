@@ -84,7 +84,7 @@ HELPFUL: Test kurulumu veya sağlayıcılar için `src/test-providers.ts` gibi y
 
 ### Gelişmiş Vitest yapılandırması
 
-İleri düzey kullanım durumları için, `angular.json` dosyasındaki `configFile` seçeneğini kullanarak özel bir Vitest yapılandırma dosyası sağlayabilirsiniz.
+İleri düzey kullanım durumları için, `angular.json` dosyasındaki `runnerConfig` seçeneğini kullanarak özel bir Vitest yapılandırma dosyası sağlayabilirsiniz.
 
 IMPORTANT: Özel bir yapılandırma kullanmak ileri düzey seçenekleri etkinleştirirken, Angular ekibi yapılandırma dosyasının içeriği veya herhangi bir üçüncü taraf eklentisi için destek sağlamaz. CLI ayrıca düzgün entegrasyon sağlamak için belirli özellikleri (`test.projects`, `test.include`) geçersiz kılacaktır.
 

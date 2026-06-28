@@ -55,7 +55,6 @@ Bir terminal açın ([Visual Studio Code](https://code.visualstudio.com/) kullan
     >
     bun install -g @angular/cli
     </docs-code>
-
 </docs-code-multifile>
 
 Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#angular-cliı-yükleme) göz atın.

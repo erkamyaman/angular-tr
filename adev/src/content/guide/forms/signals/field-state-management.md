@@ -166,7 +166,73 @@ Etkileşim durumu, kullanıcıların alanlarla etkileşim kurup kurmadığını 
 
 ### Dokunulmuş durumu
 
-`touched()` sinyali, bir kullanıcının bir alana odaklanıp ardından odağı bırakıp bırakmadığını izler. Kullanıcı, kullanıcı etkileşimi (programatik olmayan) yoluyla bir alana odaklanıp ardından odağı bıraktığında `true` olur. Gizli, devre dışı ve salt okunur alanlar etkileşimsizdir ve kullanıcı etkileşimlerinden dokunulmuş hale gelmez.
+`touched()` sinyali, bir kullanıcının bir alana odaklanıp ardından odağı bırakıp bırakmadığını ya da alanın programatik olarak dokunulmuş olarak işaretlenip işaretlenmediğini izler. Yalnızca etkileşimli alanlar dokunulmuş hale gelebilir; gizli, devre dışı ve salt okunur alanlar kullanıcı etkileşimlerinden veya `markAsTouched()` çağrısından dokunulmuş hale gelmez.
+
+Bir bölüm düzeyindeki bir eylemin o bölümdeki doğrulama hatalarını göstermesi gerektiğinde, bölüm alanı üzerinde `markAsTouched()` çağırın. `skipDescendants` varsayılan değeri `false` olduğundan, çağrı bölüm alanını ve her bir alt alanı dokunulmuş olarak işaretler.
+
+Örneğin, bir ödeme akışı, kullanıcının bir sonraki adıma geçmesine izin vermeden önce kargo bölümünü doğrulayabilir:
+
+```angular-ts
+import {Component, signal} from '@angular/core';
+import {form, FormField, required} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-checkout-shipping',
+  imports: [FormField],
+  template: `
+    <label>
+      Name
+      <input [formField]="checkoutForm.shipping.name" />
+    </label>
+    @if (checkoutForm.shipping.name().touched() && checkoutForm.shipping.name().invalid()) {
+      <p>{{ checkoutForm.shipping.name().errors()[0].message }}</p>
+    }
+
+    <label>
+      Address
+      <input [formField]="checkoutForm.shipping.address" />
+    </label>
+    @if (checkoutForm.shipping.address().touched() && checkoutForm.shipping.address().invalid()) {
+      <p>{{ checkoutForm.shipping.address().errors()[0].message }}</p>
+    }
+
+    <button type="button" (click)="continueToPayment()">Continue</button>
+
+    @if (showPayment() && checkoutForm.shipping().valid()) {
+      <p>Ready for payment.</p>
+    }
+  `,
+})
+export class CheckoutShipping {
+  checkoutModel = signal({
+    shipping: {
+      name: '',
+      address: '',
+    },
+  });
+
+  showPayment = signal(false);
+
+  checkoutForm = form(this.checkoutModel, (schemaPath) => {
+    required(schemaPath.shipping.name, {message: 'Enter a name'});
+    required(schemaPath.shipping.address, {message: 'Enter an address'});
+  });
+
+  continueToPayment() {
+    this.checkoutForm.shipping().markAsTouched();
+
+    if (this.checkoutForm.shipping().invalid()) {
+      return;
+    }
+
+    this.showPayment.set(true);
+  }
+}
+```
+
+`continueToPayment()`, `checkoutForm.shipping()` üzerinde `markAsTouched()` çağırdığında, varsayılan `skipDescendants: false` davranışını kullanır. Angular `shipping`, `shipping.name` ve `shipping.address` alanlarını dokunulmuş olarak işaretler, böylece alt `touched() && invalid()` hata mesajları tüm form gönderilmeden önce görünür hale gelir.
+
+NOTE: `{skipDescendants: true}` değerini yalnızca çağrıyı alan alanın, alt alanlarının dokunulmuş durumunu değiştirmeden dokunulmuş hale gelmesi gerektiğinde geçirin.
 
 ### Kirli durumu
 
@@ -197,12 +263,12 @@ export class Profile {
 
 ### Dokunulmuş ve kirli karşılaştırması
 
-Bu sinyaller farklı kullanıcı etkileşimlerini izler:
+Bu sinyaller farklı etkileşim durumu türlerini izler:
 
-| Signal      | When it becomes true                                                                                                    |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `touched()` | Kullanıcı etkileşimli bir alana odaklanmış ve odağı bırakmış (hiçbir şey değiştirmese bile)                             |
-| `dirty()`   | Kullanıcı etkileşimli bir alanı değiştirmiş (odağı hiç bırakmasa bile ve mevcut değer başlangıç değeriyle eşleşse bile) |
+| Signal      | When it becomes true                                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `touched()` | Kullanıcı etkileşimli bir alana odaklanmış ve odağı bırakmış ya da alan programatik olarak dokunulmuş olarak işaretlenmiş |
+| `dirty()`   | Kullanıcı etkileşimli bir alanı değiştirmiş (odağı hiç bırakmasa bile ve mevcut değer başlangıç değeriyle eşleşse bile)   |
 
 Bir alan farklı kombinasyonlarda olabilir:
 
@@ -381,7 +447,7 @@ Kök form bir alan olduğu için, aynı sinyallere sahiptir (`valid()`, `invalid
 | `valid()`   | Tüm etkileşimli alanlar geçerli ve bekleyen doğrulayıcı yok    |
 | `invalid()` | En az bir etkileşimli alanın doğrulama hataları var            |
 | `pending()` | En az bir etkileşimli alanın bekleyen asenkron doğrulaması var |
-| `touched()` | Kullanıcı en az bir etkileşimli alana dokunmuş                 |
+| `touched()` | Form ya da en az bir etkileşimli alt alan dokunulmuş           |
 | `dirty()`   | Kullanıcı en az bir etkileşimli alanı değiştirmiş              |
 
 ### Form düzeyi ve alan düzeyi ne zaman kullanılmalı
@@ -726,6 +792,89 @@ export class StyleExample {
 ```
 
 Hem `touched()` hem de doğrulama durumunu kontrol etmek, stillerin yalnızca kullanıcı alanla etkileşim kurduktan sonra görünmesini sağlar.
+
+## Bir form alanına bağlı bir form kontrolüne odaklanma
+
+Angular Signal Forms, alan durumu üzerinde, belirli bir form alanına ilişkili form kontrolüne programatik olarak [odağı](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) taşımanıza olanak tanıyan bir `focusBoundControl()` yöntemi sağlar.
+
+Yaygın bir kullanım senaryosu, form gönderiminde erişilebilirliği iyileştirmektir: bir form geçersiz olduğunda, hata mesajlarını gösterin ve odağı otomatik olarak ilk geçersiz alana taşıyarak kullanıcıyı düzeltmeye yönlendirin.
+
+### Temel kullanım
+
+Bir kayıt formu verildiğinde:
+
+```ts
+@Component({
+  /* ... */
+})
+export class Registration {
+  registrationModel = signal({username: '', email: '', password: ''});
+  registrationForm = form(this.registrationModel, (schemaPath) => {
+    required(schemaPath.username);
+    email(schemaPath.email);
+    required(schemaPath.password);
+  });
+}
+```
+
+Odağı `email` alanına bağlı kontrole taşımak için:
+
+```ts
+registrationForm.email().focusBoundControl();
+```
+
+### Kaydırmayı önleme
+
+Hedef kontrol görüntü alanının dışındaysa ve onu kaydırmayı tetiklemeden odaklamak istiyorsanız, `focusBoundControl()` yöntemini çağırırken [preventScroll](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#preventscroll) seçeneğini `true` olarak ayarlayabilirsiniz.
+
+```ts
+registrationForm.email().focusBoundControl({preventScroll: true});
+```
+
+### Gönderimde ilk geçersiz alana odaklanma
+
+Kullanıcı formu hatalarla gönderdiğinde ilk geçersiz alanı bulmak ve ona odaklanmak için `errorSummary()` kullanın:
+
+```ts
+onSubmit() {
+  const firstError = this.registrationForm().errorSummary()[0];
+  if (firstError?.fieldTree) {
+    firstError.fieldTree().focusBoundControl();
+  } else {
+    // proceed with submission
+  }
+}
+```
+
+### Özel kontroller
+
+Varsayılan olarak, bir özel kontrol üzerinde `focusBoundControl()` çağrılmasının hiçbir etkisi yoktur, çünkü bir özel kontrol birden fazla yerel girdi içerebilir. Örneğin, bir tarih seçici ayrı gün, ay ve yıl alanları içerebilir. Sonuç olarak, Angular hangi öğenin odağı alması veya hangi eylemin gerçekleştirilmesi gerektiğini belirleyemez.
+
+Bir özel kontrolde programatik odağı desteklemek için bir `focus()` yöntemi uygulayın. Bir özel kontrole ilişkili alan durumu üzerinde `focusBoundControl()` çağrıldığında, Angular varsa kontrolün `focus()` yöntemini çağırır.
+
+Bir özel parola girdisini ele alalım:
+
+```html
+<div class="password-block">
+  <input type="password" #passwordCtrl [value]="value()" (input)="value.set($event.target.value)" />
+</div>
+```
+
+```ts
+@Component({
+  /* ... */
+})
+export class PasswordInput implements FormValueControl<string> {
+  readonly value = model<string>('');
+  readonly passwordCtrl = viewChild.required<ElementRef<HTMLInputElement>>('passwordCtrl');
+
+  // focusBoundControl(), bu özel kontrole ilişkili alan durumu
+  // üzerinde çağrıldığında otomatik olarak çağrılır
+  focus(): void {
+    this.passwordCtrl().nativeElement.focus();
+  }
+}
+```
 
 ## Sonraki adımlar
 

@@ -432,7 +432,7 @@ Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncell
 Angular'ın sunucu tarafı render (SSR) sırasında HTTP yanıtlarını nasıl önbelleğe aldığını ve hidrasyon sırasında yeniden kullandığını `HttpTransferCacheOptions` yapılandırarak özelleştirebilirsiniz.
 Bu yapılandırma, `provideClientHydration()` içinde `withHttpTransferCacheOptions` kullanılarak global olarak sağlanır.
 
-Varsayılan olarak, `HttpClient` `Authorization`, `Proxy-Authorization` veya `Cookie` başlıkları içermeyen ve `withCredentials` ile ya da kimlik bilgisi gönderebilen Fetch API `credentials` modlarıyla gönderilmeyen tüm `HEAD` ve `GET` isteklerini önbelleğe alır. Ayrıca Angular, bir istek veya yanıt önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içerdiğinde ya da Fetch API `cache` seçeneği `no-store` veya `no-cache` olarak ayarlandığında transfer önbelleğini atlar. İstek filtreleme ayarlarını hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
+Varsayılan olarak, `HttpClient` `Authorization`, `Proxy-Authorization` veya `Cookie` başlıkları içermeyen ve `withCredentials` ile ya da kimlik bilgisi gönderebilen Fetch API `credentials` modlarıyla gönderilmeyen tüm `HEAD` ve `GET` isteklerini önbelleğe alır. Ayrıca Angular, bir istek veya yanıt önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içerdiğinde ya da Fetch API `cache` seçeneği `no-store` veya `no-cache` olarak ayarlandığında transfer önbelleğini atlar. `Set-Cookie` başlığı taşıyan yanıtlar da atlanır. İstek filtreleme ayarlarını hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -560,7 +560,7 @@ Bireysel bir istek için önbelleğe almayı devre dışı bırakmak amacıyla, 
 httpClient.get('/api/sensitive-data', {transferCache: false});
 ```
 
-`HttpTransferCache`, önbelleğe almayı açıkça devre dışı bırakan istekleri veya yanıtları önbelleğe almaz. Angular, bir istek `no-store`, `no-cache` veya `private` içeren bir `Cache-Control` başlığı içerdiğinde ya da istek Fetch API `cache` seçeneğini `no-store` veya `no-cache` olarak kullandığında transfer önbelleği girdilerini atlar. `Cache-Control: no-store`, `Cache-Control: no-cache` veya `Cache-Control: private` içeren yanıtlar da transfer önbelleğinde saklanmaz.
+`HttpTransferCache`, önbelleğe almayı açıkça devre dışı bırakan istekleri veya yanıtları önbelleğe almaz. Angular, bir istek `no-store`, `no-cache` veya `private` içeren bir `Cache-Control` başlığı içerdiğinde ya da istek Fetch API `cache` seçeneğini `no-store` veya `no-cache` olarak kullandığında transfer önbelleği girdilerini atlar. `Cache-Control: no-store`, `Cache-Control: no-cache` veya `Cache-Control: private` içeren yanıtlar da transfer önbelleğinde saklanmaz. `Set-Cookie` başlığı içeren yanıtlar da, genellikle kullanıcıya özgü durum taşıdıkları için, benzer şekilde saklanmaz.
 
 NOTE: Uygulamanız sunucu ve istemcide API çağrıları yapmak için farklı HTTP kaynakları kullanıyorsa, `HTTP_TRANSFER_CACHE_ORIGIN_MAP` token'ı bu kaynaklar arasında bir eşleme oluşturmanıza olanak tanır, böylece `HttpTransferCache` özelliği bu istekleri aynı istekler olarak tanıyabilir ve istemcide hidrasyon sırasında sunucuda önbelleğe alınan verileri yeniden kullanabilir.
 

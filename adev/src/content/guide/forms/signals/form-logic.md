@@ -458,16 +458,16 @@ Geciktirme en çok şu durumlarda kullanışlıdır:
 
 Meta veri, bir alana reaktif veri ekler. Doğrulama kuralları bu sistemi dahili olarak kullanır ve yardım metni, yapılandırma veya hesaplanmış görüntüleme değerleri gibi uygulamaya özgü bilgiler için kendi anahtarlarınızı yayınlayabilirsiniz.
 
-Signal Forms, yerleşik doğrulayıcıların otomatik olarak doldurduğu altı önceden tanımlanmış meta veri anahtarı sağlar:
+Signal Forms, yerleşik doğrulayıcıların otomatik olarak doldurduğu önceden tanımlanmış meta veri anahtarları sağlar:
 
-| Anahtar      | Dolduran      | Okuma yolu            |
-| ------------ | ------------- | --------------------- |
-| `REQUIRED`   | `required()`  | `field().required()`  |
-| `MIN`        | `min()`       | `field().min()`       |
-| `MAX`        | `max()`       | `field().max()`       |
-| `MIN_LENGTH` | `minLength()` | `field().minLength()` |
-| `MAX_LENGTH` | `maxLength()` | `field().maxLength()` |
-| `PATTERN`    | `pattern()`   | `field().pattern()`   |
+| Anahtar      | Dolduran             | Okuma yolu            |
+| ------------ | -------------------- | --------------------- |
+| `REQUIRED`   | `required()`         | `field().required()`  |
+| `MIN`        | `min()`, `minDate()` | `field().min()`       |
+| `MAX`        | `max()`, `maxDate()` | `field().max()`       |
+| `MIN_LENGTH` | `minLength()`        | `field().minLength()` |
+| `MAX_LENGTH` | `maxLength()`        | `field().maxLength()` |
+| `PATTERN`    | `pattern()`          | `field().pattern()`   |
 
 `[formField]` direktifi bunlardan beşini (`REQUIRED`, `MIN`, `MAX`, `MIN_LENGTH` ve `MAX_LENGTH`) yerel bir form kontrolündeki ilgili HTML niteliğine otomatik olarak bağlar. `PATTERN` istisnadır, çünkü Signal Forms alan başına birden fazla kalıbı destekler ancak HTML `pattern` niteliği yalnızca tek bir düzenli ifade kabul eder.
 

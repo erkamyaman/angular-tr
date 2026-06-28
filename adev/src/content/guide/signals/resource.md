@@ -57,6 +57,25 @@ Bir kaynak oluştururken bir `ResourceLoader` belirtirsiniz. Bu yükleyici, tek 
 
 `params` hesaplaması `undefined` döndürürse, yükleyici fonksiyon çalışmaz ve kaynak durumu `'idle'` olur.
 
+### Akış (streaming) kaynakları
+
+Bazı asenkron veri kaynakları tek bir sonuç döndürmek yerine zaman içinde birden fazla değer üretir. Örnekler arasında WebSocket'ler, Server-Sent Events (SSE) ve Firestore `onSnapshot` dinleyicileri yer alır.
+
+Sürekli güncellenen bu veri kaynakları için `stream` kullanın. Her istek için bir kez çözümlenen `loader`'ın aksine, `stream` değeri yeni veriler geldikçe güncellenmeye devam edebilen bir sinyal döndürür.
+
+Bir HTTP uç noktasından veri almak gibi tek seferlik asenkron işlemler için `loader` kullanın.
+
+```typescript
+const userUpdates = signal({value: 'Alice'});
+
+const userResource = resource({
+  stream: () => userUpdates,
+});
+
+// Daha sonra, yeni veri geldiğinde:
+userUpdates.set({value: 'Bob'});
+```
+
 ### Request'leri iptal etme
 
 Kaynak, `params` hesaplaması yüklenme sırasında değişirse bekleyen bir yükleme işlemini iptal eder.
@@ -139,6 +158,53 @@ const userResource = resource({
 `id` değeri, Angular'ın önbelleğe alınmış girişi onu isteyen kaynakla eşleştirebilmesi için uygulamanız içinde benzersiz ve sunucu ile istemcide aynı olmalıdır.
 
 IMPORTANT: Önbelleğe alınan değer sayfanın HTML'ine serileştirildiğinden, sunucu tarafı işlemeyi tetikleyen kullanıcıya özgü veri yükleyen kaynaklarda `id` ayarlamaktan kaçının, özellikle işlenen HTML önbelleğe alınabiliyorsa veya kullanıcılar arasında paylaşılabiliyorsa.
+
+## Resource'ları zincirleme
+
+Bazen bir kaynak başka bir kaynağın sonucuna bağlıdır. Bu bağımlılığı `params` bağlam nesnesinde bulunan `chain` fonksiyonunu kullanarak ifade edebilirsiniz.
+
+```typescript
+import {resource} from '@angular/core';
+
+const userResource = resource({
+  params: () => ({id: getUserId()}),
+  loader: ({params}) => fetchUser(params),
+});
+
+const companyResource = resource({
+  params: ({chain}) => chain(userResource)?.companyId,
+  loader: ({params: companyId}) => fetchCompany(companyId),
+});
+```
+
+Burada `companyResource`, yalnızca `userResource` yüklendikten sonra bilinen kullanıcının `companyId` değerine bağlıdır. `chain(userResource)`, `userResource`'un değerini okur ve durumunu otomatik olarak `companyResource`'a yayar:
+
+- `userResource` **idle** ise, `companyResource` da `idle` olur.
+- `userResource` **loading** veya **reloading** ise, `companyResource` `loading` durumuna geçer ve yükleyicisi çalışmaz. `reloading` sırasında `chain`'in önceden çözümlenmiş değeri döndürmediğini unutmayın.
+- `userResource` bir **error** durumundaysa, `companyResource` da `error` durumuna geçer.
+- `userResource` **resolved** veya **local** ise, `chain` onun güncel değerini döndürür ve `companyResource` bunu kendi params değeri olarak kullanır.
+
+`chain`, `userResource`'tan bir durum yaydığında (`idle`, `loading`, `reloading` veya `error`), params fonksiyonu devam etmez. `userResource` `resolved` veya `local` olduğunda, `chain` onun değerini döndürür ve bu değerin kendisi `undefined` olabilir. Örnek bunu `chain(userResource)?.companyId` ile ele alır; böylece `undefined` bir değer `undefined` params'a yol açar ve `companyResource` `idle` olur.
+
+NOTE: Zincirlenmiş değeri bir nesneye sarmak yerine doğrudan params değeri olarak iletin. `{companyId: undefined}` gibi bir params değeri yine de tanımlı bir değerdir, bu nedenle yükleyici kaynak `idle` olmak yerine `undefined` bir `companyId` ile çalışır.
+
+### Zincirleme ile resource değerlerini doğrudan okuma karşılaştırması
+
+Bir kaynağın değerini doğrudan `params` içinde okumak isteyebilirsiniz:
+
+```typescript {avoid, header: 'durum yayılımı olmadan value() değerini doğrudan okur'}
+const companyResource = resource({
+  params: () => {
+    const user = userResource.value(); // undefined olabilir
+    return user ? {companyId: user.companyId} : undefined;
+  },
+  loader: ({params}) => fetchCompany(params.companyId),
+});
+```
+
+Bu işe yarasa da, `params`'tan `undefined` döndürmek kaynağı, yukarı akış kaynağının gerçek durumunu yansıtmak yerine `idle` durumuna geçirir. `chain` kullanımı tercih edilir çünkü `loading` ve `error` durumlarını doğru şekilde yansıtır.
+
+`chain`'e yalnızca aşağı akış kaynağı, yukarı akış değerine bağlı kendi asenkron işini gerçekleştirdiğinde başvurun. Bir kaynaktan yalnızca senkron olarak bir değer türetmeniz gerekiyorsa, bunun yerine `computed` kullanın.
 
 ## `httpResource` ile reaktif veri çekme
 

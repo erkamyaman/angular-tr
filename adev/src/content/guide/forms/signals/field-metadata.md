@@ -40,14 +40,16 @@ export class Registration {
 
 Çeşitli yerleşik kısıtlama doğrulayıcıları bu kalıbı takip eder:
 
-| Doğrulayıcı   | Meta veri anahtarı | Tür                   | `FieldState` getter'ı |
-| ------------- | ------------------ | --------------------- | --------------------- |
-| `required()`  | `REQUIRED`         | `boolean`             | `required`            |
-| `min()`       | `MIN`              | `number \| undefined` | `min`                 |
-| `max()`       | `MAX`              | `number \| undefined` | `max`                 |
-| `minLength()` | `MIN_LENGTH`       | `number \| undefined` | `minLength`           |
-| `maxLength()` | `MAX_LENGTH`       | `number \| undefined` | `maxLength`           |
-| `pattern()`   | `PATTERN`          | `RegExp[]`            | `pattern`             |
+| Doğrulayıcı   | Meta veri anahtarı        | Tür                   | `FieldState` getter'ı |
+| ------------- | ------------------------- | --------------------- | --------------------- |
+| `required()`  | `REQUIRED`                | `boolean`             | `required`            |
+| `min()`       | `MIN`, `MIN_NUMBER` seçer | `number \| undefined` | `min`                 |
+| `max()`       | `MAX`, `MAX_NUMBER` seçer | `number \| undefined` | `max`                 |
+| `minDate()`   | `MIN`, `MIN_DATE` seçer   | `Date \| undefined`   | `min`                 |
+| `maxDate()`   | `MAX`, `MAX_DATE` seçer   | `Date \| undefined`   | `max`                 |
+| `minLength()` | `MIN_LENGTH`              | `number \| undefined` | `minLength`           |
+| `maxLength()` | `MAX_LENGTH`              | `number \| undefined` | `maxLength`           |
+| `pattern()`   | `PATTERN`                 | `RegExp[]`            | `pattern`             |
 
 `email()` ve `validate()` gibi kısıtlama olmayan doğrulayıcılar meta veriye katkıda bulunmaz. Kontrollerini çalıştırır ve bir doğrulama hatası ortaya çıkarırlar, ancak şablonların okuyabileceği reaktif bir değer yayımlamazlar.
 
@@ -217,16 +219,20 @@ Angular, [`MetadataReducer`](api/forms/signals/MetadataReducer) ad alanında alt
 
 Yerleşik kısıtlama anahtarları, indirgeyicilerini kısıtlama için "en katı"nın ne anlama geldiğine göre seçer; bu da çoğu zaman anahtarın adının önerdiğinin tam tersidir:
 
-| Anahtar      | İndirgeyici      | Gerekçe                                                                                                                                     |
-| ------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REQUIRED`   | `or()`           | Herhangi bir `required()` kuralı `true` olarak değerlendirilirse, alan zorunludur.                                                          |
-| `MIN`        | `max()`          | Bir minimum-değer kısıtlaması en büyük olduğunda en katıdır. Bir kural `>= 5` ve diğeri `>= 10` gerektirirse, geçerli minimum `10`'dur.     |
-| `MAX`        | `min()`          | Bir maksimum-değer kısıtlaması en küçük olduğunda en katıdır. Bir kural `100` ile sınırlarsa ve diğeri `50` ile, geçerli maksimum `50`'dir. |
-| `MIN_LENGTH` | `max()`          | `MIN` ile aynı mantık: gerekli en uzun uzunluk kazanır.                                                                                     |
-| `MAX_LENGTH` | `min()`          | `MAX` ile aynı mantık: izin verilen en kısa uzunluk kazanır.                                                                                |
-| `PATTERN`    | `list<RegExp>()` | Her `pattern()` çağrısı bir regex katkısında bulunur; değer bunların tümüyle eşleşmelidir.                                                  |
+| Anahtar      | İndirgeyici      | Gerekçe                                                                                                                                    |
+| ------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `REQUIRED`   | `or()`           | Herhangi bir `required()` kuralı `true` olarak değerlendirilirse, alan zorunludur.                                                         |
+| `MIN_NUMBER` | `max()`          | Bir minimum-sayı kısıtlaması en büyük olduğunda en katıdır. Bir kural `>= 5` ve diğeri `>= 10` gerektirirse, geçerli minimum `10`'dur.     |
+| `MIN_DATE`   | `max()`          | `MIN_NUMBER` ile aynı mantık: gerekli en geç tarih kazanır.                                                                                |
+| `MAX_NUMBER` | `min()`          | Bir maksimum-sayı kısıtlaması en küçük olduğunda en katıdır. Bir kural `100` ile sınırlarsa ve diğeri `50` ile, geçerli maksimum `50`'dir. |
+| `MAX_DATE`   | `min()`          | `MAX_NUMBER` ile aynı mantık: izin verilen en erken tarih kazanır.                                                                         |
+| `MIN_LENGTH` | `max()`          | `MIN_NUMBER` ile aynı mantık: gerekli en uzun uzunluk kazanır.                                                                             |
+| `MAX_LENGTH` | `min()`          | `MAX_NUMBER` ile aynı mantık: izin verilen en kısa uzunluk kazanır.                                                                        |
+| `PATTERN`    | `list<RegExp>()` | Her `pattern()` çağrısı bir regex katkısında bulunur; değer bunların tümüyle eşleşmelidir.                                                 |
 
-Bu "en katı olan kazanır" eşleştirmesi, iki birleştirilmiş şemada `min(path.age, 18)` ve `min(path.age, 21)` çağırmanın neden doğru çalıştığının nedenidir. Her çağrı kendi belirli sınırını uygulayan kendi doğrulayıcısını kaydeder (böylece her iki sınırın da altındaki bir değer doğrulamayı geçemez). Ayrı olarak, her çağrı genel `MIN` anahtarına katkıda bulunur ve `state.metadata(MIN)!()` toplamı (`21`) raporlar; böylece kullanıcı arayüzü ve özel denetimler geçerli minimumu okuyabilir.
+`MIN` ve `MAX` seçim anahtarlarıdır. Alanın değer türüyle eşleşen somut anahtarı işaret ederler; örneğin `min()` için `MIN_NUMBER` ve `minDate()` için `MIN_DATE`. `field().min()` ve `field().max()`'in hem sayısal hem de tarih alanları için çalışmasının nedeni budur.
+
+Bu "en katı olan kazanır" eşleştirmesi, iki birleştirilmiş şemada `min(path.age, 18)` ve `min(path.age, 21)` çağırmanın neden doğru çalıştığının nedenidir. Her çağrı kendi belirli sınırını uygulayan kendi doğrulayıcısını kaydeder (böylece her iki sınırın da altındaki bir değer doğrulamayı geçemez). Ayrı olarak, her çağrı `MIN_NUMBER` anahtarına katkıda bulunur ve `state.min!()` toplamı (`21`) raporlar; böylece kullanıcı arayüzü ve özel denetimler geçerli minimumu okuyabilir.
 
 ### Özel bir indirgeyici yazma
 

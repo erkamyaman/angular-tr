@@ -340,6 +340,54 @@ Kullanıcı geçersiz bir e-posta yazdığında, FormField direktifi `invalid()`
 
 Çoğu durum özelliği `input()` (formdan salt okunur) kullanır. Kontrolünüz kullanıcı etkileşiminde güncellediğinde `touched` için `model()` kullanın. `touched` özelliği, ihtiyaçlarınıza bağlı olarak benzersiz bir şekilde `model()`, `input()` veya `OutputRef` desteği sunar.
 
+### `debounce('blur')` ile çalışma
+
+[`debounce('blur')`](api/forms/signals/debounce) kuralı, UI'dan form modeline yapılan güncellemeleri her tuş vuruşunda uygulamak yerine alan odağı kaybedene (blur) kadar geciktirir. Yerleşik kontroller bir blur'u forma otomatik olarak bildirir. Özel bir kontrol yalnızca yerel [`blur` olayına](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) yanıt olarak `touch` çıktısını yaydığında bu sürece katılır:
+
+```angular-ts
+import {Component, model, output} from '@angular/core';
+import {FormValueControl} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-custom-input',
+  template: `
+    <input
+      type="text"
+      [value]="value()"
+      (input)="value.set($event.target.value)"
+      (blur)="touch.emit()"
+    />
+  `,
+})
+export class CustomInput implements FormValueControl<string> {
+  value = model('');
+  touch = output<void>();
+}
+```
+
+`touch` çıktısı yerinde olduğunda, `debounce('blur')` kontrolünüz için yerleşik girdilerde olduğu gibi davranır:
+
+```angular-ts
+import {Component, signal} from '@angular/core';
+import {debounce, form, FormField} from '@angular/forms/signals';
+import {CustomInput} from './custom-input';
+
+@Component({
+  selector: 'app-root',
+  imports: [CustomInput, FormField],
+  template: `<app-custom-input [formField]="userForm.name" />`,
+})
+export class App {
+  userModel = signal({name: ''});
+
+  userForm = form(this.userModel, (schemaPath) => {
+    debounce(schemaPath.name, 'blur');
+  });
+}
+```
+
+IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (odak kontrolden ayrıldığında) yayın. `touch` çıktısı olmadan alan asla blur olarak kaydedilmez, bu nedenle `debounce('blur')` kontrolünüz üzerinde etkili olmaz.
+
 ## Değer dönüşümü
 
 Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
