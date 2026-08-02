@@ -2,13 +2,15 @@
 
 Yapısal direktifler, bir `<ng-template>` elemanına uygulanan ve o `<ng-template>`'in içeriğini koşullu veya tekrarlı olarak render eden direktiflerdir.
 
+Günlük koşullu ve tekrarlı render için Angular'ın yerleşik [akış kontrolü bloklarını](guide/templates/control-flow) (`@if`, `@for` ve `@switch`) kullanın. Akış kontrolünün kapsamadığı, örneğin içeriği bir izin denetiminin arkasına almak veya bir şablona dış kaynaktan veri sağlamak gibi yeniden kullanılabilir render davranışına ihtiyaç duyduğunuzda yapısal direktif yazın.
+
 ## Örnek kullanım durumu
 
-Bu kılavuzda, belirli bir veri kaynağından veri getiren ve bu veri mevcut olduğunda şablonunu render eden bir yapısal direktif oluşturacaksınız. Bu direktif, SQL anahtar kelimesi `SELECT`'ten sonra `SelectDirective` olarak adlandırılır ve `[select]` nitelik seçicisi ile eşleştirilir.
+Bu kılavuz, çalışan örnek olarak `SelectDirective` adlı bir direktifi kullanır. Direktif, belirli bir veri kaynağından veri getirir ve bu veri mevcut olduğunda şablonunu render eder. Adını SQL anahtar kelimesi `SELECT`'ten alır ve `[select]` nitelik seçicisi ile eşleştirilir.
 
-`SelectDirective`, kullanılacak veri kaynağını adlandıran bir girdiye sahip olacaktır ve buna `selectFrom` diyeceksiniz. Bu girdi için `select` öneki, [kısaltılmış sözdizimi](#yapısal-direktif-kısaltılmış-sözdizimi) açısından önemlidir. Direktif, seçilen veriyi sağlayan bir şablon bağlamı ile `<ng-template>`'ini örneklendirecektir.
+`SelectDirective`, kullanılacak veri kaynağını adlandıran ve `selectFrom` olarak anılan bir girdiye sahiptir. Bu girdi için `select` öneki, [kısaltılmış sözdizimi](#structural-directive-shorthand) açısından önemlidir. Direktif, seçilen veriyi sağlayan bir şablon bağlamı ile `<ng-template>`'ini örneklendirir.
 
-Aşağıda, bu direktifin doğrudan bir `<ng-template>` üzerinde kullanılmasına bir örnek verilmiştir:
+Bu direktifin doğrudan bir `<ng-template>` üzerinde kullanılması şöyle görünür:
 
 ```angular-html
 <ng-template select let-data [selectFrom]="source">
@@ -18,11 +20,11 @@ Aşağıda, bu direktifin doğrudan bir `<ng-template>` üzerinde kullanılması
 
 Yapısal direktif, verinin kullanılabilir olmasını bekleyebilir ve ardından `<ng-template>`'ini render edebilir.
 
-HELPFUL: Angular'ın `<ng-template>` elemanının varsayılan olarak hiçbir şey render etmeyen bir şablon tanımladığını unutmayın; elemanları yapısal bir direktif uygulamadan yalnızca bir `<ng-template>` içine sararsanız, bu elemanlar render edilmez.
+HELPFUL: Angular'ın `<ng-template>` elemanı, varsayılan olarak hiçbir şey render etmeyen bir şablon tanımlar. Elemanları yapısal bir direktif uygulamadan bir `<ng-template>` içine sararsanız, bu elemanlar render edilmez.
 
 Daha fazla bilgi için [ng-template API](api/core/ng-template) belgelerine bakın.
 
-## Yapısal direktif kısaltılmış sözdizimi
+## Yapısal direktif kısaltılmış sözdizimi {#structural-directive-shorthand}
 
 Angular, açıkça bir `<ng-template>` elemanı yazmak gereğinden kaçınan yapısal direktifler için kısaltılmış sözdizimini destekler.
 
@@ -54,26 +56,18 @@ Kısaltılmış sözdizimi bir dizi kural aracılığıyla genişletilir. Daha k
 
 Sözdiziminin ikinci parçası, `from source` anahtar-ifade çiftidir. `from` bir bağlama anahtarıdır ve `source` normal bir şablon ifadesidir. Bağlama anahtarları, PascalCase'e dönüştürülerek ve yapısal direktif seçicisi eklenerek özelliklere eşlenir. `from` anahtarı `selectFrom`'a eşlenir ve ardından `source` ifadesine bağlanır. Bu nedenle birçok yapısal direktifin, yapısal direktifin seçicisi ile ön eklenmiş girdileri olacaktır.
 
-## Her eleman için tek bir yapısal direktif
+## Her eleman için tek bir yapısal direktif {#one-structural-directive-per-element}
 
 Kısaltılmış sözdizimini kullanırken her elemana yalnızca bir yapısal direktif uygulayabilirsiniz. Bunun nedeni, o direktifin açıldığı yalnızca bir `<ng-template>` elemanı olmasıdır. Birden fazla direktif, birden fazla iç içe `<ng-template>` gerektirir ve hangi direktifin önce olması gerektiği belirsizdir. Birden fazla yapısal direktifin aynı fiziksel DOM elemanı veya bileşen etrafında uygulanması gerektiğinde, kullanıcının iç içe yapıyı tanımlamasına olanak tanıyan sarma katmanları oluşturmak için `<ng-container>` kullanılabilir.
 
 ## Yapısal direktif oluşturma
 
-Bu bölüm, `SelectDirective`'i oluşturma sürecinde size rehberlik eder.
+Yapısal bir direktif, iki bağımlılık enjekte eden bir direktif sınıfıdır:
 
-<docs-workflow>
-<docs-step title="Direktifi oluşturma">
-Angular CLI'yi kullanarak, `select`'in direktifin adı olduğu aşağıdaki komutu çalıştırın:
+- [`TemplateRef`](api/core/TemplateRef) direktife, uygulandığı `<ng-template>`'in içeriğine erişim verir.
+- [`ViewContainerRef`](api/core/ViewContainerRef) direktifin o şablonu render edebileceği DOM konumunu temsil eder.
 
-```shell
-ng generate directive select
-```
-
-Angular, direktif sınıfını oluşturur ve bir şablondaki direktifi tanımlayan CSS seçicisini `[select]` belirtir.
-</docs-step>
-<docs-step title="Direktifi yapısal yapma">
-`TemplateRef`, `ViewContainerRef` ve `input`'u içe aktarın. `TemplateRef` ve `ViewContainerRef`'i direktife özel özellikler olarak enjekte edin.
+Direktif, görünüm kapsayıcısında şablondan gömülü görünümler oluşturarak ya da oluşturmayarak render'ı kontrol eder. Tamamlanmış `SelectDirective` şöyle görünür:
 
 ```ts
 import {Directive, TemplateRef, ViewContainerRef, inject, input} from '@angular/core';
@@ -88,27 +82,9 @@ export interface DataSource<T> {
 export class SelectDirective {
   private templateRef = inject(TemplateRef);
   private viewContainerRef = inject(ViewContainerRef);
-}
-```
 
-</docs-step>
-<docs-step title="'selectFrom' girdisini ekleme">
-Bir `selectFrom` `input()` özelliği ekleyin.
-
-```ts
-export class SelectDirective {
-  // ...
   selectFrom = input.required<DataSource<unknown>>();
-}
-```
 
-</docs-step>
-<docs-step title="İş mantığını ekleme">
-`SelectDirective` artık girdisiyle bir yapısal direktif olarak iskelet haline getirildiğine göre, şimdi veriyi getirmek ve şablonu onunla render etmek için mantığı ekleyebilirsiniz:
-
-```ts
-export class SelectDirective {
-  // ...
   async ngOnInit() {
     const data = await this.selectFrom().load();
     this.viewContainerRef.createEmbeddedView(this.templateRef, {
@@ -120,10 +96,15 @@ export class SelectDirective {
 }
 ```
 
-</docs-step>
-</docs-workflow>
+`selectFrom` girdisi, direktifin okuduğu veri kaynağını adlandırır. Direktif bir veri kaynağı olmadan işe yarar bir şey yapamayacağı için [`input.required()`](guide/components/inputs#required-inputs) kullanır.
 
-Hepsi bu - `SelectDirective` çalışır durumda. Bir sonraki adım [şablon tür denetimi desteği eklemek](#direktifin-bağlamını-türlendirme) olabilir.
+Angular direktifi başlattığında veriyi yükler ve ardından `createEmbeddedView()` çağrısıyla şablonu render eder. İkinci argüman, şablonun _bağlam nesnesidir_: şablonun `let` bildirimleriyle bağlanabileceği değerler. Veriyi `$implicit` anahtarına atamak, onu `let-data`'nın (veya kısaltılmış sözdiziminde `let data`'nın) aldığı varsayılan değer yapar.
+
+NOTE: Bu örnek şablonunu, direktif başlatıldığında yalnızca bir kez render eder. Bağlanan veri kaynağı değiştiğinde yeniden render etmez.
+
+Direktif çalışır duruma geldiğinde [şablon tür denetimi desteği eklemeyi](#direktifin-bağlamını-türlendirme) düşünün.
+
+HELPFUL: [`ng generate directive`](tools/cli/schematics) CLI komutu, bir direktifi test dosyasıyla birlikte oluşturur.
 
 ## Yapısal direktif sözdizimi referansı
 
@@ -167,8 +148,8 @@ Aşağıdaki tablo kısaltılmış örnekler sağlar:
 | :-------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
 | `*myDir="let item of [1,2,3]"`                                        | `<ng-template myDir let-item [myDirOf]="[1, 2, 3]">`                                                          |
 | `*myDir="let item of [1,2,3] as items; trackBy: myTrack; index as i"` | `<ng-template myDir let-item [myDirOf]="[1,2,3]" let-items="myDirOf" [myDirTrackBy]="myTrack" let-i="index">` |
-| `*ngComponentOutlet="componentClass";`                                | `<ng-template [ngComponentOutlet]="componentClass">`                                                          |
-| `*ngComponentOutlet="componentClass; inputs: myInputs";`              | `<ng-template [ngComponentOutlet]="componentClass" [ngComponentOutletInputs]="myInputs">`                     |
+| `*ngComponentOutlet="componentClass"`                                 | `<ng-template [ngComponentOutlet]="componentClass">`                                                          |
+| `*ngComponentOutlet="componentClass; inputs: myInputs"`               | `<ng-template [ngComponentOutlet]="componentClass" [ngComponentOutletInputs]="myInputs">`                     |
 | `*myDir="exp as value"`                                               | `<ng-template [myDir]="exp" let-value="myDir">`                                                               |
 
 ## Özel direktifler için şablon tür denetimini iyileştirme
@@ -251,3 +232,11 @@ export class SelectDirective<T> {
   }
 }
 ```
+
+## Sırada ne var
+
+<docs-pill-row>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif kompozisyon API'si"/>
+  <docs-pill href="guide/templates/ng-template" title="ng-template"/>
+  <docs-pill href="guide/templates/control-flow" title="Akış kontrolü"/>
+</docs-pill-row>

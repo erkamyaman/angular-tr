@@ -91,9 +91,9 @@ export class CardBody {}
   selector: 'custom-card',
   template: `
   <div class="card-shadow">
-    <ng-content select="card-title"></ng-content>
+    <ng-content select="card-title" />
     <div class="card-divider"></div>
-    <ng-content select="card-body"></ng-content>
+    <ng-content select="card-body" />
   </div>
   `,
 })
@@ -133,10 +133,10 @@ export class App {}
 ```angular-html
 <!-- Bileşen şablonu -->
 <div class="card-shadow">
-  <ng-content select="card-title"></ng-content>
+  <ng-content select="card-title" />
   <div class="card-divider"></div>
   <!-- "card-title" dışındaki her şeyi yakala -->
-  <ng-content></ng-content>
+  <ng-content />
 </div>
 ```
 
@@ -202,7 +202,7 @@ Angular, herhangi bir eleman üzerinde bir CSS seçici belirtmenize olanak tanı
 ```angular-html
 <!-- Bileşen şablonu -->
 <div class="card-shadow">
-  <ng-content select="card-title"></ng-content>
+  <ng-content select="card-title" />
   <div class="card-divider"></div>
   <ng-content />
 </div>

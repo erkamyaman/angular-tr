@@ -91,7 +91,20 @@ Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekl
 | Optional chaining\*             | `someObj.someProp?.nestedProp` |
 | Non-null assertion (TypeScript) | `someObj!.someProp`            |
 
-NOTE: Optional chaining, standart JavaScript sürümünden farklı davranır; Angular'ın optional chaining operatörünün sol tarafı `null` veya `undefined` ise, `undefined` yerine `null` döndürür.
+### Güvenli gezinme geçişi
+
+Angular 22'den önce, optional chaining operatörü (`?.`) sol taraf `null` veya `undefined` olduğunda `null` döndürüyordu; standart JavaScript'in `?.` operatörü ise `undefined` döndürür.
+Angular 22'den itibaren, Angular ifadelerindeki optional chaining davranışı standart JavaScript davranışıyla hizalandı.
+
+v22'ye geçiş sırasında `ng update` şematikleri, önceki `null` döndürme davranışını korumak için mevcut ifadelere bir `$safeNavigationMigration` sihirli fonksiyonu ekledi.
+
+```html
+{{ $safeNavigationMigration(foo?.bar) }}
+```
+
+`$safeNavigationMigration` **yalnızca geçici bir geçiş yardımcısıdır**. Derleyiciye, sarmalanan güvenli gezinme ifadesini standart JavaScript `?.` semantiği yerine eski `null` döndüren semantikle derlemesini söyler. Gerçek bir fonksiyon değildir ve TypeScript'ten çağrılamaz.
+
+NOTE: `$safeNavigationMigration`'ın kaldırılabilmesi için ifadelerinizi `null` ile `undefined` ayrımına dayanmayacak şekilde geçirmeyi tercih edin. Bu fonksiyon Angular'ın gelecekteki bir sürümünde kaldırılabilir.
 
 ### Desteklenmeyen operatörler
 
@@ -120,7 +133,7 @@ Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasında ş
 | Arrow Functions | `() => { }`                                 |
 | Classes         | `class Rectangle { }`                       |
 
-# Olay dinleyici ifadeleri
+## Olay dinleyici ifadeleri
 
 Olay işleyicileri ifadeler değil **ifadeler (statements)** dir. Angular ifadelerinin tüm sözdizimini desteklemelerine rağmen, iki temel fark vardır:
 

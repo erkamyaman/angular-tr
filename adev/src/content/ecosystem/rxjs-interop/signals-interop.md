@@ -86,7 +86,7 @@ export class EqualExample {
 
 `toSignal` içinde kullanılan bir Observable tamamlanırsa, sinyal tamamlanmadan önce yayılan en son değeri döndürmeye devam eder.
 
-## `toObservable` ile bir sinyalden RxJS Observable oluşturma
+## `toObservable` ile bir sinyalden RxJS Observable oluşturma {#create-an-rxjs-observable-from-a-signal-with-toobservable}
 
 Bir sinyalin değerini takip eden bir `Observable` oluşturmak için `toObservable` yardımcı fonksiyonunu kullanın. Sinyalin değeri, değiştiğinde Observable'a yayın yapan bir `effect` ile izlenir.
 
@@ -126,7 +126,7 @@ mySignal.set(3);
 
 Burada yalnızca son değer (3) günlüğe kaydedilir.
 
-## Asenkron veri için `rxResource` kullanımı
+## Asenkron veri için `rxResource` kullanımı {#using-rxresource-for-async-data}
 
 Angular'ın [`resource` fonksiyonu](/guide/signals/resource), uygulamanızın sinyal tabanlı koduna asenkron veriyi dahil etmenin bir yolunu sunar. Bu kalıbın üzerine inşa edilen `rxResource`, veri kaynağınızı bir RxJS `Observable` cinsinden tanımladığınız bir kaynak tanımlamanıza olanak tanır. Bir `loader` fonksiyonu kabul etmek yerine, `rxResource` bir RxJS `Observable` kabul eden bir `stream` fonksiyonu alır.
 

@@ -182,77 +182,19 @@ describe('MyListboxComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Listbox Yönergesi
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-`ngListbox` yönergesi seçilebilir seçeneklerden oluşan erişilebilir bir liste oluşturur.
+- [`Listbox`](/api/aria/listbox/Listbox)
+- [`Option`](/api/aria/listbox/Option)
 
-#### Girdiler
+### İlgili desenler
 
-| Property         | Type                               | Default      | Description                                     |
-| ---------------- | ---------------------------------- | ------------ | ----------------------------------------------- |
-| `id`             | `string`                           | auto         | Listbox için benzersiz tanımlayıcı              |
-| `multi`          | `boolean`                          | `false`      | Çoklu seçimi etkinleştirir                      |
-| `orientation`    | `'vertical'` \| `'horizontal'`     | `'vertical'` | Listenin yerleşim yönü                          |
-| `wrap`           | `boolean`                          | `true`       | Odağın liste kenarlarında sarılıp sarılmadığı   |
-| `selectionMode`  | `'follow'` \| `'explicit'`         | `'follow'`   | Seçimin nasıl tetiklendiği                      |
-| `focusMode`      | `'roving'` \| `'activedescendant'` | `'roving'`   | Odak yönetim stratejisi                         |
-| `softDisabled`   | `boolean`                          | `true`       | Devre dışı öğelerin odaklanabilir olup olmadığı |
-| `disabled`       | `boolean`                          | `false`      | Tüm listbox'ı devre dışı bırakır                |
-| `readonly`       | `boolean`                          | `false`      | Listbox'ı salt okunur yapar                     |
-| `typeaheadDelay` | `number`                           | `500`        | Yazarak arama sıfırlanmadan önceki milisaniye   |
+Listbox, belgelenen şu açılır liste desenleri tarafından kullanılır:
 
-#### Model
+- [Select](guide/aria/select) - Salt okunur combobox + listbox kullanan tek seçimli açılır liste deseni
+- [Multiselect](guide/aria/multiselect) - `multi` ile salt okunur combobox + listbox kullanan çoklu seçim deseni
+- [Autocomplete](guide/aria/autocomplete) - Combobox + listbox kullanan filtrelenebilir açılır liste deseni
 
-| Property | Type  | Description                                     |
-| -------- | ----- | ----------------------------------------------- |
-| `value`  | `V[]` | Seçili değerlerin iki yönlü bağlanabilir dizisi |
-
-#### Sinyaller
-
-| Property | Type          | Description                           |
-| -------- | ------------- | ------------------------------------- |
-| `value`  | `Signal<V[]>` | Şu anda seçili değerler sinyal olarak |
-
-#### Metodlar
-
-| Method                     | Parameters                        | Description                   |
-| -------------------------- | --------------------------------- | ----------------------------- |
-| `scrollActiveItemIntoView` | `options?: ScrollIntoViewOptions` | Aktif öğeyi görünüme kaydırır |
-| `gotoFirst`                | none                              | Listbox'taki ilk öğeye gider  |
-
-### Option Yönergesi
-
-`ngOption` yönergesi bir listbox içindeki bir öğeyi işaretler.
-
-#### Girdiler
-
-| Property   | Type      | Default | Description                                |
-| ---------- | --------- | ------- | ------------------------------------------ |
-| `id`       | `string`  | auto    | Seçenek için benzersiz tanımlayıcı         |
-| `value`    | `V`       | -       | Bu seçenekle ilişkili değer (zorunlu)      |
-| `label`    | `string`  | -       | Ekran okuyucuları için isteğe bağlı etiket |
-| `disabled` | `boolean` | `false` | Bu seçeneğin devre dışı olup olmadığı      |
-
-#### Sinyaller
-
-| Property   | Type              | Description                       |
-| ---------- | ----------------- | --------------------------------- |
-| `selected` | `Signal<boolean>` | Bu seçeneğin seçili olup olmadığı |
-| `active`   | `Signal<boolean>` | Bu seçeneğin odakta olup olmadığı |
-
-### İlgili Kalıplar
-
-Listbox, şu belgelendirilmiş açılır menü kalıpları tarafından kullanılır:
-
-- **[Select](guide/aria/select)** - Salt okunur combobox + listbox kullanan tek seçimli açılır menü kalıbı
-- **[Multiselect](guide/aria/multiselect)** - Salt okunur combobox + `multi` ile listbox kullanan çoklu seçimli açılır menü kalıbı
-- **[Autocomplete](guide/aria/autocomplete)** - Combobox + listbox kullanan filtrelenebilir açılır menü kalıbı
-
-Tetikleyici, açılır pencere ve katman konumlandırmasıyla eksiksiz açılır menü kalıpları için, listbox'ı tek başına kullanmak yerine bu kalıp rehberlerine bakın.
-
-<docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" title="Listbox ARIA pattern"/>
-  <docs-pill href="/api/aria/listbox/Listbox" title="Listbox API Reference"/>
-</docs-pill-row>
+Tetikleyici, popup ve overlay konumlandırmayı içeren eksiksiz açılır liste desenleri için listbox'ı tek başına kullanmak yerine ilgili desen kılavuzlarına bakın.

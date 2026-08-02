@@ -14,6 +14,8 @@ import type {DisabledReason} from './types';
 /**
  * The base set of properties shared by all form control contracts.
  *
+ * @see [Custom form controls](guide/forms/signals/custom-controls)
+ *
  * @category control
  * @publicApi 22.0
  */
@@ -89,8 +91,7 @@ export interface FormUiControl<TValue> {
    * automatically bind the min length from the bound field to this input.
    */
   readonly minLength?:
-    | InputSignal<number | undefined>
-    | InputSignalWithTransform<number | undefined, unknown>;
+    InputSignal<number | undefined> | InputSignalWithTransform<number | undefined, unknown>;
   /**
    * An input to receive the max value for the field. If implemented, the `Field` directive will
    * automatically bind the max value from the bound field to this input.
@@ -103,15 +104,13 @@ export interface FormUiControl<TValue> {
    * automatically bind the max length from the bound field to this input.
    */
   readonly maxLength?:
-    | InputSignal<number | undefined>
-    | InputSignalWithTransform<number | undefined, unknown>;
+    InputSignal<number | undefined> | InputSignalWithTransform<number | undefined, unknown>;
   /**
    * An input to receive the value patterns for the field. If implemented, the `Field` directive
    * will automatically bind the value patterns from the bound field to this input.
    */
   readonly pattern?:
-    | InputSignal<readonly RegExp[]>
-    | InputSignalWithTransform<readonly RegExp[], unknown>;
+    InputSignal<readonly RegExp[]> | InputSignalWithTransform<readonly RegExp[], unknown>;
   /**
    * An output to emit when the user finishes interacting with the control, marking the field as
    * touched. Emit this in response to the native `blur` event (when focus leaves the control), not
@@ -150,6 +149,8 @@ type FormUiControlImplementsFormFieldBindingOptions = Check<
  *
  * @template TValue The type of `FieldTree` that the implementing component can edit.
  *
+ * @see [Custom form controls](guide/forms/signals/custom-controls)
+ *
  * @category control
  * @publicApi 22.0
  */
@@ -178,6 +179,8 @@ export interface FormValueControl<TValue> extends FormUiControl<TValue> {
  * Many of the properties declared on this contract are optional. They do not need to be
  * implemented, but if they are will be kept in sync with the field state of the field bound to the
  * `Field` directive.
+ *
+ * @see [Custom form controls](guide/forms/signals/custom-controls)
  *
  * @category control
  * @publicApi 22.0

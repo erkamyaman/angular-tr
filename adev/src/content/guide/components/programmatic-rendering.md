@@ -8,7 +8,7 @@ Bir bileşeni programatik olarak render etmenin iki ana yolu vardır: şablonda 
 
 HELPFUL: Tembel yükleme (lazy-loading) kullanım alanları için (örneğin ağır bir bileşenin yüklemesini geciktirmek istiyorsanız), bunun yerine yerleşik [`@defer` özelliğini](/guide/templates/defer) kullanmayı düşünün. `@defer` özelliği, `@defer` bloğu içindeki tüm bileşenlerin, direktiflerin ve pipe'ların kodunun otomatik olarak ayrı JavaScript parçalarına çıkarılmasına ve yalnızca gerektiğinde, yapılandırılan tetikleyicilere göre yüklenmesine olanak tanır.
 
-## NgComponentOutlet kullanımı
+## NgComponentOutlet kullanımı {#using-ngcomponentoutlet}
 
 `NgComponentOutlet`, bir şablonda verilen bileşeni dinamik olarak render eden yapısal bir direktiftir.
 
@@ -174,7 +174,7 @@ NOTE: `componentInstance` özelliği, bileşen render edilmeden önce `null` de�
 
 Direktifin yetenekleri hakkında daha fazla bilgi için [NgComponentOutlet API referansı](api/common/NgComponentOutlet)'na bakın.
 
-## ViewContainerRef kullanımı
+## ViewContainerRef kullanımı {#using-viewcontainerref}
 
 **Görünüm kapsayıcısı** (view container), Angular'ın bileşen ağacında içerik barındırabilecek bir düğümdür. Herhangi bir bileşen veya direktif, o bileşen veya direktifin DOM'daki konumuna karşılık gelen bir görünüm kapsayıcısına referans almak için `ViewContainerRef` enjekte edebilir.
 
@@ -260,13 +260,13 @@ export class AdminSettings {
 
 Yukarıdaki örnek, bir buton tıklaması üzerine `AdvancedSettings` bileşeni yükler ve görüntüler.
 
-## Oluşturma sırasında girdi, çıktı bağlama ve host direktifleri ayarlama
+## Oluşturma sırasında girdi, çıktı bağlama ve host direktifleri ayarlama {#binding-inputs-outputs-and-setting-host-directives-at-creation}
 
 Bileşenleri dinamik olarak oluştururken, girdileri manuel olarak ayarlamak ve çıktılara abone olmak hataya açık olabilir. Bileşen örneklendikten sonra bağlamaları ayarlamak için genellikle ek kod yazmanız gerekir.
 
 Bunu basitleştirmek için, hem `createComponent` hem de `ViewContainerRef.createComponent`, girdileri ve çıktıları önceden yapılandırmak için `inputBinding()`, `outputBinding()` ve `twoWayBinding()` gibi yardımcı fonksiyonlarla birlikte bir `bindings` dizisi iletmeyi destekler. Ayrıca herhangi bir host direktifi uygulamak için bir `directives` dizisi de belirtebilirsiniz. Bu, bileşenleri şablon benzeri bağlamalarla tek bir bildirimsel çağrı ile programatik olarak oluşturmaya olanak tanır.
 
-### `ViewContainerRef.createComponent` ile host görünümü
+### `ViewContainerRef.createComponent` ile host görünümü {#host-view-using-viewcontainerrefcreatecomponent}
 
 `ViewContainerRef.createComponent` bir bileşen oluşturur ve host görünümünü ve host elemanını kapsayıcının görünüm hiyerarşisine, kapsayıcının konumunda otomatik olarak ekler. Dinamik bileşenin kapsayıcının mantıksal ve görsel yapısının bir parçası olması gerektiğinde bunu kullanın (örneğin liste öğeleri veya satır içi UI ekleme).
 
@@ -334,7 +334,7 @@ export class Host {
 
 Yukarıdaki örnekte, dinamik **AppWarning** bileşeni, `canClose` girdisi reaktif bir sinyale bağlı, `isExpanded` durumunda iki yönlü bağlama ve `close` için bir çıktı dinleyicisi ile oluşturulmuştur. `FocusTrap` ve `ThemeDirective`, `directives` aracılığıyla host elemanına eklenmiştir.
 
-### `createComponent` + `hostElement` ile `document.body`'ye eklenmiş popup
+### `createComponent` + `hostElement` ile `document.body`'ye eklenmiş popup {#popup-attached-to-documentbody-with-createcomponent--hostelement}
 
 Mevcut görünüm hiyerarşisinin dışında render etme (örneğin katmanlar) için bunu kullanın. Sağlanan `hostElement` bileşenin DOM'daki host'u olur, dolayısıyla Angular seçiciyle eşleşen yeni bir eleman oluşturmaz. **Bağlamaları** doğrudan yapılandırmanıza olanak tanır.
 

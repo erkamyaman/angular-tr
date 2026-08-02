@@ -211,86 +211,11 @@ describe('MyGridComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Grid
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Satırlar ve hücreler için klavye navigasyonu ve odak yönetimi sağlayan kapsayıcı yönerge.
-
-#### Girdiler
-
-| Property               | Type                                 | Default    | Description                                                                    |
-| ---------------------- | ------------------------------------ | ---------- | ------------------------------------------------------------------------------ |
-| `enableSelection`      | `boolean`                            | `false`    | Grid için seçimin etkin olup olmadığı                                          |
-| `disabled`             | `boolean`                            | `false`    | Tüm gridi devre dışı bırakır                                                   |
-| `softDisabled`         | `boolean`                            | `true`     | `true` olduğunda, devre dışı hücreler odaklanabilir ancak etkileşimli değildir |
-| `focusMode`            | `'roving' \| 'activedescendant'`     | `'roving'` | Grid tarafından kullanılan odak stratejisi                                     |
-| `rowWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Satırlar boyunca navigasyon sarma davranışı                                    |
-| `colWrap`              | `'continuous' \| 'loop' \| 'nowrap'` | `'loop'`   | Sütunlar boyunca navigasyon sarma davranışı                                    |
-| `multi`                | `boolean`                            | `false`    | Birden fazla hücrenin seçilebilip seçilemeyeceği                               |
-| `selectionMode`        | `'follow' \| 'explicit'`             | `'follow'` | Seçimin odağı takip edip etmediği veya açık eylem gerektirip gerektirmediği    |
-| `enableRangeSelection` | `boolean`                            | `false`    | Değiştirici tuşlar veya sürüklemeyle aralık seçimlerini etkinleştirir          |
-
-### GridRow
-
-Bir grid içindeki bir satırı temsil eder ve grid hücreleri için kapsayıcı görevi görür.
-
-#### Girdiler
-
-| Property   | Type     | Default | Description                      |
-| ---------- | -------- | ------- | -------------------------------- |
-| `rowIndex` | `number` | auto    | Bu satırın grid içindeki indeksi |
-
-### GridCell
-
-Bir grid satırındaki bireysel bir hücreyi temsil eder.
-
-#### Girdiler
-
-| Property      | Type                         | Default        | Description                                                 |
-| ------------- | ---------------------------- | -------------- | ----------------------------------------------------------- |
-| `id`          | `string`                     | auto           | Hücre için benzersiz tanımlayıcı                            |
-| `role`        | `string`                     | `'gridcell'`   | Hücre rolü: `gridcell`, `columnheader` veya `rowheader`     |
-| `disabled`    | `boolean`                    | `false`        | Bu hücreyi devre dışı bırakır                               |
-| `selected`    | `boolean`                    | `false`        | Hücrenin seçili olup olmadığı (iki yönlü bağlama destekler) |
-| `selectable`  | `boolean`                    | `true`         | Hücrenin seçilebilir olup olmadığı                          |
-| `rowSpan`     | `number`                     | —              | Hücrenin kapladığı satır sayısı                             |
-| `colSpan`     | `number`                     | —              | Hücrenin kapladığı sütun sayısı                             |
-| `rowIndex`    | `number`                     | —              | Hücrenin satır indeksi                                      |
-| `colIndex`    | `number`                     | —              | Hücrenin sütun indeksi                                      |
-| `orientation` | `'vertical' \| 'horizontal'` | `'horizontal'` | Hücre içindeki widget'lar için yön                          |
-| `wrap`        | `boolean`                    | `true`         | Widget navigasyonunun hücre içinde sarılıp sarılmadığı      |
-
-#### Sinyaller
-
-| Property | Type              | Description                           |
-| -------- | ----------------- | ------------------------------------- |
-| `active` | `Signal<boolean>` | Hücrenin şu anda odakta olup olmadığı |
-
-### GridCellWidget
-
-Grid navigasyonunun duraklatılmasına izin vermek için bir grid hücresi içindeki etkileşimli bir öğeye uygulanır.
-
-#### Girdiler
-
-| Property      | Type                                  | Default    | Description                                                   |
-| ------------- | ------------------------------------- | ---------- | ------------------------------------------------------------- |
-| `id`          | `string`                              | auto       | Widget için benzersiz tanımlayıcı                             |
-| `widgetType`  | `'simple' \| 'complex' \| 'editable'` | `'simple'` | Etkinleştirmenin nasıl davranacağını kontrol eden widget türü |
-| `disabled`    | `boolean`                             | `false`    | Bu hücre widget'ını devre dışı bırakır                        |
-| `focusTarget` | `ElementResolver<HTMLElement>`        | —          | Etkinleştirmede odağı alacak isteğe bağlı öğe referansı       |
-| `tabindex`    | `number`                              | —          | Widget için tabindex geçersiz kılması                         |
-
-#### Çıktılar
-
-| Property      | Type                                                     | Description                                  |
-| ------------- | -------------------------------------------------------- | -------------------------------------------- |
-| `activated`   | `EventEmitter<KeyboardEvent \| FocusEvent \| undefined>` | Hücre widget'ı etkinleştiğinde yayılır       |
-| `deactivated` | `EventEmitter<KeyboardEvent \| FocusEvent \| undefined>` | Hücre widget'ı devre dışı kaldığında yayılır |
-
-#### Yöntemler
-
-| Method       | Parameters | Description                       |
-| ------------ | ---------- | --------------------------------- |
-| `activate`   | none       | Widget'ı zorla etkinleştirir      |
-| `deactivate` | none       | Widget'ı zorla devre dışı bırakır |
+- [`Grid`](/api/aria/grid/Grid)
+- [`GridRow`](/api/aria/grid/GridRow)
+- [`GridCell`](/api/aria/grid/GridCell)
+- [`GridCellWidget`](/api/aria/grid/GridCellWidget)

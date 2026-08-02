@@ -243,7 +243,7 @@ Bu optimizasyonların nihai sonucu, kod bölme sonrasında daha küçük paket b
 Bu optimizasyon, yerel olmayan yan etkiler içeriyorsa kodunuzu bozabilir - ancak bu Angular uygulamalarında yaygın değildir ve genellikle kötü tasarımın bir işaretidir.
 Öneri, tüm paketlerin `sideEffects` özelliğini `false` olarak ayarlayarak yan etkisiz durumunu beyan etmesi ve geliştiricilerin doğal olarak yerel olmayan yan etkileri olmayan kodla sonuçlanan [Angular Style Guide](/style-guide)'ı izlemeleridir.
 
-Daha fazla bilgi: [webpack docs on side effects](https://github.com/webpack/webpack/tree/master/examples/side-effects)
+Daha fazla bilgi: [webpack docs on side effects](https://github.com/webpack/webpack/tree/main/examples/side-effects)
 
 ### ES2022 Dil Düzeyi
 

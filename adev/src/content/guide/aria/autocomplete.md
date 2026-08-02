@@ -216,73 +216,12 @@ describe('MyAutocompleteComponent', () => {
 });
 ```
 
-## APIs
+## API referansı
 
-### Combobox Directive
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-`ngCombobox` yonergesi, klavye tetikleyicilerini ve popover durumlarini yonetmek icin dogrudan duzenlenebilir metin `<input>` veya `<textarea>` uzerine uygulanir.
-
-#### Inputs
-
-| Property           | Type                  | Default     | Description                                                          |
-| ------------------ | --------------------- | ----------- | -------------------------------------------------------------------- |
-| `disabled`         | `boolean`             | `false`     | Combobox'i devre disi birakir                                        |
-| `softDisabled`     | `boolean`             | `true`      | Devre disi birakildiginda odaklanilabilir                            |
-| `inlineSuggestion` | `string \| undefined` | `undefined` | Otomatik tamamlama modlari icin satir ici tamamlama onerisi gosterir |
-
-#### Models
-
-| Property   | Type                   | Default | Description                                                                      |
-| ---------- | ---------------------- | ------- | -------------------------------------------------------------------------------- |
-| `value`    | `ModelSignal<string>`  | `''`    | Girisin `[(value)]` ile iki yonlu baglanabilir degeri                            |
-| `expanded` | `ModelSignal<boolean>` | `false` | Acilir pencerenin `[(expanded)]` ile iki yonlu baglanabilir genisletilmis durumu |
-
----
-
-### ComboboxPopup Directive
-
-Acilir pencere olarak kullanilan kapsayiciyi isaretlemek icin `<ng-template>` uzerine uygulanan yapisal bir yonerge.
-
-#### Inputs
-
-| Property   | Type       | Description                       |
-| ---------- | ---------- | --------------------------------- |
-| `combobox` | `Combobox` | Ust `Combobox`'a zorunlu referans |
-
----
-
-### ComboboxWidget Directive
-
-Etkin alt oge (active-descendant) odak degisikliklerini giris tetikleyicisine kopruleyebilmek icin acilir pencere icerik kapsayicisina uygulanir.
-
-#### Inputs
-
-| Property           | Type                  | Description                                                                   |
-| ------------------ | --------------------- | ----------------------------------------------------------------------------- |
-| `activeDescendant` | `string \| undefined` | Su anda etkin olan alt ogenin ID'si (`listbox.activeDescendant()`'a baglanir) |
-
----
-
-### Listbox Directives
-
-Otomatik tamamlama oneri listeleri, standart bagimsiz (standalone) listbox yonergelerini kullanir.
-
-#### Inputs
-
-| Property        | Type                               | Default    | Description                                                                                      |
-| --------------- | ---------------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| `selectionMode` | `'follow'` \| `'explicit'`         | `'follow'` | Manuel/explicit modda, guncellemeler odagi takip etmek yerine tiklama/Enter ile acikca uygulanir |
-| `focusMode`     | `'roving'` \| `'activedescendant'` | `'roving'` | Tarayici odaginin tetikleyici giriste kalmasi icin `'activedescendant'` olarak ayarlayin         |
-| `tabIndex`      | `number`                           | `0`        | Klavye tab odaginin acilir listbox kapsayicisina girmesini engellemek icin `-1` olarak ayarlayin |
-
-#### Models
-
-| Property | Type                 | Description                                                         |
-| -------- | -------------------- | ------------------------------------------------------------------- |
-| `value`  | `ModelSignal<any[]>` | `[(value)]` kullanilarak iki yonlu baglanabilir secili deger dizisi |
-
----
-
-### Related components
-
-Otomatik tamamlama, standart bagimsiz (standalone) [Listbox](/api/aria/listbox/Listbox) ve [Option](/api/aria/listbox/Option) yonergelerini kullanir. Gelismis secenekler icin [Listbox dokumantasyonuna](/guide/aria/listbox) bakin.
+- [`Combobox`](/api/aria/combobox/Combobox)
+- [`ComboboxPopup`](/api/aria/combobox/ComboboxPopup)
+- [`ComboboxWidget`](/api/aria/combobox/ComboboxWidget)
+- [`Listbox`](/api/aria/listbox/Listbox)
+- [`Option`](/api/aria/listbox/Option)

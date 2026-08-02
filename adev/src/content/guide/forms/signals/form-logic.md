@@ -30,7 +30,7 @@ NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`) formunuzda
 
 `FieldContext` özellikleri ve yöntemleri hakkında tam ayrıntılar için [Doğrulama kılavuzuna](guide/forms/signals/validation) bakın.
 
-## `disabled()` ile alan güncellemelerini engelleme
+## `disabled()` ile alan güncellemelerini engelleme {#prevent-field-updates-with-disabled}
 
 `disabled()` kuralı bir alanın devre dışı durumunu yapılandırır.
 
@@ -105,7 +105,7 @@ export class Order {
 
 Bu örnekte, sipariş toplamı 50$'dan az olduğunda kupon kodu alanı devre dışı bırakılır.
 
-### Devre dışı bırakma nedenleri
+### Devre dışı bırakma nedenleri {#disabled-reasons}
 
 Bir alanı devre dışı bıraktığınızda, `true` yerine bir dize döndürerek kullanıcıya yönelik açıklamalar sağlayın:
 
@@ -176,7 +176,7 @@ orderForm = form(this.orderModel, (schemaPath) => {
 
 Her iki koşul da doğruysa, alan her iki devre dışı nedenini gösterir. Bu kalıp, ayrı tutmak istediğiniz karmaşık kullanılabilirlik kuralları için yararlıdır.
 
-## Alanlarda `hidden()` durumunu yapılandırma
+## Alanlarda `hidden()` durumunu yapılandırma {#configuring-hidden-state-on-fields}
 
 `hidden()` kuralı bir alanın gizli durumunu yapılandırır. Ancak bu yalnızca programatik bir durum ayarlar. **Alanın kullanıcı arayüzünde görünüp görünmeyeceğini siz kontrol edersiniz**.
 
@@ -221,7 +221,46 @@ export class Profile {
 }
 ```
 
-## `readonly()` ile düzenlenemez alanları görüntüleme
+### Her zaman gizli
+
+Bir alanı kalıcı olarak gizli yapmak için `hidden()`'ı yalnızca alan yoluyla çağırın:
+
+```angular-ts
+import {Component, signal} from '@angular/core';
+import {form, FormField, hidden} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-profile',
+  imports: [FormField],
+  template: `
+    <label>
+      <input type="checkbox" [formField]="profileForm.isPublic" />
+      Make profile public
+    </label>
+
+    <!-- publicUrl kalıcı olarak gizli, bu yüzden bu blok hiç render edilmez -->
+    @if (!profileForm.publicUrl().hidden()) {
+      <label>
+        Public URL
+        <input [formField]="profileForm.publicUrl" />
+      </label>
+    }
+  `,
+})
+export class Profile {
+  profileModel = signal({
+    isPublic: false,
+    publicUrl: '',
+  });
+
+  profileForm = form(this.profileModel, (schemaPath) => {
+    // Bu alan artık kalıcı olarak gizli ve aktif doğrulamanın dışında
+    hidden(schemaPath.publicUrl);
+  });
+}
+```
+
+## `readonly()` ile düzenlenemez alanları görüntüleme {#display-uneditable-fields-with-readonly}
 
 `readonly()` kuralı kullanıcıların bir alanı güncellemesini engeller. `[FormField]` direktifi, bu durumu HTML `readonly` niteliğine otomatik olarak bağlar ve bu, düzenlemeyi engellerken kullanıcıların odaklanmasına ve metin seçmesine izin verir.
 
@@ -333,7 +372,7 @@ Alan şu durumlarda `readonly()` seçin:
 | Kullanıcılar odaklanabilir/seçebilir | Hayır      | Hayır        | Evet         |
 | HTML form gönderime dahil            | Hayır      | Hayır        | Evet         |
 
-## `debounce()` ile girdi işlemlerini geciktirme
+## `debounce()` ile girdi işlemlerini geciktirme {#delay-input-operations-with-debounce}
 
 `debounce()` kuralı form modelinin güncellenmesini geciktirir. Bu, performans optimizasyonu ve hızlı girdi sırasında gereksiz işlemleri azaltmak için kullanışlıdır.
 

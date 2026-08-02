@@ -328,9 +328,7 @@ const serverConfig: ApplicationConfig = {
 Servisi bileşenlerinize enjekte edin ve kullanın:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class Checkout {
   private analytics = inject(AnalyticsService);
 
@@ -427,6 +425,32 @@ Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncell
 
 `HttpClient`, sunucuda çalışırken giden ağ isteklerini önbelleğe alır. Bu bilgi serileştirilir ve sunucudan gönderilen ilk HTML'in bir parçası olarak tarayıcıya aktarılır. Tarayıcıda, `HttpClient` önbellekte veri olup olmadığını kontrol eder ve varsa, ilk uygulama render'ı sırasında yeni bir HTTP isteği yapmak yerine onu yeniden kullanır. `HttpClient`, bir uygulama tarayıcıda çalışırken [kararlı](api/core/ApplicationRef#isStable) hale geldikten sonra önbelleği kullanmayı bırakır.
 
+### Yanıt gövdesi boyutu sınırını yapılandırma
+
+Sunucu tarafı render sırasında `HttpClient` varsayılan fetch arka ucunu kullandığında, Angular her yanıt gövdesini 1 MB ile sınırlar. Bu sınır, render sırasında sunucunun beklenmedik şekilde büyük yanıtları arabelleğe almasını önler. Bir yanıt yapılandırılan sınırı aşarsa istek [NG02825](errors/NG02825) hatasıyla başarısız olur.
+
+Uygulamanızın sunucu render'ı sırasında daha büyük yanıtlar alması gerekiyorsa, `provideServerRendering` seçeneklerinde `maxResponseBodySize` değerini ayarlayın:
+
+```ts
+import {provideServerRendering, withRoutes} from '@angular/ssr';
+import {serverRoutes} from './app.routes.server';
+
+const serverConfig: ApplicationConfig = {
+  providers: [
+    provideServerRendering(
+      {
+        maxResponseBodySize: 5 * 1024 * 1024, // 5MB
+      },
+      withRoutes(serverRoutes),
+    ),
+  ],
+};
+```
+
+`maxResponseBodySize` bayt cinsinden yapılandırılır ve fetch arka ucunu kullanan sunucu tarafı `HttpClient` isteklerine global olarak uygulanır.
+
+IMPORTANT: Bu sınırı uygulamanızın izin verdiği kadar küçük tutun. Sınırı artırmak sunucu tarafı isteklerin daha büyük yanıt gövdelerini arabelleğe almasına izin verir; bu da bellek kullanımını ve hizmet reddi riskini artırabilir. Büyük indirmeleri sunucu render'ının dışına taşımayı tercih edin.
+
 ### Configuring the caching options
 
 Angular'ın sunucu tarafı render (SSR) sırasında HTTP yanıtlarını nasıl önbelleğe aldığını ve hidrasyon sırasında yeniden kullandığını `HttpTransferCacheOptions` yapılandırarak özelleştirebilirsiniz.
@@ -452,8 +476,6 @@ bootstrapApplication(App, {
 });
 ```
 
----
-
 ### `includeHeaders`
 
 Sunucu yanıtından hangi başlıkların önbelleğe alınan girişlere dahil edilmesi gerektiğini belirtir.
@@ -469,8 +491,6 @@ IMPORTANT: Kimlik doğrulama token'ları gibi hassas başlıkları dahil etmekte
 
 `includeHeaders` içine `Cache-Control` eklemek yalnızca o başlığı hidrasyonu yapılmış yanıtta erişilebilir kılar. Angular, bir istek veya yanıtın transfer önbelleğine uygun olup olmadığına karar verirken `Cache-Control` başlıklarını zaten otomatik olarak değerlendirir.
 
----
-
 ### `includePostRequests`
 
 Varsayılan olarak, yalnızca `GET` ve `HEAD` istekleri önbelleğe alınır.
@@ -484,12 +504,10 @@ withHttpTransferCacheOptions({
 
 Bunu yalnızca `POST` istekleri **idempotent** olduğunda ve sunucu ile istemci render'ları arasında yeniden kullanılması güvenli olduğunda kullanın.
 
----
-
 ### `includeRequestsWithAuthHeaders`
 
 `Authorization`, `Proxy‑Authorization` veya `Cookie` başlıkları içeren isteklerin önbelleğe alma için uygun olup olmadığını belirler.
-Varsayılan olarak, kullanıcıya özgü yanıtların önbelleğe alınmasını önlemek için bunlar hariç tutulur. `withCredentials` ile ya da Fetch API `credentials` değeri `include` veya `same-origin` olarak ayarlanmış şekilde gönderilen istekler de varsayılan olarak hariç tutulur.
+Varsayılan olarak, kullanıcıya özgü yanıtların önbelleğe alınmasını önlemek için bunlar hariç tutulur.
 
 ```ts
 withHttpTransferCacheOptions({
@@ -498,6 +516,32 @@ withHttpTransferCacheOptions({
 ```
 
 Bunu yalnızca kimlik doğrulama başlıkları yanıt içeriğini **etkilemediğinde** (örneğin, analitik API'leri için genel token'lar) etkinleştirin.
+
+### `includeRequestsWithCredentials`
+
+`withCredentials` ile veya Fetch API `credentials` modlarıyla (`include` ya da `same-origin`) gönderilen isteklerin önbelleğe alınmaya uygun olup olmadığını belirler.  
+Varsayılan olarak, kullanıcıya özgü yanıtların önbelleğe alınmasını önlemek için bunlar hariç tutulur.
+
+```ts
+withHttpTransferCacheOptions({
+  includeRequestsWithCredentials: true,
+});
+```
+
+Yalnızca kimlik bilgisi içeren isteklerin önbelleğe alınması güvenli yanıtlar döndürdüğünde etkinleştirin.
+
+### `includeNonCacheableRequests`
+
+Önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içeren istek ve yanıtların, `Set-Cookie` başlığı taşıyan yanıtların ya da Fetch API `cache` seçeneklerini (`no-store` veya `no-cache`) kullanan isteklerin önbelleğe alınmaya uygun olup olmadığını belirler.  
+Varsayılan olarak, HTTP önbellekleme kontrollerine saygı göstermek için bunlar hariç tutulur.
+
+```ts
+withHttpTransferCacheOptions({
+  includeNonCacheableRequests: true,
+});
+```
+
+Yalnızca transfer önbelleği için cache-control kısıtlamalarını atlamanız gerektiğinde etkinleştirin.
 
 ### Per‑request overrides
 

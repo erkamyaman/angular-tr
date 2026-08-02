@@ -154,3 +154,35 @@ Birkaç teknik dikkat çekicidir:
   Varsayılan renk testi, `Highlight` örneğini ve `defaultColor` değerini almak için ikinci `<h2>`'nin enjektörünü kullanır.
 
 - `DebugElement.properties`, yönerge tarafından ayarlanan yapay özel özelliğe erişim sağlar
+
+## Bir direktifi izole olarak test etme
+
+Bir direktif TestBed aracılığıyla oluşturulamaz; doğru davranması için bir bileşenin şablonu üzerinden render edilmesi gerekir.
+`Highlight` direktifi, direktifi kontrol etmek için yerel bir test bileşeninin girdisi kullanılarak bu şekilde test edilebilir.
+
+```ts
+@Component({
+  imports: [Highlight],
+  template: `<p [highlight]="color()">{{ color() }}</p>`,
+})
+class Test {
+  readonly color = input('');
+}
+
+describe('Highlight', () => {
+  let fixture: ComponentFixture<Test>;
+
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(Test);
+    await fixture.whenStable();
+  });
+
+  it('should use the specified color once an input is provided', async () => {
+    fixture.componentRef.setInput('color', 'blue');
+    await fixture.whenStable();
+
+    const p = fixture.nativeElement.querySelector('p');
+    expect(p.style.backgroundColor).toBe('blue');
+  });
+});
+```

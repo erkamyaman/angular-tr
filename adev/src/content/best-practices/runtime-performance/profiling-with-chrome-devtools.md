@@ -19,7 +19,7 @@ Kodunuzun tarayıcıda nasıl çalıştığını daha iyi anlamak için Angular 
 - Performans darboğazlarını belirleme ve bunları belirli bileşenlere veya servislere atama.
 - Her değişiklik algılama döngüsünün görsel bir dökümüyle Angular'ın iç çalışmaları hakkında daha derin içgörü kazanma.
 
-## Profil kaydetme
+## Profil kaydetme {#recording-a-profile}
 
 ### Entegrasyonu etkinleştirme
 
@@ -50,6 +50,18 @@ Chrome DevTools performans panelindeki **Record** düğmesini kullanın:
 <img alt="Recording a profile" src="assets/images/best-practices/runtime-performance/recording-profile-in-chrome.png">
 
 Profil kaydetme hakkında daha fazla ayrıntı için [Chrome DevTools belgeleri](https://developer.chrome.com/docs/devtools/performance#record)'ne bakın.
+
+## Angular DevTools'ta bir bileşen açma
+
+Bir profil kaydettikten sonra **Angular** izinde bir bileşen olayı seçin.
+**Summary** sekmesi, `angular-devtools://component/...` URL şemasını kullanan bir **Component** bağlantısı içerebilir.
+
+<img alt="Chrome DevTools Performance panel showing an Angular custom track with a selected _MainComponent event. The Summary tab displays a Component link that uses the angular-devtools://component URL scheme." src="assets/images/best-practices/runtime-performance/chrome-performance-deep-link.png">
+
+Angular DevTools'u açmak ve **Components** sekmesinde eşleşen bileşeni seçmek için bağlantıya tıklayın.
+Bu, tarayıcı düzeyindeki bir profilden seçilen bir olayın bileşen durumuna ve meta verilerine geçmenize yardımcı olur.
+
+NOTE: Bileşen bağlantılarını açmak için Chrome'a yönelik Angular DevTools ve Chrome'un deneysel `chrome://flags/#enable-devtools-deep-link-via-extensibility-api` bayrağı gerekir.
 
 ## Kaydedilmiş bir profili yorumlama
 

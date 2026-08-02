@@ -1,6 +1,9 @@
 # Tebrikler!
 
-Signal Forms öğreticisini tamamladınız ve sıfırdan eksiksiz bir giriş formu oluşturdunuz!
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/superhero.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Başardınız! Signal Forms öğreticisini tamamladınız ve sıfırdan bir giriş formu oluşturdunuz.</p>
+</div>
 
 ## Neler öğrendiniz
 

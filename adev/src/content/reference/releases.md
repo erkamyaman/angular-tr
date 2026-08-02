@@ -60,11 +60,13 @@ HELPFUL: Tarihler genel yönlendirme olarak sunulmuştur ve değişikliğe tabid
 
 Genel olarak, aşağıdaki yayın döngüsünü bekleyin:
 
-- Her 6 ayda bir ana sürüm
-- Her ana sürüm için 1-3 alt sürüm
+- Her 12 ayda bir ana sürüm
+- Her ana sürüm için 4-6 alt sürüm
 - Neredeyse her hafta bir yama sürümü ve ön sürüm \(`next` veya `rc`\) derlemesi
 
 Bu yayın kadansı, hevesli geliştiricilere yeni özellikler tamamen geliştirildikten ve kod inceleme ve entegrasyon test süreçlerimizden geçtikten sonra en kısa sürede erişim sağlarken, ön sürüm derlemelerini kullanan Google ve diğer geliştiriciler tarafından doğrulandıktan sonra özellikleri almayı tercih eden üretim kullanıcıları için platformun kararlılığını ve güvenilirliğini korur.
+
+HELPFUL: Angular v22'ye kadar Angular'ın 6 aylık bir ana sürüm döngüsü vardı ve her ana sürüm için 1-3 alt sürüm çıkıyordu
 
 ## Destek politikası ve takvimi
 
@@ -72,32 +74,33 @@ HELPFUL: Yaklaşık tarihler genel yönlendirme olarak sunulmuştur ve değişik
 
 ### Yayın takvimi
 
-Yaklaşan sürümlerin yayın takvimi yakında duyurulacak.
-
-<!-- | Sürüm | Tarih              |
+| Sürüm | Tarih              |
 | :---- | :----------------- |
-| v21.1 | 2026-01-12 haftası |
-| v21.2 | 2026-02-23 haftası |
-| v22.0 | 2026-06-01 haftası | -->
+| v22.1 | 2026-07-27 haftası |
+| v22.2 | ~ Eylül 2026       |
+| v22.3 | ~ Kasım 2026       |
+| v22.4 | ~ Ocak 2027        |
+| v22.5 | ~ Mart 2027        |
+| v23.0 | ~ Haziran 2027     |
 
 ### Destek penceresi
 
-Tüm ana sürümler tipik olarak 18 ay desteklenir.
+Tüm ana sürümler tipik olarak 24 ay desteklenir.
 
 | Destek aşaması      | Destek zamanlaması | Ayrıntılar                                                                       |
 | :------------------ | :----------------- | :------------------------------------------------------------------------------- |
-| Aktif               | 6 ay               | Düzenli olarak planlanmış güncellemeler ve yamalar yayınlanır                    |
+| Aktif               | 12 ay              | Düzenli olarak planlanmış güncellemeler ve yamalar yayınlanır                    |
 | Uzun vadeli \(LTS\) | 12 ay              | Yalnızca [kritik düzeltmeler ve güvenlik yamaları](#lts-düzeltmeleri) yayınlanır |
 
 ### Aktif olarak desteklenen sürümler
 
 Aşağıdaki tablo, destek altındaki Angular sürümlerinin durumunu gösterir.
 
-| Sürüm   | Durum | Yayınlandı | Aktif bitiş            | LTS bitiş              |
-| :------ | :---- | :--------- | :--------------------- | :--------------------- |
-| ^22.0.0 | Aktif | 2026-06-03 | Daha sonra duyurulacak | Daha sonra duyurulacak |
-| ^21.0.0 | LTS   | 2025-11-19 | 2026-06-03             | Daha sonra duyurulacak |
-| ^20.0.0 | LTS   | 2025-05-28 | 2025-11-19             | 2026-11-28             |
+| Sürüm   | Durum | Yayınlandı | Aktif bitiş | LTS bitiş  |
+| :------ | :---- | :--------- | :---------- | :--------- |
+| ^22.0.0 | Aktif | 2026-06-03 | 2027-06     | 2028-06    |
+| ^21.0.0 | LTS   | 2025-11-19 | 2026-06-03  | 2027-06    |
+| ^20.0.0 | LTS   | 2025-05-28 | 2025-11-19  | 2026-11-28 |
 
 Angular v2'den v19'a kadar olan sürümler artık desteklenmemektedir.
 
@@ -110,14 +113,14 @@ Genel bir kural olarak, bir düzeltme aşağıdakilerden birini çözüyorsa LTS
 
 ## Kullanımdan kaldırma politikası
 
-Angular ekibi bir API'yi veya özelliği kaldırmayı planladığında, _kullanımdan kaldırılmış_ olarak işaretlenir. Bu, bir API eskimiş olduğunda, başka bir API ile değiştirildiğinde veya başka bir şekilde durdurulduğunda gerçekleşir. Kullanımdan kaldırılmış API'ler, en az iki ana sürüm (yaklaşık bir yıl) süren kullanımdan kaldırılma aşamaları boyunca kullanılabilir olmaya devam eder.
+Angular ekibi bir API'yi veya özelliği kaldırmayı planladığında, _kullanımdan kaldırılmış_ olarak işaretlenir. Bu, bir API eskimiş olduğunda, başka bir API ile değiştirildiğinde veya başka bir şekilde durdurulduğunda gerçekleşir. Kullanımdan kaldırılmış API'ler, en az bir ana sürüm (yaklaşık bir yıl) süren kullanımdan kaldırılma aşamaları boyunca kullanılabilir olmaya devam eder.
 
 Güncelleme için yeterli zamanınız ve net bir yolunuz olmasını sağlamaya yardımcı olmak için kullanımdan kaldırma politikamız şudur:
 
 | Kullanımdan kaldırma aşamaları | Ayrıntılar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | :----------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Duyuru                         | Kullanımdan kaldırılan API'leri ve özellikleri [değişiklik günlüğünde](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log') duyuruyoruz. Kullanımdan kaldırılan API'ler [dokümantasyonda](api?status=8) ~~üstü çizili~~ olarak görünür. Bir kullanımdan kaldırma duyurusu yaptığımızda, önerilen bir güncelleme yolu da duyururuz. Ek olarak, tüm kullanımdan kaldırılan API'ler ilgili dokümantasyonda `@deprecated` ile açıklanır; bu, projeniz bunlara bağlıysa metin editörlerinin ve IDE'lerin ipuçları sağlamasını mümkün kılar. |
-| Kullanımdan kaldırma dönemi    | Bir API veya özellik kullanımdan kaldırıldığında, en az sonraki iki ana sürümde (en az 12 aylık dönem) hala mevcuttur. Bundan sonra, kullanımdan kaldırılan API'ler ve özellikler kaldırma adayıdır. Bir kullanımdan kaldırma herhangi bir sürümde duyurulabilir, ancak kullanımdan kaldırılan bir API veya özelliğin kaldırılması yalnızca ana sürümde gerçekleşir. Kullanımdan kaldırılan bir API veya özellik kaldırılana kadar, LTS destek politikasına göre sürdürülür, yani yalnızca kritik ve güvenlik sorunları düzeltilir.                               |
+| Kullanımdan kaldırma dönemi    | Bir API veya özellik kullanımdan kaldırıldığında, en az sonraki ana sürümde (en az 12 aylık dönem) hala mevcuttur. Bundan sonra, kullanımdan kaldırılan API'ler ve özellikler kaldırma adayıdır. Bir kullanımdan kaldırma herhangi bir sürümde duyurulabilir, ancak kullanımdan kaldırılan bir API veya özelliğin kaldırılması yalnızca ana sürümde gerçekleşir. Kullanımdan kaldırılan bir API veya özellik kaldırılana kadar, LTS destek politikasına göre sürdürülür, yani yalnızca kritik ve güvenlik sorunları düzeltilir.                                   |
 | npm bağımlılıkları             | Uygulamalarınızda değişiklik gerektiren npm bağımlılık güncellemelerini yalnızca ana sürümde yaparız. Alt sürümlerde, desteklenen sürümleri genişleterek eş bağımlılıkları güncelleriz, ancak projelerin bu bağımlılıkları gelecekteki bir ana sürüme kadar güncellemesini gerektirmeyiz. Bu, alt Angular sürümleri sırasında Angular uygulamaları ve kütüphaneleri içindeki npm bağımlılık güncellemelerinin isteğe bağlı olduğu anlamına gelir.                                                                                                                 |
 
 ## Uyumluluk politikası

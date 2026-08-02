@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 export function FancyButton() {}
 
-// @angular/core does not expose the `ForeignComponent` type this should return. 
+// @angular/core does not expose the `ForeignComponent` type this should return.
 function frameworkImport(component: {}): Function {
   return () => {};
 }
@@ -10,17 +10,12 @@ function frameworkImport(component: {}): Function {
 @Component({
   selector: 'main',
   template: `
-    <FancyButton
-      class="btn-cls"
-      unsafe-attr="value"
-      [label]="title"
-      [unsafe-input]="title"
-    />
+    <FancyButton class="btn-cls" unsafe-attr="value" [label]="title" [unsafe-input]="title" />
   `,
   // @ts-ignore: @angular/core does not expose the `foreignImports` property.
   foreignImports: [
     // @ts-ignore: @angular/core does not expose the `ForeignComponent` type this expects.
-    frameworkImport(FancyButton)
+    frameworkImport(FancyButton),
   ],
 })
 export class TestCmp {
@@ -31,10 +26,10 @@ export class TestCmp {
   selector: 'main-children',
   template: `
     <FancyButton [label]="title">
-      @content(icon) {
+      @content (icon) {
         <span>Icon!</span>
       }
-      @content(description) {
+      @content (description) {
         <span>Description text</span>
       }
       <span>Other children</span>
@@ -43,7 +38,7 @@ export class TestCmp {
   // @ts-ignore: @angular/core does not expose the `foreignImports` property.
   foreignImports: [
     // @ts-ignore: @angular/core does not expose the `ForeignComponent` type this expects.
-    frameworkImport(FancyButton)
+    frameworkImport(FancyButton),
   ],
 })
 export class TestCmpChildren {
@@ -54,7 +49,7 @@ export class TestCmpChildren {
   selector: 'main-render-props',
   template: `
     <FancyButton [label]="title">
-      @content(items; let item, index) {
+      @content (items; let item, index) {
         <span>#{{index}}: {{item}}</span>
       }
     </FancyButton>
@@ -62,10 +57,31 @@ export class TestCmpChildren {
   // @ts-ignore: @angular/core does not expose the `foreignImports` property.
   foreignImports: [
     // @ts-ignore: @angular/core does not expose the `ForeignComponent` type this expects.
-    frameworkImport(FancyButton)
+    frameworkImport(FancyButton),
   ],
 })
 export class TestCmpRenderProps {
   title = 'Submit';
 }
 
+// Nest @if to demonstrate that multiple `nextContext()` calls are correctly merged into one.
+@Component({
+  selector: 'main-conditional',
+  template: `
+    @if (outerCondition) {
+      @if (innerCondition) {
+        <FancyButton [label]="title" />
+      }
+    }
+  `,
+  // @ts-ignore: @angular/core does not expose the `foreignImports` property.
+  foreignImports: [
+    // @ts-ignore: @angular/core does not expose the `ForeignComponent` type this expects.
+    frameworkImport(FancyButton),
+  ],
+})
+export class TestCmpConditional {
+  title = 'Submit';
+  innerCondition = true;
+  outerCondition = true;
+}

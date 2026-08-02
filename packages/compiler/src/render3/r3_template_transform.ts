@@ -217,9 +217,7 @@ class HtmlAstToIvyAst implements html.Visitor {
         attrs.bound,
         boundEvents,
         directives,
-        [
-          /* no template attributes */
-        ],
+        [/* no template attributes */],
         children,
         references,
         variables,
@@ -355,7 +353,7 @@ class HtmlAstToIvyAst implements html.Visitor {
     return null;
   }
 
-  visitAttributeComment(comment: html.StartTagComment): null {
+  visitStartTagComment(comment: html.StartTagComment): null {
     if (this.options.collectCommentNodes) {
       this.commentNodes.push(new t.Comment(comment.value || '', comment.sourceSpan));
     }

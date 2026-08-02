@@ -44,7 +44,7 @@ Angular bileşeni işlerken, uygun tarih formatı ve para biriminin kullanıcın
 
 Angular'ın değerleri nasıl yerelleştirdiği hakkında daha fazla bilgi edinmek için [i18n derinlemesine rehberine](/guide/i18n) bakın.
 
-### Yerleşik Pipe'lar
+### Yerleşik Pipe'lar {#built-in-pipes}
 
 Angular, `@angular/common` paketinde bir dizi yerleşik pipe içerir:
 
@@ -289,3 +289,95 @@ export class JoinNamesImpurePipe implements PipeTransform {
 ```
 
 Angular geliştiricileri, diğer geliştiricilere olası performans tuzağını belirtmek için genellikle pipe `name`'ine ve sınıf adına `Impure` ekleme kuralını benimser.
+
+## Pipe mantığını şablonların dışında kullanma
+
+Pipe'lar, şablonlarda veriyi bildirimsel olarak dönüştürmek için tasarlanmış şablon operatörleridir. Aynı dönüşüm mantığına bir servis, bir yardımcı sınıf veya şablon dışındaki başka bir bağlamda ihtiyaç duyduğunuzda **pipe sınıfını enjekte etmekten kaçının**. Pipe'lar enjekte edilebilir servis olarak tasarlanmamıştır.
+
+### Özel pipe'lardan mantığı ayırın
+
+Özel bir pipe oluşturduğunuzda, dönüşümü bağımsız bir fonksiyona çıkarın. Pipe'ın `transform()` metodu bu fonksiyona devretsin ve fonksiyonu ihtiyaç duyduğunuz her yerde doğrudan içe aktarın.
+
+```ts {header: "kebab-case.ts"}
+export function toKebabCase(value: string): string {
+  return value.toLowerCase().replace(/ /g, '-');
+}
+```
+
+```ts {header: "kebab-case.pipe.ts" , prefer}
+import {Pipe, PipeTransform} from '@angular/core';
+import {toKebabCase} from './kebab-case';
+
+@Pipe({name: 'kebabCase'})
+export class KebabCasePipe implements PipeTransform {
+  transform(value: string): string {
+    return toKebabCase(value);
+  }
+}
+```
+
+```ts {header: "formatter.service.ts" , prefer}
+import {Service} from '@angular/core';
+import {toKebabCase} from './kebab-case';
+
+@Service()
+export class FormatterService {
+  formatSlug(title: string): string {
+    return toKebabCase(title);
+  }
+}
+```
+
+```ts {header: "formatter.service.ts" , avoid}
+import {Service} from '@angular/core';
+import {KebabCasePipe} from './kebab-case.pipe';
+
+@Service()
+export class FormatterService {
+  // Pipe sınıfını servislere veya diğer sınıflara enjekte etmekten kaçının.
+  private kebabCasePipe = inject(KebabCasePipe);
+
+  formatSlug(title: string): string {
+    return this.kebabCasePipe.transform(title);
+  }
+}
+```
+
+### Yerleşik pipe'lar için biçimlendirme fonksiyonlarını kullanın
+
+Angular'ın yerel ayara duyarlı yerleşik pipe'larının her birinin `@angular/common` üzerinden dışa aktarılan karşılık gelen bağımsız bir biçimlendirme fonksiyonu vardır. Pipe sınıfını enjekte etmek yerine bu fonksiyonları kullanın.
+
+| Pipe           | Bağımsız fonksiyon |
+| -------------- | ------------------ |
+| `DatePipe`     | `formatDate`       |
+| `CurrencyPipe` | `formatCurrency`   |
+| `DecimalPipe`  | `formatNumber`     |
+| `PercentPipe`  | `formatPercent`    |
+
+```ts {prefer}
+import {Service, LOCALE_ID, inject} from '@angular/core';
+import {formatNumber} from '@angular/common';
+
+@Service()
+export class PriceService {
+  private locale = inject(LOCALE_ID);
+
+  format(value: number) {
+    return formatNumber(value, this.locale, '1.2-2');
+  }
+}
+```
+
+```ts {avoid}
+import {Service} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
+
+@Service()
+export class PriceService {
+  private decimalPipe = inject(DecimalPipe);
+
+  format(value: number) {
+    return this.decimalPipe.transform(value, '1.2-2');
+  }
+}
+```

@@ -143,7 +143,7 @@ Bileşenlerinizin ve direktiflerinizin içindeki kod genellikle sayfada gösteri
 Angular şablonları, [JavaScript benzeri ifadeleri](guide/templates/expression-syntax) barındırmak üzere tasarlanmıştır.
 Nispeten basit mantığı doğrudan şablon ifadelerinde yakalamak için bu ifadelerden yararlanmalısınız.
 
-Şablondaki kod çok karmaşık hale geldiğinde, mantığı TypeScript koduna yeniden düzenleyin (tipik olarak bir [computed](guide/signals#computed-sinyaller) ile).
+Şablondaki kod çok karmaşık hale geldiğinde, mantığı TypeScript koduna yeniden düzenleyin (tipik olarak bir [computed](guide/signals#computed-signals) ile).
 
 "Karmaşık"ın ne olduğunu belirleyen kesin ve değişmez bir kural yoktur. En iyi yargınızı kullanın.
 
@@ -171,9 +171,7 @@ Angular tarafından başlatılan bileşen ve direktif özelliklerini `readonly` 
 `input`, `model`, `output` ve sorgular tarafından başlatılan özellikleri içerir. readonly erişim değiştiricisi, Angular tarafından ayarlanan değerin üzerine yazılmamasını sağlar.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UserProfile {
   readonly userId = input();
   readonly userSaved = output();
@@ -185,9 +183,7 @@ Dekoratör tabanlı `@Input`, `@Output` ve sorgu API'lerini kullanan bileşenler
 tavsiye çıkış özelliklerine ve sorgulara uygulanır, ancak giriş özelliklerine uygulanmaz.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UserProfile {
   @Output() readonly userSaved = new EventEmitter<void>();
   @ViewChildren(PaymentMethod) readonly paymentMethods?: QueryList<PaymentMethod>;
@@ -219,7 +215,7 @@ Hem `class` hem de `style` bağlamaları, standart HTML özelliklerine yakından
 
 Ek olarak, `NgClass` ve `NgStyle` direktifleri, yerleşik `class` ve `style` bağlama sözdizimine kıyasla ek bir performans maliyeti getirir.
 
-Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) bakın.
+Daha fazla ayrıntı için [bağlamalar kılavuzuna](/guide/templates/binding#css-class-and-style-property-bindings) bakın.
 
 ### Olay işleyicilerini tetikleyen olay için değil, yaptıkları eylem için adlandırın
 
@@ -244,9 +240,7 @@ Klavye olayları için, belirli işleyici adlarıyla Angular'ın tuş olayı de�
 Bazen olay işleme mantığı özellikle uzun veya karmaşıktır, bu da tek bir iyi adlandırılmış işleyici bildirmeyi pratik olmaktan çıkarır. Bu durumlarda, 'handleKeydown' gibi bir ada geri dönmek ve ardından olay ayrıntılarına göre daha belirli davranışlara devretmek sorun değildir:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 class RichText {
   handleKeydown(event: KeyboardEvent) {
     if (event.ctrlKey) {
@@ -288,9 +282,7 @@ Angular, her yaşam döngüsü yöntemi için bir TypeScript arayüzü sağlar. 
 ```ts
 import {Component, OnInit} from '@angular/core';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UserProfile implements OnInit {
   // The `OnInit` interface ensures this method is named correctly.
   ngOnInit() {

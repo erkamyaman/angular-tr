@@ -47,4 +47,4 @@ Sonra, `div`'in `contentEditable` niteliğini `isEditable` özelliğine <code ar
 
 Div artık düzenlenebilir durumda. Harika is!
 
-Özellik bağlama, Angular'ın birçok güçlü özelliğinden biridir. Daha fazla bilgi edinmek isterseniz [Angular belgelerine](guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) göz atın.
+Özellik bağlama, Angular'ın birçok güçlü özelliğinden biridir. Daha fazla bilgi edinmek isterseniz [Angular belgelerine](guide/templates/binding#css-class-and-style-property-bindings) göz atın.

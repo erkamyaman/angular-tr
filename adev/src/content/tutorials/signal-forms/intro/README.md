@@ -1,5 +1,10 @@
 # Angular Sinyal Formlarını Öğrenin
 
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/greeting.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Hoş geldiniz! Hadi sinyallerle form oluşturalım.</p>
+</div>
+
 Bu etkileşimli öğretici, Angular'ın Signal Forms API'sini kullanarak reaktif formlar oluşturmayı size öğretecektir.
 
 ## Bu eğitimi nasıl kullanabilirsiniz

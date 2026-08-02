@@ -86,7 +86,7 @@ Bu şu anlama gelir:
 1. Yalnızca `/news` yolu `/blog`'a yönlendirilir.
 2. `/news/articles` veya `/news/articles/1` gibi sonraki segmentler yeni `/blog` ön ekiyle yönlendirilmez.
 
-## Koşullu redirect'ler
+## Koşullu redirect'ler {#conditional-redirects}
 
 `redirectTo` özelliği, kullanıcıların nasıl yönlendirildiğine mantık eklemek için bir fonksiyon da kabul edebilir.
 

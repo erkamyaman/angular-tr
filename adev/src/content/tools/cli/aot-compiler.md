@@ -91,7 +91,7 @@ Aynı zamanda, AOT **toplayıcısı** Angular dekoratörlerinde kaydedilen meta 
 
 `.metadata.json`'ı, bir dekoratörün meta verisinin genel yapısının bir diyagramı olarak düşünebilirsiniz; [soyut sözdizim ağacı (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) olarak temsil edilir.
 
-HELPFUL: Angular'ın [schema.ts](https://github.com/angular/angular/blob/main/packages/compiler-cli/src/metadata/schema.ts) dosyası, JSON formatını TypeScript arayüzleri koleksiyonu olarak tanımlar.
+HELPFUL: Angular'ın [schema.ts](https://github.com/angular/angular/blob/12.2.x/packages/compiler-cli/src/metadata/schema.ts) dosyası, JSON formatını TypeScript arayüzleri koleksiyonu olarak tanımlar.
 
 ### Expression syntax limitations
 

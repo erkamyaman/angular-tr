@@ -74,7 +74,7 @@ http.post<Config>('/api/config', newConfig).subscribe((config) => {
 
 IMPORTANT: İsteğin gerçekten gönderilmesi için değiştirici istek `Observable`'larına `.subscribe()` yapmayı unutmayın.
 
-## URL Parametrelerini Ayarlama
+## URL Parametrelerini Ayarlama {#setting-url-parameters}
 
 İstek URL'sine dahil edilmesi gereken istek parametrelerini `params` seçeneğini kullanarak belirtin.
 
@@ -108,7 +108,7 @@ http
 
 `HttpClient`'ın parametreleri URL'ye nasıl kodlayacağını belirleyen özel bir `HttpParameterCodec` ile `HttpParams`'ı örnekleyebilirsiniz.
 
-### Özel Parametre Kodlaması
+### Özel Parametre Kodlaması {#custom-parameter-encoding}
 
 Varsayılan olarak, `HttpParams` parametre anahtarlarını ve değerlerini kodlamak ve çözmek için yerleşik [`HttpUrlEncodingCodec`](api/common/http/HttpUrlEncodingCodec) kullanır.
 
@@ -151,7 +151,7 @@ export class ApiService {
 }
 ```
 
-## Request Header'larını Ayarlama
+## Request Header'larını Ayarlama {#setting-request-headers}
 
 İsteğe dahil edilmesi gereken istek başlıklarını `headers` seçeneğini kullanarak belirtin.
 
@@ -185,7 +185,7 @@ http
   });
 ```
 
-## Sunucu Response Olaylarıyla Etkileşim
+## Sunucu Response Olaylarıyla Etkileşim {#interacting-with-the-server-response-events}
 
 Kolaylık sağlamak için, `HttpClient` varsayılan olarak sunucu tarafından döndürülen verinin (yanıt gövdesi) bir `Observable`'ını döndürür. Bazen gerçek yanıtı incelemek istenebilir, örneğin belirli yanıt başlıklarını almak için.
 
@@ -204,7 +204,7 @@ http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'response' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
 </docs-callout>
 
-## Ham İlerleme Olaylarını Alma
+## Ham İlerleme Olaylarını Alma {#receiving-raw-progress-events}
 
 Yanıt gövdesi veya yanıt nesnesine ek olarak, `HttpClient` istek yaşam döngüsündeki belirli anlara karşılık gelen ham _olaylar_ akışını da döndürebilir. Bu olaylar isteğin ne zaman gönderildiğini, yanıt başlığının ne zaman döndüğünü ve gövdenin ne zaman tamamlandığını içerir. Bu olaylar ayrıca büyük istek veya yanıt gövdeleri için yükleme ve indirme durumunu bildiren _ilerleme olaylarını_ da içerebilir.
 
@@ -249,7 +249,7 @@ Olay akışında bildirilen her `HttpEvent`, olayın neyi temsil ettiğini ayır
 | `HttpEventType.Response`         | The entire response has been received, including the response body                 |
 | `HttpEventType.User`             | A custom event from an HTTP interceptor.                                           |
 
-## İstek Hatalarını Yönetme
+## İstek Hatalarını Yönetme {#handling-request-failure}
 
 Bir HTTP isteğinin başarısız olmasının üç yolu vardır:
 
@@ -286,7 +286,7 @@ http
   });
 ```
 
-## Gelişmiş Fetch Seçenekleri
+## Gelişmiş Fetch Seçenekleri {#advanced-fetch-options}
 
 Angular'ın `HttpClient`'ı, performansı ve kullanıcı deneyimini iyileştirebilecek gelişmiş fetch API seçeneklerini destekler. Bu seçenekler, varsayılan olan fetch arka ucu kullanılırken mevcuttur.
 
@@ -419,7 +419,9 @@ Kullanılabilir `mode` değerleri:
 - `'cors'`: CORS ile çapraz köken isteklere izin verir (varsayılan)
 - `'no-cors'`: CORS olmadan basit çapraz köken isteklere izin verir, yanıt opaktır
 
-TIP: Hassas istekler için hiçbir zaman çapraz köken olmaması gereken durumlarda `mode: 'same-origin'` kullanın.
+TIP: Tarayıcıda, hiçbir zaman çapraz köken olmaması gereken hassas istekler için `mode: 'same-origin'` kullanın.
+
+IMPORTANT: Node.js üzerinde SSR sırasında `HttpClient`, Node.js'in [Undici tabanlı Fetch uygulamasını](https://nodejs.org/api/globals.html#fetch) kullanır. [Undici tarayıcı CORS denetimlerini uygulamaz](https://undici.nodejs.org/#cors), bu nedenle `mode: 'same-origin'` sunucu tarafı istekleri kısıtlamaz. Kullanıcıdan etkilenen URL'leri bir izin listesine göre doğrulayın.
 
 #### Yönlendirme Yönetimi
 
@@ -529,6 +531,8 @@ Kullanılabilir `credentials` değerleri:
 
 TIP: CORS'u destekleyen farklı bir alan adına kimlik doğrulama çerezleri veya başlıkları göndermeniz gerektiğinde `credentials: 'include'` kullanın. Karışıklığı önlemek için `credentials` ve `withCredentials` seçeneklerini birlikte kullanmaktan kaçının.
 
+IMPORTANT: Node.js üzerinde SSR sırasında `credentials: 'include'`, gelen tarayıcı isteğindeki çerezleri otomatik olarak iletmez. `credentials` seçeneği, açıkça eklediğiniz `Cookie` veya `Authorization` başlıklarını kaldırmaz. [Undici, tarayıcıların yasakladığı bazı başlıklara izin verir](https://undici.nodejs.org/#forbidden-and-safelisted-header-names), bu nedenle kimlik bilgisi başlıklarını yalnızca güvendiğiniz kökenlere iletin.
+
 #### Referrer (Yönlendiren)
 
 `referrer` seçeneği, istekle birlikte hangi yönlendiren bilgisinin gönderileceğini kontrol etmenize olanak tanır. Bu, gizlilik ve güvenlik açısından önemlidir.
@@ -563,7 +567,7 @@ TIP: Yönlendiren sayfa URL'sini sızdırmak istemediğiniz hassas istekler içi
 
 #### Referrer Politikası
 
-`referrerPolicy` seçeneği, ne kadar yönlendiren bilgisinin (isteği yapan sayfanın URL'si) bir HTTP isteğiyle birlikte gönderileceğini kontrol eder. Bu ayar hem gizlilik hem de analitikleri etkiler ve veri görünürlüğü ile güvenlik değerlendirmeleri arasında denge kurmanıza olanak tanır.
+`referrerPolicy` seçeneği, isteği yapan sayfanın URL'si olan yönlendiren bilgisinin ne kadarının bir HTTP isteğiyle birlikte gönderileceğini kontrol eder. Bu ayar hem gizlilik hem de analitikleri etkiler ve veri görünürlüğü ile güvenlik değerlendirmeleri arasında denge kurmanıza olanak tanır.
 
 ```ts
 // Mevcut sayfadan bağımsız olarak referrer bilgisi gönderme

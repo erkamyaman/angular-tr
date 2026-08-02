@@ -24,14 +24,15 @@ const loginModel = signal<LoginData>({
 
 ### 2. Bir `FieldTree` Oluşturmak İçin Form Modelini `form()` Fonksiyonuna Geçirin
 
-Ardından, form modelinizi `form()` fonksiyonuna geçirerek bir **alan ağacı (field tree)** oluşturursunuz - modelinizin yapısını yansıtan ve nokta notasyonuyla alanlara erişmenizi sağlayan bir nesne yapısı:
+Ardından, form modelinizi `form()` fonksiyonuna geçirerek bir **alan ağacı (field tree)** oluşturursunuz - modelinizin yapısını yansıtan ve nokta notasyonuyla alanlara erişmenizi sağlayan bir nesne yapısı.
+
+Hem kök form nesnesi hem de iç içe özellikleri birer `FieldTree` düğümüdür:
 
 ```ts
 const loginForm = form(loginModel);
 
-// Alanlara doğrudan özellik adıyla erişin
-loginForm.email;
-loginForm.password;
+loginForm; // bir FieldTree'dir
+loginForm.email; // o da bir FieldTree'dir
 ```
 
 ### 3. HTML Girdilerini `[formField]` Direktifi ile Bağlayın
@@ -47,18 +48,20 @@ Sonuç olarak, kullanıcı değişiklikleri (alana yazma gibi) formu otomatik ol
 
 NOTE: `[formField]` direktifi ayrıca uygun olduğunda `required`, `disabled` ve `readonly` gibi öznitelikler için alan durumunu da senkronize eder.
 
-### 4. `value()` ile Alan Değerlerini Okuyun
+### 4. `FieldTree` Sinyalleriyle Durumu Okuyun
 
-Alanı bir fonksiyon olarak çağırarak alan durumuna erişebilirsiniz. Bu, alanın değeri, doğrulama durumu ve etkileşim durumu için reaktif sinyaller içeren bir `FieldState` nesnesi döndürür:
+`FieldTree` düğümünü bir fonksiyon olarak çağırarak ağacın herhangi bir parçasının durumuna erişebilirsiniz. Bu, değer, doğrulama durumu ve etkileşim durumu için reaktif sinyaller içeren bir durum nesnesi döndürür:
 
 ```ts
-loginForm.email(); // Returns FieldState with value(), valid(), touched(), etc.
+loginForm(); // Tüm formun durumunu döndürür
+loginForm.email(); // email alanının durumunu döndürür
 ```
 
-Alanın mevcut değerini okumak için `value()` sinyaline erişin:
+Mevcut değeri okumak için `value()` sinyaline erişin:
 
 ```html
-<!-- Kullanıcı yazarken otomatik olarak güncellenen form değerini render et -->
+<!-- Kullanıcı yazarken otomatik olarak güncellenen değerleri render et -->
+<p>Form value: {{ loginForm().value() | json }}</p>
 <p>Email: {{ loginForm.email().value() }}</p>
 ```
 
@@ -67,9 +70,9 @@ Alanın mevcut değerini okumak için `value()` sinyaline erişin:
 const currentEmail = loginForm.email().value();
 ```
 
-### 5. `set()` ile Alan Değerlerini Güncelleyin
+### 5. `set()` ile Değerleri Güncelleyin
 
-Bir alanın değerini `value.set()` metodunu kullanarak programatik olarak güncelleyebilirsiniz. Bu, hem alanı hem de alttaki model sinyalini günceller:
+Herhangi bir düğümde `value.set()` metodunu kullanarak değerleri programatik olarak güncelleyebilirsiniz. Bu, hem `FieldTree`'yi hem de alttaki model sinyalini günceller:
 
 ```ts
 // Değeri programatik olarak güncelle
@@ -83,7 +86,7 @@ Sonuç olarak, hem alan değeri hem de model sinyali otomatik olarak güncelleni
 console.log(loginModel().email); // 'alice@wonderland.com'
 ```
 
-İşte eksiksiz bir örnek:
+### Eksiksiz örnek
 
 <docs-code-multifile preview path="adev/src/content/examples/signal-forms/src/login-simple/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/signal-forms/src/login-simple/app/app.ts"/>
@@ -235,29 +238,30 @@ required(schemaPath.email, {message: 'Email is required'});
 email(schemaPath.email, {message: 'Please enter a valid email address'});
 ```
 
-Her form alanı, doğrulama durumunu sinyaller aracılığıyla sunar. Örneğin, doğrulamanın geçip geçmediğini görmek için `field().valid()`, kullanıcının etkileşimde bulunup bulunmadığını görmek için `field().touched()` ve doğrulama hatalarının listesini almak için `field().errors()` kontrol edebilirsiniz.
+`FieldTree` içindeki her düğüm, doğrulama ve etkileşim durumunu reaktif sinyaller aracılığıyla sunar.
 
-İşte eksiksiz bir örnek:
+### FieldTree Durum Sinyalleri
+
+Kök form nesnesi dahil ağaçtaki her düğüm, durumunu izlemek için aynı sinyalleri sağlar. Her düğüm bir `FieldTree` olduğundan, geçerliliği ve etkileşimi izleme API'si her seviyede aynıdır.
+
+| Durum        | Açıklama                                                                            |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `valid()`    | Düğüm tüm doğrulama kurallarını geçerse `true` döndürür                             |
+| `invalid()`  | Doğrulama hataları varsa `true` döndürür                                            |
+| `pending()`  | Asenkron doğrulama devam ediyorsa `true` döndürür                                   |
+| `touched()`  | Kullanıcı alana veya herhangi bir alt alana odaklanıp ayrıldıysa `true` döndürür    |
+| `dirty()`    | Değer kullanıcı tarafından değiştirildiyse `true` döndürür                          |
+| `disabled()` | Düğüm devre dışı bırakıldıysa `true` döndürür                                       |
+| `readonly()` | Düğüm salt okunursa `true` döndürür                                                 |
+| `errors()`   | `kind` ve `message` özelliklerine sahip doğrulama hatalarının bir dizisini döndürür |
+
+### Eksiksiz örnek
 
 <docs-code-multifile preview path="adev/src/content/examples/signal-forms/src/login-validation/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/signal-forms/src/login-validation/app/app.ts"/>
   <docs-code header="app.html" path="adev/src/content/examples/signal-forms/src/login-validation/app/app.html"/>
   <docs-code header="app.css" path="adev/src/content/examples/signal-forms/src/login-validation/app/app.css"/>
 </docs-code-multifile>
-
-### Alan Durumu Sinyalleri
-
-Her `field()` şu durum sinyallerini sağlar:
-
-| Durum        | Açıklama                                                                            |
-| ------------ | ----------------------------------------------------------------------------------- |
-| `valid()`    | Alan tüm doğrulama kurallarını geçerse `true` döndürür                              |
-| `touched()`  | Kullanıcı alana odaklanıp ayrıldıysa `true` döndürür                                |
-| `dirty()`    | Kullanıcı değeri değiştirdiyse `true` döndürür                                      |
-| `disabled()` | Alan devre dışı bırakıldıysa `true` döndürür                                        |
-| `readonly()` | Alan salt okunursa `true` döndürür                                                  |
-| `pending()`  | Asenkron doğrulama devam ediyorsa `true` döndürür                                   |
-| `errors()`   | `kind` ve `message` özelliklerine sahip doğrulama hatalarının bir dizisini döndürür |
 
 ## Sonraki Adımlar
 

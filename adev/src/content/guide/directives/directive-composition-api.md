@@ -10,7 +10,7 @@ Bir bileşenin dekoratörüne `hostDirectives` özelliği ekleyerek bileşenlere
 
 Bu örnekte, `MenuBehavior` direktifini `AdminMenu`'nun ana elemanına uyguluyoruz. Bu, bir şablonda `<admin-menu>` elemanına `MenuBehavior`'ı uygulamaya benzer şekilde çalışır.
 
-```typescript
+```ts
 @Component({
   selector: 'admin-menu',
   templateUrl: './admin-menu.html',
@@ -19,19 +19,20 @@ Bu örnekte, `MenuBehavior` direktifini `AdminMenu`'nun ana elemanına uyguluyor
 export class AdminMenu {}
 ```
 
-Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#input-ve-outputları-dahil-etme) bölümüne bakın.
+Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#including-inputs-and-outputs) bölümüne bakın.
 
-**Angular, ana direktifleri derleme zamanında statik olarak uygular.** Çalışma zamanında dinamik olarak direktif ekleyemezsiniz.
+Ana direktifler aşağıdaki kısıtlamalarla gelir:
 
-**`hostDirectives`'de kullanılan direktifler `standalone: false` belirtemez.**
+- **Angular, ana direktifleri derleme zamanında statik olarak uygular.** Çalışma zamanında dinamik olarak
+  direktif ekleyemezsiniz.
+- **`hostDirectives`'de kullanılan direktifler `standalone: false` belirtemez.**
+- **Angular, `hostDirectives` özelliğinde uygulanan direktiflerin `selector`'ını yok sayar.**
 
-**Angular, `hostDirectives` özelliğinde uygulanan direktiflerin `selector`'ını yok sayar.**
-
-## Input ve output'ları dahil etme
+## Input ve output'ları dahil etme {#including-inputs-and-outputs}
 
 Bileşeninize `hostDirectives` uyguladığınızda, ana direktiflerden gelen girdiler ve çıktılar varsayılan olarak bileşeninizin API'sine dahil edilmez. `hostDirectives` içindeki girişi genişleterek girdileri ve çıktıları bileşeninizin API'sine açıkça dahil edebilirsiniz:
 
-```typescript
+```ts
 @Component({
   selector: 'admin-menu',
   templateUrl: './admin-menu.html',
@@ -46,15 +47,15 @@ Bileşeninize `hostDirectives` uyguladığınızda, ana direktiflerden gelen gir
 export class AdminMenu {}
 ```
 
-Girdileri ve çıktıları açıkça belirterek, `hostDirective` ile bileşenin tüketicileri bunları bir şablonda bağlayabilir:
+Girdileri ve çıktıları açıkça belirterek, `hostDirectives` ile bileşenin tüketicileri bunları bir şablonda bağlayabilir:
 
 ```angular-html
 <admin-menu menuId="top-menu" (menuClosed)="logMenuClosed()"></admin-menu>
 ```
 
-Ayrıca, bileşeninizin API'sini özelleştirmek için `hostDirective`'den girdileri ve çıktıları takma adlarla kullanabilirsiniz:
+Ayrıca, bileşeninizin API'sini özelleştirmek için bir ana direktiften girdileri ve çıktıları takma adlarla kullanabilirsiniz:
 
-```typescript
+```ts
 @Component({
   selector: 'admin-menu',
   templateUrl: './admin-menu.html',
@@ -82,14 +83,10 @@ Aşağıdaki örnekte, `Menu` ve `Tooltip` olmak üzere iki direktif tanımlıyo
 `SpecializedMenuWithTooltip` bir şablonda kullanıldığında, `Menu`, `Tooltip` ve `MenuWithTooltip`'in tümünün örneklerini oluşturur. Bu direktiflerin her birinin ana bağlamaları, `SpecializedMenuWithTooltip`'in ana elemanına uygulanır.
 
 ```ts
-@Directive({
-  /* ... */
-})
+@Directive({/* ... */})
 export class Menu {}
 
-@Directive({
-  /* ... */
-})
+@Directive({/* ... */})
 export class Tooltip {}
 
 // MenuWithTooltip birden fazla başka direktiften davranışları birleştirebilir
@@ -105,7 +102,7 @@ export class MenuWithTooltip {}
 export class SpecializedMenuWithTooltip {}
 ```
 
-## Ana direktif semantiği
+## Ana direktif semantiği {#host-directive-semantics}
 
 ### Direktif çalıştırma sırası
 
@@ -113,7 +110,7 @@ Ana direktifler, doğrudan bir şablonda kullanılan bileşenler ve direktiflerl
 
 Aşağıdaki örnek, bir ana direktifin minimal kullanımını gösterir:
 
-```typescript
+```ts
 @Component({
   selector: 'admin-menu',
   templateUrl: './admin-menu.html',
@@ -135,7 +132,7 @@ Bu işlem sırası, `hostDirectives` ile bileşenlerin bir ana direktif tarafın
 
 Bu işlem sırası, aşağıdaki örnekte gösterildiği gibi iç içe ana direktif zincirlerine de uzanır.
 
-```typescript
+```ts
 @Directive({...})
 export class Tooltip { }
 
@@ -207,11 +204,11 @@ Bu, ana direktif bileşimindeki klasik [elmas problemini](https://en.wikipedia.o
 // Her iki tetikleyicinin de ihtiyaç duyduğu paylaşılan bir davranış
 @Directive({
   host: {
-    '[attr.data-trigger-id]': 'triggerId',
+    '[attr.data-trigger-id]': 'triggerId()',
   },
 })
 export class TriggerRef {
-  readonly triggerId = `trigger-${crypto.randomUUID()}`;
+  readonly triggerId = input(`trigger-${crypto.randomUUID()}`);
 }
 
 // Her biri TriggerRef'i ana direktif olarak bildiren iki ayrı tetikleyici
@@ -241,7 +238,7 @@ HELPFUL: Angular paylaşılan direktifin yalnızca tek bir örneğini ürettiği
 
 #### Çakışan takma adlar
 
-Angular, yinelenen ana direktif eşleşmelerini birleştirirken bunların girdi ve çıktı eşlemelerini de birleştirir. Aynı ana direktifin iki örneği **aynı girdi veya çıktıyı farklı takma adlar altında** sunarsa, Angular derleme zamanında bir hata fırlatır ([NG8024](errors/NG8024))
+Angular, yinelenen ana direktif eşleşmelerini birleştirirken bunların girdi ve çıktı eşlemelerini de birleştirir. Aynı ana direktifin iki örneği **aynı girdi veya çıktıyı farklı takma adlar altında** sunarsa, Angular derleme zamanında bir hata fırlatır ([NG8024](errors/NG8024)).
 
 ```ts
 @Directive({
@@ -265,3 +262,10 @@ export class DropdownTrigger {}
 ```
 
 Bunu çözmek için, her iki yolun da paylaşılan girdi veya çıktıyı aynı takma ad altında sunmasını sağlayın veya hiç sunmayın.
+
+## Sırada ne var
+
+<docs-pill-row>
+  <docs-pill href="guide/directives/structural-directives" title="Yapısal direktifler"/>
+  <docs-pill href="guide/components/host-elements" title="Bileşen host elemanları"/>
+</docs-pill-row>

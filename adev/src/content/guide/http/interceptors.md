@@ -52,7 +52,7 @@ bootstrapApplication(App, {
 
 Yapılandırdığınız yakalayıcılar, providers'da listelediğiniz sırada zincirlenir. Yukarıdaki örnekte, `loggingInterceptor` isteği işler ve ardından `cachingInterceptor`'a iletir.
 
-### Response Olaylarını Yakalama
+### Response Olaylarını Yakalama {#intercepting-response-events}
 
 Bir yakalayıcı, yanıta erişmek veya onu değiştirmek için `next` tarafından döndürülen `HttpEvent`'lerin `Observable` akışını dönüştürebilir. Bu akış tüm yanıt olaylarını içerdiğinden, son yanıt nesnesini tanımlamak için her olayın `.type`'ını incelemek gerekebilir.
 
@@ -108,7 +108,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
 }
 ```
 
-## Request ve Response Meta Verileri
+## Request ve Response Meta Verileri {#request-and-response-metadata}
 
 Genellikle bir isteğe arka uca gönderilmeyen, özellikle yakalayıcılara yönelik bilgiler eklemek yararlıdır. `HttpRequest`'ler, bu tür meta verileri bir `HttpContext` örneği olarak depolayan bir `.context` nesnesine sahiptir. Bu nesne, `HttpContextToken` türünde anahtarlara sahip tipli bir harita olarak işlev görür.
 

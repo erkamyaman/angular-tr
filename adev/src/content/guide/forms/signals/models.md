@@ -10,7 +10,7 @@ Formlar, zamanla değişen verileri yönetmeyi gerektirir. Net bir yapı olmadan
 
 Form modelleri, form verilerini tek bir yazılabilir sinyalde merkezileştirerek bu sorunu çözer. Model güncellendiğinde, form bu değişiklikleri otomatik olarak yansıtır. Kullanıcılar formla etkileşime girdiğinde, model buna göre güncellenir.
 
-## Model oluşturma
+## Model oluşturma {#creating-models}
 
 Form modeli, Angular'ın `signal()` fonksiyonuyla oluşturulan yazılabilir bir sinyaldir. Sinyal, formunuzun veri yapısını temsil eden bir nesne tutar.
 

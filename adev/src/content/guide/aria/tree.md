@@ -215,85 +215,10 @@ describe('MyTreeComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Tree
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Hiyerarşik navigasyonu ve seçimi yöneten konteyner direktifi.
-
-#### Girdiler
-
-| Property        | Type                             | Default      | Description                                                                 |
-| --------------- | -------------------------------- | ------------ | --------------------------------------------------------------------------- |
-| `disabled`      | `boolean`                        | `false`      | Tüm ağacı devre dışı bırakır                                                |
-| `softDisabled`  | `boolean`                        | `true`       | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimsizdir     |
-| `multi`         | `boolean`                        | `false`      | Birden fazla öğenin seçilip seçilemeyeceği                                  |
-| `selectionMode` | `'explicit' \| 'follow'`         | `'explicit'` | Seçimin açık eylem gerektirip gerektirmediği veya odağı takip edip etmediği |
-| `nav`           | `boolean`                        | `false`      | Ağacın navigasyon modunda olup olmadığı (`aria-current` kullanır)           |
-| `wrap`          | `boolean`                        | `true`       | Klavye navigasyonunun son öğeden ilk öğeye sarılıp sarılmayacağı            |
-| `focusMode`     | `'roving' \| 'activedescendant'` | `'roving'`   | Ağaç tarafından kullanılan odak stratejisi                                  |
-| `values`        | `any[]`                          | `[]`         | Seçili öğe değerleri (çift yönlü bağlamayı destekler)                       |
-
-#### Metodlar
-
-| Method           | Parameters | Description                                      |
-| ---------------- | ---------- | ------------------------------------------------ |
-| `expandAll`      | none       | Tüm ağaç düğümlerini genişletir                  |
-| `collapseAll`    | none       | Tüm ağaç düğümlerini daraltır                    |
-| `selectAll`      | none       | Tüm öğeleri seçer (yalnızca çoklu seçim modunda) |
-| `clearSelection` | none       | Tüm seçimi temizler                              |
-
-### TreeItem
-
-Ağaçta alt düğümler içerebilen bireysel bir düğüm.
-
-#### Girdiler
-
-| Property   | Type                    | Default | Description                                                            |
-| ---------- | ----------------------- | ------- | ---------------------------------------------------------------------- |
-| `parent`   | `Tree \| TreeItemGroup` | —       | **Zorunlu.** Üst Tree kökü veya TreeItemGroup.                         |
-| `value`    | `any`                   | —       | **Zorunlu.** Bu ağaç öğesi için benzersiz değer                        |
-| `disabled` | `boolean`               | `false` | Bu öğeyi devre dışı bırakır                                            |
-| `expanded` | `boolean`               | `false` | Düğümün genişletilip genişletilmediği (çift yönlü bağlamayı destekler) |
-
-#### Sinyaller
-
-| Property      | Type              | Description                              |
-| ------------- | ----------------- | ---------------------------------------- |
-| `selected`    | `Signal<boolean>` | Öğenin seçili olup olmadığı              |
-| `active`      | `Signal<boolean>` | Öğenin şu anda odağa sahip olup olmadığı |
-| `hasChildren` | `Signal<boolean>` | Öğenin alt düğümleri olup olmadığı       |
-
-#### Metodlar
-
-| Method     | Parameters | Description                    |
-| ---------- | ---------- | ------------------------------ |
-| `expand`   | none       | Bu düğümü genişletir           |
-| `collapse` | none       | Bu düğümü daraltır             |
-| `toggle`   | none       | Genişletme durumunu değiştirir |
-
-### TreeItemGroup
-
-Genişletilebilir bir ağaç öğesinin alt düğümlerini tutan bir `ng-template`'e uygulanan yapısal direktif.
-
-#### Girdiler
-
-| Property  | Type       | Default | Description                                 |
-| --------- | ---------- | ------- | ------------------------------------------- |
-| `ownedBy` | `TreeItem` | —       | **Zorunlu.** Üst `ngTreeItem`'in referansı. |
-
-#### Kullanım
-
-```angular-html
-<ul ngTree #tree="ngTree">
-  <li ngTreeItem [parent]="tree" value="parent" #parentItem="ngTreeItem">
-    Parent Item
-    <ul role="group">
-      <ng-template ngTreeItemGroup [ownedBy]="parentItem" #group="ngTreeItemGroup">
-        <li ngTreeItem [parent]="group" value="child1">Child 1</li>
-        <li ngTreeItem [parent]="group" value="child2">Child 2</li>
-      </ng-template>
-    </ul>
-  </li>
-</ul>
-```
+- [`Tree`](/api/aria/tree/Tree)
+- [`TreeItem`](/api/aria/tree/TreeItem)
+- [`TreeItemGroup`](/api/aria/tree/TreeItemGroup)

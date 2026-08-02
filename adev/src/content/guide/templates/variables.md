@@ -4,7 +4,7 @@ Angular'ın şablonlarda iki tür değişken bildirimi vardır: yerel şablon de
 
 HELPFUL: Bu kılavuzda "şablon", HTML şablon dosyasının tamamı anlamına gelmez. Yalnızca dosya içindeki belirli bir şablon yapısına veya ifadesine atıfta bulunur.
 
-## `@let` ile yerel şablon değişkenleri
+## `@let` ile yerel şablon değişkenleri {#local-template-variables-with-let}
 
 Angular'ın `@let` sözdizimi, JavaScript'in [`let` sözdizimine](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let) benzer şekilde yerel bir değişken tanımlamanıza ve şablon genelinde yeniden kullanmanıza olanak tanır.
 
@@ -103,7 +103,7 @@ Her `@let` bloğu tam olarak bir değişken bildirebilir. Aynı blokta virgül i
 - Ardından çok satırlı olabilen bir Angular ifadesi.
 - `;` simgesi ile sonlandırılır.
 
-## Şablon referans değişkenleri
+## Şablon referans değişkenleri {#template-reference-variables}
 
 Şablon referans değişkenleri, şablonunuzdaki bir elemandan bir değere referans veren bir değişken bildirmenin bir yolunu sağlar.
 
@@ -135,7 +135,7 @@ Değişkeni bir Angular bileşeni üzerinde bildirirseniz, değişken bileşen �
 <my-datepicker #startDate />
 ```
 
-Değişkeni bir `<ng-template>` elemanı üzerinde bildirirseniz, değişken şablonu temsil eden bir TemplateRef örneğine referans verir. Daha fazla bilgi için [Angular yıldız işareti \* sözdizimini nasıl kullanır](/guide/directives/structural-directives#yapısal-direktif-kısaltılmış-sözdizimi) bölümüne [Yapısal Direktifler](/guide/directives/structural-directives) içinde bakın.
+Değişkeni bir `<ng-template>` elemanı üzerinde bildirirseniz, değişken şablonu temsil eden bir TemplateRef örneğine referans verir. Daha fazla bilgi için [Angular yıldız işareti \* sözdizimini nasıl kullanır](/guide/directives/structural-directives#structural-directive-shorthand) bölümüne [Yapısal Direktifler](/guide/directives/structural-directives) içinde bakın.
 
 ```angular-html
 <!-- `myFragment` değişkeni bu şablon parçasına karşılık gelen `TemplateRef` örneğine atanır. -->
@@ -151,7 +151,7 @@ Değişkeni görünümün başka herhangi bir eleman üzerinde bildirirseniz, de
 <input #taskInput placeholder="Enter task name" />
 ```
 
-#### Angular direktifine referans atama
+#### Angular direktifine referans atama {#assigning-a-reference-to-an-angular-directive}
 
 Angular direktifleri, direktifin şablonda referans verilebileceği bir ad tanımlayan `exportAs` özelliğine sahip olabilir:
 

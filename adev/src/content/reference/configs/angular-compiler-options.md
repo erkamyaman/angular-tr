@@ -201,8 +201,7 @@ Angular CLI komutu `ng new --strict` kullandığınızda, oluşturulan projenin 
 
 Bu seçeneğin etkinleştirdiği katılık bayrakları, belirli katı şablon tür denetimi türlerini açıp kapatmanıza olanak tanır.
 [Şablon hatalarını giderme](tools/cli/template-typecheck#şablon-hatalarını-giderme) bölümüne bakın.
-
-Angular CLI komutu `ng new --strict` kullandığınızda, yeni projenin yapılandırmasında `true` olarak ayarlanır.
+Varsayılan değer `true`.
 
 ### `strictStandalone`
 
@@ -227,4 +226,4 @@ Varsayılan değer `true`'dur.
 
 Yapılandırma dosyasının yanı sıra, `ngc`'yi yapılandırmak için [`tsc` komut satırı seçeneklerini](https://www.typescriptlang.org/docs/handbook/compiler-options.html) de kullanabilirsiniz.
 
-[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#bileşen-şablonunda-metni-işaretleme 'Mark text in component template - Prepare component for translation | Angular'
+[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'

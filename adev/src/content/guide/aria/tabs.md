@@ -284,74 +284,12 @@ describe('MyTabsComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Tabs
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Sekme listeleri ve panelleri koordine eden kapsayıcı yönerge.
-
-Bu yönergenin girişi veya çıktısı yoktur. `ngTabList`, `ngTab` ve `ngTabPanel` yönergeleri için kök kapsayıcı görevi görür.
-
-### TabList
-
-Seçim ve klavye navigasyonunu yöneten sekme butonları için kapsayıcı.
-
-#### Girişler
-
-| Property        | Type                             | Default        | Description                                                                 |
-| --------------- | -------------------------------- | -------------- | --------------------------------------------------------------------------- |
-| `orientation`   | `'horizontal' \| 'vertical'`     | `'horizontal'` | Sekme listesi yerleşim yönü                                                 |
-| `wrap`          | `boolean`                        | `true`         | Klavye navigasyonunun son sekmeden ilk sekmeye sarılıp sarılmadığı          |
-| `softDisabled`  | `boolean`                        | `true`         | `true` olduğunda, devre dışı sekmeler odaklanabilir ancak etkinleştirilemez |
-| `selectionMode` | `'follow' \| 'explicit'`         | `'follow'`     | Sekmelerin odaklandığında mı yoksa açık etkinleştirme mi gerektirdiği       |
-| `focusMode`     | `'roving' \| 'activedescendant'` | `'roving'`     | Odak yönetimi stratejisi                                                    |
-| `selectedTab`   | `any`                            | —              | Şu anda seçili sekmenin değeri (iki yönlü bağlama destekler)                |
-
-### Tab
-
-Bireysel bir sekme butonu.
-
-#### Girişler
-
-| Property   | Type      | Default | Description                                |
-| ---------- | --------- | ------- | ------------------------------------------ |
-| `value`    | `any`     | —       | **Zorunlu.** Bu sekme için benzersiz değer |
-| `disabled` | `boolean` | `false` | Bu sekmeyi devre dışı bırakır              |
-
-#### Sinyaller
-
-| Property   | Type              | Description                           |
-| ---------- | ----------------- | ------------------------------------- |
-| `selected` | `Signal<boolean>` | Sekmenin şu anda seçili olup olmadığı |
-| `active`   | `Signal<boolean>` | Sekmenin şu anda odakta olup olmadığı |
-
-### TabPanel
-
-Bir sekmeyle ilişkili içerik paneli.
-
-#### Girişler
-
-| Property          | Type      | Default | Description                                                                 |
-| ----------------- | --------- | ------- | --------------------------------------------------------------------------- |
-| `value`           | `any`     | —       | **Zorunlu.** İlişkili sekmenin `value` değeri ile eşleşmelidir              |
-| `preserveContent` | `boolean` | `true`  | Devre dışı bırakılmadan sonra panel içeriğinin DOM'da tutulup tutulmayacağı |
-
-#### Sinyaller
-
-| Property  | Type              | Description                           |
-| --------- | ----------------- | ------------------------------------- |
-| `visible` | `Signal<boolean>` | Panelin şu anda görünür olup olmadığı |
-
-### TabContent
-
-Sekme panel içeriğini tembel render etmek için yapısal yönerge.
-
-Bu yönergenin girişi, çıktısı veya yöntemi yoktur. Bir sekme paneli içindeki `ng-template` elemanına uygulayın:
-
-```angular-html
-<div ngTabPanel value="tab1">
-  <ng-template ngTabContent>
-    <!-- Buradaki içerik tembel olarak render edilir -->
-  </ng-template>
-</div>
-```
+- [`Tabs`](/api/aria/tabs/Tabs)
+- [`TabList`](/api/aria/tabs/TabList)
+- [`Tab`](/api/aria/tabs/Tab)
+- [`TabPanel`](/api/aria/tabs/TabPanel)
+- [`TabContent`](/api/aria/tabs/TabContent)

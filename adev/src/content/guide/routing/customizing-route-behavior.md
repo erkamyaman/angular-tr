@@ -11,11 +11,11 @@ Rota özelleştirmesi, uygulamanızın şunlara ihtiyaç duyduğunda değerli ha
 
 NOTE: Özel stratejiler uygulamadan önce, varsayılan yönlendirici davranışının ihtiyaçlarınızı karşılamadığından emin olun. Angular'ın varsayılan yönlendirmesi yaygın kullanım durumları için optimize edilmiştir ve performans ile basitlik arasında en iyi dengeyi sağlar. Rota stratejilerini özelleştirmek, dikkatli yönetilmezse bellek kullanımı üzerinde ek kod karmaşıklığı ve performans etkileri oluşturabilir.
 
-## Router yapılandırma seçenekleri
+## Router yapılandırma seçenekleri {#router-configuration-options}
 
 `withRouterConfig` veya `RouterModule.forRoot`, Yönlendiricinin davranışını ayarlamak için ek `RouterConfigOptions` sağlamaya olanak tanır.
 
-### İptal edilen navigasyonları yönetme
+### İptal edilen navigasyonları yönetme {#handle-canceled-navigations}
 
 `canceledNavigationResolution`, bir navigasyon iptal edildiğinde Yönlendiricinin tarayıcı geçmişini nasıl geri yüklediğini kontrol eder. Varsayılan değer `'replace'`'dir ve `location.replaceState` ile navigasyon öncesi URL'ye döner. Pratikte bu, adres çubuğunun navigasyon için zaten güncellenmiş olduğu durumlarda, örneğin tarayıcı geri veya ileri düğmeleriyle, navigasyon başarısız olursa veya bir koruyucu tarafından reddedilirse geçmiş girişinin "geri alma" ile üzerine yazılacağı anlamına gelir.
 `'computed'`'a geçmek, uçuş halindeki geçmiş dizinini Angular navigasyonuyla senkronize tutar, böylece geri düğmesi navigasyonunu iptal etmek orijinal sayfaya dönmek için bir ileri navigasyon tetikler (ve tam tersi).
@@ -26,7 +26,7 @@ Bu ayar, uygulamanız `urlUpdateStrategy: 'eager'` kullandığında veya koruyuc
 provideRouter(routes, withRouterConfig({canceledNavigationResolution: 'computed'}));
 ```
 
-### Aynı URL navigasyonlarına tepki verme
+### Aynı URL navigasyonlarına tepki verme {#react-to-same-url-navigations}
 
 `onSameUrlNavigation`, kullanıcı geçerli URL'ye navigasyon istediğinde ne olması gerektiğini yapılandırır. Varsayılan `'ignore'` işlemi atlar, `'reload'` ise koruyucuları ve çözücüleri yeniden çalıştırır ve bileşen örneklerini yeniler.
 
@@ -42,7 +42,7 @@ Bu davranışı global yerine bireysel navigasyonlarda da kontrol edebilirsiniz.
 router.navigate(['/some-path'], {onSameUrlNavigation: 'reload'});
 ```
 
-### Parametre devralma kontrolü
+### Parametre devralma kontrolü {#control-parameter-inheritance}
 
 `paramsInheritanceStrategy`, rota parametrelerinin ve verilerin üst rotalardan nasıl aktığını tanımlar.
 
@@ -74,9 +74,7 @@ export const routes: Routes = [
 ```
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class Customer {
   private route = inject(ActivatedRoute);
 
@@ -94,9 +92,7 @@ Bu, matris parametrelerinin, rota verilerinin ve çözümlenen değerlerin rota 
 ```
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class Customer {
   private route = inject(ActivatedRoute);
 
@@ -107,7 +103,7 @@ export class Customer {
 }
 ```
 
-### URL'nin ne zaman güncelleneceğine karar verme
+### URL'nin ne zaman güncelleneceğine karar verme {#decide-when-the-url-updates}
 
 `urlUpdateStrategy`, Angular'ın tarayıcı adres çubuğuna ne zaman yazacağını belirler. Varsayılan `'deferred'`, URL'yi değiştirmeden önce başarılı bir navigasyonu bekler. URL'yi navigasyon başladığında hemen güncellemek için `'eager'` kullanın. Hevesli güncellemeler, koruyucular veya hatalar nedeniyle navigasyon başarısız olursa denenen URL'yi daha kolay ortaya çıkarır, ancak uzun süren koruyucularınız varsa kısa süreliğine işlem devam eden bir URL gösterebilir.
 
@@ -117,7 +113,7 @@ Analitik altyapınızın koruyucular engellese bile denenen rotayı görmesi ger
 provideRouter(routes, withRouterConfig({urlUpdateStrategy: 'eager'}));
 ```
 
-### Varsayılan sorgu parametresi yönetimini seçme
+### Varsayılan sorgu parametresi yönetimini seçme {#choose-default-query-parameter-handling}
 
 `defaultQueryParamsHandling`, çağrı `queryParamsHandling` belirtmediğinde `Router.createUrlTree` için varsayılan davranışı ayarlar. `'replace'` varsayılandır ve mevcut sorgu dizesini değiştirir. `'merge'` sağlanan değerleri geçerli olanlarla birleştirir ve `'preserve'` açıkça yeni değerler sağlamadığınız sürece mevcut sorgu parametrelerini korur.
 
@@ -158,7 +154,7 @@ Angular Router, özelleştirme için dört ana alan sunar:
 
   <docs-pill-row>
     <docs-pill href="#rota-yeniden-kullanım-stratejisi" title="Route reuse strategy"/>
-    <docs-pill href="#ön-yükleme-stratejisi" title="Preloading strategy"/>
+    <docs-pill href="#preloading-strategy" title="Preloading strategy"/>
     <docs-pill href="#url-yönetim-stratejisi" title="URL handling strategy"/>
     <docs-pill href="#özel-route-eşleştiricileri" title="Custom route matchers"/>
   </docs-pill-row>
@@ -244,7 +240,7 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
 }
 ```
 
-### Ayrılmış rota tutamaçlarını manuel olarak yok etme
+### Ayrılmış rota tutamaçlarını manuel olarak yok etme {#manually-destroying-detached-route-handles}
 
 Özel bir `RouteReuseStrategy` uygularken, yeniden eklemeden vazgeçtiğiniz bir `DetachedRouteHandle`'ı manuel olarak yok etmeniz gerekebilir. Örneğin, stratejinizin bir önbellek boyut sınırı varsa veya belirli bir süre sonra tutamaçların süresini doluruyorsa, bellek sızıntılarını önlemek için bileşenin ve durumunun düzgün şekilde yok edildiğinden emin olmalısınız.
 
@@ -350,11 +346,11 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## Ön yükleme stratejisi
+## Ön yükleme stratejisi {#preloading-strategy}
 
 Ön yükleme stratejileri, Angular'ın tembel yüklenen rota modüllerini arka planda ne zaman yükleyeceğini belirler. Tembel yükleme, modül indirmelerini erteleyerek ilk yükleme süresini iyileştirirken, kullanıcılar bir tembel rotaya ilk navigasyon yaptığında hâlâ bir gecikme yaşar. Ön yükleme stratejileri, modülleri kullanıcılar talep etmeden önce yükleyerek bu gecikmeyi ortadan kaldırır.
 
-### Yerleşik ön yükleme stratejileri
+### Yerleşik ön yükleme stratejileri {#built-in-preloading-strategies}
 
 Angular, kullanıma hazır iki ön yükleme stratejisi sağlar:
 

@@ -7,7 +7,7 @@
 HTTP istemci hizmeti aşağıdaki başlıca özellikleri sunar:
 
 - [Tipli yanıt değerleri](guide/http/making-requests#json-verisi-alma) talep etme yeteneği
-- Kolaylaştırılmış [hata yönetimi](guide/http/making-requests#istek-hatalarını-yönetme)
+- Kolaylaştırılmış [hata yönetimi](guide/http/making-requests#handling-request-failure)
 - İstek ve yanıt [yakalama](guide/http/interceptors)
 - Güçlü [test araçları](guide/http/testing)
 

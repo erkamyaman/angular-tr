@@ -28,6 +28,7 @@ ng_project(
         "//:node_modules/@angular/platform-browser",
         "//:node_modules/rxjs",
         "//devtools/projects/ng-devtools",
+        "//devtools/projects/ng-devtools/src/lib/application-providers:deep_link",
         "//devtools/projects/ng-devtools/src/lib/application-services:frame_manager",
         "//devtools/projects/protocol",
     ],
@@ -44,14 +45,39 @@ ts_project(
 )
 
 ts_project(
+    name = "devtools_connected_flag",
+    srcs = [
+        "devtools-connected-flag.ts",
+    ],
+)
+
+esbuild(
+    name = "devtools_connected_flag_bundle",
+    srcs = [
+        "//:node_modules/tslib",
+        "//devtools/tools/esbuild:esbuild_base",
+        "//devtools/tools/esbuild:esbuild_config_iife",
+    ],
+    config = "//devtools/tools/esbuild:esbuild-iife.config.mjs",
+    entry_point = "devtools-connected-flag.ts",
+    format = "iife",
+    platform = "browser",
+    splitting = False,
+    target = "esnext",
+    deps = [
+        ":devtools_connected_flag",
+    ],
+)
+
+ts_project(
     name = "chrome_window_extensions",
     srcs = [
         "chrome-window-extensions.ts",
     ],
     deps = [
         "//devtools/projects/ng-devtools-backend",
-        "//devtools/projects/ng-devtools-backend/src/lib/component-tree",
-        "//devtools/projects/ng-devtools-backend/src/lib/ng-debug-api",
+        "//devtools/projects/ng-devtools-backend/src/lib/directive-forest/component-tree",
+        "//devtools/projects/ng-devtools-backend/src/lib/shared/ng-debug-api",
         "//devtools/projects/protocol",
     ],
 )
@@ -175,7 +201,7 @@ ts_project(
         ":comm_utils",
         ":same_page_message_bus",
         "//devtools/projects/ng-devtools-backend",
-        "//devtools/projects/ng-devtools-backend/src/lib:highlighter",
+        "//devtools/projects/ng-devtools-backend/src/lib/shared/highlighter",
     ],
 )
 

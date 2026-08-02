@@ -375,18 +375,30 @@ export type UnaryOperator = '+' | '-' | '!';
 
 /** Supported built-in types. */
 export type BuiltInType =
-  | 'any'
-  | 'boolean'
-  | 'number'
-  | 'string'
-  | 'function'
-  | 'never'
-  | 'unknown';
+  'any' | 'boolean' | 'number' | 'string' | 'function' | 'never' | 'unknown';
 
 export interface Parameter<TType> {
   name: string;
   type: TType | null;
 }
+
+export type AssignmentOperator =
+  | '='
+  | '+='
+  | '-='
+  | '*='
+  | '/='
+  | '%='
+  | '**='
+  | '&&='
+  | '||='
+  | '??='
+  | '&='
+  | '|='
+  | '>>='
+  | '>>>='
+  | '<<='
+  | '^=';
 
 /**
  * The binary operators supported by the `AstFactory`.
@@ -411,18 +423,9 @@ export type BinaryOperator =
   | '||'
   | '+'
   | '??'
-  | '='
-  | '+='
-  | '-='
-  | '*='
-  | '/='
-  | '%='
-  | '**='
-  | '&&='
-  | '||='
-  | '??='
   | 'in'
-  | 'instanceof';
+  | 'instanceof'
+  | AssignmentOperator;
 
 /**
  * The original location of the start or end of a node created by the `AstFactory`.
@@ -470,8 +473,7 @@ export interface ObjectLiteralSpread<TExpression> {
 
 /** Possible properties in an object literal. */
 export type ObjectLiteralProperty<TExpression> =
-  | ObjectLiteralAssignment<TExpression>
-  | ObjectLiteralSpread<TExpression>;
+  ObjectLiteralAssignment<TExpression> | ObjectLiteralSpread<TExpression>;
 
 /**
  * Information used by the `AstFactory` to create a template literal string (i.e. a back-ticked

@@ -16,7 +16,7 @@ Rehberlik için `SwPush` belgelerine bakın.
 HELPFUL: Chrome'da, bir backend olmadan push bildirimlerini test edebilirsiniz.
 Devtools -> Application -> Service Workers'ı açın ve bir JSON bildirim yükü göndermek için `Push` girdisini kullanın.
 
-## Bildirim tıklama işleme
+## Bildirim tıklama işleme {#notification-click-handling}
 
 `notificationclick` olayı için varsayılan davranış, bildirimi kapatmak ve `SwPush.notificationClicks`'i bilgilendirmektir.
 

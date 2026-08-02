@@ -82,7 +82,7 @@ Doğrulama akışı şu şekilde çalışır:
 5. İstek tamamlanır ve `pending()` `false` olur
 6. Hatalar yanıta göre güncellenir
 
-## validateHttp() ile HTTP doğrulama
+## validateHttp() ile HTTP doğrulama {#http-validation-with-validatehttp}
 
 `validateHttp()` fonksiyonu, asenkron doğrulamanın en yaygın biçimini sağlar. Bir REST API veya herhangi bir HTTP uç noktasına karşı doğrulama yapmanız gerektiğinde kullanın.
 
@@ -240,7 +240,7 @@ validateHttp(schemaPath.field, {
 
 TIP: Mevcut tüm seçenekler için [httpResource API dokümantasyonuna](api/common/http/httpResource) bakın.
 
-## validateAsync() ile özel asenkron doğrulama
+## validateAsync() ile özel asenkron doğrulama {#custom-async-validation-with-validateasync}
 
 Çoğu uygulama asenkron doğrulama için `validateHttp()` kullanmalıdır. HTTP isteklerini minimum yapılandırmayla ele alır ve kullanım durumlarının büyük çoğunluğunu kapsar.
 

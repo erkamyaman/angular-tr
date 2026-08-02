@@ -106,7 +106,7 @@ Bu değerlerin tür doğrulaması için aşağıdaki şemayı sağlayabilirsiniz
 
 ```json {header: "schema.json"}
 {
-  "$schema": "http://json-schema.org/schema",
+  "$schema": "https://json-schema.org/schema",
   "type": "object",
   "properties": {
     "source": {
@@ -120,7 +120,7 @@ Bu değerlerin tür doğrulaması için aşağıdaki şemayı sağlayabilirsiniz
 ```
 
 HELPFUL: Bu minimal bir örnektir, ancak doğrulama için şema kullanımı çok güçlü olabilir.
-Daha fazla bilgi için [JSON şemaları web sitesine](http://json-schema.org) bakın.
+Daha fazla bilgi için [JSON şemaları web sitesine](https://json-schema.org) bakın.
 
 Builder uygulamamızı şeması ve adıyla bağlamak için `package.json`'da işaret edebileceğiniz bir _builder tanımı_ dosyası oluşturmanız gerekir.
 

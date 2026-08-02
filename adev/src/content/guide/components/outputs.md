@@ -4,10 +4,8 @@ TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsa
 
 Angular bileşenleri, bir özelliği `output` fonksiyonuna atayarak özel olaylar tanımlayabilir:
 
-```ts {highlight:[3]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[5]}
+@Component(/* ... */)
 export class ExpandablePanel {
   panelClosed = output<void>();
 }
@@ -68,14 +66,12 @@ export class App {
 
 ```
 
-## Çıktı adlarını özelleştirme
+## Çıktı adlarını özelleştirme {#customizing-output-names}
 
 `output` fonksiyonu, şablonda olay için farklı bir ad belirtmenize olanak tanıyan bir parametre kabul eder:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   changed = output({alias: 'valueChanged'});
 }
@@ -89,7 +85,7 @@ Bu takma ad, özelliğin TypeScript kodundaki kullanımını etkilemez.
 
 Bileşen çıktıları için takma ad kullanmaktan genel olarak kaçınmanız gerekirken, bu özellik özellikleri yeniden adlandırırken orijinal ad için bir takma ad korumak veya yerel DOM olaylarıyla ad çakışmalarını önlemek için yararlı olabilir.
 
-## Output'lara programatik olarak abone olma
+## Output'lara programatik olarak abone olma {#subscribing-to-outputs-programmatically}
 
 Bir bileşeni dinamik olarak oluşturduğunuzda, bileşen örneğinden çıktı olaylarına programatik olarak abone olabilirsiniz. `OutputRef` türü bir `subscribe` yöntemi içerir:
 
@@ -125,16 +121,14 @@ Bileşen çıktıları için, bileşen seçicilerinde yaptığınız gibi önek 
 
 Çıktılar ve RxJS arasındaki birlikte çalışabilirlik hakkında ayrıntılar için [Bileşen ve direktif çıktılarıyla RxJS birlikte çalışabilirliği](ecosystem/rxjs-interop/output-interop) belgesine bakın.
 
-## `@Output` dekoratörü ile çıktı bildirme
+## `@Output` dekoratörü ile çıktı bildirme {#declaring-outputs-with-the-output-decorator}
 
 TIP: Angular ekibi yeni projeler için `output` fonksiyonunu önerse de, orijinal dekoratör tabanlı `@Output` API'si tamamen desteklenmeye devam etmektedir.
 
 Alternatif olarak, bir özelliği yeni bir `EventEmitter`'a atayarak ve `@Output` dekoratörü ekleyerek özel olaylar tanımlayabilirsiniz:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ExpandablePanel {
   @Output() panelClosed = new EventEmitter<void>();
 }
@@ -147,9 +141,7 @@ export class ExpandablePanel {
 `@Output` dekoratörü, şablonda olay için farklı bir ad belirtmenize olanak tanıyan bir parametre kabul eder:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   @Output('valueChanged') changed = new EventEmitter<number>();
 }

@@ -135,7 +135,7 @@ export class App{
 
 Olay işleyicisi ifadesi `false` olarak değerlendirilirse, Angular [yerel olay işleyici niteliklerine](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes#event_handler_attributes) benzer şekilde otomatik olarak `preventDefault()` çağırır. _Her zaman açıkça `preventDefault` çağırmayı tercih edin_, çünkü bu yaklaşım kodun amacını belirgin kılar.
 
-## Olay işlemeyi genişletme
+## Olay işlemeyi genişletme {#extend-event-handling}
 
 Angular'ın olay sistemi, `EVENT_MANAGER_PLUGINS` enjeksiyon belirteci ile kaydedilen özel olay eklentileri aracılığıyla genişletilebilir.
 

@@ -35,38 +35,26 @@ export class BasicDataStore {
 
 ## Service'ler nasıl kullanılabilir hale gelir
 
-Servisinizde `@Injectable({ providedIn: 'root' })` kullandığınızda, Angular:
+Service'ler varsayılan olarak kök seviyede sağlanır. Bir service global olarak sağlandığında Angular üç temel avantajı garanti eder:
 
-- Tüm uygulama için **tek bir örnek** (bir singleton) oluşturur
-- Ek yapılandırma olmadan **uygulamanız genelinde kullanılabilir** hale getirir
-- **Tree-shaking'i etkinleştirir**, böylece Angular servisi yalnızca gerçekten kullanırsanız JavaScript paketinize dahil eder
+- **Tek örnek (singleton):** Tüm uygulama için tek ve paylaşılan bir örnek oluşturur.
+- **Global erişilebilirlik:** Manuel provider kaydı olmadan her yerden otomatik olarak erişilebilir.
+- **Tree-shake edilebilirlik:** Kodunuz service'i hiçbir zaman açıkça kullanmıyorsa, service'in nihai üretim paketinin dışında kalmasını sağlar.
 
-Bu, çoğu servis için önerilen yaklaşımdır.
+### `@Service` ve `@Injectable` dekoratörlerini kullanma
 
-## `@Service` dekoratörünü kullanma
+`@Service` dekoratörü, geleneksel `@Injectable({ providedIn: 'root' })` sözdiziminin modern ve ergonomik bir kısayoludur.
 
-Uygulamanız genelinde kullanılabilen bir singleton servisin yaygın durumu için Angular, `@Injectable({providedIn: 'root'})` ifadesine daha ergonomik bir alternatif olarak `@Service` dekoratörünü sunar.
+Hangi dekoratörün sizin durumunuza uyduğuna karar vermek için bu hızlı başvuruyu kullanın:
 
-Önceki `BasicDataStore` örneği `@Service` ile yeniden yazılabilir:
-
-```ts {header: "src/app/basic-data-store.ts"}
-import {Service} from '@angular/core';
-
-@Service()
-export class BasicDataStore {
-  private data: string[] = [];
-
-  addData(item: string): void {
-    this.data.push(item);
-  }
-
-  getData(): string[] {
-    return [...this.data];
-  }
-}
-```
-
-Bu, yukarıdaki `@Injectable({providedIn: 'root'})` sürümüyle aynı şekilde davranır: Angular tek bir örnek oluşturur, her yerde kullanılabilir hale getirir ve hiç enjekte edilmezse paketten tree-shake eder.
+| Özellik / Gereksinim                                | `@Service` | `@Injectable`                             |
+| --------------------------------------------------- | ---------- | ----------------------------------------- |
+| **`inject()` fonksiyonu desteği**                   | Evet       | Evet                                      |
+| **Constructor tabanlı DI**                          | ❌ Hayır   | Evet                                      |
+| **Örtük kök singleton provider**                    | Evet       | ❌ Hayır (`{providedIn: 'root'}` gerekir) |
+| **Gelişmiş provider anahtarları (`useClass`, vb.)** | ❌ Hayır   | Evet                                      |
+| **Özel başlatma factory'leri**                      | Evet       | Evet                                      |
+| **Kök dışı kapsamlar (`platform`, vb.)**            | ❌ Hayır   | Evet                                      |
 
 ### Uygulamayı bir factory ile değiştirme
 

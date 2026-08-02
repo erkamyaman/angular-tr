@@ -388,15 +388,13 @@ export class RouterLink implements OnChanges, OnDestroy {
       !!(
         // Avoid breaking in an SSR context where customElements might not
         // be defined.
+        typeof customElements === 'object' &&
+        // observedAttributes is an optional static property/getter on a
+        // custom element. The spec states that this must be an array of
+        // strings.
         (
-          typeof customElements === 'object' &&
-          // observedAttributes is an optional static property/getter on a
-          // custom element. The spec states that this must be an array of
-          // strings.
-          (
-            customElements.get(tagName) as {observedAttributes?: string[]} | undefined
-          )?.observedAttributes?.includes?.('href')
-        )
+          customElements.get(tagName) as {observedAttributes?: string[]} | undefined
+        )?.observedAttributes?.includes?.('href')
       );
 
     if (typeof ngDevMode !== 'undefined' && ngDevMode) {
@@ -587,8 +585,6 @@ export class RouterLink implements OnChanges, OnDestroy {
  * An alias for the `RouterLink` directive.
  * Deprecated since v15, use `RouterLink` directive instead.
  *
-export { RouterLink as RouterLinkWithHref };
-nstead.
  * @publicApi
  */
 export {RouterLink as RouterLinkWithHref};

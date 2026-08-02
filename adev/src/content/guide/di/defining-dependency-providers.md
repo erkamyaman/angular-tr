@@ -2,7 +2,7 @@
 
 Angular, servisleri enjeksiyon için kullanılabilir hale getirmenin iki yolunu sunar:
 
-1. **Otomatik sağlama** - `@Injectable` dekoratöründe `providedIn` kullanarak, [`@Service`](guide/di/creating-and-using-services#service-dekoratörünü-kullanma) dekoratörü ile veya `InjectionToken` yapılandırmasında bir fabrika sağlayarak
+1. **Otomatik sağlama** - `@Injectable` dekoratöründe `providedIn` kullanarak, [`@Service`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) dekoratörü ile veya `InjectionToken` yapılandırmasında bir fabrika sağlayarak
 2. **Manuel sağlama** - Bileşenlerde, direktiflerde, rotalarda veya uygulama yapılandırmasında `providers` dizisini kullanarak
 
 [Önceki kılavuzda](/guide/di/creating-and-using-services), çoğu yaygın kullanım durumunu ele alan `providedIn: 'root'` kullanarak servislerin nasıl oluşturulacağını öğrendiniz. Bu kılavuz, hem otomatik hem de manuel sağlayıcı yapılandırması için ek desenleri inceler.
@@ -11,7 +11,7 @@ Angular, servisleri enjeksiyon için kullanılabilir hale getirmenin iki yolunu 
 
 `@Injectable` dekoratörü ile `providedIn: 'root'` servisler (sınıflar) için harika çalışırken, başka türde değerleri global olarak sağlamanız gerekebilir - yapılandırma nesneleri, fonksiyonlar veya ilkel değerler gibi. Angular bu amaçla `InjectionToken` sağlar.
 
-### InjectionToken nedir?
+### InjectionToken nedir? {#what-is-an-injectiontoken}
 
 `InjectionToken`, Angular'ın bağımlılık enjeksiyonu sisteminin enjeksiyon için değerleri benzersiz şekilde tanımlamak için kullandığı bir nesnedir. Bunu, Angular'ın DI sisteminde herhangi bir türde değer depolamanıza ve almanıza olanak tanıyan özel bir anahtar olarak düşünün:
 
@@ -613,7 +613,7 @@ Angular, sağlayıcıları kaydedebileceğiniz birkaç seviye sunar ve her birin
 
 - [**Uygulama başlatma**](#uygulama-başlatma) - Her yerde kullanılabilir global tekil örnekler
 - [**Bir eleman üzerinde (bileşen veya direktif)**](#bileşen-veya-direktif-providerları) - Belirli bileşen ağaçları için izole örnekler
-- [**Rota**](#rota-providerları) - Tembel yüklenen modüller için özelliğe özgü servisler
+- [**Rota**](#route-providers) - Tembel yüklenen modüller için özelliğe özgü servisler
 
 ### Uygulama başlatma
 
@@ -701,7 +701,7 @@ export class Modal {}
 
 NOTE: Aynı eleman üzerinde birden fazla direktif aynı token'ı sağlıyorsa, biri kazanır, ancak hangisi tanımsızdır.
 
-### Rota provider'ları
+### Rota provider'ları {#route-providers}
 
 Rota seviyesi sağlayıcılarını şunlar için kullanın:
 

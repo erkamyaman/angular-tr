@@ -1,17 +1,13 @@
 # Girdi özellikleri ile veri kabul etme
 
-TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun.
-
-TIP: Diğer web framework'lerine aşina iseniz, girdi özellikleri _props_ ile benzerdir.
+TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsayar. Angular'da yeniyseniz önce onu okuyun. Diğer web framework'lerine aşina iseniz, girdi özellikleri _props_ ile benzerdir.
 
 Bir bileşen kullandığınızda, ona genellikle bazı veriler iletmek istersiniz. Bir bileşen, kabul ettiği verileri **girdiler** bildirerek belirtir:
 
-```ts {highlight:[8]}
+```ts {highlight:[6]}
 import {Component, input} from '@angular/core';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   // 'value' adında, varsayılan değeri sıfır olan bir girdi bildirin.
   value = input(0);
@@ -27,9 +23,7 @@ Bu, özelliği bir şablonda bağlayabilmenizi sağlar:
 Bir girdinin varsayılan değeri varsa, TypeScript türü varsayılan değerden çıkarır:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   // TypeScript bu girdinin bir number olduğunu çıkarır, InputSignal<number> döndürür.
   value = input(0);
@@ -41,9 +35,7 @@ Fonksiyona bir generic parametre belirterek girdi için açıkça bir tür bildi
 Varsayılan değeri olmayan bir girdi ayarlanmazsa, değeri `undefined` olur:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   // `value` ayarlanmayabileceği için InputSignal<number | undefined> üretir.
   value = input<number>();
@@ -62,12 +54,10 @@ Bir bileşen sınıfını genişletirken, **girdiler alt sınıf tarafından mir
 
 `input` fonksiyonu bir `InputSignal` döndürür. Sinyali çağırarak değeri okuyabilirsiniz:
 
-```ts {highlight:[11]}
+```ts {highlight:[9]}
 import {Component, input, computed} from '@angular/core';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   // 'value' adında, varsayılan değeri sıfır olan bir girdi bildirin.
   value = input(0);
@@ -79,14 +69,12 @@ export class CustomSlider {
 
 `input` fonksiyonu tarafından oluşturulan sinyaller salt okunurdur.
 
-## Zorunlu girdiler
+## Zorunlu girdiler {#required-inputs}
 
 `input` yerine `input.required` çağırarak bir girdinin `required` (zorunlu) olduğunu bildirebilirsiniz:
 
-```ts {highlight:[6]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[4]}
+@Component(/* ... */)
 export class CustomSlider {
   // 'value' adında zorunlu bir girdi bildirin. `InputSignal<number>` döndürür.
   value = input.required<number>();
@@ -101,7 +89,7 @@ Zorunlu girdiler, döndürülen `InputSignal`'in generic parametresine otomatik 
 
 `input` fonksiyonu, girdinin çalışma şeklini değiştirmenize olanak tanıyan ikinci bir parametre olarak bir yapılandırma nesnesi kabul eder.
 
-### Girdi dönüşümleri
+### Girdi dönüşümleri {#input-transforms}
 
 Angular tarafından ayarlandığında girdinin değerini değiştirmek için bir `transform` fonksiyonu belirtebilirsiniz.
 
@@ -136,9 +124,7 @@ Girdi dönüşümlerinin en yaygın kullanım alanı, şablonlarda genellikle `n
 Bir girdi dönüşümü belirttiğinizde, dönüşüm fonksiyonunun parametre türü, şablonda girdiye ayarlanabilecek değer türlerini belirler.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   widthPx = input('', {transform: appendPx});
 }
@@ -150,16 +136,14 @@ function appendPx(value: number): string {
 
 Yukarıdaki örnekte, `widthPx` girdisi bir `number` kabul ederken `InputSignal` özelliği bir `string` döndürür.
 
-#### Yerleşik dönüşümler
+#### Yerleşik dönüşümler {#built-in-transformations}
 
 Angular, en yaygın iki senaryo için iki yerleşik dönüşüm fonksiyonu içerir: değerleri boolean ve sayıya zorlama.
 
 ```ts
 import {Component, input, booleanAttribute, numberAttribute} from '@angular/core';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomSlider {
   disabled = input(false, {transform: booleanAttribute});
   value = input(0, {transform: numberAttribute});
@@ -170,14 +154,12 @@ export class CustomSlider {
 
 `numberAttribute`, verilen değeri bir sayıya ayrıştırmayı dener, ayrıştırma başarısız olursa `NaN` üretir.
 
-### Girdi takma adları
+### Girdi takma adları {#input-aliases}
 
 Şablonlarda bir girdinin adını değiştirmek için `alias` seçeneğini belirtebilirsiniz.
 
-```ts {highlight:[5]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[3]}
+@Component(/* ... */)
 export class CustomSlider {
   value = input(0, {alias: 'sliderValue'});
 }
@@ -191,7 +173,7 @@ Bu takma ad, özelliğin TypeScript kodundaki kullanımını etkilemez.
 
 Bileşen girdileri için takma ad kullanmaktan genel olarak kaçınmanız gerekirken, bu özellik özellikleri yeniden adlandırırken orijinal ad için bir takma ad korumak veya yerel DOM eleman özellikleriyle ad çakışmalarını önlemek için yararlı olabilir.
 
-## Model input'lar
+## Model input'lar {#model-inputs}
 
 **Model girdileri**, bir bileşenin yeni değerleri üst bileşenine geri yaymasını sağlayan özel bir girdi türüdür.
 
@@ -200,9 +182,7 @@ Bir bileşen oluşturulurken, standart bir girdi oluşturur gibi bir model girdi
 Her iki girdi türü de birinin özelliğe bir değer bağlamasına izin verir. Ancak, **model girdileri bileşen yazarının özelliğe değer yazmasına izin verir**. Özellik iki yönlü bağlama ile bağlanmışsa, yeni değer o bağlamaya yayılır.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component(/* ... */)
 export class CustomSlider {
   // "value" adında bir model girdisi tanımlayın.
   value = model(0);
@@ -256,9 +236,7 @@ Yukarıdaki örnekte, `CustomSlider` kendi `value` model girdisine değer yazabi
 Bir bileşen veya direktifte model girdisi bildirdiğinizde, Angular otomatik olarak o model için karşılık gelen bir [çıktı](guide/components/outputs) oluşturur. Çıktının adı, model girdisinin adının sonuna "Change" eklenmesiyle oluşur.
 
 ```ts
-@Directive({
-  /* ... */
-})
+@Directive(/* ... */)
 export class CustomCheckbox {
   // Bu otomatik olarak "checkedChange" adında bir çıktı oluşturur.
   // Şablonda `(checkedChange)="handler()"` ile abone olunabilir.
@@ -270,9 +248,9 @@ Angular, model girdisinin `set` veya `update` yöntemlerini çağırarak yeni bi
 
 Çıktılar hakkında daha fazla ayrıntı için [Çıktılarla özel olaylar](guide/components/outputs) belgesine bakın.
 
-### Model input'ları özelleştirme
+### Model input'ları özelleştirme {#customizing-model-inputs}
 
-Bir model girdisini zorunlu olarak işaretleyebilir veya [standart bir girdi](guide/components/inputs) ile aynı şekilde bir takma ad sağlayabilirsiniz.
+Bir model girdisini, standart bir girdiyle aynı şekilde [zorunlu](#required-inputs) olarak işaretleyebilir veya bir [takma ad](#input-aliases) sağlayabilirsiniz.
 
 Model girdileri girdi dönüşümlerini desteklemez.
 
@@ -292,10 +270,8 @@ TIP: Angular ekibi yeni projeler için sinyal tabanlı `input` fonksiyonunu öne
 
 Alternatif olarak, bir özelliğe `@Input` dekoratörü ekleyerek bileşen girdileri bildirebilirsiniz:
 
-```ts {highlight:[5]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[3]}
+@Component(/* ... */)
 export class CustomSlider {
   @Input() value = 0;
 }
@@ -315,10 +291,8 @@ Bir girdiye bağlama, hem sinyal tabanlı hem de dekoratör tabanlı girdilerde 
 
 Belirli bir girdinin her zaman bir değere sahip olmasını zorunlu kılmak için `required` seçeneğini belirtebilirsiniz.
 
-```ts {highlight:[5]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[3]}
+@Component(/* ... */)
 export class CustomSlider {
   @Input({required: true}) value = 0;
 }
@@ -348,10 +322,8 @@ function trimString(value: string | undefined) {
 
 Şablonlarda bir girdinin adını değiştirmek için `alias` seçeneğini belirtebilirsiniz.
 
-```ts {highlight:[5]}
-@Component({
-  /*...*/
-})
+```ts {highlight:[3]}
+@Component(/* ... */)
 export class CustomSlider {
   @Input({alias: 'sliderValue'}) value = 0;
 }

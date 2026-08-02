@@ -44,7 +44,7 @@ const login = new UntypedFormGroup({
 
 Her `Untyped` sembolü, önceki Angular sürümlerindekiyle tam olarak aynı anlama sahiptir. `Untyped` ön eklerini kaldırarak türleri kademeli olarak etkinleştirebilirsiniz.
 
-## `FormControl`: Başlangıç
+## `FormControl`: Başlangıç {#formcontrol-getting-started}
 
 En basit olası form tek bir kontrolden oluşur:
 
@@ -90,7 +90,7 @@ const email = new FormControl<string | null>(null);
 email.setValue('angularrox@gmail.com');
 ```
 
-## `FormArray`: Dinamik, homojen koleksiyonlar
+## `FormArray`: Dinamik, homojen koleksiyonlar {#formarray-dynamic-homogenous-collections}
 
 Bir `FormArray`, açık uçlu bir kontrol listesi içerir. Tür parametresi, her iç kontrolün türüne karşılık gelir:
 
@@ -118,7 +118,7 @@ aliases.clear();
 console.log(aliases.length); // 0
 ```
 
-## `FormGroup` ve `FormRecord`
+## `FormGroup` ve `FormRecord` {#formgroup-and-formrecord}
 
 Angular, numaralandırılmış anahtar kümesine sahip formlar için `FormGroup` türünü ve açık uçlu veya dinamik gruplar için `FormRecord` adlı bir tür sağlar.
 
@@ -180,7 +180,7 @@ Bir `FormRecord`, `FormBuilder` ile de oluşturulabilir:
 const addresses = fb.record({'Andrew': '2340 Folsom St'});
 ```
 
-## `FormBuilder` ve `NonNullableFormBuilder`
+## `FormBuilder` ve `NonNullableFormBuilder` {#formbuilder-and-nonnullableformbuilder}
 
 `FormBuilder` sınıfı, yukarıdaki örneklerle aynı şekilde yeni türleri desteklemek üzere yükseltilmiştir.
 

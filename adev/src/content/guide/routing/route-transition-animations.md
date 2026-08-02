@@ -104,7 +104,7 @@ Benzersiz animasyon efektleri oluşturmak için CSS kullanarak view transitions'
 }
 ```
 
-IMPORTANT: View transition animasyonlarını bileşen stillerinde değil, global stil dosyanızda tanımlayın. Angular'ın [görünüm kapsülleme](/guide/components/styling#stil-kapsamı) özelliği bileşen stillerini kapsamlar ve bu da geçiş sözde öğelerini doğru şekilde hedeflemelerini engeller.
+IMPORTANT: View transition animasyonlarını bileşen stillerinde değil, global stil dosyanızda tanımlayın. Angular'ın [görünüm kapsülleme](/guide/components/styling#style-scoping) özelliği bileşen stillerini kapsamlar ve bu da geçiş sözde öğelerini doğru şekilde hedeflemelerini engeller.
 
 [StackBlitz'de güncellenmiş "count" örneğini deneyin](https://stackblitz.com/edit/stackblitz-starters-fwn4i7?file=src%2Fmain.ts)
 
@@ -112,7 +112,7 @@ IMPORTANT: View transition animasyonlarını bileşen stillerinde değil, global
 
 `withViewTransitions` özelliği, view transitions üzerinde gelişmiş kontrol için `onViewTransitionCreated` callback'i olan bir seçenekler nesnesi kabul eder. Bu callback:
 
-- Bir [enjeksiyon bağlamında](/guide/di/dependency-injection-context#bir-enjeksiyon-bağlamında-çalıştırma) çalışır
+- Bir [enjeksiyon bağlamında](/guide/di/dependency-injection-context#run-within-an-injection-context) çalışır
 - Aşağıdakileri içeren bir [`ViewTransitionInfo`](/api/router/ViewTransitionInfo) nesnesi alır:
   - `startViewTransition`'dan gelen `ViewTransition` örneği
   - Navigasyon yapılan kaynak rota için [`ActivatedRouteSnapshot`](/api/router/ActivatedRouteSnapshot)

@@ -8,7 +8,7 @@ Artımlı hidrasyon, tam uygulama hidrasyonunun üzerine inşa edilen bir perfor
 
 Artımlı hidrasyon ayrıca daha önce ertelenebilir olmayan içerik için ertelenebilir görünümler (`@defer`) kullanmanıza da olanak tanır. Özellikle, artık ekranın üst kısmındaki (above the fold) içerik için ertelenebilir görünümler kullanabilirsiniz. Artımlı hidrasyon öncesinde, ekranın üst kısmına bir `@defer` bloğu koymak, yer tutucu içeriğin render edilmesine ve ardından `@defer` bloğunun ana şablon içeriğiyle değiştirilmesine neden olurdu. Bu da düzen kaymasına yol açardı. Artımlı hidrasyon, `@defer` bloğunun ana şablonunun hidrasyon sırasında düzen kayması olmadan render edileceği anlamına gelir.
 
-## Angular'da artımlı hydration nasıl etkinleştirilir?
+## Angular'da artımlı hydration nasıl etkinleştirilir? {#how-do-you-enable-incremental-hydration-in-angular}
 
 Artımlı hidrasyonu, zaten hidrasyon ile sunucu tarafı render (SSR) kullanan uygulamalar için etkinleştirebilirsiniz. Önce sunucu tarafı render'ı etkinleştirmek için [Angular SSR Kılavuzu](guide/ssr)'nu ve hidrasyonu etkinleştirmek için [Angular Hidrasyon Kılavuzu](guide/hydration)'nu takip edin.
 
@@ -22,7 +22,7 @@ bootstrapApplication(App, {
 });
 ```
 
-NOTE: Artımlı Hidrasyon, [olay tekrarına](guide/hydration#olayları-yakalama-ve-yeniden-oynatma) bağımlıdır ve onu otomatik olarak etkinleştirir. Listenizde zaten `withEventReplay()` varsa, güvenle kaldırabilirsiniz.
+NOTE: Artımlı Hidrasyon, [olay tekrarına](guide/hydration#capturing-and-replaying-events) bağımlıdır ve onu otomatik olarak etkinleştirir. Listenizde zaten `withEventReplay()` varsa, güvenle kaldırabilirsiniz.
 
 Artımlı hidrasyondan vazgeçmek için `withNoIncrementalHydration()` kullanın:
 
@@ -40,7 +40,7 @@ bootstrapApplication(App, {
 
 ## Artımlı hydration nasıl çalışır?
 
-Artımlı hidrasyon, tam uygulama [hidrasyonu](guide/hydration), [ertelenebilir görünümler](/guide/templates/defer) ve [olay tekrarı](guide/hydration#olayları-yakalama-ve-yeniden-oynatma) üzerine inşa edilmiştir. Artımlı hidrasyon ile artımlı hidrasyon sınırlarını tanımlayan `@defer` bloklarına ek tetikleyiciler ekleyebilirsiniz. Bir defer bloğuna `hydrate` tetikleyicisi eklemek, Angular'a sunucu tarafı render sırasında o defer bloğunun bağımlılıklarını yüklemesi ve `@placeholder` yerine ana şablonu render etmesi gerektiğini söyler. İstemci tarafı render sırasında, bağımlılıklar hâlâ ertelenir ve defer bloğu içeriği `hydrate` tetikleyicisi tetiklenene kadar dehidrate kalır. Bu tetikleyici, defer bloğuna bağımlılıklarını getirmesini ve içeriği hidrasyon yapmasını söyler. Kullanıcı tarafından hidrasyon öncesinde tetiklenen herhangi bir tarayıcı olayı, özellikle bileşeninizde kayıtlı dinleyicilerle eşleşenler, sıraya alınır ve hidrasyon işlemi tamamlandıktan sonra yeniden oynatılır.
+Artımlı hidrasyon, tam uygulama [hidrasyonu](guide/hydration), [ertelenebilir görünümler](/guide/templates/defer) ve [olay tekrarı](guide/hydration#capturing-and-replaying-events) üzerine inşa edilmiştir. Artımlı hidrasyon ile artımlı hidrasyon sınırlarını tanımlayan `@defer` bloklarına ek tetikleyiciler ekleyebilirsiniz. Bir defer bloğuna `hydrate` tetikleyicisi eklemek, Angular'a sunucu tarafı render sırasında o defer bloğunun bağımlılıklarını yüklemesi ve `@placeholder` yerine ana şablonu render etmesi gerektiğini söyler. İstemci tarafı render sırasında, bağımlılıklar hâlâ ertelenir ve defer bloğu içeriği `hydrate` tetikleyicisi tetiklenene kadar dehidrate kalır. Bu tetikleyici, defer bloğuna bağımlılıklarını getirmesini ve içeriği hidrasyon yapmasını söyler. Kullanıcı tarafından hidrasyon öncesinde tetiklenen herhangi bir tarayıcı olayı, özellikle bileşeninizde kayıtlı dinleyicilerle eşleşenler, sıraya alınır ve hidrasyon işlemi tamamlandıktan sonra yeniden oynatılır.
 
 ## Tetikleyicilerle içerik hidrasyonunu kontrol etme
 

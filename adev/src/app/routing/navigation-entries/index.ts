@@ -415,7 +415,6 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             label: 'Yönlendirme ve navigasyon testi',
             path: 'guide/routing/testing',
             contentPath: 'guide/routing/testing',
-            status: 'new',
           },
           {
             label: 'Diğer yönlendirme görevleri',
@@ -532,9 +531,21 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             category: 'Signal Forms',
           },
           {
+            label: 'JSON ile dinamik formlar',
+            path: 'guide/forms/signals/dynamic-forms-with-json',
+            contentPath: 'guide/forms/signals/dynamic-forms-with-json',
+            category: 'Signal Forms',
+          },
+          {
             label: 'Özel kontroller',
             path: 'guide/forms/signals/custom-controls',
             contentPath: 'guide/forms/signals/custom-controls',
+            category: 'Signal Forms',
+          },
+          {
+            label: 'Test etme',
+            path: 'guide/forms/signals/testing',
+            contentPath: 'guide/forms/signals/testing',
             category: 'Signal Forms',
           },
           {
@@ -684,6 +695,7 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             label: 'Yönlendirme ve navigasyon testi',
             path: 'guide/routing/testing',
             contentPath: 'guide/routing/testing',
+            status: 'new',
             isCrossReferenced: true,
           },
           {

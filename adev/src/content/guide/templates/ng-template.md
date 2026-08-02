@@ -32,11 +32,11 @@ export class ItemCounter {
 
 Bir şablon parçasındaki ifadeler veya ifade blokları, parçanın nerede işlendiğinden bağımsız olarak, parçanın bildirildiği bileşene göre değerlendirilir.
 
-## Şablon parçasına referans alma
+## Şablon parçasına referans alma {#getting-a-reference-to-a-template-fragment}
 
 Bir şablon parçasına referans almanın üç yolu vardır:
 
-- `<ng-template>` elemanı üzerinde bir [şablon referans değişkeni](/guide/templates/variables#şablon-referans-değişkenleri) bildirerek
+- `<ng-template>` elemanı üzerinde bir [şablon referans değişkeni](/guide/templates/variables#template-reference-variables) bildirerek
 - Parçayı [bir bileşen veya direktif sorgusu](/guide/components/queries) ile sorgulayarak
 - Doğrudan bir `<ng-template>` elemanına uygulanan bir direktifte parçayı enjekte ederek.
 
@@ -130,7 +130,7 @@ Daha sonra bu parçaya direktif kodunuzda diğer sınıf üyeleri gibi referans 
 
 Bir şablon parçasının `TemplateRef` nesnesine referansınız olduğunda, bir parçayı iki yoldan biriyle işleyebilirsiniz: şablonunuzda `NgTemplateOutlet` direktifi ile veya TypeScript kodunuzda `ViewContainerRef` ile.
 
-### `NgTemplateOutlet` kullanma
+### `NgTemplateOutlet` kullanma {#using-ngtemplateoutlet}
 
 `@angular/common`'dan gelen `NgTemplateOutlet` direktifi bir `TemplateRef` kabul eder ve parçayı outlet'e sahip elemanın **kardeşi** olarak işler. `NgTemplateOutlet`'ı genellikle bir [`<ng-container>` elemanı](/guide/templates/ng-container) üzerinde kullanmalısınız.
 

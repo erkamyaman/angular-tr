@@ -167,7 +167,7 @@ export class UserProfile {
 }
 ```
 
-## Bir uygulamayı önyükleme
+## Bir uygulamayı önyükleme {#bootstrapping-an-application}
 
 IMPORTANT: Angular ekibi, tüm yeni kodlar için `bootstrapModule` yerine [bootstrapApplication](api/platform-browser/bootstrapApplication) kullanılmasını önerir. `@NgModule` ile önyükleme yapılan mevcut uygulamaları anlamak için bu kılavuzu kullanın.
 

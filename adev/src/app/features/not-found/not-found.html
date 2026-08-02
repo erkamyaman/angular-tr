@@ -1,26 +1,31 @@
 <main class="docs-viewer">
-  <header class="docs-header">
-    <div class="docs-page-title">
-      <h1 tabindex="-1"><span class="docs-emoji">Sayfa Bulunamadı 🙃</span></h1>
+  <div class="docs-not-found">
+    <img src="assets/images/angie/sad.svg" class="docs-not-found__angie" aria-hidden="true" />
+    <div class="docs-not-found__bubble">
+      <h1 tabindex="-1">Sayfa Bulunamadı</h1>
+      <p>
+        Aradığınız şeyi bulamadık.
+        @if (searchResults().length > 0) {
+          URL'den çıkarılan terim için bir arama başlattık.
+        }
+      </p>
+      <p>
+        Bunun bir hata olduğunu düşünüyorsanız, lütfen
+        <a
+          href="https://github.com/angular/angular/issues/new?template=3-docs-bug.yaml"
+          target="_blank"
+        >
+          bir sorun bildirin</a
+        >
+        böylece düzeltebiliriz.
+      </p>
     </div>
-  </header>
-  <p>Aradığınız şeyi bulamadık. URL'den çıkarılan terim için bir arama başlattık.</p>
-  <p>
-    Bunun bir hata olduğunu düşünüyorsanız, lütfen
-    <a
-      href="https://github.com/angular/angular/issues/new?template=3-docs-bug.yaml"
-      target="_blank"
-    >
-      bir sorun bildirin</a
-    >
-    böylece düzeltebiliriz.
-  </p>
+  </div>
 
   <!-- Search results that match the queried URL that we couldn't find  -->
   @if (searchResults().length > 0) {
     <!-- The search results are faded in if/once we have results -->
     <div animate.enter="enter-animation">
-      <br /><br />
       <h2>Şansınızı deneyin</h2>
       <p>Belki aradığınız şey aşağıdaki listede:</p>
 

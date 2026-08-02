@@ -208,90 +208,11 @@ describe('MyAccordionComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### AccordionGroup
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Bir grup akordeon öğesi için klavye navigasyonunu ve genişleme davranışını yöneten kapsayıcı yönerge.
-
-#### Girdiler
-
-| Property          | Type      | Default | Description                                                                     |
-| ----------------- | --------- | ------- | ------------------------------------------------------------------------------- |
-| `disabled`        | `boolean` | `false` | Gruptaki tüm tetikleyicileri devre dışı bırakır                                 |
-| `multiExpandable` | `boolean` | `true`  | Birden fazla panelin aynı anda genişletilip genişletilemeyeceği                 |
-| `softDisabled`    | `boolean` | `true`  | `true` olduğunda, devre dışı öğelere odaklanılabilir. `false` olduğunda atlanır |
-| `wrap`            | `boolean` | `false` | Klavye navigasyonunun son öğeden ilk öğeye ve tam tersi dönüp dönmeyeceği       |
-
-#### Yöntemler
-
-| Method        | Parameters | Description                                                                    |
-| ------------- | ---------- | ------------------------------------------------------------------------------ |
-| `expandAll`   | none       | Tüm panelleri genişletir (yalnızca `multiExpandable` `true` olduğunda çalışır) |
-| `collapseAll` | none       | Tüm panelleri daraltır                                                         |
-
-### AccordionTrigger
-
-Panel görünürlüğünü değiştiren buton elemanına uygulanan yönerge.
-
-#### Girdiler
-
-| Property   | Type             | Default | Description                                                       |
-| ---------- | ---------------- | ------- | ----------------------------------------------------------------- |
-| `panel`    | `AccordionPanel` | —       | **Zorunlu.** Kontrol edilen akordeon panelinin referansı.         |
-| `id`       | `string`         | auto    | Tetikleyici için benzersiz tanımlayıcı                            |
-| `disabled` | `boolean`        | `false` | Bu tetikleyiciyi devre dışı bırakır                               |
-| `expanded` | `boolean`        | `false` | Panelin genişletilmiş olup olmadığı (iki yönlü bağlama destekler) |
-
-#### Sinyaller
-
-| Property | Type              | Description                                 |
-| -------- | ----------------- | ------------------------------------------- |
-| `active` | `Signal<boolean>` | Tetikleyicinin şu anda odakta olup olmadığı |
-
-#### Yöntemler
-
-| Method     | Parameters | Description                         |
-| ---------- | ---------- | ----------------------------------- |
-| `expand`   | none       | İlişkili paneli genişletir          |
-| `collapse` | none       | İlişkili paneli daraltır            |
-| `toggle`   | none       | Panel genişleme durumunu değiştirir |
-
-### AccordionPanel
-
-Daraltılabilir içeriği içeren elemana uygulanan yönerge.
-
-#### Girdiler
-
-| Property          | Type      | Default | Description                                                      |
-| ----------------- | --------- | ------- | ---------------------------------------------------------------- |
-| `id`              | `string`  | auto    | Panel için benzersiz tanımlayıcı                                 |
-| `preserveContent` | `boolean` | `true`  | Panel daraltıldıktan sonra içeriğin DOM'da tutulup tutulmayacağı |
-
-#### Sinyaller
-
-| Property  | Type              | Description                                 |
-| --------- | ----------------- | ------------------------------------------- |
-| `visible` | `Signal<boolean>` | Panelin şu anda genişletilmiş olup olmadığı |
-
-#### Yöntemler
-
-| Method     | Parameters | Description                   |
-| ---------- | ---------- | ----------------------------- |
-| `expand`   | none       | Bu paneli genişletir          |
-| `collapse` | none       | Bu paneli daraltır            |
-| `toggle`   | none       | Genişleme durumunu değiştirir |
-
-### AccordionContent
-
-Tembel render etmeyi etkinleştirmek için akordeon paneli içindeki `ng-template`'e uygulanan yapısal yönerge.
-
-Bu yönergenin girdisi, çıktısı veya yöntemi yoktur. Bir `ng-template` elemanına uygulayın:
-
-```angular-html
-<div ngAccordionPanel #panel1="ngAccordionPanel">
-  <ng-template ngAccordionContent>
-    <!-- Buradaki içerik tembel olarak render edilir -->
-  </ng-template>
-</div>
-```
+- [`AccordionGroup`](/api/aria/accordion/AccordionGroup)
+- [`AccordionTrigger`](/api/aria/accordion/AccordionTrigger)
+- [`AccordionPanel`](/api/aria/accordion/AccordionPanel)
+- [`AccordionContent`](/api/aria/accordion/AccordionContent)

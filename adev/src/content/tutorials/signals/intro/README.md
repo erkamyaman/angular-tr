@@ -1,5 +1,10 @@
 # Angular Sinyallerini Öğrenin
 
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/greeting.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Hoş geldiniz! Hadi sinyalleri keşfedelim.</p>
+</div>
+
 Bu etkileşimli öğretici, Angular sinyallerinin temellerini ve bunları reaktif uygulamalar oluşturmak için nasıl kullanacağınızı öğretecektir.
 
 ## Bu eğitimi nasıl kullanabilirsiniz

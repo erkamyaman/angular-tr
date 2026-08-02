@@ -1,5 +1,10 @@
 # Sinyaller hakkında daha derine inmek ister misiniz?
 
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/superhero.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Başardınız! Sinyaller öğreticisini tamamladınız ve reaktif durumu sinyallerle yönetmeyi öğrendiniz.</p>
+</div>
+
 Aşağıdaki kaynaklarla sinyaller hakkında daha fazla bilgi edinebilirsiniz:
 
 <docs-card-container>

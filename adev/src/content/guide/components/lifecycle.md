@@ -87,16 +87,14 @@ Bu adım, bileşenin kendi şablonunun kontrol edilmesinden _önce_ gerçekleşi
 
 Başlatma sırasında, ilk `ngOnChanges` `ngOnInit`'ten önce çalışır.
 
-#### Değişiklikleri inceleme
+#### Değişiklikleri inceleme {#inspecting-changes}
 
 `ngOnChanges` yöntemi tek bir `SimpleChanges` argümanı kabul eder. Bu nesne, her bileşen girdi adını bir `SimpleChange` nesnesine eşleştiren bir [`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)'dur. Her `SimpleChange`, girdinin önceki değerini, mevcut değerini ve girdinin ilk kez değişip değişmediğini gösteren bir işaret içerir.
 
 Daha güçlü tür denetimi için ilk generic argüman olarak isteğe bağlı olarak mevcut sınıfı veya this'i iletebilirsiniz.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class UserProfile {
   name = input('');
 
@@ -121,9 +119,7 @@ Herhangi bir girdi özelliği için bir `alias` sağlarsanız, `SimpleChanges` R
 `ngOnDestroy` yöntemine alternatif olarak, bir `DestroyRef` örneği enjekte edebilirsiniz. `DestroyRef`'in `onDestroy` yöntemini çağırarak bileşenin yok edilmesi üzerine çağırılacak bir geri çağrıma kaydedebilirsiniz.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class UserProfile {
   constructor() {
     inject(DestroyRef).onDestroy(() => {
@@ -137,7 +133,7 @@ export class UserProfile {
 
 Tüm temizlik kodunu `ngOnDestroy` yöntemine koymak yerine, kurulum kodunu temizlik koduna yakın tutmak için de `DestroyRef` kullanabilirsiniz.
 
-##### Örnek yok edilmesini algılama
+##### Örnek yok edilmesini algılama {#detecting-instance-destruction}
 
 `DestroyRef`, belirli bir örneğin zaten yok edilip edilmediğini kontrol etmeye olanak tanıyan bir `destroyed` özelliği sağlar. Bu, özellikle gecikmeli veya asenkron mantıkla uğraşılırken yok edilmiş bileşenler üzerinde işlem yapmayı önlemek için kullanışlıdır.
 
@@ -157,7 +153,7 @@ Başlatma sırasında, ilk `ngDoCheck` `ngOnInit`'ten sonra çalışır.
 
 `ngAfterContentInit` yöntemi, bileşenin içerisine yuvalanan tüm alt elemanlar (_içeriği_) başlatıldıktan sonra bir kez çalışır.
 
-Bu yaşam döngüsü kancasını [içerik sorguları](guide/components/queries#içerik-sorguları)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+Bu yaşam döngüsü kancasını [içerik sorguları](guide/components/queries#content-queries)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
 ### ngAfterContentChecked
 
@@ -165,13 +161,13 @@ Bu yaşam döngüsü kancasını [içerik sorguları](guide/components/queries#i
 
 Bu yöntem çok sık çalışır ve sayfa performansınızı önemli ölçüde etkileyebilir. Bu kancayı mümkün olduğunda tanımlamaktan kaçının ve yalnızca başka bir alternatifiniz olmadığında kullanın.
 
-[İçerik sorguları](guide/components/queries#içerik-sorguları)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+[İçerik sorguları](guide/components/queries#content-queries)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
 ### ngAfterViewInit
 
 `ngAfterViewInit` yöntemi, bileşenin şablonundaki tüm alt elemanlar (_görünümü_) başlatıldıktan sonra bir kez çalışır.
 
-Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/queries#görünüm-sorguları)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/queries#decorator-view-queries)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
 ### ngAfterViewChecked
 
@@ -179,9 +175,9 @@ Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/querie
 
 Bu yöntem çok sık çalışır ve sayfa performansınızı önemli ölçüde etkileyebilir. Bu kancayı mümkün olduğunda tanımlamaktan kaçının ve yalnızca başka bir alternatifiniz olmadığında kullanın.
 
-[Görünüm sorguları](guide/components/queries#görünüm-sorguları)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+[Görünüm sorguları](guide/components/queries#decorator-view-queries)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
-### afterEveryRender ve afterNextRender
+### afterEveryRender ve afterNextRender {#aftereveryrender-and-afternextrender}
 
 `afterEveryRender` ve `afterNextRender` fonksiyonları, Angular sayfadaki _tüm bileşenleri_ DOM'a render etmeyi bitirdikten sonra çağırılacak bir **render geri çağrısı** kaydetmenize olanak tanır.
 
@@ -201,9 +197,7 @@ Render geri çağrıları, sunucu tarafı render etme veya derleme zamanı ön-r
 ```ts
 import {Component, ElementRef, afterNextRender} from '@angular/core';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UserProfile {
   private prevPadding = 0;
   private elementHeight = 0;
@@ -250,9 +244,7 @@ Angular, her yaşam döngüsü yöntemi için bir TypeScript arayüzü sağlar. 
 Her arayüz, karşılık gelen yöntemle aynı ada sahiptir, ancak `ng` öneki olmadan. Örneğin, `ngOnInit` arayüzü `OnInit`'tir.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class UserProfile implements OnInit {
   ngOnInit() {
     /* ... */

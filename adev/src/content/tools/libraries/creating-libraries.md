@@ -131,7 +131,7 @@ Daha fazla bilgi için bkz. [Schematics Overview](tools/cli/schematics) ve [Sche
 
 Kütüphanenizi bir npm paketi olarak derlemek ve yayınlamak için Angular CLI'yi ve npm paket yöneticisini kullanın.
 
-Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/master/README.md) adlı bir araç kullanır.
+Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/README.md) adlı bir araç kullanır.
 `ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Building libraries with Ivy](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
 
 Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını kullanarak derlemelisiniz.
@@ -148,7 +148,7 @@ npm publish
 ## Bir kütüphanedeki varlıkları yönetme
 
 Angular kütüphanenizde, dağıtılabilir paket tema dosyaları, Sass mixin'leri veya belgeler \(değişiklik günlüğü gibi\) gibi ek varlıklar içerebilir.
-Daha fazla bilgi için [varlıkları derlemenin bir parçası olarak kütüphanenize kopyalama](https://github.com/ng-packagr/ng-packagr/blob/master/docs/copy-assets.md) ve [varlıkları bileşen stillerine gömme](https://github.com/ng-packagr/ng-packagr/blob/master/docs/embed-assets-css.md) konularına bakın.
+Daha fazla bilgi için [varlıkları derlemenin bir parçası olarak kütüphanenize kopyalama](https://github.com/ng-packagr/ng-packagr/blob/main/docs/copy-assets.md) ve [varlıkları bileşen stillerine gömme](https://github.com/ng-packagr/ng-packagr/blob/main/docs/embed-assets-css.md) konularına bakın.
 
 IMPORTANT: Sass mixin'leri veya önceden derlenmiş CSS gibi ek varlıklar dahil ederken, bunları birincil giriş noktasının `package.json` dosyasındaki koşullu ["exports"](tools/libraries/angular-package-format#exports) bölümüne manuel olarak eklemeniz gerekir.
 

@@ -117,7 +117,7 @@ Karma'yı özelleştirmek istiyorsanız, aşağıdaki komutu çalıştırarak bi
 ng generate config karma
 ```
 
-HELPFUL: Karma yapılandırması hakkında daha fazla bilgi için [Karma yapılandırma kılavuzunu](http://karma-runner.github.io/6.4/config/configuration-file.html) okuyun.
+HELPFUL: Karma yapılandırması hakkında daha fazla bilgi için [Karma yapılandırma kılavuzunu](https://karma-runner.github.io/6.4/config/configuration-file.html) okuyun.
 
 ### `angular.json`'da test çalıştırıcısını ayarlama
 

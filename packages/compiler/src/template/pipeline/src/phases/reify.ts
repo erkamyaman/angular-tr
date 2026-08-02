@@ -403,7 +403,9 @@ function reifyCreateOperations(unit: CompilationUnit, ops: ir.OpList<ir.CreateOp
         break;
       case ir.OpKind.DeferOn:
         let args: o.Expression[] = [];
-        switch (op.trigger.kind) {
+        const triggerKind = op.trigger.kind;
+
+        switch (triggerKind) {
           case ir.DeferTriggerKind.Never:
           case ir.DeferTriggerKind.Immediate:
             break;
@@ -447,12 +449,13 @@ function reifyCreateOperations(unit: CompilationUnit, ops: ir.OpList<ir.CreateOp
               }
             }
             break;
-          default:
+          default: {
+            const unhandledTriggerKind: never = triggerKind;
+
             throw new Error(
-              `AssertionError: Unsupported reification of defer trigger kind ${
-                (op.trigger as any).kind
-              }`,
+              `AssertionError: Unsupported reification of defer trigger kind ${unhandledTriggerKind}`,
             );
+          }
         }
         ir.OpList.replace(op, ng.deferOn(op.trigger.kind, args, op.modifier, op.sourceSpan));
         break;
@@ -803,13 +806,12 @@ function reifyIrExpression(unit: CompilationUnit, expr: o.Expression): o.Express
       if (!(unit instanceof ViewCompilationUnit)) {
         throw new Error(`AssertionError: must be compiling a component`);
       }
-      const isFn = unit.job.views.get(expr.childrenViewXref)!.contextVariables.size > 0;
-      const slot = o.literal(expr.childrenViewHandle.slot!);
-      return isFn
-        ? o
-            .importExpr(Identifiers.foreignContentFn)
-            .callFn([slot, o.literal(expr.foreignComponentConstIndex)])
-        : o.importExpr(Identifiers.foreignContent).callFn([slot]);
+      const parameterized = unit.job.views.get(expr.childrenViewXref)!.contextVariables.size > 0;
+      return ng.foreignContent(
+        expr.childrenViewHandle.slot!,
+        expr.foreignComponentConstIndex,
+        parameterized,
+      );
     case ir.ExpressionKind.LexicalRead:
       throw new Error(`AssertionError: unresolved LexicalRead of ${expr.name}`);
     case ir.ExpressionKind.TwoWayBindingSet:

@@ -17,7 +17,7 @@ Gereksiz değişiklik algılama çağrılarını Angular DevTools ile tespit ede
 
 Yukarıdaki görüntüde, bir elemanla ilişkili olay işleyicileri tarafından tetiklenen bir dizi değişiklik algılama çağrısı vardır. Bu, `NgZone`'un varsayılan davranışını değiştirmeyen üçüncü taraf, yerel olmayan Angular bileşenleri kullanırken yaygın bir zorluktur.
 
-## Görevleri `NgZone` dışında çalıştırma
+## Görevleri `NgZone` dışında çalıştırma {#run-tasks-outside-ngzone}
 
 Bu tür durumlarda, [NgZone](/api/core/NgZone) kullanarak Angular'a belirli bir kod parçası tarafından planlanan görevler için değişiklik algılaması çağırmamasını talimat verebilirsiniz.
 

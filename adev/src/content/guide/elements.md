@@ -39,7 +39,7 @@ Bir özel öğe herhangi bir sayfanın DOM'una eklendiğinde, diğer herhangi bi
 Yapılandırılmış sınıfınızı tarayıcının özel öğe kayıt defterine kaydettikten sonra, yeni öğeyi doğrudan DOM'a eklediğiniz içerikte yerleşik bir HTML öğesi gibi kullanın:
 
 ```html
-<my-popup message="Use Angular!"></my-popup>
+<my-popup message="Use Angular!" />
 ```
 
 Özel öğeniz bir sayfaya yerleştirildiğinde, tarayıcı kayıtlı sınıfın bir örneğini oluşturur ve DOM'a ekler.
@@ -77,10 +77,10 @@ Daha fazla bilgi için [Özel olay oluşturma](https://developer.mozilla.org/en-
 
 ## Example: A Popup Service
 
-Daha önce, çalışma zamanında bir uygulamaya bir bileşen eklemek istediğinizde, bir _dinamik bileşen_ tanımlamanız ve ardından onu yüklemeniz, DOM'daki bir öğeye eklemeniz ve tüm bağımlılıkları, değişiklik algılamayı ve olay işlemeyi bağlamanız gerekiyordu.
+Çalışma zamanında bir uygulamaya bileşen eklemek için, `createComponent` API'si ile [programatik olarak render edebilirsiniz](guide/components/programmatic-rendering).
+Bu yaklaşımda çevresindeki altyapıdan siz sorumlusunuz: değişiklik algılamanın çalışması için bileşenin host görünümünü `ApplicationRef`'e eklemek, girdilerini ayarlamak, çıktılarına abone olmak ve bileşen kaldırıldığında görünümü ayırıp temizlemek.
 
-Angular özel öğesi kullanmak, tüm altyapıyı ve framework'ü otomatik olarak sağlayarak süreci daha basit ve daha şeffaf hale getirir - tek yapmanız gereken istediğiniz olay işleme türünü tanımlamaktır.
-\(Bileşeni uygulamanızda kullanmayacaksanız, yine de derlemeden hariç tutmanız gerekir.\)
+Angular özel öğesi kullanmak, tüm bu altyapıyı otomatik olarak sağlayarak süreci daha basit ve daha şeffaf hale getirir. Tek yapmanız gereken istediğiniz olay işleme türünü tanımlamaktır.
 
 Aşağıdaki Popup Service örnek uygulaması, dinamik olarak yükleyebileceğiniz veya özel bir öğeye dönüştürebileceğiniz bir bileşen tanımlar.
 

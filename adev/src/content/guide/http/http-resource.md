@@ -6,7 +6,7 @@ Angular'ın `resource` kalıbı hakkında daha fazla bilgi için [`resource` ile
 
 ## `httpResource` Kullanımı
 
-TIP: Uygulama sağlayıcılarınıza `provideHttpClient`'ı dahil ettiğinizden emin olun. Ayrıntılar için [HttpClient Kurulumu](/guide/http/setup) bölümüne bakın.
+TIP: `httpResource`, global olarak kullanılabilen `HttpClient`'ı kullanır. `provideHttpClient(...)`'ı yalnızca yakalayıcılar veya XSRF seçenekleri gibi HTTP özelliklerini yapılandırmanız gerektiğinde kullanın. Ayrıntılar için [HttpClient Kurulumu](/guide/http/setup) bölümüne bakın.
 
 Bir URL döndürerek bir HTTP kaynağı tanımlayabilirsiniz:
 
@@ -53,8 +53,8 @@ TIP: `POST` veya `PUT` gibi _değişiklik_ işlemleri için `httpResource` kulla
 `httpResource`'un sinyalleri, hangi öğelerin görüntüleneceğini kontrol etmek için şablonda kullanılabilir.
 
 ```angular-html
-@if(user.hasValue()) {
-  <user-details [user]="user.value()">
+@if (user.hasValue()) {
+  <user-details [user]="user.value()" />
 } @else if (user.error()) {
   <div>Could not load user information</div>
 } @else if (user.isLoading()) {
@@ -107,7 +107,7 @@ Aşağıdaki örnek, `httpResource` kullanan kod için bir birim testini göster
 
 ```ts
 TestBed.configureTestingModule({
-  providers: [provideHttpClient(), provideHttpClientTesting()],
+  providers: [provideHttpClientTesting()],
 });
 
 const id = signal(0);

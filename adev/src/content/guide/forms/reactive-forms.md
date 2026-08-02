@@ -96,17 +96,17 @@ Bir ad güncellemesini simüle etmek için şablonu bir düğmeyle güncelleyin.
 Form modeli kontrol için doğruluk kaynağıdır, bu nedenle düğmeye tıkladığınızda girdinin değeri bileşen sınıfı içinde değiştirilir ve geçerli değerini geçersiz kılar.
 
 HELPFUL: Bu örnekte tek bir kontrol kullanıyorsunuz.
-`setValue()` yöntemini bir [form grubu](#form-kontrollerini-gruplama) veya [form dizisi](#dinamik-formlar-oluşturma) örneğiyle kullanırken, değerin grubun veya dizinin yapısıyla eşleşmesi gerekir.
+`setValue()` yöntemini bir [form grubu](#grouping-form-controls) veya [form dizisi](#creating-dynamic-forms) örneğiyle kullanırken, değerin grubun veya dizinin yapısıyla eşleşmesi gerekir.
 
-## Form kontrollerini gruplama
+## Form kontrollerini gruplama {#grouping-form-controls}
 
 Formlar genellikle birbiriyle ilişkili birkaç kontrol içerir.
 Reaktif formlar, birden fazla ilişkili kontrolü tek bir girdi formunda gruplamak için iki yol sunar.
 
-| Form grupları | Ayrıntılar                                                                                                                                                                                                                                                                                 |
-| :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Form grubu    | Birlikte yönetebileceğiniz sabit bir kontrol kümesi ile bir form tanımlar. Form grubu temelleri bu bölümde tartışılmaktadır. Daha karmaşık formlar oluşturmak için [form gruplarını iç içe yerleştirebilirsiniz](#iç-içe-form-grupları-oluşturma 'See more about nesting groups').         |
-| Form dizisi   | Çalışma zamanında kontroller ekleyip kaldırabileceğiniz dinamik bir form tanımlar. Daha karmaşık formlar oluşturmak için form dizilerini de iç içe yerleştirebilirsiniz. Bu seçenek hakkında daha fazla bilgi için [Dinamik formlar oluşturma](#dinamik-formlar-oluşturma) bölümüne bakın. |
+| Form grupları | Ayrıntılar                                                                                                                                                                                                                                                                              |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Form grubu    | Birlikte yönetebileceğiniz sabit bir kontrol kümesi ile bir form tanımlar. Form grubu temelleri bu bölümde tartışılmaktadır. Daha karmaşık formlar oluşturmak için [form gruplarını iç içe yerleştirebilirsiniz](#iç-içe-form-grupları-oluşturma 'See more about nesting groups').      |
+| Form dizisi   | Çalışma zamanında kontroller ekleyip kaldırabileceğiniz dinamik bir form tanımlar. Daha karmaşık formlar oluşturmak için form dizilerini de iç içe yerleştirebilirsiniz. Bu seçenek hakkında daha fazla bilgi için [Dinamik formlar oluşturma](#creating-dynamic-forms) bölümüne bakın. |
 
 Bir form kontrol örneğinin tek bir girdi alanı üzerinde kontrol sağlaması gibi, bir form grubu örneği de bir form kontrol örnekleri grubunun form durumunu takip eder \(örneğin, bir form\).
 Form grubu oluşturulurken, form grubundaki her kontrol ada göre takip edilir.
@@ -320,7 +320,7 @@ Form doğrulama hakkında daha fazla bilgi için [Form Doğrulama](guide/forms/f
 </docs-step>
 </docs-workflow>
 
-## Dinamik form'lar oluşturma
+## Dinamik form'lar oluşturma {#creating-dynamic-forms}
 
 `FormArray`, herhangi bir sayıda adlandırılmamış kontrolü yönetmek için `FormGroup`'a bir alternatiftir.
 Form grubu örneklerinde olduğu gibi, form dizisi örneklerinden kontrolleri dinamik olarak ekleyip kaldırabilirsiniz ve form dizisi örneğinin değeri ile doğrulama durumu, alt kontrollerinden hesaplanır.
@@ -385,9 +385,7 @@ NOTE: Zoneless uygulamalarda, bir reaktif form modelini değiştirmek (örneğin
 import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class ProfileEditor {
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -434,7 +432,7 @@ Başlangıçta form bir `Alias` alanı içerir. Başka bir alan eklemek için **
 
 </docs-workflow>
 
-## Birleşik kontrol durumu değişiklik olayları
+## Birleşik kontrol durumu değişiklik olayları {#unified-control-state-change-events}
 
 Tüm form kontrolleri, `AbstractControl` (`FormControl`, `FormGroup`, `FormArray` ve `FormRecord`) üzerindeki `events` observable'ı aracılığıyla tek bir birleşik **kontrol durum değişikliği olayları** akışı sunar.
 Bu birleşik akış, **değer**, **durum**, **pristine**, **touched** ve **reset** durum değişikliklerine ve ayrıca **submit** gibi **form düzeyinde eylemlere** tepki vermenize olanak tanır; böylece birden fazla observable bağlamak yerine tek bir abonelikle tüm güncellemeleri yönetebilirsiniz.
@@ -466,9 +464,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UnifiedEventsBasicComponent {
   form = new FormGroup({
     username: new FormControl(''),
@@ -539,7 +535,7 @@ control.events.subscribe((e) => {
 
 NOTE: Değer değişikliğinde, yayılma bu kontrolün değeri güncellendikten hemen sonra gerçekleşir. Bir üst kontrolün değeri (örneğin bu FormControl bir FormGroup'un parçasıysa) daha sonra güncellenir, bu nedenle bu olayın geri çağırmasından bir üst kontrolün değerine (`value` özelliği kullanarak) erişmek, henüz güncellenmemiş bir değer almanızla sonuçlanabilir. Bunun yerine üst kontrolün `events`'ine abone olun.
 
-## Form kontrol durumunu yönetme
+## Form kontrol durumunu yönetme {#managing-form-control-state}
 
 Reaktif formlar, **touched/untouched** ve **pristine/dirty** ile kontrol durumunu takip eder. Angular bunları DOM etkileşimleri sırasında otomatik olarak günceller, ancak bunları programatik olarak da yönetebilirsiniz.
 
@@ -612,14 +608,12 @@ onSubmit() {
 
 Form kontrollerini programatik olarak güncellerken, değişikliklerin form hiyerarşisi boyunca nasıl yayılacağı ve olayların yayılıp yayılmayacağı üzerinde hassas kontrole sahipsiniz.
 
-### Olay yayımını anlama
+### Olay yayımını anlama {#understanding-event-emission}
 
 Varsayılan olarak `emitEvent: true`'dur; bir kontrole yapılan herhangi bir değişiklik, `valueChanges` ve `statusChanges` observable'ları aracılığıyla olayları yayar. `emitEvent: false` ayarı bu yayımları bastırır; bu, otomatik kaydetme gibi reaktif davranışları tetiklemeden değerleri programatik olarak ayarlamak, kontroller arasındaki döngüsel güncellemeleri önlemek veya olayların yalnızca sonunda bir kez yayılması gereken toplu güncellemeler yapmak için kullanışlıdır.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class BlogPostEditor {
   postForm = new FormGroup({
     title: new FormControl(''),
@@ -659,7 +653,7 @@ updatePostalCodeValidator(country: string) {
 
 HELPFUL: Çalışma zamanında validatorları dinamik olarak yönetmek için Form Doğrulama kılavuzundaki [Reaktif formlarda validatorları dinamik olarak yönetme](guide/forms/form-validation#reaktif-formlarda-doğrulayıcıları-dinamik-olarak-yönetme) bölümüne bakın.
 
-## Form kontrol türlerini daraltmak için yardımcı fonksiyonlar
+## Form kontrol türlerini daraltmak için yardımcı fonksiyonlar {#utility-functions-for-narrowing-form-control-types}
 
 Angular, bir `AbstractControl`'ün somut türünü belirlemeye yardımcı olan dört yardımcı fonksiyon sağlar. Bu fonksiyonlar **tür koruyucuları** olarak hareket eder ve `true` döndürdüklerinde kontrol türünü daraltır; bu da aynı blok içinde alt tipe özgü özelliklere güvenli bir şekilde erişmenize olanak tanır.
 

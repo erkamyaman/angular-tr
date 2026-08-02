@@ -12,7 +12,7 @@ Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmek
 - Service worker'dan sunucuda yeni güncellemeler olup olmadığını kontrol etmesini isteme.
 - Service worker'dan mevcut sekme için uygulamanın en son sürümünü etkinleştirmesini isteme.
 
-### Sürüm güncellemeleri
+### Sürüm güncellemeleri {#version-updates}
 
 `versionUpdates`, `SwUpdate`'in bir `Observable` özelliğidir ve beş olay türü yayar:
 
@@ -66,7 +66,7 @@ Yeniden yüklemeden güncelleme, uygulama kabuğu ile tembel yüklenen parçalar
 `activateUpdate()`'i yalnızca belirli kullanım durumunuz için güvenli olduğundan eminseniz kullanmalısınız.
 </docs-callout>
 
-### Kurtarılamaz bir durumu işleme
+### Kurtarılamaz bir durumu işleme {#handling-an-unrecoverable-state}
 
 Bazı durumlarda, service worker'ın bir istemciye hizmet vermek için kullandığı uygulamanın sürümü, tam bir sayfa yeniden yüklemesi olmadan kurtarılamayan bozuk bir durumda olabilir.
 

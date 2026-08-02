@@ -6,6 +6,8 @@ Tarayıcının yerleşik form kontrolleri (input, select, textarea gibi) yaygın
 
 Signal Forms, belirli arayüzleri uygulayan herhangi bir bileşenle çalışır. Bir **kontrol arayüzü**, bileşeninizin form sistemiyle iletişim kurmasını sağlayan özellikleri ve sinyalleri tanımlar. Bileşeniniz bu arayüzlerden birini uyguladığında, `[formField]` direktifi kontrolünüzü otomatik olarak form durumu, doğrulama ve veri bağlamaya bağlar.
 
+HELPFUL: Özel Signal Form Kontrolleri, ek uyumluluk kodu olmadan Signal, Reactive ve Template-Driven Forms ile [kullanılabilir](guide/forms/signals/migration#özel-kontroller).
+
 ## Temel bir özel kontrol oluşturma
 
 Minimal bir uygulama ile başlayalım ve ihtiyaç duydukça özellikler ekleyelim.
@@ -176,7 +178,7 @@ Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
 
 NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `field` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
 
-#### Doğrulama kısıtlamaları
+#### Doğrulama kısıtlamaları {#validation-constraints}
 
 Formdan doğrulama kısıtlama değerlerini alın:
 
@@ -197,7 +199,7 @@ Formdan doğrulama kısıtlama değerlerini alın:
 
 Aşağıdaki "[Adding state signals](#durum-sinyalleri-ekleme)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
 
-### FormField direktifi nasıl çalışır
+### FormField direktifi nasıl çalışır {#how-the-formfield-directive-works}
 
 `[formField]` direktifi, kontrolünüzün hangi arayüzü uyguladığını algılar ve uygun sinyalleri otomatik olarak bağlar:
 
@@ -336,10 +338,6 @@ export class Login {
 
 Kullanıcı geçersiz bir e-posta yazdığında, FormField direktifi `invalid()` ve `errors()` değerlerini otomatik olarak günceller. Kontrolünüz doğrulama geri bildirimini gösterebilir.
 
-### Durum özellikleri için sinyal türleri
-
-Çoğu durum özelliği `input()` (formdan salt okunur) kullanır. Kontrolünüz kullanıcı etkileşiminde güncellediğinde `touched` için `model()` kullanın. `touched` özelliği, ihtiyaçlarınıza bağlı olarak benzersiz bir şekilde `model()`, `input()` veya `OutputRef` desteği sunar.
-
 ### `debounce('blur')` ile çalışma
 
 [`debounce('blur')`](api/forms/signals/debounce) kuralı, UI'dan form modeline yapılan güncellemeleri her tuş vuruşunda uygulamak yerine alan odağı kaybedene (blur) kadar geciktirir. Yerleşik kontroller bir blur'u forma otomatik olarak bildirir. Özel bir kontrol yalnızca yerel [`blur` olayına](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) yanıt olarak `touch` çıktısını yaydığında bu sürece katılır:
@@ -388,7 +386,7 @@ export class App {
 
 IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (odak kontrolden ayrıldığında) yayın. `touch` çıktısı olmadan alan asla blur olarak kaydedilmez, bu nedenle `debounce('blur')` kontrolünüz üzerinde etkili olmaz.
 
-## Değer dönüşümü
+## Değer dönüşümü {#value-transformation}
 
 Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
 
@@ -466,6 +464,38 @@ accountForm = form(this.accountModel, (schemaPath) => {
   minLength(schemaPath.password, 8, {message: 'Password must be at least 8 characters'});
 });
 ```
+
+## Kontrolleri yeniden kullanılabilir hale getirme
+
+Özel bir kontrol çoğu zaman doğrulama konusunda örtük beklentiler taşır. Bir e-posta girdisi, kendisini kullanan her formda `required` ve `email` kurallarına ihtiyaç duyar. Bu kuralları her tüketicinin yeniden bildirmesine güvenmek yerine, kontrolün yanına eşlik eden bir şema paketleyin ve ikisini de aynı modülden dışa aktarın:
+
+```ts {header: 'email-input.ts'}
+import {schema, required, email} from '@angular/forms/signals';
+
+export const emailFieldSchema = schema<string>((path) => {
+  required(path, {message: 'Email is required'});
+  email(path, {message: 'Enter a valid email address'});
+});
+```
+
+Tüketici, eşlik eden şemayı içe aktarır ve `apply()` ile formuna dahil eder:
+
+```ts {header: 'registration.ts'}
+import {form, apply} from '@angular/forms/signals';
+import {emailFieldSchema} from './email-input';
+
+registrationForm = form(this.registrationModel, (path) => {
+  apply(path.email, emailFieldSchema);
+});
+```
+
+`apply()`, eşlik eden şemanın kurallarını belirtilen yolda üst formla birleştirir. `apply()` diğer kuralları değiştirmek yerine onlarla birleştiği için tüketici aynı alana daha fazla kural eklemeye devam edebilir. `schema()`, `apply()` ve `applyWhen()` ile koşullu birleştirmenin tamamı için [Şemalar kılavuzuna](guide/forms/signals/schemas) bakın.
+
+### Tasarım hususları
+
+Tüketicinin modeli her alanı tanımlı bir değerle başlatmalıdır. Signal Forms'ta `undefined`, boş bir değeri değil bir alanın yokluğunu ifade eder. Yeniden kullanılabilir bir e-posta kontrolü için bu, tüketicinin başlangıç değeri olarak `''` kullanması ve özelliği tanımsız bırakmaması gerektiği anlamına gelir. Başlangıç değerlerini seçme hakkında ayrıntılar için [Form Modelleri kılavuzuna](guide/forms/signals/models) bakın.
+
+Ayrıca kontroller, durum yönetimi için kendi effect'lerini kaydetmemelidir. Form sistemi alan durumunu dahili effect'ler aracılığıyla yönetir. Bu, kontrolünüzün durum güncellemelerini girdi sinyalleri aracılığıyla aldığı anlamına gelir. Bir kontrolün değerleri dönüştürmesi gerekiyorsa, bir `effect()` yerine "[Değer dönüşümü](#value-transformation)" bölümünde gösterildiği gibi `linkedSignal()` kullanın.
 
 ## Sonraki adımlar
 

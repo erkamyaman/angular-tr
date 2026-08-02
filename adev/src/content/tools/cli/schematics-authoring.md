@@ -37,12 +37,12 @@ Bir değişiklik kabul edilebilir, görmezden gelinebilir veya bir istisna fırl
 Bir `RuleFactory` nesnesi, bir `Rule` oluşturan üst düzey bir fonksiyon tanımlar.
 
 ```ts {header: "index.ts"}
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {Rule, SchematicContext, Tree} from '@angular-devkit/schematics';
 
 // Fonksiyonu varsayılan olarak dışa aktarmanız gerekmez.
 // Dosya başına birden fazla kural fabrikasına da sahip olabilirsiniz.
-export function helloWorld(\_options: any): Rule {
-   return (tree: Tree,\_context: SchematicContext) => {
+export function helloWorld(_options: any): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
     return tree;
   };
 }

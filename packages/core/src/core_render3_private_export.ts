@@ -11,6 +11,9 @@
 //
 // no code actually imports these symbols from the @angular/core entry point
 export {
+  type DebugSignalGraph as ɵDebugSignalGraph,
+  type DebugSignalGraphEdge as ɵDebugSignalGraphEdge,
+  type DebugSignalGraphNode as ɵDebugSignalGraphNode,
   Framework as ɵFramework,
   Profiler as ɵProfiler,
   ProfilerEvent as ɵProfilerEvent,
@@ -36,6 +39,7 @@ export {inferTagNameFromDefinition as ɵinferTagNameFromDefinition} from './rend
 export {ɵɵenableIncrementalHydrationRuntime} from './hydration/incremental_runtime';
 export {getLContext as ɵgetLContext} from './render3/context_discovery';
 export {depsTracker as ɵdepsTracker} from './render3/deps_tracker/deps_tracker';
+export {getComponentInstanceDeepLinkId as ɵgetComponentInstanceDeepLinkId} from './render3/debug/chrome_dev_tools_performance';
 export {
   NG_COMP_DEF as ɵNG_COMP_DEF,
   NG_DIR_DEF as ɵNG_DIR_DEF,
@@ -294,11 +298,6 @@ export {
   ExternalCoreGlobalUtils as ɵExternalCoreGlobalUtils,
   FrameworkAgnosticGlobalUtils as ɵFrameworkAgnosticGlobalUtils,
 } from './render3/util/global_utils';
-export {
-  DebugSignalGraph as ɵDebugSignalGraph,
-  DebugSignalGraphEdge as ɵDebugSignalGraphEdge,
-  DebugSignalGraphNode as ɵDebugSignalGraphNode,
-} from './render3/util/signal_debug';
 export {getTransferState as ɵgetTransferState} from './render3/util/transfer_state_utils';
 export {
   isViewDirty as ɵisViewDirty,

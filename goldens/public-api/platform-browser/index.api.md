@@ -55,6 +55,15 @@ export class By {
 export function createApplication(options?: ApplicationConfig, context?: BootstrapContext): Promise<ApplicationRef>;
 
 // @public
+export class CssVarNamespacer {
+    namespace(name: string): string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CssVarNamespacer, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<CssVarNamespacer>;
+}
+
+// @public
 export function disableDebugTools(): void;
 
 // @public
@@ -123,7 +132,6 @@ export enum HydrationFeatureKind {
 
 // @public
 export class Meta {
-    constructor(_doc: any);
     addTag(tag: MetaDefinition, forceCreation?: boolean): HTMLMetaElement | null;
     addTags(tags: MetaDefinition[], forceCreation?: boolean): HTMLMetaElement[];
     getTag(attrSelector: string): HTMLMetaElement | null;
@@ -157,6 +165,9 @@ export const platformBrowser: (extraProviders?: StaticProvider[]) => PlatformRef
 
 // @public
 export function provideClientHydration(...features: HydrationFeature<HydrationFeatureKind>[]): EnvironmentProviders;
+
+// @public
+export function provideCssVarNamespacing(namespace?: string): EnvironmentProviders;
 
 // @public
 export function provideProtractorTestingSupport(options?: {

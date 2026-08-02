@@ -2,7 +2,7 @@
 
 Bu kılavuz, mevcut kod tabanlarını Signal Forms'a taşımak için stratejiler sunar ve mevcut Reactive Forms ile birlikte çalışabilirliğe odaklanır.
 
-## `compatForm` kullanarak yukarıdan aşağıya taşıma
+## `compatForm` kullanarak yukarıdan aşağıya taşıma {#top-down-migration-using-compatform}
 
 Bazen mevcut reaktif `FormControl` örneklerini bir Signal Form içinde kullanmak isteyebilirsiniz. Bu, aşağıdakileri içeren kontroller için kullanışlıdır:
 
@@ -251,7 +251,7 @@ this.form.patchValue({email: 'other@example.com'});
 console.log(this.emailControl.fieldTree().value()); // 'other@example.com'
 ```
 
-### `SignalFormControl` bağlama
+### `SignalFormControl` bağlama {#binding-signalformcontrol}
 
 `SignalFormControl`'ü bir `FormGroup` içinde kullanmak için onu bir kontrol olarak geçirin ve şablonda `.fieldTree` kullanarak bağlayın:
 
@@ -438,3 +438,68 @@ bootstrapApplication(App, {
   ],
 });
 ```
+
+## Özel Kontroller
+
+Herhangi bir [özel Signal Form kontrolü](guide/forms/signals/custom-controls),
+Reactive (ve Template-Driven) Forms ile olduğu gibi kullanılabilir. Bu sayede
+mevcut `ControlValueAccessor` uygulamalarınızı, mevcut kullanımları bozmadan
+`FormValueControl`/`FormCheckboxControl` yapısına taşıyabilirsiniz.
+
+IMPORTANT: Aynı bileşende hem `ControlValueAccessor` hem de
+`FormValueControl`/`FormCheckboxControl` arayüzlerini **uygulamayın**. Birini
+veya diğerini uygulayın.
+
+Aşağıdaki özel kontrolü ele alalım:
+
+```angular-ts
+import {Component, model} from '@angular/core';
+import {FormValueControl} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-basic-input',
+  template: `
+    <div class="basic-input">
+      <input
+        type="text"
+        [value]="value()"
+        (input)="value.set($event.target.value)"
+        placeholder="Enter text..."
+      />
+    </div>
+  `,
+})
+export class BasicInput implements FormValueControl<string> {
+  /** Geçerli girdi değeri */
+  value = model('');
+}
+```
+
+Bu özel kontrolü, yerel bir input'u veya `ControlValueAccessor` tabanlı bir özel
+kontrolü kullandığınız gibi reactive forms ile kullanabilirsiniz. Örneğin,
+Reactive Form içeren şu basit bileşeni ele alalım.
+
+```angular-ts
+import {Component} from '@angular/core';
+import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
+import {BasicInput} from './basic-input';
+
+@Component({
+  selector: 'app-example',
+  template: `
+    <form [formGroup]="reactiveFormGroup">
+      <app-basic-input formControlName="reactiveControlName" />
+    </form>
+    <p>Text: {{ reactiveFormGroup.value.reactiveControlName }}</p>
+  `,
+  imports: [ReactiveFormsModule],
+})
+export class ExampleComponent {
+  readonly reactiveFormGroup = new FormGroup({
+    reactiveControlName: new FormControl(''),
+  });
+}
+```
+
+Özel `app-basic-input` kontrolündeki her değişiklik reactive `FormControl`'e
+yansıtılır.

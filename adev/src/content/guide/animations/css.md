@@ -32,7 +32,7 @@ Iki farkli durum arasinda animasyon yapmak isteyebilirsiniz, ornegin bir eleman 
 
 <docs-code header="animations.css" path="adev/src/content/examples/animations/src/app/animations.css" region="animation-states"/>
 
-`open` veya `closed` durumunu tetiklemek, bileseninizdeki eleman uzerinde siniflari degistirerek yapilir. Bunu nasil yapacaginiza dair ornekleri [sablon rehberimizde](guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) bulabilirsiniz.
+`open` veya `closed` durumunu tetiklemek, bileseninizdeki eleman uzerinde siniflari degistirerek yapilir. Bunu nasil yapacaginiza dair ornekleri [sablon rehberimizde](guide/templates/binding#css-class-and-style-property-bindings) bulabilirsiniz.
 
 [Stilleri dogrudan animasyonlama](guide/templates/binding#css-stil-özellikleri) icin sablon rehberinde benzer ornekler gorebilirsiniz.
 
@@ -127,7 +127,7 @@ Animasyonlar sirasinda belirli noktalarda yurutmek istediginiz eylemleriniz vars
 
 [`OnAnimationStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)
 [`OnAnimationEnd`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event)
-[`OnAnimationIteration`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationitration_event)
+[`OnAnimationIteration`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationiteration_event)
 [`OnAnimationCancel`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationcancel_event)
 
 [`OnTransitionStart`](https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionstart_event)

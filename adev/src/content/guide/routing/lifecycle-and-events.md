@@ -35,9 +35,7 @@ Belirli navigasyon yaşam döngüsü olayları sırasında kod çalıştırmak i
 import {Component, inject, signal, effect} from '@angular/core';
 import {Event, Router, NavigationStart, NavigationEnd} from '@angular/router';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class RouterEvents {
   private readonly router = inject(Router);
 

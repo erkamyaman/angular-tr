@@ -32,7 +32,7 @@ Angular bileşeninizi derlediğinde, bu stiller bileşeninizin JavaScript çıkt
 
 Angular, CSS çıktısı üreten herhangi bir araçla çalışır; bunlara [Sass](https://sass-lang.com), [Less](https://lesscss.org) ve [Stylus](https://stylus-lang.com) dahildir.
 
-## Stil kapsamı
+## Stil kapsamı {#style-scoping}
 
 Her bileşen, framework'ün bileşenin stillerini nasıl kapsülleyeceğini belirleyen bir **görünüm kapsüllemesi** ayarına sahiptir. Dört görünüm kapsüllemesi modu vardır: `Emulated`, `ShadowDom`, `ExperimentalIsolatedShadowDom` ve `None`.
 Modu `@Component` dekoratöründe belirtebilirsiniz:

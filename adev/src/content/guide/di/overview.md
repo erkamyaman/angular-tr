@@ -62,9 +62,9 @@ export class AnalyticsLogger {
 
 NOTE: `@Service`, bu servisi tüm uygulamanız boyunca tekil (singleton) olarak kullanılabilir hale getirir. Bu, çoğu servis için önerilen yaklaşımdır.
 
-HELPFUL: [`@Service`](guide/di/creating-and-using-services#service-dekoratörünü-kullanma) dekoratörü, `@Injectable({providedIn: 'root'})` için ergonomik bir kısaltmadır.
+HELPFUL: [`@Service`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) dekoratörü, `@Injectable({providedIn: 'root'})` için ergonomik bir kısaltmadır.
 
-## `inject()` ile bağımlılıkları enjekte etme
+## `inject()` ile bağımlılıkları enjekte etme {#injecting-dependencies-with-inject}
 
 Angular'ın `inject()` fonksiyonunu kullanarak bağımlılıkları enjekte edebilirsiniz.
 
@@ -96,9 +96,7 @@ export class Navbar {
 Bir bileşen, direktif veya servisin oluşturulması sırasında bağımlılıkları enjekte edebilirsiniz. [`inject`](/api/core/inject) çağrısı `constructor` içinde veya alan başlatıcıda görünebilir. İşte bazı yaygın örnekler:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class MyComponent {
   // ✅ Sınıf alan başlatıcısında
   private service = inject(MyService);

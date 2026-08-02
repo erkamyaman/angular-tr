@@ -25,7 +25,7 @@ Signal Forms şunları gerektirir:
 
 - Angular v21 veya üstü
 
-## Kurulum
+## Kurulum {#setup}
 
 Signal Forms zaten `@angular/forms` paketine dahildir. Gerekli fonksiyonları ve direktifleri `@angular/forms/signals`'dan içe aktarın:
 

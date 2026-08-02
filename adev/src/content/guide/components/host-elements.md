@@ -31,7 +31,7 @@ export class ProfilePhoto {}
 
 Yukarıdaki örnekte, `<profile-photo>` bileşeni `ProfilePhoto` bileşenin host elemanıdır.
 
-## Host elemanına bağlama
+## Host elemanına bağlama {#binding-to-the-host-element}
 
 Bir bileşen, host elemanına özellikler, nitelikler, stiller ve olaylar bağlayabilir. Bu, bileşenin şablonu içerisindeki elemanlardaki bağlamalarla aynı şekilde çalışır, ancak `@Component` dekoratöründeki `host` özelliği ile tanımlanır:
 
@@ -67,9 +67,7 @@ Alternatif olarak, sınıf üyelerine `@HostBinding` ve `@HostListener` dekorat�
 `@HostBinding`, host özelliklerini ve niteliklerini özellikler ve getter'lara bağlamanıza olanak tanır:
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class CustomSlider {
   @HostBinding('attr.aria-valuenow')
   value: number = 0;
@@ -156,7 +154,7 @@ export class MyComponent {
 }
 ```
 
-## Host eleman niteliklerini enjekte etme
+## Host eleman niteliklerini enjekte etme {#injecting-host-element-attributes}
 
 Bileşenlere ve direktiflere, [`inject`](api/core/inject) fonksiyonu ile birlikte `HostAttributeToken` kullanarak host elemanlarından statik nitelikler okunabilir.
 

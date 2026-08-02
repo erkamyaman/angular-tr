@@ -31,7 +31,7 @@ const canActivateTeam: CanActivateFn = (
 };
 ```
 
-## Bir enjeksiyon bağlamında çalıştırma
+## Bir enjeksiyon bağlamında çalıştırma {#run-within-an-injection-context}
 
 Zaten bir enjeksiyon bağlamında olmadan bir fonksiyonu bir enjeksiyon bağlamı içinde çalıştırmanız gerekiyorsa, `runInInjectionContext` kullanabilirsiniz.
 Bu, `EnvironmentInjector` gibi bir enjektöre erişim gerektirir:
@@ -53,7 +53,7 @@ export class HeroService {
 
 [`inject`](/api/core/inject)'in yalnızca enjektör istenen token'ı çözebiliyorsa bir örnek döndürdüğünü unutmayın.
 
-## Bağlamı doğrulama
+## Bağlamı doğrulama {#asserts-the-context}
 
 Angular, mevcut bağlamın bir enjeksiyon bağlamı olduğunu doğrulamak ve değilse net bir hata fırlatmak için `assertInInjectionContext` yardımcı fonksiyonunu sağlar. Hata mesajının doğru API giriş noktasına işaret etmesi için çağıran fonksiyona bir referans iletin. Bu, varsayılan genel enjeksiyon hatasından daha net ve uygulanabilir bir mesaj üretir.
 
@@ -72,9 +72,7 @@ Bu yardımcıyı **bir enjeksiyon bağlamından** (constructor, alan başlatıc�
 import {Component, inject} from '@angular/core';
 import {injectNativeElement} from './dom-helpers';
 
-@Component({
-  /* … */
-})
+@Component({/* … */})
 export class PreviewCard {
   readonly hostEl = injectNativeElement<HTMLElement>(); // Alan başlatıcı bir enjeksiyon bağlamında çalışır.
 

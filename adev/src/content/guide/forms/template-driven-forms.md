@@ -22,7 +22,7 @@ Bu eğitim size aşağıdakileri nasıl yapacağınızı öğretir:
 - Girdi kontrol değerlerini okumak ve yazmak için çift yönlü veri bağlamaları oluşturmak üzere `ngModel` kullanma
 - Kontrollerin durumunu takip eden özel CSS sınıfları kullanarak görsel geri bildirim sağlama
 - Kullanıcılara doğrulama hatalarını gösterme ve form durumuna göre form kontrollerinden girdiyi koşullu olarak izin verme
-- [Şablon referans değişkenleri](guide/templates/variables#şablon-referans-değişkenleri) kullanarak HTML öğeleri arasında bilgi paylaşma
+- [Şablon referans değişkenleri](guide/templates/variables#template-reference-variables) kullanarak HTML öğeleri arasında bilgi paylaşma
 
 ## Template-driven form oluşturun
 
@@ -123,7 +123,7 @@ HELPFUL: Bu örnekte, çift yönlü veri bağlamanın çalışmasını gözlemle
 
 Bileşeninizde `FormsModule`'ü içe aktardığınızda, Angular otomatik olarak şablondaki `<form>` etiketine bir [NgForm](api/forms/NgForm) direktifi oluşturur ve bağlar (çünkü `NgForm`, `<form>` öğeleriyle eşleşen `form` seçicisine sahiptir).
 
-`NgForm`'a ve genel form durumuna erişmek için bir [şablon referans değişkeni](guide/templates/variables#şablon-referans-değişkenleri) bildirin.
+`NgForm`'a ve genel form durumuna erişmek için bir [şablon referans değişkeni](guide/templates/variables#template-reference-variables) bildirin.
 
 1. `actor-form.component.html` şablon dosyasını düzenleyin.
 1. `<form>` etiketini `#actorForm` şablon referans değişkeniyle güncelleyin ve değerini aşağıdaki gibi ayarlayın.
@@ -197,7 +197,7 @@ Sınıfların çerçeve tarafından nasıl eklenip kaldırıldığını görmek 
 1. İlk açtığınızda, sınıflar geçerli bir değere sahip olduğunu, değerin başlatma veya sıfırlamadan beri değişmediğini ve kontrolün başlatma veya sıfırlamadan beri ziyaret edilmediğini gösterir.
 
    ```html
-   <input class="form-control ng-untouched ng-pristine ng-valid" />;
+   <input class="form-control ng-untouched ng-pristine ng-valid" />
    ```
 
 1. **Name** `<input>` kutusunda aşağıdaki eylemleri yapın ve hangi sınıfların göründüğünü gözlemleyin.

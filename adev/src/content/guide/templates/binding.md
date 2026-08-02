@@ -114,7 +114,7 @@ Bir nitelik bağlamasının değeri `null` ise, Angular `removeAttribute` çağ�
 <img src="profile-photo.jpg" alt="Profile photo of {{ firstName() }}" />
 ```
 
-## CSS sınıfı ve stil özelliği bağlamaları
+## CSS sınıfı ve stil özelliği bağlamaları {#css-class-and-style-property-bindings}
 
 Angular, elemanlara CSS sınıflarını ve CSS stil özelliklerini bağlamak için ek özellikler destekler.
 

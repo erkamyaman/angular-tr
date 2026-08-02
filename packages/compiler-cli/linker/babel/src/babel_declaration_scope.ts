@@ -10,9 +10,7 @@ import {NodePath, types as t} from '@babel/core';
 import {DeclarationScope} from '../../../linker';
 
 export type ConstantScopePath =
-  | NodePath<t.FunctionDeclaration>
-  | NodePath<t.FunctionExpression>
-  | NodePath<t.Program>;
+  NodePath<t.FunctionDeclaration> | NodePath<t.FunctionExpression> | NodePath<t.Program>;
 
 /**
  * This class represents the lexical scope of a partial declaration in Babel source code.
@@ -40,7 +38,7 @@ export class BabelDeclarationScope implements DeclarationScope<ConstantScopePath
    */
   getConstantScopeRef(expression: t.Expression): ConstantScopePath | null {
     // If the expression is of the form `a.b.c` then we want to get the far LHS (e.g. `a`).
-    let bindingExpression = expression;
+    let bindingExpression: t.Expression | t.Super = expression;
     while (t.isMemberExpression(bindingExpression)) {
       bindingExpression = bindingExpression.object;
     }

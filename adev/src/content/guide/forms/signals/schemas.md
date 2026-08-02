@@ -31,7 +31,7 @@ graph TD
 
 Bu ayrım, şemaları birleştirirken önemlidir çünkü `apply()`, `applyWhen()` ve `schema()` gibi fonksiyonların tümü yapısal katmanda çalışır. Şemalar _hangi_ kuralların var olduğunu ve _etkin olup olmadıklarını_ kontrol ederken, kural fonksiyonları o kuralların _neyi_ değerlendirdiğini tanımlar.
 
-## `schema()` ile yeniden kullanılabilir şemalar oluşturma
+## `schema()` ile yeniden kullanılabilir şemalar oluşturma {#create-reusable-schemas-with-schema}
 
 Birden fazla form, ortak bir veri şekli için aynı kuralları paylaştığında, bu kuralları yeniden kullanılabilir bir şemaya çıkarmak için `schema()` fonksiyonunu kullanabilirsiniz.
 
@@ -50,7 +50,7 @@ const nameSchema = schema<{first: string; last: string}>((name) => {
 
 TIP: Kurallar yalnızca tek bir yerde görünüyorsa, satır içi bir şema fonksiyonu da aynı şekilde işe yarar. Aynı şemayı birden fazla formda yeniden kullanmak veya aynı şemayı birden fazla yola uygulamak istediğinizde `schema()` kullanın. Yeniden kullanılabilir `Schema` nesneleri form derlemesi başına önbelleğe alınır.
 
-### Şemayı `apply()` ile kullanma
+### Şemayı `apply()` ile kullanma {#using-the-schema-with-apply}
 
 Yeniden kullanılabilir bir şemayı, `apply()` fonksiyonunu kullanarak bir formdaki belirli bir yola uygulayabilirsiniz. `apply()`'ı çağırdığınızda, şema yalnızca o alt yoldaki alanları gören kapsamlı bir yol alır:
 
@@ -66,7 +66,7 @@ registrationForm = form(this.registrationModel, (schemaPath) => {
 });
 ```
 
-## `applyWhen()` ile koşullu şemalar
+## `applyWhen()` ile koşullu şemalar {#conditional-schemas-with-applywhen}
 
 NOTE: [Form mantığı ekleme kılavuzu](guide/forms/signals/form-logic), satır içi mantıkla koşullu kurallar için `applyWhen()`'i tanıttı. Bu bölüm, `applyWhen()`'in yeniden kullanılabilir şemalarla nasıl birleştirileceğini ele alır.
 
@@ -132,7 +132,7 @@ NOTE: Yol argümanı `schemaPath.address` olmasına rağmen, mantık fonksiyonu 
 
 Bu kalıp, doğrulama mantığını modüler tutar -- her ülkenin adres kuralları kendi şemasında yaşar ve form, kullanıcının seçimine göre hangisini etkinleştireceğini belirler.
 
-## `applyWhenValue()` ile tür daraltma
+## `applyWhenValue()` ile tür daraltma {#type-narrowing-with-applywhenvalue}
 
 `applyWhenValue()` fonksiyonu, yalnızca alanın değerini kontrol etmesi gereken koşulları basitleştirir. Koşul fonksiyonu, bir `FieldContext` almak yerine, alanın ham değerini doğrudan alır.
 
@@ -190,7 +190,7 @@ paymentForm = form(this.paymentModel, (schemaPath) => {
 
 Tür koruyucu olmadan, TypeScript her şema fonksiyonunun içinde hangi alanların mevcut olduğunu bilemezdi. Tür daraltma, kredi kartı dalında `payment.cardNumber`'a ve banka havalesi dalında `payment.accountNumber`'a erişmenin tür açısından güvenli olmasını sağlar.
 
-## `applyEach()` ile dizi öğeleri
+## `applyEach()` ile dizi öğeleri {#array-items-with-applyeach}
 
 Bir form bir nesneler dizisi içerdiğinde, genellikle her öğeye aynı kuralların uygulanması gerekir. `applyEach()` fonksiyonu, kaç öğe olursa olsun, bir dizi alanındaki her öğeye bir şema uygular.
 

@@ -15,7 +15,7 @@ Signal Forms, form gönderim yaşam döngüsünü yönetmenize yardımcı olan b
 
 `submit()` fonksiyonu, eylem hatasız tamamlandığında `true`, doğrulama başarısız olduğunda veya eylem hatalar döndürdüğünde `false` değerine çözümlenen bir `Promise<boolean>` döndürür.
 
-## `FormRoot` ile form gönderimini kurma
+## `FormRoot` ile form gönderimini kurma {#setting-up-form-submission-with-formroot}
 
 `submit()` fonksiyonunu kullanmanın en yaygın yolu `FormRoot` direktifidir.
 

@@ -1,5 +1,10 @@
 # Angular Eğitimine Hoş Geldiniz
 
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/greeting.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Hoş geldiniz! Hadi Angular'ın yapı taşlarını öğrenelim.</p>
+</div>
+
 Bu interaktif eğitim, Angular ile harika uygulamalar oluşturmaya başlamak için temel yapı taşlarını öğretecektir.
 
 ## Bu eğitimi nasıl kullanabilirsiniz

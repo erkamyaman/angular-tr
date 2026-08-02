@@ -61,7 +61,7 @@ Uygulamanızı geliştirme modunda çalıştırırken, tarayıcınızda Gelişti
 
 Ayrıca [Angular DevTools tarayıcı uzantısını](tools/devtools) kullanarak bir sayfadaki bileşenlerin hidrasyon durumunu görebilirsiniz. Angular DevTools, sayfanın hangi bölümlerinin hidrasyon yapıldığını gösteren bir katman etkinleştirmenize de olanak tanır. Bir hidrasyon uyumsuzluk hatası varsa, DevTools hataya neden olan bileşeni de vurgular.
 
-## Olayları yakalama ve yeniden oynatma
+## Olayları yakalama ve yeniden oynatma {#capturing-and-replaying-events}
 
 Bir uygulama sunucuda render edildiğinde, üretilen HTML yüklenir yüklenmez tarayıcıda görünür hale gelir. Kullanıcılar sayfayla etkileşime geçebileceklerini varsayabilir, ancak olay dinleyicileri hidrasyon tamamlanana kadar eklenmez. v18'den itibaren, hidrasyon öncesinde gerçekleşen tüm olayları yakalayan ve hidrasyon tamamlandıktan sonra bu olayları yeniden oynatan Olay Tekrarı özelliğini etkinleştirebilirsiniz. Bunu `withEventReplay()` fonksiyonu ile etkinleştirebilirsiniz, örneğin:
 
@@ -90,9 +90,7 @@ Olay Tekrarı üç ana aşamaya ayrılır:
 
 Olay tekrarı _yerel tarayıcı olaylarını_ destekler, örneğin `click`, `mouseover` ve `focusin`. Olay tekrarını güçlendiren kütüphane olan JSAction hakkında daha fazla bilgi edinmek istiyorsanız, [readme dosyasında](https://github.com/angular/angular/tree/main/packages/core/primitives/event-dispatch#readme) daha fazla bilgi bulabilirsiniz.
 
----
-
-Bu özellik, Hidrasyon öncesinde gerçekleştirilen kullanıcı eylemlerinin göz ardı edilmesini önleyerek tutarlı bir kullanıcı deneyimi sağlar.
+Bu özellik, hidrasyon öncesinde gerçekleştirilen kullanıcı eylemlerinin göz ardı edilmesini önleyerek tutarlı bir kullanıcı deneyimi sağlar.
 
 NOTE: [Artımlı hidrasyon](guide/incremental-hydration) etkinleştirdiyseniz, olay tekrarı arka planda otomatik olarak etkinleştirilir.
 
@@ -221,7 +219,7 @@ Sunucu tarafı render ile istemci tarafı render arasında farklı içerik gör�
 
 Render yapabilmek için DOM manipülasyonuna bağımlı birçok üçüncü taraf kütüphanesi vardır. D3 grafikleri bunun başlıca örneğidir. Bu kütüphaneler hidrasyon olmadan çalışıyordu, ancak hidrasyon etkinleştirildiğinde DOM uyumsuzluk hatalarına neden olabilirler. Şimdilik, bu kütüphanelerden birini kullanırken DOM uyumsuzluk hatalarıyla karşılaşırsanız, o kütüphaneyi kullanarak render yapan bileşene `ngSkipHydration` niteliğini ekleyebilirsiniz.
 
-## DOM Manipülasyonu Yapan Üçüncü Taraf Betikler
+## DOM Manipülasyonu Yapan Üçüncü Taraf Betikler {#third-party-scripts-with-dom-manipulation}
 
 Reklam takipçileri ve analitik gibi birçok üçüncü taraf betiği, hidrasyon gerçekleşmeden önce DOM'u değiştirir. Bu betikler, sayfa artık Angular'ın beklediği yapıyla eşleşmediği için hidrasyon hatalarına neden olabilir. Mümkün olduğunda bu tür betikleri hidrasyon sonrasına ertelemeyi tercih edin. Betiği hidrasyon sonrası işlemler gerçekleştikten sonra geciktirmek için [`AfterNextRender`](api/core/afterNextRender) kullanmayı düşünün.
 

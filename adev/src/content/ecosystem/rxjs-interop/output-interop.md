@@ -12,9 +12,7 @@ TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/output
 import {Directive} from '@angular/core';
 import {outputFromObservable} from '@angular/core/rxjs-interop';
 
-@Directive({
-  /*...*/
-})
+@Directive(/* ... */)
 class Draggable {
   pointerMoves$: Observable<PointerMovements> = listenToPointerMoves();
 

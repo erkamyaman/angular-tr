@@ -36,10 +36,17 @@ Artık o şematiği oluşturmaya hazırsınız.
 Aşağıdaki adımlar bu tür bir şematiği tanımlar.
 
 1. `<lib-root>/schematics/ng-add` klasörüne gidin.
-1. Ana dosya olan `index.ts`'yi oluşturun.
-1. `index.ts`'yi açın ve şematik fabrika fonksiyonunuz için kaynak kodunu ekleyin.
+1. Şematiğin kabul ettiği seçenekleri tanımlamak için bir `schema.json` dosyası oluşturun.
 
-<docs-code header="projects/my-lib/schematics/ng-add/index.ts (ng-add Rule Factory)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/ng-add/index.ts"/>
+   <docs-code header="projects/my-lib/schematics/ng-add/schema.json (ng-add Schema)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/ng-add/schema.json"/>
+
+1. `schema.json` dosyasında tanımlanan seçenekler için bir arayüz tanımlamak üzere bir `schema.ts` dosyası oluşturun.
+
+   <docs-code header="projects/my-lib/schematics/ng-add/schema.ts (ng-add Schema Interface)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/ng-add/schema.ts"/>
+
+1. Ana dosya olan `index.ts`'yi oluşturun ve şematik fabrika fonksiyonunuz için kaynak kodunu ekleyin.
+
+   <docs-code header="projects/my-lib/schematics/ng-add/index.ts (ng-add Rule Factory)" path="adev/src/content/examples/schematics-for-libraries/projects/my-lib/schematics/ng-add/index.ts"/>
 
 Angular CLI, kütüphanenin en son sürümünü otomatik olarak yükler ve bu örnek, uygulamanın köküne `MyLibModule`'u ekleyerek bir adım daha ileri gider. `addRootImport` fonksiyonu, bir kod bloğu döndürmesi gereken bir geri çağrım kabul eder. `code` fonksiyonuyla etiketlenen dizenin içine herhangi bir kod yazabilirsiniz ve herhangi bir harici sembol, uygun import deyimlerinin oluşturulmasını sağlamak için `external` fonksiyonuyla sarılmalıdır.
 

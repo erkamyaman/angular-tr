@@ -40,7 +40,7 @@ Bu yapılandırıldıktan sonra, Angular metin girdisindeki herhangi bir güncel
 
 Resmi belgelerde [`NgModel`](/api/forms/NgModel) hakkında daha fazla bilgi edinin.
 
-## Bileşenler arası çift yönlü binding
+## Bileşenler arası çift yönlü binding {#two-way-binding-between-components}
 
 Bir üst ve alt bileşen arasında çift yönlü bağlamayı kullanmak, form elemanlarına kıyasla daha fazla yapılandırma gerektirir.
 
@@ -96,9 +96,7 @@ Alt bileşen bir `model` özelliğine sahip olmalıdır.
 ```angular-ts {header: 'counter.ts'}
 import {Component, model} from '@angular/core';
 
-@Component({
-  /* Kısalık için atlanmıştır */
-})
+@Component({/* Kısalık için atlanmıştır */})
 export class Counter {
   count = model<number>(0);
 

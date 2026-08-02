@@ -20,12 +20,13 @@ Yol haritamızdan en son Angular özelliklerini kullanarak geliştirmeye başlay
 
 ### Deneylenebilir
 
-- [Signal Forms](/guide/forms/signals/overview)
-- [Resource API](/guide/signals/resource)
-- [httpResource](/api/common/http/httpResource)
+- [Web MCP](/ai/webmcp)
 
 ### Üretime hazır
 
+- [Signal Forms](/guide/forms/signals/overview)
+- [Resource API](/guide/signals/resource)
+- [httpResource](/api/common/http/httpResource)
 - [Zoneless değişiklik algılama](/guide/zoneless)
 - [Linked Signal API](/guide/signals/linked-signal)
 - [Artımlı hidrasyon](/guide/incremental-hydration)
@@ -70,16 +71,6 @@ Bu projenin parçası olarak, çapraz framework birlikte çalışabilirliği ve 
 
   </docs-card>
 
-  <docs-card title="Signal Forms" href="/guide/forms/signals/overview">
-  Angular v21'de Signal Forms'un deneysel bir sürümünü yayınladık. Bu yeni yaklaşım, geliştiricilerin form durumunu sinyaller kullanarak yönetmesine olanak tanıyarak ergonomik bir form oluşturma deneyimi sağlar. Sonraki planlarımız arasında Signal Forms'u kararlı hale getirmek ve reaktif formlarla birlikte çalışabilirliği geliştirmek yer alıyor - ekiplerin büyük formları kendi hızlarında aşamalı olarak geçirmesini sağlamak.
-  </docs-card>
-  <docs-card title="Reaktivite">
-  Esnek asenkron veri işleme için deneysel sinyal API'leri olan resource() ve httpResource()'u tanıttık. Topluluk geri bildirimlerine dayanarak bu API'leri geliştirici önizlemesi/kararlı seviyesine yükseltmeyi planlıyoruz.
-  Ayrıca ele alınmamış kullanım durumları için yeni API'leri değerlendiriyoruz, dikkatli bir değerlendirmeden sonra uygulama öncesinde topluluk faydalarını ve ödünleşimleri göz önünde bulunduruyoruz.
-  </docs-card>
-  <docs-card title="Değişiklik Algılama">
-  Zoneless kararlı ve varsayılan olarak geldiğinde, güncel en iyi uygulamaları takip etmek için varsayılan değişiklik algılama stratejisini OnPush'a kaydırmayı da planlıyoruz. [Ayrıntılar için RFC tartışmasına bakın](https://github.com/angular/angular/discussions/66779).
-  </docs-card>
   <docs-card title="Bileşenler">
   Angular v21'de, erişilebilir, başsız bileşenler için sekiz desen sağlayan Angular Aria'yı geliştirici önizlemesinde yayınladık. Bu desenleri kararlı hale getirmeyi ve gerektiğinde yeni desenler tanıtmayı planlıyoruz. Geliştiricilere Angular Aria kullanarak kendi bileşenlerini geliştirmek için sağlam bir temel sağlamak istiyoruz - biz etkileşimleri sağlıyoruz, siz tasarım sisteminize uyan stili getiriyorsunuz. Geliştiriciler Angular Aria ile özel bileşenler geliştirme, CDK'dan etkileşim kalıpları kullanma veya hazır stillenmiş Material Components kullanma seçeneğine sahip olacak.
 
@@ -98,14 +89,29 @@ Erişilebilirlik için, bileşenleri ve kalıpları WCAG gibi erişilebilirlik s
 ## Tamamlanan projeler
 
 <docs-card-container>
-  <docs-card title="Angular DevTools'ta sinyal hata ayıklama" link="2025'te tamamlandı">
-  Angular'da Signals'in evrimi ile birlikte, bunları hata ayıklamak için daha iyi araçlar üzerinde çalışıyoruz. Öncelik listesinde en üstte sinyalleri inceleme ve hata ayıklama için bir UI bulunuyor.
-  </docs-card>
-  <docs-card title="HMR'yi (Sıcak Modül Yeniden Yükleme) iyileştirme" href="https://github.com/angular/angular/issues/39367#issuecomment-1439537306" link="2025'te tamamlandı">
-  Sıcak modül değiştirmeyi etkinleştirerek daha hızlı düzenleme/yenileme döngüsüne doğru çalışıyoruz.
 
-Angular v19'da CSS ve şablon HMR için ilk desteği sunduk ve v20'de şablon HMR'yi kararlı hale getirdik. Bu projeyi tamamlanmış olarak işaretlemeden önce geliştiricilerin ihtiyaçlarını karşıladığımızdan emin olmak için geri bildirim toplamaya devam edeceğiz.
+  <docs-card title="Signal Forms" href="/guide/forms/signals/overview" link="2026'da tamamlandı">
+  Signal Forms artık kararlı. Bu yeni yaklaşım, geliştiricilerin form durumunu sinyaller kullanarak yönetmesine olanak tanıyarak ergonomik bir form oluşturma deneyimi sağlar. Signal Forms'u kararlı hale getirdik ve reaktif formlarla birlikte çalışabilirliği geliştirdik - böylece ekipler büyük formları kendi hızlarında aşamalı olarak geçirebiliyor.
+  </docs-card>
+
+  <docs-card title="Reaktivite" href="/guide/signals" link="2026'da tamamlandı">
+  Esnek asenkron veri işleme için yeni sinyal API'leri olan `resource()` ve `httpResource()`'u tanıttık. Bu API'leri kararlı hale getirdik.
+  </docs-card>
+
+  <docs-card title="Değişiklik Algılama" href="/api/core/ChangeDetectionStrategy" link="2026'da tamamlandı">
+  Zoneless kararlı ve varsayılan hale geldiğinde, güncel en iyi uygulamaları takip etmek için varsayılan değişiklik algılama stratejisini `OnPush` olarak ayarladık. Ayrıca `ChangeDetectionStrategy.Default`'u `ChangeDetectionStrategy.Eager` olarak yeniden adlandırdık.
+
+[Ayrıntılar için RFC tartışmasına bakın](https://github.com/angular/angular/discussions/66779).
 </docs-card>
+
+  <docs-card title="Angular DevTools'ta sinyal hata ayıklama" link="2026'da tamamlandı">
+  Angular DevTools kullanarak Signals'i hata ayıklamak için daha iyi araçlar ekledik. Bu değişiklik, sinyalleri inceleme ve hata ayıklama için yeni bir UI içeriyor.
+  </docs-card>
+
+  <docs-card title="HMR'yi (Sıcak Modül Yeniden Yükleme) iyileştirme" href="https://github.com/angular/angular/issues/39367#issuecomment-1439537306" link="2025'te tamamlandı">
+  Sıcak modül değiştirmeyi etkinleştirerek daha hızlı düzenleme/yenileme döngüsüne doğru çalışıyoruz. Angular v19'da CSS ve şablon HMR için ilk desteği sunduk ve v20'de şablon HMR'yi kararlı hale getirdik. Bu projeyi tamamlanmış olarak işaretlemeden önce geliştiricilerin ihtiyaçlarını karşıladığımızdan emin olmak için geri bildirim toplamaya devam edeceğiz.
+</docs-card>
+
 <docs-card title="Zoneless Angular"  link="2025 4. Çeyrek'te tamamlandı">
 v18'de Angular'da deneysel zoneless desteği sunduk. Bu, geliştiricilerin zone.js'yi paketlerine dahil etmeden framework'ü kullanmalarını sağlar, bu da performansı, hata ayıklama deneyimini ve birlikte çalışabilirliği iyileştirir. İlk sürümün parçası olarak Angular CDK ve Angular Material'da da zoneless desteği tanıttık.
 

@@ -341,7 +341,7 @@ Gömülü videolar `docs-video` ile oluşturulur ve yalnızca bir `src` ve `alt`
 
 ## Charts & Graphs
 
-Kod dilini `mermaid` olarak ayarlayarak [Mermaid](http://mermaid.js.org/) kullanarak diyagramlar ve grafikler yazın, tüm tema desteği yerleşiktir.
+Kod dilini `mermaid` olarak ayarlayarak [Mermaid](https://mermaid.js.org/) kullanarak diyagramlar ve grafikler yazın, tüm tema desteği yerleşiktir.
 
 ```mermaid
     graph TD;

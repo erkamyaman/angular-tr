@@ -11,9 +11,7 @@ export class ListboxBase {
   value: string;
 }
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomListbox extends ListboxBase {
   // CustomListbox `value` özelliğini miras alır.
 }
@@ -62,16 +60,12 @@ Alt sınıflar, tüm atalarının girdilerinin, çıktılarının ve host bağla
 Bir temel sınıf `inject()`'i bir özellik başlatıcısı olarak kullandığında, alt sınıf bu özelliği otomatik olarak devralır. `super`'a iletme gerekmez.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ListboxBase {
   protected element = inject(ElementRef);
 }
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomListbox extends ListboxBase {
   // `element`, `ListboxBase`'ten devralınır.
 }
@@ -80,16 +74,12 @@ export class CustomListbox extends ListboxBase {
 Bir temel sınıf, constructor parametreleri olarak bağımlılıkları enjekte ediyorsa, alt sınıfın bu bağımlılıkları açıkça `super`'a iletmesi gerekir.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ListboxBase {
   constructor(private element: ElementRef) {}
 }
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomListbox extends ListboxBase {
   constructor(element: ElementRef) {
     super(element);
@@ -102,9 +92,7 @@ export class CustomListbox extends ListboxBase {
 Bir temel sınıf `ngOnInit` gibi bir yaşam döngüsü yöntemi tanımlıyorsa, ayrıca `ngOnInit` uygulayan bir alt sınıf temel sınıfın uygulamasını _geçersiz kılar_. Temel sınıfın yaşam döngüsü yöntemini korumak istiyorsanız, `super` ile yöntemi açıkça çağırın:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ListboxBase {
   protected isInitialized = false;
   ngOnInit() {
@@ -112,9 +100,7 @@ export class ListboxBase {
   }
 }
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomListbox extends ListboxBase {
   override ngOnInit() {
     super.ngOnInit();

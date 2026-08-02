@@ -1,118 +1,69 @@
-<docs-decorative-header title="Yerleşik direktifler" imgSrc="adev/src/assets/images/directives.svg"> <!-- markdownlint-disable-line -->
-Direktifler, Angular uygulamalarınızdaki elemanlara ek davranış ekleyen sınıflardır.
+<docs-decorative-header title="Direktifler" imgSrc="adev/src/assets/images/directives.svg"> <!-- markdownlint-disable-line -->
+Direktifler, Angular uygulamalarınızdaki elemanlara ve bileşenlere davranış ekler.
 </docs-decorative-header>
 
-Formları, listeleri, stilleri ve kullanıcıların gördüklerini yönetmek için Angular'ın yerleşik direktiflerini kullanın.
+Bir direktif; bir elemanın nasıl göründüğünü, nasıl davrandığını veya DOM'a nasıl yerleştiğini değiştirebilir. Angular çeşitli yerleşik direktiflerle gelir ve kendi direktiflerinizi de yazabilirsiniz.
 
-Angular direktiflerinin farklı türleri şunlardır:
+## Ne zaman direktif kullanmalı
 
-| Directive Types                                                  | Details                                                                                   |
-| :--------------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
-| [Components](guide/components)                                   | Bir şablonla kullanılır. Bu direktif türü en yaygın direktif türüdür.                     |
-| [Attribute directives](#yerleşik-nitelik-direktifleri)           | Bir elemanın, bileşenin veya başka bir direktifin görünümünü veya davranışını değiştirir. |
-| [Structural directives](/guide/directives/structural-directives) | DOM elemanları ekleyerek ve kaldırarak DOM düzenini değiştirir.                           |
+Direktifler, mevcut bir elemana veya bileşene uygulamak istediğiniz **yeniden kullanılabilir** davranışı kapsüllediklerinde en etkilidir.
 
-Bu kılavuz yerleşik [nitelik direktiflerini](#yerleşik-nitelik-direktifleri) kapsar.
+Yaygın örnekler şunlardır:
 
-## Yerleşik nitelik direktifleri
+- Otomatik odaklanma veya ipucu balonu gibi aynı görünüm ya da davranışı birçok elemana uygulamak.
+- Host elemanının DOM'unu, özniteliklerini veya sınıflarını okumak ya da bunlara yazmak.
+- Sahibi olmadığınız bir bileşene, kaynağını değiştirmeden davranış eklemek.
 
-Nitelik direktifleri, diğer HTML elemanlarının, niteliklerin, özelliklerin ve bileşenlerin davranışını dinler ve değiştirir.
+Kendi işaretlemenizi render etmeniz veya kendi şablonu olan bir arayüz parçasını yönetmeniz gerekiyorsa, kendi şablonuna sahip özelleşmiş bir direktif olan [bileşene](guide/components) yönelin.
 
-En yaygın nitelik direktifleri şunlardır:
+## Hızlı bir örnek
 
-| Common directives                                     | Details                                                |
-| :---------------------------------------------------- | :----------------------------------------------------- |
-| [`NgClass`](#ngclass-ile-sınıf-ekleme-ve-kaldırma)    | Bir dizi CSS sınıfı ekler ve kaldırır.                 |
-| [`NgStyle`](#ngstyle-ile-satır-içi-stilleri-ayarlama) | Bir dizi HTML stili ekler ve kaldırır.                 |
-| [`NgModel`](guide/forms/template-driven-forms)        | Bir HTML form elemanına çift yönlü veri bağlama ekler. |
+Kullanıcı fareyle üzerine geldiğinde elemanların vurgulanmasını, yani arka plan renklerinin sarıya dönmesini istediğinizi varsayalım. Aynı olay işleme mantığını her elemanda tekrarlamak yerine, bu davranışı bir direktifte paketleyip ihtiyaç duyduğunuz her yerde uygulayabilirsiniz.
 
-HELPFUL: Yerleşik direktifler yalnızca genel API'leri kullanır. Diğer direktiflerin erişemediği hiçbir özel API'ye özel erişimleri yoktur.
+Aşağıdaki `appHighlight` direktifi, fare elemanın üzerine geldiğinde host elemanının arka plan rengini ayarlar ve fare ayrıldığında temizler:
 
-## `NgClass` ile sınıf ekleme ve kaldırma
+```ts
+import {Directive, signal} from '@angular/core';
 
-`ngClass` ile aynı anda birden fazla CSS sınıfı ekleyin veya kaldırın.
-
-HELPFUL: _Tek_ bir sınıf eklemek veya kaldırmak için `NgClass` yerine [sınıf bağlama](/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) kullanın.
-
-### Bileşende `NgClass` içe aktarma
-
-`NgClass` kullanmak için bileşenin `imports` listesine ekleyin.
-
-```angular-ts
-import {NgClass} from '@angular/common';
-
-@Component({
-  /* ... */
-  imports: [NgClass],
+@Directive({
+  selector: '[appHighlight]',
+  host: {
+    '(mouseenter)': 'isHovered.set(true)',
+    '(mouseleave)': 'isHovered.set(false)',
+    '[style.background-color]': 'isHovered() ? "yellow" : null',
+  },
 })
-export class AppComponent {}
+export class HighlightDirective {
+  protected isHovered = signal(false);
+}
 ```
 
-### `NgClass`'i bir ifade ile kullanma
+`host` meta verisi, `isHovered` sinyalini güncellemek için fare olaylarını dinler ve host elemanının `background-color` stilini sinyalin değerine bağlar.
 
-Stil vermek istediğiniz elemana `[ngClass]` ekleyin ve bir ifadeye eşitleyin.
-Bu durumda, `isSpecial` `app.component.ts` içinde `true` olarak ayarlanmış bir boolean'dır.
-`isSpecial` true olduğundan, `ngClass` `<div>`'e `special` sınıfını uygular.
+Direktifi, seçicisini bir elemana öznitelik olarak ekleyerek uygularsınız:
 
-<docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="special-div"/>
-
-### `NgClass`'i bir yöntem ile kullanma
-
-1. `NgClass`'i bir yöntemle kullanmak için, yöntemi bileşen sınıfına ekleyin.
-   Aşağıdaki örnekte, `setCurrentClasses()`, `currentClasses` özelliğini diğer üç bileşen özelliğinin `true` veya `false` durumuna göre üç sınıfı ekleyen veya kaldıran bir nesne ile ayarlar.
-
-   Nesnenin her anahtarı bir CSS sınıf adıdır.
-   Bir anahtar `true` ise, `ngClass` sınıfı ekler.
-   Bir anahtar `false` ise, `ngClass` sınıfı kaldırır.
-
-   <docs-code header="app.component.ts" path="adev/src/content/examples/built-in-directives/src/app/app.component.ts" region="setClasses"/>
-
-1. Şablonda, elemanın sınıflarını ayarlamak için `ngClass` özellik bağlamasını `currentClasses`'a ekleyin:
-
-   <docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="NgClass-1"/>
-
-Bu kullanım durumu için Angular, sınıfları başlatmada ve `currentClasses` nesnesinin yeniden atanmasının neden olduğu değişiklikler durumunda uygular.
-Tam örnek, ilk olarak `ngOnInit()` ile ve kullanıcı `Refresh currentClasses` düğmesine tıkladığında `setCurrentClasses()`'ı çağırır.
-Bu adımlar `ngClass`'i uygulamak için gerekli değildir.
-
-## `NgStyle` ile satır içi stilleri ayarlama
-
-HELPFUL: _Tek_ bir stili eklemek veya kaldırmak için `NgStyle` yerine [stil bağlamalarını](guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) kullanın.
-
-### Bileşende `NgStyle` içe aktarma
-
-`NgStyle` kullanmak için bileşenin `imports` listesine ekleyin.
-
-```angular-ts
-import {NgStyle} from '@angular/common';
-
-@Component({
-  /* ... */
-  imports: [NgStyle],
-})
-export class AppComponent {}
+```angular-html
+<p appHighlight>Highlight me!</p>
 ```
 
-Bileşenin durumuna göre aynı anda birden fazla satır içi stili ayarlamak için `NgStyle` kullanın.
+`appHighlight` özniteliğini taşıyan her eleman, mantığı tek bir yerde tanımlanmış olan aynı hover davranışını kazanır.
 
-1. `NgStyle` kullanmak için bileşen sınıfına bir yöntem ekleyin.
+## Direktif türleri
 
-   Aşağıdaki örnekte, `setCurrentStyles()`, diğer üç bileşen özelliğinin durumuna göre üç stili tanımlayan bir nesne ile `currentStyles` özelliğini ayarlar.
+Angular'da üç temel direktif türü vardır:
 
-   <docs-code header="app.component.ts" path="adev/src/content/examples/built-in-directives/src/app/app.component.ts" region="setStyles"/>
-
-1. Elemanın stillerini ayarlamak için `currentStyles`'a bir `ngStyle` özellik bağlaması ekleyin.
-
-   <docs-code header="app.component.html" path="adev/src/content/examples/built-in-directives/src/app/app.component.html" region="NgStyle-2"/>
-
-Bu kullanım durumu için Angular, stilleri başlatmada ve değişiklikler durumunda uygular.
-Bunu yapmak için tam örnek, ilk olarak `ngOnInit()` ile ve bağımlı özellikler bir düğme tıklamasıyla değiştiğinde `setCurrentStyles()`'ı çağırır.
-Ancak bu adımlar `ngStyle`'ı kendi başına uygulamak için gerekli değildir.
+| Direktif türü                                                   | Ayrıntılar                                                                                 |
+| :-------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| [Bileşenler](guide/components)                                  | Kendi şablonlarına sahip, yeniden kullanılabilir arayüz tanımlar.                          |
+| [Öznitelik direktifleri](guide/directives/attribute-directives) | Bir elemanın, bileşenin veya başka bir direktifin görünümünü ya da davranışını değiştirir. |
+| [Yapısal direktifler](guide/directives/structural-directives)   | DOM elemanları ekleyip kaldırarak DOM düzenini değiştirir.                                 |
 
 ## Sırada ne var
 
+Aşağıdaki kılavuzlarda her direktif türü hakkında daha fazla bilgi edinin.
+
 <docs-pill-row>
-  <docs-pill href="guide/directives/attribute-directives" title="Attribute Directives"/>
-  <docs-pill href="guide/directives/structural-directives" title="Structural Directives"/>
-  <docs-pill href="guide/directives/directive-composition-api" title="Directive composition API"/>
+  <docs-pill href="guide/directives/attribute-directives" title="Öznitelik direktifleri"/>
+  <docs-pill href="guide/directives/structural-directives" title="Yapısal direktifler"/>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif kompozisyon API'si"/>
 </docs-pill-row>

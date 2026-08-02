@@ -257,57 +257,10 @@ describe('MyToolbarComponent', () => {
 });
 ```
 
-## APIs
+## API referansı
 
-### Toolbar Directive
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-`ngToolbar` direktifi, araç çubuğu işlevselliği için kapsayıcıyı sağlar.
-
-#### Inputs
-
-| Property       | Type                           | Default        | Description                                             |
-| -------------- | ------------------------------ | -------------- | ------------------------------------------------------- |
-| `orientation`  | `'vertical'` \| `'horizontal'` | `'horizontal'` | Araç çubuğunun dikey mi yatay mı yönlendirildiği        |
-| `disabled`     | `boolean`                      | `false`        | Tüm araç çubuğunu devre dışı bırakır                    |
-| `softDisabled` | `boolean`                      | `true`         | Devre dışı öğelerin odak alıp alamayacağı               |
-| `wrap`         | `boolean`                      | `true`         | Odağın kenarlarda sarılıp sarılmayacağı                 |
-| `value`        | `V[]`                          | `[]`           | Seçili widget değerleri (iki yönlü bağlamayı destekler) |
-
-### ToolbarWidget Directive
-
-`ngToolbarWidget` direktifi, araç çubuğu içinde bir öğeyi gezinilebilir widget olarak işaretler.
-
-#### Inputs
-
-| Property   | Type      | Default | Description                         |
-| ---------- | --------- | ------- | ----------------------------------- |
-| `id`       | `string`  | auto    | Widget için benzersiz tanımlayıcı   |
-| `disabled` | `boolean` | `false` | Widget'ı devre dışı bırakır         |
-| `value`    | `V`       | -       | Widget ile ilişkili değer (zorunlu) |
-
-#### Signals
-
-| Property   | Type              | Description                                 |
-| ---------- | ----------------- | ------------------------------------------- |
-| `active`   | `Signal<boolean>` | Widget'ın şu anda odaklanıp odaklanmadığı   |
-| `selected` | `Signal<boolean>` | Widget'ın seçili olup olmadığı (bir grupta) |
-
-### ToolbarWidgetGroup Directive
-
-`ngToolbarWidgetGroup` direktifi ilgili widget'ları birlikte gruplar.
-
-#### Inputs
-
-| Property   | Type      | Default | Description                                   |
-| ---------- | --------- | ------- | --------------------------------------------- |
-| `disabled` | `boolean` | `false` | Gruptaki tüm widget'ları devre dışı bırakır   |
-| `multi`    | `boolean` | `false` | Birden fazla widget'ın seçilip seçilemeyeceği |
-
-### Related components
-
-Araç çubuğu düğmeler, ağaçlar ve combobox'lar dahil çeşitli widget türlerini içerebilir. Belirli widget uygulamaları için ayrı bileşen belgelerine bakın.
-
-<docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/" title="Toolbar ARIA pattern"/>
-  <docs-pill href="/api/aria/toolbar/Toolbar" title="Toolbar API Reference"/>
-</docs-pill-row>
+- [`Toolbar`](/api/aria/toolbar/Toolbar)
+- [`ToolbarWidget`](/api/aria/toolbar/ToolbarWidget)
+- [`ToolbarWidgetGroup`](/api/aria/toolbar/ToolbarWidgetGroup)

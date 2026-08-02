@@ -30,10 +30,10 @@ Aşağıdaki paket adlarıyla ilişkili bağlantıları takip ederek daha fazla 
 
 | Dağıtım hedefi                                                    | Kurulum Komutu                                                                              |
 | :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
-| [Firebase hosting](https://firebase.google.com/docs/hosting)      | [`ng add @angular/fire`](https://npmjs.org/package/@angular/fire)                           |
+| [Firebase hosting](https://firebase.google.com/docs/hosting)      | [`ng add @angular/fire`](https://www.npmjs.com/package/@angular/fire)                       |
 | [Vercel](https://vercel.com/solutions/angular)                    | [`vercel init angular`](https://github.com/vercel/vercel/tree/main/examples/angular)        |
-| [Netlify](https://www.netlify.com)                                | [`ng add @netlify-builder/deploy`](https://npmjs.org/package/@netlify-builder/deploy)       |
-| [GitHub Pages](https://pages.github.com)                          | [`ng add angular-cli-ghpages`](https://npmjs.org/package/angular-cli-ghpages)               |
+| [Netlify](https://www.netlify.com)                                | [`ng add @netlify-builder/deploy`](https://www.npmjs.com/package/@netlify-builder/deploy)   |
+| [GitHub Pages](https://pages.github.com)                          | [`ng add angular-cli-ghpages`](https://www.npmjs.com/package/angular-cli-ghpages)           |
 | [Amazon Cloud S3](https://aws.amazon.com/s3/?nc2=h_ql_prod_st_s3) | [`ng add @jefiozie/ngx-aws-deploy`](https://www.npmjs.com/package/@jefiozie/ngx-aws-deploy) |
 
 Kendi yönettiğiniz bir sunucuya dağıtıyorsanız veya favori bulut platformunuz için bir builder yoksa, `ng deploy` komutunu kullanmanıza olanak tanıyan [bir builder oluşturabilir](tools/cli/cli-builder) veya uygulamanızı manuel olarak nasıl dağıtacağınızı öğrenmek için bu kılavuzu okuyabilirsiniz.

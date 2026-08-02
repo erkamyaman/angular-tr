@@ -73,7 +73,7 @@ Bu, uygulama aslında hiçbir yerde `<lib-header>` kullanmasa bile referans veri
 Tree-shaking sorunu, bir bileşen enjeksiyon token'ı olarak kullanıldığında ortaya çıkar.
 Bunun gerçekleşebileceği iki durum vardır:
 
-- Token, bir [içerik sorgusunun](guide/components/queries#içerik-sorguları) değer konumunda kullanılır.
+- Token, bir [içerik sorgusunun](guide/components/queries#content-queries) değer konumunda kullanılır.
 - Token, `inject` fonksiyonu ile kullanılır.
 
 Aşağıdaki örnekte, `CustomOther` token'ının her iki kullanımı da `CustomOther`'ın tutulmasına neden olur ve kullanılmadığında tree-shaken edilmesini engeller:

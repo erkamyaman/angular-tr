@@ -46,7 +46,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
 Bircok durumda, `ErrorHandler` yalnizca hatalari gunluge kaydedebilir ve uygulamanin calismaya devam etmesine izin verebilir. Ancak testlerde, neredeyse her zaman bu hatalari yuzey cikmak istersiniz. Angular'in `TestBed`'i, framework tarafindan yakalanan hatalarin istemeden gozden kacirilamamasi veya gormezden gelinememesi icin beklenmeyen hatalari yeniden firlatir. Nadir durumlarda, bir test ozellikle hatalarin uygulamanin yanit vermemesine veya cokmesine neden olmadigini saglamaya calisabilir. Bu durumlarda, `TestBed.configureTestingModule({rethrowApplicationErrors: false})` ile [`TestBed`'i uygulama hatalarini yeniden _firlatmayacak_ sekilde yapilandirabilirsiniz](api/core/testing/TestModuleMetadata#rethrowApplicationErrors).
 
-## Global hata dinleyicileri
+## Global hata dinleyicileri {#global-error-listeners}
 
 Ne uygulama kodu ne de framework'un uygulama ornegi tarafindan yakalanmayan hatalar global kapsama ulasabilir. Global kapsama ulasan hatalar, hesaba katilmazsa istenmeyen sonuclara yol acabilir. Tarayici disindaki ortamlarda, surecin cokmesine neden olabilirler. Tarayicida, bu hatalar raporlanmadan kalabilir ve site ziyaretcileri hatalari tarayici konsolunda gorebilir. Angular, bu sorunlari ele almak icin her iki ortam icin de global dinleyiciler saglar.
 

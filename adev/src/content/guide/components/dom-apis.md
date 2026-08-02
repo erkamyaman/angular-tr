@@ -5,9 +5,7 @@ TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsa
 Angular, DOM oluşturma, güncelleme ve kaldırma işlemlerinin çoğunu sizin için yönetir. Ancak nadiren bir bileşenin DOM'u ile doğrudan etkileşime girmeniz gerekebilir. Bileşenlere, bileşenin host elemanına bir referans almak için ElementRef enjekte edilebilir:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ProfilePhoto {
   constructor() {
     const elementRef = inject(ElementRef);
@@ -21,9 +19,7 @@ export class ProfilePhoto {
 Angular sayfayı render etmeyi bitirdiğinde çalışan bir **render geri çağrısı** kaydetmek için Angular'ın `afterEveryRender` ve `afterNextRender` fonksiyonlarını kullanabilirsiniz.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class ProfilePhoto {
   constructor() {
     const elementRef = inject(ElementRef);
@@ -47,7 +43,7 @@ export class ProfilePhoto {
 
 Bileşenlere, diğer Angular özellikleriyle bağlantılı belirli DOM manipülasyonları gerçekleştirmek için bir `Renderer2` örneği enjekte edilebilir.
 
-Bir bileşenin `Renderer2`'si tarafından oluşturulan tüm DOM elemanları, o bileşenin [stil kapsüllemesine](guide/components/styling#stil-kapsamı) katılır.
+Bir bileşenin `Renderer2`'si tarafından oluşturulan tüm DOM elemanları, o bileşenin [stil kapsüllemesine](guide/components/styling#style-scoping) katılır.
 
 Belirli `Renderer2` API'leri ayrıca Angular'ın animasyon sistemine bağlanır. Sentetik animasyon özelliklerini güncellemek için `setProperty` yöntemini ve sentetik animasyon olayları için olay dinleyicileri eklemek için `listen` yöntemini kullanabilirsiniz. Ayrıntılar için [Animasyonlar](guide/animations) rehberine bakın.
 

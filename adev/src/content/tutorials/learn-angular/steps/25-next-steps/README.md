@@ -1,5 +1,10 @@
 # Angular'ı daha fazla keşfetmeye hazır mısınız?
 
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/superhero.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Başardınız! Angular'ı Öğrenin öğreticisini tamamladınız ve uygulama geliştirmenin temellerini öğrendiniz.</p>
+</div>
+
 Ayrıca [kılavuzlarımızda](overview) ve [referanslar](api) bölümünde daha fazla bilgi edinebilir veya `ng new` komutunu kullanabilirsiniz.
 
 <docs-card-container>

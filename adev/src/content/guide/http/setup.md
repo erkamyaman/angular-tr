@@ -1,22 +1,22 @@
 # `HttpClient` Kurulumu
 
-Uygulamanızda `HttpClient` kullanabilmeniz için önce onu [bağımlılık enjeksiyonu](guide/di) ile yapılandırmanız gerekir.
+Angular v21 ve sonrasında `HttpClient` varsayılan olarak enjekte edilebilir durumdadır.
 
 ## Bağımlılık Enjeksiyonu ile `HttpClient` Sağlama
 
-`HttpClient`, çoğu uygulamanın `app.config.ts` dosyasındaki uygulama `providers` içine dahil ettiği `provideHttpClient` yardımcı fonksiyonu kullanılarak sağlanır.
+Varsayılan HTTP özellik setini yapılandırmak veya `app.config.ts` dosyasındaki uygulama `providers` içine özellik eklemek için `provideHttpClient` yardımcı fonksiyonunu kullanabilirsiniz.
 
 ```ts
 export const appConfig: ApplicationConfig = {
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(/* özellikleri buraya ekleyin, örneğin withInterceptors(...) */)],
 };
 ```
 
-Uygulamanız bunun yerine NgModule tabanlı önyükleme kullanıyorsa, `provideHttpClient`'ı uygulamanızın NgModule'ünün providers'ına dahil edebilirsiniz:
+Uygulamanız bunun yerine NgModule tabanlı önyükleme kullanıyorsa, varsayılan HTTP özellik setini yapılandırmak veya özellik eklemek için `provideHttpClient`'ı uygulamanızın NgModule'ünün providers'ına dahil edebilirsiniz:
 
 ```ts
 @NgModule({
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(/* özellikleri buraya ekleyin, örneğin withInterceptors(...) */)],
   // ... diğer uygulama yapılandırması
 })
 export class AppModule {}

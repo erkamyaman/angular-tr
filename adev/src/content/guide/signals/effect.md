@@ -36,9 +36,7 @@ Bunun yerine, diğer duruma bağlı durumu modellemek için `computed` sinyaller
 Varsayılan olarak, bir `effect()` oluşturmayı yalnızca bir [enjeksiyon bağlamında](guide/di/dependency-injection-context) (`inject` fonksiyonuna erişiminizin olduğu yerde) yapabilirsiniz. Bu gereksinimi karşılamanın en kolay yolu, `effect`'i bir bileşen, direktif veya servis `constructor`'ı içinde çağırmaktır:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class EffectiveCounter {
   readonly count = signal(0);
 
@@ -54,9 +52,7 @@ export class EffectiveCounter {
 Constructor dışında bir effect oluşturmak için, seçenekleri aracılığıyla `effect`'e bir `Injector` iletebilirsiniz:
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class EffectiveCounter {
   readonly count = signal(0);
   private injector = inject(Injector);
@@ -86,7 +82,7 @@ Her iki tür `effect`'in yürütülmesi de değişiklik algılama sürecine bağ
 
 Her iki durumda da, effect yürütülmesi sırasında effect bağımlılıklarından en az biri değiştiyse, effect değişiklik algılama sürecinde ilerlemeden önce yeniden çalışacaktır.
 
-### Effect'lerin yok edilmesi
+### Effect'lerin yok edilmesi {#destroying-effects}
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 
@@ -97,7 +93,7 @@ Bir `effect`, ne zaman yok edileceğini etkileyen iki farklı bağlamda oluştur
 
 Effect'ler bir `EffectRef` döndürür. Bir effect'i manuel olarak elden çıkarmak için ref'in `destroy` yöntemini kullanabilirsiniz. Otomatik temizlemeyi devre dışı bırakmak için bir effect oluştururken bunu `manualCleanup` seçeneği ile birleştirebilirsiniz. Artık gerekli olmadıklarında bu tür effect'leri gerçekten yok etmeye dikkat edin.
 
-### Effect cleanup fonksiyonları
+### Effect cleanup fonksiyonları {#effect-cleanup-functions}
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 Effect'ler, effect yok edildiğinde veya ilk işlem tamamlanmadan tekrar çalıştığında iptal etmeniz gereken uzun süren işlemleri başlatabilir. Bir effect oluştururken, fonksiyonunuz isteğe bağlı olarak ilk parametresi olarak bir `onCleanup` fonksiyonunu kabul edebilir. Bu `onCleanup` fonksiyonu, effect'in bir sonraki çalışmasından önce veya effect yok edildiğinde çağrılan bir geri çağrı kaydetmenize olanak tanır.
@@ -123,9 +119,7 @@ effect((onCleanup) => {
 Bu durumlar için `afterRenderEffect` kullanabilirsiniz. `effect` gibi çalışır, ancak Angular render işlemini tamamlayıp değişikliklerini DOM'a uyguladıktan sonra çalışır.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class MyFancyChart {
   chartData = input.required<ChartData>();
   canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');

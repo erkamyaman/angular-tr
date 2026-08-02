@@ -47,9 +47,9 @@ Bu güvenlik açıklarını önlemek için üretim dağıtımlarında her zaman 
 
 İçerik güvenlik politikası ve Güvenilir Türler kullanımıyla ek bir koruma katmanı sağlanabilir.
 Bu web platform özellikleri, XSS sorunlarını önlemek için en etkili yer olan DOM düzeyinde çalışır. Burada diğer, daha düşük seviyeli API'ler kullanılarak atlanamaz.
-Bu nedenle, bu özelliklerden yararlanmanız kesinlikle teşvik edilir. Bunu yapmak için uygulama için [içerik güvenlik politikasını](#içerik-güvenlik-politikası) yapılandırın ve [güvenilir tür uygulamasını](#güvenilir-türleri-zorlama) etkinleştirin.
+Bu nedenle, bu özelliklerden yararlanmanız kesinlikle teşvik edilir. Bunu yapmak için uygulama için [içerik güvenlik politikasını](#content-security-policy) yapılandırın ve [güvenilir tür uygulamasını](#güvenilir-türleri-zorlama) etkinleştirin.
 
-### Sterilizasyon ve güvenlik bağlamları
+### Sterilizasyon ve güvenlik bağlamları {#sanitization-and-security-contexts}
 
 _Sterilizasyon_, güvenilmez bir değerin incelenmesi ve DOM'a eklenmesi güvenli olan bir değere dönüştürülmesidir.
 Birçok durumda, sterilizasyon bir değeri hiç değiştirmez.
@@ -86,7 +86,7 @@ Angular değeri güvensiz olarak tanır ve otomatik olarak sterilize eder; `scri
 
 <img alt="A screenshot showing interpolated and bound HTML values" src="assets/images/guide/security/binding-inner-html.png#small">
 
-### DOM API'lerinin doğrudan kullanımı ve açık sterilizasyon çağrıları
+### DOM API'lerinin doğrudan kullanımı ve açık sterilizasyon çağrıları {#direct-use-of-the-dom-apis-and-explicit-sanitization-calls}
 
 Güvenilir Türleri zorlamadığınız sürece, yerleşik tarayıcı DOM API'leri sizi güvenlik açıklarından otomatik olarak korumaz.
 Örneğin, `document`, `ElementRef` aracılığıyla kullanılabilir düğüm ve birçok üçüncü taraf API güvensiz yöntemler içerir.
@@ -134,7 +134,7 @@ Bunu önlemek için güvenilir bir video URL'si oluşturmak için bileşen üzer
 
 <docs-code header="bypass-security.component.ts (trust-video-url)" path="adev/src/content/examples/security/src/app/bypass-security.component.ts" region="trust-video-url"/>
 
-### İçerik güvenlik politikası
+### İçerik güvenlik politikası {#content-security-policy}
 
 İçerik Güvenlik Politikası \(CSP\), XSS'i önlemek için derinlemesine bir savunma tekniğidir.
 CSP'yi etkinleştirmek için web sunucunuzu uygun bir `Content-Security-Policy` HTTP başlığı döndürecek şekilde yapılandırın.

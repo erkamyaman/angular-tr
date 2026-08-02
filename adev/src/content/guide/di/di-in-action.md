@@ -26,7 +26,7 @@ export class HighlightDirective {
 }
 ```
 
-## Ana elemanın etiket adını enjekte etme
+## Ana elemanın etiket adını enjekte etme {#inject-the-host-elements-tag-name}
 
 Bir ana elemanın etiket adını almak için, `HOST_TAG_NAME` token'ını kullanarak enjekte edin.
 
@@ -57,7 +57,7 @@ export class RoleButtonDirective {
 
 NOTE: Ana elemanın etiket adı olmayabilirse (örneğin `ng-container` veya `ng-template`), enjeksiyonu isteğe bağlı yapın.
 
-## İleri referans ile döngüsel bağımlılıkları çözme
+## İleri referans ile döngüsel bağımlılıkları çözme {#resolve-circular-dependencies-with-a-forward-reference}
 
 TypeScript'te sınıf bildirimlerinin sırası önemlidir.
 Bir sınıfı tanımlamadan önce doğrudan ona referans veremezsiniz.

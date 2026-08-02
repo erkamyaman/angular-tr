@@ -107,7 +107,7 @@ We analyzed your package.json, there are some packages to update:
 
 Komuta güncellenecek bir kütüphane kümesi verirseniz, bu kütüphaneleri, eş bağımlılıklarını ve bunlara bağımlı olan eş bağımlılıkları günceller.
 
-HELPFUL: Tutarsızlıklar varsa \(örneğin, eş bağımlılıklar basit bir [semver](https://semver.io) aralığıyla eşleştirilemezse\), komut bir hata oluşturur ve çalışma alanında hiçbir şeyi değiştirmez.
+HELPFUL: Tutarsızlıklar varsa \(örneğin, eş bağımlılıklar basit bir [semver](https://semver.org) aralığıyla eşleştirilemezse\), komut bir hata oluşturur ve çalışma alanında hiçbir şeyi değiştirmez.
 
 Varsayılan olarak tüm bağımlılıkların güncellenmesini zorlamamamanızı öneririz.
 Önce belirli bağımlılıkları güncellemeyi deneyin.

@@ -140,6 +140,8 @@ Hiçbir `@case` ifadeye eşleşmezse ve `@default` bloğu yoksa hiçbir şey gö
 
 `@default never;` kullanarak, kalan hiçbir durumun olmaması gerektiğini açıkça belirtirsiniz. Birleştirme türü daha sonra genişletilirse ve yeni bir durum bir @case tarafından karşılanmazsa, Angular'ın şablon tür denetleyicisi bir hata bildirir ve eksik dalları erken yakalamanıza yardımcı olur.
 
+NOTE: Bütünlük denetimi, TypeScript'in yalnızca değişkenlerde çalışan tür daraltmasına dayanır. Switch koşulu bir fonksiyon çağrısı veya bir sinyal ise (örneğin `@switch (state())`) çalışmaz. Bunu aşmak için sinyali bir `@let` değişkenine atayın, örneğin: `@let mySignal = this.mySignal()`.
+
 ```angular-html
 @Component({
   template: `
@@ -163,6 +165,7 @@ export class AppComponent {
 
 Anahtarlanan ifade bir birleşim içinde iç içe yer aldığında, bütünlük denetimi için kontrol edilecek ifadeyi açıkça belirtmeniz gerekir.
 
+<!-- prettier-ignore -->
 ```angular-ts
 @Component({
   template: `

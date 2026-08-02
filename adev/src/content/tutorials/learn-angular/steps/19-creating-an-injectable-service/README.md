@@ -21,7 +21,7 @@ class UserService {
 
 `@Service` dekoratörü sınıfı bir servis olarak işaretler ve DI sistemine `UserService`'e uygulamanızın herhangi bir yerinden erişilebileceğini bildirir. Angular, servisi varsayılan olarak uygulamanızın tamamına sağlar, bu nedenle ek bir yapılandırma yazmanıza gerek yoktur.
 
-NOTE: `@Service` varsayılan olarak sınıfı kök enjektörde (root injector) sağlar. Servisi manuel olarak sağlamak isterseniz, örneğin belirli bir rota veya bileşenle sınırlandırmak için, `autoProvided: false` olarak ayarlayın. Daha fazla bilgi için [servis oluşturma ve kullanma kılavuzuna](guide/di/creating-and-using-services#service-dekoratörünü-kullanma) bakın.
+NOTE: `@Service` varsayılan olarak sınıfı kök enjektörde (root injector) sağlar. Servisi manuel olarak sağlamak isterseniz, örneğin belirli bir rota veya bileşenle sınırlandırmak için, `autoProvided: false` olarak ayarlayın. Daha fazla bilgi için [servis oluşturma ve kullanma kılavuzuna](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) bakın.
 
 Pekala, siz deneyin:
 

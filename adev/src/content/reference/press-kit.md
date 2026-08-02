@@ -14,6 +14,10 @@ Bu sayfada indirilebilen logo grafikleri [CC BY 4.0](https://creativecommons.org
     Marka kılavuzları klasörlerimiz, markanın nasıl uyarlanabileceğine dair tasarım dosyalarını, rehberliği ve topluluk örneklerini içerir.
     Logoyu uyarlama hakkında daha fazla bilgi için aşağıdaki bölümü okuyun.
   </docs-card>
+  <docs-card title="Angular maskotu" href="https://drive.google.com/drive/folders/1uX4H3exWWpwPqh52Bxig3GLS736gBEAf?usp=drive_link" link="Google Drive'dan indirin">
+    ![Angular mascot cheerful](assets/images/press-kit/angular_mascot_cheerful.png "Angular mascot cheerful")
+    Angie, Angular framework'ünün resmi maskotudur. Maskot klasörleri, topluluk materyallerinizde ve sunumlarınızda kullanmanız için sevimli arkadaşımızın farklı dosya formatlarını ve pozlarını içerir.
+  </docs-card>
 </docs-card-container>
 
 ## Basın ve Medya

@@ -112,4 +112,4 @@ Angular Router hakkında daha fazla bilgi edinmek için aşağıdaki konulara ba
   <docs-pill href="api/router/Router" title="Router API"/>
 </docs-pill-row>
 
-HELPFUL: Bu içerik, [Brandon Roberts](https://twitter.com/brandontroberts) tarafından yazılan [Custom Route Matching with the Angular Router](https://medium.com/@brandontroberts/custom-route-matching-with-the-angular-router-fbdd48665483) makalesine dayanmaktadır.
+HELPFUL: Bu içerik, [Brandon Roberts](https://x.com/brandontroberts) tarafından yazılan [Custom Route Matching with the Angular Router](https://medium.com/@brandontroberts/custom-route-matching-with-the-angular-router-fbdd48665483) makalesine dayanmaktadır.

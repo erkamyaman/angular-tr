@@ -212,57 +212,16 @@ describe('MySelectComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-Select kalıbı, Angular'ın Aria kütüphanesindeki aşağıdaki yönergeleri kullanır. Bağlantılı rehberlerdeki tam API dokümantasyonuna bakın.
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-### Combobox Yönergeleri
-
-Select kalıbı, klavye navigasyonunu korurken metin girişini engellemek için `ngCombobox`'ı doğrudan etkileşimli olmayan bir host elemanına (örneğin bir `div` veya bir `button`) uygular.
-
-#### Girişler
-
-| Property   | Type                   | Default | Description                     |
-| ---------- | ---------------------- | ------- | ------------------------------- |
-| `disabled` | `boolean`              | `false` | Tüm select'i devre dışı bırakır |
-| `expanded` | `ModelSignal<boolean>` | `false` | Select'in genişletilmiş durumu  |
-
-Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Combobox API dokümantasyonuna](guide/aria/combobox#apiler) bakın.
-
-#### Popup Yönergeleri
-
-Yapısal `ngComboboxPopup` yönergesi, overlay şablonunu işaretler ve üst combobox'a bir referans gerektirir:
-
-| Property   | Type       | Description                            |
-| ---------- | ---------- | -------------------------------------- |
-| `combobox` | `Combobox` | Üst `Combobox`'a gerekli olan referans |
-
-#### ComboboxWidget Yönergesi
-
-`ngComboboxWidget` yönergesi, active-descendant odak takibini desteklemek için listbox'ı combobox tetikleyicisiyle köprüler.
-
-| Property           | Type                  | Description                                                                                                                                            |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `activeDescendant` | `string \| undefined` | Tetikleyicideki `aria-activedescendant` niteliğini güncellemek için o anda aktif olan seçeneğin ID'si (`listbox.activeDescendant()` değerine bağlanır) |
-
-### Listbox Yönergeleri
-
-Select kalıbı, açılır liste için `ngListbox` ve her seçilebilir öğe için `ngOption` kullanır.
-
-#### Girişler
-
-| Property        | Type                               | Default      | Description                                                                                                                                    |
-| --------------- | ---------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `selectionMode` | `'follow'` \| `'explicit'`         | `'explicit'` | Seçeneklerin aktif odağı izlemek yerine tıklama/Enter ile açıkça değiştirilmesi için `'explicit'` olarak ayarlayın                             |
-| `focusMode`     | `'roving'` \| `'activedescendant'` | `'roving'`   | Listbox tarafından kullanılan odak stratejisi. Tarayıcı odağının combobox tetikleyicisinde kalması için `'activedescendant'` olarak ayarlayın. |
-| `tabIndex`      | `number`                           | `0`          | Listbox'ın tabindex'i. Active-descendant modunda klavye odağının açılır pencere kabına girmesini önlemek için `-1` olarak ayarlayın.           |
-
-#### Model
-
-| Property | Type                 | Description                                                                    |
-| -------- | -------------------- | ------------------------------------------------------------------------------ |
-| `value`  | `ModelSignal<any[]>` | Seçili değerlerin iki yönlü bağlanabilir dizisi (select için tek değer içerir) |
+- [`Combobox`](/api/aria/combobox/Combobox)
+- [`ComboboxPopup`](/api/aria/combobox/ComboboxPopup)
+- [`ComboboxWidget`](/api/aria/combobox/ComboboxWidget)
+- [`Listbox`](/api/aria/listbox/Listbox)
+- [`Option`](/api/aria/listbox/Option)
 
 ### Konumlandırma
 
-Select kalıbı, akıllı konumlandırma için [CDK Overlay](https://material.angular.io/cdk/overlay/overview) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak yönetmek için `cdkConnectedOverlay` kullanın.
+Select deseni, akıllı konumlandırma için [CDK Overlay](https://material.angular.dev/cdk/overlay/overview) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak işlemek için `cdkConnectedOverlay` kullanın.

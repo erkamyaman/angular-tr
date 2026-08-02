@@ -214,37 +214,11 @@ describe('MyMenubarComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-Menü çubuğu kalıbı, Angular'ın Aria kütüphanesindeki yönergeleri kullanır. Eksiksiz API dokümantasyonu için [Menu rehberine](guide/aria/menu) bakın.
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-### MenuBar
-
-Üst düzey menü öğeleri için yatay kapsayıcı.
-
-#### Girişler
-
-| Property         | Type      | Default | Description                                                                  |
-| ---------------- | --------- | ------- | ---------------------------------------------------------------------------- |
-| `disabled`       | `boolean` | `false` | Tüm menü çubuğunu devre dışı bırakır                                         |
-| `wrap`           | `boolean` | `true`  | Klavye navigasyonunun son öğeden ilk öğeye sarılıp sarılmadığı               |
-| `softDisabled`   | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
-| `value`          | `V[]`     | `[]`    | Seçili menü öğesi değerleri (iki yönlü bağlamayı destekler)                  |
-| `typeaheadDelay` | `number`  | `500`   | Yazarak arama arabelleği sıfırlanmadan önceki milisaniye süresi              |
-
-Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Menu API dokümantasyonuna](guide/aria/menu#apiler) bakın.
-
-### MenuItem
-
-Menü çubuğu içindeki bireysel öğeler. Menu ile aynı API - [MenuItem](guide/aria/menu#menuitem) sayfasına bakın.
-
-**Menü çubuğuna özel davranış:**
-
-- Sol/Sağ ok tuşları menü çubuğu öğeleri arasında gezinir (dikey menülerdeki Yukarı/Aşağı yerine)
-- İlk klavye etkileşimi veya tıklama alt menüler için üzerine gelindiğinde açmayı etkinleştirir
-- Enter veya Aşağı ok tuşu alt menüyü açar ve ilk öğeye odaklanır
-- `aria-haspopup="menu"` alt menülere sahip öğeleri gösterir
-
-### MenuTrigger
-
-Menü çubuklarında genellikle kullanılmaz - MenuItem, ilişkili bir alt menüsü olduğunda tetikleyici davranışını doğrudan yönetir. Bağımsız menü tetikleyici kalıpları için [MenuTrigger](guide/aria/menu#menutrigger) sayfasına bakın.
+- [`MenuBar`](/api/aria/menu/MenuBar)
+- [`MenuItem`](/api/aria/menu/MenuItem)
+- [`MenuTrigger`](/api/aria/menu/MenuTrigger)
+- [`Menu`](/api/aria/menu/Menu)

@@ -65,7 +65,7 @@ Bazı örnekler şunlar olabilir:
 
 Bir alan başına bir şeyi izlemek için formunuzun yanında paralel bir `Map<fieldKey, value>` tuttuğunuzu fark ederseniz, bu meta verinin doğru araç olduğunun bir işaretidir. Meta veri şemayla aynı yerde kalır, reaktif kalır ve alanın yaşam döngüsüne katılır.
 
-## Bir meta veri anahtarı oluşturma
+## Bir meta veri anahtarı oluşturma {#creating-a-metadata-key}
 
 Özel bir anahtar oluşturmak istediğinizde, `createMetadataKey<TWrite>()` çağırın. Tür parametresi, şema kurallarınızın katkıda bulunacağı değeri açıklar.
 
@@ -79,7 +79,7 @@ Her `createMetadataKey()` çağrısı yeni bir benzersiz anahtar oluşturur. Eş
 
 NOTE: İndirgeyicisiz oluşturulan bir anahtar varsayılan olarak "geçersiz kılma" anlamını kullanır: birden çok kural anahtarı ayarlarsa son katkı kazanır.
 
-## Bir şemadan değer ayarlama
+## Bir şemadan değer ayarlama {#setting-values-from-a-schema}
 
 Belirli bir alandaki anahtar için bir değer kaydetmeniz gerektiğinde, bir şema fonksiyonunun içinde `metadata(path, key, logic)` kullanın.
 
@@ -162,7 +162,7 @@ Yukarıdaki bileşen örneği, bir `computed()` içinde isteğe bağlı zincirle
 
 Tek bir katkıcı için tüm API budur. Bir sonraki bölüm, birden fazla şema kuralı aynı anahtara katkıda bulunduğunda ne olduğunu ve bu katkıların indirgeyicilerle nasıl birleştirileceğini ele alır.
 
-## Katkıları indirgeyicilerle birleştirme
+## Katkıları indirgeyicilerle birleştirme {#combining-contributions-with-reducers}
 
 Geçersiz kılma anlamı, belirli bir alandaki bir anahtara yalnızca bir kural katkıda bulunduğunda işe yarar. İki kural katkıda bulunur bulunmaz, ilk değer sessizce atılır:
 
@@ -281,7 +281,7 @@ form(model, (path) => {
 
 TIP: İndirgeyicilerinizi saf tutun: `reduce()` yalnızca iki argümanına bağlı olmalıdır ve `getInitial()` her çağrıldığında aynı değeri döndürmelidir. İndirgeyiciler, herhangi bir katkının sinyalleri değiştiğinde yeniden yürütülen reaktif bir hesaplamanın içinde çalışır, bu yüzden saf olmayan indirgeyiciler tutarsız meta veri üretir.
 
-## Yönetilen meta veriyle yaşam döngüsü farkındalığına sahip nesneler ekleme
+## Yönetilen meta veriyle yaşam döngüsü farkındalığına sahip nesneler ekleme {#attaching-lifecycle-aware-objects-with-managed-metadata}
 
 Yönetilen meta veri, bir alanda reaktif bir değer yerine yaşam döngüsü farkındalığına sahip bir nesne depolar. Dış veri getiren bir `resource()`, dış bir sisteme senkronize eden bir `effect()` ya da tek bir alanla sınırlandırılmış bir servis tutamacı gibi alan başına nesneler için kullanın.
 

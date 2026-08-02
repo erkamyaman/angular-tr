@@ -2,7 +2,7 @@
 
 `NgOptimizedImage` direktifi, görsel yükleme için performans en iyi uygulamalarını benimsemeyi kolaylaştırır.
 
-Direktif, [Largest Contentful Paint (LCP)](http://web.dev/lcp) görselinin yüklenmesinin önceliklendirilmesini şu şekilde sağlar:
+Direktif, [Largest Contentful Paint (LCP)](https://web.dev/lcp) görselinin yüklenmesinin önceliklendirilmesini şu şekilde sağlar:
 
 - `<img>` etiketinde `fetchpriority` niteliğini otomatik olarak ayarlama
 - Diğer görselleri varsayılan olarak tembel yükleme
@@ -77,7 +77,7 @@ Angular, LCP öğesi `priority` niteliğine sahip olmayan bir görsel ise geliş
 <img ngSrc="cat.jpg" width="400" height="200" />
 ```
 
-**Duyarlı görseller** (görünüm alanına göre büyüyüp küçülecek şekilde stillendirilmiş görseller) için `width` ve `height` nitelikleri görsel dosyasının gerçek boyutu olmalıdır. Duyarlı görseller için ayrıca [`sizes` için bir değer ayarlamak](#duyarlı-görseller) da önemlidir.
+**Duyarlı görseller** (görünüm alanına göre büyüyüp küçülecek şekilde stillendirilmiş görseller) için `width` ve `height` nitelikleri görsel dosyasının gerçek boyutu olmalıdır. Duyarlı görseller için ayrıca [`sizes` için bir değer ayarlamak](#responsive-images) da önemlidir.
 
 **Sabit boyutlu görseller** için `width` ve `height` nitelikleri görselin istenen render boyutunu yansıtmalıdır. Bu niteliklerin en-boy oranı her zaman görselin gerçek en-boy oranıyla eşleşmelidir.
 
@@ -115,7 +115,7 @@ IMPORTANT: "fill" görselinin düzgün render edilmesi için üst öğesi `posit
 
 Arka plan görselinin kapsayıcıyı nasıl doldurduğunu [Fill modunu kullanma](#fill-modunu-kullanma) bölümünde açıklandığı gibi ayarlayabilirsiniz.
 
-## Yer Tutucuları Kullanma
+## Yer Tutucuları Kullanma {#using-placeholders}
 
 ### Otomatik Yer Tutucular
 
@@ -208,7 +208,7 @@ Oluşturulan srcset örneği:
 <img ... srcset="image-400w.jpg 1x, image-800w.jpg 2x" />
 ```
 
-#### Duyarlı Görseller
+#### Duyarlı Görseller {#responsive-images}
 
 Görselinizin duyarlı olması gerekiyorsa (yani görünüm alanı boyutuna göre büyüyüp küçülüyorsa), `srcset`'i oluşturmak için bir [`sizes` niteliği](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) tanımlamanız gerekir.
 

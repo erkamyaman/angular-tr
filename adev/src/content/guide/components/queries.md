@@ -65,7 +65,7 @@ export class CustomCard {
 
 **Sorgular asla bileşen sınırlarını delmez.** Görünüm sorguları yalnızca bileşenin şablonundan sonuç alabilir.
 
-## İçerik sorguları
+## İçerik sorguları {#content-queries}
 
 İçerik sorguları, bileşenin _içeriğindeki_ -- bileşenin kullanıldığı şablonda bileşenin içerisine yuvalanan -- elemanlardan sonuçları alır. Tek bir sonuç için `contentChild` fonksiyonu ile sorgulama yapabilirsiniz.
 
@@ -139,16 +139,14 @@ export class UserProfile {}
 
 **Sorgular asla bileşen sınırlarını delmez.** İçerik sorguları yalnızca bileşenin kendisi ile aynı şablondaki sonuçları alabilir.
 
-## Zorunlu sorgular
+## Zorunlu sorgular {#required-queries}
 
 Bir alt sorgu (`viewChild` veya `contentChild`) sonuç bulamazsa, değeri `undefined` olur. Bu, hedef eleman `@if` veya `@for` gibi bir kontrol akışı ifadesi tarafından gizlenmişse gerçekleşebilir. Bu nedenle, alt sorgular değer türlerinde `undefined` içeren bir sinyal döndürür.
 
 Bazı durumlarda, özellikle `viewChild` ile, belirli bir alt elemanın her zaman mevcut olduğunu kesinlikle bilirsiniz. Diğer durumlarda, belirli bir alt elemanın mevcut olmasını katı bir şekilde zorunlu kılmak isteyebilirsiniz. Bu durumlar için _zorunlu sorgu_ kullanabilirsiniz.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomCard {
   header = viewChild.required(CustomCardHeader);
   body = contentChild.required(CustomCardBody);
@@ -163,7 +161,7 @@ Her sorgu dekoratörünün ilk parametresi **konumlandırıcı**sıdır (locator
 
 Çoğunlukla konumlandırıcı olarak bir bileşen veya direktif kullanmak istersiniz.
 
-Alternatif olarak, bir [şablon referans değişkeni](guide/templates/variables#şablon-referans-değişkenleri)'ne karşılık gelen bir dize konumlandırıcı belirtebilirsiniz.
+Alternatif olarak, bir [şablon referans değişkeni](guide/templates/variables#template-reference-variables)'ne karşılık gelen bir dize konumlandırıcı belirtebilirsiniz.
 
 ```angular-ts
 @Component({
@@ -197,9 +195,7 @@ const SUB_ITEM = new InjectionToken<string>('sub-item');
 })
 export class SpecialItem {}
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomList {
   subItemType = contentChild(SUB_ITEM);
 }
@@ -216,9 +212,7 @@ Tüm sorgu fonksiyonları ikinci parametre olarak bir seçenekler nesnesi kabul 
 Varsayılan olarak, sorgu konumlandırıcısı hem aradığınız elemanı hem de alınan değeri belirtir. Konumlandırıcı tarafından eşleştirilen elemandan farklı bir değer almak için alternatif olarak `read` seçeneğini belirtebilirsiniz.
 
 ```ts
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class CustomExpando {
   toggle = contentChild(ExpandoContent, {read: TemplateRef});
 }
@@ -438,7 +432,7 @@ Statik sorgu sonuçları başlatmadan sonra güncellenmez.
 
 `static` seçeneği `@ViewChildren` ve `@ContentChildren` sorguları için mevcut değildir.
 
-### QueryList kullanımı
+### QueryList kullanımı {#using-querylist}
 
 `@ViewChildren` ve `@ContentChildren` her ikisi de sonuçların bir listesini içeren bir `QueryList` nesnesi sağlar.
 

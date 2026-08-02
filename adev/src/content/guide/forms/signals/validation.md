@@ -10,19 +10,19 @@ Signal Forms, şema tabanlı bir doğrulama yaklaşımı sunar. Doğrulama kural
   <docs-code header="app.css" path="adev/src/content/examples/signal-forms/src/login-validation-complete/app/app.css"/>
 </docs-code-multifile>
 
-## Doğrulama temelleri
+## Doğrulama temelleri {#validation-basics}
 
 Signal Forms'ta doğrulama, `form()`'a ikinci argüman olarak geçirilen bir şema fonksiyonu aracılığıyla tanımlanır.
 
-### Şema fonksiyonu
+### Şema fonksiyonu {#the-schema-function}
 
 Şema fonksiyonu, doğrulama kurallarınızı tanımlamanıza olanak tanıyan bir `SchemaPathTree` nesnesi alır:
 
 <docs-code
   header="app.ts"
   path="adev/src/content/examples/signal-forms/src/login-validation-complete/app/app.ts"
-  visibleLines="[21,22,23,24,25,26,27]"
-  highlight="[23,24,26]"
+  visibleLines="[29,30,31,32,33,34]"
+  highlight="[30,31,33]"
 />
 
 Şema fonksiyonu, form başlatma sırasında bir kez çalışır. Doğrulama kuralları, şema yol parametresi kullanılarak alanlara bağlanır (`schemaPath.email`, `schemaPath.password` gibi) ve doğrulama, alan değerleri değiştiğinde otomatik olarak çalışır.
@@ -51,6 +51,20 @@ Doğrulama kuralları şu sırayla yürütülür:
 Senkron doğrulama kuralları (`required()`, `email()` gibi) anında tamamlanır. Asenkron doğrulama kuralları (`validateHttp()` gibi) zaman alabilir ve yürütülürken `pending()` sinyalini `true` olarak ayarlar.
 
 Tüm doğrulama kuralları her değişiklikte çalışır -- doğrulama ilk hatadan sonra kısa devre yapmaz. Bir alanda hem `required()` hem de `email()` doğrulama kuralları varsa, her ikisi de çalışır ve her ikisi de aynı anda hata üretebilir.
+
+### Yerel HTML doğrulaması
+
+Signal Forms, doğrulama kurallarını çalıştırmak için tarayıcının yerleşik [kısıt doğrulamasını](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation) **kullanmaz**. Bu bilinçli bir tasarım tercihidir: Signal Forms yalnızca yerel form elemanlarının değil, herhangi bir bileşenin form kontrolü olarak davranmasına izin verir.
+
+Bunun yerine doğrulama kurallarınız tamamen Angular içinde çalışır ve doğrulama durumu, elemanın yerel geçerlilik durumu yerine `valid()`, `invalid()` ve `errors()` gibi alan durumu sinyalleri aracılığıyla sunulur. [`FormRoot` direktifi](guide/forms/signals/form-submission) ayrıca form elemanına `novalidate` niteliğini ekler, böylece tarayıcı gönderimi engellemez.
+
+Bir alan yerel bir form elemanına bağlandığında, bazı yerleşik doğrulama kuralları kısıtlarını karşılık gelen yerel niteliğe yansıtır: `required()`, `min()`, `max()`, `minLength()` ve `maxLength()`, eleman destekliyorsa `required`, `min`, `max`, `minlength` ve `maxlength` niteliklerini ayarlar. `pattern()` bir istisnadır ve yerel `pattern` niteliğini ayarlamaz. Signal Forms bu nitelikleri girdi davranışını kontrol etmek ve erişilebilirliği artırmak için ayarlar, **yerel doğrulamayı tetiklemek için değil**.
+
+NOTE: Signal Forms'un yerel geçerlilik durumunu okuduğu tek bir durum vardır: tarayıcı yerel bir girdinin değerini ayrıştıramadığında (örneğin kısmen yazılmış bir tarih), Signal Forms bunu bir ayrıştırma hatası olarak bildirir. O durumda bile hata, diğer tüm doğrulama hataları gibi alanın `errors()` sinyali aracılığıyla ortaya çıkar. Ayrıntılar için [Değer dönüşümü](guide/forms/signals/custom-controls#value-transformation) bölümüne bakın.
+
+IMPORTANT: `:valid` ve `:invalid` CSS sözde sınıfları, elemanın `validity` özelliği veya `validationMessage` gibi yerel geçerlilik özelliklerine güvenmeyin. Tarayıcı, yansıtılan niteliklerin bir yan etkisi olarak bazı girdileri geçersiz bildirebilir (örneğin değeri `min`'in altında olan bir sayı girdisi), ancak bu davranış doğrulama kuralına ve girdi türüne göre değişir ve doğrulama durumunu gözlemlemenin desteklenen bir yolu değildir.
+
+Kontrolleri doğrulama durumuna göre biçimlendirmek için sınıfları alan durumu sinyallerine bağlayın ([Alan durumu yönetimi](guide/forms/signals/field-state-management#koşullu-hata-gösterimi) bölümüne bakın) veya otomatik durum sınıflarını yapılandırın ([Otomatik durum sınıfları](guide/forms/signals/migration#automatic-status-classes) bölümüne bakın).
 
 ## Yerleşik doğrulama kuralları
 
@@ -116,7 +130,7 @@ registrationForm = form(this.registrationModel, (schemaPath) => {
 
 Doğrulama kuralı yalnızca `when` fonksiyonu `true` döndürdüğünde çalışır.
 
-Not: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-ve-maxlength) kullanın. `false` değerini ise eksik (geçersiz) olarak kabul eder ve bu, `<input type="checkbox" required>` davranışıyla örtüşür.
+Not: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-and-maxlength) kullanın. `false` değerini ise eksik (geçersiz) olarak kabul eder ve bu, `<input type="checkbox" required>` davranışıyla örtüşür.
 
 ### email()
 
@@ -149,7 +163,7 @@ export class ContactComponent {
 
 `email()` doğrulama kuralı standart bir e-posta biçimi regex'i kullanır. `user@example.com` gibi adresleri kabul eder ancak `user@` veya `@example.com` gibi hatalı biçimlendirilmiş adresleri reddeder.
 
-### min() ve max()
+### min() ve max() {#min-and-max}
 
 `min()` ve `max()` doğrulama kuralları sayısal değerlerle çalışır:
 
@@ -200,7 +214,7 @@ ageForm = form(this.ageModel, (schemaPath) => {
 });
 ```
 
-### minLength() ve maxLength()
+### minLength() ve maxLength() {#minlength-and-maxlength}
 
 `minLength()` ve `maxLength()` doğrulama kuralları dizeler ve dizilerle çalışır:
 
@@ -332,7 +346,7 @@ export class OrderComponent {
 }
 ```
 
-## Doğrulama hataları
+## Doğrulama hataları {#validation-errors}
 
 Doğrulama kuralları başarısız olduğunda, neyin yanlış gittiğini tanımlayan hata nesneleri üretir. Hata yapısını anlamak, kullanıcılara net geri bildirim sağlamanıza yardımcı olur.
 
@@ -419,7 +433,7 @@ TIP: Hataların kullanıcılar alanla etkileşime girmeden önce görünmesini �
 
 Yerleşik doğrulama kuralları yaygın durumları ele alsa da, iş kuralları, karmaşık biçimler veya alana özgü kısıtlamalar için sıklıkla özel doğrulama mantığına ihtiyaç duyarsınız.
 
-### validate() kullanımı
+### validate() kullanımı {#using-validate}
 
 `validate()` fonksiyonu özel doğrulama kuralları oluşturur. Alan bağlamına erişen ve şunları döndüren bir doğrulayıcı fonksiyon alır:
 
@@ -478,7 +492,7 @@ NOTE: Alt alanların ayrıca bir `key` sinyali vardır ve dizi öğesi alanları
 
 Doğrulama başarısız olduğunda `kind` ve `message` ile bir hata nesnesi döndürün. Doğrulama geçtiğinde `null` veya `undefined` döndürün.
 
-### validateTree() kullanımı
+### validateTree() kullanımı {#using-validatetree}
 
 `validateTree()` fonksiyonu, birden fazla alanı hedefleyebilen veya tüm alt ağaç için karmaşık doğrulama mantığı sağlayan özel doğrulama kuralları oluşturur.
 
@@ -491,9 +505,7 @@ interface User {
   lastName: string;
 }
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class UserFormComponent {
   readonly userModel = model<User>({
     firstName: '',
@@ -629,11 +641,11 @@ Bazen bir doğrulama kuralı yalnızca belirli koşullar altında uygulanmalıd�
 Doğrulama kuralları şema fonksiyonu içinde yer aldığından, bunları şemaları oluşturan aynı yapısal fonksiyonlarla koşullu olarak uygularsınız:
 
 - Diğer alanların değerleri dahil olmak üzere reaktif form durumuna dayalı bir kural grubunu etkinleştirmek için [`applyWhen()`](guide/forms/signals/form-logic#applywhen-ile-koşullu-mantık) kullanın.
-- Bir alanın kendi değerine dayalı kurallar uygulamak için [`applyWhenValue()`](guide/forms/signals/schemas#applywhenvalue-ile-tür-daraltma) kullanın. Yüklem (predicate) bir tür koruyucusu (type guard) olduğunda, kurallar daraltılmış değere göre tiplenir; bu da onu ayrımcı birleşimleri (discriminated unions) ve diğer varyant türlerini doğrulamanın önerilen yolu yapar.
+- Bir alanın kendi değerine dayalı kurallar uygulamak için [`applyWhenValue()`](guide/forms/signals/schemas#type-narrowing-with-applywhenvalue) kullanın. Yüklem (predicate) bir tür koruyucusu (type guard) olduğunda, kurallar daraltılmış değere göre tiplenir; bu da onu ayrımcı birleşimleri (discriminated unions) ve diğer varyant türlerini doğrulamanın önerilen yolu yapar.
 
 Yeniden kullanılabilir şemalar ve ayrımcı birleşimler dahil tam örnekler için [Şemalar ve şema bileştirilebilirliği kılavuzuna](guide/forms/signals/schemas) bakın.
 
-## Asenkron doğrulama
+## Asenkron doğrulama {#async-validation}
 
 Asenkron doğrulama, kullanıcı adı kullanılabilirliğini bir sunucuda kontrol etmek veya bir API'ye karşı doğrulama gibi harici veri kaynaklarını gerektiren doğrulamayı ele alır.
 
@@ -707,7 +719,7 @@ Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndür�
 
 `valid()` sinyali, doğrulama beklemedeyken henüz hata olmasa bile `false` döndürür. `invalid()` sinyali yalnızca hatalar mevcutsa `true` döndürür.
 
-## Şema doğrulama kütüphaneleriyle entegrasyon
+## Şema doğrulama kütüphaneleriyle entegrasyon {#integration-with-schema-validation-libraries}
 
 Signal Forms, [Zod](https://zod.dev/) veya [Valibot](https://valibot.dev/) gibi [Standard Schema](https://standardschema.dev/)'ya uygun kütüphaneler için yerleşik desteğe sahiptir. Entegrasyon, `validateStandardSchema` fonksiyonu aracılığıyla sağlanır. Bu, Signal Forms'un reaktif doğrulama avantajlarını koruyarak mevcut şemaları kullanmanıza olanak tanır.
 
@@ -736,9 +748,7 @@ import {Component, computed, signal} from '@angular/core';
 import {form, FormField, validateStandardSchema} from '@angular/forms/signals';
 import z from 'zod';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class DynamicSchema {
   model = signal({document: '', type: 'dni'});
 

@@ -162,7 +162,7 @@ export class Counter {
 
 `declareExperimentalWebMcpTool` herhangi bir enjeksiyon bağlamında çalışsa da, [ad çakışmalarına](#ad-çakışmaları) dikkat edin ve onu kök servislerde kullanmayı tercih edin.
 
-## Signal Form'larda örtük araçlar
+## Signal Form'larda örtük araçlar {#implicit-tools-in-signal-forms}
 
 Mevcut bir Angular [Signal Form](essentials/signal-forms)'undan minimum yapılandırmayla örtük olarak bir WebMCP aracı oluşturabilirsiniz. Angular, form modellerinizi zengin WebMCP araçlarına dönüştürür; bu sayede JSON şemalarını veya olay işleyicilerini manuel olarak yazmanıza gerek kalmadan oldukça dinamik formları etkin biçimde destekler.
 
@@ -248,7 +248,7 @@ Aşağıdaki en iyi uygulamaları aklınızda bulundurun:
 
 WebMCP, her aracın benzersiz bir ada sahip olmasını gerektirir ve aynı araç adı birden fazla kez kaydedilirse hata fırlatır. Bu, `declareExperimentalWebMcpTool` veya `provideExperimentalWebMcpTools`'u birden fazla kez kaydedilebilecekleri bir bağlamda (örneğin bir bileşen yapıcısında) çağırmanın çalışma zamanında hatalara yol açabileceği anlamına gelir.
 
-Mümkün olduğunda araçları uygulama sağlayıcılarına, rota sağlayıcılarına veya kök servislere yerleştirmeyi tercih edin. Araçları bir bileşene, [Signal Form'lardaki örtük araçlar](#signal-formlarda-örtük-araçlar) dahil, yerleştirirken, o bileşenin herhangi bir anda sayfada en fazla _bir_ kez render edildiğinden emin olun.
+Mümkün olduğunda araçları uygulama sağlayıcılarına, rota sağlayıcılarına veya kök servislere yerleştirmeyi tercih edin. Araçları bir bileşene, [Signal Form'lardaki örtük araçlar](#implicit-tools-in-signal-forms) dahil, yerleştirirken, o bileşenin herhangi bir anda sayfada en fazla _bir_ kez render edildiğinden emin olun.
 
 ### Araç girdilerini doğrulayın
 

@@ -107,7 +107,7 @@ Aşağıdaki kod örneği, Fransızca dil dosyasının nasıl sunulacağını g�
 
 <docs-code header="angular.json" path="adev/src/content/examples/i18n/angular.json" region="build-production-french" />
 
-## Eksik çevirileri raporlama
+## Eksik çevirileri raporlama {#report-missing-translations}
 
 Bir çeviri eksik olduğunda, derleme başarılı olur ancak `Missing translation for message "{translation_text}"` gibi bir uyarı oluşturur.
 Angular derleyicisi tarafından oluşturulan uyarı seviyesini yapılandırmak için aşağıdaki seviyelerden birini belirtin.

@@ -57,7 +57,7 @@ Varsayılan olarak, defer blokları tetiklenmeden önce herhangi bir içerik iş
 }
 ```
 
-İsteğe bağlı olsa da, belirli tetikleyiciler çalışabilmek için bir `@placeholder` veya bir [şablon referans değişkeni](/guide/templates/variables#şablon-referans-değişkenleri) bulunmasını gerektirebilir. Daha fazla bilgi için [Tetikleyiciler](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) bölümüne bakın.
+İsteğe bağlı olsa da, belirli tetikleyiciler çalışabilmek için bir `@placeholder` veya bir [şablon referans değişkeni](/guide/templates/variables#template-reference-variables) bulunmasını gerektirebilir. Daha fazla bilgi için [Tetikleyiciler](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) bölümüne bakın.
 
 Angular, yükleme tamamlandığında yer tutucu içeriği ana içerikle değiştirir. Yer tutucu bölümünde düz HTML, bileşenler, direktifler ve pipe'lar dahil herhangi bir içerik kullanabilirsiniz. _Yer tutucu bloğunun bağımlılıkların istekli olarak yüklendiğini_ unutmayın.
 
@@ -161,7 +161,7 @@ Kullanılabilir tetikleyiciler aşağıdaki gibidir:
 }
 ```
 
-##### `idle` davranışını özelleştirme
+##### `idle` davranışını özelleştirme {#customizing-idle-behavior}
 
 Kendi `IdleService` implementasyonunuzu sağlayıp uygulamanızın provider'larında `provideIdleServiceWith` ile kaydederek `idle` tetikleyicisini özelleştirebilirsiniz.
 
@@ -237,7 +237,7 @@ Varsayılan olarak, yer tutucu etkileşim elemanı olarak hareket eder. Bu şeki
 }
 ```
 
-Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek etkileşimler için izlenen eleman olarak kullanabilirsiniz. Bu değişken, viewport tetikleyicisine parametre olarak geçirilir.
+Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek etkileşimler için izlenen eleman olarak kullanabilirsiniz. Bu değişken, etkileşim tetikleyicisine parametre olarak geçirilir.
 
 ```angular-html
 <div #greeting>Hello!</div>
@@ -260,7 +260,7 @@ Varsayılan olarak, yer tutucu etkileşim elemanı olarak hareket eder. Bu şeki
 }
 ```
 
-Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek görünüm alanına giriş için izlenen eleman olarak kullanabilirsiniz. Bu değişken, viewport tetikleyicisine parametre olarak geçirilir.
+Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değişkeni](/guide/templates/variables) belirterek üzerine gelinen eleman olarak kullanabilirsiniz. Bu değişken, hover tetikleyicisine parametre olarak geçirilir.
 
 ```angular-html
 <div #greeting>Hello!</div>

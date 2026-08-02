@@ -62,6 +62,8 @@ export interface ComponentType {
   name: string;
   isElement: boolean;
   id: number;
+  /** Angular framework instance ID assigned by the profiler. Only present when profiling is active. */
+  instanceId?: number;
 }
 
 export type HydrationStatus =
@@ -120,6 +122,7 @@ export interface DevToolsNode<DirType = DirectiveType, CmpType = ComponentType> 
   resolutionPath?: SerializedInjector[];
   hydration?: HydrationStatus;
   controlFlowBlock: ControlFlowBlock | null;
+  static: boolean;
   changeDetection?: ChangeDetection;
   injector?: Injector;
 }
@@ -220,9 +223,7 @@ export interface WizComponentMetadata extends BaseDirectiveMetadata {
 
 /** Directive metadata for all supported frameworks. */
 export type DirectiveMetadata =
-  | AngularDirectiveMetadata
-  | AcxDirectiveMetadata
-  | WizComponentMetadata;
+  AngularDirectiveMetadata | AcxDirectiveMetadata | WizComponentMetadata;
 
 export interface SerializedInjectedService {
   token: string;
@@ -380,13 +381,7 @@ export interface SupportedApis {
 }
 
 export type TransferStateValue =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | Record<string, unknown>
-  | unknown[];
+  string | number | boolean | null | undefined | Record<string, unknown> | unknown[];
 
 export interface Events {
   handshake: () => void;
@@ -439,8 +434,8 @@ export interface Events {
   selectComponent: (id: number) => void;
   removeComponentHighlight: () => void;
 
-  enableTimingAPI: () => void;
-  disableTimingAPI: () => void;
+  enablePerformanceTrack: () => void;
+  disablePerformanceTrack: () => void;
 
   // todo: type properly
   getInjectorProviders: (injector: SerializedInjector) => void;
@@ -461,6 +456,7 @@ export interface Events {
   detectAngular: (detectionResult: AngularDetection) => void;
   backendInstalled: (detectionResult: AngularDetection) => void;
   backendReady: () => void;
+  devtoolsShutdown: () => void;
 
   log: (logEvent: {message: string; level: 'log' | 'warn' | 'debug' | 'error'}) => void;
 }

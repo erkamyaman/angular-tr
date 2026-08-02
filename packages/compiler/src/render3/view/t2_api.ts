@@ -13,6 +13,7 @@ import {
   BoundEvent,
   Component,
   Content,
+  ContentBlock,
   DeferredBlock,
   DeferredBlockError,
   DeferredBlockLoading,
@@ -31,7 +32,6 @@ import {
   Template,
   TextAttribute,
   Variable,
-  ContentBlock,
 } from '../r3_ast';
 
 /** Node that has a `Scope` associated with it. */
@@ -51,9 +51,7 @@ export type ScopedNode =
 
 /** Possible values that a reference can be resolved to. */
 export type ReferenceTarget<DirectiveT> =
-  | {directive: DirectiveT; node: Exclude<DirectiveOwner, HostElement>}
-  | Element
-  | Template;
+  {directive: DirectiveT; node: Exclude<DirectiveOwner, HostElement>} | Element | Template;
 
 /** Entity that is local to the template and defined within the template. */
 export type TemplateEntity = Reference | Variable | LetDeclaration;
@@ -182,12 +180,6 @@ export interface ForeignComponentMeta {
    * Name of the foreign component (used for matching and debugging).
    */
   name: string;
-
-  /** Reference to the foreign component declaration site. */
-  ref: {
-    /** Key that uniquely identifies the reference. */
-    key: string;
-  };
 }
 
 /**

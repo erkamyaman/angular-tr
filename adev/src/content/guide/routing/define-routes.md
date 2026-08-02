@@ -28,7 +28,7 @@ Bir rota koleksiyonu şöyle görünür:
 ```ts
 import {Routes} from '@angular/router';
 import {HomePage} from './home-page';
-import {AdminPage} from './about-page';
+import {AdminPage} from './admin-page';
 
 export const routes: Routes = [
   {
@@ -187,7 +187,7 @@ const routes: Routes = [
 
 Bir rotayı değiştirir veya kaldırırsanız, bazı kullanıcılar hâlâ o rotaya ait eski bağlantılara veya yer imlerine tıklayabilir. "Bulunamadı" sayfası yerine bu kullanıcıları uygun bir alternatif rotaya yönlendirmek için bir yeniden yönlendirme ekleyebilirsiniz.
 
-## Sayfa başlıkları
+## Sayfa başlıkları {#page-titles}
 
 Her rota ile bir **başlık** ilişkilendirebilirsiniz. Angular, bir rota etkinleştirildiğinde [sayfa başlığını](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title) otomatik olarak günceller. Erişilebilir bir deneyim oluşturmak için gerekli olan uygun sayfa başlıklarını uygulamanız için her zaman tanımlayın.
 
@@ -226,7 +226,7 @@ const routes: Routes = [
 
 Rota başlıkları, [`TitleStrategy`](/api/router/TitleStrategy) soyut sınıfını genişleten bir servis aracılığıyla da ayarlanabilir. Varsayılan olarak Angular, [`DefaultTitleStrategy`](/api/router/DefaultTitleStrategy) kullanır.
 
-### Sayfa başlıkları için TitleStrategy kullanma
+### Sayfa başlıkları için TitleStrategy kullanma {#using-titlestrategy-for-page-titles}
 
 Belge başlığının nasıl oluşturulduğu üzerinde merkezi kontrol gerektiren gelişmiş senaryolarda, bir `TitleStrategy` uygulayın.
 

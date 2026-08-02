@@ -97,6 +97,36 @@ Sıra dışı belirli bir konu hakkında bilgi edinmek istiyorsanız (örneğin,
 
 ## **Sorun Giderme**
 
+### Kurulum Sorunları
+
+**"launch the Angular AI tutor" hiçbir şey yapmıyor mu?**
+
+Önce açık bir projeniz olduğundan emin olun. Eğitmenin çalışması için gerçek bir Angular projesine ihtiyacı vardır:
+
+```bash
+ng new my-app
+cd my-app
+code .
+```
+
+Ardından MCP sunucunuzun çalıştığından emin olun. VS Code'da `.vscode/mcp.json` dosyasını açın ve dosyanın üst kısmındaki **"Start"** düğmesine tıklayın.
+
+"launch the Angular AI tutor" yazdığınızda, "Reviewed .vscode/mcp.json and ran start task"
+diyen bir onay işareti ve "Allow task run?" diye soran bir istem görmelisiniz.
+Allow'a tıklayıp devam edin.
+
+**Hâlâ çalışmıyor mu?**
+
+Önce Angular bağlamını yüklemek için `#angular-cli` yazmayı deneyin, ardından öğretici URL'sini yapıştırın: `https://angular.dev/ai/ai-tutor`
+
+**Sunucunun çalıştığı nasıl doğrulanır**
+
+Komut Paletini açın (`Ctrl+Shift+P`), "MCP: List Running Servers" yazın ve listede "angular-cli" olup olmadığına bakın.
+
+---
+
+### Genel Sorunlar
+
 Eğitmen doğru yanıt vermezse veya uygulamanızda bir sorun olduğundan şüpheleniyorsanız, deneyebileceğiniz birkaç şey:
 
 1. **"proceed" yazın:** Bu, eğitmenin takılması durumunda bir sonraki adıma devam etmesini sağlayabilir.

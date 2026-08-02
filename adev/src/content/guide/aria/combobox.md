@@ -235,63 +235,23 @@ describe('MyComboboxComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Combobox Yönergesi
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Etkileşimli bir tetikleyici eleman (metin girişi, buton veya div gibi) ile bir açılır pencere konteynerini koordine eder.
+- [`Combobox`](/api/aria/combobox/Combobox)
+- [`ComboboxPopup`](/api/aria/combobox/ComboboxPopup)
+- [`ComboboxWidget`](/api/aria/combobox/ComboboxWidget)
 
-#### Girdiler / Model
+### İlgili desenler ve direktifler
 
-| Property           | Type                   | Default | Description                                                                                                        |
-| ------------------ | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `value`            | `ModelSignal<string>`  | `''`    | Combobox'ın iki yönlü bağlanabilir metin değeri                                                                    |
-| `expanded`         | `ModelSignal<boolean>` | `false` | Açılır pencerenin iki yönlü bağlanabilir açık/kapalı durumu                                                        |
-| `disabled`         | `boolean`              | `false` | Combobox tetikleyici elemanını devre dışı bırakır                                                                  |
-| `softDisabled`     | `boolean`              | `true`  | Elemanı klavyeyle odaklanabilir tutarken etkileşimi devre dışı bırakır                                             |
-| `readonly`         | `boolean`              | `false` | Combobox'ı salt okunur yapar. Elemanı klavyeyle odaklanabilir tutarken kullanıcının değeri değiştirmesini engeller |
-| `alwaysExpanded`   | `boolean`              | `false` | Açılır pencereyi her zaman açık kalmaya zorlar                                                                     |
-| `inlineSuggestion` | `string \| undefined`  | -       | Girişin sonunda vurgulanacak satır içi bir öneri ayarlar                                                           |
-| `tabIndex`         | `number \| undefined`  | -       | Combobox elemanının tabindex'i (`tabindex`'e takma ad)                                                             |
+Combobox, belgelenen şu desenler için temel direktiftir:
 
-Tüm klavye olayları, odak koordinasyonu ve ARIA durum nitelikleri (`role="combobox"`, `aria-autocomplete` ve `aria-expanded` dahil) ana eleman üzerinde otomatik olarak yönetilir.
+- [Autocomplete](guide/aria/autocomplete) - Filtreleme ve öneri deseni (girdi yazımını seçenek listesiyle eşgüdümler)
+- [Select](guide/aria/select) - Tek seçimli açılır liste deseni (düzenlenemeyen buton tetikleyicilere doğrudan uygulanır)
+- [Multiselect](guide/aria/multiselect) - Çoklu seçim deseni (multi etkinleştirilmiş Listbox ile düzenlenemeyen tetikleyicilere uygulanır)
 
----
+Combobox tipik olarak şunlarla birlikte kullanılır:
 
-### ComboboxPopup Yönergesi
-
-Bir `<ng-template>`'i combobox için açılır pencere konteyneri olarak işaretler.
-
-#### Girdiler
-
-| Property    | Type                                        | Default     | Description                                       |
-| ----------- | ------------------------------------------- | ----------- | ------------------------------------------------- |
-| `combobox`  | `Combobox`                                  | (Zorunlu)   | Ana `Combobox` yönergesine referans               |
-| `popupType` | `'listbox' \| 'tree' \| 'grid' \| 'dialog'` | `'listbox'` | Açılır pencerenin yerleşim/rol profilini belirtir |
-
----
-
-### ComboboxWidget Yönergesi
-
-Açılır pencere içeriğini (listbox veya grid gibi) ana combobox tetikleyicisiyle bağlar.
-
-#### Girdiler
-
-| Property           | Type                  | Description                                                                  |
-| ------------------ | --------------------- | ---------------------------------------------------------------------------- |
-| `activeDescendant` | `string \| undefined` | Şu anda aktif olan seçeneğin ID'si (widget'taki aktif seçenek ID'sine bağlı) |
-
----
-
-### İlgili Kalıplar ve Yönergeler
-
-Combobox, bu belgelendirilmiş kalıplar için temel yönergedir:
-
-- **[Autocomplete](guide/aria/autocomplete)** - Filtreleme ve öneriler kalıbı (giriş yazımını seçenekler listesiyle koordine eder)
-- **[Select](guide/aria/select)** - Tek seçim açılır menü kalıbı (düzenlenemeyen buton tetikleyicilerine doğrudan uygulanır)
-- **[Multiselect](guide/aria/multiselect)** - Çoklu seçim kalıbı (çoklu etkin Listbox ile düzenlenemeyen tetikleyicilere uygulanır)
-
-Combobox tipik olarak şunlarla birleştirilir:
-
-- **[Listbox](guide/aria/listbox)** - En yaygın açılır pencere içeriği
-- **[Tree](guide/aria/tree)** - Hiyerarşik açılır pencere içeriği (örnekler için Tree rehberine bakın)
+- [Listbox](guide/aria/listbox) - En yaygın popup içeriği
+- [Tree](guide/aria/tree) - Hiyerarşik popup içeriği (örnekler için Tree kılavuzuna bakın)

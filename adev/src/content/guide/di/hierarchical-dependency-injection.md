@@ -4,7 +4,7 @@ Bu kılavuz, Angular'ın hiyerarşik bağımlılık enjeksiyonu sistemi hakkınd
 
 NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#angularda-injector-hiyerarşisi) bakın.
 
-## Injector hiyerarşi türleri
+## Injector hiyerarşi türleri {#types-of-injector-hierarchies}
 
 Angular'da iki enjektör hiyerarşisi vardır:
 
@@ -526,7 +526,7 @@ Bu durumda, `FlowerService`, `<app-child>`'ın ayçiçeği <code>🌻</code> ile
 Enjektörün enjektör ağacında daha ileriye bakması gerekmez.
 `FlowerService`'i bulur bulmaz durur ve kırmızı hibiskusu <code>🌺</code> asla görmez.
 
-### `viewProviders` dizisini kullanma
+### `viewProviders` dizisini kullanma {#using-the-viewproviders-array}
 
 `@Component()` dekoratöründe servis sağlamanın başka bir yolu olarak `viewProviders` dizisini kullanın.
 `viewProviders` kullanmak, servisleri `<#VIEW>` içinde görünür kılar.

@@ -154,7 +154,7 @@ Uygulamada bir değişiklik yapın ve service worker'ın güncellemeyi yükledi�
 
    Service worker, uygulamanızın güncellenmiş sürümünü _arka planda_ yükledi ve sayfa bir sonraki yüklendiğinde veya yenilendiğinde, service worker en son sürüme geçer.
 
-## Service worker yapılandırması
+## Service worker yapılandırması {#service-worker-configuration}
 
 Angular service worker'ları, `SwRegistrationOptions` arayüzü aracılığıyla kapsamlı yapılandırma seçeneklerini destekler ve kayıt davranışı, önbellekleme ve betik yürütme üzerinde ayrıntılı kontrol sağlar.
 

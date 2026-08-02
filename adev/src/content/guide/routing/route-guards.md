@@ -39,7 +39,7 @@ Angular, her biri farklı amaçlara hizmet eden dört tür rota koruyucusu sağl
   <docs-pill href="#canmatch" title="CanMatch"/>
 </docs-pill-row>
 
-Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#rota-providerları) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
+Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
 ### CanActivate
 

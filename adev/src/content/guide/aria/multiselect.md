@@ -215,61 +215,12 @@ describe('MyMultiselectComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-Çoklu seçim kalıbı, Angular'ın Aria kütüphanesindeki aşağıdaki yönergeleri kullanır. Bağlantılı rehberlerdeki tam API dokümantasyonuna bakın.
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-### Combobox yönergeleri
-
-Çoklu seçim kalıbı, select benzeri bir çoklu seçim açılır menüsü oluşturmak için `ngCombobox` yönergesini doğrudan tetikleyici öğe (`div` veya `button` gibi) üzerinde kullanır.
-
-#### Girişler
-
-| Property   | Type      | Default | Description                         |
-| ---------- | --------- | ------- | ----------------------------------- |
-| `disabled` | `boolean` | `false` | Tüm çoklu seçimi devre dışı bırakır |
-
-Mevcut tüm girişler ve sinyaller hakkında eksiksiz bilgi için [Combobox API dokümantasyonuna](guide/aria/combobox#apiler) bakın.
-
-#### Açılır pencere yönergeleri
-
-Yapısal `ngComboboxPopup` yönergesi, katman şablonunu işaretler ve ana combobox'a bir referans gerektirir:
-
-| Property   | Type       | Description                       |
-| ---------- | ---------- | --------------------------------- |
-| `combobox` | `Combobox` | Ana `Combobox`'a zorunlu referans |
-
-#### ComboboxWidget yönergesi
-
-`ngComboboxWidget` yönergesi, aktif soyundan (active-descendant) odak takibini desteklemek için listbox ile combobox tetikleyicisi arasında köprü kurar.
-
-| Property           | Type                  | Description                                                                                                                                         |
-| ------------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activeDescendant` | `string \| undefined` | Tetikleyicideki `aria-activedescendant` niteliğini güncellemek için o anda aktif olan seçeneğin kimliği (`listbox.activeDescendant()` ile bağlanır) |
-
-### Listbox yönergeleri
-
-Çoklu seçim kalıbı, çoklu seçim için `multi` niteliği ile `ngListbox` ve her seçilebilir öğe için `ngOption` kullanır.
-
-#### Girişler
-
-| Property        | Type                               | Default    | Description                                                                                                                              |
-| --------------- | ---------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `multi`         | `boolean`                          | `false`    | Çoklu seçimi etkinleştirmek için `true` olarak ayarlayın                                                                                 |
-| `selectionMode` | `'follow'` \| `'explicit'`         | `'follow'` | Seçeneklerin aktif odağı takip etmek yerine tıklama/Boşluk ile açıkça değiştirilmesi için `'explicit'` olarak ayarlayın                  |
-| `focusMode`     | `'roving'` \| `'activedescendant'` | `'roving'` | Listbox tarafından kullanılan odak stratejisi. Tarayıcı odağının combobox tetikleyicisinde kalması için `'activedescendant'` ayarlayın.  |
-| `tabIndex`      | `number`                           | `0`        | Listbox'ın tabindex'i. Aktif soyundan modunda klavye odağının açılır pencere kapsayıcısına girmesini önlemek için `-1` olarak ayarlayın. |
-
-#### Model
-
-| Property | Type                 | Description                                     |
-| -------- | -------------------- | ----------------------------------------------- |
-| `value`  | `ModelSignal<any[]>` | Seçili değerlerin iki yönlü bağlanabilir dizisi |
-
-`multi` true olduğunda, kullanıcılar seçimi değiştirmek için Boşluk kullanarak birden fazla seçenek seçebilir. Açılır pencere seçimden sonra açık kalır ve ek seçimlere izin verir.
-
-Listbox yapılandırması, seçim modları ve seçenek özellikleri hakkında eksiksiz bilgi için [Listbox API dokümantasyonuna](guide/aria/listbox#apiler) bakın.
-
-### Konumlandırma
-
-Çoklu seçim kalıbı, akıllı konumlandırma için [CDK Overlay](https://material.angular.io/cdk/overlay/overview) ile entegre olur. Görünüm alanı kenarlarını ve kaydırmayı otomatik olarak yönetmek için `cdkConnectedOverlay` kullanın.
+- [`Combobox`](/api/aria/combobox/Combobox)
+- [`ComboboxPopup`](/api/aria/combobox/ComboboxPopup)
+- [`ComboboxWidget`](/api/aria/combobox/ComboboxWidget)
+- [`Listbox`](/api/aria/listbox/Listbox)
+- [`Option`](/api/aria/listbox/Option)

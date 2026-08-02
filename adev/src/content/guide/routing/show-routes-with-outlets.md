@@ -166,7 +166,7 @@ Standart olay bağlama söz dizimi ile olay dinleyicileri ekleyebilirsiniz:
 
 Daha fazla bilgi edinmek istiyorsanız [RouterOutlet için API dokümanlarına](/api/router/RouterOutlet?tab=api) göz atın.
 
-## Yönlendirilen bileşenlere bağlamsal veri aktarma
+## Yönlendirilen bileşenlere bağlamsal veri aktarma {#passing-contextual-data-to-routed-components}
 
 Yönlendirilen bileşenlere bağlamsal veri aktarmak genellikle global durum veya karmaşık rota yapılandırmaları gerektirir. Bunu kolaylaştırmak için her `RouterOutlet` bir `routerOutletData` girişini destekler. Yönlendirilen bileşenler ve alt bileşenleri, `ROUTER_OUTLET_DATA` enjeksiyon token'ını kullanarak bu veriyi sinyal olarak okuyabilir ve böylece rota tanımlarını değiştirmeden outlet'e özgü yapılandırma yapılabilir.
 

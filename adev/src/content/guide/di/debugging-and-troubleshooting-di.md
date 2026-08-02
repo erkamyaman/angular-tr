@@ -274,7 +274,7 @@ export class DataLoader {
 
 IMPORTANT: Mümkün olduğunda bağımlılıkları her zaman sınıf seviyesinde yakalayın. Basit gecikmeli alma için `injector.get()` kullanın ve yalnızca harici kodun `inject()` çağırması gerektiğinde `runInInjectionContext()` kullanın.
 
-TIP: Kodunuzun geçerli bir enjeksiyon bağlamında çalışıp çalışmadığını doğrulamak için `assertInInjectionContext()` kullanın. Bu, `inject()` çağıran yeniden kullanılabilir fonksiyonlar oluştururken yararlıdır. Ayrıntılar için [Bağlamı doğrulama](guide/di/dependency-injection-context#bağlamı-doğrulama) bölümüne bakın.
+TIP: Kodunuzun geçerli bir enjeksiyon bağlamında çalışıp çalışmadığını doğrulamak için `assertInInjectionContext()` kullanın. Bu, `inject()` çağıran yeniden kullanılabilir fonksiyonlar oluştururken yararlıdır. Ayrıntılar için [Bağlamı doğrulama](guide/di/dependency-injection-context#asserts-the-context) bölümüne bakın.
 
 ### providers ve viewProviders karışıklığı
 
@@ -440,7 +440,7 @@ TIP: Token'ları her zaman paylaşılan bir dosyadan dışa aktarın ve ihtiyaç
 
 Bir TypeScript arayüzü tanımladığınızda, yalnızca derleme sırasında tür denetimi için var olur. TypeScript, JavaScript'e derlerken tüm arayüz tanımlarını siler, bu nedenle çalışma zamanında Angular'ın enjeksiyon token'ı olarak kullanabileceği bir nesne yoktur. Bir arayüz türünü enjekte etmeye çalışırsanız, Angular'ın sağlayıcı yapılandırmasıyla eşleştireceği hiçbir şey yoktur.
 
-```angular-ts {avoid, header: 'Can't inject interface'}
+```angular-ts {avoid, header: "Can't inject interface"}
 interface UserConfig {
   name: string;
   email: string;

@@ -1,6 +1,6 @@
 # Service'leri lazy loading ile yükleme
 
-IMPORTANT: Lazy loading'in çalışması için, yüklediğiniz servisin otomatik olarak sağlanması (auto-provided) gerekir. Onu `@Injectable({providedIn: 'root'})` veya [`@Service()`](guide/di/creating-and-using-services#service-dekoratörünü-kullanma) ile süsleyin. Otomatik sağlama olmadan Angular'ın, servis yüklendikten sonra onu oluşturmasının bir yolu yoktur.
+IMPORTANT: Lazy loading'in çalışması için, yüklediğiniz servisin otomatik olarak sağlanması (auto-provided) gerekir. Onu `@Injectable({providedIn: 'root'})` veya [`@Service()`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) ile süsleyin. Otomatik sağlama olmadan Angular'ın, servis yüklendikten sonra onu oluşturmasının bir yolu yoktur.
 
 Angular'ın `injectAsync` fonksiyonu, bir servisi yalnızca gerçekten ihtiyaç duyulduğunda, talep üzerine yüklemenize olanak tanır. Bu, bir servis büyük bir kütüphaneye ya da nadiren kullanılan bir özelliğe bağlı olduğunda ve bunun bedelini ilk sayfa yüklemesinde ödemek istemediğinizde kullanışlıdır.
 
@@ -42,7 +42,7 @@ export default class ReportExporter {
 private exporter = injectAsync(() => import('./report-exporter'));
 ```
 
-## Bağımlılığı önceden yükleme (prefetch)
+## Bağımlılığı önceden yükleme (prefetch) {#prefetching-the-dependency}
 
 Varsayılan olarak lazy chunk, yalnızca döndürülen fonksiyonu çağırdığınızda indirilir. Seçeneklerde bir `prefetch` tetikleyicisi geçirerek indirmeyi daha erken başlatabilirsiniz. Bir tetikleyici, `Promise` döndüren herhangi bir fonksiyondur; promise çözüldüğünde Angular loader'ı başlatır.
 
@@ -51,9 +51,7 @@ Angular, tarayıcı boşta kalana kadar bekleyen yerleşik bir tetikleyici olan 
 ```ts
 import {Component, injectAsync, onIdle} from '@angular/core';
 
-@Component({
-  /* … */
-})
+@Component({/* … */})
 export class Report {
   private exporter = injectAsync(() => import('./report-exporter').then((m) => m.ReportExporter), {
     prefetch: onIdle,

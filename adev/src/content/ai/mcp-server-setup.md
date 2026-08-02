@@ -3,7 +3,7 @@
 Angular CLI, yapay zeka asistanlarının (Cursor, Antigravity, JetBrains AI vb.) doğrudan Angular CLI ile etkileşime geçmesini sağlayan bir Model Context Protocol (MCP) sunucusu içerir. Kod üretimi, çalışma alanı analizi ve derleme/test çalıştırma için araçlar sağlar.
 
 <docs-callout title="Angular AI Agent Skills ile entegrasyon">
-  Ana bilgisayar ortamınız özel Agent Skills'i destekliyorsa (Antigravity gibi), Angular CLI MCP sunucusunu resmi [Angular AI Skills](https://angular.dev/ai/skills) ile birleştirebilirsiniz. Skills, ajana derin talimat düzeyinde rehberlik ve kodlama standartları sağlarken, MCP sunucusu bu yönergeleri uygulamak için eylem araçlarını (derleme, test çalıştırma ve çalışma alanı analizi gibi) sunar. Bu da eksiksiz ve güçlü bir geliştirme ajanı ortaya çıkarır.
+  Ana bilgisayar ortamınız özel Agent Skills'i destekliyorsa (Antigravity gibi), Angular CLI MCP sunucusunu resmi [Angular AI Skills](https://angular.dev/ai/agent-skills) ile birleştirebilirsiniz. Skills, ajana derin talimat düzeyinde rehberlik ve kodlama standartları sağlarken, MCP sunucusu bu yönergeleri uygulamak için eylem araçlarını (derleme, test çalıştırma ve çalışma alanı analizi gibi) sunar. Bu da eksiksiz ve güçlü bir geliştirme ajanı ortaya çıkarır.
 </docs-callout>
 
 ## Başlarken

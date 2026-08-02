@@ -2,7 +2,7 @@
 
 Bu kılavuz, uygulamanızda Angular yönlendirici kullanımıyla ilişkili diğer bazı yaygın görevleri kapsar.
 
-## Rota bilgisi alma
+## Rota bilgisi alma {#getting-route-information}
 
 Genellikle, bir kullanıcı uygulamanızda gezinirken bir bileşenden diğerine bilgi aktarmak istersiniz.
 Örneğin, market ürünlerinin bir alışveriş listesini görüntüleyen bir uygulama düşünün.
@@ -58,7 +58,7 @@ internalId = linkedSignal(() => this.id() ?? getDefaultId());
 
 NOTE: Anahtar, değer çiftleri ile tüm rota verilerini bileşen girişlerine bağlayabilirsiniz: statik veya çözümlenmiş rota verileri, yol parametreleri, matris parametreleri ve sorgu parametreleri.
 
-### Sorgu parametresi bağlamayı devre dışı bırakma
+### Sorgu parametresi bağlamayı devre dışı bırakma {#disable-query-parameter-binding}
 
 Sorgu parametrelerini ayrı olarak yönetiyorsanız, sorgu parametresi bağlamayı devre dışı bırakmak için `ComponentInputBindingOptions` kullanın:
 
@@ -98,7 +98,7 @@ Parametrelerin yalnızca boş yol rotalarından devralındığı eski davranış
 provideRouter(routes, withRouterConfig({paramsInheritanceStrategy: 'emptyOnly'}));
 ```
 
-Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma seçeneklerine](guide/routing/customizing-route-behavior#router-yapılandırma-seçenekleri) bakın.
+Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma seçeneklerine](guide/routing/customizing-route-behavior#router-configuration-options) bakın.
 
 ## 404 sayfası görüntüleme
 

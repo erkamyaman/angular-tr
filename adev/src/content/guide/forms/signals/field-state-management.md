@@ -6,7 +6,7 @@ Signal Forms'un alan durumu, doğrulama durumu (`valid`, `invalid`, `errors` gib
 
 [`form()`](api/forms/signals/form) fonksiyonu ile bir form oluşturduğunuzda, bir **alan ağacı** döndürür - form modelinizi yansıtan bir nesne yapısı. Ağaçtaki her alana nokta gösterimi ile erişilebilir ([`form.email`](api/forms/signals/form#email) gibi).
 
-### Alan durumuna erişim
+### Alan durumuna erişim {#accessing-field-state}
 
 Alan ağacındaki herhangi bir alanı fonksiyon olarak çağırdığınızda ([`form.email()`](api/forms/signals/form#email) gibi), alanın doğrulama, etkileşim ve kullanılabilirlik durumunu izleyen reaktif sinyaller içeren bir `FieldState` nesnesi döndürür. Örneğin, `invalid()` sinyali alanın doğrulama hataları olup olmadığını söyler:
 
@@ -56,17 +56,17 @@ console.log(emailValue); // Geçerli email dizesi
 
 `value()` dışında, alan durumu doğrulama, etkileşim takibi ve kullanılabilirlik kontrolü için sinyaller içerir:
 
-| Category                                      | Signal       | Description                                                                           |
-| --------------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
-| **[Validation](#doğrulama-durumu)**           | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
-|                                               | `invalid()`  | Alanın doğrulama hataları var                                                         |
-|                                               | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
-|                                               | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
-| **[Interaction](#etkileşim-durumu)**          | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
-|                                               | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
-| **[Availability](#kullanılabilirlik-durumu)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
-|                                               | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |
-|                                               | `readonly()` | Alan salt okunur ve üst form durumunu etkilemiyor                                     |
+| Category                                | Signal       | Description                                                                           |
+| --------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
+| **[Validation](#doğrulama-durumu)**     | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
+|                                         | `invalid()`  | Alanın doğrulama hataları var                                                         |
+|                                         | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
+|                                         | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
+| **[Interaction](#etkileşim-durumu)**    | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
+|                                         | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
+| **[Availability](#availability-state)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
+|                                         | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |
+|                                         | `readonly()` | Alan salt okunur ve üst form durumunu etkilemiyor                                     |
 
 Bu sinyaller, kullanıcı davranışına tepki veren, manuel olay işleme gerektirmeyen duyarlı form kullanıcı deneyimleri oluşturmanızı sağlar. Aşağıdaki bölümler her kategoriyi ayrıntılı olarak inceler.
 
@@ -164,7 +164,7 @@ Bu sinyal, asenkron doğrulama yürütülürken yükleme durumları göstermeniz
 
 Etkileşim durumu, kullanıcıların alanlarla etkileşim kurup kurmadığını izler ve "hataları yalnızca kullanıcı alana dokunduktan sonra göster" gibi kalıpları mümkün kılar.
 
-### Dokunulmuş durumu
+### Dokunulmuş durumu {#touched-state}
 
 `touched()` sinyali, bir kullanıcının bir alana odaklanıp ardından odağı bırakıp bırakmadığını ya da alanın programatik olarak dokunulmuş olarak işaretlenip işaretlenmediğini izler. Yalnızca etkileşimli alanlar dokunulmuş hale gelebilir; gizli, devre dışı ve salt okunur alanlar kullanıcı etkileşimlerinden veya `markAsTouched()` çağrısından dokunulmuş hale gelmez.
 
@@ -279,7 +279,7 @@ Bir alan farklı kombinasyonlarda olabilir:
 
 NOTE: Gizli, devre dışı ve salt okunur alanlar etkileşimsizdir - kullanıcı etkileşimlerinden dokunulmuş veya kirli hale gelmezler.
 
-## Kullanılabilirlik durumu
+## Kullanılabilirlik durumu {#availability-state}
 
 Kullanılabilirlik durumu sinyalleri, alanların etkileşimli, düzenlenebilir veya görünür olup olmadığını kontrol eder. Devre dışı, gizli ve salt okunur alanlar etkileşimsizdir. Üst formlarının geçerli, dokunulmuş veya kirli olup olmadığını etkilemezler.
 
@@ -793,7 +793,7 @@ export class StyleExample {
 
 Hem `touched()` hem de doğrulama durumunu kontrol etmek, stillerin yalnızca kullanıcı alanla etkileşim kurduktan sonra görünmesini sağlar.
 
-## Bir form alanına bağlı bir form kontrolüne odaklanma
+## Bir form alanına bağlı bir form kontrolüne odaklanma {#focus-a-form-control-bound-to-a-form-field}
 
 Angular Signal Forms, alan durumu üzerinde, belirli bir form alanına ilişkili form kontrolüne programatik olarak [odağı](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) taşımanıza olanak tanıyan bir `focusBoundControl()` yöntemi sağlar.
 
@@ -804,9 +804,7 @@ Yaygın bir kullanım senaryosu, form gönderiminde erişilebilirliği iyileşti
 Bir kayıt formu verildiğinde:
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class Registration {
   registrationModel = signal({username: '', email: '', password: ''});
   registrationForm = form(this.registrationModel, (schemaPath) => {
@@ -861,9 +859,7 @@ Bir özel parola girdisini ele alalım:
 ```
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class PasswordInput implements FormValueControl<string> {
   readonly value = model<string>('');
   readonly passwordCtrl = viewChild.required<ElementRef<HTMLInputElement>>('passwordCtrl');

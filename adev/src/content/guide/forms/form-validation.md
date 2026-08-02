@@ -19,7 +19,7 @@ Aşağıdaki örnek, `NgModel`'i `name` adlı bir değişkene dışa aktarır:
 
 - `<input>` öğesi HTML doğrulama niteliklerini taşır: `required` ve `minlength`.
   Ayrıca özel bir doğrulayıcı direktif olan `forbiddenName`'i taşır.
-  Daha fazla bilgi için [Özel doğrulayıcılar](#özel-doğrulayıcılar-tanımlama) bölümüne bakın.
+  Daha fazla bilgi için [Özel doğrulayıcılar](#defining-custom-validators) bölümüne bakın.
 
 - `#name="ngModel"`, `NgModel`'i `name` adlı yerel bir değişkene dışa aktarır.
   `NgModel`, altta yatan `FormControl` örneğinin birçok özelliğini yansıtır, böylece bunu şablonda `valid` ve `dirty` gibi kontrol durumlarını kontrol etmek için kullanabilirsiniz.
@@ -54,7 +54,7 @@ Her biri hatalar ayarlanmadan önce tamamlanmalıdır.
 
 ### Yerleşik doğrulayıcı fonksiyonlar
 
-[Kendi doğrulayıcı fonksiyonlarınızı yazmayı](#özel-doğrulayıcılar-tanımlama) seçebilir veya Angular'ın bazı yerleşik doğrulayıcılarını kullanabilirsiniz.
+[Kendi doğrulayıcı fonksiyonlarınızı yazmayı](#defining-custom-validators) seçebilir veya Angular'ın bazı yerleşik doğrulayıcılarını kullanabilirsiniz.
 
 Şablon odaklı formlarda nitelik olarak kullanılabilen aynı yerleşik doğrulayıcılar, `required` ve `minlength` gibi, `Validators` sınıfından fonksiyon olarak kullanılabilir.
 Yerleşik doğrulayıcıların tam listesi için [Validators](api/forms/Validators) API referansına bakın.
@@ -79,7 +79,7 @@ Bu form, şablon odaklı sürümden farklıdır çünkü artık herhangi bir dir
 
 `required` niteliğinin hala şablonda mevcut olduğuna dikkat edin. Doğrulama için gerekli olmasa da, erişilebilirlik amacıyla korunmalıdır.
 
-## Özel doğrulayıcılar tanımlama
+## Özel doğrulayıcılar tanımlama {#defining-custom-validators}
 
 Yerleşik doğrulayıcılar her zaman uygulamanızın tam kullanım durumuna uymaz, bu nedenle bazen özel bir doğrulayıcı oluşturmanız gerekir.
 
@@ -152,7 +152,7 @@ Aşağıdaki örnekte, aktör formu her form kontrolünün kenar rengini ayarlam
 
 ## Çapraz alan doğrulama
 
-Çapraz alan doğrulayıcı, bir formdaki farklı alanların değerlerini karşılaştıran ve bunları kombinasyon halinde kabul eden veya reddeden bir [özel doğrulayıcıdır](#özel-doğrulayıcılar-tanımlama 'Read about custom validators').
+Çapraz alan doğrulayıcı, bir formdaki farklı alanların değerlerini karşılaştıran ve bunları kombinasyon halinde kabul eden veya reddeden bir [özel doğrulayıcıdır](#defining-custom-validators 'Read about custom validators').
 Örneğin, birbirine uyumsuz seçenekler sunan bir formunuz olabilir, böylece kullanıcı A veya B'yi seçebilir, ancak ikisini birden seçemez.
 Bazı alan değerleri de diğerlerine bağlı olabilir; bir kullanıcının B'yi yalnızca A da seçiliyse seçmesine izin verilebilir.
 
@@ -229,7 +229,7 @@ Daha iyi kullanıcı deneyimi sağlamak için, form geçersiz olduğunda uygun b
 
 Bu, hem şablon odaklı hem de reaktif formlarda aynıdır.
 
-## Asenkron doğrulayıcılar oluşturma
+## Asenkron doğrulayıcılar oluşturma {#creating-asynchronous-validators}
 
 Asenkron doğrulayıcılar, `AsyncValidatorFn` ve `AsyncValidator` arayüzlerini uygular.
 Bunlar senkron karşılıklarına çok benzer, ancak aşağıdaki farklılıklara sahiptir.
@@ -255,7 +255,7 @@ Aşağıdaki örnek, bunu şablon odaklı bir formda nasıl gerçekleştireceği
 }
 ```
 
-### Özel bir asenkron doğrulayıcı uygulama
+### Özel bir asenkron doğrulayıcı uygulama {#implementing-a-custom-async-validator}
 
 Aşağıdaki örnekte, bir asenkron doğrulayıcı aktörlerin henüz alınmamış bir role atanmasını sağlar.
 Yeni aktörler sürekli seçmelere katılıyor ve eski aktörler emekli oluyor, bu nedenle mevcut rollerin listesi önceden alınamaz.

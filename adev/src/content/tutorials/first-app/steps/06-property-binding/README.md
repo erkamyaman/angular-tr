@@ -15,7 +15,7 @@ Bu derste, şablondaki özelliklere özellik bağlama kullanarak veri bağlayara
 
 Özellik bağlama, bir değişkeni Angular şablonundaki bir `Input`'a bağlamanızı sağlar. Veriler daha sonra `Input`'a dinamik olarak bağlanır.
 
-Daha ayrıntılı bir açıklama için lütfen [Özellik bağlama](/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları) kılavuzuna bakın.
+Daha ayrıntılı bir açıklama için lütfen [Özellik bağlama](/guide/templates/binding#css-class-and-style-property-bindings) kılavuzuna bakın.
 
 <docs-workflow>
 
@@ -46,5 +46,5 @@ SUMMARY: Bu derste, yeni bir özellik bağlama eklediniz ve bir sınıf özelli�
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="/guide/templates/binding#css-sınıfı-ve-stil-özelliği-bağlamaları" title="Property binding"/>
+  <docs-pill href="/guide/templates/binding#css-class-and-style-property-bindings" title="Property binding"/>
 </docs-pill-row>

@@ -6,7 +6,7 @@ Signal Forms, her kural fonksiyonuna bir **alan bağlamı** (field context) sağ
 
 Bu kılavuz alan bağlamı API'sini ayrıntılı olarak ele alır ve yaygın çapraz alan kalıplarını gösterir. Tek alanlı doğrulama için [Doğrulama kılavuzuna](/guide/forms/signals/validation) bakın.
 
-## Alan bağlamını anlama
+## Alan bağlamını anlama {#understanding-the-field-context}
 
 Signal Forms'taki her kural fonksiyonu, mevcut alanı tanımlayan ve formun geri kalanına erişim sağlayan bir nesne olan **alan bağlamı** parametresini alır.
 
@@ -32,9 +32,7 @@ Mevcut alanın (bitiş tarihi) formdaki başlangıç tarihinden sonra geldiğini
 import {Component, signal} from '@angular/core';
 import {form, validate} from '@angular/forms/signals';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class EventForm {
   eventModel = signal({
     startDate: new Date('2026-06-01'),
@@ -68,9 +66,7 @@ Ancak bu tek doğrulayıcı hatayı yalnızca bitiş tarihi alanına yerleştiri
 import {Component, signal} from '@angular/core';
 import {form, validate} from '@angular/forms/signals';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class EventForm {
   eventModel = signal({
     startDate: new Date('2026-06-01'),
@@ -113,9 +109,7 @@ Bazı formlarda, belirli alanlar yalnızca belirli koşullar altında zorunludur
 import {Component, signal} from '@angular/core';
 import {form, required} from '@angular/forms/signals';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class RegistrationForm {
   registrationModel = signal({
     accountType: 'personal' as 'personal' | 'business',
@@ -145,9 +139,7 @@ export class RegistrationForm {
 import {Component, signal} from '@angular/core';
 import {form, validate} from '@angular/forms/signals';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class PasswordForm {
   passwordModel = signal({
     password: '',
@@ -175,7 +167,7 @@ export class PasswordForm {
 
 WARNING: Kendi alanınızın doğrulamasına bağlı olan durumu okumamaya dikkat edin, çünkü bu döngüsel bir döngü oluşturur. Örneğin, üst alanın geçerli olup olmadığını kontrol eden bir doğrulayıcı sonsuz bir döngü oluşturur, çünkü üst alanın geçerliliği alt alanlarının geçerliliğine bağlıdır (bu da sizin doğrulayıcınızı içerir).
 
-## validateTree kullanımı
+## validateTree kullanımı {#using-validatetree}
 
 Şimdiye kadarki örnekler tek tek alanları kontrol etmek için `validate()` kullanır. Bazen, mantığı doğası gereği bir gruptaki birden fazla alanla ilgili olan bir grup alanı doğrulamanız ve hataları o gruptaki belirli alt alanlara yönlendirmeniz gerekir. `validateTree`, bu tür senaryolar için idealdir.
 
@@ -185,9 +177,7 @@ WARNING: Kendi alanınızın doğrulamasına bağlı olan durumu okumamaya dikka
 import {Component, signal} from '@angular/core';
 import {form, validateTree} from '@angular/forms/signals';
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class SudokuRow {
   rowModel = signal({
     cell1: 1,

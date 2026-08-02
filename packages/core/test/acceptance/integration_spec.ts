@@ -40,7 +40,8 @@ import {getLViewById} from '../../src/render3/interfaces/lview_tracking';
 import {isLView} from '../../src/render3/interfaces/type_checks';
 import {ID, LView, PARENT, TVIEW} from '../../src/render3/interfaces/view';
 import {getLView} from '../../src/render3/state';
-import {fakeAsync, flushMicrotasks, TestBed} from '../../testing';
+import {TestBed} from '../../testing';
+import {timeout} from '@angular/private/testing';
 
 describe('acceptance integration tests', () => {
   beforeEach(() => {
@@ -2890,8 +2891,8 @@ describe('acceptance integration tests', () => {
         {{ $any(val)?.foo!.bar }}
       `,
       standalone: false,
-    
-      changeDetection: ChangeDetectionStrategy.Eager,})
+      changeDetection: ChangeDetectionStrategy.Eager,
+    })
     class Comp {
       val: any = null;
 
@@ -3487,7 +3488,7 @@ describe('acceptance integration tests', () => {
   });
 
   describe('animations', () => {
-    it('should apply triggers for a list of items when they are sorted and reSorted', fakeAsync(() => {
+    it('should apply triggers for a list of items when they are sorted and reSorted', async () => {
       interface Item {
         value: any;
         id: number;
@@ -3567,11 +3568,11 @@ describe('acceptance integration tests', () => {
       elements = queryAll(fixture.nativeElement, 'animation-comp');
       expect(elements.length).toEqual(5);
       expect(elements.map((e) => e.textContent?.trim())).toEqual(['1', '2', '4', '5', '3']);
-      completeAnimations();
+      await completeAnimations();
 
       fixture.componentInstance.showWarningMessage = true;
       fixture.detectChanges();
-      completeAnimations();
+      await completeAnimations();
 
       elements = queryAll(fixture.nativeElement, 'animation-comp');
       expect(elements.length).toEqual(0);
@@ -3582,9 +3583,9 @@ describe('acceptance integration tests', () => {
 
       elements = queryAll(fixture.nativeElement, 'animation-comp');
       expect(elements.length).toEqual(5);
-    }));
+    });
 
-    it('should insert and remove views in the correct order when animations are present', fakeAsync(() => {
+    it('should insert and remove views in the correct order when animations are present', async () => {
       @Component({
         animations: [
           trigger('root', [transition('* => *', [])]),
@@ -3653,7 +3654,7 @@ describe('acceptance integration tests', () => {
       });
       const fixture = TestBed.createComponent(Cmp);
       fixture.detectChanges();
-      completeAnimations();
+      await completeAnimations();
       const comp = fixture.componentInstance;
       expect(comp.log).toEqual([
         'root', // insertion of the inner-comp content
@@ -3663,7 +3664,7 @@ describe('acceptance integration tests', () => {
       comp.log = [];
       comp.showIfContents = false;
       fixture.detectChanges();
-      completeAnimations();
+      await completeAnimations();
 
       expect(comp.log).toEqual([
         'host', // insertion of the inner-comp content
@@ -3674,14 +3675,14 @@ describe('acceptance integration tests', () => {
       comp.log = [];
       comp.showRoot = false;
       fixture.detectChanges();
-      completeAnimations();
+      await completeAnimations();
 
       expect(comp.log).toEqual([
         'root', // removal the root div container
         'host', // removal of the inner-comp content
         'inner', // removal of the inner comp element
       ]);
-    }));
+    });
   });
 
   describe('arrow functions', () => {
@@ -4006,11 +4007,11 @@ describe('acceptance integration tests', () => {
   });
 });
 
-function completeAnimations() {
-  flushMicrotasks();
+async function completeAnimations() {
+  await timeout(0);
   const log = MockAnimationDriver.log as MockAnimationPlayer[];
   log.forEach((player) => player.finish());
-  flushMicrotasks();
+  await timeout(0);
 }
 
 function arraySwap(arr: any[], indexA: number, indexB: number): void {

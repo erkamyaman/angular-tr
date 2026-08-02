@@ -49,21 +49,32 @@ import {
   serializeProviderRecord,
   serializeResolutionPath,
   updateState,
-} from './component-tree/component-tree';
-import {unHighlight} from './highlighter';
+} from './directive-forest/component-tree/component-tree';
 import {start as startProfiling, stop as stopProfiling} from './profiling/capture';
-import {disableTimingAPI, enableTimingAPI} from './profiling/timing-api';
+import {disablePerformanceTrack, enablePerformanceTrack} from './profiling/performance-track';
 import {getProfiler, Profiler} from './profiling/profiler';
-import {ComponentTreeNode} from './interfaces';
-import {ngDebugClient, ngDebugDependencyInjectionApiIsSupported} from './ng-debug-api/ng-debug-api';
-import {getSupportedApis} from './ng-debug-api/supported-apis';
-import {getRouterCallableConstructRef, parseRoutes, RoutePropertyType} from './router-tree';
-import {setConsoleReference} from './set-console-reference';
-import {serializeDirectiveState, serializeValue} from './state-serializer/state-serializer';
-import {runOutsideAngular, unwrapSignal} from './utils/general';
-import {sanitizeObject} from './utils/serialization';
-import {SignalGraphRef} from './utils/signal-graph-ref';
+import {ComponentTreeNode} from './shared/interfaces';
+import {
+  ngDebugClient,
+  ngDebugDependencyInjectionApiIsSupported,
+} from './shared/ng-debug-api/ng-debug-api';
+import {getSupportedApis} from './shared/ng-debug-api/supported-apis';
+import {
+  getRouterCallableConstructRef,
+  parseRoutes,
+  RoutePropertyType,
+} from './router-tree/router-tree';
+import {setConsoleReference} from './console/set-console-reference';
+import {serializeDirectiveState, serializeValue} from './shared/state-serializer/state-serializer';
+import {runOutsideAngular, unwrapSignal} from './shared/utils/general';
+import {sanitizeObject} from './shared/utils/serialization';
+import {SignalGraphRef} from './shared/utils/signal-graph-ref';
 import {getDirectiveForestManager} from './directive-forest/manager';
+import {
+  highlightHydrationNodes,
+  removeHydrationHighlights,
+} from './hydration/hydration-highlighting';
+import {removeAllHighlights} from './shared/highlighter';
 
 type InspectorRef = {ref: ComponentInspector | null};
 
@@ -76,6 +87,8 @@ export const subscribeToClientEvents = (
   const inspector: InspectorRef = {ref: null};
 
   messageBus.on('shutdown', shutdownCallback(messageBus));
+
+  messageBus.on('devtoolsShutdown', devtoolsShutdownCallback(inspector));
 
   messageBus.on(
     'getLatestComponentExplorerView',
@@ -98,8 +111,8 @@ export const subscribeToClientEvents = (
   messageBus.on('updateState', updateState);
   messageBus.on('logValue', logValue);
 
-  messageBus.on('enableTimingAPI', enableTimingAPI);
-  messageBus.on('disableTimingAPI', disableTimingAPI);
+  messageBus.on('enablePerformanceTrack', enablePerformanceTrack);
+  messageBus.on('disablePerformanceTrack', disablePerformanceTrack);
 
   messageBus.on('getInjectorProviders', getInjectorProvidersCallback(messageBus));
 
@@ -139,6 +152,11 @@ export const subscribeToClientEvents = (
 
 const shutdownCallback = (messageBus: MessageBus<Events>) => () => {
   messageBus.destroy();
+};
+
+const devtoolsShutdownCallback = (inspector: InspectorRef) => () => {
+  inspector.ref?.stopInspecting();
+  removeAllHighlights();
 };
 
 const getLatestComponentExplorerViewCallback =
@@ -373,10 +391,10 @@ const setupInspector = (messageBus: MessageBus<Events>): ComponentInspector => {
   messageBus.on('createHighlightOverlay', (position: ElementPosition) => {
     inspector.highlightByPosition(position);
   });
-  messageBus.on('removeHighlightOverlay', unHighlight);
+  messageBus.on('removeHighlightOverlay', () => inspector.unhighlight());
 
-  messageBus.on('createHydrationOverlay', inspector.highlightHydrationNodes);
-  messageBus.on('removeHydrationOverlay', inspector.removeHydrationHighlights);
+  messageBus.on('createHydrationOverlay', highlightHydrationNodes);
+  messageBus.on('removeHydrationOverlay', removeHydrationHighlights);
 
   return inspector;
 };
@@ -432,6 +450,7 @@ const prepareForestForSerialization = (
             name: node.component.name,
             isElement: node.component.isElement,
             id: getDirectiveForestManager().getDirectiveId(node.component.instance)!,
+            instanceId: ngDebugClient()?.ɵgetComponentInstanceDeepLinkId?.(node.component.instance),
           }
         : null,
       directives: node.directives?.map((d) => ({
@@ -441,6 +460,7 @@ const prepareForestForSerialization = (
       children: prepareForestForSerialization(node.children, includeResolutionPath),
       hydration: node.hydration,
       controlFlowBlock: node.controlFlowBlock,
+      static: node.static,
       changeDetection: node.component ? getDirectiveCdStrategy(node.component) : undefined,
 
       // native elements are not serializable
@@ -596,9 +616,7 @@ const getTransferStateCallback = (messageBus: MessageBus<Events>) => () => {
     if (!injector) continue;
 
     const rootData = ng.ɵgetTransferState?.(injector) as
-      | Record<string, TransferStateValue>
-      | null
-      | undefined;
+      Record<string, TransferStateValue> | null | undefined;
     if (rootData && typeof rootData === 'object') {
       Object.assign(merged, rootData);
       collected = true;
@@ -606,27 +624,6 @@ const getTransferStateCallback = (messageBus: MessageBus<Events>) => () => {
   }
 
   messageBus.emit('transferStateData', [collected ? merged : null]);
-};
-
-const getInjectorInstance = (
-  serializedInjector: SerializedInjector,
-  serializedProvider: SerializedProviderRecord,
-) => {
-  const injector = idToInjector.get(serializedInjector.id)?.deref();
-  if (!injector) {
-    return;
-  }
-
-  const providerRecords = getInjectorProviders(injector);
-
-  if (typeof serializedProvider.index === 'number') {
-    const provider = providerRecords[serializedProvider.index];
-    return injector.get(provider.token, null, {optional: true});
-  } else if (Array.isArray(serializedProvider.index)) {
-    const providers = serializedProvider.index.map((index) => providerRecords[index]);
-    return injector.get(providers[0].token, null, {optional: true});
-  }
-  return null;
 };
 
 const getSignalGraphCallback = (messageBus: MessageBus<Events>) => (element: ElementPosition) => {

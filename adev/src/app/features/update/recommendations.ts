@@ -245,7 +245,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 8',
     action:
-      '[Node 8 veya üstünü](http://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
+      '[Node 8 veya üstünü](https://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
   },
   {
     possibleIn: 600,
@@ -487,7 +487,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 10',
     action:
-      '[Node 10 veya üstünü](http://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun.',
+      '[Node 10 veya üstünü](https://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun.',
   },
   {
     possibleIn: 800,
@@ -580,7 +580,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'node 10.13',
     action:
-      '[Node 10.13 veya üstünü](http://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun.',
+      '[Node 10.13 veya üstünü](https://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun.',
   },
   {
     possibleIn: 900,
@@ -710,7 +710,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Advanced,
     step: 'wtf',
     action:
-      "Angular'da web izleme çerçevesi desteği sürüm 8'de kullanımdan kaldırılmıştır. Tüm `wtf*` API'lerini kullanmayı bırakmalısınız. Performans izleme için [tarayıcı performans araçları](https://developers.google.com/web/tools/lighthouse/audits/user-timing) kullanmanızı öneririz.",
+      "Angular'da web izleme çerçevesi desteği sürüm 8'de kullanımdan kaldırılmıştır. Tüm `wtf*` API'lerini kullanmayı bırakmalısınız. Performans izleme için [tarayıcı performans araçları](https://developer.chrome.com/docs/lighthouse/performance/user-timings) kullanmanızı öneririz.",
   },
   {
     possibleIn: 800,
@@ -782,7 +782,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '$localize',
     action:
-      "[Angular'ın i18n desteğini](http://angular.io/guide/i18n) kullanıyorsanız, `@angular/localize` kullanmaya başlamanız gerekecektir. [$localize Global Import Taşıması](https://v9.angular.io/guide/migration-localize) hakkında daha fazla bilgi edinin.",
+      "[Angular'ın i18n desteğini](https://angular.io/guide/i18n) kullanıyorsanız, `@angular/localize` kullanmaya başlamanız gerekecektir. [$localize Global Import Taşıması](https://v9.angular.io/guide/migration-localize) hakkında daha fazla bilgi edinin.",
   },
 
   {
@@ -984,7 +984,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v11 browser support',
     action:
-      'IE9, IE10 ve IE mobile desteği kaldırılmıştır. Bu, [v10 güncellemesinde](http://blog.angular.dev/version-10-of-angular-now-available-78960babd41#c357) duyurulmuştu. ',
+      'IE9, IE10 ve IE mobile desteği kaldırılmıştır. Bu, [v10 güncellemesinde](https://blog.angular.dev/version-10-of-angular-now-available-78960babd41#c357) duyurulmuştu. ',
   },
   {
     possibleIn: 1100,
@@ -1352,7 +1352,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v13 node',
     action:
-      '[Node 12.20.0 veya üstünü](http://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
+      '[Node 12.20.0 veya üstünü](https://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
   },
   {
     possibleIn: 1300,
@@ -1475,7 +1475,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     step: 'v14 node',
     action:
-      '[Node 14.15.0 veya üstünü](http://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
+      '[Node 14.15.0 veya üstünü](https://www.hostingadvice.com/how-to/update-node-js-latest-version/) kullandığınızdan emin olun',
   },
   {
     possibleIn: 1400,
@@ -2557,6 +2557,14 @@ export const RECOMMENDATIONS: Step[] = [
   },
   {
     action:
+      '`effect()` çağrılarından `allowSignalWrites` seçeneğini kaldırın. Bu seçenek kullanımdan kaldırıldı ve artık gerekli değil; effect içindeki sinyal yazmalarına varsayılan olarak izin veriliyor.',
+    level: ApplicationComplexity.Medium,
+    necessaryAsOf: 1900,
+    possibleIn: 1900,
+    step: '19.0.0-remove-allow-signal-writes',
+  },
+  {
+    action:
       "Uygulamanızın proje dizininde, Angular v20'ye güncellemek için `ng update @angular/core@20 @angular/cli@20` komutunu çalıştırın.",
     level: ApplicationComplexity.Basic,
     necessaryAsOf: 2000,
@@ -2793,6 +2801,15 @@ export const RECOMMENDATIONS: Step[] = [
     material: true,
     step: 'update @angular/material',
     action: '`ng update @angular/material@21` komutunu çalıştırın.',
+  },
+  {
+    possibleIn: 2100,
+    necessaryAsOf: 2100,
+    level: ApplicationComplexity.Medium,
+    material: true,
+    step: '21.0.0-cdk-overlay-top-layer-stacking',
+    action:
+      "CDK overlay'leri artık tarayıcının yerel üst katmanında (top layer) render edilebiliyor; bu nedenle daha önce `z-index` ile Material overlay'lerinin üzerinde görünen elemanlar artık altlarında render ediliyor. Önceki davranışı geri getirmek için `@angular/cdk/overlay` içindeki `OVERLAY_DEFAULT_CONFIG`'i `{usePopover: false}` değeriyle sağlayabilirsiniz.",
   },
   {
     possibleIn: 2100,

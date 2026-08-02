@@ -7,7 +7,7 @@ Herhangi bir asenkron işlemi gerçekleştirmek için bir `Resource` kullanabili
 Bir `Resource` oluşturmanın en kolay yolu `resource` fonksiyonudur.
 
 ```typescript
-import {resource, Signal} from '@angular/core';
+import {computed, resource, Signal} from '@angular/core';
 
 const userId: Signal<string> = getUserId();
 
@@ -159,7 +159,7 @@ const userResource = resource({
 
 IMPORTANT: Önbelleğe alınan değer sayfanın HTML'ine serileştirildiğinden, sunucu tarafı işlemeyi tetikleyen kullanıcıya özgü veri yükleyen kaynaklarda `id` ayarlamaktan kaçının, özellikle işlenen HTML önbelleğe alınabiliyorsa veya kullanıcılar arasında paylaşılabiliyorsa.
 
-## Resource'ları zincirleme
+## Resource'ları zincirleme {#chaining-resources}
 
 Bazen bir kaynak başka bir kaynağın sonucuna bağlıdır. Bu bağımlılığı `params` bağlam nesnesinde bulunan `chain` fonksiyonunu kullanarak ifade edebilirsiniz.
 
@@ -210,7 +210,7 @@ Bu işe yarasa da, `params`'tan `undefined` döndürmek kaynağı, yukarı akı�
 
 [`httpResource`](/guide/http/http-resource), `HttpClient` etrafında size istek durumunu ve yanıtı sinyal olarak veren bir sarmalayıcıdır. Yakalayıcılar dahil Angular HTTP yığını aracılığıyla HTTP istekleri yapar.
 
-## Snapshot'lar ile Resource bileşimi
+## Snapshot'lar ile Resource bileşimi {#resource-composition-with-snapshots}
 
 `ResourceSnapshot`, bir kaynağın mevcut durumunun yapılandırılmış bir temsilidir. Her kaynağın mevcut durumunun sinyalini sağlayan bir `snapshot` özelliği vardır.
 
@@ -252,9 +252,7 @@ function withPreviousValue<T>(input: Resource<T>): Resource<T> {
   return resourceFromSnapshots(derived);
 }
 
-@Component({
-  /*... */
-})
+@Component({/*... */})
 export class AwesomeProfile {
   userId = input.required<number>();
   user = withPreviousValue(httpResource(() => `/user/${this.userId()}`));

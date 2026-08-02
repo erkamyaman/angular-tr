@@ -33,7 +33,7 @@ export class Product {
 
 Rotada erişebileceğiniz şeylerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) göz atın.
 
-## Route anlık görüntülerini anlama
+## Route anlık görüntülerini anlama {#understanding-route-snapshots}
 
 Sayfa navigasyonları zaman içindeki olaylardır ve belirli bir zamanda yönlendirici durumuna bir rota anlık görüntüsü alarak erişebilirsiniz.
 
@@ -44,9 +44,7 @@ Rota anlık görüntüleri, parametreleri, verileri ve alt rotaları dahil olmak
 ```angular-ts
 import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 
-@Component({
-  /*...*/
-})
+@Component(/* ... */)
 export class UserProfile {
   readonly userId: string;
   private route = inject(ActivatedRoute);
@@ -218,7 +216,7 @@ export class AwesomeProducts {
 
 NOTE: `ActivatedRoute` kullanmaya alternatif olarak, `withComponentInputBinding` kullanıldığında matris parametreleri bileşen girişlerine de bağlanır.
 
-## RouterLinkActive ile aktif geçerli route'u tespit etme
+## RouterLinkActive ile aktif geçerli route'u tespit etme {#detect-active-current-route-with-routerlinkactive}
 
 Geçerli aktif rotaya göre navigasyon öğelerini dinamik olarak stilize etmek için `RouterLinkActive` direktifini kullanabilirsiniz. Bu, kullanıcıları aktif rotanın hangisi olduğu hakkında bilgilendirmek için navigasyon öğelerinde yaygın olarak kullanılır.
 
@@ -327,7 +325,7 @@ RouterLinkActive direktifi, geliştiricilerin öğeleri istedikleri gibi stilize
 
 Daha fazla bilgi için [RouterLinkActive API dokümanlarına](/api/router/RouterLinkActive) göz atın.
 
-## Bir URL'nin aktif olup olmadığını kontrol etme
+## Bir URL'nin aktif olup olmadığını kontrol etme {#check-if-a-url-is-active}
 
 `isActive` fonksiyonu, belirli bir URL'nin yönlendiricide şu anda aktif olup olmadığını izleyen hesaplanmış bir sinyal döndürür. Sinyal, yönlendirici durumu değiştikçe otomatik olarak güncellenir.
 

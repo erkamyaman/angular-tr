@@ -2,7 +2,7 @@
 
 Aşağıdaki bölümler bazı temel yönlendirici kavramlarını ve terminolojisini vurgular.
 
-## Router Olayları
+## Router Olayları {#router-events}
 
 Her navigasyon sırasında `Router`, `Router.events` özelliği aracılığıyla navigasyon olayları yayınlar.
 Bu olaylar aşağıdaki tabloda gösterilmektedir.

@@ -2,11 +2,11 @@
 
 Veri çözücüler, bir rotaya navigasyon yapmadan önce veri çekmenize olanak tanır ve bileşenlerinizin render edilmeden önce ihtiyaç duydukları verileri almasını sağlar. Bu, yükleme durumları ihtiyacını önlemeye ve temel verileri önceden yükleyerek kullanıcı deneyimini iyileştirmeye yardımcı olabilir.
 
-## Veri resolver'ları nedir?
+## Veri resolver'ları nedir? {#what-are-data-resolvers}
 
 Veri çözücü, `ResolveFn` fonksiyonunu uygulayan bir servistir. Bir rota etkinleştirilmeden önce çalışır ve API'lerden, veritabanlarından veya diğer kaynaklardan veri çekebilir. Çözümlenen veri, `ActivatedRoute` aracılığıyla bileşen tarafından kullanılabilir hale gelir.
 
-Veri çözücüler, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#rota-providerları) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
+Veri çözücüler, [rota düzeyinde sağlanan servislere](guide/di/defining-dependency-providers#route-providers) ve `route` argümanı aracılığıyla rotaya özgü bilgilere erişebilir.
 
 ## Veri resolver'ları neden kullanılır?
 
@@ -143,7 +143,7 @@ Veri çözücülerle hataları yönetmenin üç temel yolu vardır:
 2. Router olaylarına abonelik aracılığıyla hataları yönetme
 3. Hataları doğrudan çözücüde yönetme
 
-### `withNavigationErrorHandler` ile hata yönetimini merkezileştirme
+### `withNavigationErrorHandler` ile hata yönetimini merkezileştirme {#centralize-error-handling-in-withnavigationerrorhandler}
 
 [`withNavigationErrorHandler`](api/router/withNavigationErrorHandler) özelliği, başarısız veri çözücülerden kaynaklananlar dahil tüm navigasyon hatalarını yönetmenin merkezi bir yolunu sağlar. Bu yaklaşım, hata yönetimi mantığını tek bir yerde tutar ve çözücüler arasında tekrarlanan hata yönetimi kodunu önler.
 

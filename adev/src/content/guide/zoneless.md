@@ -69,7 +69,7 @@ Benzer şekilde, `NgZone.isStable` her zaman `true` olacaktır ve kod yürütme 
 `NgZone.run` ve `NgZone.runOutsideAngular`'ın Zoneless uygulamalarla uyumlu olması için kaldırılmasına gerek yoktur. Aslında, bu çağrıların kaldırılması, hâlâ ZoneJS'e dayanan uygulamalarda kullanılan kütüphaneler için performans gerilemelerine yol açabilir.
 </docs-callout>
 
-### Sunucu Taraflı Render (SSR) İçin `PendingTasks`
+### Sunucu Taraflı Render (SSR) İçin `PendingTasks` {#pendingtasks-for-server-side-rendering-ssr}
 
 Angular ile SSR kullanıyorsanız, uygulamanın ne zaman "kararlı" olduğunu ve serileştirilebileceğini belirlemeye yardımcı olmak için ZoneJS'e dayandığını biliyor olabilirsiniz. Serileştirmeyi engellemesi gereken asenkron görevler varsa, ZoneJS kullanmayan bir uygulama Angular'ı [PendingTasks](/api/core/PendingTasks) servisi ile bunlardan haberdar etmelidir. Serileştirme, tüm bekleyen görevlerin kaldırıldığı ilk anı bekleyecektir.
 

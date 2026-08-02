@@ -155,10 +155,14 @@ describe('OrderTotal', () => {
     expect(service.total(100)).toBe(105);
   });
 
+  afterEach(() => {
+    taxCalculatorStub.calculate.mockClear();
+  });
+
   // Spy ile etkileşimi doğrula
   it('calls the tax calculator', () => {
     service.total(100);
-    expect(taxCalculatorStub.calculate).toHaveBeenCalledExactlyOnce();
+    expect(taxCalculatorStub.calculate).toHaveBeenCalledExactlyOnceWith(100);
   });
 });
 ```

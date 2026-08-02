@@ -4,7 +4,7 @@ Angular Signals, durumunuzun uygulamanız genelinde nasıl ve nerede kullanıld�
 
 TIP: Bu kapsamlı kılavuza dalmadan önce Angular'ın [Temel Bilgiler](essentials/signals) bölümüne göz atın.
 
-## Sinyaller nedir?
+## Sinyaller nedir? {#what-are-signals}
 
 Bir **sinyal**, ilgili tüketicileri değer değiştiğinde bilgilendiren bir değer etrafındaki sarmalayıcıdır. Sinyaller, ilkel değerlerden karmaşık veri yapılarına kadar herhangi bir değer içerebilir.
 
@@ -55,9 +55,7 @@ export class CounterState {
   }
 }
 
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class AwesomeCounter {
   state = inject(CounterState);
 
@@ -73,7 +71,7 @@ Salt okunur sinyal, orijinal yazılabilir sinyalde yapılan değişiklikleri yan
 
 IMPORTANT: Salt okunur sinyallerin, değerlerinin derin değişikliğini önleyecek herhangi bir yerleşik mekanizması **yoktur**.
 
-### Computed sinyaller
+### Computed sinyaller {#computed-signals}
 
 **Hesaplanmış sinyaller**, değerlerini diğer sinyallerden türeten salt okunur sinyallerdir. Hesaplanmış sinyalleri `computed` fonksiyonunu kullanarak ve bir türetme belirterek tanımlarsınız:
 
@@ -134,11 +132,11 @@ Angular aşağıdaki durumlarda otomatik olarak bir reaktif bağlama girer:
 - Bir `computed` sinyali değerlendirilirken.
 - Bir `linkedSignal` değerlendirilirken.
 - Bir `resource`'un params veya loader fonksiyonu değerlendirilirken.
-- Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#host-elemanına-bağlama) bağlamalar dahil).
+- Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#binding-to-the-host-element) bağlamalar dahil).
 
 Bu işlemler sırasında Angular _canlı_ bir bağlantı oluşturur. İzlenen bir sinyal değişirse, Angular _sonunda_ tüketiciyi yeniden çalıştıracaktır.
 
-### Reactive context doğrulama
+### Reactive context doğrulama {#asserts-the-reactive-context}
 
 Angular, kodun bir reaktif bağlam içinde yürütülmediğini doğrulamak için `assertNotInReactiveContext` yardımcı fonksiyonunu sağlar. Doğrulama başarısız olursa hata mesajının doğru API giriş noktasını göstermesi için çağıran fonksiyona bir referans iletin. Bu, genel bir reaktif bağlam hatasından daha net ve eyleme geçirilebilir bir hata mesajı üretir.
 
@@ -151,7 +149,7 @@ function subscribeToEvents() {
 }
 ```
 
-### Dependency tracking olmadan okuma
+### Dependency tracking olmadan okuma {#reading-without-tracking-dependencies}
 
 Nadiren, `computed` veya `effect` gibi reaktif bir fonksiyon içinde sinyal okuyabilecek kodu bir bağımlılık oluşturmadan yürütmek isteyebilirsiniz.
 
@@ -232,7 +230,7 @@ Bir `OnPush` bileşeninin şablonunda bir sinyal okuduğunuzda, Angular sinyali 
 
 ## İleri düzey konular
 
-### Signal equality fonksiyonları
+### Signal equality fonksiyonları {#signal-equality-functions}
 
 Bir sinyal oluştururken, isteğe bağlı olarak yeni değerin önceki değerden gerçekten farklı olup olmadığını kontrol etmek için kullanılacak bir eşitlik fonksiyonu sağlayabilirsiniz.
 
@@ -251,7 +249,7 @@ Eşitlik fonksiyonları hem yazılabilir hem de hesaplanmış sinyallere sağlan
 
 HELPFUL: Varsayılan olarak, sinyaller referans eşitliğini ([`Object.is()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is) karşılaştırması) kullanır.
 
-### Signal type kontrolü
+### Signal type kontrolü {#type-checking-signals}
 
 Bir değerin `Signal` olup olmadığını kontrol etmek için `isSignal` kullanabilirsiniz:
 

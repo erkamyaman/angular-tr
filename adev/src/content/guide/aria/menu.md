@@ -244,85 +244,12 @@ describe('MyMenuComponent', () => {
 });
 ```
 
-## API'ler
+## API referansı
 
-### Menu
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
 
-Menü öğeleri için kapsayıcı yönerge.
-
-#### Girişler
-
-| Property       | Type      | Default | Description                                                                  |
-| -------------- | --------- | ------- | ---------------------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Menüdeki tüm öğeleri devre dışı bırakır                                      |
-| `wrap`         | `boolean` | `true`  | Klavye navigasyonunun kenarlarda sarılıp sarılmadığı                         |
-| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
-
-#### Yöntemler
-
-| Method  | Parameters | Description    |
-| ------- | ---------- | -------------- |
-| `close` | none       | Menüyü kapatır |
-
-### MenuBar
-
-Birden fazla menü için yatay kapsayıcı.
-
-#### Girişler
-
-| Property       | Type      | Default | Description                                                                  |
-| -------------- | --------- | ------- | ---------------------------------------------------------------------------- |
-| `disabled`     | `boolean` | `false` | Tüm menü çubuğunu devre dışı bırakır                                         |
-| `wrap`         | `boolean` | `true`  | Klavye navigasyonunun kenarlarda sarılıp sarılmadığı                         |
-| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı öğeler odaklanabilir ancak etkileşimli değildir |
-
-### MenuItem
-
-Bir menü içindeki bireysel bir öğe.
-
-#### Girişler
-
-| Property     | Type                                                  | Default      | Description                                                   |
-| ------------ | ----------------------------------------------------- | ------------ | ------------------------------------------------------------- |
-| `value`      | `any`                                                 | —            | **Zorunlu.** Bu öğenin değeri                                 |
-| `role`       | `'menuitem' \| 'menuitemcheckbox' \| 'menuitemradio'` | `'menuitem'` | Menü öğesi için ARIA rolü                                     |
-| `disabled`   | `boolean`                                             | `false`      | Bu menü öğesini devre dışı bırakır                            |
-| `submenu`    | `Menu`                                                | —            | Bir alt menüye referans                                       |
-| `searchTerm` | `string`                                              | `''`         | Yazarak arama için arama terimi (iki yönlü bağlama destekler) |
-
-#### Sinyaller
-
-| Property   | Type              | Description                                  |
-| ---------- | ----------------- | -------------------------------------------- |
-| `active`   | `Signal<boolean>` | Öğenin şu anda odakta olup olmadığı          |
-| `expanded` | `Signal<boolean>` | Alt menünün genişletilmiş olup olmadığı      |
-| `hasPopup` | `Signal<boolean>` | Öğenin ilişkili bir alt menüsü olup olmadığı |
-
-NOTE: MenuItem genel yöntemler sunmaz. Alt menüleri menü öğeleriyle ilişkilendirmek için `submenu` girişini kullanın.
-
-### MenuTrigger
-
-Bir menüyü açan buton veya eleman.
-
-#### Girişler
-
-| Property       | Type      | Default | Description                                            |
-| -------------- | --------- | ------- | ------------------------------------------------------ |
-| `menu`         | `Menu`    | —       | **Zorunlu.** Tetiklenecek menü                         |
-| `disabled`     | `boolean` | `false` | Tetikleyiciyi devre dışı bırakır                       |
-| `softDisabled` | `boolean` | `true`  | `true` olduğunda, devre dışı tetikleyici odaklanabilir |
-
-#### Sinyaller
-
-| Property   | Type              | Description                                      |
-| ---------- | ----------------- | ------------------------------------------------ |
-| `expanded` | `Signal<boolean>` | Menünün şu anda açık olup olmadığı               |
-| `hasPopup` | `Signal<boolean>` | Tetikleyicinin ilişkili bir menüsü olup olmadığı |
-
-#### Yöntemler
-
-| Method   | Parameters | Description                        |
-| -------- | ---------- | ---------------------------------- |
-| `open`   | none       | Menüyü açar                        |
-| `close`  | none       | Menüyü kapatır                     |
-| `toggle` | none       | Menüyü aç/kapa durumunu değiştirir |
+- [`Menu`](/api/aria/menu/Menu)
+- [`MenuBar`](/api/aria/menu/MenuBar)
+- [`MenuItem`](/api/aria/menu/MenuItem)
+- [`MenuTrigger`](/api/aria/menu/MenuTrigger)
+- [`MenuContent`](/api/aria/menu/MenuContent)
