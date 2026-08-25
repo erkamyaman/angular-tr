@@ -42,19 +42,30 @@ export class AppScroller {
   }
 
   private setupScrollRestoration(): void {
-    let windowWidth = window.innerWidth;
-    // Setting up a ResizeObserver to update the width on resize. (without triggering a reflow)
-    const windowSizeObserver = new ResizeObserver((entries) => {
-      windowWidth = entries[0].contentRect.width;
-    });
-    windowSizeObserver.observe(document.documentElement);
-    inject(DestroyRef).onDestroy(() => windowSizeObserver.disconnect());
-
     const root = document.documentElement; // or any element with the variable
     const styles = getComputedStyle(root);
     // slice to drop the 'px'
     const xsBreakpoint = +styles.getPropertyValue('--screen-xs').slice(0, -2);
     const mdBreakpoint = +styles.getPropertyValue('--screen-md').slice(0, -2);
+
+    const setOffsetForWidth = (windowWidth: number) => {
+      if (windowWidth <= xsBreakpoint) {
+        this.viewportScroller.setOffset([0, 64]);
+      } else if (windowWidth <= mdBreakpoint) {
+        this.viewportScroller.setOffset([0, 140]);
+      } else {
+        this.viewportScroller.setOffset([0, 24]);
+      }
+    };
+
+    setOffsetForWidth(window.innerWidth);
+
+    // Setting up a ResizeObserver to update the offset on resize. (without triggering a reflow)
+    const windowSizeObserver = new ResizeObserver((entries) => {
+      setOffsetForWidth(entries[0].contentRect.width);
+    });
+    windowSizeObserver.observe(document.documentElement);
+    inject(DestroyRef).onDestroy(() => windowSizeObserver.disconnect());
 
     this.viewportScroller.setHistoryScrollRestoration('manual');
     this.router.events
@@ -65,13 +76,7 @@ export class AppScroller {
           this.canScroll = true;
           this._lastScrollEvent = e;
         }),
-        filter(() => {
-          const info = this.router.lastSuccessfulNavigation()?.extras.info as Record<
-            'disableScrolling',
-            boolean
-          >;
-          return !info?.['disableScrolling'];
-        }),
+        filter(() => !this.isScrollingDisabled()),
         switchMap((e) => {
           return firstValueFrom(
             this.appRef.isStable.pipe(
@@ -84,14 +89,33 @@ export class AppScroller {
       .subscribe(() => {
         this.scroll();
       });
+  }
 
-    if (windowWidth < xsBreakpoint) {
-      this.viewportScroller.setOffset([0, 64]);
-    } else if (windowWidth <= mdBreakpoint) {
-      this.viewportScroller.setOffset([0, 140]);
-    } else {
-      this.viewportScroller.setOffset([0, 24]);
+  scrollAfterContentRendered(injector: Injector): void {
+    const anchor = this._lastScrollEvent?.anchor ?? this.router.parseUrl(this.router.url).fragment;
+
+    if (!anchor || this.isScrollingDisabled()) {
+      return;
     }
+
+    this.cancelScroll?.();
+    this.appRef.whenStable().then(() => {
+      const ref = afterNextRender(
+        {
+          write: () => this.viewportScroller.scrollToAnchor(anchor),
+        },
+        {injector},
+      );
+      this.cancelScroll = () => ref.destroy();
+    });
+  }
+
+  private isScrollingDisabled(): boolean {
+    const info = this.router.lastSuccessfulNavigation()?.extras.info as Record<
+      'disableScrolling',
+      boolean
+    >;
+    return !!info?.['disableScrolling'];
   }
 
   private scroll(injector?: Injector) {

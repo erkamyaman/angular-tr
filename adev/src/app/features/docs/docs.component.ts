@@ -6,8 +6,9 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {Component, computed, input} from '@angular/core';
+import {Component, Injector, computed, inject, input} from '@angular/core';
 import {DocContent, DocViewer} from '@angular/docs';
+import {AppScroller} from '../../app-scroller';
 
 @Component({
   selector: 'docs-docs',
@@ -25,4 +26,11 @@ export default class DocsComponent {
 
   docContent = input<DocContent>();
   isOverview = computed(() => this.docContent()?.id.includes('what-is-angular'));
+
+  private readonly appScroller = inject(AppScroller);
+  private readonly injector = inject(Injector);
+
+  protected onContentLoaded(): void {
+    this.appScroller.scrollAfterContentRendered(this.injector);
+  }
 }
