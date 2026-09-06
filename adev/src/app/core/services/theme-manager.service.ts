@@ -83,6 +83,6 @@ export class ThemeManager {
   }
 }
 
-function preferredScheme(): 'dark' | 'light' {
+export function preferredScheme(): 'dark' | 'light' {
   return window.matchMedia(PREFERS_COLOR_SCHEME_DARK).matches ? 'dark' : 'light';
 }
