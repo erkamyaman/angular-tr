@@ -54,7 +54,10 @@ export const docsVideoExtension = {
     }
 
     const videoId = /\/embed\/([^/?#]+)/.exec(token.src)?.[1];
-    const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}&autoplay=1` : token.src;
+    const start = /[?&;]start=(\d+)/.exec(token.src)?.[1];
+    const watchUrl = videoId
+      ? `https://www.youtube.com/watch?v=${videoId}${start ? `&t=${start}` : ''}&autoplay=1`
+      : token.src;
     const thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : '';
     const label = token.title ? `Play video: ${token.title}` : 'Play video';
 

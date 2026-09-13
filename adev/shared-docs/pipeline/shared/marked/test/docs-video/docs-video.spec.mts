@@ -36,4 +36,12 @@ describe('markdown to html', () => {
 
     expect(facadeEl.querySelector('.docs-video-play-button')).toBeTruthy();
   });
+
+  it('should keep the start time in the watch link', () => {
+    const facadeEl = markdownDocument.querySelectorAll('.docs-video-facade')[1];
+
+    expect(facadeEl.getAttribute('href')).toBe(
+      'https://www.youtube.com/watch?v=R0nRX8jD2D0&t=440&autoplay=1',
+    );
+  });
 });
