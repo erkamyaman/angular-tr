@@ -134,6 +134,24 @@ describe('ShadowCss, :host and :host-context', () => {
         '.foo[contenta]:not( [a-host]) { background-color:green;}',
       );
     });
+
+    it('should not replace `:host` in declaration values', () => {
+      expect(shim(':host{container:host/inline-size}', 'contenta', 'a-host')).toEqualCss(
+        '[a-host]{container:host/inline-size}',
+      );
+      expect(
+        shim('div{grid-area:host;container-name:host-element}', 'contenta', 'a-host'),
+      ).toEqualCss('div[contenta]{grid-area:host;container-name:host-element}');
+      expect(
+        shim('@media screen{:host{container:host/inline-size}}', 'contenta', 'a-host'),
+      ).toEqualCss('@media screen{[a-host]{container:host/inline-size}}');
+    });
+
+    it('should not replace `:host-context` in declaration values', () => {
+      expect(shim(':host{container:host-context(foo)}', 'contenta', 'a-host')).toEqualCss(
+        '[a-host]{container:host-context(foo)}',
+      );
+    });
   });
 
   describe(':host-context', () => {
