@@ -176,6 +176,7 @@ export class TcbUnclaimedOutputsOp extends TcbOp {
           output.keySpan,
           this.tcb.schemas,
           this.hasComponent,
+          this.tcb.env.config.checkLowercaseUnclaimedEventNames,
         );
       }
 

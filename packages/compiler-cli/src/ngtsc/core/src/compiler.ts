@@ -1109,6 +1109,7 @@ export class NgCompiler {
         checkTypeOfDomEvents: strictTemplates,
         checkUnclaimedEventNames: false, // 3p-only
         // g3-only checkUnclaimedEventNames: strictTemplates,
+        checkLowercaseUnclaimedEventNames: false,
         checkTypeOfDomReferences: strictTemplates,
         // Non-DOM references have the correct type in View Engine so there is no strictness flag.
         checkTypeOfNonDomReferences: true,
@@ -1144,6 +1145,7 @@ export class NgCompiler {
         checkTypeOfAnimationEvents: false,
         checkTypeOfDomEvents: false,
         checkUnclaimedEventNames: false,
+        checkLowercaseUnclaimedEventNames: false,
         checkTypeOfDomReferences: false,
         checkTypeOfNonDomReferences: false,
         checkTypeOfPipes: false,
@@ -1183,6 +1185,10 @@ export class NgCompiler {
     }
     if (this.options.strictUnclaimedEventNames !== undefined) {
       typeCheckingConfig.checkUnclaimedEventNames = this.options.strictUnclaimedEventNames;
+    }
+    if (this.options.strictUnclaimedLowercaseEventNames !== undefined) {
+      typeCheckingConfig.checkLowercaseUnclaimedEventNames =
+        this.options.strictUnclaimedLowercaseEventNames;
     }
     if (this.options.strictSafeNavigationTypes !== undefined) {
       typeCheckingConfig.strictSafeNavigationTypes = this.options.strictSafeNavigationTypes;

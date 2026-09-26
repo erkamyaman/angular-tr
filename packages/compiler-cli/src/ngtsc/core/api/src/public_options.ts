@@ -198,7 +198,8 @@ export interface TypeCheckingOptions {
    * DOM events — the ones described by TypeScript's `GlobalEventHandlersEventMap` — compared
    * ignoring case to cover vendor-prefixed names like `webkitAnimationEnd`. When
    * `CUSTOM_ELEMENTS_SCHEMA` is in use, elements without a matched Angular component are exempt
-   * as well.
+   * as well. All-lowercase names can be checked too by enabling
+   * `strictUnclaimedLowercaseEventNames`.
    *
    * Note that this check is a heuristic: the compiler cannot know the set of custom events that
    * may bubble up from descendant elements. Projects listening to camelCase custom events on
@@ -207,6 +208,18 @@ export interface TypeCheckingOptions {
    * Defaults to `false`.
    */
   strictUnclaimedEventNames?: boolean;
+
+  /**
+   * Whether the check enabled by `strictUnclaimedEventNames` also reports all-lowercase event
+   * names, such as a misspelled `(clcik)` or `(valuechnage)`.
+   *
+   * All-lowercase names are skipped by default since they could be custom events dispatched by
+   * descendant elements. Enable this option if your project doesn't listen to such events on
+   * elements with matched directives.
+   *
+   * Has no effect unless `strictUnclaimedEventNames` is `true`. Defaults to `false`.
+   */
+  strictUnclaimedLowercaseEventNames?: boolean;
 
   /**
    * Whether to include the generic type of components when type-checking the template.

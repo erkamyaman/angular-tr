@@ -298,6 +298,7 @@ export const ALL_ENABLED_CONFIG: Readonly<TypeCheckingConfig> = {
   checkTypeOfDomEvents: true,
   // Requires an explicit opt-in in production as well, since the check is heuristic.
   checkUnclaimedEventNames: false,
+  checkLowercaseUnclaimedEventNames: false,
   checkTypeOfDomReferences: true,
   checkTypeOfNonDomReferences: true,
   checkTypeOfPipes: true,
@@ -452,6 +453,7 @@ export function tcb(
     checkTypeOfAnimationEvents: true,
     checkTypeOfDomEvents: true,
     checkUnclaimedEventNames: false,
+    checkLowercaseUnclaimedEventNames: false,
     checkTypeOfDomReferences: true,
     checkTypeOfNonDomReferences: true,
     checkTypeOfPipes: true,

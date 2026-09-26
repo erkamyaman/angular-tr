@@ -22,6 +22,7 @@ import {ErrorCode, ngErrorCode} from '../../diagnostics';
 import {TemplateDiagnostic} from '../api';
 import {makeTemplateDiagnostic} from '../diagnostics';
 
+import {NATIVE_DOM_EVENTS} from './native_dom_events';
 import {TypeCheckSourceResolver} from './tcb_util';
 
 export const REGISTRY = new DomElementSchemaRegistry();
@@ -152,19 +153,27 @@ export class RegistryDomSchemaChecker implements DomSchemaChecker<TemplateDiagno
     span: ParseSourceSpan,
     schemas: SchemaMetadata[],
     hasComponent: boolean,
+    checkLowercase: boolean,
   ): void {
-    // Native DOM events are almost all lowercase and custom events conventionally use
-    // dash-separated names, so only names that look like misspelled directive outputs (single
-    // camelCase identifiers) are candidates for this check.
-    if (!UNCLAIMED_EVENT_CANDIDATE_REGEX.test(eventName) || !/[A-Z]/.test(eventName)) {
+    // Custom events conventionally use dash-separated names, so only names that look like
+    // directive outputs (single identifiers) are candidates for this check. All-lowercase names
+    // could also be custom events dispatched by a descendant element, so they're only checked
+    // when explicitly requested.
+    if (
+      !UNCLAIMED_EVENT_CANDIDATE_REGEX.test(eventName) ||
+      (!checkLowercase && !/[A-Z]/.test(eventName))
+    ) {
       return;
     }
 
     // Events bubble, so a native event of any element may legitimately be observed on this
     // element, regardless of its tag. Some native events do have camelCase names (e.g. the
-    // vendor-prefixed `webkitAnimationEnd`, which the schema stores in lowercase), so they have
-    // to be exempted explicitly.
-    if (REGISTRY.isKnownEventOfAnyElement(eventName)) {
+    // vendor-prefixed `webkitAnimationEnd` or `DOMContentLoaded`), so names are compared ignoring
+    // case.
+    if (
+      REGISTRY.isKnownEventOfAnyElement(eventName) ||
+      NATIVE_DOM_EVENTS.has(eventName.toLowerCase())
+    ) {
       return;
     }
 

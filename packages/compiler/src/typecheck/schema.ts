@@ -78,6 +78,8 @@ export interface DomSchemaChecker<T> {
    * @param hasComponent whether an Angular component matched on the element. Elements with a
    * matched component are checked even in the presence of `CUSTOM_ELEMENTS_SCHEMA`, since they
    * aren't custom elements.
+   * @param checkLowercase whether all-lowercase event names are checked as well. Otherwise only
+   * names containing an uppercase letter are checked.
    */
   checkTemplateElementEvent(
     id: TypeCheckId,
@@ -86,6 +88,7 @@ export interface DomSchemaChecker<T> {
     span: ParseSourceSpan,
     schemas: SchemaMetadata[],
     hasComponent: boolean,
+    checkLowercase: boolean,
   ): void;
 
   /**

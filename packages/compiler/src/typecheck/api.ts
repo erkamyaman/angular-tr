@@ -212,6 +212,12 @@ export interface TypeCheckingConfig {
   checkUnclaimedEventNames: boolean;
 
   /**
+   * Whether all-lowercase event names are also reported by the unclaimed event name check (see
+   * `checkUnclaimedEventNames`), which otherwise only reports names containing an uppercase letter.
+   */
+  checkLowercaseUnclaimedEventNames: boolean;
+
+  /**
    * Whether to infer the type of local references to DOM elements.
    */
   checkTypeOfDomReferences: boolean;

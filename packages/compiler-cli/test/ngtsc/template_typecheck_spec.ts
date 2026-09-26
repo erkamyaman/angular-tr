@@ -1614,6 +1614,58 @@ runInEachFileSystem(() => {
 
         expectNoDiagnostics();
       });
+
+      it('should report all-lowercase unclaimed events when strictUnclaimedLowercaseEventNames is enabled', () => {
+        env.tsconfig({
+          strictTemplates: true,
+          strictUnclaimedEventNames: true,
+          strictUnclaimedLowercaseEventNames: true,
+        });
+        writeTestComponent('<target-cmp (someoutput)="handle($any($event))"></target-cmp>');
+
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toBe(1);
+        expect(diags[0].messageText).toContain(
+          `Event 'someoutput' is not emitted by any directive applied to 'target-cmp' and it isn't a known native DOM event.`,
+        );
+      });
+
+      it('should report misspelled native DOM events when strictUnclaimedLowercaseEventNames is enabled', () => {
+        env.tsconfig({
+          strictTemplates: true,
+          strictUnclaimedEventNames: true,
+          strictUnclaimedLowercaseEventNames: true,
+        });
+        writeTestComponent('<target-cmp (clcik)="handle($any($event))"></target-cmp>');
+
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toBe(1);
+        expect(diags[0].messageText).toContain(
+          `Event 'clcik' is not emitted by any directive applied to 'target-cmp' and it isn't a known native DOM event.`,
+        );
+      });
+
+      it('should not report native DOM events missing from the DOM schema when strictUnclaimedLowercaseEventNames is enabled', () => {
+        env.tsconfig({
+          strictTemplates: true,
+          strictUnclaimedEventNames: true,
+          strictUnclaimedLowercaseEventNames: true,
+        });
+        writeTestComponent(
+          '<target-cmp (focusin)="handle($event)" (focusout)="handle($event)"' +
+            ' (touchstart)="handle($event)" (compositionstart)="handle($event)"' +
+            ' (visibilitychange)="handle($event)" (DOMContentLoaded)="handle($event)"></target-cmp>',
+        );
+
+        expectNoDiagnostics();
+      });
+
+      it('should not report all-lowercase unclaimed events when only strictUnclaimedLowercaseEventNames is enabled', () => {
+        env.tsconfig({strictTemplates: true, strictUnclaimedLowercaseEventNames: true});
+        writeTestComponent('<target-cmp (someoutput)="handle($any($event))"></target-cmp>');
+
+        expectNoDiagnostics();
+      });
     });
 
     it('should check basic usage of NgIf', () => {
