@@ -914,10 +914,19 @@ export class ShadowCss {
     return this._safeSelector!.restore(scopedSelector);
   }
 
-  private _insertPolyfillHostInCssText(selector: string): string {
-    return selector
-      .replace(_colonHostContextRe, _polyfillHostContext)
-      .replace(_colonHostRe, _polyfillHost);
+  private _insertPolyfillHostInCssText(cssText: string): string {
+    // Only replace `:host` and `:host-context` in selectors (i.e. rules followed by a block) and
+    // leave declarations untouched, since values such as `container:host/inline-size` or
+    // `grid-area:host` must not be rewritten.
+    return processRules(cssText, (rule, hasBlock) => {
+      if (!hasBlock) {
+        return rule;
+      }
+      const selector = rule.selector
+        .replace(_colonHostContextRe, _polyfillHostContext)
+        .replace(_colonHostRe, _polyfillHost);
+      return new CssRule(selector, this._insertPolyfillHostInCssText(rule.content));
+    });
   }
 }
 
@@ -1072,7 +1081,10 @@ export class CssRule {
   ) {}
 }
 
-export function processRules(input: string, ruleCallback: (rule: CssRule) => CssRule): string {
+export function processRules(
+  input: string,
+  ruleCallback: (rule: CssRule, hasBlock: boolean) => CssRule,
+): string {
   const escaped = escapeInStrings(input);
   const inputWithEscapedBlocks = escapeBlocks(escaped, CONTENT_PAIRS, BLOCK_PLACEHOLDER);
   let nextBlockIndex = 0;
@@ -1086,7 +1098,7 @@ export function processRules(input: string, ruleCallback: (rule: CssRule) => Css
       suffix = suffix.substring(BLOCK_PLACEHOLDER.length + 1);
       contentPrefix = '{';
     }
-    const rule = ruleCallback(new CssRule(selector, content));
+    const rule = ruleCallback(new CssRule(selector, content), contentPrefix !== '');
     return `${m[1]}${rule.selector}${m[3]}${contentPrefix}${rule.content}${suffix}`;
   });
   return unescapeInStrings(escapedResult);
