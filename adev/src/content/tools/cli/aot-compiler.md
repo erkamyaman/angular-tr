@@ -1,4 +1,4 @@
-# Ahead-of-time (AOT) compilation
+# Önceden derleme (AOT) {#ahead-of-time-aot-compilation}
 
 Bir Angular uygulaması esas olarak bileşenlerden ve bunların HTML şablonlarından oluşur.
 Angular tarafından sağlanan bileşenler ve şablonlar doğrudan tarayıcı tarafından anlaşılamadığından, Angular uygulamalarının tarayıcıda çalışabilmeleri için bir derleme sürecinden geçmeleri gerekir.
@@ -20,7 +20,7 @@ AOT kullanmak istemenizin bazı nedenleri şunlardır.
 | Şablon hatalarını daha erken tespit etme  | AOT derleyicisi, kullanıcılar göremeden önce derleme adımında şablon bağlama hatalarını tespit eder ve bildirir.                                                                                                                                  |
 | Daha iyi güvenlik                         | AOT, HTML şablonlarını ve bileşenleri istemciye sunulmadan çok önce JavaScript dosyalarına derler. Okunacak şablon ve riskli istemci tarafı HTML veya JavaScript değerlendirmesi olmadığından, enjeksiyon saldırıları için daha az fırsat vardır. |
 
-## Choosing a compiler
+## Derleyici seçimi {#choosing-a-compiler}
 
 Angular, uygulamanızı derlemek için iki yol sunar:
 
@@ -34,7 +34,7 @@ Varsayılan olarak, yeni CLI uygulamaları için `aot` değeri `true` olarak aya
 
 Daha fazla bilgi için [CLI komut referansına](cli) ve [Angular uygulamaları derleme ve sunma](tools/cli/build) belgesine bakın.
 
-## How AOT works
+## AOT nasıl çalışır {#how-aot-works}
 
 Angular AOT derleyicisi, Angular'ın yönetmesi gereken uygulama parçalarını yorumlamak için **meta veri** çıkarır.
 Meta veriyi `@Component()` gibi **dekoratörlerde** açıkça veya dekoratör uygulanmış sınıfların yapıcı bildirimlerinde örtük olarak belirtebilirsiniz.
@@ -56,7 +56,7 @@ export class Typical {
 Angular derleyicisi, meta veriyi _bir kez_ çıkarır ve `Typical` için bir _fabrika_ oluşturur.
 Bir `Typical` örneği oluşturması gerektiğinde, Angular fabrikayı çağırır; bu fabrika, enjekte edilen bağımlılığı ile bileşen sınıfının yeni bir örneğine bağlı yeni bir görsel öğe üretir.
 
-### Compilation phases
+### Derleme aşamaları {#compilation-phases}
 
 AOT derlemesinin üç aşaması vardır.
 
@@ -66,7 +66,7 @@ AOT derlemesinin üç aşaması vardır.
 | 2   | kod oluşturma       | Bu aşamada, derleyicinin `StaticReflector`'ı 1. aşamada toplanan meta veriyi yorumlar, meta verinin ek doğrulamasını yapar ve bir meta veri kısıtlama ihlali tespit ederse bir hata fırlatır.                                                                                                                                           |
 | 3   | şablon tür denetimi | Bu isteğe bağlı aşamada, Angular _şablon derleyicisi_ şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır. Bu aşamayı `strictTemplates` yapılandırma seçeneğini ayarlayarak açıkça etkinleştirebilirsiniz; [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın. |
 
-### Metadata restrictions
+### Meta veri kısıtlamaları {#metadata-restrictions}
 
 Meta veriyi, aşağıdaki genel kısıtlamalara uyması gereken bir TypeScript _alt kümesinde_ yazarsınız:
 
@@ -78,12 +78,12 @@ Meta veriyi, aşağıdaki genel kısıtlamalara uyması gereken bir TypeScript _
 HELPFUL: AOT derlemesindeki hatalar genellikle derleyicinin gereksinimlerine uymayan meta veriler nedeniyle oluşur \(aşağıda daha ayrıntılı açıklanmıştır\).
 Bu sorunları anlamada ve çözmede yardım için [AOT Meta Veri Hataları](tools/cli/aot-metadata-errors) belgesine bakın.
 
-### Configuring AOT compilation
+### AOT derlemesini yapılandırma {#configuring-aot-compilation}
 
 Derleme sürecini kontrol eden [TypeScript yapılandırma dosyasında](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) seçenekler sağlayabilirsiniz.
 Mevcut seçeneklerin eksiksiz listesi için [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın.
 
-## Phase 1: Code analysis
+## 1. Aşama: Kod analizi {#phase-1-code-analysis}
 
 TypeScript derleyicisi, ilk aşamanın analitik çalışmasının bir kısmını yapar.
 AOT derleyicisinin uygulama kodu oluşturmak için ihtiyaç duyduğu tür bilgisine sahip `.d.ts` _tür tanım dosyalarını_ yayar.
@@ -93,7 +93,7 @@ Aynı zamanda, AOT **toplayıcısı** Angular dekoratörlerinde kaydedilen meta 
 
 HELPFUL: Angular'ın [schema.ts](https://github.com/angular/angular/blob/12.2.x/packages/compiler-cli/src/metadata/schema.ts) dosyası, JSON formatını TypeScript arayüzleri koleksiyonu olarak tanımlar.
 
-### Expression syntax limitations
+### İfade sözdizimi sınırlamaları {#expression-syntax-limitations}
 
 AOT toplayıcısı yalnızca JavaScript'in bir alt kümesini anlar.
 Meta veri nesnelerini aşağıdaki sınırlı sözdizimi ile tanımlayın:
@@ -134,43 +134,7 @@ HELPFUL: `ngc`'nin bir hatalı `.metadata.json` dosyası üretmek yerine sözdiz
 
 Angular kütüphaneleri, tüm Angular `.metadata.json` dosyalarının temiz olmasını sağlamak için bu seçeneğe sahiptir ve kendi kütüphanelerinizi oluştururken de aynısını yapmanız en iyi uygulamadır.
 
-### No arrow functions
-
-AOT derleyicisi, _lambda_ fonksiyonları olarak da adlandırılan [fonksiyon ifadelerini](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/function) ve [ok fonksiyonlarını](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Arrow_functions) desteklemez.
-
-Aşağıdaki bileşen dekoratörünü düşünün:
-
-```ts
-
-@Component({
-  …
-  providers: [{provide: server, useFactory: () => new Server()}]
-})
-
-```
-
-AOT toplayıcısı, bir meta veri ifadesindeki ok fonksiyonunu `() => new Server()` desteklemez.
-Fonksiyon yerine bir hata düğümü oluşturur.
-Derleyici daha sonra bu düğümü yorumladığında, ok fonksiyonunu _dışa aktarılmış bir fonksiyona_ dönüştürmenizi öneren bir hata bildirir.
-
-Hatayı şuna dönüştürerek düzeltebilirsiniz:
-
-```ts
-
-export function serverFactory() {
-  return new Server();
-}
-
-@Component({
-  …
-  providers: [{provide: server, useFactory: serverFactory}]
-})
-
-```
-
-Sürüm 5 ve sonrasında, derleyici `.js` dosyasını yayarken bu yeniden yazmayı otomatik olarak gerçekleştirir.
-
-### Code folding
+### Kod katlama {#code-folding}
 
 Derleyici yalnızca **_dışa aktarılmış_** sembollere yapılan referansları çözebilir.
 Ancak toplayıcı, toplama sırasında bir ifadeyi değerlendirebilir ve orijinal ifade yerine sonucu `.metadata.json`'a kaydedebilir.
@@ -232,7 +196,7 @@ Toplayıcı bu ifadeyi eşdeğer _katlanmış_ dizesine indirger:
 '<div>{{hero().name}}</div><div>{{hero().title}}</div>';
 ```
 
-#### Foldable syntax
+#### Katlanabilir sözdizimi {#foldable-syntax}
 
 Aşağıdaki tablo, toplayıcının hangi ifadeleri katlayıp katlamayacağını açıklar:
 
@@ -257,9 +221,9 @@ Aşağıdaki tablo, toplayıcının hangi ifadeleri katlayıp katlamayacağını
 | Koşul operatörü            | evet, koşul katlanabilirse              |
 | Parantezler                | evet, ifade katlanabilirse              |
 
-Bir ifade katlanabilir değilse, toplayıcı onu derleyicinin çözmesi için bir [AST](https://en.wikipedia.org/wiki/Abstract*syntax*tree) olarak `.metadata.json`'a yazar.
+Bir ifade katlanabilir değilse, toplayıcı onu derleyicinin çözmesi için bir [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) olarak `.metadata.json`'a yazar.
 
-## Phase 2: code generation
+## 2. Aşama: Kod oluşturma {#phase-2-code-generation}
 
 Toplayıcı, topladığı ve `.metadata.json`'a çıkardığı meta veriyi anlamaya çalışmaz.
 Meta veriyi olabildiğince iyi temsil eder ve bir meta veri sözdizimi ihlali tespit ettiğinde hataları kaydeder.
@@ -267,7 +231,7 @@ Kod oluşturma aşamasında `.metadata.json`'ı yorumlamak derleyicinin işidir.
 
 Derleyici, toplayıcının desteklediği tüm sözdizimi biçimlerini anlar, ancak meta verinin _semantiği_ derleyici kurallarını ihlal ediyorsa _sözdizimsel olarak_ doğru meta veriyi reddedebilir.
 
-### Public or protected symbols
+### Public veya protected semboller {#public-or-protected-symbols}
 
 Derleyici yalnızca \_dışa aktarılmış sembol_lere başvurabilir.
 
@@ -276,20 +240,19 @@ Derleyici yalnızca \_dışa aktarılmış sembol_lere başvurabilir.
 
 - Veriye bağlı özellikler de public veya protected olmalıdır
 
-### Supported classes and functions
+### Desteklenen sınıflar ve fonksiyonlar {#supported-classes-and-functions}
 
 Toplayıcı, sözdizimi geçerli olduğu sürece bir fonksiyon çağrısını veya `new` ile nesne oluşturmayı temsil edebilir.
 Ancak derleyici, daha sonra belirli bir fonksiyona çağrı yapmayı veya belirli bir nesne oluşturmayı reddedebilir.
 
 Derleyici yalnızca belirli sınıfların örneklerini oluşturabilir, yalnızca çekirdek dekoratörleri destekler ve yalnızca ifade döndüren makrolara \(fonksiyonlar veya statik metotlar\) yapılan çağrıları destekler.
 
-| Derleyici eylemi         | Ayrıntılar                                                                                                                                                                      |
-| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Yeni örnekler            | Derleyici yalnızca `@angular/core`'dan `InjectionToken` sınıfının örneklerini oluşturan meta verilere izin verir.                                                               |
-| Desteklenen dekoratörler | Derleyici yalnızca [`@angular/core` modülündeki Angular dekoratörleri](/api?type=decorator) için meta verileri destekler.                                                       |
-| Fonksiyon çağrıları      | Fabrika fonksiyonları dışa aktarılmış, adlandırılmış fonksiyonlar olmalıdır. AOT derleyicisi, fabrika fonksiyonları için lambda ifadelerini \("ok fonksiyonları"\) desteklemez. |
+| Derleyici eylemi         | Ayrıntılar                                                                                                                |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| Yeni örnekler            | Derleyici yalnızca `@angular/core`'dan `InjectionToken` sınıfının örneklerini oluşturan meta verilere izin verir.         |
+| Desteklenen dekoratörler | Derleyici yalnızca [`@angular/core` modülündeki Angular dekoratörleri](/api?type=decorator) için meta verileri destekler. |
 
-### Functions and static method calls
+### Fonksiyonlar ve statik metot çağrıları {#functions-and-static-method-calls}
 
 Toplayıcı, tek bir `return` ifadesi içeren herhangi bir fonksiyonu veya statik metodu kabul eder.
 Ancak derleyici, yalnızca bir _ifade_ döndüren fonksiyonlar veya statik metotlar biçimindeki makroları destekler.
@@ -325,44 +288,7 @@ export class TypicalModule {}
 Angular [`RouterModule`](api/router/RouterModule), kök ve alt rotaları bildirmeye yardımcı olan iki makro statik metot, `forRoot` ve `forChild`, dışa aktarır.
 Makroların karmaşık [NgModules](guide/ngmodules/overview) yapılandırmasını nasıl basitleştirebileceğini görmek için bu metotların [kaynak kodunu](https://github.com/angular/angular/blob/main/packages/router/src/router_module.ts#L139 'RouterModule.forRoot source code') inceleyin.
 
-### Metadata rewriting
-
-Derleyici, `useClass`, `useValue`, `useFactory` ve `data` alanlarını içeren nesne literallerini özel olarak ele alır ve bu alanlardan birini başlatan ifadeyi, ifadeyi dışa aktarılmış bir değişkenle değiştirir.
-Bu ifadelerin yeniden yazılması süreci, içlerinde ne olabileceğine dair tüm kısıtlamaları kaldırır çünkü
-derleyicinin ifadenin değerini bilmesine gerek yoktur — yalnızca değere bir referans oluşturabilmesi gerekir.
-
-Şöyle bir şey yazabilirsiniz:
-
-```ts
-class TypicalServer {}
-
-@NgModule({
-  providers: [{provide: SERVER, useFactory: () => TypicalServer}],
-})
-export class TypicalModule {}
-```
-
-Yeniden yazma olmadan, lambda'lar desteklenmediği ve `TypicalServer` dışa aktarılmadığı için bu geçersiz olurdu.
-Buna izin vermek için derleyici bunu otomatik olarak şöyle bir şeye yeniden yazar:
-
-```ts
-class TypicalServer {}
-
-export const θ0 = () => new TypicalServer();
-
-@NgModule({
-  providers: [{provide: SERVER, useFactory: θ0}],
-})
-export class TypicalModule {}
-```
-
-Bu, derleyicinin `θ0`'ın ne içerdiğini bilmeden fabrikada `θ0`'a bir referans oluşturmasına olanak tanır.
-
-Derleyici, `.js` dosyasının yayınlanması sırasında yeniden yazmayı gerçekleştirir.
-Ancak `.d.ts` dosyasını yeniden yazmaz, bu nedenle TypeScript bunu bir dışa aktarma olarak tanımaz.
-Ve ES modülünün dışa aktarılan API'sine müdahale etmez.
-
-## Phase 3: Template type checking
+## 3. Aşama: Şablon tür denetimi {#phase-3-template-type-checking}
 
 Angular derleyicisinin en yararlı özelliklerinden biri, şablonlardaki ifadeleri tür denetleme ve çalışma zamanında çökmelere neden olmadan önce hataları yakalama yeteneğidir.
 Şablon tür denetimi aşamasında, Angular şablon derleyicisi şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır.
@@ -411,7 +337,7 @@ my.component.ts.MyComponent.html(1,1): : Object is possibly 'undefined'
 
 hatası da bildirilir.
 
-### Type narrowing
+### Tür daraltma {#type-narrowing}
 
 Bir `ngIf` direktifinde kullanılan ifade, TypeScript'te `if` ifadesinin yaptığı gibi Angular şablon derleyicisinde tür birleşimlerini daraltmak için kullanılır.
 Örneğin, yukarıdaki şablondaki `Object is possibly 'undefined'` hatasını önlemek için, aşağıda gösterildiği gibi yalnızca `person` değeri başlatılmışsa enterpolasyonu yayınlayacak şekilde değiştirin:
@@ -430,7 +356,7 @@ class MyComponent {
 
 Girdi tür daraltma hakkında daha fazla bilgi için [Özel direktifler için şablon tür denetimini iyileştirme](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) belgesine bakın.
 
-### Non-null type assertion operator
+### Non-null tür doğrulama operatörü {#non-null-type-assertion-operator}
 
 `*ngIf` kullanmanın uygun olmadığı veya bileşendeki bazı kısıtlamaların bağlama ifadesi enterpolasyon yapıldığında ifadenin her zaman non-null olmasını sağladığı durumlarda `Object is possibly 'undefined'` hatasını bastırmak için non-null tür onaylama operatörünü kullanın.
 

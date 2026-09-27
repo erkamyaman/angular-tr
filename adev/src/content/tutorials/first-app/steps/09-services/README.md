@@ -57,7 +57,7 @@ IDE'nizin **Edit** bölmesinde:
    1. `HousingService` sınıfı içinde, az önce kopyaladığınız veriden sonra bu fonksiyonları yapıştırın.
       Bu fonksiyonlar, bağımlılıkların servisin verilerine erişmesini sağlar.
 
-      <docs-code header="Service functions in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[112,118]"/>
+      <docs-code header="Service functions in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[110,116]"/>
 
       Bu fonksiyonlara ilerideki bir derste ihtiyacınız olacak. Şimdilik, bu fonksiyonların belirli bir `HousingLocation`'ı id'ye göre veya tüm listeyi döndürdüğünü anlamak yeterlidir.
 

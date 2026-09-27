@@ -20,6 +20,7 @@ import {
   RendererStyleFlags2,
   RendererType2,
   ViewEncapsulation,
+  ɵdescribeDomNode as describeDomNode,
   ɵRuntimeError as RuntimeError,
   type ListenerOptions,
   ɵTracingService as TracingService,
@@ -353,6 +354,18 @@ class DefaultDomRenderer2 implements Renderer2 {
   insertBefore(parent: any, newChild: any, refChild: any): void {
     if (parent) {
       const targetParent = isTemplateNode(parent) ? parent.content : parent;
+      // If something outside Angular removed or moved `refChild` (a browser extension, for
+      // example), the native call below throws a `NotFoundError` with no useful info. Catch it
+      // here so we can say what actually happened.
+      if (refChild != null && refChild.parentNode !== targetParent) {
+        throw new RuntimeError(
+          RuntimeErrorCode.INSERT_BEFORE_NODE_NOT_FOUND,
+          ngDevMode &&
+            `Angular could not insert a node before ${describeDomNode(refChild)} because it is no longer a child of ${describeDomNode(targetParent)}. ` +
+              `This can happen when code outside of Angular's control (for example, a browser extension or a script that directly manipulates the DOM) ` +
+              `has moved or removed a node that Angular is still managing.`,
+        );
+      }
       targetParent.insertBefore(newChild, refChild);
     }
   }
@@ -543,11 +556,11 @@ function isTemplateNode(node: any): node is HTMLTemplateElement {
 }
 
 class ShadowDomRenderer extends DefaultDomRenderer2 {
-  private shadowRoot: any;
+  private readonly shadowRoot: ShadowRoot;
 
   constructor(
     eventManager: EventManager,
-    private hostEl: any,
+    private readonly hostEl: Element,
     component: RendererType2,
     doc: Document,
     ngZone: NgZone,
@@ -557,7 +570,7 @@ class ShadowDomRenderer extends DefaultDomRenderer2 {
     private sharedStylesHost?: SharedStylesHost,
   ) {
     super(eventManager, doc, ngZone, tracingService, cssVarNamespace);
-    this.shadowRoot = (hostEl as any).attachShadow({mode: 'open'});
+    this.shadowRoot = hostEl.attachShadow({mode: 'open'});
 
     // SharedStylesHost is used to add styles to the shadow root by ShadowDom.
     // This is optional as it is not used by ExperimentalIsolatedShadowDom.

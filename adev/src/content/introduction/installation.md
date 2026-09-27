@@ -17,7 +17,7 @@ Yeni bir projeye başlıyorsanız, Git gibi araçları kullanabilmek için büy�
 
 ### Ön Koşullar
 
-- **Node.js** - [v20.19.0 veya daha yeni](/reference/versions)
+- **Node.js** - [v22.22.3 veya daha yeni](/reference/versions)
 - **Metin editörü** - [Visual Studio Code](https://code.visualstudio.com/) öneriyoruz
 - **Terminal** - [Angular CLI](/tools/cli) komutlarını çalıştırmak için gereklidir
 - **Geliştirme Aracı** - Geliştirme iş akışınızı iyileştirmek için [Angular Language Service](/tools/language-service) öneriyoruz

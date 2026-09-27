@@ -156,13 +156,13 @@ Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna ba�
 
 1.  `url` adında bir string özelliği ekleyin ve değerini `'http://localhost:3000/locations'` olarak ayarlayın
 
-    <docs-code header="Add url property to housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[8]"/>
+    <docs-code header="Add url property to housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[6]"/>
 
     Bu kod, dosyanın geri kalanında hatalara neden olacaktır çünkü `housingLocationList` özelliğine bağımlıdır. Servis metotlarını şimdi güncelleyeceğiz.
 
 1.  `getAllHousingLocations` fonksiyonunu, yapılandırdığınız web sunucusuna bir çağrı yapacak şekilde güncelleyin.
 
-     <docs-code header="Update the getAllHousingLocations method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[10,13]"/>
+     <docs-code header="Update the getAllHousingLocations method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[8,11]"/>
 
     Kod artık HTTP üzerinden bir **GET** isteği yapmak için asenkron kod kullanmaktadır.
 
@@ -172,7 +172,7 @@ Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna ba�
 
     HELPFUL: `fetch` metodunun, eşleşen `id` özellik değerine sahip konum verilerini _sorgulamak_ için güncellendiğine dikkat edin. Daha fazla bilgi için [URL Arama Parametresi](https://developer.mozilla.org/en-US/docs/Web/API/URL/search) bölümüne bakın.
 
-     <docs-code header="Update the getHousingLocationById method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[15,19]"/>
+     <docs-code header="Update the getHousingLocationById method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[13,17]"/>
 
 1.  Tüm güncellemeler tamamlandığında, güncellenmiş servisiniz aşağıdaki kodla eşleşmelidir.
 

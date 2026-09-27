@@ -76,6 +76,93 @@ Bu dosyadan dışa aktarılan her şey, kütüphaneniz bir uygulamaya aktarıld�
 
 Kütüphaneniz, kurulum ve bakım için belgeler \(genellikle bir README dosyası\) sağlamalıdır.
 
+## Giriş noktaları {#entry-points}
+
+Bir _giriş noktası_, tüketicilerin içe aktarma yaptığı bir modül belirleyicisi ile bu belirleyicinin sunduğu genel API'nin bütünüdür.
+Her kütüphanenin bir _birincil giriş noktası_ vardır ve istenilen sayıda _ikincil giriş noktası_ eklenebilir.
+
+Birincil giriş noktası paketin kendisidir.
+Kütüphanenin kökündeki `ng-package.json` dosyası onu yapılandırır ve `lib.entryFile`, genel API'sini tanımlayan dosyayı belirtir.
+
+```json {header: 'projects/my-lib/ng-package.json'}
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/my-lib",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  }
+}
+```
+
+Tüketiciler birincil giriş noktasını paket adıyla içe aktarır:
+
+```ts
+import {ThemeService} from 'my-lib';
+```
+
+İkincil giriş noktası, kütüphane içinde kendi `ng-package.json` dosyasına sahip bir dizindir.
+Bu dizinin kütüphane köküne göre yolu, içe aktarma alt yolunu belirler.
+Örneğin, bir `button` dizini tüketicilere `my-lib/button` yolunu sunar:
+
+```ts
+import {ButtonComponent} from 'my-lib/button';
+```
+
+Angular paketleri de aynı yapıyı kullanır.
+Örneğin, `@angular/core` birincil giriş noktasıdır ve `@angular/core/testing` aynı paketin ikincil bir giriş noktasıdır.
+
+HELPFUL: Giriş noktalarının Angular Paket Formatı'nda kod bölmeyi nasıl mümkün kıldığına ve chunk sınırlarını nasıl tanımladığına ilişkin mimari bir genel bakış için [Giriş noktaları ve kod bölme](tools/libraries/angular-package-format#entrypoints-and-code-splitting) bölümüne bakın.
+
+### İkincil giriş noktası ekleme {#adding-a-secondary-entry-point}
+
+Kütüphane içinde kendi `ng-package.json` ve genel API dosyasına sahip bir dizin oluşturun:
+
+```text
+projects/my-lib/
+├── ng-package.json      (primary entry point: my-lib)
+├── package.json
+├── src/
+│   ├── public-api.ts
+│   └── lib/ …
+└── button/
+    ├── ng-package.json  (secondary entry point: my-lib/button)
+    └── src/
+        ├── public-api.ts
+        └── button.ts
+```
+
+İkincil `ng-package.json` yalnızca giriş noktasının kendisini yapılandırır:
+
+```json {header: 'projects/my-lib/button/ng-package.json'}
+{
+  "$schema": "../../../node_modules/ng-packagr/ng-entrypoint.schema.json",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  }
+}
+```
+
+IMPORTANT: İkincil bir `ng-package.json` yalnızca `lib` seçeneklerini kabul eder. `dest` ve `assets` gibi paket genelindeki seçenekler kütüphane kökündeki `ng-package.json` dosyasında yer alır ve tüm giriş noktalarına uygulanır.
+
+İkincil giriş noktasını başka bir yerde kaydetmeniz gerekmez.
+Derleme sırasında `ng-packagr`, kütüphane kökü altındaki her `ng-package.json` dosyasını otomatik olarak bulur ve içe aktarma alt yolunu dizin yolundan türetir (örneğin, `button/` dizini `my-lib/button`, `testing/harness/` dizini ise `my-lib/testing/harness` olur).
+
+Aynı çalışma alanındaki bir uygulamadan ikincil bir giriş noktasını içe aktarmak için, çalışma alanının `tsconfig.json` dosyasına joker karakterli bir yol eşlemesi ekleyin.
+Varsayılan olarak `ng generate library` yalnızca paket kökünü eşler ve bu, alt yolları kapsamaz:
+
+```json {header: 'tsconfig.json'}
+{
+  "compilerOptions": {
+    "paths": {
+      "my-lib": ["./dist/my-lib"],
+      "my-lib/*": ["./dist/my-lib/*"]
+    }
+  }
+}
+```
+
+IMPORTANT: Aynı kütüphanedeki başka bir giriş noktasından kod içe aktarırken, göreli bir yol yerine her zaman onun paket içe aktarma yolunu kullanın (örneğin, `import {ThemeService} from 'my-lib'`). `ng-packagr` her giriş noktasını bağımlılık sırasına göre ayrı ayrı derler; bu nedenle giriş noktaları arasındaki göreli içe aktarmalar ve giriş noktaları arasındaki döngüsel bağımlılıklar derlemenin başarısız olmasına neden olur.
+
 ## Bir uygulamanın bölümlerini kütüphaneye dönüştürme
 
 Çözümünüzü yeniden kullanılabilir hale getirmek için, uygulamaya özel koda bağımlı olmayacak şekilde ayarlamanız gerekir.

@@ -30,7 +30,7 @@ Kod editöründe, `@angular/core` paketinden `input` yardımcı metodunu `Housin
 <docs-step title="Input özelliğini ekleyin">
 `housingLocation` adında zorunlu bir özellik ekleyin ve bunu `HousingLocationInfo` türüyle `input.required()` kullanarak başlatın.
 
-  <docs-code header="Declare the input property in housing-location.ts" path="adev/src/content/tutorials/first-app/steps/06-property-binding/src/app/housing-location/housing-location.ts" visibleLines="[12]"/>
+  <docs-code header="Declare the input property in housing-location.ts" path="adev/src/content/tutorials/first-app/steps/06-property-binding/src/app/housing-location/housing-location.ts" visibleLines="[10]"/>
 
 Üst bileşenin bir değer sağlaması gerektiğini belirtmek için `input` üzerinde `required` metodunu çağırmalısınız. Örnek uygulamamızda, bu değerin her zaman aktarılacağını biliyoruz -- bu tasarım gereğidir. `.required()` çağrısı, TypeScript derleyicisinin bunu zorunlu kılmasını ve bu bileşen bir şablonda kullanıldığında özelliği null olmayan olarak ele almasını sağlar.
 

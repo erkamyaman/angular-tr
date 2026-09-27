@@ -64,13 +64,6 @@ Bağımsız olarak yayımlanan kütüphaneler için, npm paketleri gibi, `'parti
 `'partial'` derlemeleri, kütüphaneden farklı Angular sürümlerinde oluşturulan uygulamalar tarafından kullanımı daha iyi destekleyen kararlı, ara bir biçim çıktısı verir.
 Uygulamalarıyla birlikte "HEAD"de oluşturulan ve mono-depo gibi aynı Angular sürümünü kullanan kütüphaneler, sürüm uyumsuzluğu riski olmadığından `'full'` kullanabilir.
 
-### `disableExpressionLowering`
-
-`true` olduğunda (varsayılan), bir açıklamada kullanılan veya kullanılabilecek kodu, şablon fabrika modüllerinden içe aktarılmasına izin vermek için dönüştürür.
-Daha fazla bilgi için [metadata yeniden yazma](tools/cli/aot-compiler#metadata-rewriting) bölümüne bakın.
-
-`false` olduğunda, bu yeniden yazmayı devre dışı bırakır ve yeniden yazmanın manuel olarak yapılmasını gerektirir.
-
 ### `disableTypeScriptVersionCheck`
 
 `true` olduğunda, derleyici TypeScript sürümüne bakmaz ve desteklenmeyen bir TypeScript sürümü kullanıldığında hata bildirmez.
@@ -90,6 +83,9 @@ Bu mesaj biçimlerinde, boşluk işleme ve bir şablonun orijinal HTML'sindeki b
 
 Yeni mesaj biçimi, boşluk değişikliklerine karşı daha dayanıklıdır, tüm çeviri dosyası biçimlerinde aynıdır ve doğrudan `$localize` çağrılarından oluşturulabilir.
 Bu, uygulama kodundaki `$localize` mesajlarının, bileşen şablonlarındaki aynı `i18n` mesajlarıyla aynı kimliği kullanmasına olanak tanır.
+
+IMPORTANT: Bu seçenek yalnızca `@angular-devkit/build-angular:browser` builder'ı tarafından desteklenir.
+`@angular/build:application` builder'ı (esbuild) kullanılırken bu seçeneğin hiçbir etkisi yoktur ve bu ayardan bağımsız olarak her zaman yeni ondalık mesaj kimliği biçimi kullanılır.
 
 ### `enableResourceInlining`
 

@@ -48,7 +48,7 @@ Bu eğitim boyunca, aşağıdaki adımları kullanarak örnek bir formu verilere
    - Duruma görsel geri bildirim sağlamak için özel CSS ekleyin
    - Doğrulama hata mesajlarını gösterin ve gizleyin
 1. Model verilerine ekleyerek yerel bir HTML düğme tıklama olayına yanıt verin.
-1. Formun [`ngSubmit`](api/forms/NgForm#properties) çıkış özelliğini kullanarak form gönderimini yönetin.
+1. Formun [`ngSubmit`](api/forms/NgForm#ngSubmit) çıkış özelliğini kullanarak form gönderimini yönetin.
    - Form geçerli olana kadar **Submit** düğmesini devre dışı bırakın
    - Gönderdikten sonra, tamamlanmış formu sayfadaki farklı içerikle değiştirin
 
@@ -320,7 +320,7 @@ Bu olaya yanıt vermek için aşağıdaki adımları izleyin.
 <docs-workflow>
 
 <docs-step title="ngOnSubmit'i dinleyin">
-Formun [`ngSubmit`](api/forms/NgForm#properties) olay özelliğini aktör form bileşeninin `onSubmit()` yöntemine bağlayın.
+Formun [`ngSubmit`](api/forms/NgForm#ngSubmit) olay özelliğini aktör form bileşeninin `onSubmit()` yöntemine bağlayın.
 
 <docs-code header="actor-form.component.html (ngSubmit)" path="adev/src/content/examples/forms/src/app/actor-form/actor-form.component.html" region="ngSubmit"/>
 </docs-step>

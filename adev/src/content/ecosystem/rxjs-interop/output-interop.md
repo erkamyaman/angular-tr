@@ -8,7 +8,7 @@ TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/output
 
 `outputFromObservable`, bir RxJS observable'a dayalı olarak yayın yapan bir bileşen veya direktif çıktısı oluşturmanıza olanak tanır:
 
-```ts {highlight:[11]}
+```ts {highlight:[9]}
 import {Directive} from '@angular/core';
 import {outputFromObservable} from '@angular/core/rxjs-interop';
 

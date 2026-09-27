@@ -92,7 +92,7 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
 1. Aşağıdaki stilleri `src/app/details/details.css` dosyasına kopyalayın:
 
-   <docs-code header="Add styles for the Details" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.css" visibleLines="[1,71]"/>
+   <docs-code header="Add styles for the Details" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.css" visibleLines="[1,72]"/>
 
    ve değişikliklerinizi kaydedin
 

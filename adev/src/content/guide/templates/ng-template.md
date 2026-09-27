@@ -202,7 +202,7 @@ Yukarıdaki örnekte, "Show" butonuna tıklamak şu çıktıyı üretir:
 
 ```angular-html
 <component-with-fragment>
-  <h2>Component with a fragment>
+  <h2>Component with a fragment</h2>
   <my-outlet>
     <button>Show</button>
   </my-outlet>

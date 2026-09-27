@@ -18,8 +18,11 @@ import {isCustomElement} from '../../shared/utils/general';
 import {
   ControlFlowBlocksIterator,
   createControlFlowTreeNode,
+  blocksFilter,
   isControlFlowBlock,
 } from '../utils/control-flow';
+import {AngularDevtoolsError} from '../../shared/utils/error';
+import {getConfig} from '../../config/config';
 
 interface TreeExtractionContext {
   blocksIterator: ControlFlowBlocksIterator;
@@ -107,7 +110,7 @@ function groupControlFlowBlocksChildren(
 ) {
   const currentBlock = ctx.blocksIterator.currentBlock;
   if (!currentBlock) {
-    throw new Error('There is no current block in the control flow block iterator.');
+    throw new AngularDevtoolsError('There is no current block in the control flow block iterator.');
   }
 
   ctx.blocksIterator.advance();
@@ -185,7 +188,10 @@ export class RTreeStrategy {
 
   build(element: Element, rootId: number = 0): ComponentTreeNode[] {
     const ng = ngDebugClient();
-    const controlFlowBlocks = ng.ɵgetControlFlowBlocks?.(element) ?? [];
+    const controlFlowBlocks = (ng.ɵgetControlFlowBlocks?.(element) ?? []).filter((block) =>
+      blocksFilter(block, getConfig().snapshot()),
+    );
+
     const ctx: TreeExtractionContext = {
       blocksIterator: new ControlFlowBlocksIterator(controlFlowBlocks),
       rootId,

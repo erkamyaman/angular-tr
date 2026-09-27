@@ -19,7 +19,7 @@ LCP görselinin yüklenmesini optimize etmenin yanı sıra, `NgOptimizedImage` a
 
 CSS'te bir arka plan görseli kullanıyorsanız, [buradan başlayın](#arka-plan-görselinizi-nasıl-taşırsınız).
 
-**NOTE: `NgOptimizedImage` direktifi Angular sürüm 15'te kararlı bir özellik haline getirilmiş olsa da, geriye taşınmış ve 13.4.0 ile 14.3.0 sürümlerinde de kararlı bir özellik olarak mevcuttur.**
+NOTE: `NgOptimizedImage` direktifi Angular sürüm 15'te kararlı bir özellik haline getirilmiş olsa da, geriye taşınmış ve 13.4.0 ile 14.3.0 sürümlerinde de kararlı bir özellik olarak mevcuttur.
 
 ## Başlarken
 

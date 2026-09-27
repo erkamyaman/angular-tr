@@ -142,8 +142,7 @@ export const featureToggleGuard: CanMatchFn = (
 
 Aynı yol için farklı bileşenler kullanmanıza da olanak tanır.
 
-```ts
-// 📄 routes.ts
+```ts {header: "routes.ts"}
 const routes: Routes = [
   {
     path: 'dashboard',

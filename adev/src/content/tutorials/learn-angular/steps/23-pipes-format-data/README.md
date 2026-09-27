@@ -24,7 +24,7 @@ Bazı pipe çıktılarını özelleştirme zamanı:
 
 `app.ts` dosyasında, şablonu `decimal` pipe'ı için parametre içerecek şekilde güncelleyin.
 
-```angular-html {highlight:[3]}
+```angular-html {highlight:[2]}
 template: ` ...
 <li>Number with "decimal" {{ num | number: '3.2-2' }}</li>
 `
@@ -38,7 +38,7 @@ NOTE: Bu format nedir? `DecimalPipe` için parametre `digitsInfo` olarak adland�
 
 Şimdi, şablonu `date` pipe'ını kullanacak şekilde güncelleyin.
 
-```angular-html {highlight:[3]}
+```angular-html {highlight:[2]}
 template: ` ...
 <li>Date with "date" {{ birthday | date: 'medium' }}</li>
 `
@@ -52,7 +52,7 @@ Ekstra eğlence için, `date` için farklı parametreler deneyin. Daha fazla bil
 
 Son göreviniz için, şablonu `currency` pipe'ını kullanacak şekilde güncelleyin.
 
-```angular-html {highlight:[3]}
+```angular-html {highlight:[2]}
 template: ` ...
 <li>Currency with "currency" {{ cost | currency }}</li>
 `

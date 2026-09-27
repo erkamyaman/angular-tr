@@ -21,9 +21,9 @@ import {
 import {InjectableClassRegistry, JitDeclarationRegistry} from '../../annotations/common';
 import {CycleAnalyzer, CycleHandlingStrategy, ImportGraph} from '../../cycles';
 import {
-  COMPILER_ERRORS_WITH_GUIDES,
-  ERROR_DETAILS_PAGE_BASE_URL,
+  addDiagnosticDetails,
   ErrorCode,
+  errorCodeWithGuideFromDiagnosticCode,
   isFatalDiagnosticError,
   ngErrorCode,
 } from '../../diagnostics';
@@ -397,6 +397,7 @@ export class NgCompiler {
   private readonly implicitStandaloneValue: boolean;
   private readonly enableSelectorless: boolean;
   private readonly emitDeclarationOnly: boolean;
+  private readonly enableTemplateSourceLocations: boolean;
 
   /**
    * `NgCompiler` can be reused for multiple compilations (for resource-only changes), and each
@@ -472,6 +473,7 @@ export class NgCompiler {
       this.angularCoreVersion === null ||
       coreVersionSupportsFeature(this.angularCoreVersion, '>= 18.1.0');
     this.enableSelectorless = options['_enableSelectorless'] ?? false;
+    this.enableTemplateSourceLocations = options['enableTemplateSourceLocations'] ?? false;
     this.emitDeclarationOnly =
       !!options.emitDeclarationOnly && !!options._experimentalAllowEmitDeclarationOnly;
     // Standalone by default is enabled since v19. We need to toggle it here,
@@ -676,12 +678,18 @@ export class NgCompiler {
    */
   private addMessageTextDetails(diagnostics: ts.Diagnostic[]): ts.Diagnostic[] {
     return diagnostics.map((diag) => {
-      if (diag.code && COMPILER_ERRORS_WITH_GUIDES.has(ngErrorCode(diag.code))) {
+      const errorCode = errorCodeWithGuideFromDiagnosticCode(diag.code);
+      if (errorCode !== null) {
+        const messageText =
+          typeof diag.messageText === 'string'
+            ? addDiagnosticDetails(errorCode, diag.messageText)
+            : {
+                ...diag.messageText,
+                messageText: addDiagnosticDetails(errorCode, diag.messageText.messageText),
+              };
         return {
           ...diag,
-          messageText:
-            diag.messageText +
-            `. Find more at ${ERROR_DETAILS_PAGE_BASE_URL}/NG${ngErrorCode(diag.code)}`,
+          messageText,
         };
       }
       return diag;
@@ -1099,6 +1107,8 @@ export class NgCompiler {
         // - error TS2531: Object is possibly 'null'.
         // - error TS2339: Property 'value' does not exist on type 'EventTarget'.
         checkTypeOfDomEvents: strictTemplates,
+        checkUnclaimedEventNames: false, // 3p-only
+        // g3-only checkUnclaimedEventNames: strictTemplates,
         checkTypeOfDomReferences: strictTemplates,
         // Non-DOM references have the correct type in View Engine so there is no strictness flag.
         checkTypeOfNonDomReferences: true,
@@ -1133,6 +1143,7 @@ export class NgCompiler {
         checkTypeOfOutputEvents: false,
         checkTypeOfAnimationEvents: false,
         checkTypeOfDomEvents: false,
+        checkUnclaimedEventNames: false,
         checkTypeOfDomReferences: false,
         checkTypeOfNonDomReferences: false,
         checkTypeOfPipes: false,
@@ -1169,6 +1180,9 @@ export class NgCompiler {
     }
     if (this.options.strictDomEventTypes !== undefined) {
       typeCheckingConfig.checkTypeOfDomEvents = this.options.strictDomEventTypes;
+    }
+    if (this.options.strictUnclaimedEventNames !== undefined) {
+      typeCheckingConfig.checkUnclaimedEventNames = this.options.strictUnclaimedEventNames;
     }
     if (this.options.strictSafeNavigationTypes !== undefined) {
       typeCheckingConfig.strictSafeNavigationTypes = this.options.strictSafeNavigationTypes;
@@ -1543,6 +1557,7 @@ export class NgCompiler {
         this.enableSelectorless,
         this.emitDeclarationOnly,
         this.options.legacyOptionalChaining ?? LEGACY_OPTIONAL_CHAINING_DEFAULT,
+        this.enableTemplateSourceLocations,
       ),
 
       // TODO(alxhub): understand why the cast here is necessary (something to do with `null`

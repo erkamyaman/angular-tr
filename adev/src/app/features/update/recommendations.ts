@@ -2793,6 +2793,14 @@ export const RECOMMENDATIONS: Step[] = [
     possibleIn: 2100,
     step: '21.0.0_ng_update',
   },
+  {
+    possibleIn: 2100,
+    necessaryAsOf: 2100,
+    level: ApplicationComplexity.Advanced,
+    step: '21.0.0-safe-resource-url-audio-src',
+    action:
+      "`audio[src]` bağlamalarıyla `SafeResourceUrl` değerleri kullanıyorsanız, Angular v21'de `audio[src]` değerinin artık sanitize edilmediğini unutmayın. Bu nedenle mevcut `bypassSecurityTrustResourceUrl` kullanımları `SafeValue must use [property]=binding` mesajına neden olabilir. Gereksiz sanitizasyonu kaldırın ve bunun yerine URL'yi doğrudan bağlayın.",
+  },
 
   {
     possibleIn: 2100,

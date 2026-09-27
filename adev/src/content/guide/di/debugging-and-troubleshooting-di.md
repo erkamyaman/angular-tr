@@ -84,7 +84,7 @@ export class EagerView {
 
 Tembel yüklenen rotalar, yalnızca rota yüklendikten sonra kullanılabilen alt enjektörler oluşturur.
 
-NOTE: Varsayılan olarak, rota enjektörleri ve servisleri rotadan ayrıldıktan sonra bile devam eder. Uygulama kapatılana kadar yok edilmezler. Kullanılmayan rota enjektörlerinin otomatik temizlenmesi için [rota davranışını özelleştirme](guide/routing/customizing-route-behavior#deneysel-kullanılmayan-rota-enjektörlerinin-otomatik-temizlenmesi) bölümüne bakın.
+NOTE: Varsayılan olarak, rota enjektörleri ve servisleri rotadan ayrıldıktan sonra bile devam eder. Uygulama kapatılana kadar yok edilmezler. Kullanılmayan rota enjektörlerinin otomatik temizlenmesi için [rota davranışını özelleştirme](guide/routing/customizing-route-behavior#automatic-cleanup-of-unused-route-injectors) bölümüne bakın.
 
 **Çözüm:** Tembel sınırlar arasında paylaşılması gereken servisler için `@Service` kullanın.
 
@@ -595,7 +595,7 @@ export class DebugView {
 
 Bu desen, uygulamayı çökertmeden bir servisin kullanılabilir olup olmadığını doğrulamanıza yardımcı olur.
 
-#### Logging resolution modifiers
+#### Çözümleme değiştiricilerini günlükleme {#logging-resolution-modifiers}
 
 Günlükleme ile farklı çözümleme stratejilerini test edin.
 
@@ -628,7 +628,7 @@ export class DebugView {
 
 Bu, farklı enjektör seviyelerinde hangi örneklerin kullanılabilir olduğunu gösterir.
 
-### Debugging workflow
+### Hata ayıklama iş akışı {#debugging-workflow}
 
 DI başarısız olduğunda, şu sistematik yaklaşımı izleyin:
 
@@ -665,11 +665,11 @@ DI başarısız olduğunda, şu sistematik yaklaşımı izleyin:
 - Her enjektör seviyesini ayrı ayrı kontrol edin
 - Bir yeniden üretim durumu oluşturun
 
-## DI error reference
+## DI hata referansı {#di-error-reference}
 
 Bu bölüm, karşılaşabileceğiniz belirli Angular DI hata kodları hakkında ayrıntılı bilgi sağlar. Konsolunuzda bu hataları gördüğünüzde bunu referans olarak kullanın.
 
-### NullInjectorError: No provider for [Service]
+### NullInjectorError: [Service] için sağlayıcı yok {#nullinjectorerror-no-provider-for-service}
 
 **Hata kodu:** Yok (`NullInjectorError` olarak görüntülenir)
 
@@ -682,7 +682,7 @@ NullInjectorError: No provider for UserClient!
 
 Bağımlılık yolu, `App`'ın `AuthClient`'ı enjekte ettiğini, onun da `UserClient`'ı enjekte etmeye çalıştığını ancak hiçbir sağlayıcı bulunamadığını gösterir.
 
-#### Missing the `@Service ` or `@Injectable` decorator
+#### Eksik `@Service` veya `@Injectable` dekoratörü {#missing-the-service--or-injectable-decorator}
 
 En yaygın neden, bir servis sınıfında `@Service` veya `@Injectable()` dekoratörünü unutmaktır.
 
@@ -709,7 +709,7 @@ export class UserClient {
 
 NOTE: Sıfır argümanlı constructor'lara sahip sınıflar `@Service()` olmadan çalışabilir, ancak bu önerilmez. Tutarlılık sağlamak ve daha sonra bağımlılık eklerken sorunları önlemek için her zaman dekoratörü dahil edin.
 
-#### Missing providedIn configuration
+#### Eksik providedIn yapılandırması {#missing-providedin-configuration}
 
 Bir servisin `@Injectable()` dekoratörü olabilir ancak nerede sağlanacağını belirtmeyebilir.
 
@@ -739,7 +739,7 @@ export class UserClient {
 
 `@Service` dekoratörü, servisi uygulama genelinde kullanılabilir hale getirir ve tree-shaking'i etkinleştirir (servis hiç enjekte edilmezse paketten kaldırılır).
 
-#### Standalone component missing imports
+#### Standalone bileşende eksik içe aktarmalar {#standalone-component-missing-imports}
 
 Standalone bileşenlerle Angular v20+'da, her bileşende bağımlılıkları açıkça içe aktarmanız veya sağlamanız gerekir.
 
@@ -773,7 +773,7 @@ export class UserProfile {
 }
 ```
 
-#### Debugging with the dependency path
+#### Bağımlılık yolu ile hata ayıklama {#debugging-with-the-dependency-path}
 
 Hata mesajındaki bağımlılık yolu, hataya yol açan enjeksiyon zincirini gösterir.
 
@@ -791,7 +791,7 @@ Bu yol size şunu söyler:
 
 Araştırmanıza zincirin sonundan (`LoggerStore`) başlayın ve uygun yapılandırmaya sahip olduğunu doğrulayın.
 
-#### Checking provider availability with optional injection
+#### İsteğe bağlı enjeksiyon ile sağlayıcı kullanılabilirliğini kontrol etme {#checking-provider-availability-with-optional-injection}
 
 Hata fırlatmadan bir sağlayıcının var olup olmadığını kontrol etmek için isteğe bağlı enjeksiyon kullanın.
 
@@ -811,7 +811,7 @@ export class DebugView {
 
 İsteğe bağlı enjeksiyon, sağlayıcı bulunamazsa `null` döndürür ve yokluğu zarifçe ele almanıza olanak tanır.
 
-### NG0203: inject() must be called from an injection context
+### NG0203: inject() bir enjeksiyon bağlamından çağrılmalıdır {#ng0203-inject-must-be-called-from-an-injection-context}
 
 **Hata kodu:** NG0203
 
@@ -823,7 +823,7 @@ constructor, a factory function, a field initializer, or a function
 used with `runInInjectionContext`.
 ```
 
-#### Valid injection contexts
+#### Geçerli enjeksiyon bağlamları {#valid-injection-contexts}
 
 Angular şu konumlarda `inject()` kullanımına izin verir:
 
@@ -907,8 +907,9 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
 - [provideEnvironmentInitializer](api/core/provideEnvironmentInitializer)
 - Fonksiyonel [rota korumaları](guide/routing/route-guards)
 - Fonksiyonel [veri çözücüleri](guide/routing/data-resolvers)
+- Rota [kaynakları](guide/routing/data-fetching-with-resources)
 
-#### When this error occurs
+#### Bu hata ne zaman oluşur {#when-this-error-occurs}
 
 Bu hata şu durumlarda oluşur:
 
@@ -919,7 +920,7 @@ Bu hata şu durumlarda oluşur:
 
 Ayrıntılı örnekler ve çözümler için "Yanlış inject() kullanımı" bölümüne bakın.
 
-#### Solutions and workarounds
+#### Çözümler ve geçici çözümler {#solutions-and-workarounds}
 
 **Çözüm 1:** Bağımlılıkları alan başlatıcılarında yakalayın (en yaygın)
 
@@ -955,7 +956,7 @@ setTimeout(() => {
 }, 1000)
 ```
 
-### NG0200: Circular dependency detected
+### NG0200: Döngüsel bağımlılık tespit edildi {#ng0200-circular-dependency-detected}
 
 **Hata kodu:** NG0200
 
@@ -968,17 +969,17 @@ NG0200: Circular dependency in DI detected for AuthClient
 
 Bağımlılık yolu döngüyü gösterir: `AuthClient`, `UserClient`'a bağımlıdır ve o da `AuthClient`'a geri bağımlıdır.
 
-#### Understanding the error
+#### Hatayı anlamak {#understanding-the-error}
 
 Angular, constructor'larını çağırarak ve bağımlılıkları enjekte ederek servis örnekleri oluşturur. Servisler döngüsel olarak birbirine bağımlı olduğunda, Angular hangisini önce oluşturacağını belirleyemez.
 
-#### Common causes
+#### Yaygın nedenler {#common-causes}
 
 - Doğrudan döngüsel bağımlılık (Servis A -> Servis B -> Servis A)
 - Dolaylı döngüsel bağımlılık (Servis A -> Servis B -> Servis C -> Servis A)
 - Servis bağımlılıkları olan modül dosyalarındaki içe aktarma döngüleri
 
-#### Resolution strategies
+#### Çözüm stratejileri {#resolution-strategies}
 
 Ayrıntılı örnekler ve çözümler için "Döngüsel bağımlılıklar" bölümüne bakın:
 
@@ -988,17 +989,17 @@ Ayrıntılı örnekler ve çözümler için "Döngüsel bağımlılıklar" böl�
 
 Servis döngüsel bağımlılıkları için `forwardRef()` KULLANMAYIN. Yalnızca bileşen yapılandırmalarındaki döngüsel içe aktarmaları çözer.
 
-### Other DI error codes
+### Diğer DI hata kodları {#other-di-error-codes}
 
 Bu hatalar için ayrıntılı açıklamalar ve çözümler için [Angular hata referansına](errors) bakın:
 
-| Error Code              | Description                                                                                     |
+| Hata Kodu               | Açıklama                                                                                        |
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
 | [NG0204](errors/NG0204) | Tüm parametreler çözümlenemiyor - eksik `@Injectable()` dekoratörü                              |
 | [NG0205](errors/NG0205) | Enjektör zaten yok edildi - bileşen yok edildikten sonra servislere erişim                      |
 | [NG0207](errors/NG0207) | Yanlış bağlamda EnvironmentProviders - bileşen sağlayıcılarında `provideHttpClient()` kullanımı |
 
-## Next steps
+## Sonraki adımlar {#next-steps}
 
 DI hatalarıyla karşılaştığınızda şunları unutmayın:
 

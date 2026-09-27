@@ -11,7 +11,7 @@ Bu belge, size öncü bir uygulama geliştirme platformu sağlamak için izledi�
 Gelecekteki değişikliklerin her zaman öngörülebilir bir şekilde tanıtılmasını sağlamaya çalışıyoruz.
 Angular'a bağımlı olan herkesin, yeni özelliklerin ne zaman ve nasıl eklendiğini bilmesini ve eskiyen özellikler kaldırıldığında iyi hazırlıklı olmasını istiyoruz.
 
-Bazen API'lerin veya özelliklerin kaldırılması gibi _kırıcı değişiklikler_, yenilik yapmak ve gelişen en iyi uygulamalar, değişen bağımlılıklar veya web platformundaki değişimlerle güncel kalmak için gereklidir. Bu kırıcı değişiklikler, [kullanımdan kaldırma politikamızda](#kullanımdan-kaldırma-politikası) açıklanan bir kullanımdan kaldırma sürecinden geçer.
+Bazen API'lerin veya özelliklerin kaldırılması gibi _kırıcı değişiklikler_, yenilik yapmak ve gelişen en iyi uygulamalar, değişen bağımlılıklar veya web platformundaki değişimlerle güncel kalmak için gereklidir. Bu kırıcı değişiklikler, [kullanımdan kaldırma politikamızda](#deprecation-policy) açıklanan bir kullanımdan kaldırma sürecinden geçer.
 
 Bu geçişleri mümkün olduğunca kolay hale getirmek için Angular ekibi şu taahhütlerde bulunur:
 
@@ -77,7 +77,7 @@ HELPFUL: Yaklaşık tarihler genel yönlendirme olarak sunulmuştur ve değişik
 | Sürüm | Tarih              |
 | :---- | :----------------- |
 | v22.1 | 2026-07-27 haftası |
-| v22.2 | ~ Eylül 2026       |
+| v22.2 | 2026-09-21 haftası |
 | v22.3 | ~ Kasım 2026       |
 | v22.4 | ~ Ocak 2027        |
 | v22.5 | ~ Mart 2027        |
@@ -102,7 +102,7 @@ Aşağıdaki tablo, destek altındaki Angular sürümlerinin durumunu gösterir.
 | ^21.0.0 | LTS   | 2025-11-19 | 2026-06-03  | 2027-06    |
 | ^20.0.0 | LTS   | 2025-05-28 | 2025-11-19  | 2026-11-28 |
 
-Angular v2'den v19'a kadar olan sürümler artık desteklenmemektedir.
+IMPORTANT: Angular v2'den v19'a kadar olan sürümler artık desteklenmemektedir.
 
 ### LTS düzeltmeleri
 
@@ -111,7 +111,7 @@ Genel bir kural olarak, bir düzeltme aşağıdakilerden birini çözüyorsa LTS
 - Yeni tespit edilen bir güvenlik açığı,
 - LTS başlangıcından itibaren, yeni bir tarayıcı sürümü gibi üçüncü taraf bir değişiklikten kaynaklanan bir regresyon.
 
-## Kullanımdan kaldırma politikası
+## Kullanımdan kaldırma politikası {#deprecation-policy}
 
 Angular ekibi bir API'yi veya özelliği kaldırmayı planladığında, _kullanımdan kaldırılmış_ olarak işaretlenir. Bu, bir API eskimiş olduğunda, başka bir API ile değiştirildiğinde veya başka bir şekilde durdurulduğunda gerçekleşir. Kullanımdan kaldırılmış API'ler, en az bir ana sürüm (yaklaşık bir yıl) süren kullanımdan kaldırılma aşamaları boyunca kullanılabilir olmaya devam eder.
 
@@ -143,7 +143,7 @@ Kırıcı değişiklik, sonraki durumun önceki durumla geriye dönük uyumlu ol
 
 Angular'daki kırıcı değişiklikler durumunda sizi desteklemek için:
 
-- Genel bir API'yi kaldırmadan önce [kullanımdan kaldırma politikamızı](#kullanımdan-kaldırma-politikası) izliyoruz
+- Genel bir API'yi kaldırmadan önce [kullanımdan kaldırma politikamızı](#deprecation-policy) izliyoruz
 - `ng update` komutu aracılığıyla güncelleme otomasyonunu destekliyoruz. Bu, Google'da yüz binlerce proje üzerinde önceden test ettiğimiz kod dönüşümleri sağlar
 - Bir ana sürümden diğerine nasıl güncelleneceğine dair adım adım talimatlar ["Angular Güncelleme Kılavuzu"](update-guide)'nda bulunur
 

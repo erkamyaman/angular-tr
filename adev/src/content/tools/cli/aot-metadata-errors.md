@@ -26,7 +26,7 @@ Angular meta verisi yazarken derleyicinin [kısıtlı ifade sözdizimi](tools/cl
 
 ## Yerel (dışa aktarılmamış) sembole referans
 
-HELPFUL: Reference to a local \(non-exported\) symbol 'symbol name'. Consider exporting the symbol.
+HELPFUL: Yerel \(dışa aktarılmamış\) 'symbol name' sembolüne başvuru. Sembolü dışa aktarmayı düşünün.
 
 Derleyici, yerel olarak tanımlanmış ancak ya dışa aktarılmamış ya da başlatılmamış bir sembole başvuru buldu.
 
@@ -100,7 +100,7 @@ Bildirimin başına `export` eklemek yalnızca yeni bir hata üretir: "[`Only in
 
 ## Yalnızca başlatılmış değişkenler ve sabitler
 
-HELPFUL: _Only initialized variables and constants can be referenced because the value of this variable is needed by the template compiler._
+HELPFUL: _Bu değişkenin değerine şablon derleyicisi tarafından ihtiyaç duyulduğundan yalnızca başlatılmış değişkenlere ve sabitlere başvurulabilir._
 
 Derleyici, dışa aktarılmış ancak başlatılmamış bir değişkene veya statik alana referans buldu.
 Kod oluşturmak için o değişkenin değerine ihtiyaç duyar.
@@ -149,8 +149,8 @@ export class MyComponent {}
 
 ## Dışa aktarılmamış sınıfa referans
 
-HELPFUL: _Reference to a non-exported class `<class name>`._
-_Consider exporting the class._
+HELPFUL: _Dışa aktarılmamış `<class name>` sınıfına başvuru._
+_Sınıfı dışa aktarmayı düşünün._
 
 Meta veri, dışa aktarılmamış bir sınıfa referans verdi.
 
@@ -181,40 +181,9 @@ export abstract class MyStrategy { }
   …
 ```
 
-## Dışa aktarılmamış fonksiyona referans
-
-HELPFUL: _Metadata referenced a function that wasn't exported._
-
-Örneğin, bir providers `useFactory` özelliğini yerel olarak tanımlanmış ve dışa aktarmayı ihmal ettiğiniz bir fonksiyona ayarlamış olabilirsiniz.
-
-```ts
-// HATA
-function myStrategy() { … }
-
-  …
-  providers: [
-    { provide: MyStrategy, useFactory: myStrategy }
-  ]
-  …
-```
-
-Angular, ayrı bir modülde bir sınıf fabrikası oluşturur ve bu fabrika [yalnızca dışa aktarılmış fonksiyonlara erişebilir](tools/cli/aot-compiler#public-or-protected-symbols).
-Bu hatayı düzeltmek için fonksiyonu dışa aktarın.
-
-```ts
-// DÜZELTİLMİŞ
-export function myStrategy() { … }
-
-  …
-  providers: [
-    { provide: MyStrategy, useFactory: myStrategy }
-  ]
-  …
-```
-
 ## Parçalanmış değişken veya sabit desteklenmiyor
 
-HELPFUL: _Referencing an exported destructured variable or constant is not supported by the template compiler. Consider simplifying this to avoid destructuring._
+HELPFUL: _Dışa aktarılmış, yapı çözümlemesiyle (destructuring) elde edilmiş bir değişkene veya sabite başvurmak şablon derleyicisi tarafından desteklenmez. Yapı çözümlemesinden kaçınmak için bunu basitleştirmeyi düşünün._
 
 Derleyici, [parçalama](https://www.typescriptlang.org/docs/handbook/variable-declarations.html#destructuring) ile atanmış değişkenlere yapılan referansları desteklemez.
 
@@ -249,7 +218,7 @@ import { configuration } from './configuration';
 
 ## Tür çözümlenemedi
 
-HELPFUL: _The compiler encountered a type and can't determine which module exports that type._
+HELPFUL: _Derleyici bir türle karşılaştı ve bu türü hangi modülün dışa aktardığını belirleyemiyor._
 
 Bu, ortam türüne başvurduğunuzda olabilir.
 Örneğin, `Window` türü global `.d.ts` dosyasında bildirilen bir ortam türüdür.
@@ -314,7 +283,7 @@ export class MyComponent {
 
 ## Ad bekleniyor
 
-HELPFUL: _The compiler expected a name in an expression it was evaluating._
+HELPFUL: _Derleyici, değerlendirdiği bir ifadede bir isim bekliyordu._
 
 Bu, aşağıdaki örnekte olduğu gibi özellik adı olarak bir sayı kullandığınızda olabilir.
 
@@ -332,7 +301,7 @@ provider: [{provide: Foo, useValue: {'0': 'test'}}];
 
 ## Desteklenmeyen enum üye adı
 
-HELPFUL: _Angular couldn't determine the value of the [enum member](https://www.typescriptlang.org/docs/handbook/enums.html) that you referenced in metadata._
+HELPFUL: _Angular, meta veride başvurduğunuz [enum üyesinin](https://www.typescriptlang.org/docs/handbook/enums.html) değerini belirleyemedi._
 
 Derleyici basit enum değerlerini anlayabilir ancak hesaplanan özelliklerden türetilenler gibi karmaşık değerleri anlayamaz.
 
@@ -357,7 +326,7 @@ Karmaşık başlatıcılara veya hesaplanan özelliklere sahip enum'lara başvur
 
 ## Etiketli şablon ifadeleri desteklenmiyor
 
-HELPFUL: _Tagged template expressions are not supported in metadata._
+HELPFUL: _Etiketli şablon ifadeleri meta veride desteklenmez._
 
 Derleyici, aşağıdaki gibi bir JavaScript ES2015 [etiketli şablon ifadesiyle](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Template_literals#Tagged_template_literals) karşılaştı.
 
@@ -378,7 +347,7 @@ AOT derleyicisi etiketli şablon ifadelerini desteklemez; meta veri ifadelerinde
 
 ## Sembol referansı bekleniyor
 
-HELPFUL: _The compiler expected a reference to a symbol at the location specified in the error message._
+HELPFUL: _Derleyici, hata mesajında belirtilen konumda bir sembole başvuru bekliyordu._
 
 Bu hata, bir sınıfın `extends` yan tümcesinde bir ifade kullandığınızda oluşabilir.
 

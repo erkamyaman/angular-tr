@@ -27,7 +27,7 @@ Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/template
 
 1. `src/app/home/home.ts` dosyasında, `Home` sınıfından `housingLocation` özelliğini kaldırın.
 1. `Home` sınıfını `housingLocationList` adında bir özelliğe sahip olacak şekilde güncelleyin. Kodunuzu aşağıdaki kodla eşleşecek şekilde güncelleyin:
-   <docs-code language="angular-ts"  header="Add housingLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="26-131"/>
+   <docs-code language="angular-ts"  header="Add housingLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[26,127]"/>
 
    IMPORTANT: `@Component` dekoratörünü kaldırmayın, bu kodu yaklaşan bir adımda güncelleyeceksiniz.
 

@@ -57,7 +57,7 @@ Angular, soyut sınıfların parametrelerinin enjekte edilebilir olduğunu doğr
 Varsayılan olarak, geçiş kodu mümkün olduğunca temizlemeye çalışır, bu da yapıcıdan parametreleri silmeyi veya herhangi bir kod içermiyorsa tüm yapıcıyı silmeyi içerir.
 Bazı durumlarda bu, Angular dekoratörleri olan sınıflar Angular dekoratörleri olan diğer sınıflardan miras aldığında derleme hatalarına yol açabilir. Bu seçeneği etkinleştirirseniz, geçiş daha fazla kod pahasına geriye dönük uyumluluğu korumak için ek bir yapıcı imzası oluşturacaktır.
 
-#### Önce
+#### Önce {#backwards-compatible-constructors-before}
 
 ```typescript
 import {Component} from '@angular/core';
@@ -69,7 +69,7 @@ export class MyComp {
 }
 ```
 
-#### Sonra
+#### Sonra {#backwards-compatible-constructors-after}
 
 ```ts
 import { Component } from '@angular/core';
@@ -92,7 +92,7 @@ private service = inject(MyService);
 
 **NOTE:** Zaten nullable olarak tip atanmış parametrelere null olmayan iddialar eklenmeyecektir, çünkü bunlara bağımlı kod muhtemelen zaten null olabilirliğini hesaba katmaktadır.
 
-#### Önce
+#### Önce {#non-nullable-optional-before}
 
 ```typescript
 import {Component, Inject, Optional} from '@angular/core';
@@ -107,7 +107,7 @@ export class MyComp {
 }
 ```
 
-#### Sonra
+#### Sonra {#non-nullable-optional-after}
 
 ```typescript
 import {Component, inject} from '@angular/core';

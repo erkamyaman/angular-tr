@@ -110,7 +110,7 @@ handleSubmit() {
 Form değerlerine erişiminiz var, şimdi gönderim olayını işleme ve `handleSubmit` metodunu kullanma zamanı.
 Angular'ın bu amaca özel `ngSubmit` adında bir olay işleyicisi vardır. Form gönderildiğinde `handleSubmit` metodunu çağırmak için form elementini güncelleyin.
 
-```angular-html {highlight:[3]}
+```angular-html {highlight:[1]}
 <form [formGroup]="profileForm" (ngSubmit)="handleSubmit()"></form>
 ```
 

@@ -21,8 +21,32 @@ export class Settings {
     initialValue: false,
   });
 
+  readonly showCdInExplorer = this.settingsStore.create({
+    key: 'show_cd_in_explorer',
+    category: 'components',
+    initialValue: false,
+  });
+
+  readonly showDeferBlocks = this.settingsStore.create({
+    key: 'show_defer_blocks',
+    category: 'components',
+    initialValue: true,
+  });
+
+  readonly showForBlocks = this.settingsStore.create({
+    key: 'show_for_blocks',
+    category: 'components',
+    initialValue: true,
+  });
+
   readonly performanceTrack = this.settingsStore.create({
     key: 'performance_track',
+    category: 'profiling',
+    initialValue: false,
+  });
+
+  readonly highlightChangeDetection = this.settingsStore.create({
+    key: 'highlight_change_detection',
     category: 'profiling',
     initialValue: false,
   });

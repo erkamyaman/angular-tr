@@ -287,7 +287,7 @@ Bir girdiye bağlama, hem sinyal tabanlı hem de dekoratör tabanlı girdilerde 
 
 `@Input` dekoratörü, girdinin çalışma şeklini değiştirmenize olanak tanıyan bir yapılandırma nesnesi kabul eder.
 
-#### Zorunlu girdiler
+#### Zorunlu girdiler {#required-inputs-decorator}
 
 Belirli bir girdinin her zaman bir değere sahip olmasını zorunlu kılmak için `required` seçeneğini belirtebilirsiniz.
 
@@ -300,7 +300,7 @@ export class CustomSlider {
 
 Tüm zorunlu girdilerini belirtmeden bir bileşen kullanmaya çalışırsanız, Angular derleme zamanında bir hata bildirir.
 
-#### Girdi dönüşümleri
+#### Girdi dönüşümleri {#input-transforms-decorator}
 
 Angular tarafından ayarlandığında girdinin değerini değiştirmek için bir `transform` fonksiyonu belirtebilirsiniz. Bu dönüşüm fonksiyonu, yukarıda açıklanan sinyal tabanlı girdilerin dönüşüm fonksiyonlarıyla aynı şekilde çalışır.
 
@@ -318,7 +318,7 @@ function trimString(value: string | undefined) {
 }
 ```
 
-#### Girdi takma adları
+#### Girdi takma adları {#input-aliases-decorator}
 
 Şablonlarda bir girdinin adını değiştirmek için `alias` seçeneğini belirtebilirsiniz.
 

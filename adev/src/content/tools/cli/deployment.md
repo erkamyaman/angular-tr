@@ -109,7 +109,7 @@ Bir uygulamayı `ng serve` ile yerel olarak çalıştırdığınızda, Angular �
 
 - [`expression-changed-after-checked`](errors/NG0100) algılama gibi ek güvenlik kontrolleri.
 - Daha ayrıntılı hata mesajları.
-- Global `ng` değişkeni ile [hata ayıklama fonksiyonları](api#core-global) ve [Angular DevTools](tools/devtools) desteği gibi ek hata ayıklama yardımcıları.
+- Global `ng` değişkeni ile [hata ayıklama fonksiyonları](api#angular_core_globals) ve [Angular DevTools](tools/devtools) desteği gibi ek hata ayıklama yardımcıları.
 
 Bu özellikler geliştirme sırasında faydalıdır, ancak uygulamada ek kod gerektirirler, bu da
 üretimde istenmeyen bir durumdur. Bu özelliklerin son kullanıcılar için paket boyutunu olumsuz etkilememesini sağlamak amacıyla Angular CLI, üretim için derleme yaparken yalnızca geliştirmeye özgü kodu paketten kaldırır.

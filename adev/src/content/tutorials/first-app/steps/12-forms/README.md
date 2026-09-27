@@ -25,7 +25,7 @@ IDE'nizin **Edit** bölmesinde:
 
 1.  `src/app/housing.service.ts` dosyasında, `HousingService` sınıfı içine bu metodu sınıf tanımının en altına yapıştırın.
 
-       <docs-code header="Submit method in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[120,124]"/>
+       <docs-code header="Submit method in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[118,122]"/>
 
 1.  Uygulamanın hatasız derlendiğini doğrulayın.
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.

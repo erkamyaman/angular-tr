@@ -15,14 +15,17 @@ import {
   EnterNodeAnimations,
   LeaveNodeAnimations,
   AnimationClassBindingFn,
+  AnimationClassValue,
 } from './interfaces';
 import {INJECTOR, LView, ANIMATIONS, DECLARATION_VIEW} from '../render3/interfaces/view';
 import {RuntimeError, RuntimeErrorCode} from '../errors';
 import {Renderer} from '../render3/interfaces/renderer';
 import {RElement} from '../render3/interfaces/renderer_dom';
 import {TNode} from '../render3/interfaces/node';
+import {getAnimationDuration} from './longest_animation';
 
 const DEFAULT_ANIMATIONS_DISABLED = false;
+const ANIMATION_DURATION_TOLERANCE_MS = 1;
 
 export const areAnimationSupported =
   (typeof ngServerMode === 'undefined' || !ngServerMode) &&
@@ -267,8 +270,13 @@ export function getLViewLeaveAnimations(lView: LView): Map<number, LeaveNodeAnim
 /**
  * Gets the list of classes from a passed in value
  */
-export function getClassListFromValue(value: string | AnimationClassBindingFn): string[] | null {
-  const classes = typeof value === 'function' ? value() : value;
+export function getClassListFromValue(
+  value: string | AnimationClassBindingFn | AnimationClassValue,
+): string[] | null {
+  let classes: AnimationClassValue = typeof value === 'function' ? value() : value;
+  while (typeof classes === 'function') {
+    classes = classes();
+  }
   let classList: string[] | null = Array.isArray(classes) ? classes : null;
   if (typeof classes === 'string') {
     classList = classes
@@ -277,6 +285,24 @@ export function getClassListFromValue(value: string | AnimationClassBindingFn): 
       .filter((k) => k);
   }
   return classList;
+}
+
+/**
+ * Removes a list of CSS classes from an element using the provided renderer.
+ */
+export function removeClasses(renderer: Renderer, el: RElement, classList: string[]): void {
+  for (const item of classList) {
+    renderer.removeClass(el, item);
+  }
+}
+
+/**
+ * Adds a list of CSS classes to an element using the provided renderer.
+ */
+export function addClasses(renderer: Renderer, el: RElement, classList: string[]): void {
+  for (const item of classList) {
+    renderer.addClass(el, item);
+  }
 }
 
 /**
@@ -291,9 +317,7 @@ export function cancelAnimationsIfRunning(element: HTMLElement, renderer: Render
     elementData.classList.length > 0 &&
     elementHasClassList(element, elementData.classList)
   ) {
-    for (const klass of elementData.classList) {
-      renderer.removeClass(element as unknown as RElement, klass);
-    }
+    removeClasses(renderer, element, elementData.classList);
   }
   // We need to prevent any enter animation listeners from firing if they exist.
   cleanupEnterClassData(element);
@@ -332,14 +356,42 @@ export function isLongestAnimation(
   // If we don't have any record of a longest animation, then we shouldn't
   // block the animationend/transitionend event from doing its work.
   if (longestAnimation === undefined) return true;
-  return (
-    nativeElement === getEventTarget(event) &&
-    ((longestAnimation.animationName !== undefined &&
-      (event as AnimationEvent).animationName === longestAnimation.animationName) ||
-      (longestAnimation.propertyName !== undefined &&
-        (longestAnimation.propertyName === 'all' ||
-          (event as TransitionEvent).propertyName === longestAnimation.propertyName)))
-  );
+
+  if (nativeElement !== getEventTarget(event)) return false;
+
+  // Distinct CSS animations can share a name. Chrome 151 stable exposes their instance:
+  // https://developer.chrome.com/release-notes/151#animation_accessor_on_animation_and_transition_events
+  const eventAnimation = (
+    event as (AnimationEvent | TransitionEvent) & {readonly animation?: Animation | null}
+  ).animation;
+
+  // Compare the event animation's duration instead of retaining the Animation object. This also
+  // disambiguates records obtained from computed styles when getAnimations() was empty.
+  if (eventAnimation) {
+    const eventAnimationDuration = getAnimationDuration(eventAnimation);
+    // CSSOM can round serialized times while Web Animations retains more precision. Only reject an
+    // event when it is shorter by more than the tolerance so the longest event is not ignored.
+    if (
+      eventAnimationDuration !== undefined &&
+      eventAnimationDuration + ANIMATION_DURATION_TOLERANCE_MS < longestAnimation.duration
+    ) {
+      return false;
+    }
+  }
+
+  // Fall back to strings for older browsers.
+  if (longestAnimation.animationName !== undefined) {
+    return (event as AnimationEvent).animationName === longestAnimation.animationName;
+  }
+
+  if (longestAnimation.propertyName !== undefined) {
+    return (
+      longestAnimation.propertyName === 'all' ||
+      (event as TransitionEvent).propertyName === longestAnimation.propertyName
+    );
+  }
+
+  return false;
 }
 
 /**

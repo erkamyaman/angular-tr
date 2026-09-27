@@ -27,7 +27,13 @@ import {
   viewChild,
 } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DevToolsNode, ElementPosition, Events, MessageBus} from '../../../../../../protocol';
+import {
+  CdElementData,
+  DevToolsNode,
+  ElementPosition,
+  Events,
+  MessageBus,
+} from '../../../../../../protocol';
 
 import {TabUpdate} from '../../tab-update/index';
 import {DEEP_LINK_INSTANCE_ID} from '../../../application-providers/deep_link';
@@ -76,6 +82,7 @@ export class DirectiveForestComponent {
   readonly forest = input<DevToolsNode[]>([]);
   readonly showCommentNodes = input<boolean>(false);
   readonly currentSelectedElement = input.required<IndexedNode>();
+  readonly cdData = input<CdElementData[]>();
 
   readonly selectNode = output<IndexedNode | null>();
   readonly selectDomElement = output<IndexedNode>();
@@ -97,6 +104,38 @@ export class DirectiveForestComponent {
       return this.dataSource.data.indexOf(node);
     }
     return -1;
+  });
+
+  protected readonly mappedCdData = computed<Map<DevToolsNode, CdElementData>>(() => {
+    const mapped = new Map<DevToolsNode, CdElementData>();
+    const cdData = this.cdData();
+    if (!cdData || !cdData.length) {
+      return mapped;
+    }
+
+    const forest = this.forest();
+
+    for (const data of cdData ?? []) {
+      // Wrap the forest in a fake root node-like object.
+      let node: DevToolsNode | null = {children: forest} as DevToolsNode;
+
+      // Attempt to find the target node using the
+      // non-indexed `DevToolsNode[]` structure.
+      for (const pos of data.element) {
+        if (node.children[pos]) {
+          node = node.children[pos];
+        } else {
+          node = null;
+          break;
+        }
+      }
+
+      if (node) {
+        mapped.set(node, data);
+      }
+    }
+
+    return mapped;
   });
 
   readonly treeControl = new FlatTreeControl<FlatNode>(
@@ -285,7 +324,7 @@ export class DirectiveForestComponent {
 
   handleFilter(filterFn: FilterFn): void {
     this.currentlyMatchedIndex.set(-1);
-    this.matchedNodes.set(new Map());
+    const matched = new Map<number, NodeTextMatch[]>();
 
     for (let i = 0; i < this.dataSource.data.length; i++) {
       const node = this.dataSource.data[i];
@@ -293,13 +332,11 @@ export class DirectiveForestComponent {
       const matches = filterFn(fullName);
 
       if (matches.length) {
-        this.matchedNodes.update((matched) => {
-          const map = new Map(matched);
-          map.set(i, matches);
-          return map;
-        });
+        matched.set(i, matches);
       }
     }
+
+    this.matchedNodes.set(matched);
 
     // Select the first match, if there are any.
     if (this.matchesCount()) {

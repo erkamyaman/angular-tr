@@ -8,8 +8,6 @@
 
 import {
   Component,
-  afterRenderEffect,
-  ElementRef,
   inject,
   input,
   output,
@@ -18,8 +16,10 @@ import {
   computed,
   DestroyRef,
   untracked,
+  linkedSignal,
 } from '@angular/core';
 import {
+  CdElementData,
   ComponentExplorerView,
   ComponentExplorerViewQuery,
   DevToolsNode,
@@ -112,14 +112,9 @@ export class DirectiveExplorerComponent {
   readonly toggleInspector = output<void>();
 
   readonly directiveForest = viewChild.required(DirectiveForestComponent);
-  readonly splitElementRef = viewChild.required(SplitComponent, {read: ElementRef});
-  readonly directiveForestSplitArea = viewChild.required('directiveForestSplitArea', {
-    read: ElementRef,
-  });
 
   readonly currentSelectedElement = signal<IndexedNode | null>(null);
   readonly forest = signal<DevToolsNode[]>([]);
-  readonly splitDirection = signal<'horizontal' | 'vertical'>('horizontal');
   readonly parents = signal<FlatNode[] | null>(null);
 
   readonly signalsOpen = signal(false);
@@ -139,39 +134,38 @@ export class DirectiveExplorerComponent {
 
   protected readonly externallySelectedSignalNodeId = signal<{id: string} | null>(null);
 
-  protected readonly responsiveSplitConfig: ResponsiveSplitConfig = {
+  // Responsible for splitting behavior of the explorer and the props pane.
+  protected readonly tabSplitConfig: ResponsiveSplitConfig = {
+    defaultDirection: 'horizontal',
+    widthBreakpoint: '<500px',
+    breakpointDirection: 'vertical',
+  };
+
+  // Responsible for splitting behavior of the forest and the signal graph pane.
+  protected readonly forestSplitConfig: ResponsiveSplitConfig = {
     defaultDirection: 'vertical',
-    aspectRatioBreakpoint: 1.5,
+    aspectRatioBreakpoint: '>=1.5',
     breakpointDirection: 'horizontal',
   };
 
   protected readonly forestSplitSize = signal<number>(FOREST_VER_SPLIT_SIZE);
   protected readonly signalGraphSplitSize = signal<number>(SIGNAL_GRAPH_VER_SPLIT_SIZE);
 
+  protected readonly cdData = linkedSignal<boolean, CdElementData[] | null>({
+    source: this.settings.showCdInExplorer,
+    computation: (showCdInExplorer, prev) => {
+      // We reset the `cdData` if the feature
+      // is disabled from the settings.
+      if (!showCdInExplorer) {
+        return null;
+      }
+      return prev?.value ?? null;
+    },
+  });
+
   private readonly currentElementPos = computed(() => this.currentSelectedElement()?.position);
 
   constructor() {
-    afterRenderEffect((cleanup) => {
-      const splitElement = this.splitElementRef().nativeElement;
-      const directiveForestSplitArea = this.directiveForestSplitArea().nativeElement;
-      const resizeObserver = new ResizeObserver((entries) => {
-        this.refreshHydrationNodeHighlightsIfNeeded();
-
-        const resizedEntry = entries[0];
-        if (resizedEntry.target === splitElement) {
-          this.splitDirection.set(
-            resizedEntry.contentRect.width <= 500 ? 'vertical' : 'horizontal',
-          );
-        }
-      });
-
-      resizeObserver.observe(splitElement);
-      resizeObserver.observe(directiveForestSplitArea);
-      cleanup(() => {
-        resizeObserver.disconnect();
-      });
-    });
-
     this.subscribeToBackendEvents();
     this.refresh();
     this.signalGraph.listen(this.currentElementPos);
@@ -214,6 +208,8 @@ export class DirectiveExplorerComponent {
     });
 
     this._messageBus.on('componentTreeDirty', () => this.refresh());
+
+    this._messageBus.on('latestCdData', (cdData) => this.cdData.set(cdData));
   }
 
   refresh(): void {
@@ -231,7 +227,6 @@ export class DirectiveExplorerComponent {
     if (!this._refreshRetryTimeout) {
       this._refreshRetryTimeout = setTimeout(() => this.refresh(), 500);
     }
-    this.refreshHydrationNodeHighlightsIfNeeded();
   }
 
   viewSource(directiveName: string): void {
@@ -362,21 +357,6 @@ export class DirectiveExplorerComponent {
       this._messageBus.emit('log', [{level: 'warn', message: error}]);
     } else {
       this._appOperations.inspect(directivePosition, objectPath, selectedFrame!);
-    }
-  }
-
-  createHydrationOverlays() {
-    this._messageBus.emit('createHydrationOverlay');
-  }
-
-  removeHydrationOverlays() {
-    this._messageBus.emit('removeHydrationOverlay');
-  }
-
-  private refreshHydrationNodeHighlightsIfNeeded() {
-    if (untracked(this.settings.showHydrationOverlays)) {
-      this.removeHydrationOverlays();
-      this.createHydrationOverlays();
     }
   }
 

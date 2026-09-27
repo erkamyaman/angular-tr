@@ -52,7 +52,7 @@ Senkron doğrulama kuralları (`required()`, `email()` gibi) anında tamamlanır
 
 Tüm doğrulama kuralları her değişiklikte çalışır -- doğrulama ilk hatadan sonra kısa devre yapmaz. Bir alanda hem `required()` hem de `email()` doğrulama kuralları varsa, her ikisi de çalışır ve her ikisi de aynı anda hata üretebilir.
 
-### Yerel HTML doğrulaması
+### Yerel HTML doğrulaması {#native-html-validation}
 
 Signal Forms, doğrulama kurallarını çalıştırmak için tarayıcının yerleşik [kısıt doğrulamasını](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation) **kullanmaz**. Bu bilinçli bir tasarım tercihidir: Signal Forms yalnızca yerel form elemanlarının değil, herhangi bir bileşenin form kontrolü olarak davranmasına izin verir.
 
@@ -110,12 +110,22 @@ export class RegistrationComponent {
 }
 ```
 
-Bir alan şu durumlarda "boş" kabul edilir:
+Bir alanın değeri aşağıdakilerden biri olduğunda alan "boş" kabul edilir; `0` ve boş dizi `[]` dahil
+diğer tüm değerler için boş değildir:
 
-| Koşul          | Örnek   |
-| -------------- | ------- |
-| Değer `null`   | `null`, |
-| Değer boş dize | `''`    |
+| Koşul             | Örnek       |
+| ----------------- | ----------- |
+| Değer `null`      | `null`      |
+| Değer `undefined` | `undefined` |
+| Değer boş dize    | `''`        |
+| Değer `false`     | `false`     |
+| Değer `NaN`       | `NaN`       |
+
+Son ikisi özellikle belirtilmeye değer:
+
+- `false`, `<input type="checkbox">` üzerindeki `required` özelliğinin yerel anlamını izlemek için boş kabul edilir;
+  bu durumda işaretlenmemiş bir kutu doğrulamadan geçemez.
+- `NaN` boş kabul edilir, çünkü genellikle bir ayrıştırma hatasının sonucudur ve geçerli bir sayı değildir.
 
 Koşullu gereksinimler için `when` seçeneğini kullanın:
 
@@ -130,7 +140,7 @@ registrationForm = form(this.registrationModel, (schemaPath) => {
 
 Doğrulama kuralı yalnızca `when` fonksiyonu `true` döndürdüğünde çalışır.
 
-Not: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-and-maxlength) kullanın. `false` değerini ise eksik (geçersiz) olarak kabul eder ve bu, `<input type="checkbox" required>` davranışıyla örtüşür.
+Not: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-and-maxlength) kullanın.
 
 ### email()
 

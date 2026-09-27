@@ -255,7 +255,7 @@ Kök form nesnesi dahil ağaçtaki her düğüm, durumunu izlemek için aynı si
 | `readonly()` | Düğüm salt okunursa `true` döndürür                                                 |
 | `errors()`   | `kind` ve `message` özelliklerine sahip doğrulama hatalarının bir dizisini döndürür |
 
-### Eksiksiz örnek
+### Eksiksiz örnek {#complete-example-validation}
 
 <docs-code-multifile preview path="adev/src/content/examples/signal-forms/src/login-validation/app/app.ts">
   <docs-code header="app.ts" path="adev/src/content/examples/signal-forms/src/login-validation/app/app.ts"/>

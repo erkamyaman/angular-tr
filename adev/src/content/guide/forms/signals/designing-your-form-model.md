@@ -365,7 +365,7 @@ class MyForm {
 
 Yukarıdaki örnekler, form modelinin doğrudan alan modelinden saf bir türetilmesini gösterir. Ancak, bazı durumlarda yeni alan modeli değeri ile önceki alan modeli ve form modeli değerleri arasında daha gelişmiş bir fark (diff) işlemi yapmak isteyebilirsiniz. Bu, `linkedSignal` [önceki durum](/guide/signals/linked-signal#önceki-durumu-dikkate-alma) özelliğine dayalı olarak uygulanabilir.
 
-### Form model to domain model
+### Form modelinden alan modeline {#form-model-to-domain-model}
 
 Kullanıcının girdisini sisteme geri kaydetmeye hazır olduğumuzda, bunu alan modeli gösterimine dönüştürmemiz gerekir. Bu, genellikle kullanıcı formu gönderdiğinde veya otomatik kaydetme yapan bir form için kullanıcı düzenleme yaptıkça sürekli olarak gerçekleşir.
 

@@ -12,18 +12,18 @@ Yapay zeka eğitmenine [Angular MCP sunucusu](ai/mcp) aracılığıyla erişebil
 2. Yeni bir Angular projesi oluşturun `ng new <project-name>`
 3. [Gemini CLI](https://geminicli.com/) gibi yapay zeka destekli bir düzenleyici veya araçta yeni projenize gidin (`cd <project-name>`)
 4. `launch the Angular AI tutor` gibi bir prompt girin
-   ![A screenshot demonstrating how to launch the Angular AI Tutor in the Gemini CLI.](assets/images/launch-ai-tutor.png 'Launch the Angular AI Tutor')
+   ![Gemini CLI'da Angular AI Tutor'ın nasıl başlatılacağını gösteren bir ekran görüntüsü.](assets/images/launch-ai-tutor.png 'Angular AI Tutor'ı başlatın')
 
 ## Yapay Zeka Eğitmenini Kullanma
 
 Her modül kısa bir kavram açıklaması ile başlar.
-![A screenshot of the Angular AI Tutor presenting a brief concept explanation.](assets/images/ai-tutor-preview-1.png 'Angular AI Tutor explanation')
+![Angular AI Tutor'ın kısa bir kavram açıklaması sunduğu bir ekran görüntüsü.](assets/images/ai-tutor-preview-1.png 'Angular AI Tutor açıklaması')
 Uygulanabilir olduğunda, eğitmen kavramı göstermek için bir kod örneği sunacaktır.
-![A screenshot of the Angular AI Tutor showing a code example.](assets/images/ai-tutor-preview-2.png 'Angular AI Tutor code example')
+![Angular AI Tutor'ın bir kod örneği gösterdiği bir ekran görüntüsü.](assets/images/ai-tutor-preview-2.png 'Angular AI Tutor kod örneği')
 Eğitmen ayrıca anlayışınızı test etmek için açık uçlu bir alıştırma sağlayacaktır.
-![A screenshot of the Angular AI Tutor providing an exercise.](assets/images/ai-tutor-preview-3.png 'Angular AI Tutor exercise')
+![Angular AI Tutor'ın bir alıştırma sunduğu bir ekran görüntüsü.](assets/images/ai-tutor-preview-3.png 'Angular AI Tutor alıştırması')
 Son olarak, eğitmen bir sonraki modüle geçmeden önce çalışmanızı kontrol edecektir.
-![A screenshot of the Angular AI Tutor checking the user's work.](assets/images/ai-tutor-preview-4.png 'Angular AI Tutor check')
+![Angular AI Tutor'ın kullanıcının çalışmasını kontrol ettiği bir ekran görüntüsü.](assets/images/ai-tutor-preview-4.png 'Angular AI Tutor kontrolü')
 
 ## Nasıl Çalışır: Öğrenme Döngüsü
 
@@ -142,46 +142,46 @@ Uygulamanızı beş aşamalı bir yolculuk boyunca oluşturacaksınız. Eksiksiz
 
 **Otomatik Kurulum Hakkında Not:** Bazı modüller, arayüzler veya sahte veriler oluşturma gibi bir kurulum adımı gerektirir. Bu durumlarda, eğitmen size kodu ve dosya talimatlarını sunacaktır. Alıştırma başlamadan önce talimat verilen şekilde bu dosyaları oluşturmak ve değiştirmek sizin sorumluluğunuzdadır.
 
-### **Phase 1: Angular Fundamentals**
+### **Aşama 1: Angular Temelleri** {#phase-1-angular-fundamentals}
 
-- **Module 1:** Getting Started
-- **Module 2:** Dynamic Text with Interpolation
-- **Module 3:** Event Listeners (`(click)`)
+- **Modül 1:** Başlarken
+- **Modül 2:** İnterpolasyon ile Dinamik Metin
+- **Modül 3:** Olay Dinleyicileri (`(click)`)
 
-### **Phase 2: State and Signals**
+### **Aşama 2: Durum ve Sinyaller** {#phase-2-state-and-signals}
 
-- **Module 4:** State Management with Writable Signals (Part 1: `set`)
-- **Module 5:** State Management with Writable Signals (Part 2: `update`)
-- **Module 6:** Computed Signals
+- **Modül 4:** Yazılabilir Sinyallerle Durum Yönetimi (Bölüm 1: `set`)
+- **Modül 5:** Yazılabilir Sinyallerle Durum Yönetimi (Bölüm 2: `update`)
+- **Modül 6:** Hesaplanmış Sinyaller
 
-### **Phase 3: Component Architecture**
+### **Aşama 3: Bileşen Mimarisi** {#phase-3-component-architecture}
 
-- **Module 7:** Template Binding (Properties & Attributes)
-- **Module 8:** Creating & Nesting Components
-- **Module 9:** Component Inputs with Signals
-- **Module 10:** Styling Components
-- **Module 11:** List Rendering with `@for`
-- **Module 12:** Conditional Rendering with `@if`
+- **Modül 7:** Şablon Bağlama (Özellikler ve Nitelikler)
+- **Modül 8:** Bileşen Oluşturma ve İç İçe Yerleştirme
+- **Modül 9:** Sinyallerle Bileşen Girdileri
+- **Modül 10:** Bileşenleri Stillendirme
+- **Modül 11:** `@for` ile Liste Oluşturma
+- **Modül 12:** `@if` ile Koşullu Oluşturma
 
-### **Phase 4: Advanced Features & Architecture**
+### **Aşama 4: Gelişmiş Özellikler ve Mimari** {#phase-4-advanced-features--architecture}
 
-- **Module 13:** Two-Way Binding
-- **Module 14:** Services & Dependency Injection (DI)
-- **Module 15:** Basic Routing
-- **Module 16:** Introduction to Forms
-- **Module 17:** Intro to Angular Material
+- **Modül 13:** Çift Yönlü Bağlama
+- **Modül 14:** Servisler ve Bağımlılık Enjeksiyonu (DI)
+- **Modül 15:** Temel Yönlendirme
+- **Modül 16:** Formlara Giriş
+- **Modül 17:** Angular Material'a Giriş
 
-### **Phase 5: Signal Forms**
+### **Aşama 5: Signal Forms** {#phase-5-signal-forms}
 
-- **Module 18**: **Introduction to Signal Forms**
-- **Module 19**: **Submitting & Resetting**
-- **Module 20**: **Validation in Signal Forms**
-- **Module 21**: **Field State & Error Messages**
+- **Modül 18**: **Signal Forms'a Giriş**
+- **Modül 19**: **Gönderme ve Sıfırlama**
+- **Modül 20**: **Signal Forms'ta Doğrulama**
+- **Modül 21**: **Alan Durumu ve Hata Mesajları**
 
 ---
 
 ## **Yapay Zeka ve Geri Bildirim Hakkında Bir Not**
 
-Bu egitmen bir Buyuk Dil Modeli (LLM) tarafindan desteklenmektedir. Onu bir uzman yapmak icin cok calistigimiz halde, yapay zekalar hata yapabilir. Yanlis gorunen bir aciklama veya kod ornegiyle karsilastirsaniz, lutfen bize bildirin. Egitmeni duzeltebilirsiniz ve yanitini buna gore ayarlayacaktir.
+Bu eğitmen bir Büyük Dil Modeli (LLM) tarafından desteklenmektedir. Onu bir uzman yapmak için çok çalıştığımız halde, yapay zekalar hata yapabilir. Yanlış görünen bir açıklama veya kod örneğiyle karşılaşırsanız, lütfen bize bildirin. Eğitmeni düzeltebilirsiniz ve yanıtını buna göre ayarlayacaktır.
 
-Herhangi bir teknik hata veya ozellik talebi icin lutfen [bir sorun gonderin](https://github.com/angular/angular-cli/issues).
+Herhangi bir teknik hata veya özellik talebi için lütfen [bir sorun gönderin](https://github.com/angular/angular-cli/issues).

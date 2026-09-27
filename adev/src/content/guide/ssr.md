@@ -28,8 +28,7 @@ NOTE: Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve bir sun
 
 Bir [`ServerRoute`](api/ssr/ServerRoute 'API reference') nesneleri dizisi bildirerek sunucu rota yapılandırması oluşturabilirsiniz. Bu yapılandırma genellikle `app.routes.server.ts` adlı bir dosyada bulunur.
 
-```typescript
-// app.routes.server.ts
+```typescript {header: "app.routes.server.ts"}
 import {RenderMode, ServerRoute} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
@@ -54,11 +53,10 @@ export const serverRoutes: ServerRoute[] = [
 
 Bu yapılandırmayı [`withRoutes`](api/ssr/withRoutes 'API reference') fonksiyonunu kullanarak [`provideServerRendering`](api/ssr/provideServerRendering 'API reference') ile uygulamanıza ekleyebilirsiniz:
 
-```typescript
+```typescript {header: "app.config.server.ts"}
 import {provideServerRendering, withRoutes} from '@angular/ssr';
 import {serverRoutes} from './app.routes.server';
 
-// app.config.server.ts
 const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(withRoutes(serverRoutes)),
@@ -137,8 +135,7 @@ NOTE: Angular service worker kullanırken, ilk istek sunucuda render edilir, anc
 
 `ServerRoute` yapılandırmasındaki `headers` ve `status` özelliklerini kullanarak bireysel sunucu rotaları için özel başlıklar ve durum kodları ayarlayabilirsiniz.
 
-```typescript
-// app.routes.server.ts
+```typescript {header: "app.routes.server.ts"}
 import {RenderMode, ServerRoute} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
@@ -158,17 +155,17 @@ export const serverRoutes: ServerRoute[] = [
 
 Angular, rota yapılandırmalarındaki [`redirectTo`](api/router/Route#redirectTo 'API reference') özelliği tarafından belirtilen yönlendirmeleri sunucu tarafında farklı şekilde işler.
 
-**Server-Side Rendering (SSR)**
+**Sunucu tarafı render (SSR)**
 Yönlendirmeler, sunucu tarafı render işlemi içinde standart HTTP yönlendirmeleri (örneğin, 301, 302) kullanılarak gerçekleştirilir.
 
-**Prerendering (SSG)**
+**Ön-render (SSG)**
 Yönlendirmeler, ön-render edilmiş HTML'de [`<meta http-equiv="refresh">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#refresh) etiketleri kullanılarak "yumuşak yönlendirmeler" olarak uygulanır.
 
 ### Derleme zamanı ön-render'ı (SSG) özelleştirme
 
 [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') kullanırken, ön-render ve sunma işlemini özelleştirmek için birçok yapılandırma seçeneği belirleyebilirsiniz.
 
-#### Parameterized routes
+#### Parametreli rotalar {#parameterized-routes}
 
 [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') ile her rota için, hangi belirli parametrelerin ayrı ön-render edilmiş belgeler üreteceğini kontrol etmenize olanak tanıyan bir [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu belirtebilirsiniz.
 
@@ -178,8 +175,7 @@ Yönlendirmeler, ön-render edilmiş HTML'de [`<meta http-equiv="refresh">`](htt
 
 Bu fonksiyonu ayrıca catch-all rotalarla (örneğin, `/**`) kullanabilirsiniz; burada parametre adı `"**"` olacak ve dönüş değeri yolun segmentleri olacaktır, örneğin `foo/bar`. Bunlar daha karmaşık rota yapılandırmasını işlemek için diğer parametrelerle (örneğin, `/post/:id/**`) birleştirilebilir.
 
-```ts
-// app.routes.server.ts
+```ts {header: "app.routes.server.ts"}
 import {RenderMode, ServerRoute} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
@@ -210,7 +206,7 @@ export const serverRoutes: ServerRoute[] = [
 
 IMPORTANT: `getPrerenderParams` içinde [`inject`](api/core/inject 'API reference') kullanırken, `inject`'in senkron olarak kullanılması gerektiğini lütfen unutmayın. Asenkron geri çağırmalarda veya herhangi bir `await` ifadesinden sonra çağrılamaz. Daha fazla bilgi için `runInInjectionContext`'e bakın.
 
-#### Fallback strategies
+#### Geri dönüş stratejileri {#fallback-strategies}
 
 [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') modu kullanırken, ön-render edilmemiş yollar için istekleri işlemek üzere bir geri dönüş stratejisi belirleyebilirsiniz.
 
@@ -220,8 +216,7 @@ Kullanılabilir geri dönüş stratejileri şunlardır:
 - **Client:** İstemci tarafı render'a geri döner.
 - **None:** Geri dönüş yok. Angular, ön-render edilmemiş yollar için istekleri işlemez.
 
-```ts
-// app.routes.server.ts
+```ts {header: "app.routes.server.ts"}
 import {RenderMode, PrerenderFallback, ServerRoute} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
@@ -239,7 +234,7 @@ export const serverRoutes: ServerRoute[] = [
 ];
 ```
 
-## Authoring server-compatible components
+## Sunucu uyumlu bileşenler yazma {#authoring-server-compatible-components}
 
 Bazı yaygın tarayıcı API'leri ve yetenekleri sunucuda mevcut olmayabilir. Uygulamalar `window`, `document`, `navigator` veya `location` gibi tarayıcıya özgü genel nesneleri ve `HTMLElement`'in belirli özelliklerini kullanamazlar.
 
@@ -268,14 +263,14 @@ NOTE: `isPlatformBrowser` veya `isPlatformServer` ile çalışma zamanı kontrol
 
 IMPORTANT: Sunucu ve istemcide farklı içerik render etmek için `@if` veya diğer koşullu ifadelerle şablonlarda `isPlatformBrowser` kullanmaktan kaçının. Bu, hidrasyon uyumsuzluklarına ve düzen kaymalarına neden olarak kullanıcı deneyimini ve [Core Web Vitals](https://web.dev/learn-core-web-vitals/) değerlerini olumsuz etkiler. Bunun yerine, tarayıcıya özgü başlatma için `afterNextRender` kullanın ve render edilen içeriği platformlar arasında tutarlı tutun.
 
-## Setting providers on the server
+## Sunucuda sağlayıcıları ayarlama {#setting-providers-on-the-server}
 
 Sunucu tarafında, üst düzey sağlayıcı değerleri, uygulama kodu ilk kez ayrıştırılıp değerlendirildiğinde bir kez ayarlanır.
 Bu, `useValue` ile yapılandırılmış sağlayıcıların sunucu uygulaması yeniden başlatılana kadar birden fazla istek boyunca değerlerini koruyacağı anlamına gelir.
 
 Her istek için yeni bir değer oluşturmak istiyorsanız, `useFactory` ile bir fabrika sağlayıcısı kullanın. Fabrika fonksiyonu her gelen istek için çalışır ve her seferinde yeni bir değer oluşturulup token'a atanmasını sağlar.
 
-## Providing platform-specific implementations
+## Platforma özgü uygulamalar sağlama {#providing-platform-specific-implementations}
 
 Uygulamanız tarayıcı ve sunucuda farklı davranış gerektirdiğinde, her platform için ayrı servis uygulamaları sağlayın. Bu yaklaşım, platform mantığını özel servislerde merkezileştirir.
 
@@ -309,8 +304,7 @@ export class ServerAnalyticsService implements AnalyticsService {
 
 Ana uygulama yapılandırmanızda tarayıcı uygulamasını kaydedin:
 
-```ts
-// app.config.ts
+```ts {header: "app.config.ts"}
 export const appConfig: ApplicationConfig = {
   providers: [{provide: AnalyticsService, useClass: BrowserAnalyticsService}],
 };
@@ -318,8 +312,7 @@ export const appConfig: ApplicationConfig = {
 
 Sunucu yapılandırmanızda sunucu uygulamasıyla geçersiz kılın:
 
-```ts
-// app.config.server.ts
+```ts {header: "app.config.server.ts"}
 const serverConfig: ApplicationConfig = {
   providers: [{provide: AnalyticsService, useClass: ServerAnalyticsService}],
 };
@@ -338,7 +331,7 @@ export class Checkout {
 }
 ```
 
-## Accessing Document via DI
+## DI aracılığıyla Document'a erişme {#accessing-document-via-di}
 
 Sunucu tarafı render ile çalışırken, `document` gibi tarayıcıya özgü global değişkenlere doğrudan başvurmaktan kaçınmalısınız. Bunun yerine, belge nesnesine platforma agnostik bir şekilde erişmek için [`DOCUMENT`](api/core/DOCUMENT) token'ını kullanın.
 
@@ -362,7 +355,7 @@ export class CanonicalLinkService {
 
 HELPFUL: Meta etiketlerini yönetmek için Angular `Meta` servisini sağlar.
 
-## Accessing Request and Response via DI
+## DI aracılığıyla Request ve Response'a erişme {#accessing-request-and-response-via-di}
 
 `@angular/core` paketi, sunucu tarafı render ortamıyla etkileşim için birkaç token sağlar. Bu token'lar, SSR sırasında Angular uygulamanızdaki önemli bilgilere ve nesnelere erişmenizi sağlar.
 
@@ -397,7 +390,7 @@ IMPORTANT: Yukarıdaki token'lar aşağıdaki senaryolarda `null` olacaktır:<ul
 
 <!-- prettier-ignore-end -->
 
-## Generate a fully static application
+## Tamamen statik bir uygulama oluşturma {#generate-a-fully-static-application}
 
 Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve istekleri işlemek için bir sunucu dosyası oluşturur. Bu, uygulamanızın kullanıcılara ön-render edilmiş içerik sunmasına olanak tanır. Ancak, sunucu olmadan tamamen statik bir site tercih ediyorsanız, `angular.json` yapılandırma dosyanızda `outputMode`'u `static` olarak ayarlayarak bu davranıştan çıkabilirsiniz.
 
@@ -421,11 +414,11 @@ Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncell
 }
 ```
 
-## Caching data when using HttpClient
+## HttpClient kullanırken verileri önbelleğe alma {#caching-data-when-using-httpclient}
 
 `HttpClient`, sunucuda çalışırken giden ağ isteklerini önbelleğe alır. Bu bilgi serileştirilir ve sunucudan gönderilen ilk HTML'in bir parçası olarak tarayıcıya aktarılır. Tarayıcıda, `HttpClient` önbellekte veri olup olmadığını kontrol eder ve varsa, ilk uygulama render'ı sırasında yeni bir HTTP isteği yapmak yerine onu yeniden kullanır. `HttpClient`, bir uygulama tarayıcıda çalışırken [kararlı](api/core/ApplicationRef#isStable) hale geldikten sonra önbelleği kullanmayı bırakır.
 
-### Yanıt gövdesi boyutu sınırını yapılandırma
+### Yanıt gövdesi boyutu sınırını yapılandırma {#configuring-the-response-body-size-limit}
 
 Sunucu tarafı render sırasında `HttpClient` varsayılan fetch arka ucunu kullandığında, Angular her yanıt gövdesini 1 MB ile sınırlar. Bu sınır, render sırasında sunucunun beklenmedik şekilde büyük yanıtları arabelleğe almasını önler. Bir yanıt yapılandırılan sınırı aşarsa istek [NG02825](errors/NG02825) hatasıyla başarısız olur.
 
@@ -451,7 +444,9 @@ const serverConfig: ApplicationConfig = {
 
 IMPORTANT: Bu sınırı uygulamanızın izin verdiği kadar küçük tutun. Sınırı artırmak sunucu tarafı isteklerin daha büyük yanıt gövdelerini arabelleğe almasına izin verir; bu da bellek kullanımını ve hizmet reddi riskini artırabilir. Büyük indirmeleri sunucu render'ının dışına taşımayı tercih edin.
 
-### Configuring the caching options
+CRITICAL: SSR sırasında Fetch uygulaması, [Fetch Standardı](https://fetch.spec.whatwg.org/#concept-main-fetch) gerektirdiği için bir yanıt döndürmeden önce `integrity` doğrulaması yapmak üzere yanıt gövdesinin tamamını okur. Angular, [`maxResponseBodySize`](/guide/ssr#configuring-the-response-body-size-limit) sınırını yalnızca Fetch bir yanıt döndürdükten sonra uygular; bu nedenle bu sınır, bütünlük doğrulaması sırasında arabelleğe alınan veriyi kısıtlamaz.
+
+### Önbelleğe alma seçeneklerini yapılandırma {#configuring-the-caching-options}
 
 Angular'ın sunucu tarafı render (SSR) sırasında HTTP yanıtlarını nasıl önbelleğe aldığını ve hidrasyon sırasında yeniden kullandığını `HttpTransferCacheOptions` yapılandırarak özelleştirebilirsiniz.
 Bu yapılandırma, `provideClientHydration()` içinde `withHttpTransferCacheOptions` kullanılarak global olarak sağlanır.
@@ -543,7 +538,7 @@ withHttpTransferCacheOptions({
 
 Yalnızca transfer önbelleği için cache-control kısıtlamalarını atlamanız gerektiğinde etkinleştirin.
 
-### Per‑request overrides
+### İstek bazında geçersiz kılmalar {#perrequest-overrides}
 
 `transferCache` istek seçeneğini kullanarak belirli bir istek için önbelleğe alma davranışını geçersiz kılabilirsiniz.
 
@@ -552,11 +547,11 @@ Yalnızca transfer önbelleği için cache-control kısıtlamalarını atlamanı
 http.get('/api/profile', {transferCache: {includeHeaders: ['CustomHeader']}});
 ```
 
-### Disabling caching
+### Önbelleğe almayı devre dışı bırakma {#disabling-caching}
 
 Sunucudan gönderilen isteklerin HTTP önbelleğe alınmasını global olarak veya bireysel olarak devre dışı bırakabilirsiniz.
 
-#### Globally
+#### Global olarak {#globally}
 
 Uygulamanızdaki tüm istekler için önbelleğe almayı devre dışı bırakmak için `withNoHttpTransferCache` özelliğini kullanın:
 
@@ -572,7 +567,7 @@ bootstrapApplication(App, {
 });
 ```
 
-#### Filtering
+#### Filtreleme {#filtering}
 
 Belirli istekler için önbelleğe almayı seçici olarak devre dışı bırakmak amacıyla `withHttpTransferCacheOptions` içindeki [`filter`](api/common/http/HttpTransferCacheOptions) seçeneğini de kullanabilirsiniz. Örneğin, belirli bir API uç noktası için önbelleğe almayı devre dışı bırakabilirsiniz:
 
@@ -596,7 +591,7 @@ bootstrapApplication(App, {
 
 Bu seçeneği, kullanıcıya özgü veya dinamik verilere sahip uç noktaları (örneğin `/api/profile`) hariç tutmak için kullanın.
 
-#### Per-request
+#### İstek bazında {#per-request}
 
 Bireysel bir istek için önbelleğe almayı devre dışı bırakmak amacıyla, bir `HttpRequest`'te [`transferCache`](api/common/http/HttpRequest#transferCache) seçeneğini belirtebilirsiniz.
 
@@ -608,14 +603,13 @@ httpClient.get('/api/sensitive-data', {transferCache: false});
 
 NOTE: Uygulamanız sunucu ve istemcide API çağrıları yapmak için farklı HTTP kaynakları kullanıyorsa, `HTTP_TRANSFER_CACHE_ORIGIN_MAP` token'ı bu kaynaklar arasında bir eşleme oluşturmanıza olanak tanır, böylece `HttpTransferCache` özelliği bu istekleri aynı istekler olarak tanıyabilir ve istemcide hidrasyon sırasında sunucuda önbelleğe alınan verileri yeniden kullanabilir.
 
-## Configuring a server
+## Sunucu yapılandırma {#configuring-a-server}
 
 ### Node.js
 
 `@angular/ssr/node`, Node.js ortamları için özelleştirilmiş `@angular/ssr`'yi genişletir. Node.js uygulamanızda sunucu tarafı render'ı uygulamayı kolaylaştıran API'ler sağlar. Fonksiyonların tam listesi ve kullanım örnekleri için [`@angular/ssr/node` API referansına](api/ssr/node/AngularNodeAppEngine) bakın.
 
-```ts
-// server.ts
+```ts {header: "server.ts"}
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -645,12 +639,11 @@ app.use('*', (req, res, next) => {
 export const reqHandler = createNodeRequestHandler(app);
 ```
 
-### Non-Node.js
+### Node.js dışı {#non-nodejs}
 
 `@angular/ssr`, Node.js dışındaki platformlarda Angular uygulamanızı sunucu tarafı render etmek için temel API'ler sağlar. Web API'sinden standart [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) ve [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) nesnelerini kullanır ve Angular SSR'yi çeşitli sunucu ortamlarına entegre etmenizi sağlar. Ayrıntılı bilgi ve örnekler için [`@angular/ssr` API referansına](api/ssr/AngularAppEngine) bakın.
 
-```ts
-// server.ts
+```ts {header: "server.ts"}
 import {AngularAppEngine, createRequestHandler} from '@angular/ssr';
 
 const angularApp = new AngularAppEngine();
@@ -659,12 +652,12 @@ const angularApp = new AngularAppEngine();
  * This is a request handler used by the Angular CLI (dev-server and during build).
  */
 export const reqHandler = createRequestHandler(async (req: Request) => {
-  const res: Response | null = await angularApp.render(req);
+  const res: Response | null = await angularApp.handle(req);
 
   // ...
 });
 ```
 
-## Security
+## Güvenlik {#security}
 
 Sunucu Tarafı İstek Sahteciliğini (SSRF) önleme ve izin verilen ana bilgisayarları yapılandırma hakkında ayrıntılı bilgi için [Sunucu tarafı güvenlik](best-practices/security#sunucu-tarafı-istek-sahteciliğini-ssrf-önleme) kılavuzuna bakın.

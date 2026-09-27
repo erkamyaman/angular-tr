@@ -1,13 +1,13 @@
 # Çalışma zamanı performans optimizasyonu
 
-Hizli render Angular icin kritik oneme sahiptir ve performansli uygulamalar gelistirmenize yardimci olmak icin framework'u bircok optimizasyon dusunulerek olusturduk. Uygulamanizin performansini daha iyi anlamak icin [Angular DevTools](tools/devtools) ve profil cikarma icin Chrome DevTools'un nasil kullanilacagina dair bir [video kilavuzu](https://www.youtube.com/watch?v=FjyX_hkscII) sunuyoruz. Bu bolumde en yaygin performans optimizasyon tekniklerini ele aliyoruz.
+Hızlı render Angular için kritik öneme sahiptir ve performanslı uygulamalar geliştirmenize yardımcı olmak için framework'u birçok optimizasyon düşünülerek oluşturduk. Uygulamanızın performansını daha iyi anlamak için [Angular DevTools](tools/devtools) ve profil çıkarma için Chrome DevTools'un nasıl kullanılacağına dair bir [video kılavuzu](https://www.youtube.com/watch?v=FjyX_hkscII) sunuyoruz. Bu bölümde en yaygın performans optimizasyon tekniklerini ele alıyoruz.
 
-**Degisiklik algilama**, Angular'in uygulama durumunuzun degisip degismedigini ve herhangi bir DOM'un guncellenmesi gerekip gerekm edigini kontrol ettigi surectir. Ust duzey de, Angular bilesenlerinizi yukaridan asagiya dogru gezrerek degisiklikleri arar. Angular, veri modelindeki degisikliklerin bir uygulamanin gorunumune yansitilamsi icin degisiklik algilama mekanizmasini periyodik olarak calistirir. Degisiklik algilama, ya manuel olarak ya da bir asenkron olay (ornegin bir kullanici etkilesimi veya bir XMLHttpRequest tamamlanmasi) araciligiyla tetiklenebilir.
+**Değişiklik algılama**, Angular'ın uygulama durumunuzun değişip değişmediğini ve herhangi bir DOM'un güncellenmesi gerekip gerekmediğini kontrol ettiği süreçtir. Üst düzey de, Angular bileşenlerinizi yukarıdan aşağıya doğru gezerek değişiklikleri arar. Angular, veri modelindeki değişikliklerin bir uygulamanın görünümüne yansıtılması için değişiklik algılama mekanizmasını periyodik olarak çalıştırır. Değişiklik algılama, ya manuel olarak ya da bir asenkron olay (örneğin bir kullanıcı etkileşimi veya bir XMLHttpRequest tamamlanması) aracılığıyla tetiklenebilir.
 
-Degisiklik algilama son derece optimize edilmis ve performanslidir, ancak uygulama onu cok sik calistirirsa yavaslamalara neden olabilir.
+Değişiklik algılama son derece optimize edilmiş ve performanslıdır, ancak uygulama onu çok sık çalıştırırsa yavaşlamalara neden olabilir.
 
-Bu kilavuzda, uygulamanizin bolumleri atlayarak ve degisiklik algilamayi yalnizca gerekli oldugunda calistirarak degisiklik algilama mekanizmasini nasil kontrol edip optimize edeceginizi ogreneceksiniz.
+Bu kılavuzda, uygulamanızın bölümleri atlayarak ve değişiklik algılamayı yalnızca gerekli olduğunda çalıştırarak değişiklik algılama mekanizmasını nasıl kontrol edip optimize edeceğinizi öğreneceksiniz.
 
-Performans optimizasyonlari hakkinda bir medya formatinda daha fazla bilgi edinmeyi tercih ediyorsaniz bu videoyu izleyin:
+Performans optimizasyonları hakkında bir medya formatında daha fazla bilgi edinmeyi tercih ediyorsanız bu videoyu izleyin:
 
 <docs-video src="https://www.youtube.com/embed/f8sA-i6gkGQ"/>

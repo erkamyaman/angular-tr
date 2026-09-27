@@ -102,10 +102,10 @@ Bir bileşenin işlenmesi tipik olarak bir giriş noktası (mavi) ve ardından �
 
 #### Örnek: Değişiklik algılama
 
-Bir degisiklik algilama dongusu genellikle bir veya daha fazla veri senkronizasyon gecisindan (mavi) olusur; her gecis bir bilesen alt kumesini gezer.
+Bir değişiklik algılama döngüsü genellikle bir veya daha fazla veri senkronizasyon geçişinden (mavi) oluşur; her geçiş bir bileşen alt kümesini gezer.
 
 <img alt="Profile data: change detection" src="assets/images/best-practices/runtime-performance/profile-change-detection.png">
 
-Bu veri gorsellestirmesi ile, degisiklik algilamaya dahil olan bilesenler ve hangilerinin atlangini (tipik olarak kirli olarak isaretlenmemis `OnPush` bilesenleri) hemen belirlemek mumkundur.
+Bu veri görselleştirmesi ile, değişiklik algılamaya dahil olan bileşenler ve hangilerinin atlandığını (tipik olarak kirli olarak işaretlenmemiş `OnPush` bileşenleri) hemen belirlemek mümkündür.
 
-Ek olarak, bir degisiklik algilama icin senkronizasyon gecisi sayisini inceleyebilirsiniz. Birden fazla senkronizasyon gecisine sahip olmak, degisiklik algilama sirasinda durumun guncellendigini gostrebilir. Bundan kacinmalisiniz, cunku sayfa guncellemelerini yavaslatir ve en kotu durumda sonsuz dongulere bile yol acabilir.
+Ek olarak, bir değişiklik algılama için senkronizasyon geçişi sayısını inceleyebilirsiniz. Birden fazla senkronizasyon geçişine sahip olmak, değişiklik algılama sırasında durumun güncellendiğini gösterebilir. Bundan kaçınmalısınız, çünkü sayfa güncellemelerini yavaşlatır ve en kötü durumda sonsuz döngülere bile yol açabilir.

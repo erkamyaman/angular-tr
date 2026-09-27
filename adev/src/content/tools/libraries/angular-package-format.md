@@ -12,7 +12,7 @@ v13 öncesi spesifikasyonun sürümlerini bu [google doc](https://docs.google.co
 
 ## Neden Bir Paket Formatı Belirleyelim?
 
-Günümüz JavaScript ortamında, geliştiriciler paketleri birçok farklı araç zinciri \(webpack, Rollup, esbuild, vb.\) kullanarak çeşitli yollarla tüketir.
+Günümüz JavaScript ortamında, geliştiriciler paketleri birçok farklı araç zinciri \(webpack, Rollup, Rolldown, esbuild, vb.\) kullanarak çeşitli yollarla tüketir.
 Bu araçlar farklı girdileri anlayabilir ve gerektirebilir - bazı araçlar en son ES dil sürümünü işleyebilirken, diğerleri doğrudan daha eski bir ES sürümünü tüketmekten fayda görebilir.
 
 Angular dağıtım formatı, yaygın olarak kullanılan tüm geliştirme araçlarını ve iş akışlarını destekler ve daha küçük uygulama yük boyutu veya daha hızlı geliştirme iterasyon döngüsü \(derleme süresi\) ile sonuçlanan optimizasyonlara vurgu yapar.
@@ -47,7 +47,7 @@ Bu tablo, dosya ve dizinlerin amacını açıklamak için açıklamalı `node_mo
 | `fesm2022/` <br /> &nbsp;&nbsp;─ `core.mjs` <br /> &nbsp;&nbsp;─ `core.mjs.map` <br /> &nbsp;&nbsp;─ `testing.mjs` <br /> &nbsp;&nbsp;─ `testing.mjs.map` | Kaynak haritalarıyla birlikte düzleştirilmiş \(FESM\) ES2022 formatındaki tüm giriş noktaları için kod.                                                                                                                          |
 | `types/` <br /> &nbsp;&nbsp;─ `core.d.ts` <br /> &nbsp;&nbsp;─ `testing.d.ts`                                                                             | Tüm genel giriş noktaları için paketlenmiş TypeScript tip tanımlamaları.                                                                                                                                                         |
 
-## `package.json`
+### `package.json`
 
 Birincil `package.json` aşağıdakiler dahil olmak üzere önemli paket meta verilerini içerir:
 
@@ -133,7 +133,7 @@ Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creat
 
 Çoğu Angular paketi üst düzey yan etkilere bağlı olmamalıdır ve bu nedenle bu bildirimi içermelidir.
 
-## Giriş Noktaları ve Kod Bölme
+### Giriş Noktaları ve Kod Bölme {#entrypoints-and-code-splitting}
 
 Angular Paket Formatındaki paketler bir birincil giriş noktası ve sıfır veya daha fazla ikincil giriş noktası \(örneğin `@angular/common/http`\) içerir.
 Giriş noktaları çeşitli işlevlere hizmet eder.
@@ -158,11 +158,13 @@ Tüm kütüphaneler böyle bir ayrıntı düzeyi gerektirmez.
 Tek bir mantıksal amaca sahip çoğu kütüphane, tek bir giriş noktası olarak yayınlanmalıdır.
 Örneğin `@angular/core`, çalışma zamanı için tek bir giriş noktası kullanır çünkü Angular çalışma zamanı genellikle tek bir varlık olarak kullanılır.
 
-### İkincil Giriş Noktalarının Çözümlenmesi
+#### İkincil Giriş Noktalarının Çözümlenmesi
 
 İkincil giriş noktaları, paketin `package.json`'ındaki `"exports"` alanı aracılığıyla çözümlenebilir.
 
-## README.md
+Bir kütüphanede ikincil giriş noktalarının nasıl yapılandırılacağını öğrenmek için [Giriş noktaları](tools/libraries/creating-libraries#entry-points) bölümüne bakın.
+
+### README.md
 
 npm ve GitHub'da bir paketin açıklamasını görüntülemek için kullanılan Markdown formatındaki README dosyası.
 
@@ -174,7 +176,11 @@ the main [Angular](https://github.com/angular/angular) repo.Please file issues a
 against that repo. License: MIT
 ```
 
-## Kısmi Derleme
+## Kütüphane Derlemesi ve Paket Optimizasyonları {#library-compilation-and-package-optimizations}
+
+Bu bölüm, kütüphaneler için derleme sürecini ve yapıtı bir kayıt defterinde yayınlamadan önce npm paketine uygulanan optimizasyonları açıklar.
+
+### Kısmi Derleme
 
 Angular Paket Formatındaki kütüphaneler "kısmi derleme" modunda yayınlanmalıdır.
 Bu, `ngc` için Angular derleyicisi ve çalışma zamanı sürümlerinin tam olarak eşleşmesi gereken uygulamalar için kullanılan tam derlemenin aksine, belirli bir Angular çalışma zamanı sürümüne bağlı olmayan derlenmiş Angular kodu üreten bir derleme modudur.
@@ -194,15 +200,13 @@ Kısmen derlenmiş kütüphane kodu, daha sonra uygulama derleme sürecinde Angu
 
 Derleme süreciniz Angular CLI kullanmıyorsa [Consuming partial ivy code outside the Angular CLI](tools/libraries/creating-libraries#angular-cli-dışında-partial-ivy-kodunu-kullanma) kılavuzuna bakın.
 
-## Optimizasyonlar
-
 ### ES Modüllerinin Düzleştirilmesi
 
 Angular Paket Formatı, kodun "düzleştirilmiş" ES modülü formatında yayınlanmasını belirtir.
 Bu, Angular uygulamalarının derleme süresini ve nihai uygulama paketinin indirme ve ayrıştırma süresini önemli ölçüde azaltır.
 Lütfen Nolan Lawson'ın mükemmel yazısı ["The cost of small modules"](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules)'a göz atın.
 
-Angular derleyicisi indeks ES modülü dosyaları oluşturabilir. Rollup gibi araçlar, _Düzleştirilmiş ES Modülü_ (FESM) dosya formatında düzleştirilmiş modüller oluşturmak için bu dosyaları kullanabilir.
+Angular derleyicisi indeks ES modülü dosyaları oluşturabilir. Rollup / Rolldown gibi araçlar, _Düzleştirilmiş ES Modülü_ (FESM) dosya formatında düzleştirilmiş modüller oluşturmak için bu dosyaları kullanabilir.
 
 FESM, bir giriş noktasından erişilebilen tüm ES Modüllerinin tek bir ES Modülüne düzleştirilmesiyle oluşturulan bir dosya formatıdır.
 Bir paketteki tüm içe aktarımlar izlenerek ve bu kod tek bir dosyaya kopyalanırken tüm genel ES dışa aktarımları korunarak ve tüm özel içe aktarımlar kaldırılarak oluşturulur.
@@ -230,7 +234,7 @@ Düzleştirilmiş bir ES Modülü indeks dosyası oluşturmak için tsconfig.jso
 }
 ```
 
-ngc tarafından indeks dosyası \(örneğin, `my-ui-lib.js`\) oluşturulduktan sonra, düzleştirilmiş ESM dosyasını üretmek için Rollup gibi paketleyiciler ve optimize ediciler kullanılabilir.
+ngc tarafından indeks dosyası \(örneğin, `my-ui-lib.js`\) oluşturulduktan sonra, düzleştirilmiş ESM dosyasını üretmek için Rollup ve Rolldown gibi paketleyiciler ve optimize ediciler kullanılabilir.
 
 ### "sideEffects" Bayrağı
 
@@ -250,14 +254,14 @@ Daha fazla bilgi: [webpack docs on side effects](https://github.com/webpack/webp
 ES2022 dil düzeyi artık Angular CLI ve diğer araçlar tarafından tüketilen varsayılan dil düzeyidir.
 Angular CLI, paketi uygulama derleme zamanında tüm hedeflenen tarayıcılar tarafından desteklenen bir dil düzeyine düşürür.
 
-### d.ts Paketleme / Tip Tanımlamalarının Düzleştirilmesi
+### Tip Tanımlamalarının Düzleştirilmesi (`.d.ts` paketleme) {#flattening-of-type-definitions-dts-bundling}
 
 APF v8'den itibaren TypeScript tanımlamalarının paketlenmesi önerilir.
 Tip tanımlamalarının paketlenmesi, özellikle kütüphanenizde çok sayıda bireysel `.ts` kaynak dosyası varsa, kullanıcılar için derlemeleri önemli ölçüde hızlandırabilir.
 
-Angular, `.d.ts` dosyalarını düzleştirmek için [`rollup-plugin-dts`](https://github.com/Swatinem/rollup-plugin-dts) kullanır (FESM dosyalarının oluşturulmasına benzer şekilde `rollup` kullanarak).
+Angular, `.d.ts` dosyalarını düzleştirmek için [`rolldown-plugin-dts`](https://github.com/sxzz/rolldown-plugin-dts) kullanır (FESM dosyalarının oluşturulmasına benzer şekilde `rolldown` kullanarak).
 
-`.d.ts` paketlemesi için rollup kullanmak, giriş noktaları arasında kod bölmeyi desteklediği için faydalıdır.
+`.d.ts` paketlemesi için rolldown kullanmak, giriş noktaları arasında kod bölmeyi desteklediği için faydalıdır.
 Örneğin, aynı paylaşılan tipe dayanan birden fazla giriş noktanız olduğunu düşünün; daha büyük düzleştirilmiş `.d.ts` dosyalarıyla birlikte paylaşılan bir `.d.ts` dosyası oluşturulur.
 Bu istenen bir durumdur ve tiplerin tekrarlanmasını önler.
 
@@ -268,9 +272,12 @@ Bunun nedeni, tslib sürümünün kütüphanenizi derlemek için kullanılan Typ
 
 ## Örnekler
 
+Angular framework'ünün npm paketleri, APF uyumlu kütüphane paketleri için iyi bir referans noktasıdır.
+Dosya düzenine ve npm paketine UNPKG üzerinden göz atın:
+
 <docs-pill-row>
-  <docs-pill href="https://app.unpkg.com/@angular/core@21.0.6" title="@angular/core package"/>
-  <docs-pill href="https://app.unpkg.com/@angular/material@21.0.3" title="@angular/material package"/>
+  <docs-pill href="https://app.unpkg.com/@angular/core@latest" title="@angular/core package"/>
+  <docs-pill href="https://app.unpkg.com/@angular/material@latest" title="@angular/material package"/>
 </docs-pill-row>
 
 ## Terimlerin Tanımı
@@ -284,11 +291,11 @@ npm'e yayınlanan ve birlikte yüklenen en küçük dosya kümesi, örneğin `@a
 Bu paket; package.json adlı bir manifest, derlenmiş kaynak kodu, typescript tip tanımlama dosyaları, kaynak haritaları, meta veriler vb. içerir.
 Paket `npm install @angular/core` ile yüklenir.
 
-### Symbol
+### Sembol {#symbol}
 
 Bir modülde bulunan ve isteğe bağlı olarak bir modül dışa aktarımı aracılığıyla dış dünyaya görünür kılınan sınıf, fonksiyon, sabit veya değişken.
 
-### Module
+### Modül {#module}
 
 ECMAScript Modüllerinin kısaltması.
 Sembolleri içe aktaran ve dışa aktaran ifadeler içeren bir dosya.
@@ -303,40 +310,40 @@ ECMAScript Modüllerinin kısaltması \(yukarıya bakın\).
 Düzleştirilmiş ES Modüllerinin kısaltması ve bir giriş noktasından erişilebilen tüm ES Modüllerinin tek bir ES Modülüne düzleştirilmesiyle oluşturulan bir dosya formatından oluşur.
 FESM'in tipik olarak tek bir dosya olduğunu, ancak diğer FESM'lerle paylaşılan bir paylaşımlı parçaya bağlı olabileceğini unutmayın.
 
-### Module ID
+### Modül ID'si {#module-id}
 
 import ifadelerinde kullanılan bir modülün tanımlayıcısı \(örneğin, `@angular/core`\).
 ID genellikle doğrudan dosya sistemindeki bir yola eşlenir, ancak çeşitli modül çözümleme stratejileri nedeniyle bu her zaman böyle değildir.
 
-### Module specifier
+### Modül belirleyicisi {#module-specifier}
 
 Bir modül tanımlayıcısı \(yukarıya bakın\).
 
-### Module resolution strategy
+### Modül çözümleme stratejisi {#module-resolution-strategy}
 
 Modül ID'lerini dosya sistemindeki yollara dönüştürmek için kullanılan algoritma.
 Node.js'in iyi belgelenmiş ve yaygın olarak kullanılan bir stratejisi vardır, TypeScript çeşitli modül çözümleme stratejilerini destekler, [Closure Compiler](https://developers.google.com/closure/compiler)'ın ise başka bir stratejisi vardır.
 
-### Module format
+### Modül formatı {#module-format}
 
 En azından bir dosyadan içe aktarma ve dışa aktarma söz dizimini kapsayan modül söz dizimi spesifikasyonu.
 Yaygın modül formatları CommonJS \(CJS, genellikle Node.js uygulamaları için kullanılır\) veya ECMAScript Modülleridir \(ESM\).
 Modül formatı yalnızca bireysel modüllerin paketlenmesini belirtir, modül içeriğini oluşturmak için kullanılan JavaScript dil özelliklerini değil.
 Bu nedenle Angular ekibi, modül formatına genellikle dil düzeyi belirleyicisini sonek olarak kullanır, \(örneğin, ESM+ES2022, modülün ESM formatında olduğunu ve ES2022 kodu içerdiğini belirtir\).
 
-### Bundle
+### Paket dosyası (bundle) {#bundle}
 
 Bir veya daha fazla modülden kaynaklanan sembolleri içeren, bir derleme aracı \(örneğin, [webpack](https://webpack.js.org) veya [Rollup](https://rollupjs.org)\) tarafından üretilen tek bir JS dosyası biçimindeki yapıtaşı.
 Paketler, tarayıcıların yüzlerce hatta on binlerce dosyayı indirmeye başlaması durumunda oluşacak ağ yükünü azaltan tarayıcıya özgü bir çözümdür.
 Node.js genellikle paketleri kullanmaz.
 Yaygın paket formatları UMD ve System.register'dır.
 
-### Language level
+### Dil düzeyi {#language-level}
 
 Kodun dili \(ES2022\).
 Modül formatından bağımsızdır.
 
-### Entry point
+### Giriş noktası {#entry-point}
 
 Kullanıcı tarafından içe aktarılması amaçlanan bir modül.
 Benzersiz bir modül ID'si tarafından referans alınır ve bu modül ID'si tarafından referans alınan genel API'yi dışa aktarır.
@@ -344,12 +351,12 @@ Bir örnek `@angular/core` veya `@angular/core/testing`'dir.
 Her iki giriş noktası da `@angular/core` paketinde bulunur, ancak farklı semboller dışa aktarırlar.
 Bir paket birçok giriş noktasına sahip olabilir.
 
-### Deep import
+### Derin içe aktarma {#deep-import}
 
 Giriş Noktası olmayan modüllerden sembol alma işlemi.
 Bu modül ID'leri genellikle projenin ömrü boyunca veya verilen paket için paket oluşturulurken değişebilen özel API'ler olarak kabul edilir.
 
-### Top-Level import
+### Üst düzey içe aktarma {#top-level-import}
 
 Bir giriş noktasından gelen içe aktarım.
 Mevcut üst düzey içe aktarımlar, genel API'yi tanımlayan ve `@angular/core` veya `@angular/common` gibi "@angular/name" modüllerinde sunulan içe aktarımlardır.
@@ -357,12 +364,12 @@ Mevcut üst düzey içe aktarımlar, genel API'yi tanımlayan ve `@angular/core`
 ### Tree-shaking
 
 Bir uygulama tarafından kullanılmayan kodun belirlenmesi ve kaldırılması süreci - ölü kod eliminasyonu olarak da bilinir.
-Bu, [Rollup](https://rollupjs.org), [Closure Compiler](https://developers.google.com/closure/compiler) veya [Terser](https://github.com/terser/terser) gibi araçlar kullanılarak uygulama düzeyinde gerçekleştirilen global bir optimizasyondur.
+Bu, [Rollup](https://rollupjs.org), [Rolldown](https://rolldown.rs/), [Closure Compiler](https://developers.google.com/closure/compiler) veya [Terser](https://github.com/terser/terser) gibi araçlar kullanılarak uygulama düzeyinde gerçekleştirilen global bir optimizasyondur.
 
-### AOT compiler
+### AOT derleyicisi {#aot-compiler}
 
 Angular'ın Ahead of Time Derleyicisi.
 
-### Flattened type definitions
+### Düzleştirilmiş tip tanımlamaları {#flattened-type-definitions}
 
 [API Extractor](https://api-extractor.com) veya [rollup-plugin-dts](https://github.com/Swatinem/rollup-plugin-dts) gibi araçlar kullanılarak oluşturulan paketlenmiş TypeScript tip tanımlamaları.

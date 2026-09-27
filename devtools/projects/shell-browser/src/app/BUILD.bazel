@@ -34,6 +34,25 @@ ng_project(
     ],
 )
 
+ts_test_library(
+    name = "app_component_test_lib",
+    srcs = ["app.component.spec.ts"],
+    deps = [
+        ":app",
+        "//:node_modules/@angular/core",
+        "//devtools/projects/ng-devtools",
+        "//devtools/projects/ng-devtools/src/lib/application-providers:deep_link",
+        "//devtools/projects/protocol",
+    ],
+)
+
+zoneless_web_test_suite(
+    name = "app_component_test",
+    deps = [
+        ":app_component_test_lib",
+    ],
+)
+
 ts_project(
     name = "ng_validate",
     srcs = [
@@ -99,12 +118,34 @@ ts_project(
         "chrome-application-operations.ts",
     ],
     deps = [
+        ":comm_utils",
         "//:node_modules/@angular/cdk",
         "//:node_modules/@angular/core",
         "//:node_modules/@types/chrome",
         "//devtools:node_modules/@types/firefox-webext-browser",
         "//devtools/projects/ng-devtools",
         "//devtools/projects/protocol",
+    ],
+)
+
+ts_test_library(
+    name = "chrome_application_operations_test_lib",
+    srcs = ["chrome-application-operations.spec.ts"],
+    deps = [
+        ":chrome_application_operations",
+        "//:node_modules/@angular/cdk",
+        "//:node_modules/@angular/core",
+        "//:node_modules/@types/chrome",
+        "//:node_modules/jasmine",
+        "//devtools/projects/ng-devtools",
+        "//devtools/projects/protocol",
+    ],
+)
+
+zoneless_web_test_suite(
+    name = "chrome_application_operations_test",
+    deps = [
+        ":chrome_application_operations_test_lib",
     ],
 )
 
@@ -157,7 +198,50 @@ ts_project(
         "background.ts",
     ],
     deps = [
+        ":breakpoint_manager",
         ":tab_manager",
+        "//devtools/projects/protocol",
+    ],
+)
+
+ts_project(
+    name = "breakpoint_manager",
+    srcs = [
+        "breakpoint_manager.ts",
+    ],
+    deps = [
+        ":comm_utils",
+        "//:node_modules/@types/chrome",
+        "//devtools/projects/protocol",
+    ],
+)
+
+zoneless_web_test_suite(
+    name = "breakpoint_manager_test",
+    deps = [
+        ":breakpoint_manager_test_lib",
+    ],
+)
+
+ts_test_library(
+    name = "fake_chrome_debugger",
+    srcs = [
+        "fake_chrome_debugger.ts",
+    ],
+    deps = [
+        "//:node_modules/@types/chrome",
+    ],
+)
+
+ts_test_library(
+    name = "breakpoint_manager_test_lib",
+    srcs = [
+        "breakpoint_manager.spec.ts",
+    ],
+    deps = [
+        ":breakpoint_manager",
+        ":fake_chrome_debugger",
+        "//:node_modules/@types/chrome",
         "//devtools/projects/protocol",
     ],
 )

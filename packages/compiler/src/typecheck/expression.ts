@@ -76,8 +76,10 @@ class TcbExprTranslator implements AstVisitor {
   }
 
   visitUnary(ast: Unary): TcbExpr {
-    const expr = this.translate(ast.expr);
-    const node = new TcbExpr(`${ast.operator}${expr.print()}`);
+    // Note that we don't need to guard against sequences like `+ +a` collapsing into `++a`,
+    // because `wrapForTypeChecker` always parenthesizes nested unary expressions.
+    const expr = this.translate(ast.expr).print();
+    const node = new TcbExpr(ast.isPrefix ? `${ast.operator}${expr}` : `${expr}${ast.operator}`);
     return node.wrapForTypeChecker().addParseSpanInfo(ast.sourceSpan);
   }
 
@@ -143,7 +145,10 @@ class TcbExprTranslator implements AstVisitor {
   }
 
   visitKeyedRead(ast: KeyedRead): TcbExpr {
-    const receiver = this.translate(ast.receiver).wrapForTypeChecker();
+    const receiver = this.translate(ast.receiver);
+    if (!this.isStrictSafeNavigationChain(ast.receiver)) {
+      receiver.wrapForTypeChecker();
+    }
     const key = this.translate(ast.key);
     return new TcbExpr(`${receiver.print()}[${key.print()}]`).addParseSpanInfo(ast.sourceSpan);
   }
@@ -234,11 +239,21 @@ class TcbExprTranslator implements AstVisitor {
   }
 
   visitPropertyRead(ast: PropertyRead): TcbExpr {
-    const receiver = this.translate(ast.receiver).wrapForTypeChecker();
-    return new TcbExpr(`${receiver.print()}.${ast.name}`)
-      .addParseSpanInfo(ast.nameSpan)
-      .wrapForTypeChecker()
-      .addParseSpanInfo(ast.sourceSpan);
+    const receiver = this.translate(ast.receiver);
+    const isSafeChain = this.isStrictSafeNavigationChain(ast.receiver);
+    if (!isSafeChain) {
+      receiver.wrapForTypeChecker();
+    }
+
+    const node = new TcbExpr(`${receiver.print()}.${ast.name}`).addParseSpanInfo(ast.nameSpan);
+
+    let result: TcbExpr;
+    if (isSafeChain) {
+      result = new TcbExpr(node.print());
+    } else {
+      result = node.wrapForTypeChecker();
+    }
+    return result.addParseSpanInfo(ast.sourceSpan);
   }
 
   visitSafePropertyRead(ast: SafePropertyRead): TcbExpr {
@@ -284,7 +299,10 @@ class TcbExprTranslator implements AstVisitor {
       if (resolved !== null) {
         expr = resolved;
       } else {
-        const propertyReceiver = this.translate(receiver.receiver).wrapForTypeChecker();
+        const propertyReceiver = this.translate(receiver.receiver);
+        if (!this.isStrictSafeNavigationChain(receiver.receiver)) {
+          propertyReceiver.wrapForTypeChecker();
+        }
         expr = new TcbExpr(`${propertyReceiver.print()}.${receiver.name}`).addParseSpanInfo(
           receiver.nameSpan,
         );
@@ -401,7 +419,7 @@ class TcbExprTranslator implements AstVisitor {
     const args = argNodes.map((node) => node.print()).join(', ');
 
     if (this.config.strictSafeNavigationTypes) {
-      return new TcbExpr(`(${expr}?.(${args}))`);
+      return new TcbExpr(`${expr}?.(${args})`);
     }
 
     if (VeSafeLhsInferenceBugDetector.veWillInferAnyFor(ast)) {
@@ -413,6 +431,34 @@ class TcbExprTranslator implements AstVisitor {
 
   private escapeTemplateLiteral(value: string) {
     return value.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\${/g, '$\\{');
+  }
+
+  private isStrictSafeNavigationChain(ast: AST): boolean {
+    if (!this.config.strictSafeNavigationTypes) {
+      return false;
+    }
+    let current: AST | undefined = ast;
+    while (current) {
+      if (
+        current instanceof SafePropertyRead ||
+        current instanceof SafeKeyedRead ||
+        current instanceof SafeCall
+      ) {
+        return true;
+      }
+      if (
+        current instanceof PropertyRead ||
+        current instanceof KeyedRead ||
+        current instanceof Call
+      ) {
+        current = current.receiver;
+      } else if (current instanceof NonNullAssert) {
+        current = current.expression;
+      } else {
+        break;
+      }
+    }
+    return false;
   }
 }
 

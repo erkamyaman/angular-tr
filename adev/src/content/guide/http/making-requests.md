@@ -616,6 +616,8 @@ http
 
 IMPORTANT: `integrity` seçeneği, yanıt içeriği ile sağlanan özet arasında tam bir eşleşme gerektirir. İçerik eşleşmezse, istek bir ağ hatası ile başarısız olur.
 
+CRITICAL: SSR sırasında Fetch uygulaması, [Fetch Standardı](https://fetch.spec.whatwg.org/#concept-main-fetch) gereği bir yanıt döndürmeden önce `integrity` değerini doğrulamak için yanıt gövdesinin tamamını okur. Angular, [`maxResponseBodySize`](/guide/ssr#configuring-the-response-body-size-limit) sınırını yalnızca Fetch bir yanıt döndürdükten sonra uygular; bu nedenle bu sınır, bütünlük doğrulaması sırasında arabelleğe alınan verileri kısıtlamaz.
+
 TIP: Değiştirilmediğinden emin olmak için harici kaynaklardan kritik kaynaklar yüklerken alt kaynak bütünlüğünü kullanın. Özetleri `openssl` gibi araçlar kullanarak oluşturun.
 
 ## HTTP `Observable`'lar

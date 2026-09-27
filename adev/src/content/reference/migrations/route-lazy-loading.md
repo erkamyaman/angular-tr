@@ -31,8 +31,7 @@ Geçiş, rotalardaki tüm bileşenleri kontrol edecek, standalone ve hevesli yü
 
 #### Önce
 
-```typescript
-// app.module.ts
+```typescript {header: "app.module.ts"}
 import {Home} from './home';
 
 @NgModule({
@@ -51,8 +50,7 @@ export class AppModule {}
 
 #### Sonra
 
-```typescript
-// app.module.ts
+```typescript {header: "app.module.ts"}
 @NgModule({
   imports: [
     RouterModule.forRoot([

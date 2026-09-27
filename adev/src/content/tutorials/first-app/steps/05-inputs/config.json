@@ -6,6 +6,6 @@
   "openFiles": [
     "src/app/housing-location/housing-location.ts",
     "src/app/home/home.ts",
-    "src/app/housinglocations.ts"
+    "src/app/housinglocation.ts"
   ]
 }

@@ -301,7 +301,7 @@ Dahili sinyale `.sourceValue` aracılığıyla yine de erişebilirsiniz:
 const value = userControl.sourceValue();
 ```
 
-### Disabling/Enabling control
+### Kontrolü devre dışı bırakma/etkinleştirme {#disabling-enabling-control}
 
 Etkin/devre dışı durumunu değiştirmek için zorunlu API'ler (`enable()`, `disable()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez. Bunun nedeni, kontrolün durumunun sinyal durumundan ve kurallardan türetilmesi gerektiğidir.
 
@@ -351,7 +351,7 @@ export class UserProfile {
 }
 ```
 
-### Dynamic manipulation
+### Dinamik değişiklik {#dynamic-manipulation}
 
 Doğrulayıcı eklemek veya kaldırmak için zorunlu API'ler (`addValidators()`, `removeValidators()`, `setValidators()` gibi) `SignalFormControl`'de kasıtlı olarak desteklenmez.
 
@@ -397,11 +397,11 @@ export class UserProfile {
 }
 ```
 
-### Manual Error Selection
+### Manuel hata belirleme {#manual-error-selection}
 
 `setErrors()` ve `markAsPending()` yöntemleri desteklenmez. Signal Forms'ta hatalar doğrulama kurallarından ve asenkron doğrulama durumundan türetilir. Bir hata bildirmeniz gerekiyorsa, bu şemadaki bir doğrulama kuralı aracılığıyla bildirimsel olarak yapılmalıdır.
 
-## Automatic status classes
+## Otomatik durum sınıfları {#automatic-status-classes}
 
 Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#kontrol-durumlarını-takip-etme) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
 

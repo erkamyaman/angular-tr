@@ -222,6 +222,29 @@ Yukarıdaki örnek, `ExpandoContent` direktifine sahip bir eleman bulur ve o ele
 
 Geliştiriciler en yaygın olarak `read` ile `ElementRef` ve `TemplateRef` alır.
 
+`read` seçeneğine `Injector` da geçebilirsiniz.
+
+```angular-ts
+@Component({
+  selector: 'custom-table',
+  template: `
+    <third-party-table #inner>
+      <ng-template>
+        <ng-container [ngTemplateOutlet]="columns()" [ngTemplateOutletInjector]="innerInjector()" />
+      </ng-template>
+    </third-party-table>
+  `,
+})
+export class CustomTable {
+  columns = contentChild(TemplateRef);
+  innerInjector = viewChild('inner', {read: Injector});
+}
+```
+
+Yukarıdaki örnek, `third-party-table` elemanının node injector'ını, yani ağaçta o elemanın konumundan görülen
+injector'ı alır. Bunu `ngTemplateOutletInjector` aracılığıyla `NgTemplateOutlet`'e geçmek, yansıtılan şablondaki
+direktiflerin üçüncü taraf bileşenin sağladığı değerleri enjekte edebilmesini sağlar.
+
 ### İçerik alt elemanları
 
 Varsayılan olarak, `contentChildren` sorguları yalnızca bileşenin _doğrudan_ alt elemanlarını bulur ve alt elemanların içerisine inmez.

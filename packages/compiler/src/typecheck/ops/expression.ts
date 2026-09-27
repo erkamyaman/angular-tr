@@ -16,6 +16,8 @@ import {
   SafeCall,
   SafePropertyRead,
   ThisReceiver,
+  Unary,
+  unwrapWriteTarget,
 } from '../../expression_parser/ast';
 import {LetDeclaration} from '../../render3/r3_ast';
 import {Identifiers as R3Identifiers} from '../../render3/r3_identifiers';
@@ -135,22 +137,42 @@ export class TcbExpressionTranslator {
           return new TcbExpr(`${targetExpression.print()} as any`);
         }
       }
+
       return targetExpression;
     } else if (
-      ast instanceof Binary &&
-      Binary.isAssignmentOperation(ast.operation) &&
-      ast.left instanceof PropertyRead &&
-      (ast.left.receiver instanceof ImplicitReceiver || ast.left.receiver instanceof ThisReceiver)
+      (ast instanceof Binary && Binary.isAssignmentOperation(ast.operation)) ||
+      (ast instanceof Unary && Unary.isUpdateOperation(ast.operator))
     ) {
-      const read = ast.left;
+      const update = ast instanceof Unary ? ast : null;
+
+      const read = unwrapWriteTarget(update !== null ? update.expr : ast.left);
+
+      if (
+        !(read instanceof PropertyRead) ||
+        !(read.receiver instanceof ImplicitReceiver || read.receiver instanceof ThisReceiver)
+      ) {
+        return null;
+      }
+
       const target = this.tcb.boundTarget.getExpressionTarget(read);
       if (target === null) {
         return null;
       }
 
       const targetExpression = this.getTargetNodeExpression(target, read);
-      const expr = this.translate(ast.right);
-      const result = new TcbExpr(`(${targetExpression.print()} = ${expr.print()})`);
+      let result: TcbExpr;
+
+      if (update !== null) {
+        result = new TcbExpr(
+          update.isPrefix
+            ? `(${update.operator}${targetExpression.print()})`
+            : `(${targetExpression.print()}${update.operator})`,
+        );
+      } else {
+        const expr = this.translate(ast.right);
+        result = new TcbExpr(`(${targetExpression.print()} = ${expr.print()})`);
+      }
+
       result.addParseSpanInfo(read.sourceSpan);
 
       // Ignore diagnostics from TS produced for writes to `@let` and re-report them using
@@ -186,16 +208,33 @@ export class TcbExpressionTranslator {
 
         // Use an 'any' value to at least allow the rest of the expression to be checked.
         pipe = new TcbExpr('(0 as any)');
-      } else if (
-        pipeMeta.isExplicitlyDeferred &&
-        this.tcb.boundTarget.getEagerlyUsedPipes().includes(ast.name)
-      ) {
-        // This pipe was defer-loaded (included into `@Component.deferredImports`),
-        // but was used outside of a `@defer` block, which is the error.
-        this.tcb.oobRecorder.deferredPipeUsedEagerly(this.tcb.id, ast);
-
-        // Use an 'any' value to at least allow the rest of the expression to be checked.
-        pipe = new TcbExpr('(0 as any)');
+      } else if (pipeMeta.isExplicitlyDeferred) {
+        const enclosingBlocks = this.tcb.boundTarget.getDeferBlocksOfPipe(ast);
+        const isDeferred = enclosingBlocks.length > 0;
+        if (!isDeferred) {
+          this.tcb.oobRecorder.deferredPipeUsedEagerly(this.tcb.id, ast, null, null);
+          pipe = new TcbExpr('(0 as any)');
+        } else if (pipeMeta.deferredBlocks != null) {
+          const isAllowedInBlock = enclosingBlocks.some(
+            (b) => b.definedName !== null && pipeMeta.deferredBlocks!.has(b.definedName),
+          );
+          if (!isAllowedInBlock) {
+            const currentBlockName =
+              enclosingBlocks[enclosingBlocks.length - 1].definedName ?? 'unnamed';
+            const declaredBlocks = Array.from(pipeMeta.deferredBlocks);
+            this.tcb.oobRecorder.deferredPipeUsedEagerly(
+              this.tcb.id,
+              ast,
+              currentBlockName,
+              declaredBlocks,
+            );
+            pipe = new TcbExpr('(0 as any)');
+          } else {
+            pipe = this.tcb.env.pipeInst(pipeMeta);
+          }
+        } else {
+          pipe = this.tcb.env.pipeInst(pipeMeta);
+        }
       } else {
         // Use a variable declared as the pipe's type.
         pipe = this.tcb.env.pipeInst(pipeMeta);

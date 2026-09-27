@@ -12,7 +12,7 @@
 
 Öğretici içerik, öğretici dizinindeki bir `README.md` dosyasında bulunmalıdır.
 
-Örnek olarak `learn-angular` öğreticisine bakın: [`src/content/tutorials/learn-angular/intro/README.md`](/src/content/tutorials/learn-angular/intro/README.md)
+Örnek olarak `learn-angular` öğreticisine bakın: [`adev/src/content/tutorials/learn-angular/intro/README.md`](/adev/src/content/tutorials/learn-angular/intro/README.md)
 
 ### Configuration: `config.json`
 
@@ -43,30 +43,30 @@ Bir öğretici, bir giriş ve adımlardan oluşur. Hem giriş hem de her adım k
 
 ### Introduction
 
-[`src/content/tutorials/learn-angular/intro`](/src/content/tutorials/learn-angular/intro)
+[`adev/src/content/tutorials/learn-angular/intro`](/adev/src/content/tutorials/learn-angular/intro)
 
 öğreticinin girişidir ve `/tutorials/learn-angular` rotasında yer alır.
 
 ### Steps
 
-[`src/content/tutorials/learn-angular/steps`](/src/content/tutorials/learn-angular/steps) öğretici adımlarını içeren dizindir.
+[`adev/src/content/tutorials/learn-angular/steps`](/adev/src/content/tutorials/learn-angular/steps) öğretici adımlarını içeren dizindir.
 
 `learn-angular` öğreticisinden bazı örnekler:
 
-- [`learn-angular/steps/1-components-in-angular`](/src/content/tutorials/learn-angular/steps/1-components-in-angular): Rota `/tutorials/learn-angular/components-in-angular` olacaktır
-- [`learn-angular/steps/2-updating-the-component-class`](/src/content/tutorials/learn-angular/steps/2-updating-the-component-class): Rota `/tutorials/learn-angular/updating-the-component-class` olacaktır
+- [`learn-angular/steps/1-components-in-angular`](/adev/src/content/tutorials/learn-angular/steps/1-components-in-angular): Rota `/tutorials/learn-angular/1-components-in-angular` olacaktır
+- [`learn-angular/steps/2-updating-the-component-class`](/adev/src/content/tutorials/learn-angular/steps/2-updating-the-component-class): Rota `/tutorials/learn-angular/2-updating-the-component-class` olacaktır
 
 Her adım dizini bir sayı ile başlamalı, ardından bir tire ve adım yol adı gelmelidir.
 
 - Sayı, adımı belirtir ve öğretici içindeki önceki ve sonraki adımı tanımlar.
 - Tire bir ayırıcıdır :).
-- Dizin adından alınan yol adı, adımın URL'sini tanımlar.
+- Sayı ve tire dahil olmak üzere dizin adı, adımın URL'sini tanımlar.
 
 ## Reserved tutorials directories
 
 ### `common`
 
-Ortak proje, tüm öğreticiler tarafından yeniden kullanılan eksiksiz bir Angular projesidir. Tüm bağımlılıkları (`package.json`, `package-lock.json`), proje yapılandırmasını (`tsconfig.json`, `angular.json`) ve uygulamayı başlatmak için ana dosyaları (`index.html`, `main.ts`, `app.module.ts`) içerir.
+Ortak proje, tüm öğreticiler tarafından yeniden kullanılan eksiksiz bir Angular projesidir. Tüm bağımlılıkları (`package.json`, `package-lock.json`), proje yapılandırmasını (`tsconfig.json`, `angular.json`) ve uygulamayı başlatmak için ana dosyaları (`index.html`, `main.ts`, `app.config.ts`) içerir.
 
 Ortak proje çeşitli nedenlerle kullanılır:
 
@@ -76,30 +76,35 @@ Ortak proje çeşitli nedenlerle kullanılır:
 - Tüm öğreticiler için tutarlı bir ortam sağlamak.
 - Her öğreticinin proje kurulumuna değil, öğretilen konuya özgü kaynak koduna odaklanmasını sağlamak.
 
-Bakınız: [`src/content/tutorials/common`](/src/content/tutorials/common)
+Bakınız: [`adev/shared-docs/pipeline/tutorials/common`](/adev/shared-docs/pipeline/tutorials/common)
+
+Bir öğretici kendi `common` dizinini de sağlayabilir; bu dizindeki dosyalar, o öğreticinin girişi ve her adımı için paylaşılan ortak projenin üzerine uygulanır. Örnek için [`adev/src/content/tutorials/signals/common`](/adev/src/content/tutorials/signals/common) dizinine bakın.
 
 ### `playground`
 
 Oyun alanı, `/playground` adresindeki öğretici oyun alanı için kaynak kodunu içerir. Herhangi bir içerik barındırmamalıdır.
 
-Bakınız: [`src/content/tutorials/playground`](/src/content/tutorials/playground)
+Bakınız: [`adev/src/content/tutorials/playground`](/adev/src/content/tutorials/playground)
 
 ### `homepage`
 
 Ana sayfa, ana sayfa oyun alanı için kaynak kodunu içerir. Herhangi bir içerik barındırmamalıdır.
 
-Bakınız: [`src/content/tutorials/homepage`](/src/content/tutorials/homepage)
+Bakınız: [`adev/src/content/tutorials/homepage`](/adev/src/content/tutorials/homepage)
 
 ## Update dependencies
 
 Tüm öğreticilerin bağımlılıklarını güncellemek için aşağıdaki betiği çalıştırabilirsiniz
 
 ```bash
-rm ./adev/src/content/tutorials/homepage/package-lock.json  ./adev/src/content/tutorials/first-app/common/package-lock.json ./adev/src/content/tutorials/learn-angular/common/package-lock.json ./adev/src/content/tutorials/playground/common/package-lock.json ./adev/src/content/tutorials/deferrable-views/common/package-lock.json
+rm ./adev/src/content/tutorials/homepage/package-lock.json  ./adev/src/content/tutorials/first-app/common/package-lock.json ./adev/src/content/tutorials/learn-angular/common/package-lock.json ./adev/src/content/tutorials/playground/common/package-lock.json ./adev/src/content/tutorials/deferrable-views/common/package-lock.json ./adev/src/content/tutorials/signals/common/package-lock.json ./adev/src/content/tutorials/signal-forms/common/package-lock.json ./adev/shared-docs/pipeline/tutorials/common/package-lock.json
 
 npm i --package-lock-only --prefix ./adev/src/content/tutorials/homepage
 npm i --package-lock-only --prefix ./adev/src/content/tutorials/first-app/common
 npm i --package-lock-only --prefix ./adev/src/content/tutorials/learn-angular/common
 npm i --package-lock-only --prefix ./adev/src/content/tutorials/playground/common
 npm i --package-lock-only --prefix ./adev/src/content/tutorials/deferrable-views/common
+npm i --package-lock-only --prefix ./adev/src/content/tutorials/signals/common
+npm i --package-lock-only --prefix ./adev/src/content/tutorials/signal-forms/common
+npm i --package-lock-only --prefix ./adev/shared-docs/pipeline/tutorials/common
 ```

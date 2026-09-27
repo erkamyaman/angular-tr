@@ -24,6 +24,7 @@ Buna ek olarak, Angular Yönlendirme kütüphanesi şu ek işlevleri de sunar:
 - Programatik navigasyon
 - Rota parametreleri, sorgular ve joker karakterler
 - `ActivatedRoute` ile aktif rota bilgisi
+- Rota resource'ları ve resolver'lar ile veri çekme
 - Görünüm geçiş efektleri
 - Navigasyon koruyucuları
 

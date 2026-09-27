@@ -161,7 +161,6 @@ Kullanıcılara doğrulama geri bildirimi gösterin:
 | Property  | Purpose                                   |
 | --------- | ----------------------------------------- |
 | `errors`  | Mevcut doğrulama hatalarının dizisi       |
-| `valid`   | Alanın geçerli olup olmadığı              |
 | `invalid` | Alanın doğrulama hataları olup olmadığı   |
 | `pending` | Asenkron doğrulamanın devam edip etmediği |
 
@@ -300,7 +299,7 @@ export class StatefulInput implements FormValueControl<string> {
 
   // Salt okunur durum - form sistemi bunları yönetir
   disabled = input<boolean>(false);
-  disabledReasons = input<readonly DisabledReason[]>([]);
+  disabledReasons = input<readonly WithOptionalFieldTree<DisabledReason>[]>([]);
   readonly = input<boolean>(false);
   hidden = input<boolean>(false);
   invalid = input<boolean>(false);
@@ -390,41 +389,88 @@ IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (od
 
 Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
 
-Model değerini görüntüleme için dönüştürmek üzere `linkedSignal()` (`@angular/core`'dan) kullanın ve kullanıcı girdisini depolama biçimine geri ayrıştırmak için girdi olaylarını işleyin:
+`transformedValue()` (`@angular/forms/signals`'tan) kullanarak kullanıcı arayüzünde gösterilen ham değeri model değeriyle senkronize tutun. Bu fonksiyon, kontrolün `value` model sinyalini ve bir `parse` ile bir `format` fonksiyonunu alır; ham değeri tutan yazılabilir bir sinyal döndürür:
+
+- `format`, model değerini şablonun render ettiği ham değere dönüştürür.
+- `parse`, kullanıcının yazdığını tekrar bir model değerine dönüştürür ve bunun yerine ayrıştırma hataları da bildirebilir.
 
 ```angular-ts
-import {formatCurrency} from '@angular/common';
-import {ChangeDetectionStrategy, Component, linkedSignal, model} from '@angular/core';
-import {FormValueControl} from '@angular/forms/signals';
+import {Component, model} from '@angular/core';
+import {FormValueControl, transformedValue} from '@angular/forms/signals';
 
 @Component({
-  selector: 'app-currency-input',
+  selector: 'number-input',
   template: `
-    <input
-      type="text"
-      [value]="displayValue()"
-      (input)="displayValue.set($event.target.value)"
-      (blur)="updateModel()"
-    />
+    <input type="text" [value]="rawValue()" (input)="rawValue.set($event.target.value)" />
   `,
 })
-export class CurrencyInput implements FormValueControl<number> {
-  // Sayısal değeri saklar (1234.56)
-  readonly value = model.required<number>();
+export class NumberInput implements FormValueControl<number | null> {
+  readonly value = model.required<number | null>();
 
-  // Görüntüleme değerini saklar ("1,234.56")
-  readonly displayValue = linkedSignal(() => formatCurrency(this.value(), 'en', 'USD'));
-
-  // Görüntüleme değerinden modeli güncelle.
-  updateModel() {
-    this.value.set(parseCurrency(this.displayValue()));
-  }
+  protected readonly rawValue = transformedValue(this.value, {
+    parse: (val: string): {value: number | null} => ({value: val ? Number(val) : null}),
+    format: (val: number | null): string => val?.toString() ?? '',
+  });
 }
+```
 
-// Bir para birimi dizesini sayıya dönüştürür (ör. "USD1,234.56" -> 1234.56).
-function parseCurrency(value: string): number {
-  return parseFloat(value.replace(/^[^\d-]+/, '').replace(/,/g, ''));
+Döndürülen sinyale yazmak (`rawValue.set(...)`) `parse` fonksiyonunu çalıştırır ve sonucu `value` içine yazar. Model başka bir yerden değiştiğinde (bir `reset()`, bir şema kuralı veya uygulamanın başka bir bölümü tarafından) `format` yeniden çalışır ve ham değer buna uyacak şekilde güncellenir.
+
+### Ayrıştırma hatalarını bildirme {#reporting-parse-errors}
+
+Bazen ham değerin geçerli bir model karşılığı yoktur: yarım yazılmış bir tarih veya sayısal bir alandaki harfler gibi. Yukarıdaki `NumberInput` bu soruna sahiptir: `Number('abc')` sonucu `NaN` olur ve `parse` bunu gönül rahatlığıyla modele yazar.
+
+Bunun yerine `{error}` döndürün:
+
+```ts
+export class NumberInput implements FormValueControl<number | null> {
+  readonly value = model.required<number | null>();
+
+  protected readonly rawValue = transformedValue(this.value, {
+    parse: (val) => {
+      const parsed = val ? Number(val) : null;
+
+      return Number.isNaN(parsed)
+        ? {error: {kind: 'parse', message: `${val} is not a number`}}
+        : {value: parsed};
+    },
+    format: (val) => val?.toString() ?? '',
+  });
 }
+```
+
+Modeli güncellemek _ve_ bir sorunu işaretlemek istediğinizde hem `value` hem de `error` döndürün.
+
+Kontrol `[formField]` ile bağlandığında, ayrıştırma hataları otomatik olarak alana bildirilir; böylece doğrulama hatalarıyla birlikte alanın `errors()` sinyalinde görünürler:
+
+```angular-ts
+@Component({
+  imports: [NumberInput, FormField],
+  template: `
+    <number-input [formField]="orderForm.amount" />
+
+    @for (error of orderForm.amount().errors(); track $index) {
+      <!-- {kind: 'parse', message: '...'} de burada bildirilir -->
+      <p class="error">{{ error.message }}</p>
+    }
+  `,
+})
+export class Order {
+  orderModel = signal<{amount: number | null}>({amount: null});
+  orderForm = form(this.orderModel);
+}
+```
+
+Ayrıştırma hatası olan bir alan geçersizdir ve bu, başarısız bir doğrulama kuralının yaptığı gibi gönderimi engeller.
+
+HELPFUL: Signal Forms, yerel girdiler için de aynı mekanizmayı kullanır. Tarayıcı bir değeri ayrıştıramadığında (örneğin `<input type="date">` içinde kısmen yazılmış bir tarih), bu durum alanda bir `parse` hatası olarak ortaya çıkar. Ayrıntılar için [Yerel HTML doğrulaması](guide/forms/signals/validation#native-html-validation) bölümüne bakın.
+
+### Sıfırlama {#resetting}
+
+Alan üzerinde `reset()` çağırmak bekleyen ayrıştırma hatalarını temizler ve ham değeri modelden yeniden biçimlendirir; böylece ayrıştırılamayan bir durumda bırakılmış bir kontrol temiz bir görüntüleme değerine döner:
+
+```ts
+orderForm.amount().reset();
 ```
 
 ## Doğrulama entegrasyonu
@@ -495,7 +541,7 @@ registrationForm = form(this.registrationModel, (path) => {
 
 Tüketicinin modeli her alanı tanımlı bir değerle başlatmalıdır. Signal Forms'ta `undefined`, boş bir değeri değil bir alanın yokluğunu ifade eder. Yeniden kullanılabilir bir e-posta kontrolü için bu, tüketicinin başlangıç değeri olarak `''` kullanması ve özelliği tanımsız bırakmaması gerektiği anlamına gelir. Başlangıç değerlerini seçme hakkında ayrıntılar için [Form Modelleri kılavuzuna](guide/forms/signals/models) bakın.
 
-Ayrıca kontroller, durum yönetimi için kendi effect'lerini kaydetmemelidir. Form sistemi alan durumunu dahili effect'ler aracılığıyla yönetir. Bu, kontrolünüzün durum güncellemelerini girdi sinyalleri aracılığıyla aldığı anlamına gelir. Bir kontrolün değerleri dönüştürmesi gerekiyorsa, bir `effect()` yerine "[Değer dönüşümü](#value-transformation)" bölümünde gösterildiği gibi `linkedSignal()` kullanın.
+Ayrıca kontroller, durum yönetimi için kendi effect'lerini kaydetmemelidir. Form sistemi alan durumunu dahili effect'ler aracılığıyla yönetir. Bu, kontrolünüzün durum güncellemelerini girdi sinyalleri aracılığıyla aldığı anlamına gelir. Bir kontrolün değerleri dönüştürmesi gerekiyorsa, bir `effect()` yerine "[Değer dönüşümü](#value-transformation)" bölümünde gösterildiği gibi `transformedValue()` kullanın.
 
 ## Sonraki adımlar
 

@@ -46,7 +46,7 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 1. Son şablon güncellemesi `@for` yönergesi içindir. `@for` yönergesini `filteredLocationList` dizisindeki değerler üzerinde yineleme yapacak şekilde güncelleyin.
 
-   <docs-code header="Update the @for template directive in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]" language="html"/>
+   <docs-code language="angular-ts" header="Update the @for template directive in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]"/>
 
 </docs-step>
 

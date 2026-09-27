@@ -79,6 +79,7 @@ export interface TcbPipeMetadata {
   name: string;
   ref: TcbReferenceMetadata;
   isExplicitlyDeferred: boolean;
+  deferredBlocks?: Set<string> | null;
 }
 
 /**
@@ -109,6 +110,7 @@ export interface TcbDirectiveMetadata {
   isStructural: boolean;
   isStandalone: boolean;
   isExplicitlyDeferred: boolean;
+  deferredBlocks?: Set<string> | null;
   preserveWhitespaces: boolean;
   exportAs: string[] | null;
   matchSource: MatchSource;
@@ -202,6 +204,12 @@ export interface TypeCheckingConfig {
    * Whether to infer the type of the `$event` variable in event bindings to DOM events.
    */
   checkTypeOfDomEvents: boolean;
+
+  /**
+   * Whether to report event bindings on elements with matched directives whose name matches
+   * neither an output of the matched directives nor a known native DOM event.
+   */
+  checkUnclaimedEventNames: boolean;
 
   /**
    * Whether to infer the type of local references to DOM elements.

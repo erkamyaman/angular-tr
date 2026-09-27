@@ -56,7 +56,7 @@ Her `@defer` bloğu, noktalı virgül (`;`) ile ayrılmış birden fazla hidrasy
 
 Kullanılabilir tetikleyiciler aşağıdaki gibidir:
 
-| Trigger                                             | Description                                                                    |
+| Tetikleyici                                         | Açıklama                                                                       |
 | --------------------------------------------------- | ------------------------------------------------------------------------------ |
 | [`hydrate on idle`](#hydrate-on-idle)               | Tarayıcı boşta olduğunda tetiklenir. İsteğe bağlı bir zaman aşımını destekler. |
 | [`hydrate on viewport`](#hydrate-on-viewport)       | Belirtilen içerik görünüm alanına girdiğinde tetiklenir                        |

@@ -8,7 +8,7 @@ Bu kılavuz yaygın bileşen test kullanım durumlarını inceler.
 
 Birkaç değişiklikten sonra, `Banner` bileşeni, bileşenin `title` özelliğine bağlanarak şu şekilde dinamik bir başlık sunar.
 
-```angular-ts {header="banner.ts"}
+```angular-ts {header: "banner.ts"}
 import {Component, signal} from '@angular/core';
 
 @Component({

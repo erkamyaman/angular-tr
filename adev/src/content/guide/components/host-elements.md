@@ -60,6 +60,11 @@ export class CustomSlider {
 
 NOTE: Bir olay adının önüne eklenebilecek genel hedef adları `document:`, `window:` ve `body:` dir.
 
+NOTE: `'(keydown.enter)'` gibi tuş adları, kullanıcının klavye düzenine ve giriş diline bağlı olan
+`KeyboardEvent.key` ile eşleştirilir. Düzenden bağımsız olarak fiziksel bir tuşu eşleştirmek için bunun yerine
+`code` değiştiricisini kullanın, örneğin `'(keydown.code.Enter)'`. Ayrıntılar için
+[Tuş değiştiricilerini kullanma](guide/templates/event-listeners#using-key-modifiers) bölümüne bakın.
+
 ## `@HostBinding` ve `@HostListener` dekoratörleri
 
 Alternatif olarak, sınıf üyelerine `@HostBinding` ve `@HostListener` dekoratörlerini uygulayarak host elemanına bağlama yapabilirsiniz.

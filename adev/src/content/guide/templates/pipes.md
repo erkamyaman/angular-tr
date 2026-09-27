@@ -177,8 +177,7 @@ TypeScript sınıfı ayrıca bir pipe için tür imzasını karşıladığını 
 
 İşte dizgeleri kebab-case'e dönüştüren özel bir pipe örneği:
 
-```angular-ts
-// kebab-case.pipe.ts
+```angular-ts {header: "kebab-case.pipe.ts"}
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({

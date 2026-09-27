@@ -32,7 +32,12 @@ import {
   type CompilationJob,
   type ViewCompilationUnit,
 } from './compilation';
-import {BINARY_OPERATORS, namespaceForKey, prefixWithNamespace} from './conversion';
+import {
+  BINARY_OPERATORS,
+  UNARY_OPERATORS,
+  namespaceForKey,
+  prefixWithNamespace,
+} from './conversion';
 import {MATH_ML_NAMESPACE, SVG_NAMESPACE} from './namespaces';
 
 // Schema containing DOM elements and their properties.
@@ -48,7 +53,7 @@ export function isI18nRootNode(meta?: i18n.I18nMeta): meta is i18n.Message {
   return meta instanceof i18n.Message;
 }
 
-export function isSingleI18nIcu(meta?: i18n.I18nMeta): meta is i18n.I18nMeta & {nodes: [i18n.Icu]} {
+function isSingleI18nIcu(meta?: i18n.I18nMeta): meta is i18n.I18nMeta & {nodes: [i18n.Icu]} {
   return isI18nRootNode(meta) && meta.nodes.length === 1 && meta.nodes[0] instanceof i18n.Icu;
 }
 
@@ -186,7 +191,7 @@ function calcHostBindingSecurityContexts(
 
 // TODO: We should refactor the parser to use the same types and structures for host bindings as
 // with ordinary components. This would allow us to share a lot more ingestion code.
-export function ingestDomProperty(
+function ingestDomProperty(
   job: HostBindingCompilationJob,
   property: e.ParsedProperty,
   bindingKind: ir.BindingKind,
@@ -220,7 +225,7 @@ export function ingestDomProperty(
   );
 }
 
-export function ingestHostAttribute(
+function ingestHostAttribute(
   job: HostBindingCompilationJob,
   name: string,
   value: o.Expression,
@@ -244,7 +249,7 @@ export function ingestHostAttribute(
   job.root.update.push(attrBinding);
 }
 
-export function ingestHostEvent(job: HostBindingCompilationJob, event: e.ParsedEvent) {
+function ingestHostEvent(job: HostBindingCompilationJob, event: e.ParsedEvent) {
   let eventBinding: ir.CreateOp;
   if (event.type === e.ParsedEventType.Animation) {
     eventBinding = ir.createAnimationListenerOp(
@@ -306,6 +311,8 @@ function ingestNodes(unit: ViewCompilationUnit, template: t.Node[]): void {
       ingestForBlock(unit, node);
     } else if (node instanceof t.LetDeclaration) {
       ingestLetDeclaration(unit, node);
+    } else if (node instanceof t.BoundaryBlock) {
+      ingestBoundaryBlock(unit, node);
     } else if (node instanceof t.Component) {
       // TODO(crisbeto): account for selectorless nodes.
     } else {
@@ -668,6 +675,104 @@ function ingestIfBlock(unit: ViewCompilationUnit, ifBlock: t.IfBlock): void {
     ingestNodes(cView, ifCase.children);
   }
   unit.update.push(ir.createConditionalOp(firstXref!, null, conditions, ifBlock.sourceSpan));
+}
+
+/**
+ * Ingest an `@boundary` block into the given `ViewCompilation`.
+ */
+function ingestBoundaryBlock(unit: ViewCompilationUnit, boundaryBlock: t.BoundaryBlock): void {
+  // 1. Process primary block first to get its view xref for BoundaryCreateOp
+  const primaryView = unit.job.allocateView(unit.xref);
+  const primaryTagName = ingestControlFlowInsertionPoint(unit, primaryView.xref, boundaryBlock);
+
+  // Create BoundaryCreateOp for the container itself, using the primary view xref!
+  const createOp = ir.createBoundaryCreateOp(
+    unit.job.allocateXrefId(),
+    ir.TemplateKind.Block,
+    primaryTagName,
+    'Boundary',
+    ir.Namespace.HTML,
+    undefined,
+    boundaryBlock.startSourceSpan,
+    boundaryBlock.sourceSpan,
+  );
+  unit.create.push(createOp);
+  const primaryCreateOp = ir.createConditionalBranchCreateOp(
+    primaryView.xref,
+    ir.TemplateKind.Block,
+    primaryTagName,
+    'Primary',
+    ir.Namespace.HTML,
+    undefined,
+    boundaryBlock.startSourceSpan,
+    boundaryBlock.sourceSpan,
+  );
+  unit.create.push(primaryCreateOp);
+
+  let conditions: Array<ir.ConditionalCaseExpr> = [];
+
+  // 2. Process @error blocks (fallbacks)
+  for (const errorBlock of boundaryBlock.errorBlocks) {
+    const errorView = unit.job.allocateView(unit.xref);
+
+    // Create branch creation operation
+    const branchCreateOp = ir.createBoundaryErrorCreateOp(
+      errorView.xref,
+      ir.TemplateKind.Block,
+      'Error',
+      undefined,
+      errorBlock.startSourceSpan,
+      errorBlock.sourceSpan,
+      createOp.xref,
+      errorBlock.contextVariables,
+    );
+    unit.create.push(branchCreateOp);
+
+    // Expression case
+    const caseExpr = errorBlock.expression
+      ? convertAst(errorBlock.expression, unit.job, null)
+      : null;
+
+    const errorVar = errorBlock.contextVariables.find((v) => v.value === '$error');
+
+    const conditionalCaseExpr = new ir.ConditionalCaseExpr(
+      caseExpr,
+      branchCreateOp.xref,
+      branchCreateOp.handle,
+      errorVar || null,
+    );
+    conditions.push(conditionalCaseExpr);
+
+    for (const variable of errorBlock.contextVariables) {
+      errorView.aliases.add({
+        kind: ir.SemanticVariableKind.Alias,
+        name: null,
+        identifier: variable.name,
+        expression: new o.ReadPropExpr(new ir.ContextExpr(errorView.xref), variable.value),
+      });
+    }
+    ingestNodes(errorView, errorBlock.children);
+  }
+
+  const primaryCaseExpr = new ir.ConditionalCaseExpr(
+    null,
+    primaryCreateOp.xref,
+    primaryCreateOp.handle,
+    null,
+  );
+
+  ingestNodes(primaryView, boundaryBlock.children);
+
+  unit.update.push(
+    ir.createBoundaryOp(
+      createOp.xref,
+      createOp.handle,
+      primaryCreateOp.xref,
+      primaryCaseExpr,
+      conditions,
+      boundaryBlock.sourceSpan,
+    ),
+  );
 }
 
 /**
@@ -1208,24 +1313,18 @@ function convertAst(
   } else if (ast instanceof e.LiteralPrimitive) {
     return o.literal(ast.value, undefined, convertSourceSpan(ast.span, baseSourceSpan));
   } else if (ast instanceof e.Unary) {
-    switch (ast.operator) {
-      case '+':
-        return new o.UnaryOperatorExpr(
-          o.UnaryOperator.Plus,
-          convertAst(ast.expr, job, baseSourceSpan),
-          undefined,
-          convertSourceSpan(ast.span, baseSourceSpan),
-        );
-      case '-':
-        return new o.UnaryOperatorExpr(
-          o.UnaryOperator.Minus,
-          convertAst(ast.expr, job, baseSourceSpan),
-          undefined,
-          convertSourceSpan(ast.span, baseSourceSpan),
-        );
-      default:
-        throw new Error(`AssertionError: unknown unary operator ${ast.operator}`);
+    if (!UNARY_OPERATORS.has(ast.operator)) {
+      throw new Error(`AssertionError: unknown unary operator ${ast.operator}`);
     }
+    return new o.UnaryOperatorExpr(
+      UNARY_OPERATORS.get(ast.operator)!,
+      convertAst(ast.expr, job, baseSourceSpan),
+      undefined,
+      convertSourceSpan(ast.span, baseSourceSpan),
+      undefined,
+      undefined,
+      ast.isPrefix,
+    );
   } else if (ast instanceof e.Binary) {
     const operator = BINARY_OPERATORS.get(ast.operation);
     if (operator === undefined) {
@@ -1982,7 +2081,13 @@ function convertSourceSpan(
 function ingestControlFlowInsertionPoint(
   unit: ViewCompilationUnit,
   xref: ir.XrefId,
-  node: t.IfBlockBranch | t.SwitchBlockCaseGroup | t.ForLoopBlock | t.ForLoopBlockEmpty,
+  node:
+    | t.IfBlockBranch
+    | t.SwitchBlockCaseGroup
+    | t.ForLoopBlock
+    | t.ForLoopBlockEmpty
+    | t.BoundaryBlock
+    | t.BoundaryErrorBlock,
 ): string | null {
   let root: t.Element | t.Template | null = null;
 

@@ -59,7 +59,7 @@ IMPORTANT: Bileşenin seçicisini özel öğe etiket adı olarak kullanmaktan ka
 Bu, Angular'ın tek bir DOM öğesi için iki bileşen örneği oluşturması nedeniyle beklenmeyen davranışlara yol açabilir:
 Biri normal Angular bileşeni ve diğeri özel öğeyi kullanan.
 
-### Mapping
+### Eşleme {#mapping}
 
 Özel bir öğe, bir Angular bileşenini _barındırır_ ve bileşende tanımlanan veriler ve mantık ile standart DOM API'leri arasında bir köprü sağlar.
 Bileşen özellikleri ve mantığı doğrudan HTML niteliklerine ve tarayıcının olay sistemine eşlenir.
@@ -75,7 +75,7 @@ Bileşen özellikleri ve mantığı doğrudan HTML niteliklerine ve tarayıcın�
 
 Daha fazla bilgi için [Özel olay oluşturma](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events#creating_custom_events) Web Component belgelerine bakın.
 
-## Example: A Popup Service
+## Örnek: Bir Popup Service {#example-a-popup-service}
 
 Çalışma zamanında bir uygulamaya bileşen eklemek için, `createComponent` API'si ile [programatik olarak render edebilirsiniz](guide/components/programmatic-rendering).
 Bu yaklaşımda çevresindeki altyapıdan siz sorumlusunuz: değişiklik algılamanın çalışması için bileşenin host görünümünü `ApplicationRef`'e eklemek, girdilerini ayarlamak, çıktılarına abone olmak ve bileşen kaldırıldığında görünümü ayırıp temizlemek.
@@ -84,7 +84,7 @@ Angular özel öğesi kullanmak, tüm bu altyapıyı otomatik olarak sağlayarak
 
 Aşağıdaki Popup Service örnek uygulaması, dinamik olarak yükleyebileceğiniz veya özel bir öğeye dönüştürebileceğiniz bir bileşen tanımlar.
 
-| Files              | Details                                                                                                                                                                                                                 |
+| Dosyalar           | Ayrıntılar                                                                                                                                                                                                              |
 | :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `popup.ts`         | Bazı animasyon ve stillerle bir giriş mesajı görüntüleyen basit bir açılır pencere öğesi tanımlar.                                                                                                                      |
 | `popup.service.ts` | `Popup`'ı çağırmak için iki farklı yol sağlayan enjekte edilebilir bir servis oluşturur; dinamik bileşen olarak veya özel öğe olarak. Dinamik yükleme yöntemi için ne kadar daha fazla kurulum gerektiğine dikkat edin. |
@@ -100,7 +100,7 @@ Sonuç aynıdır, ancak hazırlık farklıdır.
     <docs-code header="app.ts" path="adev/src/content/examples/elements/src/app/app.ts"/>
 </docs-code-multifile>
 
-## Typings for custom elements
+## Özel öğeler için tipler {#typings-for-custom-elements}
 
 `document.createElement()` veya `document.querySelector()` gibi genel DOM API'leri, belirtilen argümanlar için uygun bir öğe türü döndürür.
 Örneğin, `document.createElement('a')` çağrısı TypeScript'in `href` özelliğine sahip olduğunu bildiği bir `HTMLAnchorElement` döndürür.
@@ -159,7 +159,7 @@ document.createElement('my-dialog'); //--> NgElement & WithProperties<{content: 
 document.querySelector('my-other-element'); //--> NgElement & WithProperties<{foo: 'bar'}>      (custom element)
 ```
 
-## Limitations
+## Sınırlamalar {#limitations}
 
 `@angular/elements` ile oluşturulan özel öğeleri yok edip yeniden eklerken [disconnect()](https://github.com/angular/angular/issues/38778) geri çağırmasıyla ilgili sorunlar nedeniyle dikkatli olunmalıdır. Bu sorunla karşılaşabileceğiniz durumlar şunlardır:
 

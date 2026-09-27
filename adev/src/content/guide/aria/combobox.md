@@ -132,7 +132,7 @@ Metin girişi olmadan bir açılır menü tetikleme, ana tetikleyici olarak bir 
 
 Bu yapılandırma, [Select](guide/aria/select) ve [Multiselect](guide/aria/multiselect) kalıpları için temeli sağlar. Tetikleyiciler ve katman konumlandırmasıyla eksiksiz açılır menü uygulamaları için bu rehberlere bakın.
 
-### Datepicker grid
+### Datepicker gridi {#datepicker-grid}
 
 Combobox, erişilebilir datepicker'lar oluşturmak için iki boyutlu bir grid ile koordine olabilir. Kullanıcılar takvim grid tablosundaki tarihler arasında yönlü ok tuşlarıyla gezinir ve seçimi tıklama, Enter veya Boşluk tuşu ile onaylar.
 

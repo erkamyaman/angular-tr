@@ -11,16 +11,7 @@ import {DOCUMENT, Service, VERSION, computed, inject} from '@angular/core';
 
 import versionJson from '../../../assets/others/versions.json';
 
-export interface Version {
-  displayName: string;
-  url: string;
-}
-
-export type VersionMode = 'stable' | 'deprecated' | 'rc' | 'next' | number;
-
-export const INITIAL_ADEV_DOCS_VERSION = 18;
-export const VERSION_PLACEHOLDER = '{{version}}';
-export const MODE_PLACEHOLDER = '{{prefix}}';
+type VersionMode = 'stable' | 'deprecated' | 'rc' | 'next' | number;
 
 type VersionJson = {version: string; url: string};
 

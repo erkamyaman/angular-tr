@@ -163,7 +163,7 @@ npm install @angular/material --save
 
 Geliştirilmiş sunum için standart Markdown üçlü ters tırnakları niteliklerle stillendirebilirsiniz:
 
-```ts {header:"Awesome Title", linenums, highlight="[2]", hideCopy}
+```ts {header:"Awesome Title", linenums, highlight: [2], hideCopy}
 console.log('Hello, World!');
 console.log('Awesome Angular Docs!');
 ```
@@ -335,9 +335,9 @@ Semantik Markdown resmi kullanarak resim ekleyebilirsiniz:
 ![Lazy loaded image](assets/images/kitchen-sink/rhubarb.jpg {loading: 'lazy'})
 ![Combined attributes](assets/images/kitchen-sink/rhubarb.jpg#small {loading: 'lazy', decoding: 'async', fetchpriority: 'low'})
 
-Gömülü videolar `docs-video` ile oluşturulur ve yalnızca bir `src` ve `alt` gerektirir:
+Gömülü videolar `docs-video` ile oluşturulur ve yalnızca bir `src` ve `title` gerektirir:
 
-<docs-video src="https://www.youtube.com/embed/O47uUnJjbJc" alt=""/>
+<docs-video src="https://www.youtube.com/embed/O47uUnJjbJc" title="Expression changed after checked"/>
 
 ## Charts & Graphs
 

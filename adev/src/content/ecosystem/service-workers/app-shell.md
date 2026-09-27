@@ -38,6 +38,7 @@ src
 └── main.server.ts # ana sunucu uygulama başlatma
 ```
 
+</docs-step>
 <docs-step title="Uygulamanın kabuk içeriğiyle derlendiğini doğrulayın">
 
 ```shell

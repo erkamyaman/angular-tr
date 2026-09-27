@@ -67,6 +67,7 @@ import {
   type ValidationError,
   type WithOptionalFieldTree,
 } from '../../public_api';
+import {act} from '@angular/private/testing';
 import {InputValidityMonitor} from '../../src/directive/input_validity_monitor';
 import {TestInputValidityMonitor} from './test_input_validity_monitor';
 
@@ -135,6 +136,32 @@ describe('field directive', () => {
         input.dispatchEvent(new Event('input'));
       });
       expect(component.model()).toEqual({x: 'a', y: 'c'});
+    });
+
+    it('should update field value before template (input) listener fires', () => {
+      @Component({
+        imports: [FormField],
+        template: `<input [formField]="f.x" (input)="onInput()" />`,
+      })
+      class TestCmp {
+        readonly model = signal({x: 'a'});
+        readonly f = form(this.model);
+        observedDuringInput: string | undefined;
+
+        onInput() {
+          this.observedDuringInput = this.f.x().value();
+        }
+      }
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const component = fixture.componentInstance;
+      const input = fixture.nativeElement.firstChild as HTMLInputElement;
+
+      act(() => {
+        input.value = 'b';
+        input.dispatchEvent(new Event('input'));
+      });
+      expect(component.observedDuringInput).toBe('b');
+      expect(component.model()).toEqual({x: 'b'});
     });
   });
 
@@ -1645,7 +1672,7 @@ describe('field directive', () => {
 
     describe('pending', () => {
       it('should bind to custom control', async () => {
-        const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+        const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
         @Component({
           selector: 'custom-control',
@@ -1690,7 +1717,7 @@ describe('field directive', () => {
       });
 
       it('should bind to a custom control when composed as a host directive', async () => {
-        const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+        const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
         @Component({
           selector: 'custom-control',
@@ -1736,7 +1763,7 @@ describe('field directive', () => {
       });
 
       it('should be reset when field changes on custom control', async () => {
-        const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+        const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
         @Component({selector: 'custom-control', template: ``})
         class CustomControl implements FormValueControl<string> {
@@ -1780,7 +1807,7 @@ describe('field directive', () => {
       });
 
       it('should bind to directive input on native control', async () => {
-        const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+        const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
         @Directive({selector: '[testDir]'})
         class TestDir {
@@ -1818,7 +1845,7 @@ describe('field directive', () => {
       });
 
       it('should bind to directive input on custom control', async () => {
-        const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+        const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
         @Directive({selector: '[testDir]'})
         class TestDir {
@@ -4235,6 +4262,46 @@ describe('field directive', () => {
     expect(cmp.f().value()).toBe(ABC.B);
   });
 
+  it('synchronizes the checked state when a reused radio changes value', async () => {
+    interface RadioOption {
+      readonly id: string;
+      readonly value: string;
+    }
+
+    @Component({
+      imports: [FormField],
+      template: `
+        @for (option of options(); track option.id) {
+          <input type="radio" [formField]="f" [value]="option.value" />
+        }
+      `,
+    })
+    class TestCmp {
+      readonly f = form(signal('selected'), {name: 'test'});
+      readonly options = signal<ReadonlyArray<RadioOption>>([
+        {id: 'shared', value: 'other'},
+        {id: 'old', value: 'selected'},
+      ]);
+    }
+
+    const fixture = TestBed.createComponent(TestCmp);
+    await fixture.whenStable();
+    const getCheckedStates = () =>
+      Array.from(
+        (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLInputElement>('input'),
+      ).map((input) => input.checked);
+
+    expect(getCheckedStates()).toEqual([false, true]);
+
+    fixture.componentInstance.options.set([
+      {id: 'new', value: 'other'},
+      {id: 'shared', value: 'selected'},
+    ]);
+    await fixture.whenStable();
+
+    expect(getCheckedStates()).toEqual([false, true]);
+  });
+
   it('synchronizes with a textarea', () => {
     @Component({
       imports: [FormField],
@@ -5051,7 +5118,7 @@ describe('field directive', () => {
   });
 
   it('should synchronize pending status', async () => {
-    const {promise, resolve} = promiseWithResolvers<ValidationError[]>();
+    const {promise, resolve} = Promise.withResolvers<ValidationError[]>();
 
     @Component({
       selector: 'my-input',
@@ -5946,7 +6013,7 @@ describe('field directive', () => {
 
   describe('debounce', () => {
     it('should support native control', async () => {
-      const {promise, resolve} = promiseWithResolvers<void>();
+      const {promise, resolve} = Promise.withResolvers<void>();
 
       @Component({
         imports: [FormField],
@@ -5973,7 +6040,7 @@ describe('field directive', () => {
     });
 
     it('should support custom control', async () => {
-      const {promise, resolve} = promiseWithResolvers<void>();
+      const {promise, resolve} = Promise.withResolvers<void>();
 
       @Component({
         selector: 'my-input',
@@ -6005,7 +6072,7 @@ describe('field directive', () => {
     });
 
     it('should reset control when debounced update is reset', async () => {
-      const {promise, resolve} = promiseWithResolvers<void>();
+      const {promise, resolve} = Promise.withResolvers<void>();
 
       @Component({
         imports: [FormField],
@@ -6043,7 +6110,7 @@ describe('field directive', () => {
     });
 
     it('should reset child control when debounced update is reset at root', async () => {
-      const {promise, resolve} = promiseWithResolvers<void>();
+      const {promise, resolve} = Promise.withResolvers<void>();
 
       @Component({
         imports: [FormField],
@@ -6237,7 +6304,7 @@ describe('field directive', () => {
   });
 
   it('should create & bind input when a macro task is running', async () => {
-    const {promise, resolve} = promiseWithResolvers<void>();
+    const {promise, resolve} = Promise.withResolvers<void>();
 
     @Component({
       selector: 'app-form',
@@ -6500,34 +6567,4 @@ function setupRadioWithBindingsGroup() {
   const cmp = fix.componentInstance as TestCmp;
 
   return {cmp, inputA, inputB, inputC, ABC};
-}
-
-function act<T>(fn: () => T): T {
-  try {
-    return fn();
-  } finally {
-    TestBed.tick();
-  }
-}
-
-/**
- * Replace with `Promise.withResolvers()` once it's available.
- *
- * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers.
- */
-// TODO: share this with submit.spec.ts
-function promiseWithResolvers<T = void>(): {
-  promise: Promise<T>;
-  resolve: (value: T | PromiseLike<T>) => void;
-  reject: (reason?: any) => void;
-} {
-  let resolve!: (value: T | PromiseLike<T>) => void;
-  let reject!: (reason?: any) => void;
-
-  const promise = new Promise<T>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-
-  return {promise, resolve, reject};
 }

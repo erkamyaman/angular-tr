@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {AST} from '../../expression_parser/ast';
+import {AST, BindingPipe} from '../../expression_parser/ast';
 import {ClassPropertyMapping} from '../../property_mapping';
 import {
   BoundAttribute,
@@ -316,7 +316,17 @@ export interface BoundTarget<DirectiveT extends DirectiveMeta> {
   /**
    * Whether a given node is located in a `@defer` block.
    */
-  isDeferred(node: Element): boolean;
+  isDeferred(node: DirectiveOwner): boolean;
+
+  /**
+   * Gets the list of `@defer` blocks enclosing a given element, ordered from outermost to innermost.
+   */
+  getDeferBlocksOfNode(node: DirectiveOwner): DeferredBlock[];
+
+  /**
+   * Gets the list of `@defer` blocks enclosing a given pipe, ordered from outermost to innermost.
+   */
+  getDeferBlocksOfPipe(ast: BindingPipe): DeferredBlock[];
 
   /**
    * Checks whether a component/directive that was referenced directly in the template exists.

@@ -5,7 +5,7 @@ Angular, metin dizelerinin uluslararasılaştırılması için doğru yerel ayar
 <docs-callout title="Unicode yerel ayar kimliği">
 
 - Bir yerel ayar kimliği [Unicode Common Locale Data Repository (CLDR) çekirdek belirtimi][UnicodeCldrDevelopmentCoreSpecification]'ne uygundur.
-  Yerel ayar kimlikleri hakkında daha fazla bilgi için [Unicode Language and Locale Identifiers][UnicodeCldrDevelopmentCoreSpecificationLocaleIDs] bölümüne bakın.
+  Yerel ayar kimlikleri hakkında daha fazla bilgi için [Unicode Language and Locale Identifiers][UnicodeCldrDevelopmentCoreSpecificationLocaleID] bölümüne bakın.
 
 - CLDR ve Angular, yerel ayar kimliğinin temeli olarak [BCP 47 etiketlerini][RfcEditorInfoBcp47] kullanır
 

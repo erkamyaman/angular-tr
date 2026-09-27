@@ -165,7 +165,7 @@ export class PasswordForm {
 
 `stateOf()` çağrısı, diğer alanın [alan durumunu](api/forms/signals/FieldState) döndürür ve `invalid()`, `touched()` ile `dirty()` gibi sinyallere erişim sağlar. Bunlar sinyal olduğundan, kural şifre alanının geçerliliği her değiştiğinde yeniden değerlendirilir.
 
-WARNING: Kendi alanınızın doğrulamasına bağlı olan durumu okumamaya dikkat edin, çünkü bu döngüsel bir döngü oluşturur. Örneğin, üst alanın geçerli olup olmadığını kontrol eden bir doğrulayıcı sonsuz bir döngü oluşturur, çünkü üst alanın geçerliliği alt alanlarının geçerliliğine bağlıdır (bu da sizin doğrulayıcınızı içerir).
+CRITICAL: Kendi alanınızın doğrulamasına bağlı olan durumu okumamaya dikkat edin, çünkü bu döngüsel bir döngü oluşturur. Örneğin, üst alanın geçerli olup olmadığını kontrol eden bir doğrulayıcı sonsuz bir döngü oluşturur, çünkü üst alanın geçerliliği alt alanlarının geçerliliğine bağlıdır (bu da sizin doğrulayıcınızı içerir).
 
 ## validateTree kullanımı {#using-validatetree}
 

@@ -149,7 +149,7 @@ Bir projeye yapıtlar eklemek için şematiğinizin kendi şablon dosyalarına i
 1. Dosya oluşturmak için kullanılacak bir şablonu tanımlayan `__name@dasherize__.service.ts.template` adlı bir dosya oluşturun.
    Bu şablon, Angular'ın `HttpClient`'ını zaten bir `http` özelliğine enjekte edilmiş olarak içeren bir servis oluşturacaktır.
 
-   ```ts {header:projects/my-lib/schematics/my-service/files/__name@dasherize__.service.ts.template (Schematic Template)}
+   ```ts {header: "projects/my-lib/schematics/my-service/files/__name@dasherize__.service.ts.template (Schematic Template)"}
 
    import { Service } from '@angular/core';
    import { HttpClient } from '@angular/common/http';

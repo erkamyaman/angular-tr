@@ -201,7 +201,7 @@ export interface DataGroup {
 
 Her `DataGroup` aşağıdaki veri grubu özellikleriyle tanımlanır.
 
-#### `name`
+#### `name` {#datagroups-name}
 
 `assetGroups`'a benzer şekilde, her veri grubunun onu benzersiz şekilde tanımlayan bir `name`'i vardır.
 
@@ -318,7 +318,7 @@ CORS uygulayamıyorsanız — örneğin kaynağı kontrol etmiyorsanız — opak
 
 </docs-callout>
 
-#### `cacheQueryOptions`
+#### `cacheQueryOptions` {#datagroups-cachequeryoptions}
 
 Ayrıntılar için [assetGroups](#assetgroups) bölümüne bakın.
 

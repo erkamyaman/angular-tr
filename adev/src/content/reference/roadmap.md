@@ -46,7 +46,7 @@ Yol haritamızdan en son Angular özelliklerini kullanarak geliştirmeye başlay
   Ekip, Google AI Studio, Gemini CLI ve Antigravity gibi Agentic IDE'ler gibi agentic araçlarla anlamlı entegrasyonlar geliştirmeye devam edecektir. Hızla gelişen sektörle uyumlu çözümler sunmayı planlıyoruz. Bazı örnekler arasında agent becerileri, yeni MCP özellikleri ve yapay zeka SDK'ları bulunmaktadır.
   </docs-card>
   <docs-card title="Kod Üretimi">
-  [Araştırmamıza göre](https://blog.angular.dev/beyond-the-horizon-how-angular-is-embracing-ai-for-next-gen-apps-7a7ed706e1a3), modern LLM'lerle Angular için kod üretimi zaten yüksek kalitede. Kod üretimini iyileştirme yatırımlarımıza devam edeceğiz. Bu, mevcut modelleri kullanarak kod üretimi kalitesini düzenli olarak değerlendireceğimiz ve sistem talimatları, dokümantasyon ve taktiksel framework değişiklikleri aracılığıyla bunu iyileştirmek için çalışacağımız anlamına gelir. Ayrıca değerlendirme altyapımız olan [Web Codegen Scorer](https://github.com/angular/web-codegen-scorer)'a yatırımlarımızı sürdüreceğiz.
+  [Araştırmamıza göre](https://blog.angular.dev/beyond-the-horizon-how-angular-is-embracing-ai-for-next-gen-apps-7a7ed706e1a3), modern LLM'lerle Angular için kod üretimi zaten yüksek kalitede. Kod üretimini iyileştirme yatırımlarımıza devam edeceğiz. Bu, mevcut modelleri kullanarak kod üretimi kalitesini düzenli olarak değerlendireceğimiz ve sistem talimatları, dokümantasyon ve taktiksel framework değişiklikleri aracılığıyla bunu iyileştirmek için çalışacağımız anlamına gelir.
   </docs-card>
   <docs-card title="Yapay Zeka Destekli Deneyimler">
   Dinamik UI oluşturma gibi yeni kavramlarla Angular geliştiricileri için keşfedilecek yeni bir sınır var. A2UI için Angular desteği oluşturarak başladık ve modern uygulama deneyimlerini desteklemek için aktif olarak daha fazla fırsat arıyoruz.
@@ -67,12 +67,12 @@ Bu desteğin nasıl görüneceğini prototipliyor ve keşfediyoruz ve tsgo ile u
   <docs-card title="Geliştirilmiş Ekosistem uyumluluğu">
     Geliştiriciler, yapay zeka tarafından üretilen kodu manuel olarak üretilen kodla karıştırıyor ve popüler kütüphaneleri kullanmak ve yeni deneyimleri hızla entegre etmek istiyor. Angular bu ekosisteme iyi entegre olmak istiyor - geliştiriciler sevdikleri araçları kullanabilmeli ve gereksinimlerine göre framework'leri karıştırıp eşleştirebilmelidir.
 
-Bu projenin parçası olarak, çapraz framework birlikte çalışabilirliği ve derleme araçlarımızın gereksinim alanını keşfedeceğiz. Ayrıca, [Web Codegen Scorer](https://github.com/angular/web-codegen-scorer) projesiyle sunduğumuz şeye benzer şekilde, web ekosistemindeki açık sorunlara framework-agnostik çözümler sağlayarak bu alana katkıda bulunup bulunamayacağımızı görmek istiyoruz.
+Bu projenin parçası olarak, çapraz framework birlikte çalışabilirliği ve derleme araçlarımızın gereksinim alanını keşfedeceğiz.
 
   </docs-card>
 
   <docs-card title="Bileşenler">
-  Angular v21'de, erişilebilir, başsız bileşenler için sekiz desen sağlayan Angular Aria'yı geliştirici önizlemesinde yayınladık. Bu desenleri kararlı hale getirmeyi ve gerektiğinde yeni desenler tanıtmayı planlıyoruz. Geliştiricilere Angular Aria kullanarak kendi bileşenlerini geliştirmek için sağlam bir temel sağlamak istiyoruz - biz etkileşimleri sağlıyoruz, siz tasarım sisteminize uyan stili getiriyorsunuz. Geliştiriciler Angular Aria ile özel bileşenler geliştirme, CDK'dan etkileşim kalıpları kullanma veya hazır stillenmiş Material Components kullanma seçeneğine sahip olacak.
+  Angular v21'de, erişilebilir, başsız bileşenler için sekiz desen sağlayan Angular Aria'yı geliştirici önizlemesinde yayınladık. Angular v22'de Angular Aria'yı kararlı hale getirdik ve gerektiğinde yeni desenler tanıtmayı planlıyoruz. Geliştiricilere Angular Aria kullanarak kendi bileşenlerini geliştirmek için sağlam bir temel sağlamak istiyoruz - biz etkileşimleri sağlıyoruz, siz tasarım sisteminize uyan stili getiriyorsunuz. Geliştiriciler Angular Aria ile özel bileşenler geliştirme, CDK'dan etkileşim kalıpları kullanma veya hazır stillenmiş Material Components kullanma seçeneğine sahip olacak.
 
 Erişilebilirlik için, bileşenleri ve kalıpları WCAG gibi erişilebilirlik standartlarına karşı sürekli olarak değerlendiriyoruz ve bu süreçten kaynaklanan sorunları düzeltmek için çalışıyoruz.
 </docs-card>
@@ -150,14 +150,14 @@ Geliştiricilerin modern Angular API'lerini kullanmasını kolaylaştırmak içi
 Bu girişimin parçası olarak, dil servisi bileşenleri ve pipe'ları standalone ve NgModule tabanlı uygulamalarda otomatik olarak içe aktarır. Ek olarak, standalone bileşenlerde kullanılmayan içe aktarmaları vurgulamak için bir şablon tanılaması ekledik, bu da uygulama paketlerini küçültmeye yardımcı olmalıdır.
 </docs-card>
 <docs-card title="Yerel şablon değişkenleri" link="2024 3. Çeyrek'te tamamlandı">
-Angular'da yerel şablon değişkenleri desteğini yayınladık, ek bilgi için [`@let` belgelerine](/api/core/@let) bakın.
+Angular'da yerel şablon değişkenleri desteğini yayınladık, ek bilgi için [`@let`](/api/core/@let) sayfasına bakın.
 </docs-card>
 <docs-card title="Angular Material özelleştirilebilirliğini genişletme" link="2024 2. Çeyrek'te tamamlandı" href="https://material.angular.dev/guide/theming">
 Angular Material bileşenlerimizin daha iyi özelleştirilmesini sağlamak ve Material 3 yeteneklerini etkinleştirmek için, token tabanlı tema API'leri tanımlamak üzere Google'ın Material Design ekibiyle işbirliği yapacağız.
 
 v17.2'de Angular Material 3 için deneysel destek paylaştık ve v18'de bunu kararlı hale getirdik.
 </docs-card>
-<docs-card title="Ertelenmiş yüklemeyi tanıtma" link="2024 2. Çeyrek'te tamamlandı" href="https://next.angular.dev/guide/templates/defer">
+<docs-card title="Ertelenmiş yüklemeyi tanıtma" link="2024 2. Çeyrek'te tamamlandı" href="guide/templates/defer">
 v17'de ertelenebilir görünümleri geliştirici önizlemesinde sunduk, bunlar ertelenmiş kod yükleme için ergonomik bir API sağlar. v18'de ertelenebilir görünümleri kütüphane geliştiricileri için etkinleştirdik ve API'yi kararlı hale getirdik.
 </docs-card>
 <docs-card title="Angular DevTools'ta iframe desteği" link="2024 2. Çeyrek'te tamamlandı">

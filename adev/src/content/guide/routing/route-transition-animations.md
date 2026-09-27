@@ -27,7 +27,7 @@ Tarayıcı API'si hakkında daha fazla bilgi için [Chrome Açıklayıcısına](
 
 Angular Router, sorunsuz rota değişiklikleri oluşturmak için view transitions'ı navigasyon yaşam döngüsüne entegre eder. Navigasyon sırasında Yönlendirici:
 
-1. **Navigasyon hazırlığını tamamlar** - Rota eşleştirme, [tembel yükleme](guide/routing/loading-strategies#tembel-yüklenen-bileşenler-ve-routelar), [koruyucular](/guide/routing/route-guards) ve [çözücüler](/guide/routing/data-resolvers) çalışır
+1. **Navigasyon hazırlığını tamamlar** - Rota eşleştirme, [tembel yükleme](guide/routing/loading-strategies#tembel-yüklenen-bileşenler-ve-routelar), [koruyucular](/guide/routing/route-guards), [kaynaklar](/guide/routing/data-fetching-with-resources) ve [çözücüler](/guide/routing/data-resolvers) çalışır
 2. **View transition'ı başlatır** - Rotalar etkinleştirmeye hazır olduğunda Yönlendirici `startViewTransition` çağırır
 3. **DOM'u günceller** - Yönlendirici, geçiş callback'i içinde yeni rotaları etkinleştirir ve eskileri devre dışı bırakır
 4. **Geçişi sonlandırır** - Angular render'ı tamamladığında geçiş Promise'i çözümlenir

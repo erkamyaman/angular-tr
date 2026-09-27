@@ -12,17 +12,17 @@ Angular Router, navigasyon yaşam döngüsünü izlemek için abone olabileceği
 | [`RoutesRecognized`](api/router/RoutesRecognized)   | Yönlendirici hangi rotanın URL ile eşleştiğini belirledikten sonra gerçekleşir ve rota durum bilgisini içerir.          |
 | [`GuardsCheckStart`](api/router/GuardsCheckStart)   | Rota koruyucu aşamasını başlatır. Yönlendirici `canActivate` ve `canDeactivate` gibi rota koruyucularını değerlendirir. |
 | [`GuardsCheckEnd`](api/router/GuardsCheckEnd)       | Koruyucu değerlendirmesinin tamamlandığını bildirir. Sonucu (izin verildi/reddedildi) içerir.                           |
-| [`ResolveStart`](api/router/ResolveStart)           | Veri çözümleme aşamasını başlatır. Rota çözücüleri veri çekmeye başlar.                                                 |
-| [`ResolveEnd`](api/router/ResolveEnd)               | Veri çözümleme tamamlanır. Tüm gerekli veriler kullanılabilir hale gelir.                                               |
+| [`ResolveStart`](api/router/ResolveStart)           | Veri çözümleme aşamasını başlatır. Rota çözücüleri ve resource'lar veri çekmeye başlar.                                 |
+| [`ResolveEnd`](api/router/ResolveEnd)               | Veri çözümleme tamamlanır. Tüm gerekli veriler ve engelleyen resource'lar kullanılabilir hale gelir.                    |
 | [`NavigationEnd`](api/router/NavigationEnd)         | Navigasyon başarıyla tamamlandığında son olay. Yönlendirici URL'yi günceller.                                           |
 | [`NavigationSkipped`](api/router/NavigationSkipped) | Yönlendirici navigasyonu atladığında gerçekleşir (örn. aynı URL navigasyonu).                                           |
 
 Yaygın hata olayları şunlardır:
 
-| Olay                                              | Açıklama                                                                                                           |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`NavigationCancel`](api/router/NavigationCancel) | Yönlendirici navigasyonu iptal ettiğinde gerçekleşir. Genellikle bir koruyucunun false döndürmesinden kaynaklanır. |
-| [`NavigationError`](api/router/NavigationError)   | Navigasyon başarısız olduğunda gerçekleşir. Geçersiz rotalar veya çözücü hatalarından kaynaklanabilir.             |
+| Olay                                              | Açıklama                                                                                                                                  |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [`NavigationCancel`](api/router/NavigationCancel) | Yönlendirici navigasyonu iptal ettiğinde gerçekleşir. Genellikle bir koruyucunun false döndürmesinden kaynaklanır.                        |
+| [`NavigationError`](api/router/NavigationError)   | Navigasyon başarısız olduğunda gerçekleşir. Geçersiz rotalar, çözücü hataları veya reddedilen engelleyen resource'lardan kaynaklanabilir. |
 
 Tüm yaşam döngüsü olaylarının listesi için [bu kılavuzun tam tablosuna](#tüm-router-olayları) göz atın.
 
@@ -189,7 +189,7 @@ export class ErrorHandler {
 
 Referans olarak, Angular'da bulunan tüm router olaylarının tam listesi burada verilmiştir. Bu olaylar kategoriye göre düzenlenmiş ve navigasyon sırasında tipik olarak oluşma sırasına göre listelenmiştir.
 
-### Navigation events
+### Navigasyon olayları {#navigation-events}
 
 Bu olaylar, başlangıçtan rota tanıma, koruyucu kontrolleri ve veri çözümlemeye kadar temel navigasyon sürecini izler. Navigasyon yaşam döngüsünün her aşamasına görünürlük sağlar.
 
@@ -204,7 +204,7 @@ Bu olaylar, başlangıçtan rota tanıma, koruyucu kontrolleri ve veri çözüml
 | [`ResolveStart`](api/router/ResolveStart)                 | Çözümleme aşamasının başında gerçekleşir                               |
 | [`ResolveEnd`](api/router/ResolveEnd)                     | Çözümleme aşamasının sonunda gerçekleşir                               |
 
-### Activation events
+### Etkinleştirme olayları {#activation-events}
 
 Bu olaylar, rota bileşenlerinin oluşturulup başlatıldığı etkinleştirme aşamasında gerçekleşir. Etkinleştirme olayları, üst ve alt rotalar dahil olmak üzere rota ağacındaki her rota için tetiklenir.
 
@@ -215,7 +215,7 @@ Bu olaylar, rota bileşenlerinin oluşturulup başlatıldığı etkinleştirme a
 | [`ActivationEnd`](api/router/ActivationEnd)               | Rota etkinleştirmesinin sonunda gerçekleşir     |
 | [`ChildActivationEnd`](api/router/ChildActivationEnd)     | Alt rota etkinleştirmesinin sonunda gerçekleşir |
 
-### Navigation completion events
+### Navigasyon tamamlanma olayları {#navigation-completion-events}
 
 Bu olaylar, bir navigasyon girişiminin nihai sonucunu temsil eder. Her navigasyon, başarılı olup olmadığını, iptal edilip edilmediğini, başarısız olup olmadığını veya atlanıp atlanmadığını gösteren bu olaylardan tam olarak biriyle sona erer.
 
@@ -226,7 +226,7 @@ Bu olaylar, bir navigasyon girişiminin nihai sonucunu temsil eder. Her navigasy
 | [`NavigationError`](api/router/NavigationError)     | Beklenmeyen bir hata nedeniyle navigasyon başarısız olduğunda gerçekleşir    |
 | [`NavigationSkipped`](api/router/NavigationSkipped) | Yönlendirici navigasyonu atladığında gerçekleşir (örn. aynı URL navigasyonu) |
 
-### Other events
+### Diğer olaylar {#other-events}
 
 Ana navigasyon yaşam döngüsünün dışında gerçekleşen ancak yönlendiricinin olay sisteminin bir parçası olan ek bir olay daha vardır.
 
@@ -234,6 +234,6 @@ Ana navigasyon yaşam döngüsünün dışında gerçekleşen ancak yönlendiric
 | ----------------------------- | ------------------------------ |
 | [`Scroll`](api/router/Scroll) | Kaydırma sırasında gerçekleşir |
 
-## Next steps
+## Sonraki adımlar {#next-steps}
 
-[Rota koruyucuları](/guide/routing/route-guards) ve [yaygın yönlendirici görevleri](/guide/routing/common-router-tasks) hakkında daha fazla bilgi edinin.
+[Rota koruyucuları](/guide/routing/route-guards), [resource'lar ile veri çekme](/guide/routing/data-fetching-with-resources) ve [yaygın yönlendirici görevleri](/guide/routing/common-router-tasks) hakkında daha fazla bilgi edinin.

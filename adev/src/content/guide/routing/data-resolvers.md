@@ -2,6 +2,8 @@
 
 Veri çözücüler, bir rotaya navigasyon yapmadan önce veri çekmenize olanak tanır ve bileşenlerinizin render edilmeden önce ihtiyaç duydukları verileri almasını sağlar. Bu, yükleme durumları ihtiyacını önlemeye ve temel verileri önceden yükleyerek kullanıcı deneyimini iyileştirmeye yardımcı olabilir.
 
+TIP: Uygulamanız Angular Signals kullanıyorsa, `Resource` API'leriyle reaktif veri çekme ve engellemeyen veri yükleme için yerleşik destek sunan [rota resource'larını](/guide/routing/data-fetching-with-resources) kullanmayı düşünün.
+
 ## Veri resolver'ları nedir? {#what-are-data-resolvers}
 
 Veri çözücü, `ResolveFn` fonksiyonunu uygulayan bir servistir. Bir rota etkinleştirilmeden önce çalışır ve API'lerden, veritabanlarından veya diğer kaynaklardan veri çekebilir. Çözümlenen veri, `ActivatedRoute` aracılığıyla bileşen tarafından kullanılabilir hale gelir.
@@ -272,6 +274,8 @@ export const userResolver: ResolveFn<User | RedirectCommand> = (route) => {
 
 Veri çözücüler bileşenler içindeki yükleme durumlarını önlese de, farklı bir UX değerlendirmesi ortaya çıkarır: çözücüler çalışırken navigasyon engellenir. Özellikle yavaş ağ isteklerinde, kullanıcılar bir bağlantıya tıklama ile yeni rotayı görme arasında gecikmeler yaşayabilir.
 
+TIP: Navigasyonu engellemekten kaçınmak ve bileşenleri iskelet ya da yükleme göstergeleriyle hemen render etmek için [engellemeyen rota resource'larını](/guide/routing/data-fetching-with-resources#blocking-and-non-blocking-resources) kullanın.
+
 ### Navigasyon geri bildirimi sağlama
 
 Çözücü çalışması sırasında kullanıcı deneyimini iyileştirmek için router olaylarını dinleyebilir ve yükleme göstergeleri gösterebilirsiniz:
@@ -308,7 +312,9 @@ Bu yaklaşım, çözücüler veri çekerken kullanıcıların navigasyonun devam
 
 ## Alt resolver'larda üst çözümlenmiş verileri okuma
 
-Çözücüler üst rotadan alt rotaya doğru çalışır. Bir üst rota bir çözücü tanımladığında, çözümlenen veriler daha sonra çalışan alt çözücüler tarafından kullanılabilir.
+Çözücüler üst rotadan alt rotaya doğru sırayla çalışır. Bir üst rota bir çözücü tanımladığında, çözümlenen veriler daha sonra çalışan alt çözücüler tarafından kullanılabilir.
+
+NOTE: Çözücüler üst rotadan alt rotaya doğru sırayla çalıştığından, her iç içe seviye toplam navigasyon bekleme süresine eklenir (bir ağ şelalesi). Alt rotalarınız üst rota verilerine bağlı değilse, tüm rotalarda eşzamanlı olarak çalışan [rota resource'larını](/guide/routing/data-fetching-with-resources) kullanmayı düşünün.
 
 ```ts
 import { inject } from '@angular/core';
@@ -340,3 +346,10 @@ provideRouter([
   },
 ]);
 ```
+
+## Sonraki adımlar {#next-steps}
+
+<docs-pill-row>
+  <docs-pill href="/guide/routing/data-fetching-with-resources" title="Resource'lar ile veri çekme"/>
+  <docs-pill href="/guide/routing/route-guards" title="Guard'lar ile route erişimini kontrol etme"/>
+</docs-pill-row>

@@ -27,7 +27,7 @@ Bir bileşenin yaşam döngüsü, Angular'ın bileşenlerinizi zaman içinde de�
       </td>
     </tr>
     <tr>
-      <td rowspan="7">Değişiklik<p>Algılama</td>
+      <td rowspan="7">Değişiklik<br>Algılama</td>
       <td><code>ngOnInit</code>
       </td>
       <td>Bileşenin tüm girdileri başlatıldıktan sonra bir kez çalışır.</td>

@@ -36,10 +36,8 @@ const canActivateTeam: CanActivateFn = (
 Zaten bir enjeksiyon bağlamında olmadan bir fonksiyonu bir enjeksiyon bağlamı içinde çalıştırmanız gerekiyorsa, `runInInjectionContext` kullanabilirsiniz.
 Bu, `EnvironmentInjector` gibi bir enjektöre erişim gerektirir:
 
-```ts {highlight: [9], header:"hero.service.ts"}
-@Injectable({
-  providedIn: 'root',
-})
+```ts {highlight: [7], header:"hero.service.ts"}
+@Service()
 export class HeroService {
   private environmentInjector = inject(EnvironmentInjector);
 

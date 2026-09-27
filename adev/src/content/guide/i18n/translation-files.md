@@ -132,20 +132,20 @@ Aşağıdaki işlemler Fransızca için çeviri sürecini açıklar.
 1. `messages.fr.xlf` dosyasını açın ve ilk `<trans-unit>` öğesini bulun.
    Bu, daha önce `i18n` niteliğiyle işaretlenmiş `<h1>` selamlama etiketinin çevirisini temsil eden bir _çeviri birimi_, aynı zamanda bir _metin düğümü_ olarak da bilinir.
 
-   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translated-hello-before"/>
+   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translated-hello-before"/>
 
    `id="introductionHeader"`, kaynak HTML'de gerekli olan `@@` öneki olmayan bir [özel kimlik][GuideI18nOptionalManageMarkedText]'dir.
 
 1. Metin düğümündeki `<source>... </source>` öğesini çoğaltın, `target` olarak yeniden adlandırın ve ardından içeriği Fransızca metinle değiştirin.
 
-   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>, after translation)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translated-hello"/>
+   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>, after translation)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translated-hello"/>
 
    Daha karmaşık bir çeviride, [açıklama ve anlam öğelerindeki][GuideI18nCommonPrepareAddHelpfulDescriptionsAndMeanings] bilgi ve bağlam, çeviri için doğru kelimeleri seçmenize yardımcı olur.
 
 1. Diğer metin düğümlerini çevirin.
    Aşağıdaki örnek, çevirinin nasıl yapılacağını göstermektedir.
 
-   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translated-other-nodes"/>
+   <docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translated-other-nodes"/>
 
 IMPORTANT: Çeviri birimlerinin kimliklerini değiştirmeyin.
 Her `id` niteliği Angular tarafından oluşturulur ve bileşen metninin içeriğine ve atanan anlama bağlıdır.
@@ -169,7 +169,7 @@ Bir `plural` çevirmek için ICU format eşleşme değerlerini çevirin.
 
 Aşağıdaki örnek, çevirinin nasıl yapılacağını göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translated-plural"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translated-plural"/>
 
 ## Alternatif ifadeleri çevirme
 
@@ -184,18 +184,18 @@ Aşağıdaki örnek, bileşen şablonunda bir `select` ICU ifadesini göstermekt
 Bu örnekte Angular, ifadeyi iki çeviri birimine çıkarır.
 İlki `select` yan tümcesinin dışındaki metni içerir ve `select` için bir yer tutucu kullanır \(`<x id="ICU">`\):
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translate-select-1"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translate-select-1"/>
 
 IMPORTANT: Metni çevirirken, gerekirse yer tutucuyu taşıyın ancak kaldırmayın.
 Yer tutucuyu kaldırırsanız, ICU ifadesi çevrilmiş uygulamanızdan kaldırılır.
 
 Aşağıdaki örnek, `select` yan tümcesini içeren ikinci çeviri birimini göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translate-select-2"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translate-select-2"/>
 
 Aşağıdaki örnek, çeviri tamamlandıktan sonra her iki çeviri birimini göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translated-select"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translated-select"/>
 
 ## İç içe ifadeleri çevirme
 
@@ -206,15 +206,15 @@ Angular, ifadeyi iki çeviri birimine çıkarır.
 
 Aşağıdaki örnek, iç içe ifadenin dışındaki metni içeren ilk çeviri birimini göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translate-nested-1"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translate-nested-1"/>
 
 Aşağıdaki örnek, tam iç içe ifadeyi içeren ikinci çeviri birimini göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translate-nested-2"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translate-nested-2"/>
 
 Aşağıdaki örnek, çeviriden sonra her iki çeviri birimini göstermektedir.
 
-<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="translate-nested"/>
+<docs-code header="src/locale/messages.fr.xlf (<trans-unit>)" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="translate-nested"/>
 
 ## Sıradaki
 

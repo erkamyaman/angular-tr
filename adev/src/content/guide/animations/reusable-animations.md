@@ -1,33 +1,33 @@
 # Yeniden kullanılabilir animasyonlar
 
-IMPORTANT: `@angular/animations` paketi artik kullanim disidir (deprecated). Angular ekibi, tum yeni kodlar icin animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanizi onerir. Yeni giris ve cikis [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrica uygulamalarinizda saf CSS animasyonlarina nasil gecis yapabileceginizi ogrenmek icin [Angular'in Animasyon paketinden gecis](guide/animations/migration) belgesine bakin.
+IMPORTANT: `@angular/animations` paketi artık kullanım dışıdır (deprecated). Angular ekibi, tüm yeni kodlar için animasyonlarda `animate.enter` ve `animate.leave` ile yerel CSS kullanmanızı önerir. Yeni giriş ve çıkış [animasyon rehberinde](guide/animations) daha fazla bilgi edinin. Ayrıca uygulamalarınızda saf CSS animasyonlarına nasıl geçiş yapabileceğinizi öğrenmek için [Angular'ın Animasyon paketinden geçiş](guide/animations/migration) belgesine bakın.
 
-Bu konu, yeniden kullanilabilir animasyonlarin nasil olusturulacagina dair ornekler saglar.
+Bu konu, yeniden kullanılabilir animasyonların nasıl oluşturulacağına dair örnekler sağlar.
 
 ## Yeniden kullanılabilir animasyonlar oluşturma
 
-Yeniden kullanilabilir bir animasyon olusturmak icin, [`animation()`](api/animations/animation) fonksiyonunu kullanarak ayri bir `.ts` dosyasinda bir animasyon tanimlayin ve bu animasyon tanimini bir `const` dis aktarim degiskeni olarak bildirin.
-Daha sonra bu animasyonu [`useAnimation()`](api/animations/useAnimation) fonksiyonunu kullanarak uygulamanizin bilesenlerinde iceri aktarabilir ve yeniden kullanabilirsiniz.
+Yeniden kullanılabilir bir animasyon oluşturmak için, [`animation()`](api/animations/animation) fonksiyonunu kullanarak ayrı bir `.ts` dosyasında bir animasyon tanımlayın ve bu animasyon tanımını bir `const` dış aktarım değişkeni olarak bildirin.
+Daha sonra bu animasyonu [`useAnimation()`](api/animations/useAnimation) fonksiyonunu kullanarak uygulamanızın bileşenlerinde içeri aktarabilir ve yeniden kullanabilirsiniz.
 
 <docs-code header="animations.ts" path="adev/src/content/examples/animations/src/app/animations.1.ts" region="animation-const"/>
 
-Onceki kod parcasinda, `transitionAnimation` bir dis aktarim degiskeni olarak bildirilerek yeniden kullanilabilir hale getirilmistir.
+Önceki kod parçasında, `transitionAnimation` bir dış aktarım değişkeni olarak bildirilerek yeniden kullanılabilir hale getirilmiştir.
 
-HELPFUL: `height`, `opacity`, `backgroundColor` ve `time` girisleri calisma zamaninda degistirilir.
+HELPFUL: `height`, `opacity`, `backgroundColor` ve `time` girişleri çalışma zamanında değiştirilir.
 
-Ayrica bir animasyonun bir bolumunu de dis aktarabilirsiniz.
-Ornegin, asagidaki kod parcasi animasyon `trigger`'ini dis aktarir.
+Ayrıca bir animasyonun bir bölümünü de dış aktarabilirsiniz.
+Örneğin, aşağıdaki kod parçası animasyon `trigger`'ını dış aktarır.
 
-<docs-code header="animations.1.ts" path="adev/src/content/examples/animations/src/app/animations.1.ts" region="trigger-const"/>
+<docs-code header="animations.ts" path="adev/src/content/examples/animations/src/app/animations.1.ts" region="trigger-const"/>
 
-Bu noktadan itibaren, yeniden kullanilabilir animasyon degiskenlerini bilesen sinifiniza iceri aktarabilirsiniz.
-Ornegin, asagidaki kod parcasi `transitionAnimation` degiskenini iceri aktarir ve `useAnimation()` fonksiyonu araciligiyla kullanir.
+Bu noktadan itibaren, yeniden kullanılabilir animasyon değişkenlerini bileşen sınıfınıza içeri aktarabilirsiniz.
+Örneğin, aşağıdaki kod parçası `transitionAnimation` değişkenini içeri aktarır ve `useAnimation()` fonksiyonu aracılığıyla kullanır.
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.3.ts" region="reusable"/>
 
 ## Angular animasyonları hakkında daha fazla bilgi
 
-Asagidakilerle de ilgilenebilirsiniz:
+Aşağıdakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
   <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>

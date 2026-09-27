@@ -164,12 +164,14 @@ Form gönderimini tetiklemek için formun altına bir düğme eklemek üzere bir
 Önceki kod parçacığındaki düğme, `profileForm` geçersiz olduğunda düğmeyi devre dışı bırakmak için kendisine bağlı bir `disabled` bağlamasına da sahiptir. Henüz herhangi bir doğrulama yapmıyorsunuz, bu nedenle düğme her zaman etkindir. Temel form doğrulama, [Form girdisini doğrulama](#form-girdisini-doğrulama) bölümünde ele alınmaktadır.
 </docs-step>
 
-<docs-step title="Bileşeni görüntüleyin">
+<docs-step title="Bileşeni görüntüleyin {#display-the-component-form-group}">
 Formu içeren `ProfileEditor` bileşenini görüntülemek için, onu bir bileşen şablonuna ekleyin.
 
 <docs-code header="app.component.html (profile editor)" path="adev/src/content/examples/reactive-forms/src/app/app.component.1.html" region="app-profile-editor"/>
 
 `ProfileEditor`, form grubu örneği içindeki `firstName` ve `lastName` kontrolleri için form kontrol örneklerini yönetmenize olanak tanır.
+</docs-step>
+</docs-workflow>
 
 ### İç içe form grupları oluşturma
 
@@ -683,7 +685,7 @@ export function positiveValues(control: AbstractControl) {
 ## Reactive form'lar API özeti
 
 Aşağıdaki tablo, reaktif form kontrollerini oluşturmak ve yönetmek için kullanılan temel sınıfları ve hizmetleri listeler.
-Tam sözdizimi ayrıntıları için [Forms paketi](api#forms 'API reference') API referans belgelerine bakın.
+Tam sözdizimi ayrıntıları için [Forms paketi](api#angular_forms 'API reference') API referans belgelerine bakın.
 
 ### Sınıflar
 

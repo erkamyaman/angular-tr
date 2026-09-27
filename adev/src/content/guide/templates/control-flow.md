@@ -142,7 +142,7 @@ Hiçbir `@case` ifadeye eşleşmezse ve `@default` bloğu yoksa hiçbir şey gö
 
 NOTE: Bütünlük denetimi, TypeScript'in yalnızca değişkenlerde çalışan tür daraltmasına dayanır. Switch koşulu bir fonksiyon çağrısı veya bir sinyal ise (örneğin `@switch (state())`) çalışmaz. Bunu aşmak için sinyali bir `@let` değişkenine atayın, örneğin: `@let mySignal = this.mySignal()`.
 
-```angular-html
+```angular-ts
 @Component({
   template: `
     @switch (state) {
@@ -154,7 +154,8 @@ NOTE: Bütünlük denetimi, TypeScript'in yalnızca değişkenlerde çalışan t
         <p>Welcome back!</p>
       }
 
-      @default never; // 'loading' @case'i eksik olduğu için hata verir
+      @default never;
+      <!-- @case ('loading') eksik olduğu için hata verir -->
     }
   `,
 })

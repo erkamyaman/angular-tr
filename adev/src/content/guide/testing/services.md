@@ -34,7 +34,7 @@ describe('Calculator', () => {
   let service: Calculator;
 
   beforeEach(() => {
-    // Calculator servisini enjekte eder; servis `providedIn: 'root'`
+    // Calculator servisini enjekte eder; servis `@Service`
     // kullandığı için Angular tarafından erişilebilirdir
     service = TestBed.inject(Calculator);
   });

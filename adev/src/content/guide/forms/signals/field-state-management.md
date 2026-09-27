@@ -4,11 +4,11 @@ Signal Forms'un alan durumu, doğrulama durumu (`valid`, `invalid`, `errors` gib
 
 ## Alan durumunu anlama
 
-[`form()`](api/forms/signals/form) fonksiyonu ile bir form oluşturduğunuzda, bir **alan ağacı** döndürür - form modelinizi yansıtan bir nesne yapısı. Ağaçtaki her alana nokta gösterimi ile erişilebilir ([`form.email`](api/forms/signals/form#email) gibi).
+[`form()`](api/forms/signals/form) fonksiyonu ile bir form oluşturduğunuzda, bir **alan ağacı** döndürür - form modelinizi yansıtan bir nesne yapısı. Ağaçtaki her alana nokta gösterimi ile erişilebilir ([`form.email`](api/forms/signals/FieldTree) gibi).
 
 ### Alan durumuna erişim {#accessing-field-state}
 
-Alan ağacındaki herhangi bir alanı fonksiyon olarak çağırdığınızda ([`form.email()`](api/forms/signals/form#email) gibi), alanın doğrulama, etkileşim ve kullanılabilirlik durumunu izleyen reaktif sinyaller içeren bir `FieldState` nesnesi döndürür. Örneğin, `invalid()` sinyali alanın doğrulama hataları olup olmadığını söyler:
+Alan ağacındaki herhangi bir alanı fonksiyon olarak çağırdığınızda ([`form.email()`](api/forms/signals/FieldState) gibi), alanın doğrulama, etkileşim ve kullanılabilirlik durumunu izleyen reaktif sinyaller içeren bir `FieldState` nesnesi döndürür. Örneğin, `invalid()` sinyali alanın doğrulama hataları olup olmadığını söyler:
 
 ```angular-ts
 import {Component, signal} from '@angular/core';

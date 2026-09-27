@@ -226,7 +226,7 @@ Durum değişikliklerine tepki vermek istediğimizde senkron veya asenkron türe
 
 ## `OnPush` bileşenlerinde signal okuma
 
-Bir `OnPush` bileşeninin şablonunda bir sinyal okuduğunuzda, Angular sinyali o bileşenin bir bağımlılığı olarak izler. O sinyalin değeri değiştiğinde, Angular bir sonraki değişiklik algılama çalıştığında güncellendiğinden emin olmak için bileşeni otomatik olarak [işaretler](api/core/ChangeDetectorRef#markforcheck). `OnPush` bileşenleri hakkında daha fazla bilgi için [Bileşen alt ağaçlarını atlama](best-practices/skipping-subtrees) kılavuzuna bakın.
+Bir `OnPush` bileşeninin şablonunda bir sinyal okuduğunuzda, Angular sinyali o bileşenin bir bağımlılığı olarak izler. O sinyalin değeri değiştiğinde, Angular bir sonraki değişiklik algılama çalıştığında güncellendiğinden emin olmak için bileşeni otomatik olarak [işaretler](api/core/ChangeDetectorRef#markForCheck). `OnPush` bileşenleri hakkında daha fazla bilgi için [Bileşen alt ağaçlarını atlama](best-practices/skipping-subtrees) kılavuzuna bakın.
 
 ## İleri düzey konular
 

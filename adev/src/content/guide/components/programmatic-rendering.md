@@ -13,24 +13,31 @@ HELPFUL: Tembel yükleme (lazy-loading) kullanım alanları için (örneğin ağ
 `NgComponentOutlet`, bir şablonda verilen bileşeni dinamik olarak render eden yapısal bir direktiftir.
 
 ```angular-ts
-@Component({/*...*/})
-export class AdminBio { /* ... */ }
+import {NgComponentOutlet} from '@angular/common';
 
 @Component({/*...*/})
-export class StandardBio { /* ... */ }
+export class AdminBio {
+  /* ... */
+}
+
+@Component({/*...*/})
+export class StandardBio {
+  /* ... */
+}
 
 @Component({
-  ...,
+  imports: [NgComponentOutlet],
   template: `
-    <p>Profile for {{user.name}}</p>
-    <ng-container *ngComponentOutlet="getBioComponent()" /> `
+    <p>Profile for {{ user().name }}</p>
+    <ng-container *ngComponentOutlet="bioComponent()" />
+  `,
 })
 export class CustomDialog {
   user = input.required<User>();
 
-  getBioComponent() {
+  bioComponent = computed(() => {
     return this.user().isAdmin ? AdminBio : StandardBio;
-  }
+  });
 }
 ```
 
@@ -382,3 +389,18 @@ export class PopupService {
   }
 }
 ```
+
+## Render hatalarını ele alma {#handling-rendering-errors}
+
+`ViewContainerRef.createComponent` veya bağımsız `createComponent` fonksiyonunu kullanarak bileşenleri dinamik olarak oluştururken, render veya değişiklik algılama aşamalarında oluşan hataları ele almak için seçenekler nesnesinde bir `onError` callback'i sağlayabilirsiniz. Bu, şablonlarda bir `@error` bloğu kullanmanın programatik karşılığıdır.
+
+```ts
+viewContainerRef.createComponent(DynamicComponent, {
+  onError: (err: Error, details: ErrorDetails) => {
+    console.error('Component rendering failed:', err);
+    // Alternatif bir arayüz render edin veya metrikleri kaydedin
+  },
+});
+```
+
+NOTE: `onError` callback'i yalnızca render veya değişiklik algılama aşamalarında oluşan hataları yakalar. Bileşen örneği oluşturulurken (örneğin constructor içinde) oluşan hataları yakalamaz. Angular, oluşturma hatalarını API'yi çağırdığınız anda senkron olarak fırlatır.

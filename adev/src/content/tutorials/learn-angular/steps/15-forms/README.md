@@ -31,7 +31,7 @@ Bu formun, formlara veri bağlama özelliklerini etkinleştiren Angular özellik
 
 `FormsModule`'ü `@angular/forms` paketinden içe aktarın ve `User` bileşeninin `imports` dizisine ekleyin.
 
-```ts {highlight:[2,6]}
+```ts {highlight:[[2],[6]]}
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 

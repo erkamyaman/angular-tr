@@ -24,12 +24,13 @@ export class Product {
 
 `ActivatedRoute`, rota hakkında farklı bilgiler sağlayabilir. Bazı yaygın özellikler şunlardır:
 
-| Özellik       | Ayrıntılar                                                                                                            |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------- |
-| `url`         | Rota yolunun her bir parçası için dize dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır.            |
-| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir. |
-| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                            |
-| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                        |
+| Özellik       | Ayrıntılar                                                                                                             |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `url`         | Rota yolunun her bir parçası için dize dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır.             |
+| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir.  |
+| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                             |
+| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                         |
+| `resources`   | Rotada tanımlanan `Resource` örneklerinden oluşan isteğe bağlı bir kayıt (`withRouterResources` etkinleştirildiğinde). |
 
 Rotada erişebileceğiniz şeylerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) göz atın.
 

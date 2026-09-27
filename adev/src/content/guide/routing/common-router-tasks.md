@@ -56,7 +56,18 @@ internalId = linkedSignal(() => this.id() ?? getDefaultId());
 </docs-step>
 </docs-workflow>
 
-NOTE: Anahtar, değer çiftleri ile tüm rota verilerini bileşen girişlerine bağlayabilirsiniz: statik veya çözümlenmiş rota verileri, yol parametreleri, matris parametreleri ve sorgu parametreleri.
+NOTE: Anahtar-değer çiftleri ile tüm rota verilerini bileşen girişlerine bağlayabilirsiniz: rota kaynakları, statik veya çözümlenmiş rota verileri, yol parametreleri, matris parametreleri ve sorgu parametreleri.
+
+### Giriş bağlama önceliği {#input-binding-priority}
+
+Birden fazla rota kaynağı aynı anahtarları tanımladığında, yönlendirici çakışmaları aşağıdaki öncelik sırasına göre (en yüksekten en düşüğe) çözer:
+
+1. **Rota kaynakları**: Rotanın `resources` haritasında tanımlanan değerler. Engelleyen kaynaklar sarmalanmamış değerlerini (`resource.value()`) bağlarken, engellemeyen kaynaklar `Resource` örneğini bağlar.
+2. **Rota verileri ve çözücüler**: `data` içinde tanımlanan statik veriler veya `resolve` aracılığıyla çözümlenen değerler.
+3. **Yol parametreleri ve matris parametreleri**: URL yolundaki parametreler (örneğin `:id`) ve matris parametreleri.
+4. **Sorgu parametreleri**: Sorgu dizesindeki parametreler (örneğin `?id=123`).
+
+Örneğin, bir rotada hem `:id` yol parametresi hem de `?id=...` sorgu parametresi varsa, yol parametresinin değeri bileşenin `id` girişine bağlanır. Rota ayrıca `id` adlı bir kaynak tanımlıyorsa, kaynak değeri her ikisine göre de önceliklidir.
 
 ### Sorgu parametresi bağlamayı devre dışı bırakma {#disable-query-parameter-binding}
 

@@ -15,8 +15,7 @@ Her bileşenin birkaç ana parçası vardır:
 
 İşte basitleştirilmiş bir `UserProfile` bileşeni örneği.
 
-```angular-ts
-// user-profile.ts
+```angular-ts {header: "user-profile.ts"}
 @Component({
   selector: 'user-profile',
   template: `
@@ -31,8 +30,7 @@ export class UserProfile {
 
 `@Component` dekoratörü ayrıca isteğe bağlı olarak şablonunuza uygulamak istediğiniz CSS için bir `styles` özelliğini de kabul eder:
 
-```angular-ts
-// user-profile.ts
+```angular-ts {header: "user-profile.ts"}
 @Component({
   selector: 'user-profile',
   template: `
@@ -54,8 +52,7 @@ export class UserProfile {
 
 Bir bileşenin HTML ve CSS'ini `templateUrl` ve `styleUrl` kullanarak ayrı dosyalarda tanımlayabilirsiniz:
 
-```angular-ts
-// user-profile.ts
+```angular-ts {header: "user-profile.ts"}
 @Component({
   selector: 'user-profile',
   templateUrl: 'user-profile.html',
@@ -66,14 +63,12 @@ export class UserProfile {
 }
 ```
 
-```angular-html
-<!-- user-profile.html -->
+```angular-html {header: "user-profile.html"}
 <h1>User profile</h1>
 <p>This is the user profile page</p>
 ```
 
-```css
-/* user-profile.css */
+```css {header: "user-profile.css"}
 h1 {
   font-size: 3em;
 }
@@ -102,8 +97,7 @@ Bir bileşeni içe aktarmak ve kullanmak için şunları yapmanız gerekir:
 
 İşte bir `ProfilePhoto` bileşenini içe aktaran bir `UserProfile` bileşeni örneği:
 
-```angular-ts
-// user-profile.ts
+```angular-ts {header: "user-profile.ts"}
 import {ProfilePhoto} from 'profile-photo.ts';
 
 @Component({

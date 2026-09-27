@@ -1,6 +1,6 @@
 <!-- TODO: need an Angular + AI logo -->
 
-<docs-decorative-header title="Build with AI" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
+<docs-decorative-header title="Yapay zeka ile geliştirme" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
 Yapay zeka destekli uygulamalar geliştirin. Yapay zeka ile daha hızlı geliştirme yapın.
 </docs-decorative-header>
 
@@ -20,7 +20,7 @@ Başlamak için Angular hakkında temel bir anlayışa sahip olmanız gerekir. A
 
 NOTE: Bu sayfa Google yapay zeka ürünleriyle entegrasyonlar ve örnekler içerse de, Genkit gibi araçlar model agnostiktir ve kendi modelinizi seçmenize olanak tanır. Birçok durumda, örnekler ve kod parçacıkları diğer üçüncü taraf çözümlere de uygulanabilir.
 
-## Getting Started
+## Başlarken {#getting-started}
 
 Yapay zeka destekli uygulamalar geliştirmek yeni ve hızla gelişen bir alandır. Nereden başlayacağınıza ve hangi teknolojileri seçeceğinize karar vermek zor olabilir. Aşağıdaki bölüm, aralarından seçim yapabileceğiniz üç seçenek sunmaktadır:
 
@@ -30,7 +30,7 @@ Yapay zeka destekli uygulamalar geliştirmek yeni ve hızla gelişen bir alandı
 
 1. _Gemini API_, API yüzeyi aracılığıyla doğrudan sunulan yöntemleri ve işlevselliği kullanan bir uygulama oluşturmanızı sağlar; tam yığın uygulamalar için en iyisidir. Özel görüntü üretimi veya derin veri işleme gibi yapay zeka modelleri üzerinde doğrudan kontrol gerektiren uygulamalar için uygundur.
 
-### Build AI-powered applications with Genkit and Angular
+### Genkit ve Angular ile yapay zeka destekli uygulamalar geliştirin {#build-ai-powered-applications-with-genkit-and-angular}
 
 [Genkit](https://genkit.dev), web ve mobil uygulamalarda yapay zeka destekli özellikler oluşturmanıza yardımcı olmak için tasarlanmış açık kaynaklı bir araç setidir. Google, OpenAI, Anthropic, Ollama ve daha fazlasından yapay zeka modellerini entegre etmek için birleşik bir arayüz sunar, böylece ihtiyaçlarınız için en iyi modelleri keşfedebilir ve seçebilirsiniz. Sunucu tarafı bir çözüm olarak, web uygulamalarınızın Genkit ile entegre olmak için desteklenen bir sunucu ortamına, örneğin node tabanlı bir sunucuya ihtiyacı vardır. Angular SSR kullanarak tam yığın bir uygulama oluşturmak, size örneğin başlangıç sunucu tarafı kodunu verir.
 
@@ -43,17 +43,17 @@ Genkit ve Angular ile nasıl geliştirme yapılacağına dair örnekler:
 - [Dinamik Hikaye Oluşturucu uygulaması](https://github.com/angular/examples/tree/main/genkit-angular-story-generator) — Genkit, Gemini ve Imagen 3 tarafından desteklenen, kullanıcı etkileşimine dayalı olarak dinamik bir hikaye oluşturan ve yaşanan olaylara eşlik eden güzel görüntü panelleri içeren ajansal bir Angular uygulaması oluşturmayı öğrenin. Daha gelişmiş bir kullanım senaryosuyla deney yapmak istiyorsanız buradan başlayın.
 
   Bu örneğin ayrıca işlevselliğin derinlemesine bir video açıklaması vardır:
-  - [Watch "Building Agentic Apps with Angular and Genkit live!"](https://youtube.com/live/mx7yZoIa2n4?feature=share)
-  - [Watch "Building Agentic Apps with Angular and Genkit live! PT 2"](https://youtube.com/live/YR6LN5_o3B0?feature=share)
+  - ["Building Agentic Apps with Angular and Genkit live!" yayınını izleyin](https://youtube.com/live/mx7yZoIa2n4?feature=share)
+  - ["Building Agentic Apps with Angular and Genkit live! PT 2" yayınını izleyin](https://youtube.com/live/YR6LN5_o3B0?feature=share)
 
 - [Firebase ve Google Cloud ile Ajansal uygulamalar geliştirme (Barista Örneği)](https://developers.google.com/solutions/learn/agentic-barista) - Firebase ve Google Cloud ile ajansal bir kahve sipariş uygulaması oluşturmayı öğrenin. Bu örnek hem Firebase AI Logic hem de Genkit kullanır.
 
 - [Dinamik, Sunucu Tarafından Yönetilen Kullanıcı Arayüzleri Oluşturma](https://github.com/angular/examples/tree/main/dynamic-sdui-app) - Kullanıcı girdisine dayalı olarak çalışma zamanında oluşturulan kullanıcı arayüzü görünümleri ile Ajansal Angular uygulamaları oluşturmayı öğrenin.
 
   Bu örneğin ayrıca işlevselliğin derinlemesine bir video açıklaması vardır:
-  - [Watch "Exploring the future of web apps"](https://www.youtube.com/live/4qargCqOu70?feature=share)
+  - ["Exploring the future of web apps" yayınını izleyin](https://www.youtube.com/live/4qargCqOu70?feature=share)
 
-### Build AI-powered applications with Firebase AI Logic and Angular
+### Firebase AI Logic ve Angular ile yapay zeka destekli uygulamalar geliştirin {#build-ai-powered-applications-with-firebase-ai-logic-and-angular}
 
 [Firebase AI Logic](https://firebase.google.com/products/vertex-ai-in-firebase), web ve mobil uygulamalarınızdan doğrudan Vertex AI Gemini API veya Imagen API ile etkileşime geçmenin güvenli bir yolunu sunar. Bu, uygulamaların hem tam yığın hem de yalnızca istemci tarafı olabilmesi nedeniyle Angular geliştiricileri için caziptir. Yalnızca istemci tarafı bir uygulama geliştiriyorsanız, Firebase AI Logic web uygulamalarınıza yapay zeka eklemek için iyi bir seçenektir.
 
@@ -63,7 +63,7 @@ Firebase AI Logic ve Angular ile nasıl geliştirme yapılacağına dair bir ör
 
   Bu örnek, [işlevselliği açıklayan ve yeni özellikler eklemeyi gösteren derinlemesine bir video açıklaması](https://youtube.com/live/4vfDz2al_BI) içerir.
 
-### Build AI-powered applications with Gemini API and Angular
+### Gemini API ve Angular ile yapay zeka destekli uygulamalar geliştirin {#build-ai-powered-applications-with-gemini-api-and-angular}
 
 [Gemini API](https://ai.google.dev/gemini-api/docs), ses, görüntü, video ve metin girdisini destekleyen Google'ın en son modellerine erişim sağlar. Bu modeller belirli kullanım senaryoları için optimize edilmiştir, [Gemini API dokümantasyon sitesinde daha fazla bilgi edinin](https://ai.google.dev/gemini-api/docs/models).
 
@@ -71,9 +71,9 @@ Firebase AI Logic ve Angular ile nasıl geliştirme yapılacağına dair bir ör
 
 - [Yapay Zeka Sohbet Botu uygulama şablonu](https://github.com/FirebaseExtended/firebase-framework-tools/tree/main/starters/angular/ai-chatbot) - Bu şablon, HTTP aracılığıyla Gemini API ile iletişim kuran bir sohbet botu kullanıcı arayüzü ile başlar.
 
-## Best Practices
+## En İyi Uygulamalar {#best-practices}
 
-### Connecting to model providers and keeping your API Credentials Secure
+### Model sağlayıcılarına bağlanma ve API kimlik bilgilerinizi güvende tutma {#connecting-to-model-providers-and-keeping-your-api-credentials-secure}
 
 Model sağlayıcılarına bağlanırken API gizli anahtarlarınızı güvende tutmanız önemlidir. _API anahtarınızı asla `environments.ts` gibi istemciye gönderilen bir dosyaya koymayın_.
 
@@ -85,7 +85,7 @@ API anahtarları gerektiren model API'lerine sunucu tarafı bağlantıları içi
 
 Tam yığın bir uygulamada sunucu tarafı bağlantı örneği için koda bakın: [Angular AI Örneği (Genkit ve Angular Hikaye Oluşturucu) deposu](https://github.com/angular/examples/tree/main/genkit-angular-story-generator).
 
-### Use Tool Calling to enhance apps
+### Uygulamaları geliştirmek için araç çağrısı kullanın {#use-tool-calling-to-enhance-apps}
 
 Ajansal iş akışları oluşturmak istiyorsanız - burada ajanlar, promptlara dayalı olarak hareket edebilir ve sorunları çözmek için araçları kullanabilir - "araç çağrısı" kullanın. Fonksiyon çağrısı olarak da bilinen araç çağrısı, LLM'lere kendisini çağıran uygulamaya geri istek yapma yeteneği sağlamanın bir yoludur. Bir geliştirici olarak, hangi araçların mevcut olduğunu siz tanımlarsınız ve araçların nasıl veya ne zaman çağrılacağı konusunda kontrole sahipsiniz.
 
@@ -93,7 +93,7 @@ Araç çağrısı, yapay zeka entegrasyonunuzu bir soru-cevap tarzı sohbet botu
 
 [Angular örnekler deposunun](https://github.com/angular/examples) [e-ticaret örneğinde](https://github.com/angular/examples/blob/main/firebase-ai-logic-angular-example/src/app/ai.service.ts#L88), LLM, bir grup mağaza ürününün ne kadara mal olacağını hesaplamak gibi daha karmaşık görevleri gerçekleştirmek için gerekli bağlamı elde etmek amacıyla envanter fonksiyonlarına çağrı yapmayı talep eder. Mevcut API'nin kapsamı, LLM tarafından talep edilen bir fonksiyonun çağrılıp çağrılmayacağı gibi, geliştirici olarak size bağlıdır. Yürütme akışının kontrolü sizde kalır. Örneğin bir servisin belirli fonksiyonlarını açığa çıkarabilir ancak o servisin tüm fonksiyonlarını açığa çıkarmayabilirsiniz.
 
-### Handling non-deterministic responses
+### Deterministik olmayan yanıtları ele alma {#handling-non-deterministic-responses}
 
 Modeller deterministik olmayan sonuçlar döndürebildiğinden, uygulamalarınız bunu göz önünde bulundurarak tasarlanmalıdır. Uygulama implementasyonunuzda kullanabileceğiniz birkaç strateji:
 
@@ -109,11 +109,11 @@ Bu stratejileri ve teknikleri göz önünde bulundurarak bile, uygulama tasarım
 - Hassas bilgileri açığa çıkarmayan uygun bir mesajla kullanıcıyı kesinti hakkında uyarın
 - Hizmetler tekrar kullanılabilir olduğunda daha sonra konuşmaya devam edin.
 
-## Next steps
+## Sonraki adımlar {#next-steps}
 
 LLM promptları ve yapay zeka IDE kurulumu hakkında bilgi edinmek için aşağıdaki kılavuzlara bakın:
 
 <docs-pill-row>
-  <docs-pill href="ai/develop-with-ai" title="LLM prompts and IDE setup"/>
-  <docs-pill href="ai/agent-skills" title="Agent Skills"/>
+  <docs-pill href="ai/develop-with-ai" title="LLM komutları ve AI IDE kurulumu"/>
+  <docs-pill href="ai/agent-skills" title="Ajan Yetenekleri"/>
 </docs-pill-row>

@@ -8,10 +8,10 @@ NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar 
 
 Angular'da iki enjektör hiyerarşisi vardır:
 
-| Injector hierarchies            | Details                                                                                                                                                                                        |
-| :------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EnvironmentInjector` hierarchy | Bu hiyerarşide `@Service()` veya `ApplicationConfig` içindeki `providers` dizisini kullanarak bir `EnvironmentInjector` yapılandırın.                                                          |
-| `ElementInjector` hierarchy     | Her DOM elemanında örtük olarak oluşturulur. Bir `ElementInjector`, `@Directive()` veya `@Component()` üzerindeki `providers` özelliğinde yapılandırmadığınız sürece varsayılan olarak boştur. |
+| Enjektör hiyerarşileri            | Ayrıntılar                                                                                                                                                                                     |
+| :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EnvironmentInjector` hiyerarşisi | Bu hiyerarşide `@Service()` veya `ApplicationConfig` içindeki `providers` dizisini kullanarak bir `EnvironmentInjector` yapılandırın.                                                          |
+| `ElementInjector` hiyerarşisi     | Her DOM elemanında örtük olarak oluşturulur. Bir `ElementInjector`, `@Directive()` veya `@Component()` üzerindeki `providers` özelliğinde yapılandırmadığınız sürece varsayılan olarak boştur. |
 
 <docs-callout title="NgModule Tabanlı Uygulamalar">
 `NgModule` tabanlı uygulamalar için, `@NgModule()` veya `@Injectable()` anotasyonunu kullanarak `ModuleInjector` hiyerarşisi ile bağımlılıklar sağlayabilirsiniz.
@@ -136,7 +136,7 @@ Bir bileşende servisler sağladığınızda, bu servis o bileşen örneğindeki
 
 Bileşen örneği yok edildiğinde, o servis örneği de yok edilir.
 
-#### `@Directive()` and `@Component()`
+#### `@Directive()` ve `@Component()` {#directive-and-component}
 
 Bir bileşen özel bir direktif türüdür, yani `@Directive()`'in bir `providers` özelliği olduğu gibi, `@Component()`'in de vardır.
 Bu, direktiflerin yanı sıra bileşenlerin de `providers` özelliğini kullanarak sağlayıcılar yapılandırabileceği anlamına gelir.
@@ -266,7 +266,7 @@ export class Skipself {
 
 Bu durumda, `emoji` için alacağınız değer akçaağaç yaprağı <code>🍁</code> değil eğreltiotu <code>🌿</code> olacaktır.
 
-#### `skipSelf` option with `optional`
+#### `optional` ile `skipSelf` seçeneği {#skipself-option-with-optional}
 
 Değer `null` ise bir hatayı önlemek için `skipSelf` seçeneğini `optional` ile kullanın.
 
@@ -356,10 +356,10 @@ Aşağıdaki bölümler, servis görünürlüğünü `skipSelf` ve `host` ile de
 
 Bir bileşen sınıfı servisleri iki şekilde sağlayabilir:
 
-| Arrays                       | Details                                        |
-| :--------------------------- | :--------------------------------------------- |
-| With a `providers` array     | `@Component({ providers: [SomeService] })`     |
-| With a `viewProviders` array | `@Component({ viewProviders: [SomeService] })` |
+| Diziler                        | Ayrıntılar                                     |
+| :----------------------------- | :--------------------------------------------- |
+| Bir `providers` dizisi ile     | `@Component({ providers: [SomeService] })`     |
+| Bir `viewProviders` dizisi ile | `@Component({ viewProviders: [SomeService] })` |
 
 Aşağıdaki örneklerde, bir Angular uygulamasının mantıksal ağacını göreceksiniz.
 Enjektörün şablonlar bağlamında nasıl çalıştığını göstermek için mantıksal ağaç, uygulamanın HTML yapısını temsil edecektir.
@@ -368,11 +368,11 @@ Enjektörün şablonlar bağlamında nasıl çalıştığını göstermek için 
 Mantıksal ağaçta özel nitelikler göreceksiniz: `@Provide`, `@Inject` ve `@ApplicationConfig`.
 Bunlar gerçek nitelikler değildir, arka planda neler olduğunu göstermek için buradalar.
 
-| Angular service attribute | Details                                                                           |
-| :------------------------ | :-------------------------------------------------------------------------------- |
-| `@Inject(Token)=>Value`   | Mantıksal ağaçtaki bu konumda `Token` enjekte edilirse, değeri `Value` olacaktır. |
-| `@Provide(Token=Value)`   | Mantıksal ağaçtaki bu konumda `Token`'ın `Value` ile sağlandığını gösterir.       |
-| `@ApplicationConfig`      | Bu konumda yedek bir `EnvironmentInjector` kullanılması gerektiğini gösterir.     |
+| Angular servis niteliği | Ayrıntılar                                                                        |
+| :---------------------- | :-------------------------------------------------------------------------------- |
+| `@Inject(Token)=>Value` | Mantıksal ağaçtaki bu konumda `Token` enjekte edilirse, değeri `Value` olacaktır. |
+| `@Provide(Token=Value)` | Mantıksal ağaçtaki bu konumda `Token`'ın `Value` ile sağlandığını gösterir.       |
+| `@ApplicationConfig`    | Bu konumda yedek bir `EnvironmentInjector` kullanılması gerektiğini gösterir.     |
 
 ### Örnek uygulama yapısı
 
@@ -744,6 +744,41 @@ Yansıtılan `<app-inspector>`, <code>🐳</code> değerini alır çünkü <code
 
 `Child`'ın şablonunda doğrudan yer alan (yansıtılmamış) `<app-inspector>` ise <code>🐶</code> değerini alır; `<#VIEW>` içinde olduğu için aşılması gereken bir sınır yoktur.
 
+### Yansıtılan içeriğe bir view injector erişimi verme {#giving-projected-content-access-to-a-view-injector}
+
+`<ng-content>` ile yansıtılan içerik bir bileşenin `viewProviders`'ını göremez, çünkü Angular enjeksiyonu içeriğin render edildiği yere göre değil, bildirildiği injector'a göre çözümler.
+
+Yansıtılan içeriğin özellikle view düzeyindeki bir servise (veya yansıtmayı yapan bileşen örneğinin kendisine) erişmesini istediğinizde, içeriği `<ng-content>` yerine bir şablon olarak kabul edin ve açık bir injector ile render edin.
+
+`Child`'ı, `AnimalService`'i `viewProviders` içinde sağlayacak, yansıtılan şablonu sorgulayacak ve onu `ngTemplateOutletInjector` değeri bu servisi görebilen bir injector'a ayarlanmış [`NgTemplateOutlet`](/api/common/NgTemplateOutlet) aracılığıyla render edecek şekilde güncelleyin:
+
+```ts
+@Component({
+  selector: 'app-child',
+  viewProviders: [AnimalService],
+  imports: [NgTemplateOutlet],
+  template: `
+    <ng-container [ngTemplateOutlet]="content()" [ngTemplateOutletInjector]="injector" />
+  `,
+})
+export class Child {
+  readonly content = contentChild.required(TemplateRef);
+  readonly injector = inject(Injector);
+}
+```
+
+Tüketici, yansıtılan işaretlemeyi bir `<ng-template>` içine sarar:
+
+```html
+<app-child>
+  <ng-template>
+    <app-inspector />
+  </ng-template>
+</app-child>
+```
+
+`Child` artık `<app-inspector>`'ı outlet'te kendi injector'ını kullanarak oluşturur, bu nedenle işaretleme `App`'in şablonunda yazılmış olsa bile `AnimalService` köpeğe <code>🐶</code> çözümlenir. Bunun bedeli, `<ng-content>`'e kıyasla her iki tarafta biraz daha fazla işaretleme yazmaktır.
+
 ### Sağlanan token'ların görünürlüğü
 
 Görünürlük dekoratörleri, mantıksal ağaçta enjeksiyon token'ı aramasının nerede başlayıp nerede biteceğini etkiler.
@@ -804,7 +839,7 @@ Bunun nedeni, `host`'un aramanın üst sınırını `app-child` `<#VIEW>` ile s�
 
 Burada, servisler ve değerleri aynıdır, ancak `host` enjektörün `FlowerService` için `<#VIEW>`'den daha ileriye bakmasını engeller, bu nedenle bulamaz ve `null` döndürür.
 
-### `skipSelf` and `viewProviders`
+### `skipSelf` ve `viewProviders` {#skipself-and-viewproviders}
 
 `<app-child>`'ın `AnimalService`'i `viewProviders` dizisinde köpek <code>🐶</code> değeri ile sağladığını hatırlayın.
 Enjektörün `AnimalService` için yalnızca `<app-child>`'ın `ElementInjector`'ına bakması gerektiğinden, balinayı <code>🐳</code> asla görmez.
@@ -843,7 +878,7 @@ Bunun yerine, enjektör `<app-root>` `ElementInjector`'ından başlayacaktır.
 
 `<app-child>`'da `skipSelf` ile, enjektör `AnimalService` aramasına `<app-root>` `ElementInjector`'ında başlar ve balina 🐳 bulur.
 
-### `host` and `viewProviders`
+### `host` ve `viewProviders` {#host-and-viewproviders}
 
 `AnimalService`'in enjeksiyonu için sadece `host` kullanırsanız, sonuç köpek <code>🐶</code> olacaktır çünkü enjektör `AnimalService`'i `<app-child>` `<#VIEW>` içinde bulur.
 `Child`, köpek emojisinin `AnimalService` değeri olarak sağlanması için `viewProviders`'ı yapılandırır.
@@ -1166,8 +1201,8 @@ style tires fill:#BDD7EE,color:#000
 style RootInjector fill:#BDD7EE,color:#000
 ```
 
-## More on dependency injection
+## Bağımlılık enjeksiyonu hakkında daha fazlası {#more-on-dependency-injection}
 
 <docs-pill-row>
-  <docs-pill href="/guide/di/defining-dependency-providers" title="DI Providers"/>
+  <docs-pill href="/guide/di/defining-dependency-providers" title="DI Sağlayıcıları"/>
 </docs-pill-row>

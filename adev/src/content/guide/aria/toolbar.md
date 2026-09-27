@@ -36,7 +36,7 @@ Klavye navigasyonu ile ilgili kontrolleri ve eylemleri gruplamak için kullanıl
   </docs-tab>
 </docs-tab-group>
 
-## Usage
+## Kullanım {#usage}
 
 Toolbar, kullanıcıların sık eriştiği ilgili kontrolleri gruplamak için en iyi şekilde çalışır. Şu durumlarda toolbar kullanmayı düşünün:
 
@@ -51,11 +51,11 @@ Toolbar, kullanıcıların sık eriştiği ilgili kontrolleri gruplamak için en
 - Kontroller ilişkili değilse - Toolbar mantıksal bir gruplama ima eder; ilgisiz kontroller kullanıcıları karıştırır
 - Karmaşık iç içe navigasyon - Derin hiyerarşiler menüler veya navigasyon bileşenleri tarafından daha iyi karşılanır
 
-## Features
+## Özellikler {#features}
 
 Angular'ın toolbar'ı tam erişilebilir bir araç çubuğu uygulaması sağlar:
 
-- **Klavye Navigasyonu** - Ok tuşlarıyla widget'lar arasında gezinin, Enter veya Space ile etkinleştirin
+- **Klavye Navigasyonu** - Roving tabindex kullanarak ok tuşları, Home ve End ile widget'lar arasında gezinin; kontroller yerel etkinleştirme davranışlarını korur
 - **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA öznitelikleri
 - **Widget Grupları** - Radyo düğmesi grupları veya geçiş düğmesi grupları gibi ilgili widget'ları organize edin
 - **Esnek Yönelim** - Otomatik klavye navigasyonu ile yatay veya dikey düzenler
@@ -63,9 +63,9 @@ Angular'ın toolbar'ı tam erişilebilir bir araç çubuğu uygulaması sağlar:
 - **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak yönetir
 - **Yapılandırılabilir Odak** - Kenarlarda sarmalama navigasyonu veya sert duraklar arasında seçim yapın
 
-## Examples
+## Örnekler {#examples}
 
-### Basic horizontal toolbar
+### Temel yatay araç çubuğu {#basic-horizontal-toolbar}
 
 Yatay araç çubukları kontrolleri soldan sağa düzenler ve metin editörleri ve tasarım araçlarındaki yaygın kalıba uyar. Ok tuşları widget'lar arasında gezinir ve kullanıcılar bir sonraki sayfa öğesine geçmek için Tab'a basana kadar odağı araç çubuğu içinde tutar.
 
@@ -95,7 +95,7 @@ Yatay araç çubukları kontrolleri soldan sağa düzenler ve metin editörleri 
   </docs-tab>
 </docs-tab-group>
 
-### Vertical toolbar
+### Dikey araç çubuğu {#vertical-toolbar}
 
 Dikey araç çubukları kontrolleri yukarıdan aşağıya yığar; yan paneller veya dikey komut paletleri için kullanışlıdır. Yukarı ve aşağı ok tuşları widget'lar arasında gezinir.
 
@@ -125,31 +125,61 @@ Dikey araç çubukları kontrolleri yukarıdan aşağıya yığar; yan paneller 
   </docs-tab>
 </docs-tab-group>
 
-### Widget groups
+### Widget grupları {#widget-groups}
 
-Widget grupları birlikte çalışan ilgili kontrolleri içerir; metin hizalama seçenekleri veya liste biçimlendirme seçimleri gibi. Gruplar, araç çubuğu navigasyonuna katılırken kendi iç durumlarını korur.
+Widget grupları, metin hizalama seçenekleri veya biçimlendirme geçişleri gibi birlikte çalışan ilgili kontrolleri organize eder. Gruplar, yardımcı teknolojilere uygun semantik yapıyı sunarken roving tabindex navigasyonunu korur.
 
-Yukarıdaki örneklerde hizalama düğmeleri, karşılıklı dışlayıcı bir seçim grubu oluşturmak için `role="radiogroup"` ile `ngToolbarWidgetGroup` içine sarılmıştır.
+Yukarıdaki örneklerde hizalama düğmeleri, `role="radiogroup"` ile `ngToolbarWidgetGroup` içine sarılmıştır. Seçim, araç çubuğu kapsayıcısından ayrıştırılmıştır; bu sayede durumu Angular sinyalleri veya özel direktifler kullanarak yönetebilirsiniz:
 
-`multi` girişi, bir grup içindeki birden fazla widget'ın aynı anda seçilip seçilemeyeceğini kontrol eder:
-
-```html {highlight: [15]}
-<!-- Single selection (radio group) -->
+```angular-html
+<!-- Mutually exclusive radio group -->
 <div ngToolbarWidgetGroup role="radiogroup" aria-label="Alignment">
-  <button ngToolbarWidget value="left">Left</button>
-  <button ngToolbarWidget value="center">Center</button>
-  <button ngToolbarWidget value="right">Right</button>
+  <button
+    ngToolbarWidget
+    role="radio"
+    type="button"
+    [attr.aria-checked]="alignment() === 'left'"
+    (click)="alignment.set('left')"
+  >
+    Left
+  </button>
+  <button
+    ngToolbarWidget
+    role="radio"
+    type="button"
+    [attr.aria-checked]="alignment() === 'center'"
+    (click)="alignment.set('center')"
+  >
+    Center
+  </button>
+  <button
+    ngToolbarWidget
+    role="radio"
+    type="button"
+    [attr.aria-checked]="alignment() === 'right'"
+    (click)="alignment.set('right')"
+  >
+    Right
+  </button>
 </div>
 
-<!-- Multiple selection (toggle group) -->
-<div ngToolbarWidgetGroup [multi]="true" aria-label="Formatting">
-  <button ngToolbarWidget value="bold">Bold</button>
-  <button ngToolbarWidget value="italic">Italic</button>
-  <button ngToolbarWidget value="underline">Underline</button>
+<!-- Toggle button group -->
+<div class="group" role="group" aria-label="Text styling">
+  <button ngToolbarWidget type="button" [attr.aria-pressed]="bold()" (click)="bold.set(!bold())">
+    Bold
+  </button>
+  <button
+    ngToolbarWidget
+    type="button"
+    [attr.aria-pressed]="italic()"
+    (click)="italic.set(!italic())"
+  >
+    Italic
+  </button>
 </div>
 ```
 
-### Disabled widgets
+### Devre dışı widget'lar {#disabled-widgets}
 
 Araç çubukları iki devre dışı bırakma modunu destekler:
 
@@ -184,7 +214,7 @@ Varsayılan olarak `softDisabled` `true`'dur, bu da devre dışı widget'ların 
   </docs-tab>
 </docs-tab-group>
 
-### Right-to-left (RTL) support
+### Sağdan sola (RTL) desteği {#right-to-left-rtl-support}
 
 Araç çubukları sağdan sola dilleri otomatik olarak destekler. Düzeni ve klavye navigasyon yönünü tersine çevirmek için araç çubuğunu `dir="rtl"` içeren bir kapsayıcı ile sarın. Ok tuşu navigasyonu otomatik olarak ayarlanır: sol ok sonraki widget'a, sağ ok önceki widget'a hareket eder.
 
@@ -214,7 +244,7 @@ Araç çubukları sağdan sola dilleri otomatik olarak destekler. Düzeni ve kla
   </docs-tab>
 </docs-tab-group>
 
-## Testing
+## Test etme {#testing}
 
 Angular Aria, araç çubuğu bileşenlerini test etmek için bileşen harness'leri sağlar.
 Bir bileşen testinde harness'lerin nasıl kullanılacağına dair bir örnek:
@@ -240,7 +270,7 @@ describe('MyToolbarComponent', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
-  it('should have widgets and allow selection', async () => {
+  it('should have widgets and update toggle state on click', async () => {
     // Araç çubuğu harness'ini yükle
     const toolbar = await loader.getHarness(ToolbarHarness);
 
@@ -251,7 +281,7 @@ describe('MyToolbarComponent', () => {
     // İlk widget'a tıkla
     await widgets[0].click();
 
-    // Seçim durumunu doğrula
+    // Basılı durumun tıklama işleyicisi aracılığıyla güncellendiğini doğrula
     expect(await widgets[0].isSelected()).toBe(true);
   });
 });

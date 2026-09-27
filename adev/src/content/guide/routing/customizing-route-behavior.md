@@ -28,7 +28,7 @@ provideRouter(routes, withRouterConfig({canceledNavigationResolution: 'computed'
 
 ### Aynı URL navigasyonlarına tepki verme {#react-to-same-url-navigations}
 
-`onSameUrlNavigation`, kullanıcı geçerli URL'ye navigasyon istediğinde ne olması gerektiğini yapılandırır. Varsayılan `'ignore'` işlemi atlar, `'reload'` ise koruyucuları ve çözücüleri yeniden çalıştırır ve bileşen örneklerini yeniler.
+`onSameUrlNavigation`, kullanıcı geçerli URL'ye navigasyon istediğinde ne olması gerektiğini yapılandırır. Varsayılan `'ignore'` işlemi atlar, `'reload'` ise Router'a URL'yi atlamak yerine navigasyon hattında işlemesini söyler. Koruyucuların ve çözücülerin yeniden çalıştırılması [`runGuardsAndResolvers`](api/router/RunGuardsAndResolvers) tarafından yönetilir, bileşenlerin yeniden kullanımı ise [rota yeniden kullanım stratejisi](#route-reuse-strategy) tarafından belirlenir.
 
 Bu, bir liste filtresine, sol navigasyon öğesine veya yenile düğmesine tekrarlanan tıklamaların URL değişmese bile yeni veri çekmeyi tetiklemesini istediğinizde yararlıdır.
 
@@ -41,6 +41,8 @@ Bu davranışı global yerine bireysel navigasyonlarda da kontrol edebilirsiniz.
 ```ts
 router.navigate(['/some-path'], {onSameUrlNavigation: 'reload'});
 ```
+
+TIP: [Rota resource'ları](/guide/routing/data-fetching-with-resources#reloading-resources-without-renavigation) kullanıyorsanız, `onSameUrlNavigation`'ı yapılandırmanıza veya bir router navigasyonu tetiklemenize gerek kalmadan, resource üzerinde `.reload()` çağırarak ya da `params` içinde okunan sinyalleri güncelleyerek verileri istediğiniz zaman yenileyebilirsiniz.
 
 ### Parametre devralma kontrolü {#control-parameter-inheritance}
 
@@ -153,13 +155,13 @@ Bu stratejiler yalnızca tarayıcıya yazılan URL'yi etkiler.
 Angular Router, özelleştirme için dört ana alan sunar:
 
   <docs-pill-row>
-    <docs-pill href="#rota-yeniden-kullanım-stratejisi" title="Route reuse strategy"/>
+    <docs-pill href="#route-reuse-strategy" title="Route reuse strategy"/>
     <docs-pill href="#preloading-strategy" title="Preloading strategy"/>
-    <docs-pill href="#url-yönetim-stratejisi" title="URL handling strategy"/>
+    <docs-pill href="#url-handling-strategy" title="URL handling strategy"/>
     <docs-pill href="#özel-route-eşleştiricileri" title="Custom route matchers"/>
   </docs-pill-row>
 
-## Rota yeniden kullanım stratejisi
+## Rota yeniden kullanım stratejisi {#route-reuse-strategy}
 
 Rota yeniden kullanım stratejisi, Angular'ın navigasyon sırasında bileşenleri yok edip yeniden oluşturup oluşturmayacağını veya yeniden kullanım için koruyup korumayacağını kontrol eder. Varsayılan olarak Angular, bir rotadan ayrılırken bileşen örneklerini yok eder ve geri döndüğünde yeni örnekler oluşturur.
 
@@ -261,17 +263,17 @@ if (this.handles.size > MAX_CACHE_SIZE) {
 
 NOTE: `canMatch` koruyucuları söz konusu olduğunda anahtar olarak rota yolunu kullanmaktan kaçının, çünkü yinelenen girişlere yol açabilir.
 
-### (Deneysel) Kullanılmayan rota enjektörlerinin otomatik temizlenmesi
+### Kullanılmayan rota enjektörlerinin otomatik temizlenmesi {#automatic-cleanup-of-unused-route-injectors}
 
 Varsayılan olarak Angular, ayrılmış rotaların enjektörlerini, artık `RouteReuseStrategy` tarafından saklanmasalar bile yok etmez. Bu, öncelikle bu düzeyde bellek yönetiminin çoğu uygulama için yaygın olarak gerekli olmamasından kaynaklanmaktadır.
 
-Kullanılmayan rota enjektörlerinin otomatik temizlenmesini etkinleştirmek için yönlendirici yapılandırmanızda `withExperimentalAutoCleanupInjectors` özelliğini kullanabilirsiniz. Bu özellik, navigasyonlardan sonra strateji tarafından şu anda hangi rotaların saklandığını kontrol eder ve yeniden kullanım stratejisi tarafından saklanmayan ayrılmış rotaların enjektörlerini yok eder.
+Kullanılmayan rota enjektörlerinin otomatik temizlenmesini etkinleştirmek için yönlendirici yapılandırmanızda `withAutoCleanupInjectors` özelliğini kullanabilirsiniz. Bu özellik, navigasyonlardan sonra strateji tarafından şu anda hangi rotaların saklandığını kontrol eder ve yeniden kullanım stratejisi tarafından saklanmayan ayrılmış rotaların enjektörlerini yok eder.
 
 ```ts
-import {provideRouter, withExperimentalAutoCleanupInjectors} from '@angular/router';
+import {provideRouter, withAutoCleanupInjectors} from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes, withExperimentalAutoCleanupInjectors())],
+  providers: [provideRouter(routes, withAutoCleanupInjectors())],
 };
 ```
 
@@ -303,7 +305,7 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
     this.handles.set(route.routeConfig!, handle);
   }
 
-  retrieveStoredRouteHandles(): DetachedRouteHandle {
+  retrieveStoredRouteHandles(): DetachedRouteHandle[] {
     return Array.from(this.handles.values());
   }
 
@@ -427,7 +429,7 @@ export const routes: Routes = [
 
 Tarayıcı kaynak sınırları da ön yükleme davranışını etkiler. Tarayıcılar eşzamanlı HTTP bağlantılarını sınırlar, bu nedenle agresif ön yükleme diğer isteklerin arkasında sıraya girebilir. Service worker'lar, önbellek ve ağ istekleri üzerinde ayrıntılı kontrol sağlayarak ön yükleme stratejisini tamamlayabilir.
 
-## URL yönetim stratejisi
+## URL yönetim stratejisi {#url-handling-strategy}
 
 URL yönetim stratejileri, Angular yönlendiricisinin hangi URL'leri işleyeceğini ve hangilerini yok sayacağını belirler. Varsayılan olarak Angular, uygulama içindeki tüm navigasyon olaylarını işlemeye çalışır, ancak gerçek dünya uygulamalarının genellikle diğer sistemlerle birlikte var olması, harici bağlantıları yönetmesi veya kendi rotalarını yöneten eski uygulamalarla entegre olması gerekir.
 

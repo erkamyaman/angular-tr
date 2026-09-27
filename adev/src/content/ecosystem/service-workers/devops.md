@@ -109,6 +109,24 @@ Angular service worker'a yapılan güncellemelerin çoğu uygulama için şeffaf
 Nadiren, Angular service worker'daki bir hata düzeltmesi veya özellik, eski önbelleklerin geçersiz kılınmasını gerektirebilir.
 Bu durumda, service worker uygulamayı şeffaf bir şekilde ağdan yeniler.
 
+#### Yalnızca yanıt başlıkları değiştiğinde service worker'ı güncelleme {#updating-the-service-worker-when-only-its-response-headers-change}
+
+Tarayıcılar yeni bir service worker'ı yalnızca service worker betiği kurulu olandan bayt düzeyinde farklı olduğunda kurar.
+`ngsw-worker.js` genellikle derlemeler arasında aynı olduğundan, sunucunun onunla birlikte gönderdiği yanıt başlıklarını (örneğin bir `Content-Security-Policy`) değiştirmek tek başına kurulu service worker'ı güncellemez.
+Service worker, kurulduğu sıradaki başlıklarla çalışmaya devam eder.
+
+Tarayıcıların service worker'ı yeniden kurmasını sağlamak için onu sürümlenmiş bir betik URL'siyle kaydedin ve bu başlıklar her değiştiğinde sürümü değiştirin:
+
+```ts
+provideServiceWorker('ngsw-worker.js?v=2', {
+  enabled: !isDevMode(),
+  registrationStrategy: 'registerWhenStable:30000',
+});
+```
+
+Farklı bir betik URL'si kaydetmek, içeriği değişmemiş olsa bile tarayıcının service worker'ı yeniden indirip kurmasını sağlar.
+Angular service worker, önbelleklerini ve `ngsw.json` dosyasını betik URL'sine göre değil kayıt kapsamına göre çözümler; bu nedenle sorgu parametresi önbelleğe alınmış içeriği etkilemez.
+
 ### Service worker'ı atlama
 
 Bazı durumlarda, service worker'ı tamamen atlamak ve tarayıcının isteği işlemesine izin vermek isteyebilirsiniz.

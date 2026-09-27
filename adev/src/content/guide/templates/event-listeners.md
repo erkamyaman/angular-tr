@@ -42,7 +42,7 @@ export class App {
 }
 ```
 
-## Tuş değiştiricilerini kullanma
+## Tuş değiştiricilerini kullanma {#using-key-modifiers}
 
 Belirli bir tuş için belirli klavye olaylarını yakalamak istediğinizde, aşağıdakine benzer bir kod yazabilirsiniz:
 
@@ -106,9 +106,9 @@ Global hedef adları bir olaya önek olarak kullanılabilir. Desteklenen 3 globa
 @Component({
   /* ... */
   host: {
-    'window:click': 'onWindowClick()',
-    'document:click': 'onDocumentClick()',
-    'body:click': 'onBodyClick()',
+    '(window:click)': 'onWindowClick()',
+    '(document:click)': 'onDocumentClick()',
+    '(body:click)': 'onBodyClick()',
   },
 })
 export class MyView {}

@@ -37,11 +37,11 @@ Bu derste, ayrıntılar sayfasına navigasyon yapabilmek için uygulamanızda y�
 2.  `main.ts` dosyasında, uygulamada yönlendirmeyi etkinleştirmek için aşağıdaki güncellemeleri yapın:
     1.  Routes dosyasını ve `provideRouter` fonksiyonunu içe aktarın:
 
-          <docs-code header="Import routing details in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[7,8]"/>
+          <docs-code header="Import routing details in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[3,4]"/>
 
     1.  `bootstrapApplication` çağrısını yönlendirme yapılandırmasını dahil edecek şekilde güncelleyin:
 
-          <docs-code header="Add router configuration in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[10,17]"/>
+          <docs-code header="Add router configuration in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[6,8]"/>
 
 3.  `src/app/app.ts` dosyasında, bileşeni yönlendirme kullanacak şekilde güncelleyin:
     1.  Router yönergeleri `RouterOutlet` ve `RouterLink` için dosya düzeyinde import'lar ekleyin:

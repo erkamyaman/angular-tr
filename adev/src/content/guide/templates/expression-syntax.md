@@ -70,6 +70,8 @@ Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 | in                            | `'model' in car`                               |
 | instanceof                    | `car instanceof Automobile`                    |
 | Assignment                    | `a = b`                                        |
+| Increment                     | `a++`, `++a`                                   |
+| Decrement                     | `a--`, `--a`                                   |
 | Addition Assignment           | `a += b`                                       |
 | Subtraction Assignment        | `a -= b`                                       |
 | Multiplication Assignment     | `a *= b`                                       |
@@ -96,7 +98,7 @@ Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekl
 Angular 22'den önce, optional chaining operatörü (`?.`) sol taraf `null` veya `undefined` olduğunda `null` döndürüyordu; standart JavaScript'in `?.` operatörü ise `undefined` döndürür.
 Angular 22'den itibaren, Angular ifadelerindeki optional chaining davranışı standart JavaScript davranışıyla hizalandı.
 
-v22'ye geçiş sırasında `ng update` şematikleri, önceki `null` döndürme davranışını korumak için mevcut ifadelere bir `$safeNavigationMigration` sihirli fonksiyonu ekledi.
+v22'ye geçiş sırasında `ng update` şematikleri, önceki davranışı korumak için mevcut ifadelere bir `$safeNavigationMigration` fonksiyonu ekler.
 
 ```html
 {{ $safeNavigationMigration(foo?.bar) }}

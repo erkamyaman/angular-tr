@@ -9,7 +9,7 @@ Angular çıkarıcı, aşağıdaki örneklerin her biri için bir çeviri birimi
 
 Aşağıdaki örnek, benzersiz kimliklere sahip çeviri birimlerini gösterir.
 
-<docs-code header="messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="generated-id"/>
+<docs-code header="messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="generated-id"/>
 
 Çevrilebilir metni değiştirdiğinizde, çıkarıcı o çeviri birimi için yeni bir kimlik oluşturur.
 Çoğu durumda, kaynak metindeki değişiklikler çeviride de bir değişiklik gerektirir.
@@ -34,7 +34,7 @@ variableText1 = $localize`:@@introductionHeader:Hello i18n!`;
 
 Özel bir kimlik belirttiğinizde, çıkarıcı özel kimlikle bir çeviri birimi oluşturur.
 
-<docs-code header="messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="custom-id"/>
+<docs-code header="messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="custom-id"/>
 
 Metni değiştirirseniz, çıkarıcı kimliği değiştirmez.
 Sonuç olarak, çeviriyi güncelleme adımını atlamanız gerekmez.
@@ -75,7 +75,7 @@ Aynı kimliği iki farklı metin öğesi için kullanırsanız, çıkarma aracı
 
 Aşağıda Fransızca çeviri gösterilmektedir.
 
-<docs-code header="src/locale/messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" visibleRegion="i18n-duplicate-custom-id"/>
+<docs-code header="src/locale/messages.fr.xlf" path="adev/src/content/examples/i18n/doc-files/messages.fr.xlf" region="i18n-duplicate-custom-id"/>
 
 Her iki öğe de artık aynı çeviriyi \(`Bonjour`\) kullanır, çünkü her ikisi de aynı özel kimlikle tanımlanmıştır.
 

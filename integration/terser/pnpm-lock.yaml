@@ -19,19 +19,19 @@ importers:
         version: link:in-existing-linked-by-bazel
       acorn:
         specifier: ^8.5.0
-        version: 8.17.0
+        version: 8.18.0
       rxjs:
         specifier: ^7.0.0
         version: 7.8.2
       terser:
         specifier: ^5.8.0
-        version: 5.49.0
+        version: 5.51.2
       typescript:
         specifier: 6.0.3
         version: 6.0.3
       zone.js:
-        specifier: 0.16.2
-        version: 0.16.2
+        specifier: 0.16.3
+        version: 0.16.3
 
 packages:
 
@@ -45,14 +45,14 @@ packages:
   '@jridgewell/source-map@0.3.11':
     resolution: {integrity: sha512-ZMp1V8ZFcPG5dIWnQLr3NSI1MiCU7UETdS/A0G8V/XWHvJv3ZsFqutJn1Y5RPmAPX6F3BiE397OqveU/9NCuIA==}
 
-  '@jridgewell/sourcemap-codec@1.5.5':
-    resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+  '@jridgewell/sourcemap-codec@1.6.0':
+    resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  acorn@8.17.0:
-    resolution: {integrity: sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==}
+  acorn@8.18.0:
+    resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -72,8 +72,8 @@ packages:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
 
-  terser@5.49.0:
-    resolution: {integrity: sha512-SNiDnXyHSrxVcIOtVbULzcTmniUiwcV7Nwdyj1twVubeTmbjoa8p69KKDpfkdoOavuM4/GRm1+ykI8qqnavHoA==}
+  terser@5.51.2:
+    resolution: {integrity: sha512-bWnjSNscmuI+GJze6ZupnHP8G/cTcsJF+bXCeQknk2SHQsgbNJnLrqiH9jZ2W4STPVXH2mDKKRX3iwPhc9Cn/Q==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -85,14 +85,14 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  zone.js@0.16.2:
-    resolution: {integrity: sha512-Eky7p2Z1Ig3NnbfodSPoARCjKBSTFMnE/ACsP1L/XJEfY4SdOFce19BsUCWVwL6K5ABZFy5J3bjcMWffX+YM3Q==}
+  zone.js@0.16.3:
+    resolution: {integrity: sha512-ihXL9+vhYyEhXz4TDNpHeAOZN9FVrbog0Il64OIEI28UP/n5AaI6gsccRuOHBfx+206agzyoK527bYIO0Foy6A==}
 
 snapshots:
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
       '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/resolve-uri@3.1.2': {}
@@ -102,14 +102,14 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
 
-  '@jridgewell/sourcemap-codec@1.5.5': {}
+  '@jridgewell/sourcemap-codec@1.6.0': {}
 
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
 
-  acorn@8.17.0: {}
+  acorn@8.18.0: {}
 
   buffer-from@1.1.2: {}
 
@@ -126,10 +126,10 @@ snapshots:
 
   source-map@0.6.1: {}
 
-  terser@5.49.0:
+  terser@5.51.2:
     dependencies:
       '@jridgewell/source-map': 0.3.11
-      acorn: 8.17.0
+      acorn: 8.18.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -137,4 +137,4 @@ snapshots:
 
   typescript@6.0.3: {}
 
-  zone.js@0.16.2: {}
+  zone.js@0.16.3: {}

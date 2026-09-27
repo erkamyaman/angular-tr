@@ -19621,138 +19621,6 @@ var require_lib = __commonJS({
 });
 
 // 
-var require_dist = __commonJS({
-  ""(exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.format = format3;
-    exports.parse = parse4;
-    var TEXT_REGEXP = /^[\u0009\u0020-\u007e\u0080-\u00ff]*$/;
-    var TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
-    var QUOTE_REGEXP = /[\\"]/g;
-    var TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
-    var NullObject = (() => {
-      const C = function() {
-      };
-      C.prototype = /* @__PURE__ */ Object.create(null);
-      return C;
-    })();
-    function format3(obj) {
-      const { type, parameters } = obj;
-      if (!type || !TYPE_REGEXP.test(type)) {
-        throw new TypeError(`Invalid type: ${type}`);
-      }
-      let result = type;
-      if (parameters) {
-        for (const param of Object.keys(parameters)) {
-          if (!TOKEN_REGEXP.test(param)) {
-            throw new TypeError(`Invalid parameter name: ${param}`);
-          }
-          result += `; ${param}=${qstring(parameters[param])}`;
-        }
-      }
-      return result;
-    }
-    function parse4(header, options) {
-      const len = header.length;
-      let index = skipOWS(header, 0, len);
-      const valueStart = index;
-      index = skipValue(header, index, len);
-      const valueEnd = trailingOWS(header, valueStart, index);
-      const type = header.slice(valueStart, valueEnd).toLowerCase();
-      const parameters = options?.parameters === false ? new NullObject() : parseParameters(header, index, len);
-      return { type, parameters };
-    }
-    var SP = 32;
-    var HTAB = 9;
-    var SEMI = 59;
-    var EQ = 61;
-    var DQUOTE = 34;
-    var BSLASH = 92;
-    function parseParameters(header, index, len) {
-      const parameters = new NullObject();
-      parameter:
-        while (index < len) {
-          index = skipOWS(header, index + 1, len);
-          const keyStart = index;
-          while (index < len) {
-            const code = header.charCodeAt(index);
-            if (code === SEMI)
-              continue parameter;
-            if (code === EQ) {
-              const keyEnd = trailingOWS(header, keyStart, index);
-              const key = header.slice(keyStart, keyEnd).toLowerCase();
-              index = skipOWS(header, index + 1, len);
-              if (index < len && header.charCodeAt(index) === DQUOTE) {
-                index++;
-                let value = "";
-                while (index < len) {
-                  const code2 = header.charCodeAt(index++);
-                  if (code2 === DQUOTE) {
-                    index = skipValue(header, index, len);
-                    if (parameters[key] === void 0)
-                      parameters[key] = value;
-                    break;
-                  }
-                  if (code2 === BSLASH && index < len) {
-                    value += header[index++];
-                    continue;
-                  }
-                  value += String.fromCharCode(code2);
-                }
-                continue parameter;
-              }
-              const valueStart = index;
-              index = skipValue(header, index, len);
-              if (parameters[key] === void 0) {
-                const valueEnd = trailingOWS(header, valueStart, index);
-                parameters[key] = header.slice(valueStart, valueEnd);
-              }
-              continue parameter;
-            }
-            index++;
-          }
-        }
-      return parameters;
-    }
-    function skipValue(str, index, len) {
-      while (index < len) {
-        const char = str.charCodeAt(index);
-        if (char === SEMI)
-          break;
-        index++;
-      }
-      return index;
-    }
-    function skipOWS(header, index, len) {
-      while (index < len) {
-        const char = header.charCodeAt(index);
-        if (char !== SP && char !== HTAB)
-          break;
-        index++;
-      }
-      return index;
-    }
-    function trailingOWS(header, start, end) {
-      while (end > start) {
-        const char = header.charCodeAt(end - 1);
-        if (char !== SP && char !== HTAB)
-          break;
-        end--;
-      }
-      return end;
-    }
-    function qstring(str) {
-      if (TOKEN_REGEXP.test(str))
-        return str;
-      if (TEXT_REGEXP.test(str))
-        return `"${str.replace(QUOTE_REGEXP, "\\$&")}"`;
-      throw new TypeError(`Invalid parameter value: ${str}`);
-    }
-  }
-});
-
-// 
 var require_lockfile = __commonJS({
   ""(exports, module) {
     module.exports = /******/
@@ -28677,7 +28545,109 @@ function withDefaults(oldDefaults, newDefaults) {
 var endpoint = withDefaults(null, DEFAULTS);
 
 // 
-var import_content_type = __toESM(require_dist());
+var NullObject = (() => {
+  const C = function() {
+  };
+  C.prototype = /* @__PURE__ */ Object.create(null);
+  return C;
+})();
+function parse2(header, options) {
+  const stopChar = options?.comma === true ? COMMA : 65536;
+  const len = header.length;
+  let index = skipOWS(header, options?.start ?? 0, len);
+  const valueStart = index;
+  index = skipValue(header, index, len, stopChar);
+  const valueEnd = trailingOWS(header, valueStart, index);
+  const type = header.slice(valueStart, valueEnd).toLowerCase();
+  if (options?.parameters === false) {
+    return { type, index, parameters: new NullObject() };
+  }
+  return parseParameters(header, type, index, len, stopChar);
+}
+var SP = 32;
+var HTAB = 9;
+var SEMI = 59;
+var EQ = 61;
+var DQUOTE = 34;
+var BSLASH = 92;
+var COMMA = 44;
+function parseParameters(header, type, index, len, stopChar) {
+  const parameters = new NullObject();
+  parameter:
+    while (index < len) {
+      if (header.charCodeAt(index) === stopChar)
+        break;
+      index = skipOWS(header, index + 1, len);
+      const keyStart = index;
+      while (index < len) {
+        const code = header.charCodeAt(index);
+        if (code === stopChar)
+          break parameter;
+        if (code === SEMI)
+          continue parameter;
+        if (code === EQ) {
+          const keyEnd = trailingOWS(header, keyStart, index);
+          const key = header.slice(keyStart, keyEnd).toLowerCase();
+          index = skipOWS(header, index + 1, len);
+          if (index < len && header.charCodeAt(index) === DQUOTE) {
+            index++;
+            let value = "";
+            while (index < len) {
+              const code2 = header.charCodeAt(index++);
+              if (code2 === DQUOTE) {
+                index = skipValue(header, index, len, stopChar);
+                if (parameters[key] === void 0)
+                  parameters[key] = value;
+                break;
+              }
+              if (code2 === BSLASH && index < len) {
+                value += header[index++];
+                continue;
+              }
+              value += String.fromCharCode(code2);
+            }
+            continue parameter;
+          }
+          const valueStart = index;
+          index = skipValue(header, index, len, stopChar);
+          if (parameters[key] === void 0) {
+            const valueEnd = trailingOWS(header, valueStart, index);
+            parameters[key] = header.slice(valueStart, valueEnd);
+          }
+          continue parameter;
+        }
+        index++;
+      }
+    }
+  return { type, index, parameters };
+}
+function skipValue(str, index, len, stopChar) {
+  while (index < len) {
+    const code = str.charCodeAt(index);
+    if (code === SEMI || code === stopChar)
+      break;
+    index++;
+  }
+  return index;
+}
+function skipOWS(header, index, len) {
+  while (index < len) {
+    const char = header.charCodeAt(index);
+    if (char !== SP && char !== HTAB)
+      break;
+    index++;
+  }
+  return index;
+}
+function trailingOWS(header, start, end) {
+  while (end > start) {
+    const char = header.charCodeAt(end - 1);
+    if (char !== SP && char !== HTAB)
+      break;
+    end--;
+  }
+  return end;
+}
 
 // 
 var intRegex = /^-?\d+$/;
@@ -28959,7 +28929,7 @@ var JSONParseV2 = (text, reviver) => {
 };
 var MAX_INT = Number.MAX_SAFE_INTEGER.toString();
 var MAX_DIGITS = MAX_INT.length;
-var stringsOrLargeNumbers = /"(?:\\.|[^"])*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
+var stringsOrLargeNumbers = /"(?:[^"\\]|\\.)*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
 var noiseValueWithQuotes = /^"-?\d+n+"$/;
 var applyReviverIteratively = (parsed, userReviver) => {
   const rootHolder = { "": parsed };
@@ -29082,7 +29052,7 @@ var RequestError = class extends Error {
 };
 
 // 
-var VERSION2 = "10.0.11";
+var VERSION2 = "10.0.16";
 var defaults_default = {
   headers: {
     "user-agent": `octokit-request.js/${VERSION2} ${getUserAgent()}`
@@ -29203,7 +29173,7 @@ async function getResponseData(response) {
   if (!contentType) {
     return response.text().catch(noop);
   }
-  const mimetype = (0, import_content_type.parse)(contentType);
+  const mimetype = parse2(contentType);
   if (isJSONResponse(mimetype)) {
     let text = "";
     try {
@@ -29212,7 +29182,10 @@ async function getResponseData(response) {
     } catch (err) {
       return text;
     }
-  } else if (mimetype.type.startsWith("text/") || mimetype.parameters.charset?.toLowerCase() === "utf-8") {
+  } else if (mimetype.type.startsWith("text/") || // `application/octet-stream` is the canonical "arbitrary binary" type
+  // (RFC 2046) and must never be decoded as text, even when the response
+  // carries a (misleading) `charset=utf-8` parameter — see #751.
+  mimetype.parameters.charset?.toLowerCase() === "utf-8" && mimetype.type !== "application/octet-stream") {
     return response.text().catch(noop);
   } else {
     return response.arrayBuffer().catch(
@@ -29281,6 +29254,9 @@ var GraphqlResponseError = class extends Error {
       Error.captureStackTrace(this, this.constructor);
     }
   }
+  request;
+  headers;
+  response;
   name = "GraphqlResponseError";
   errors;
   data;
@@ -29417,7 +29393,7 @@ var createTokenAuth = function createTokenAuth2(token) {
 };
 
 // 
-var VERSION4 = "7.0.6";
+var VERSION4 = "7.0.8";
 
 // 
 var noop2 = () => {
@@ -32718,7 +32694,7 @@ function cliui(opts, _mixin) {
 }
 function ansiRegex({ onlyFirst = false } = {}) {
   const ST = "(?:\\u0007|\\u001B\\u005C|\\u009C)";
-  const osc = `(?:\\u001B\\][\\s\\S]*?${ST})`;
+  const osc = `(?:\\u001B\\][^\\u0007\\u001B\\u009C]*${ST})`;
   const csi = "[\\u001B\\u009B][[\\]()#;?]*(?:\\d{1,4}(?:[;:]\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]";
   const pattern = `${osc}|${csi}`;
   return new RegExp(pattern, onlyFirst ? void 0 : "g");
@@ -37949,6 +37925,7 @@ var yellow = styleText.bind(null, "yellow");
 var bold = styleText.bind(null, "bold");
 var blue = styleText.bind(null, "blue");
 var underline = styleText.bind(null, "underline");
+var magenta = styleText.bind(null, "magenta");
 var Log = class {
 };
 Log.info = buildLogLevelFunction(() => console.info, LogLevel.INFO, null);
@@ -38082,137 +38059,9 @@ import { styleText as styleText4 } from "node:util";
 import { styleText as styleText5 } from "node:util";
 import { styleText as styleText6 } from "node:util";
 import { styleText as styleText7 } from "node:util";
+import { styleText as styleText8 } from "node:util";
+import { styleText as styleText9 } from "node:util";
 var require4 = __cjsCompatRequire_ngDev3(import.meta.url);
-var require_dist2 = __commonJS2({
-  ""(exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.format = format3;
-    exports.parse = parse32;
-    var TEXT_REGEXP = /^[\u0009\u0020-\u007e\u0080-\u00ff]*$/;
-    var TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
-    var QUOTE_REGEXP = /[\\"]/g;
-    var TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
-    var NullObject = (() => {
-      const C = function() {
-      };
-      C.prototype = /* @__PURE__ */ Object.create(null);
-      return C;
-    })();
-    function format3(obj) {
-      const { type, parameters } = obj;
-      if (!type || !TYPE_REGEXP.test(type)) {
-        throw new TypeError(`Invalid type: ${type}`);
-      }
-      let result = type;
-      if (parameters) {
-        for (const param of Object.keys(parameters)) {
-          if (!TOKEN_REGEXP.test(param)) {
-            throw new TypeError(`Invalid parameter name: ${param}`);
-          }
-          result += `; ${param}=${qstring(parameters[param])}`;
-        }
-      }
-      return result;
-    }
-    function parse32(header, options) {
-      const len = header.length;
-      let index = skipOWS(header, 0, len);
-      const valueStart = index;
-      index = skipValue(header, index, len);
-      const valueEnd = trailingOWS(header, valueStart, index);
-      const type = header.slice(valueStart, valueEnd).toLowerCase();
-      const parameters = options?.parameters === false ? new NullObject() : parseParameters(header, index, len);
-      return { type, parameters };
-    }
-    var SP = 32;
-    var HTAB = 9;
-    var SEMI = 59;
-    var EQ = 61;
-    var DQUOTE = 34;
-    var BSLASH = 92;
-    function parseParameters(header, index, len) {
-      const parameters = new NullObject();
-      parameter:
-        while (index < len) {
-          index = skipOWS(header, index + 1, len);
-          const keyStart = index;
-          while (index < len) {
-            const code = header.charCodeAt(index);
-            if (code === SEMI)
-              continue parameter;
-            if (code === EQ) {
-              const keyEnd = trailingOWS(header, keyStart, index);
-              const key = header.slice(keyStart, keyEnd).toLowerCase();
-              index = skipOWS(header, index + 1, len);
-              if (index < len && header.charCodeAt(index) === DQUOTE) {
-                index++;
-                let value = "";
-                while (index < len) {
-                  const code2 = header.charCodeAt(index++);
-                  if (code2 === DQUOTE) {
-                    index = skipValue(header, index, len);
-                    if (parameters[key] === void 0)
-                      parameters[key] = value;
-                    break;
-                  }
-                  if (code2 === BSLASH && index < len) {
-                    value += header[index++];
-                    continue;
-                  }
-                  value += String.fromCharCode(code2);
-                }
-                continue parameter;
-              }
-              const valueStart = index;
-              index = skipValue(header, index, len);
-              if (parameters[key] === void 0) {
-                const valueEnd = trailingOWS(header, valueStart, index);
-                parameters[key] = header.slice(valueStart, valueEnd);
-              }
-              continue parameter;
-            }
-            index++;
-          }
-        }
-      return parameters;
-    }
-    function skipValue(str, index, len) {
-      while (index < len) {
-        const char = str.charCodeAt(index);
-        if (char === SEMI)
-          break;
-        index++;
-      }
-      return index;
-    }
-    function skipOWS(header, index, len) {
-      while (index < len) {
-        const char = header.charCodeAt(index);
-        if (char !== SP && char !== HTAB)
-          break;
-        index++;
-      }
-      return index;
-    }
-    function trailingOWS(header, start, end) {
-      while (end > start) {
-        const char = header.charCodeAt(end - 1);
-        if (char !== SP && char !== HTAB)
-          break;
-        end--;
-      }
-      return end;
-    }
-    function qstring(str) {
-      if (TOKEN_REGEXP.test(str))
-        return str;
-      if (TEXT_REGEXP.test(str))
-        return `"${str.replace(QUOTE_REGEXP, "\\$&")}"`;
-      throw new TypeError(`Invalid parameter value: ${str}`);
-    }
-  }
-});
 var require_constants6 = __commonJS2({
   ""(exports, module) {
     "use strict";
@@ -50929,36 +50778,38 @@ var require_Alias = __commonJS2({
           if (node.anchor === this.source)
             found = node;
         }
+        if (found && ctx) {
+          const { anchors: anchors2, doc: doc2, maxAliasCount } = ctx;
+          let data = anchors2.get(found);
+          if (!data) {
+            toJS.toJS(found, null, ctx);
+            data = anchors2.get(found);
+          }
+          if (data?.res === void 0) {
+            const msg = "This should not happen: Alias anchor was not resolved?";
+            throw new ReferenceError(msg);
+          }
+          if (maxAliasCount >= 0) {
+            data.count += 1;
+            if (data.aliasCount === 0)
+              data.aliasCount = getAliasCount(doc2, found, anchors2);
+            if (data.count * data.aliasCount > maxAliasCount) {
+              const msg = "Excessive alias count indicates a resource exhaustion attack";
+              throw new ReferenceError(msg);
+            }
+          }
+        }
         return found;
       }
       toJSON(_arg, ctx) {
         if (!ctx)
           return { source: this.source };
-        const { anchors: anchors2, doc, maxAliasCount } = ctx;
-        const source = this.resolve(doc, ctx);
+        const source = this.resolve(ctx.doc, ctx);
         if (!source) {
           const msg = `Unresolved alias (the anchor must be set before the alias): ${this.source}`;
           throw new ReferenceError(msg);
         }
-        let data = anchors2.get(source);
-        if (!data) {
-          toJS.toJS(source, null, ctx);
-          data = anchors2.get(source);
-        }
-        if (data?.res === void 0) {
-          const msg = "This should not happen: Alias anchor was not resolved?";
-          throw new ReferenceError(msg);
-        }
-        if (maxAliasCount >= 0) {
-          data.count += 1;
-          if (data.aliasCount === 0)
-            data.aliasCount = getAliasCount(doc, source, anchors2);
-          if (data.count * data.aliasCount > maxAliasCount) {
-            const msg = "Excessive alias count indicates a resource exhaustion attack";
-            throw new ReferenceError(msg);
-          }
-        }
-        return data.res;
+        return ctx.anchors.get(source).res;
       }
       toString(ctx, _onComment, _onChompKeep) {
         const src = `*${this.source}`;
@@ -54856,37 +54707,38 @@ var require_resolve_flow_scalar = __commonJS2({
       }
       if (badChar)
         onError(0, "BAD_SCALAR_START", `Plain value cannot start with ${badChar}`);
-      return foldLines(source);
+      return unfoldLines(source);
     }
     function singleQuotedValue(source, onError) {
       if (source[source.length - 1] !== "'" || source.length === 1)
         onError(source.length, "MISSING_CHAR", "Missing closing 'quote");
-      return foldLines(source.slice(1, -1)).replace(/''/g, "'");
+      return unfoldLines(source.slice(1, -1)).replace(/''/g, "'");
     }
-    function foldLines(source) {
-      let first, line;
-      try {
-        first = new RegExp("(.*?)(?<![ 	])[ 	]*\r?\n", "sy");
-        line = new RegExp("[ 	]*(.*?)(?:(?<![ 	])[ 	]*)?\r?\n", "sy");
-      } catch {
-        first = /(.*?)[ \t]*\r?\n/sy;
-        line = /[ \t]*(.*?)[ \t]*\r?\n/sy;
-      }
-      let match = first.exec(source);
+    function unfoldLines(source) {
+      const line = /(.*?)\r?\n/sy;
+      let match = line.exec(source);
       if (!match)
         return source;
-      let res = match[1];
+      let trimEnd, trimBoth;
+      try {
+        trimEnd = new RegExp("(?<![ 	])[ 	]+$");
+        trimBoth = new RegExp("^[ 	]+|(?<![ 	])[ 	]+$", "g");
+      } catch {
+        trimEnd = /[ \t]+$/;
+        trimBoth = /^[ \t]+|[ \t]+$/g;
+      }
+      let res = match[1].replace(trimEnd, "");
       let sep22 = " ";
-      let pos = first.lastIndex;
-      line.lastIndex = pos;
+      let pos = line.lastIndex;
       while (match = line.exec(source)) {
-        if (match[1] === "") {
+        const lm = match[1].replace(trimBoth, "");
+        if (lm === "") {
           if (sep22 === "\n")
             res += sep22;
           else
             sep22 = "\n";
         } else {
-          res += sep22 + match[1];
+          res += sep22 + lm;
           sep22 = " ";
         }
         pos = line.lastIndex;
@@ -57443,7 +57295,7 @@ var require_public_api = __commonJS2({
     exports.stringify = stringify;
   }
 });
-var require_dist22 = __commonJS2({
+var require_dist = __commonJS2({
   ""(exports) {
     "use strict";
     var composer = require_composer();
@@ -57916,7 +57768,109 @@ function withDefaults4(oldDefaults, newDefaults) {
   });
 }
 var endpoint2 = withDefaults4(null, DEFAULTS2);
-var import_content_type2 = __toESM2(require_dist2());
+var NullObject2 = (() => {
+  const C = function() {
+  };
+  C.prototype = /* @__PURE__ */ Object.create(null);
+  return C;
+})();
+function parse22(header, options) {
+  const stopChar = options?.comma === true ? COMMA2 : 65536;
+  const len = header.length;
+  let index = skipOWS2(header, options?.start ?? 0, len);
+  const valueStart = index;
+  index = skipValue2(header, index, len, stopChar);
+  const valueEnd = trailingOWS2(header, valueStart, index);
+  const type = header.slice(valueStart, valueEnd).toLowerCase();
+  if (options?.parameters === false) {
+    return { type, index, parameters: new NullObject2() };
+  }
+  return parseParameters2(header, type, index, len, stopChar);
+}
+var SP2 = 32;
+var HTAB2 = 9;
+var SEMI2 = 59;
+var EQ2 = 61;
+var DQUOTE2 = 34;
+var BSLASH2 = 92;
+var COMMA2 = 44;
+function parseParameters2(header, type, index, len, stopChar) {
+  const parameters = new NullObject2();
+  parameter:
+    while (index < len) {
+      if (header.charCodeAt(index) === stopChar)
+        break;
+      index = skipOWS2(header, index + 1, len);
+      const keyStart = index;
+      while (index < len) {
+        const code = header.charCodeAt(index);
+        if (code === stopChar)
+          break parameter;
+        if (code === SEMI2)
+          continue parameter;
+        if (code === EQ2) {
+          const keyEnd = trailingOWS2(header, keyStart, index);
+          const key = header.slice(keyStart, keyEnd).toLowerCase();
+          index = skipOWS2(header, index + 1, len);
+          if (index < len && header.charCodeAt(index) === DQUOTE2) {
+            index++;
+            let value = "";
+            while (index < len) {
+              const code2 = header.charCodeAt(index++);
+              if (code2 === DQUOTE2) {
+                index = skipValue2(header, index, len, stopChar);
+                if (parameters[key] === void 0)
+                  parameters[key] = value;
+                break;
+              }
+              if (code2 === BSLASH2 && index < len) {
+                value += header[index++];
+                continue;
+              }
+              value += String.fromCharCode(code2);
+            }
+            continue parameter;
+          }
+          const valueStart = index;
+          index = skipValue2(header, index, len, stopChar);
+          if (parameters[key] === void 0) {
+            const valueEnd = trailingOWS2(header, valueStart, index);
+            parameters[key] = header.slice(valueStart, valueEnd);
+          }
+          continue parameter;
+        }
+        index++;
+      }
+    }
+  return { type, index, parameters };
+}
+function skipValue2(str, index, len, stopChar) {
+  while (index < len) {
+    const code = str.charCodeAt(index);
+    if (code === SEMI2 || code === stopChar)
+      break;
+    index++;
+  }
+  return index;
+}
+function skipOWS2(header, index, len) {
+  while (index < len) {
+    const char = header.charCodeAt(index);
+    if (char !== SP2 && char !== HTAB2)
+      break;
+    index++;
+  }
+  return index;
+}
+function trailingOWS2(header, start, end) {
+  while (end > start) {
+    const char = header.charCodeAt(end - 1);
+    if (char !== SP2 && char !== HTAB2)
+      break;
+    end--;
+  }
+  return end;
+}
 var intRegex2 = /^-?\d+$/;
 var noiseValue2 = /^-?\d+n+$/;
 var originalStringify2 = JSON.stringify;
@@ -58196,7 +58150,7 @@ var JSONParseV22 = (text, reviver) => {
 };
 var MAX_INT2 = Number.MAX_SAFE_INTEGER.toString();
 var MAX_DIGITS2 = MAX_INT2.length;
-var stringsOrLargeNumbers2 = /"(?:\\.|[^"])*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
+var stringsOrLargeNumbers2 = /"(?:[^"\\]|\\.)*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
 var noiseValueWithQuotes2 = /^"-?\d+n+"$/;
 var applyReviverIteratively2 = (parsed, userReviver) => {
   const rootHolder = { "": parsed };
@@ -58315,7 +58269,7 @@ var RequestError2 = class extends Error {
     this.request = requestCopy;
   }
 };
-var VERSION22 = "10.0.11";
+var VERSION22 = "10.0.16";
 var defaults_default2 = {
   headers: {
     "user-agent": `octokit-request.js/${VERSION22} ${getUserAgent2()}`
@@ -58436,7 +58390,7 @@ async function getResponseData2(response) {
   if (!contentType) {
     return response.text().catch(noop3);
   }
-  const mimetype = (0, import_content_type2.parse)(contentType);
+  const mimetype = parse22(contentType);
   if (isJSONResponse2(mimetype)) {
     let text = "";
     try {
@@ -58445,7 +58399,10 @@ async function getResponseData2(response) {
     } catch (err) {
       return text;
     }
-  } else if (mimetype.type.startsWith("text/") || mimetype.parameters.charset?.toLowerCase() === "utf-8") {
+  } else if (mimetype.type.startsWith("text/") || // `application/octet-stream` is the canonical "arbitrary binary" type
+  // (RFC 2046) and must never be decoded as text, even when the response
+  // carries a (misleading) `charset=utf-8` parameter — see #751.
+  mimetype.parameters.charset?.toLowerCase() === "utf-8" && mimetype.type !== "application/octet-stream") {
     return response.text().catch(noop3);
   } else {
     return response.arrayBuffer().catch(
@@ -58512,6 +58469,9 @@ var GraphqlResponseError2 = class extends Error {
       Error.captureStackTrace(this, this.constructor);
     }
   }
+  request;
+  headers;
+  response;
   name = "GraphqlResponseError";
   errors;
   data;
@@ -58644,7 +58604,7 @@ var createTokenAuth3 = function createTokenAuth22(token) {
     hook: hook2.bind(null, token)
   });
 };
-var VERSION42 = "7.0.6";
+var VERSION42 = "7.0.8";
 var noop22 = () => {
 };
 var consoleWarn2 = console.warn.bind(console);
@@ -62572,11 +62532,16 @@ var effectScheduler = {
 function isFactory(value) {
   return typeof value === "function";
 }
+function isReducer(value) {
+  return typeof value === "function";
+}
 function useState(defaultValue) {
   return withPointer((pointer) => {
     const setState = AsyncResource2.bind(function setState2(newValue) {
-      if (pointer.get() !== newValue) {
-        pointer.set(newValue);
+      const currentValue = pointer.get();
+      const nextValue = isReducer(newValue) ? newValue(currentValue) : newValue;
+      if (!Object.is(currentValue, nextValue)) {
+        pointer.set(nextValue);
         handleChange();
       }
     });
@@ -62972,7 +62937,7 @@ function usePrefix({ status = "idle", theme }) {
 function useMemo(fn, dependencies) {
   return withPointer((pointer) => {
     const prev = pointer.get();
-    if (!prev || prev.dependencies.length !== dependencies.length || prev.dependencies.some((dep, i) => dep !== dependencies[i])) {
+    if (!pointer.initialized || prev.dependencies.length !== dependencies.length || prev.dependencies.some((dep, i) => dep !== dependencies[i])) {
       const value = fn();
       pointer.set({ value, dependencies });
       return value;
@@ -63758,6 +63723,14 @@ var PromisePolyfill = class extends Promise {
   }
 };
 var nativeSetImmediate = globalThis.setImmediate;
+function listenTo(target, event, listener) {
+  if ("on" in target) {
+    target.on(event, listener);
+    return () => target.removeListener(event, listener);
+  }
+  target.addEventListener(event, listener);
+  return () => target.removeEventListener(event, listener);
+}
 function getCallSites() {
   const savedPrepareStackTrace = Error.prepareStackTrace;
   let result = [];
@@ -63789,37 +63762,45 @@ function createPrompt(view) {
     output.mute();
     const screen = new ScreenManager(rl);
     const { promise, resolve: resolve22, reject } = PromisePolyfill.withResolver();
-    const cancel = () => reject(new CancelPromptError());
-    if (signal) {
-      const abort = () => reject(new AbortPromptError({ cause: signal.reason }));
-      if (signal.aborted) {
-        abort();
-        return Object.assign(promise, { cancel });
-      }
-      signal.addEventListener("abort", abort);
-      cleanups.add(() => signal.removeEventListener("abort", abort));
-    }
-    cleanups.add(onExit((code, signal2) => {
-      reject(new ExitPromptError(`User force closed the prompt with ${code} ${signal2}`));
-    }));
-    const sigint = () => reject(new ExitPromptError(`User force closed the prompt with SIGINT`));
-    rl.on("SIGINT", sigint);
-    cleanups.add(() => rl.removeListener("SIGINT", sigint));
     return withHooks(rl, (cycle) => {
-      const hooksCleanup = AsyncResource3.bind(() => effectScheduler.clearAll());
-      rl.on("close", hooksCleanup);
-      cleanups.add(() => rl.removeListener("close", hooksCleanup));
+      const clearEffects = AsyncResource3.bind(() => effectScheduler.clearAll());
+      const settlePrompt = (settle) => {
+        try {
+          clearEffects();
+          settle();
+        } catch (error2) {
+          reject(error2);
+        }
+      };
+      const resolvePrompt = (value) => settlePrompt(() => resolve22(value));
+      const rejectPrompt = (error2) => settlePrompt(() => reject(error2));
+      const promptPromise = Object.assign(promise.finally(() => {
+        cleanups.forEach((cleanup) => cleanup());
+        screen.done({ clearContent: Boolean(context3.clearPromptOnDone) });
+        output.end();
+      }).then(() => promise), { cancel: () => rejectPrompt(new CancelPromptError()) });
+      if (signal) {
+        const abort = () => rejectPrompt(new AbortPromptError({ cause: signal.reason }));
+        if (signal.aborted) {
+          abort();
+          return promptPromise;
+        }
+        cleanups.add(listenTo(signal, "abort", abort));
+      }
+      cleanups.add(onExit((code, signal2) => {
+        rejectPrompt(new ExitPromptError(`User force closed the prompt with ${code} ${signal2}`));
+      }));
+      cleanups.add(listenTo(rl, "SIGINT", () => rejectPrompt(new ExitPromptError(`User force closed the prompt with SIGINT`))));
+      cleanups.add(listenTo(rl, "close", clearEffects));
       const startCycle = () => {
-        const checkCursorPos = () => screen.checkCursorPos();
-        rl.input.on("keypress", checkCursorPos);
-        cleanups.add(() => rl.input.removeListener("keypress", checkCursorPos));
+        cleanups.add(listenTo(rl.input, "keypress", () => screen.checkCursorPos()));
         let pendingDone = null;
         cycle(() => {
           let effectsSettled = false;
           try {
             const nextView = view(config, (value) => {
               if (effectsSettled) {
-                resolve22(value);
+                resolvePrompt(value);
               } else {
                 pendingDone = { value };
               }
@@ -63836,13 +63817,13 @@ function createPrompt(view) {
             screen.render(content, bottomContent);
             effectScheduler.run();
           } catch (error2) {
-            reject(error2);
+            rejectPrompt(error2);
           }
           effectsSettled = true;
           if (pendingDone !== null) {
             const { value } = pendingDone;
             pendingDone = null;
-            resolve22(value);
+            resolvePrompt(value);
           }
         });
       };
@@ -63851,17 +63832,7 @@ function createPrompt(view) {
       } else {
         startCycle();
       }
-      return Object.assign(promise.then((answer) => {
-        effectScheduler.clearAll();
-        return answer;
-      }, (error2) => {
-        effectScheduler.clearAll();
-        throw error2;
-      }).finally(() => {
-        cleanups.forEach((cleanup) => cleanup());
-        screen.done({ clearContent: Boolean(context3.clearPromptOnDone) });
-        output.end();
-      }).then(() => promise), { cancel });
+      return promptPromise;
     });
   };
   return prompt;
@@ -64310,23 +64281,44 @@ var dist_default5 = createPrompt((config, done) => {
   }
   return [[prefix, message, helpTip].filter(Boolean).join(" "), error2];
 });
-function getBooleanValue(value, defaultValue) {
-  let answer = defaultValue !== false;
-  if (/^(y|yes)/i.test(value))
-    answer = true;
-  else if (/^(n|no)/i.test(value))
-    answer = false;
-  return answer;
-}
-function boolToString(value) {
-  return value ? "Yes" : "No";
-}
+var confirmTheme = {
+  keywords: {
+    yes: "Yes",
+    no: "No"
+  },
+  style: {
+    confirmDefault: (text) => {
+      const first = text[0] ?? "";
+      if (first.toLowerCase() === first.toUpperCase()) {
+        return styleText4("cyan", text);
+      }
+      return first.toUpperCase() + text.slice(1);
+    }
+  }
+};
 var dist_default6 = createPrompt((config, done) => {
-  const { transformer = boolToString } = config;
   const [status, setStatus] = useState("idle");
   const [value, setValue] = useState("");
-  const theme = makeTheme(config.theme);
+  const theme = makeTheme(confirmTheme, config.theme);
   const prefix = usePrefix({ status, theme });
+  const { yes, no } = theme.keywords;
+  const yesHint = (yes[0] ?? "").toLowerCase();
+  const noHint = (no[0] ?? "").toLowerCase();
+  const hint = config.default === false ? `${yesHint}/${theme.style.confirmDefault(noHint)}` : `${theme.style.confirmDefault(yesHint)}/${noHint}`;
+  function boolToString(value2) {
+    return value2 ? yes : no;
+  }
+  const { transformer = boolToString } = config;
+  function getBooleanValue(value2, defaultValue2) {
+    const v = value2.trim().toLowerCase();
+    if (v === "")
+      return defaultValue2 !== false;
+    if (yes.toLowerCase().startsWith(v))
+      return true;
+    if (no.toLowerCase().startsWith(v))
+      return false;
+    return defaultValue2 !== false;
+  }
   useKeypress((key, rl) => {
     if (status !== "idle")
       return;
@@ -64349,7 +64341,7 @@ var dist_default6 = createPrompt((config, done) => {
   if (status === "done") {
     formattedValue = theme.style.answer(value);
   } else {
-    defaultValue = ` ${theme.style.defaultAnswer(config.default === false ? "y/N" : "Y/n")}`;
+    defaultValue = ` ${theme.style.defaultAnswer(hint)}`;
   }
   const message = theme.style.message(config.message, status);
   return `${prefix} ${message}${defaultValue} ${formattedValue}`;
@@ -64437,11 +64429,27 @@ var dist_default7 = createPrompt((config, done) => {
     error2
   ];
 });
+function toDecimal(value) {
+  const [coefficient = "", exponent = "0"] = value.toString().toLowerCase().split("e");
+  const [integer = "", fraction = ""] = coefficient.split(".");
+  return {
+    significand: BigInt(`${integer}${fraction}`),
+    exponent: Number(exponent) - fraction.length
+  };
+}
 function isStepOf(value, step, min) {
-  const valuePow = value * Math.pow(10, 6);
-  const stepPow = step * Math.pow(10, 6);
-  const minPow = min * Math.pow(10, 6);
-  return (valuePow - (Number.isFinite(min) ? minPow : 0)) % stepPow === 0;
+  if (!Number.isFinite(value) || !Number.isFinite(step) || step === 0) {
+    return false;
+  }
+  const valueDecimal = toDecimal(value);
+  const stepDecimal = toDecimal(step);
+  const minDecimal = Number.isFinite(min) ? toDecimal(min) : void 0;
+  const exponent = Math.min(valueDecimal.exponent, stepDecimal.exponent, minDecimal?.exponent ?? Infinity);
+  const toInteger = (decimal) => decimal.significand * 10n ** BigInt(decimal.exponent - exponent);
+  const valueInteger = toInteger(valueDecimal);
+  const stepInteger = toInteger(stepDecimal);
+  const minInteger = minDecimal ? toInteger(minDecimal) : 0n;
+  return (valueInteger - minInteger) % stepInteger === 0n;
 }
 function validateNumber(value, { min, max, step }) {
   if (value == null || Number.isNaN(value)) {
@@ -64559,7 +64567,7 @@ var expand22 = createPrompt((config, done) => {
         } else if (value === "") {
           setError("Please input a value");
         } else {
-          setError(`"${styleText4("red", value)}" isn't an available option`);
+          setError(`"${styleText5("red", value)}" isn't an available option`);
         }
       }
     } else {
@@ -64599,7 +64607,7 @@ var expand22 = createPrompt((config, done) => {
   let helpTip = "";
   const currentOption = choices.find((choice) => !Separator.isSeparator(choice) && choice.key === value.toLowerCase());
   if (currentOption) {
-    helpTip = `${styleText4("cyan", ">>")} ${currentOption.name}`;
+    helpTip = `${styleText5("cyan", ">>")} ${currentOption.name}`;
   }
   let error2 = "";
   if (errorMsg) {
@@ -64613,7 +64621,7 @@ var expand22 = createPrompt((config, done) => {
 var numberRegex = /\d+/;
 var rawlistTheme = {
   style: {
-    description: (text) => styleText5("cyan", text)
+    description: (text) => styleText6("cyan", text)
   }
 };
 function isSelectableChoice(choice) {
@@ -64684,7 +64692,7 @@ var dist_default9 = createPrompt((config, done) => {
       } else if (value === "") {
         setError("Please input a value");
       } else {
-        setError(`"${styleText5("red", value)}" isn't an available option`);
+        setError(`"${styleText6("red", value)}" isn't an available option`);
       }
     } else if (isUpKey(key, keybindings2) || isDownKey(key, keybindings2)) {
       rl.clearLine(0);
@@ -64737,15 +64745,17 @@ var dist_default9 = createPrompt((config, done) => {
 });
 var passwordTheme = {
   style: {
-    maskedText: "[input is masked]"
+    maskedText: "[input is masked]",
+    keysHelpTip: (keys) => keys.map(([key, action]) => `${styleText7("bold", key)} ${styleText7("dim", action)}`).join(styleText7("dim", " \u2022 "))
   }
 };
 var dist_default10 = createPrompt((config, done) => {
-  const { validate: validate2 = () => true } = config;
+  const { toggleMask = true, validate: validate2 = () => true } = config;
   const theme = makeTheme(passwordTheme, config.theme);
   const [status, setStatus] = useState("idle");
   const [errorMsg, setError] = useState();
   const [value, setValue] = useState("");
+  const [revealed, setRevealed] = useState(false);
   const prefix = usePrefix({ status, theme });
   useKeypress(async (key, rl) => {
     if (status !== "idle") {
@@ -64764,36 +64774,43 @@ var dist_default10 = createPrompt((config, done) => {
         setError(isValid || "You must provide a valid value");
         setStatus("idle");
       }
+    } else if (toggleMask && key.ctrl && key.name === "t") {
+      setRevealed((prev) => !prev);
     } else {
       setValue(rl.line);
       setError(void 0);
     }
   });
   const message = theme.style.message(config.message, status);
+  const showPlaintext = toggleMask && revealed && status === "idle";
   let formattedValue = "";
-  let helpTip;
-  if (config.mask) {
+  if (showPlaintext) {
+    formattedValue = value;
+  } else if (config.mask) {
     const maskChar = typeof config.mask === "string" ? config.mask : "*";
     formattedValue = maskChar.repeat(value.length);
   } else if (status !== "done") {
-    helpTip = `${theme.style.help(theme.style.maskedText)}${cursorHide}`;
+    formattedValue = theme.style.help(theme.style.maskedText);
   }
   if (status === "done") {
     formattedValue = theme.style.answer(formattedValue);
+  } else if (!config.mask) {
+    formattedValue += cursorHide;
   }
-  let error2 = "";
-  if (errorMsg) {
-    error2 = theme.style.error(errorMsg);
-  }
-  return [[prefix, message, config.mask ? formattedValue : helpTip].join(" "), error2];
+  const content = [prefix, message, formattedValue].filter(Boolean).join(" ");
+  const bottomContent = [
+    errorMsg ? theme.style.error(errorMsg) : "",
+    toggleMask && status === "idle" ? theme.style.keysHelpTip([["ctrl+t", "toggle visibility"]]) : ""
+  ].filter(Boolean).join("\n");
+  return [content, bottomContent];
 });
 var searchTheme = {
   icon: { cursor: dist_default.pointer },
   style: {
-    disabled: (text) => styleText6("dim", `- ${text}`),
-    searchTerm: (text) => styleText6("cyan", text),
-    description: (text) => styleText6("cyan", text),
-    keysHelpTip: (keys) => keys.map(([key, action]) => `${styleText6("bold", key)} ${styleText6("dim", action)}`).join(styleText6("dim", " \u2022 "))
+    disabled: (text) => styleText8("dim", `- ${text}`),
+    searchTerm: (text) => styleText8("cyan", text),
+    description: (text) => styleText8("cyan", text),
+    keysHelpTip: (keys) => keys.map(([key, action]) => `${styleText8("bold", key)} ${styleText8("dim", action)}`).join(styleText8("dim", " \u2022 "))
   }
 };
 function isSelectable2(item) {
@@ -64829,7 +64846,7 @@ var dist_default11 = createPrompt((config, done) => {
   const { pageSize = 7, validate: validate2 = () => true } = config;
   const theme = makeTheme(searchTheme, config.theme);
   const [status, setStatus] = useState("loading");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(config.initialValue ?? "");
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState();
   const defaultApplied = useRef(false);
@@ -64840,6 +64857,11 @@ var dist_default11 = createPrompt((config, done) => {
     return { first, last };
   }, [searchResults]);
   const [active = bounds.first, setActive] = useState();
+  useEffect((rl) => {
+    if (config.initialValue) {
+      rl.write(config.initialValue);
+    }
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     setStatus("loading");
@@ -64958,9 +64980,9 @@ var dist_default11 = createPrompt((config, done) => {
 var selectTheme = {
   icon: { cursor: dist_default.pointer },
   style: {
-    disabled: (text) => styleText7("dim", text),
-    description: (text) => styleText7("cyan", text),
-    keysHelpTip: (keys) => keys.map(([key, action]) => `${styleText7("bold", key)} ${styleText7("dim", action)}`).join(styleText7("dim", " \u2022 "))
+    disabled: (text) => styleText9("dim", text),
+    description: (text) => styleText9("cyan", text),
+    keysHelpTip: (keys) => keys.map(([key, action]) => `${styleText9("bold", key)} ${styleText9("dim", action)}`).join(styleText9("dim", " \u2022 "))
   },
   i18n: { disabledError: "This option is disabled and cannot be selected." },
   indexMode: "hidden"
@@ -65137,7 +65159,7 @@ Prompt.input = dist_default7;
 Prompt.checkbox = dist_default4;
 Prompt.select = dist_default12;
 Prompt.editor = dist_default5;
-var import_yaml = __toESM2(require_dist22());
+var import_yaml = __toESM2(require_dist());
 
 // 
 var require5 = __cjsCompatRequire_ngDev4(import.meta.url);
@@ -65316,7 +65338,10 @@ content-type/dist/index.js:
   (* v8 ignore next -- @preserve *)
   (* v8 ignore else -- @preserve *)
 
-@angular/ng-dev/bundles/chunk-QM7BPMX4.mjs:
+@octokit/graphql/dist-bundle/index.js:
+  (* v8 ignore if -- @preserve *)
+
+@angular/ng-dev/bundles/chunk-3TPHGSIP.mjs:
   (*! Bundled license information:
   
   yargs-parser/build/lib/string-utils.js:
@@ -65357,7 +65382,7 @@ content-type/dist/index.js:
      *)
   *)
 
-@angular/ng-dev/bundles/chunk-D7SBR34O.mjs:
+@angular/ng-dev/bundles/chunk-4PNYOBOC.mjs:
   (*! Bundled license information:
   
   content-type/dist/index.js:
@@ -65373,5 +65398,8 @@ content-type/dist/index.js:
   @octokit/request/dist-bundle/index.js:
     (* v8 ignore next -- @preserve *)
     (* v8 ignore else -- @preserve *)
+  
+  @octokit/graphql/dist-bundle/index.js:
+    (* v8 ignore if -- @preserve *)
   *)
 */

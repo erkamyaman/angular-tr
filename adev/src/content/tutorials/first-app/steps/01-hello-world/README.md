@@ -100,7 +100,7 @@ IDE'nizde:
 
 1. `app.ts` dosyasında, `App` sınıf tanımındaki `title` satırını, bileşen başlığını değiştirmek için bu kodla değiştirin.
 
-   <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[11,13]"/>
+   <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[10]"/>
 
    Ardından, `app.ts` dosyasında yaptığınız değişiklikleri kaydedin.
 

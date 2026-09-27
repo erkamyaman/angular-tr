@@ -320,9 +320,12 @@ Bu kod örneğinde, ana sayfa ve hakkında sayfası, ilgili bileşenlerinde sayf
 
 Bu statik verileri `ActivatedRoute` enjekte ederek okuyabilirsiniz. Ayrıntılar için [Rota durumunu okuma](/guide/routing/read-route-state) bölümüne bakın.
 
-### Veri çözücüler ile dinamik veri
+### Resource'lar ve çözücüler ile dinamik veri {#dynamic-data-with-resources-and-resolvers}
 
-Bir rotaya dinamik veri sağlamanız gerektiğinde, [rota veri çözücüleri kılavuzuna](/guide/routing/data-resolvers) göz atın.
+Bir rota için veri çekmeniz gerektiğinde, Angular Router veri çözücülerinin yanı sıra reaktif rota resource'larını da destekler:
+
+- [Resource'lar ile veri çekme](/guide/routing/data-fetching-with-resources): Angular Signals `Resource` API'lerini kullanarak verileri reaktif olarak çekin.
+- [Rota veri çözücüleri](/guide/routing/data-resolvers): Resolver fonksiyonlarını kullanarak rota etkinleştirilmeden önce veri çekin.
 
 ## İç İçe Route'lar
 

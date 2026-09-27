@@ -158,7 +158,7 @@ En iyi seçenek bir CommonJS bağımlılığı kullanmaksa, `angular.json` için
 Angular CLI, farklı tarayıcı sürümleriyle uyumluluk sağlamak için [Browserslist](https://github.com/browserslist/browserslist) kullanır.
 Desteklenen tarayıcılara bağlı olarak, Angular belirli JavaScript ve CSS özelliklerini otomatik olarak dönüştürerek derlenen uygulamanın desteklenen bir tarayıcı tarafından uygulanmamış bir özellik kullanmamasını sağlar. Ancak Angular CLI, eksik Web API'lerini tamamlamak için otomatik olarak polyfill eklemez. Polyfill eklemek için `angular.json` içindeki `polyfills` seçeneğini kullanın.
 
-Varsayılan olarak, Angular CLI mevcut ana sürüm için [Angular tarafından desteklenen tarayıcılarla eşleşen](reference/versions#tarayıcı-desteği) bir `browserslist` yapılandırması kullanır.
+Varsayılan olarak, Angular CLI mevcut ana sürüm için [Angular tarafından desteklenen tarayıcılarla eşleşen](reference/versions#browser-support) bir `browserslist` yapılandırması kullanır.
 
 Dahili yapılandırmayı geçersiz kılmak için, Angular'ın desteklenen tarayıcılarıyla eşleşen bir `.browserslistrc` yapılandırma dosyası oluşturan [`ng generate config browserslist`](cli/generate/config) komutunu çalıştırın.
 

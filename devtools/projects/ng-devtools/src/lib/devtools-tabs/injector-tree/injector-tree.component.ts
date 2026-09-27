@@ -10,6 +10,7 @@ import {
   afterRenderEffect,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   signal,
@@ -121,7 +122,7 @@ export class InjectorTreeComponent {
 
   protected readonly responsiveSplitConfig: ResponsiveSplitConfig = {
     defaultDirection: 'vertical',
-    aspectRatioBreakpoint: 1.5,
+    aspectRatioBreakpoint: '>=1.5',
     breakpointDirection: 'horizontal',
   };
 
@@ -142,6 +143,8 @@ export class InjectorTreeComponent {
   };
 
   constructor() {
+    this.subscribeToBackendEvents();
+
     afterRenderEffect({
       write: () => {
         const view = this.componentExplorerView();
@@ -149,7 +152,6 @@ export class InjectorTreeComponent {
           return;
         }
 
-        this.init();
         this.rawDirectiveForest = view.forest;
         untracked(() => this.updateInjectorTreeVisualization(view.forest));
       },
@@ -199,8 +201,8 @@ export class InjectorTreeComponent {
     }
   }
 
-  private init() {
-    this.messageBus.on('highlightComponent', (id: number) => {
+  private subscribeToBackendEvents(): void {
+    const unregisterHighlight = this.messageBus.on('highlightComponent', (id: number) => {
       const elementTree = this.elementTree();
       if (!elementTree) {
         return;
@@ -211,6 +213,10 @@ export class InjectorTreeComponent {
       }
 
       this.selectInjectorByNode(injectorNode);
+    });
+
+    inject(DestroyRef).onDestroy(() => {
+      unregisterHighlight();
     });
   }
 

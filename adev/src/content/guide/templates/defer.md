@@ -386,14 +386,12 @@ Varsayılan olarak, sunucuda bir uygulama işlenirken (SSR veya SSG kullanılara
 
 `@defer` kullanıyor ancak derleme çıktınızda ayrı bir lazy parça görmüyorsanız, ertelenen bileşeni nasıl içe aktardığınızı kontrol edin. Bir barrel dosyası (`index.ts`) üzerinden içe aktarmak yaygın bir nedendir; paketleyiciler barrel'ı tek bir modül olarak görür ve tüm export'larını bir arada tutar, böylece bileşeniniz `@defer` kullanılsa bile ana pakete girer.
 
-```typescript
-// index.ts
+```typescript {header: "index.ts"}
 export {HeavyComponent} from './heavy.component';
 export {OtherComponent} from './other.component';
 ```
 
-```typescript
-// parent.component.ts
+```typescript {header: "parent.component.ts"}
 import {HeavyComponent} from './index'; // OtherComponent'i de getirir
 
 @Component({

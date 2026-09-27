@@ -105,7 +105,7 @@ export class SearchResults {
 
 `query` sinyali değiştikçe, `query$` Observable'ı en son sorguyu yayar ve yeni bir HTTP isteği tetikler.
 
-### Enjeksiyon bağlamı
+### Enjeksiyon bağlamı {#injection-context-to-observable}
 
 `toObservable` varsayılan olarak bir [enjeksiyon bağlamında](guide/di/dependency-injection-context) çalışmalıdır; örneğin bir bileşen veya servisin oluşturulması sırasında. Eğer bir enjeksiyon bağlamı mevcut değilse, bunun yerine kullanılacak `Injector`'ı manuel olarak belirtebilirsiniz.
 
@@ -154,3 +154,5 @@ export class UserProfile {
 `stream` özelliği, bir RxJS `Observable` için bir fabrika fonksiyonu kabul eder. Bu fabrika fonksiyonuna kaynağın `params` değeri geçirilir ve bir `Observable` döndürür. Kaynak, `params` hesaplaması her yeni değer ürettiğinde bu fabrika fonksiyonunu çağırır. Fabrika fonksiyonuna geçirilen parametreler hakkında daha fazla bilgi için [Kaynak yükleyiciler](/guide/signals/resource#resource-loaderları) bölümüne bakın.
 
 Diğer tüm açılardan, `rxResource`, parametreleri belirlemek, değerleri okumak, yükleme durumunu kontrol etmek ve hataları incelemek için `resource` ile aynı şekilde davranır ve aynı API'leri sağlar.
+
+`stream` fonksiyonundan döndürülen `Observable`, tamamlanmadan önce her zaman bir değer veya bir hata yaymalıdır; aksi takdirde ne olacağını ve bundan nasıl kaçınılacağını öğrenmek için [`NG0991`](/errors/NG0991) sayfasına bakın.

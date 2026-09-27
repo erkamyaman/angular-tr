@@ -97,7 +97,7 @@ try {
 }
 ```
 
-Ek olarak, `rxjs-interop`'taki [pendingUntilEvent](/api/core/rxjs-interop/pendingUntilEvent#) yardımcısı, observable yayın yapana, tamamlanana, hata verene veya abonelikten çıkana kadar uygulamanın kararsız kalmasını sağlar.
+Ek olarak, `rxjs-interop`'taki [pendingUntilEvent](/api/core/rxjs-interop/pendingUntilEvent) yardımcısı, observable yayın yapana, tamamlanana, hata verene veya abonelikten çıkana kadar uygulamanın kararsız kalmasını sağlar.
 
 ```typescript
 readonly myObservableState = someObservable.pipe(pendingUntilEvent());

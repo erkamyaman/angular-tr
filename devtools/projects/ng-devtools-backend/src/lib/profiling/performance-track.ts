@@ -10,16 +10,19 @@ import {LifecycleProfile} from '../../../../protocol';
 import {getProfiler} from './profiler';
 import {getDirectiveName} from '../directive-forest/component-tree/component-tree';
 import type {ComponentInstance, DirectiveInstance} from '../shared/interfaces';
+import {getConfig} from '../config/config';
 
 type Method = keyof LifecycleProfile | 'changeDetection' | string;
 
-// Performance track global flag.
-let chromeDevToolsPerformanceTrackEnabled = false;
-
-/** Disable Angular's performance track in the Chrome DevTools profiler. */
-export const disablePerformanceTrack = () => (chromeDevToolsPerformanceTrackEnabled = false);
-
-const performanceTrackEnabled = () => chromeDevToolsPerformanceTrackEnabled;
+export function loadPerformanceTrack(): () => void {
+  return getConfig().onChange('performanceTrack', (enabled: boolean) => {
+    if (enabled) {
+      getProfiler().subscribe(timingHooks);
+    } else {
+      getProfiler().unsubscribe(timingHooks);
+    }
+  });
+}
 
 const markName = (s: string, method: Method) => `🅰️ ${s}#${method}`;
 
@@ -63,56 +66,21 @@ const endMark = (nodeName: string, method: Method) => {
 
 const timingHooks = {
   onChangeDetectionStart(component: ComponentInstance): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     recordMark(getDirectiveName(component), 'changeDetection');
   },
   onChangeDetectionEnd(component: ComponentInstance): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     endMark(getDirectiveName(component), 'changeDetection');
   },
   onLifecycleHookStart(component: DirectiveInstance, lifecyle: keyof LifecycleProfile): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     recordMark(getDirectiveName(component), lifecyle);
   },
   onLifecycleHookEnd(component: DirectiveInstance, lifecyle: keyof LifecycleProfile): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     endMark(getDirectiveName(component), lifecyle);
   },
   onOutputStart(component: DirectiveInstance, output: string): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     recordMark(getDirectiveName(component), output);
   },
   onOutputEnd(component: DirectiveInstance, output: string): void {
-    if (!performanceTrackEnabled()) {
-      return;
-    }
     endMark(getDirectiveName(component), output);
   },
 };
-
-let performanceTrackInitialized = false;
-
-function initializePerformanceTrack(): void {
-  if (performanceTrackInitialized) {
-    return;
-  }
-
-  getProfiler().subscribe(timingHooks);
-  performanceTrackInitialized = true;
-}
-
-/** Enable Angular's performance track in the Chrome DevTools profiler. */
-export function enablePerformanceTrack(): void {
-  initializePerformanceTrack();
-  chromeDevToolsPerformanceTrackEnabled = true;
-}

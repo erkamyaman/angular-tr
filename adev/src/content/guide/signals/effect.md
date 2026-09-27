@@ -1,4 +1,4 @@
-## Effects
+# Effects
 
 Sinyaller, değiştiklerinde ilgili tüketicileri bilgilendirdikleri için kullanışlıdır. Bir **effect**, bir veya daha fazla sinyal değeri değiştiğinde çalışan bir işlemdir. `effect` fonksiyonu ile bir effect oluşturabilirsiniz:
 
@@ -14,7 +14,7 @@ Effect'ler her zaman **en az bir kez** çalışır. Bir effect çalıştığınd
 
 Effect'ler her zaman **asenkron olarak**, değişiklik algılama sürecinde yürütülür.
 
-### Effect'ler için kullanım alanları
+## Effect'ler için kullanım alanları
 
 Effect'ler başvurmanız gereken son API olmalıdır. Türetilmiş değerler için her zaman `computed()`'u ve hem türetilebilen hem de manuel olarak ayarlanabilen değerler için `linkedSignal()`'ı tercih edin. Kendinizi bir effect ile bir sinyalden diğerine veri kopyalarken buluyorsanız, bu doğruluk kaynağınızı daha yukarıya taşımanız ve bunun yerine `computed()` veya `linkedSignal()` kullanmanız gerektiğinin bir işaretidir. Effect'ler, sinyal durumunu zorunlu (imperative), sinyal olmayan API'lerle senkronize etmek için en iyisidir.
 
@@ -31,7 +31,7 @@ Durum değişikliklerinin yayılması için effect kullanmaktan kaçının. Bu, 
 Bunun yerine, diğer duruma bağlı durumu modellemek için `computed` sinyallerini kullanın.
 </docs-callout>
 
-### Enjeksiyon bağlamı
+## Enjeksiyon bağlamı
 
 Varsayılan olarak, bir `effect()` oluşturmayı yalnızca bir [enjeksiyon bağlamında](guide/di/dependency-injection-context) (`inject` fonksiyonuna erişiminizin olduğu yerde) yapabilirsiniz. Bu gereksinimi karşılamanın en kolay yolu, `effect`'i bir bileşen, direktif veya servis `constructor`'ı içinde çağırmaktır:
 
@@ -68,7 +68,7 @@ export class EffectiveCounter {
 }
 ```
 
-### Effect'lerin yürütülmesi
+## Effect'lerin yürütülmesi
 
 Angular, effect'leri için oluşturuldukları bağlama göre iki örtük davranış tanımlar.
 
@@ -82,7 +82,7 @@ Her iki tür `effect`'in yürütülmesi de değişiklik algılama sürecine bağ
 
 Her iki durumda da, effect yürütülmesi sırasında effect bağımlılıklarından en az biri değiştiyse, effect değişiklik algılama sürecinde ilerlemeden önce yeniden çalışacaktır.
 
-### Effect'lerin yok edilmesi {#destroying-effects}
+## Effect'lerin yok edilmesi {#destroying-effects}
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 
@@ -93,7 +93,7 @@ Bir `effect`, ne zaman yok edileceğini etkileyen iki farklı bağlamda oluştur
 
 Effect'ler bir `EffectRef` döndürür. Bir effect'i manuel olarak elden çıkarmak için ref'in `destroy` yöntemini kullanabilirsiniz. Otomatik temizlemeyi devre dışı bırakmak için bir effect oluştururken bunu `manualCleanup` seçeneği ile birleştirebilirsiniz. Artık gerekli olmadıklarında bu tür effect'leri gerçekten yok etmeye dikkat edin.
 
-### Effect cleanup fonksiyonları {#effect-cleanup-functions}
+## Effect cleanup fonksiyonları {#effect-cleanup-functions}
 
 Bir bileşen veya direktif yok edildiğinde, Angular ilişkili tüm effect'leri otomatik olarak temizler.
 Effect'ler, effect yok edildiğinde veya ilk işlem tamamlanmadan tekrar çalıştığında iptal etmeniz gereken uzun süren işlemleri başlatabilir. Bir effect oluştururken, fonksiyonunuz isteğe bağlı olarak ilk parametresi olarak bir `onCleanup` fonksiyonunu kabul edebilir. Bu `onCleanup` fonksiyonu, effect'in bir sonraki çalışmasından önce veya effect yok edildiğinde çağrılan bir geri çağrı kaydetmenize olanak tanır.

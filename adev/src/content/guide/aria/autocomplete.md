@@ -61,7 +61,7 @@ Angular'ın otomatik tamamlaması, tam erişilebilir bir combobox uygulaması sa
 
 ### Otomatik seçim modu
 
-Kismi metin yazan kullanicilar, girdilerinin mevcut bir secenekle eslestigine dair aninda onay bekler. Otomatik secim modu, kullanicilar yazarken giris degerini ilk filtrelenmis secenekle eslesecek sekilde gunceller, gereken tus vurusu sayisini azaltir ve aramalarinin dogru yolda olduguna dair aninda geri bildirim saglar.
+Kısmi metin yazan kullanıcılar, girdilerinin mevcut bir seçenekle eşleştiğine dair anında onay bekler. Otomatik seçim modu, kullanıcılar yazarken giriş değerini ilk filtrelenmiş seçenekle eşleşecek şekilde günceller, gereken tuş vuruşu sayısını azaltır ve aramalarının doğru yolda olduğuna dair anında geri bildirim sağlar.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -91,7 +91,7 @@ Kismi metin yazan kullanicilar, girdilerinin mevcut bir secenekle eslestigine da
 
 ### Manuel seçim modu
 
-Manuel secim modu, kullanicilar oneri listesinde gezinirken yazilan metni degistirmeden tutar ve otomatik guncellemelerden kaynaklanan karisikligi onler. Giris, yalnizca kullanicilar secimlerini Enter veya tiklamayla acikca onayladiklarinda degisir.
+Manuel seçim modu, kullanıcılar öneri listesinde gezinirken yazılan metni değiştirmeden tutar ve otomatik güncellemelerden kaynaklanan karışıklığı önler. Giriş, yalnızca kullanıcılar seçimlerini Enter veya tıklamayla açıkça onayladıklarında değişir.
 
 <docs-tab-group>
   <docs-tab label="Basic">
@@ -119,9 +119,9 @@ Manuel secim modu, kullanicilar oneri listesinde gezinirken yazilan metni degist
   </docs-tab>
 </docs-tab-group>
 
-### Highlight mode
+### Vurgulama modu {#highlight-mode}
 
-Vurgulama modu, kullanicinin Enter veya tiklama ile acikca yeni bir secenek secene kadar, ok tuslariyla secenekler arasinda gezinirken giris degerini degistirmeden gezinmesine olanak tanir.
+Vurgulama modu, kullanıcının Enter veya tıklama ile açıkça yeni bir seçenek seçene kadar, ok tuşlarıyla seçenekler arasında gezinirken giriş değerini değiştirmeden gezinmesine olanak tanır.
 
 <docs-tab-group>
   <docs-tab label="Basic">

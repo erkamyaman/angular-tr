@@ -155,7 +155,8 @@ Angular için nonce'u aşağıdaki yollardan biriyle ayarlayabilirsiniz:
 1. `CSP_NONCE` enjeksiyon token'ını kullanarak nonce'u sağlayın. Çalışma zamanında nonce'a erişiminiz varsa ve `index.html`'yi önbelleğe alabilmek istiyorsanız bu yaklaşımı kullanın.
 
 ```ts
-import {bootstrapApplication, CSP_NONCE} from '@angular/core';
+import {CSP_NONCE} from '@angular/core';
+import {bootstrapApplication} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
 
 bootstrapApplication(AppComponent, {

@@ -73,7 +73,7 @@ Daha spesifik olarak:
 
 - Tarayıcı, service worker betiğini ve `ngsw.json` manifest dosyasını indirmez
 - `SwUpdate.checkForUpdate()` çağırma gibi service worker ile etkileşim için yapılan aktif girişimler, reddedilen promise'ler döndürür
-- `SwUpdate.available` gibi ilgili servislerin observable olayları tetiklenmez
+- `SwUpdate.versionUpdates` gibi ilgili servislerin observable olayları tetiklenmez
 
 Uygulamanızın tarayıcıda service worker desteği olmadan bile çalıştığından emin olmanız şiddetle tavsiye edilir.
 Desteklenmeyen bir tarayıcı service worker önbelleklemesini yok saysa da, uygulama service worker ile etkileşim kurmaya çalışırsa hata raporlar.

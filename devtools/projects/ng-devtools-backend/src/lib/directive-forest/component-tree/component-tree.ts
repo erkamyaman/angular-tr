@@ -7,18 +7,19 @@
  */
 
 import type {
+  ɵAcxComponentDebugMetadata as AcxComponentDebugMetadata,
+  ɵAngularComponentDebugMetadata as AngularComponentDebugMetadata,
   ClassProvider,
   ExistingProvider,
   FactoryProvider,
   InjectOptions,
   InjectionToken,
   Injector,
+  ɵProviderRecord as ProviderRecord,
   Type,
   ValueProvider,
-  ɵAngularComponentDebugMetadata as AngularComponentDebugMetadata,
-  ɵAcxComponentDebugMetadata as AcxComponentDebugMetadata,
-  ɵProviderRecord as ProviderRecord,
 } from '@angular/core';
+import {buildDirectiveForestWithStrategy} from '..';
 import {
   ChangeDetection,
   ComponentExplorerViewQuery,
@@ -32,7 +33,11 @@ import {
   SerializedProviderRecord,
   UpdatedStateData,
 } from '../../../../../protocol';
-import {buildDirectiveForestWithStrategy} from '..';
+import {
+  ComponentInstanceType,
+  ComponentTreeNode,
+  DirectiveInstanceType,
+} from '../../shared/interfaces';
 import {
   ngDebugApiIsSupported,
   ngDebugClient,
@@ -42,16 +47,13 @@ import {
   deeplySerializeSelectedProperties,
   serializeDirectiveState,
 } from '../../shared/state-serializer/state-serializer';
-import {mutateNestedProp} from '../property-mutation/property-mutation';
-import {
-  ComponentTreeNode,
-  DirectiveInstanceType,
-  ComponentInstanceType,
-} from '../../shared/interfaces';
-import {getAppRoots} from './get-roots';
-import {AcxChangeDetectionStrategy, ChangeDetectionStrategy, Framework} from '../core-enums';
 import {unwrapSignal} from '../../shared/utils/general';
+import {AcxChangeDetectionStrategy, ChangeDetectionStrategy, Framework} from '../core-enums';
+import {mutateNestedProp} from '../property-mutation/property-mutation';
 import {getLViewFromDirectiveOrElementInstance} from '../tree-strategies/ltree';
+import {getAppRoots} from './get-roots';
+import {log} from '../../shared/utils/log';
+import {AngularDevtoolsError} from '../../shared/utils/error';
 
 export const injectorToId = new WeakMap<Injector | HTMLElement, string>();
 export const nodeInjectorToResolutionPath = new WeakMap<HTMLElement, SerializedInjector[]>();
@@ -226,9 +228,9 @@ const enum DirectiveMetadataKey {
 // Gets directive metadata. For newer versions of Angular (v12+) it uses
 // the global `getDirectiveMetadata`. For prior versions of the framework
 // the method directly interacts with the directive/component definition.
-const getDirectiveMetadata = (dir: any): DirectiveMetadata => {
-  const getMetadata = ngDebugClient().getDirectiveMetadata!;
-  const metadata = getMetadata?.(dir);
+function getDirectiveMetadata(dir: any): DirectiveMetadata {
+  const getMetadata = ngDebugClient().getDirectiveMetadata;
+  const metadata = dir ? getMetadata?.(dir) : null;
   if (metadata) {
     const {framework} = metadata;
     switch (framework) {
@@ -263,7 +265,7 @@ const getDirectiveMetadata = (dir: any): DirectiveMetadata => {
         };
       }
       default: {
-        throw new Error(`Unknown framework: "${framework}".`);
+        throw new AngularDevtoolsError(`Unknown framework: "${framework}".`);
       }
     }
   }
@@ -273,7 +275,7 @@ const getDirectiveMetadata = (dir: any): DirectiveMetadata => {
     try {
       return dir.constructor.ɵcmp ? dir.constructor.ɵcmp[key] : dir.constructor.ɵdir[key];
     } catch {
-      console.warn(`Could not find metadata for key: ${key} in directive:`, dir);
+      log.warn(`Could not find metadata for key: ${key} in directive:`, dir);
       return undefined;
     }
   };
@@ -285,9 +287,9 @@ const getDirectiveMetadata = (dir: any): DirectiveMetadata => {
     encapsulation: safelyGrabMetadata(DirectiveMetadataKey.ENCAPSULATION),
     changeDetection: safelyGrabMetadata(DirectiveMetadataKey.CHANGE_DETECTION),
   };
-};
+}
 
-export function getDirectiveCdStrategy(dir: any): ChangeDetection | undefined {
+export function getDirectiveCdStrategy(dir: ComponentInstanceType): ChangeDetection | undefined {
   const metadata = getDirectiveMetadata(dir.instance);
 
   switch (metadata.framework) {
@@ -311,7 +313,9 @@ export function getDirectiveCdStrategy(dir: any): ChangeDetection | undefined {
       return undefined;
 
     default:
-      throw new Error(`Unknown framework: "${(metadata as {framework: string}).framework}".`);
+      throw new AngularDevtoolsError(
+        `Unknown framework: "${(metadata as {framework: string}).framework}".`,
+      );
   }
 }
 
@@ -449,7 +453,7 @@ export function serializeInjector(injector: Injector): Omit<SerializedInjector, 
   const metadata = getInjectorMetadata(injector);
 
   if (metadata === null) {
-    console.error('Angular DevTools: Could not serialize injector.', injector);
+    log.error('Could not serialize injector.', injector);
     return null;
   }
 
@@ -480,7 +484,7 @@ export function serializeInjector(injector: Injector): Omit<SerializedInjector, 
     return {type: 'environment', name: stripUnderscore(metadata.source ?? ''), providers};
   }
 
-  console.error('Angular DevTools: Could not serialize injector.', injector);
+  log.error('Could not serialize injector.', injector);
   return null;
 }
 
@@ -545,7 +549,7 @@ function elementToDirectiveNames(element: HTMLElement): string[] {
 
 export function getElementInjectorElement(elementInjector: Injector): HTMLElement {
   if (!isElementInjector(elementInjector)) {
-    throw new Error('Injector is not an element injector');
+    throw new AngularDevtoolsError('Injector is not an element injector');
   }
 
   return getInjectorMetadata(elementInjector)!.source as HTMLElement;
@@ -734,7 +738,7 @@ export const findNodeInForest = (
 export const findNodeFromSerializedPosition = (
   serializedPosition: string,
 ): ComponentTreeNode | null => {
-  const position: number[] = serializedPosition.split(',').map((index) => parseInt(index, 10));
+  const position: number[] = JSON.parse(serializedPosition);
   return queryDirectiveForest(position, buildDirectiveForest());
 };
 
@@ -742,7 +746,7 @@ export const updateState = (updatedStateData: UpdatedStateData): void => {
   const ng = ngDebugClient();
   const node = queryDirectiveForest(updatedStateData.directiveId.element, buildDirectiveForest());
   if (!node) {
-    console.warn(
+    log.warn(
       'Could not update the state of component',
       updatedStateData,
       'because the component was not found',
@@ -771,7 +775,7 @@ export function logValue(valueInfo: {
 }): void {
   const node = queryDirectiveForest(valueInfo.directiveId.element, buildDirectiveForest());
   if (!node) {
-    console.warn(
+    log.warn(
       'Could not log the value of component',
       valueInfo,
       'because the directive was not found',
@@ -782,27 +786,27 @@ export function logValue(valueInfo: {
   if (node.directives && valueInfo.directiveId.directive !== undefined) {
     const directiveInstance = node.directives[valueInfo.directiveId.directive].instance;
     if (valueInfo.keyPath === null) {
-      logToConsole(directiveInstance);
+      logSignalToConsole(directiveInstance);
       return;
     }
 
     const value = valueInfo.keyPath.reduce((obj, key) => obj && obj[key], directiveInstance);
-    logToConsole(value);
+    logSignalToConsole(value);
     return;
   }
   if (node.component) {
     const compInstance = node.component.instance;
     if (valueInfo.keyPath === null) {
-      logToConsole(compInstance);
+      logSignalToConsole(compInstance);
       return;
     }
     const value = valueInfo.keyPath.reduce((obj, key) => obj && obj[key], compInstance);
-    logToConsole(value);
+    logSignalToConsole(value);
     return;
   }
 }
 
-function logToConsole(value: unknown) {
+function logSignalToConsole(value: unknown) {
   // tslint:disable-next-line:no-console
   console.log(unwrapSignal(value));
 }

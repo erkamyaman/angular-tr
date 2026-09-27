@@ -407,8 +407,7 @@ Yol eklemek için `stylePreprocessorOptions` seçeneğini kullanın:
 
 Bu dizindeki dosyalar, örneğin `src/style-paths/_variables.scss`, projenizin herhangi bir yerinden göreceli yol olmadan içe aktarılabilir:
 
-```scss
-// src/app/app.scss
+```scss {header: "src/app/app.scss"}
 // Göreceli yol çalışır
 @import '../style-paths/variables';
 

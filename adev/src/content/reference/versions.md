@@ -69,7 +69,7 @@ Angular v9'a kadar, Angular ve Angular CLI sürümleri senkronize değildi.
 | 4.0.x \|\| 4.1.x            | 1.0.x \|\| 1.1.x \|\| 1.2.x | ^6.9.0              | >=2.1.6 <2.4.0 | ^5.0.1 |
 | 2.x                         | -                           | ^6.9.0              | >=1.8.0 <2.2.0 | ^5.0.1 |
 
-## Tarayıcı desteği
+## Tarayıcı desteği {#browser-support}
 
 Angular, tarayıcı desteğini tanımlamak için ["yaygın olarak kullanılabilir" Baseline](https://web.dev/baseline)'ı kullanır.
 Her ana sürüm için Angular, o ana sürümün yayın tarihine yakın seçilen bir tarihteki Baseline'a dahil olan tarayıcıları destekler.

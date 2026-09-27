@@ -22,6 +22,7 @@ import {
   R3TargetBinder,
   SelectorlessMatcher,
   SelectorMatcher,
+  TcbDirectiveMetadata,
   TcbGenericContextBehavior,
   TmplAstBoundAttribute,
   TmplAstBoundEvent,
@@ -31,6 +32,7 @@ import {
   TmplAstHoverDeferredTrigger,
   TmplAstInteractionDeferredTrigger,
   TmplAstLetDeclaration,
+  TmplAstTemplate,
   TmplAstTextAttribute,
   TmplAstViewportDeferredTrigger,
   TypeCheckId,
@@ -180,6 +182,21 @@ export function angularCoreDtsFiles(): TestFile[] {
   })));
 }
 
+let _angularFormsDts: TestFile[] | null = null;
+export function angularFormsDtsFiles(): TestFile[] {
+  if (_angularFormsDts !== null) {
+    return _angularFormsDts;
+  }
+
+  const directory = resolveFromRunfiles('_main/packages/forms/npm_package');
+  const dtsFiles = globSync('**/*.d.ts', {cwd: directory});
+
+  return (_angularFormsDts = ['package.json', ...dtsFiles].map((fileName) => ({
+    name: absoluteFrom(`/node_modules/@angular/forms/${fileName}`),
+    contents: readFileSync(path.join(directory, fileName), 'utf8'),
+  })));
+}
+
 export function angularAnimationsDts(): TestFile {
   return {
     name: absoluteFrom('/node_modules/@angular/animations/index.d.ts'),
@@ -279,6 +296,8 @@ export const ALL_ENABLED_CONFIG: Readonly<TypeCheckingConfig> = {
   checkTypeOfOutputEvents: true,
   checkTypeOfAnimationEvents: true,
   checkTypeOfDomEvents: true,
+  // Requires an explicit opt-in in production as well, since the check is heuristic.
+  checkUnclaimedEventNames: false,
   checkTypeOfDomReferences: true,
   checkTypeOfNonDomReferences: true,
   checkTypeOfPipes: true,
@@ -432,6 +451,7 @@ export function tcb(
     checkTypeOfOutputEvents: true,
     checkTypeOfAnimationEvents: true,
     checkTypeOfDomEvents: true,
+    checkUnclaimedEventNames: false,
     checkTypeOfDomReferences: true,
     checkTypeOfNonDomReferences: true,
     checkTypeOfPipes: true,
@@ -533,12 +553,20 @@ export function setup(
     parseOptions?: ParseTemplateOptions;
     referenceEmitter?: ReferenceEmitter;
   } = {},
+  load: {
+    forms?: boolean;
+  } = {},
 ): {
   templateTypeChecker: TemplateTypeChecker;
   program: ts.Program;
   programStrategy: TsCreateProgramDriver;
 } {
-  const files = [typescriptLibDts(), ...angularCoreDtsFiles(), angularAnimationsDts()];
+  const files = [
+    typescriptLibDts(),
+    ...angularCoreDtsFiles(),
+    angularAnimationsDts(),
+    ...(load.forms ? angularFormsDtsFiles() : []),
+  ];
   const fakeMetadataRegistry = new Map();
   const shims = new Map<AbsoluteFsPath, AbsoluteFsPath>();
 
@@ -857,6 +885,7 @@ function prepareDeclarations(
         isStandalone: false,
         decorator: null,
         isExplicitlyDeferred: false,
+        deferredBlocks: null,
         isPure: true,
       });
     }
@@ -940,6 +969,7 @@ function getDirectiveMetaFromDeclaration(
     ngContentSelectors: decl.ngContentSelectors || null,
     preserveWhitespaces: decl.preserveWhitespaces ?? false,
     isExplicitlyDeferred: false,
+    deferredBlocks: null,
     imports: decl.imports,
     rawImports: null,
     matchSource: MatchSource.Selector,
@@ -999,12 +1029,14 @@ function makeScope(program: ts.Program, sf: ts.SourceFile, decls: TestDeclaratio
         foreignImports: null,
         rawImports: null,
         deferredImports: null,
+        deferredImportsByBlock: null,
         schemas: null,
         decorator: null,
         assumedToExportProviders: false,
         ngContentSelectors: decl.ngContentSelectors || null,
         preserveWhitespaces: decl.preserveWhitespaces ?? false,
         isExplicitlyDeferred: false,
+        deferredBlocks: null,
         inputFieldNamesFromMetadataArray: null,
         selectorlessEnabled: false,
         localReferencedSymbols: null,
@@ -1037,6 +1069,7 @@ function makeScope(program: ts.Program, sf: ts.SourceFile, decls: TestDeclaratio
         isStandalone: false,
         decorator: null,
         isExplicitlyDeferred: false,
+        deferredBlocks: null,
         isPure: true,
       });
     }
@@ -1065,6 +1098,7 @@ export class NoopSchemaChecker implements DomSchemaChecker<TemplateDiagnostic> {
 
   checkElement(): void {}
   checkTemplateElementProperty(): void {}
+  checkTemplateElementEvent(): void {}
   checkHostElementProperty(): void {}
 }
 
@@ -1074,8 +1108,19 @@ export class NoopOobRecorder implements OutOfBandDiagnosticRecorder<TemplateDiag
   }
   missingReferenceTarget(): void {}
   missingPipe(): void {}
-  deferredPipeUsedEagerly(id: TypeCheckId, ast: BindingPipe): void {}
-  deferredComponentUsedEagerly(id: TypeCheckId, element: TmplAstElement): void {}
+  deferredPipeUsedEagerly(
+    id: TypeCheckId,
+    ast: BindingPipe,
+    currentBlockName: string | null,
+    declaredBlocks: string[] | null,
+  ): void {}
+  deferredComponentUsedEagerly(
+    id: TypeCheckId,
+    element: TmplAstElement | TmplAstTemplate,
+    dirMeta: TcbDirectiveMetadata,
+    currentBlockName: string | null,
+    declaredBlocks: string[] | null,
+  ): void {}
   duplicateTemplateVar(): void {}
   suboptimalTypeInference(): void {}
   splitTwoWayBinding(): void {}

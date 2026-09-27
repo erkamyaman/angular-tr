@@ -31,14 +31,14 @@ export class Report {
 
 Lazy olarak yüklenen servis [default export](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/export#using_the_default_export) ise, dinamik import'u doğrudan geçirin, Angular sizin için `default`'u açar:
 
-```ts {header: report-exporter.ts}
+```ts {header: "report-exporter.ts"}
 @Service()
 export default class ReportExporter {
   /* … */
 }
 ```
 
-```ts {header: report.ts}
+```ts {header: "report.ts"}
 private exporter = injectAsync(() => import('./report-exporter'));
 ```
 

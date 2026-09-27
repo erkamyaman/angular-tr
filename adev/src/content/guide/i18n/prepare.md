@@ -35,7 +35,7 @@ Aşağıdaki `<div>` etiketi, değiştirme durumuna bağlı olarak `div` ve `ari
 
 <docs-code-multifile>
     <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html"  region="i18n-conditional"/>
-    <docs-code header="app.component.ts" path="adev/src/content/examples/i18n/src/app/app.component.ts" visibleLines="[[14,21],[33,37]]"/>
+    <docs-code header="app.component.ts" path="adev/src/content/examples/i18n/src/app/app.component.ts" visibleLines="[[13,18],[32,34]]"/>
 </docs-code-multifile>
 
 ### HTML öğesi olmadan satır içi metni çevirme
@@ -124,7 +124,7 @@ Bir [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesine [enterpolasyo
 $localize`string_to_translate ${variable_name}`;
 ```
 
-### Enterpolasyon yer tutucusunu adlandırma
+### Enterpolasyon yer tutucusunu adlandırma {#name-the-interpolation-placeholder-in-code}
 
 ```ts
 $localize`string_to_translate ${variable_name}:placeholder_name:`;
@@ -265,7 +265,7 @@ other { default_quantity }
 
 HELPFUL: Çoğullama kategorileri hakkında daha fazla bilgi için [CLDR - Unicode Ortak Yerel Ayar Veri Deposu][UnicodeCldrMain]'ndaki [Choosing plural category names][UnicodeCldrIndexCldrSpecPluralRulesTocChoosingPluralCategoryNames] bölümüne bakın.
 
-<docs-callout header='Background: Locales may not support some pluralization categories'>
+<docs-callout title="Arka plan: Yerel ayarlar bazı çoğullama kategorilerini desteklemeyebilir">
 
 Birçok yerel ayar bazı çoğullama kategorilerini desteklemez.
 Varsayılan yerel ayar \(`en-US`\), `few` çoğullama kategorisini desteklemeyen çok basit bir `plural()` fonksiyonu kullanır.

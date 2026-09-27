@@ -38,8 +38,7 @@ NOTE: String parametresi (örn., `'api.url'`) tamamen hata ayıklama amaçlı bi
 
 `factory`'ye sahip bir `InjectionToken`, varsayılan olarak `providedIn: 'root'` ile sonuçlanır (ancak `providedIn` özelliği ile geçersiz kılınabilir).
 
-```ts
-// 📁 /app/config.token.ts
+```ts {header: "/app/config.token.ts"}
 import {InjectionToken} from '@angular/core';
 
 export interface AppConfig {
@@ -75,8 +74,7 @@ export class Header {
 
 Bir sınıf kullanamadığınızda ancak bağımlılıkları global olarak sağlamanız gerektiğinde, fabrika fonksiyonları ile InjectionToken idealdir:
 
-```ts
-// 📁 /app/logger.token.ts
+```ts {header: "/app/logger.token.ts"}
 import {InjectionToken, inject} from '@angular/core';
 import {APP_CONFIG} from './config.token';
 
@@ -96,8 +94,9 @@ export const LOGGER_FN = new InjectionToken<LoggerFn>('logger.function', {
     };
   },
 });
+```
 
-// 📁 /app/storage.token.ts
+```ts {header: "/app/storage.token.ts"}
 // Tarayıcı API'lerini token olarak sağlama
 export const LOCAL_STORAGE = new InjectionToken<Storage>('localStorage', {
   // providedIn: 'root' varsayılan olarak yapılandırılmıştır
@@ -108,8 +107,9 @@ export const SESSION_STORAGE = new InjectionToken<Storage>('sessionStorage', {
   providedIn: 'root',
   factory: () => window.sessionStorage,
 });
+```
 
-// 📁 /app/feature-flags.token.ts
+```ts {header: "/app/feature-flags.token.ts"}
 // Çalışma zamanı mantığı ile karmaşık yapılandırma
 export const FEATURE_FLAGS = new InjectionToken<Map<string, boolean>>('feature.flags', {
   providedIn: 'root',
@@ -300,8 +300,7 @@ Sınıf hem tanımlayıcı hem de uygulama olarak hizmet eder, bu nedenle Angula
 
 Angular, enjekte edilebilir değerler için veya aynı arayüzün birden fazla uygulamasını sağlamak istediğinizde benzersiz bir nesne referansı oluşturan yerleşik [`InjectionToken`](api/core/InjectionToken) sınıfını sağlar.
 
-```ts
-// 📁 /app/tokens.ts
+```ts {header: "/app/tokens.ts"}
 import {InjectionToken} from '@angular/core';
 import {DataService} from './data-service.interface';
 
@@ -624,8 +623,7 @@ Angular, sağlayıcıları kaydedebileceğiniz birkaç seviye sunar ve her birin
 - **Servisin bileşene özgü yapılandırması yoksa** - Her yerde aynı şekilde çalışan genel amaçlı yardımcı araçlar
 - **Global yapılandırma sağlıyorsanız** - API uç noktaları, özellik bayrakları veya ortam ayarları
 
-```ts
-// main.ts
+```ts {header: "main.ts"}
 bootstrapApplication(App, {
   providers: [
     {provide: API_BASE_URL, useValue: 'https://api.example.com'},
@@ -709,8 +707,7 @@ Rota seviyesi sağlayıcılarını şunlar için kullanın:
 - **Tembel yüklenen modül bağımlılıkları** - Yalnızca belirli özelliklerle yüklenmesi gereken servisler
 - **Rotaya özgü yapılandırma** - Uygulama alanına göre değişen ayarlar
 
-```ts
-// routes.ts
+```ts {header: "routes.ts"}
 export const routes: Routes = [
   {
     path: 'admin',
@@ -743,8 +740,7 @@ Angular kütüphaneleri oluştururken, temiz API'leri korurken tüketiciler içi
 
 Kullanıcıların karmaşık sağlayıcıları manuel olarak yapılandırmasını gerektirmek yerine, kütüphane yazarları sağlayıcı yapılandırmalarını döndüren fonksiyonları dışa aktarabilir:
 
-```ts
-// 📁 /libs/analytics/src/providers.ts
+```ts {header: "/libs/analytics/src/providers.ts"}
 import {InjectionToken, Provider, inject} from '@angular/core';
 
 // Yapılandırma arayüzü
@@ -770,9 +766,10 @@ export class AnalyticsService {
 export function provideAnalytics(config: AnalyticsConfig): Provider[] {
   return [{provide: ANALYTICS_CONFIG, useValue: config}, AnalyticsService];
 }
+```
 
+```ts {header: "main.ts"}
 // Tüketici uygulamada kullanım
-// main.ts
 bootstrapApplication(App, {
   providers: [
     provideAnalytics({
@@ -787,8 +784,7 @@ bootstrapApplication(App, {
 
 Daha karmaşık senaryolar için, birden fazla yapılandırma yaklaşımını birleştirebilirsiniz:
 
-```ts
-// 📁 /libs/http-client/src/provider.ts
+```ts {header: "/libs/http-client/src/provider.ts"}
 import {Provider, InjectionToken, inject} from '@angular/core';
 
 // İsteğe bağlı işlevsellik için özellik bayrakları

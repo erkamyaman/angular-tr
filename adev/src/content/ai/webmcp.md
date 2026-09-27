@@ -124,15 +124,15 @@ export const routes: Routes = [
 ];
 ```
 
-NOTE: Araçları belirli bir rotaya kaydederken, kullanıcı rotadan ayrıldığında araçların kayıtlarının otomatik olarak _kaldırılmasını_ sağlamak için router'ı [`withExperimentalAutoCleanupInjectors`](api/router/withExperimentalAutoCleanupInjectors) kullanacak şekilde yapılandırmayı düşünün. Bu seçenek olmadan, rotalarda tanımlanan WebMCP araçları, kullanıcı farklı bir rotaya gittikten sonra bile yapay zeka ajanları için erişilebilir kalır.
+NOTE: Araçları belirli bir rotaya kaydederken, kullanıcı rotadan ayrıldığında araçların kayıtlarının otomatik olarak _kaldırılmasını_ sağlamak için router'ı [`withAutoCleanupInjectors`](api/router/withAutoCleanupInjectors) kullanacak şekilde yapılandırmayı düşünün. Bu seçenek olmadan, rotalarda tanımlanan WebMCP araçları, kullanıcı farklı bir rotaya gittikten sonra bile yapay zeka ajanları için erişilebilir kalır.
 
 ```ts {header:"app.config.ts"}
 import {ApplicationConfig} from '@angular/core';
-import {provideRouter, withExperimentalAutoCleanupInjectors} from '@angular/router';
+import {provideRouter, withAutoCleanupInjectors} from '@angular/router';
 import {routes} from './routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes, withExperimentalAutoCleanupInjectors())],
+  providers: [provideRouter(routes, withAutoCleanupInjectors())],
 };
 ```
 
@@ -214,7 +214,7 @@ export class UserRegistration {
       },
       submission: {
         action: async (formValue) => {
-          console.log('Submitting user:', formValue);
+          console.log('Submitting user:', formValue().value());
           // ...
         },
       },

@@ -207,7 +207,7 @@ Eşleşirlerse, aktörün rolü belirsizdir ve doğrulayıcı bir hata nesnesi d
 
 Daha iyi kullanıcı deneyimi sağlamak için, form geçersiz olduğunda şablon uygun bir hata mesajı gösterir.
 
-<docs-code header="actor-form-template.component.html" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="cross-validation-error-message"/>
+<docs-code header="actor-form-reactive.component.html" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="cross-validation-error-message"/>
 
 Bu `@if`, `FormGroup`'ta `unambiguousRoleValidator` doğrulayıcısı tarafından döndürülen çapraz doğrulama hatası varsa hatayı görüntüler, ancak yalnızca kullanıcı [formla etkileşimi tamamladıysa](#kontrol-durumu-css-sınıfları).
 
@@ -294,7 +294,7 @@ Bir süre sonra, observable zinciri tamamlanır ve asenkron doğrulama biter.
 
 Reaktif formlarda asenkron doğrulayıcı kullanmak için, doğrulayıcıyı bileşen sınıfının bir özelliğine enjekte ederek başlayın.
 
-<docs-code header="actor-form-reactive.component.2.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-inject"/>
+<docs-code header="actor-form-reactive.component.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-inject"/>
 
 Ardından, doğrulayıcı fonksiyonu doğrudan `FormControl`'a geçirerek uygulayın.
 
@@ -302,7 +302,7 @@ Aşağıdaki örnekte, `UniqueRoleValidator`'ın `validate` fonksiyonu, kontrol�
 `asyncValidators`'ın değeri tek bir asenkron doğrulayıcı fonksiyon veya bir fonksiyonlar dizisi olabilir.
 `FormControl` seçenekleri hakkında daha fazla bilgi edinmek için [AbstractControlOptions](api/forms/AbstractControlOptions) API referansına bakın.
 
-<docs-code header="actor-form-reactive.component.2.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-usage"/>
+<docs-code header="actor-form-reactive.component.ts" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.2.ts" region="async-validator-usage"/>
 
 ### Template-driven form'lara asenkron doğrulayıcılar ekleme
 

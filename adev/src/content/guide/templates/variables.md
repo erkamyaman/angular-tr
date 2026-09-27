@@ -124,7 +124,7 @@ Bir şablon referans değişkeni aşağıdakilere referans verebilir:
 <input #taskInput placeholder="Enter task name" />
 ```
 
-### Şablon referans değişkenlerine değer atama
+### Şablon referans değişkenlerine değer atama {#assigning-values-to-template-reference-variables}
 
 Angular, değişkenin bildirildiği elemana göre şablon değişkenlerine bir değer atar.
 
