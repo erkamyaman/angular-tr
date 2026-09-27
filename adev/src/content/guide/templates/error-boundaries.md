@@ -1,4 +1,4 @@
-# `@boundary` ile hata sınırları {#error-boundaries-with-boundary}
+# `@boundary` ile hata sınırları
 
 IMPORTANT: `@boundary` [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
 

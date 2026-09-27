@@ -1,4 +1,4 @@
-# Önceden derleme (AOT) {#ahead-of-time-aot-compilation}
+# Önceden derleme (AOT)
 
 Bir Angular uygulaması esas olarak bileşenlerden ve bunların HTML şablonlarından oluşur.
 Angular tarafından sağlanan bileşenler ve şablonlar doğrudan tarayıcı tarafından anlaşılamadığından, Angular uygulamalarının tarayıcıda çalışabilmeleri için bir derleme sürecinden geçmeleri gerekir.
