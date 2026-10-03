@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/" title="Toolbar ARIA pattern"/>
-  <docs-pill href="/api/aria/toolbar/Toolbar" title="Toolbar API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/" title="Toolbar ARIA deseni"/>
+  <docs-pill href="/api/aria/toolbar/Toolbar" title="Toolbar API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış

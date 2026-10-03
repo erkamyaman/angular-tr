@@ -78,7 +78,7 @@ ng generate @angular/core:output-migration --path src/app/sub-folder
 ## İstisnalar
 
 Bazı durumlarda, geçiş koda dokunmayacaktır.
-Bu istisnalardan biri, olayın `pipe()` yöntemiyle kullanıldığı durumdur.
+Bu istisnalardan biri, olayın `pipe()` yöntemiyle kullanıldığı durumdur (test dosyası dışında).
 Aşağıdaki kod geçirilmeyecektir:
 
 ```typescript
@@ -92,3 +92,7 @@ export class MyDialogComponent {
   }
 }
 ```
+
+Bir test dosyasında geçiş, çıktıyı atlamak yerine kullanımı yeniden yazar; böylece `this.close.pipe(…)` ifadesi `outputToObservable(this.close).pipe(…)` olur.
+
+NOTE: Geçiş, bir test dosyasını, yolunda `jasmine` veya `catalyst` geçen bir import arayarak tanır. Yalnızca Jest veya Vitest import eden bir dosyayı tanımaz, bu nedenle orada çıktıyı yeniden yazmak yerine atlar.

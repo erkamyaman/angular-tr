@@ -282,7 +282,6 @@ export function ngForTypeCheckTarget(): TypeCheckingTarget {
 
 export const ALL_ENABLED_CONFIG: Readonly<TypeCheckingConfig> = {
   applyTemplateContextGuards: true,
-  checkQueries: false,
   checkTemplateBodies: true,
   checkControlFlowBodies: true,
   alwaysCheckSchemaInTemplateBodies: true,
@@ -310,6 +309,7 @@ export const ALL_ENABLED_CONFIG: Readonly<TypeCheckingConfig> = {
   unusedStandaloneImports: 'warning',
   allowSignalsInTwoWayBindings: true,
   allowDomEventAssertion: true,
+  checkUnknownElements: true,
 };
 
 // Remove 'ref' from TypeCheckableDirectiveMeta and add a 'selector' instead.
@@ -442,7 +442,6 @@ export function tcb(
 
   const fullConfig: TypeCheckingConfig = {
     applyTemplateContextGuards: true,
-    checkQueries: false,
     checkTypeOfInputBindings: true,
     honorAccessModifiersForInputBindings: false,
     strictNullInputBindings: true,
@@ -467,6 +466,7 @@ export function tcb(
     useInlineTypeConstructors: true,
     allowSignalsInTwoWayBindings: true,
     allowDomEventAssertion: true,
+    checkUnknownElements: true,
     ...config,
   };
   options = options || {emitSpans: false};

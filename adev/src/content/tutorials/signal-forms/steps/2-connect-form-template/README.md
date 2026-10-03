@@ -15,7 +15,7 @@ Bu derste şunları öğreneceksiniz:
 
 <docs-workflow>
 
-<docs-step title="Import the FormField directive">
+<docs-step title="`FormField` direktifini içe aktarın">
 `@angular/forms/signals` paketinden `FormField` direktifini içe aktarın ve bileşeninizin imports dizisine ekleyin:
 
 ```ts
@@ -31,7 +31,7 @@ import { form, FormField } from '@angular/forms/signals';
 
 </docs-step>
 
-<docs-step title="Bind the email field">
+<docs-step title="E-posta alanını bağlayın">
 Şablonunuzda, e-posta input'una `[formField]` direktifini ekleyin:
 
 ```html
@@ -41,7 +41,7 @@ import { form, FormField } from '@angular/forms/signals';
 `loginForm.email` ifadesi, formunuzdaki e-posta alanına erişir.
 </docs-step>
 
-<docs-step title="Bind the password field">
+<docs-step title="Parola alanını bağlayın">
 Parola input'una `[formField]` direktifini ekleyin:
 
 ```html
@@ -50,7 +50,7 @@ Parola input'una `[formField]` direktifini ekleyin:
 
 </docs-step>
 
-<docs-step title="Bind the checkbox field">
+<docs-step title="Onay kutusu alanını bağlayın">
 Onay kutusu input'una `[formField]` direktifini ekleyin:
 
 ```html
@@ -59,7 +59,7 @@ Onay kutusu input'una `[formField]` direktifini ekleyin:
 
 </docs-step>
 
-<docs-step title="Display the form values">
+<docs-step title="Form değerlerini görüntüleyin">
 Formun altında, mevcut form değerlerini gösteren bir hata ayıklama bölümü var. `.value()` kullanarak her alan değerini görüntüleyin:
 
 ```angular-html

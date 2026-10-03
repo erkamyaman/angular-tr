@@ -110,6 +110,6 @@ NOTE: Bazı test ortamları `animationstart`, `animationend` ve bunların geçi�
 Aşağıdakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
-  <docs-pill href="guide/animations/css" title="Complex Animations with CSS"/>
-  <docs-pill href="guide/routing/route-transition-animations" title="Route transition animations"/>
+  <docs-pill href="guide/animations/css" title="CSS ile uygulamanızı animasyonlama"/>
+  <docs-pill href="guide/routing/route-transition-animations" title="Route Geçiş Animasyonları"/>
 </docs-pill-row>

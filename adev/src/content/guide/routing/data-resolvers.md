@@ -151,9 +151,8 @@ Veri çözücülerle hataları yönetmenin üç temel yolu vardır:
 
 ```ts
 import {bootstrapApplication} from '@angular/platform-browser';
-import {provideRouter, withNavigationErrorHandler} from '@angular/router';
+import {provideRouter, Router, withNavigationErrorHandler} from '@angular/router';
 import {inject} from '@angular/core';
-import {Router} from '@angular/router';
 import {routes} from './app.routes';
 
 bootstrapApplication(App, {
@@ -317,17 +316,17 @@ Bu yaklaşım, çözücüler veri çekerken kullanıcıların navigasyonun devam
 NOTE: Çözücüler üst rotadan alt rotaya doğru sırayla çalıştığından, her iç içe seviye toplam navigasyon bekleme süresine eklenir (bir ağ şelalesi). Alt rotalarınız üst rota verilerine bağlı değilse, tüm rotalarda eşzamanlı olarak çalışan [rota resource'larını](/guide/routing/data-fetching-with-resources) kullanmayı düşünün.
 
 ```ts
-import { inject } from '@angular/core';
-import { provideRouter , ActivatedRouteSnapshot } from '@angular/router';
-import { userResolver } from './resolvers';
-import { UserPosts } from './pages';
-import { PostService } from './services',
-import type { User } from './types';
+import {inject} from '@angular/core';
+import {provideRouter, ActivatedRouteSnapshot} from '@angular/router';
+import {userResolver} from './resolvers';
+import {UserPosts} from './pages';
+import {PostService} from './services';
+import type {User} from './types';
 
 provideRouter([
   {
     path: 'users/:id',
-    resolve: { user: userResolver }, // üst rotadaki user resolver
+    resolve: {user: userResolver}, // üst rotadaki user resolver
     children: [
       {
         path: 'posts',

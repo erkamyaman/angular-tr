@@ -14,7 +14,7 @@ Giriş formumuzun temelini oluşturalım!
 
 <docs-workflow>
 
-<docs-step title="Define the LoginData interface">
+<docs-step title="`LoginData` arayüzünü tanımlayın">
 Giriş formu verilerinizin yapısını tanımlayan bir TypeScript arayüzü oluşturun. Form şunları içerecek:
 
 - Bir `email` alanı (string)
@@ -32,7 +32,7 @@ interface LoginData {
 Bu arayüzü `@Component` dekoratörünün üzerine ekleyin.
 </docs-step>
 
-<docs-step title="Import signal and form">
+<docs-step title="`signal` ve `form` fonksiyonlarını içe aktarın">
 `@angular/core` paketinden `signal` fonksiyonunu ve `@angular/forms/signals` paketinden `form` fonksiyonunu içe aktarın:
 
 ```ts
@@ -42,7 +42,7 @@ import {form} from '@angular/forms/signals';
 
 </docs-step>
 
-<docs-step title="Create the form model signal">
+<docs-step title="Form modeli sinyalini oluşturun">
 Bileşen sınıfınızda, başlangıç değerleriyle bir `loginModel` sinyali oluşturun. Tür parametresi olarak `LoginData` arayüzünü kullanın:
 
 ```ts
@@ -56,7 +56,7 @@ loginModel = signal<LoginData>({
 Başlangıç değerleri, metin alanları için boş dizeler ve onay kutusu için `false` olarak ayarlanır.
 </docs-step>
 
-<docs-step title="Create the form">
+<docs-step title="Formu oluşturun">
 Şimdi model sinyalinizi `form()` fonksiyonuna ileterek formu oluşturun:
 
 ```ts

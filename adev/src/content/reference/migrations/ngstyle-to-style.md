@@ -9,6 +9,8 @@ Yalnızca geçirilmesi güvenli kabul edilen kullanımları geçirecektir.
 ng generate @angular/core:ngstyle-to-style
 ```
 
+Tek anahtarlı bir nesne, yalnızca o stil özelliğine yapılan bir bağlamaya dönüşür.
+
 #### Önce
 
 ```html
@@ -18,7 +20,21 @@ ng generate @angular/core:ngstyle-to-style
 #### Sonra
 
 ```html
-<div [style]="{'background-color': 'red'}"></div>
+<div [style.background-color]="'red'"></div>
+```
+
+Birden fazla anahtarı olan bir nesne, tek bir `[style]` bağlamasına dönüşür.
+
+#### Önce {#multiple-keys-before}
+
+```html
+<div [ngStyle]="{'color': 'blue', 'font-weight': 'bold'}"></div>
+```
+
+#### Sonra {#multiple-keys-after}
+
+```html
+<div [style]="{'color': 'blue', 'font-weight': 'bold'}"></div>
 ```
 
 ## Yapılandırma seçenekleri

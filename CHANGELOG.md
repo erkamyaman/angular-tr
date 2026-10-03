@@ -1,3 +1,97 @@
+<a name="22.3.0-next.0"></a>
+# 22.3.0-next.0 (2026-09-30)
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [0ee0a16c4a](https://github.com/angular/angular/commit/0ee0a16c4ae92458757f79afbbfc1e3aa000eae6) | fix | stop suppressing non-iterable values in `@for` expression |
+### compiler-cli
+| Commit | Type | Description |
+| -- | -- | -- |
+| [a614bd23cd](https://github.com/angular/angular/commit/a614bd23cd9b0b4c0b8676bf72eadafa7a30e785) | fix | resolve base class defined via intermediate variable in dts |
+| [91b8391b3d](https://github.com/angular/angular/commit/91b8391b3d3fb23767834a373b68ab604f2f1655) | fix | validate unknown element tags even when matched by attribute directives |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [6ea13efc20](https://github.com/angular/angular/commit/6ea13efc20c9509237062b1aaa77dad8942b9b25) | feat | support increment/decrement operators in expressions |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="22.2.1"></a>
+# 22.2.1 (2026-09-30)
+### common
+| Commit | Type | Description |
+| -- | -- | -- |
+| [ad2f291ba0](https://github.com/angular/angular/commit/ad2f291ba06a7d6807f1fde6641502f455f248e5) | fix | let NgOptimizedImage pass a [srcset] binding through when srcset optimization is disabled |
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [0ecaf8e7ab](https://github.com/angular/angular/commit/0ecaf8e7ab8d52957dc314a09d52b4e6da500f11) | fix | add explicit return types to generated functions |
+| [c451a3b98d](https://github.com/angular/angular/commit/c451a3b98d405521bf3a4970e20d20bd5b578415) | fix | avoid incorrectly stripping parentheses in template pipeline |
+| [bbc556daa9](https://github.com/angular/angular/commit/bbc556daa9d83b6bf1bfa88f6239ae8210ac6a00) | fix | avoid stripping parentheses from some expressions |
+### compiler-cli
+| Commit | Type | Description |
+| -- | -- | -- |
+| [fe9ebf5bf5](https://github.com/angular/angular/commit/fe9ebf5bf5ef8a56bc20b2de8115d4b1a1ed299a) | fix | support extendedConfigCache in readConfiguration |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [21851fc3a3](https://github.com/angular/angular/commit/21851fc3a38258a68d62d966bf5202d6f4e23df1) | fix | add debugName on afterRenderEffect |
+| [7c634ecec4](https://github.com/angular/angular/commit/7c634ecec442d71e023ad8ec1976c2791d547bf8) | fix | block dangerous data: and vbscript: URLs in URL sanitizer |
+| [9aeef8df6f](https://github.com/angular/angular/commit/9aeef8df6f8c49270ff67aa7656419b65d4df993) | fix | extend data: URL allowlist for non-executable MIME types |
+| [f5e8edc5a6](https://github.com/angular/angular/commit/f5e8edc5a6faa798a958548e90f91aaefeee9484) | fix | include signal and component name in NG0600 error message |
+| [88614a5407](https://github.com/angular/angular/commit/88614a54070c194a281ccc116a54d2b7e7546f92) | fix | render error boundary fallbacks after HMR |
+### http
+| Commit | Type | Description |
+| -- | -- | -- |
+| [6dee7fe91c](https://github.com/angular/angular/commit/6dee7fe91c95fc0de80bde547f5c904c4bb3391b) | fix | forward `reportProgress` of `httpResource` as `reportDownloadProgress` |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [928dcfd258](https://github.com/angular/angular/commit/928dcfd2582152655b5559509d057bf6a5a19521) | fix | reject protocol-relative paths in resolveUrl |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [568d6a83a2](https://github.com/angular/angular/commit/568d6a83a23b37f519ba564f79f7a03bbdfb6893) | fix | do not copy URL-sized objects into every route snapshot |
+| [a6e6097b3d](https://github.com/angular/angular/commit/a6e6097b3d0d60f2d7057bfb261c9e4776b2b0b1) | fix | fall back when serializing protocol-relative URLs |
+| [8b6dd5e947](https://github.com/angular/angular/commit/8b6dd5e947d74af79d50f1bace38b3229b451bab) | fix | limit absolute redirects from redirect functions |
+| [3b6796f1ab](https://github.com/angular/angular/commit/3b6796f1ab279ab26b33d4e29e576d3b1762ccf5) | fix | reject duplicate outlets in production builds |
+| [e9bf52aa03](https://github.com/angular/angular/commit/e9bf52aa03a3b9b302c33ffbc967ef0e1de5fb79) | fix | require outlets to match a route before processing child segments |
+| [d23932f2fd](https://github.com/angular/angular/commit/d23932f2fd134e6e2608b2ccefdd69c5d9b8f83c) | fix | set initial blocking resource input synchronously on activation |
+| [14793bfe4b](https://github.com/angular/angular/commit/14793bfe4b44a36ed4b7e49a60458ec711c2b41a) | perf | do not retain UrlTree instances in RouterLink |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="21.2.25"></a>
+# 21.2.25 (2026-09-30)
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [450af9c813](https://github.com/angular/angular/commit/450af9c813c7660b9bd91e5635f705ee3ed7b32a) | fix | reject protocol-relative paths in resolveUrl |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [4bc11a546b](https://github.com/angular/angular/commit/4bc11a546be9e66ee5c40b48d7a8a5d014609987) | fix | do not copy URL-sized objects into every route snapshot |
+| [6489ca5d84](https://github.com/angular/angular/commit/6489ca5d8460a9ed8ae4daf7b0c24ec052f20398) | fix | reject duplicate outlets in production builds |
+| [a83f8119ac](https://github.com/angular/angular/commit/a83f8119acd466b524ae0113096ed188358d6d6c) | fix | require outlets to match a route before processing child segments |
+| [a131f77d92](https://github.com/angular/angular/commit/a131f77d92808ad5c2f3fa4dc6fde36825f12c5a) | perf | do not retain UrlTree instances in RouterLink |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="20.3.33"></a>
+# 20.3.33 (2026-09-30)
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [83944fc8c5](https://github.com/angular/angular/commit/83944fc8c50e86be90e8ec4184cd15002b5af262) | fix | reject protocol-relative paths in resolveUrl |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [142f187b3c](https://github.com/angular/angular/commit/142f187b3c8e956aade5457f7f9c8ed73754979b) | fix | do not copy URL-sized objects into every route snapshot |
+| [cd8efcb924](https://github.com/angular/angular/commit/cd8efcb924d26464bc42ee436d39e10784cfc240) | fix | reject duplicate outlets in production builds |
+| [b0d2ba0f54](https://github.com/angular/angular/commit/b0d2ba0f54e21cb57ea5a0ca0d8e6065f28e23a0) | fix | require outlets to match a route before processing child segments |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="22.2.0"></a>
 # 22.2.0 (2026-09-23)
 ### compiler

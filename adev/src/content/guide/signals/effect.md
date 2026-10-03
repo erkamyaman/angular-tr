@@ -25,7 +25,7 @@ TIP: Effect'in iyi olduğu durumlar yoktur, yalnızca uygun olduğu durumlar var
 - Şablon sözdizimi ile ifade edilemeyen özel DOM davranışı ekleme.
 - Bir `<canvas>` öğesine, grafik kütüphanesine veya diğer üçüncü taraf kullanıcı arayüzü kütüphanesine özel render yapma.
 
-<docs-callout critical title="When not to use effects">
+<docs-callout critical title="Effect'lerin ne zaman kullanılmaması gerektiği">
 Durum değişikliklerinin yayılması için effect kullanmaktan kaçının. Bu, `ExpressionChangedAfterItHasBeenChecked` hatalarına, sonsuz döngüsel güncellemelere veya gereksiz değişiklik algılama döngülerine yol açabilir.
 
 Bunun yerine, diğer duruma bağlı durumu modellemek için `computed` sinyallerini kullanın.
@@ -129,7 +129,7 @@ export class MyFancyChart {
     // Grafik örneğini oluşturmak için bir kez çalıştır
     afterNextRender({
       write: () => {
-        this.chart = initializeChart(this.canvas().nativeElement(), this.chartData());
+        this.chart = initializeChart(this.canvas().nativeElement, this.chartData());
       },
     });
 
@@ -153,16 +153,16 @@ Bu işlemleri optimize etmek için `afterRenderEffect`, geri çağrıları grupl
 
 Fazlar şunlardır:
 
-| Phase            | Description                                                                                                                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `earlyRead`      | Use this phase to read from the DOM before a subsequent write callback, for example to perform custom layout that the browser doesn't natively support. Prefer the read phase if reading can wait. |
-| `write`          | Use this phase to write to the DOM. **Never** read from the DOM in this phase.                                                                                                                     |
-| `mixedReadWrite` | Use this phase to read from and write to the DOM simultaneously. Never use this phase if it is possible to divide the work among the other phases instead.                                         |
-| `read`           | Use this phase to read from the DOM. **Never** write to the DOM in this phase.                                                                                                                     |
+| Faz              | Açıklama                                                                                                                                                                                                             |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `earlyRead`      | Sonraki bir yazma geri çağrısından önce DOM'dan okumak için bu fazı kullanın, örneğin tarayıcının yerel olarak desteklemediği özel bir düzen gerçekleştirmek için. Okuma bekleyebiliyorsa `read` fazını tercih edin. |
+| `write`          | DOM'a yazmak için bu fazı kullanın. Bu fazda DOM'dan **asla** okumayın.                                                                                                                                              |
+| `mixedReadWrite` | DOM'dan okuma ve DOM'a yazmayı aynı anda yapmak için bu fazı kullanın. İşi diğer fazlar arasında bölmek mümkünse bu fazı asla kullanmayın.                                                                           |
+| `read`           | DOM'dan okumak için bu fazı kullanın. Bu fazda DOM'a **asla** yazmayın.                                                                                                                                              |
 
 Bu fazları kullanmak, düzen bozulmalarını önlemeye yardımcı olur ve DOM işlemlerinizin güvenli ve verimli bir şekilde gerçekleştirilmesini sağlar.
 
-`afterRender` veya `afterNextRender`'a bir `phase` özelliğine sahip bir nesne ileterek fazı belirtebilirsiniz:
+`afterRenderEffect`'e her faz için bir geri çağrı içeren bir nesne ileterek fazları belirtebilirsiniz:
 
 ```ts
 afterRenderEffect({
@@ -185,7 +185,7 @@ CRITICAL: Fazı belirtmezseniz, `afterRenderEffect` geri çağrıları `mixedRea
 
 #### Faz yürütmeleri
 
-`earlyRead` fazı geri çağrısı parametre almaz. Sonraki her faz, önceki fazın geri çağrısının dönüş değerini bir Signal olarak alır. Fazlar arasında çalışmayı koordine etmek için bunu kullanabilirsiniz.
+`earlyRead` fazı geri çağrısı yalnızca temizleme fonksiyonunu alır. Sonraki her faz, önceki fazın geri çağrısının dönüş değerini bir Signal olarak alır. Fazlar arasında çalışmayı koordine etmek için bunu kullanabilirsiniz.
 
 Effect'ler aşağıdaki faz sırasında çalışır:
 

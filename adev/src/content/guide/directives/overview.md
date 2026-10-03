@@ -65,5 +65,5 @@ Aşağıdaki kılavuzlarda her direktif türü hakkında daha fazla bilgi edinin
 <docs-pill-row>
   <docs-pill href="guide/directives/attribute-directives" title="Öznitelik direktifleri"/>
   <docs-pill href="guide/directives/structural-directives" title="Yapısal direktifler"/>
-  <docs-pill href="guide/directives/directive-composition-api" title="Direktif kompozisyon API'si"/>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif bileşim API'si"/>
 </docs-pill-row>

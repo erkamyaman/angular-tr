@@ -4,7 +4,7 @@ Bu eğitim, şablon odaklı bir formun nasıl oluşturulacağını gösterir. Fo
 
 Şablon odaklı formlar, bileşendeki veri modelini şablonda yapılan değişiklikler doğrultusunda güncellemek ve tam tersini yapmak için [çift yönlü veri bağlama](guide/templates/two-way-binding) kullanır.
 
-<docs-callout helpful title="Template vs Reactive forms">
+<docs-callout helpful title="Template-driven ve Reactive form'lar">
 Angular, etkileşimli formlar için iki tasarım yaklaşımını destekler. Şablon odaklı formlar, Angular şablonunuzda forma özgü direktifler kullanmanıza olanak tanır. Reaktif formlar, form oluşturmak için model odaklı bir yaklaşım sağlar.
 
 Şablon odaklı formlar küçük veya basit formlar için harika bir seçimdir, reaktif formlar ise daha ölçeklenebilir ve karmaşık formlar için uygundur. İki yaklaşımın karşılaştırması için [Bir yaklaşım seçme](guide/forms#bir-yaklaşım-seçme) bölümüne bakın
@@ -266,7 +266,7 @@ Aşağıdaki örnekte olduğu gibi, `name` girdi kutusuna koşullu bir hata mesa
 </docs-step>
 </docs-workflow>
 
-<docs-callout title='Illustrating the "pristine" state'>
+<docs-callout title='"Pristine" durumunu açıklama'>
 
 Bu örnekte, kontrol ya geçerli ya da _saf_ olduğunda mesajı gizlersiniz.
 Saf, kullanıcının bu formda görüntülenen değeri değiştirmediği anlamına gelir.
@@ -306,7 +306,7 @@ Form kullanıcılarının yeni bir aktör eklemesine izin vermek için, bir tık
 
 1. Form kontrollerinin saf durumunu geri yüklemek için, `newActor()` yöntemini çağırdıktan sonra formun `reset()` yöntemini çağırarak tüm bayrakları zorunlu olarak temizleyin.
 
-   <docs-code header="actor-form.component.html (Reset the form)" path="adev/src/content/examples/forms/src/app/actor-form/actor-form.component.html" region="new-actor-button-form-reset"/>
+   <docs-code header="actor-form.component.html (Formu sıfırlama)" path="adev/src/content/examples/forms/src/app/actor-form/actor-form.component.html" region="new-actor-button-form-reset"/>
 
    Artık **New Actor**'a tıklamak hem formu hem de kontrol bayraklarını sıfırlar.
 

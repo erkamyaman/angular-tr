@@ -14,7 +14,7 @@ Doğrulama ekleyelim!
 
 <docs-workflow>
 
-<docs-step title="Import the validators">
+<docs-step title="Doğrulayıcıları içe aktarın">
 `@angular/forms/signals` paketinden `required` ve `email` doğrulayıcılarını içe aktarın:
 
 ```ts
@@ -23,7 +23,7 @@ import {form, FormField, required, email} from '@angular/forms/signals';
 
 </docs-step>
 
-<docs-step title="Add a schema function to your form">
+<docs-step title="Formunuza bir şema fonksiyonu ekleyin">
 `form()` çağrınızı, ikinci parametre olarak bir şema fonksiyonu içerecek şekilde güncelleyin. Şema fonksiyonu, her alana erişmenizi sağlayan bir `fieldPath` parametresi alır:
 
 ```ts
@@ -34,7 +34,7 @@ loginForm = form(this.loginModel, (fieldPath) => {
 
 </docs-step>
 
-<docs-step title="Add validation to the email field">
+<docs-step title="E-posta alanına doğrulama ekleyin">
 Şema fonksiyonunun içinde, e-posta alanı için doğrulama ekleyin. Hem `required()` hem de `email()` doğrulayıcılarını kullanın:
 
 ```ts
@@ -47,7 +47,7 @@ loginForm = form(this.loginModel, (fieldPath) => {
 `message` seçeneği, kullanıcılar için özel hata mesajları sağlar.
 </docs-step>
 
-<docs-step title="Add validation to the password field">
+<docs-step title="Parola alanına doğrulama ekleyin">
 `required()` doğrulayıcısını kullanarak parola alanı için doğrulama ekleyin:
 
 ```ts

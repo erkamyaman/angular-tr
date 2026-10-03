@@ -101,7 +101,7 @@ export class UserProfile {}
 
 Sorgu bir sonuç bulamazsa, değeri `undefined` olur. Bu, hedef eleman mevcut değilse veya `@if` tarafından gizlenmişse gerçekleşebilir. Angular, uygulama durumunuz değiştikçe `contentChild` sonucunu güncel tutar.
 
-Varsayılan olarak, içerik sorguları yalnızca bileşenin _doğrudan_ alt elemanlarını bulur ve alt elemanların içerisine inmez.
+Varsayılan olarak, `contentChild` sorguları alt elemanların içerisine inerken, `contentChildren` sorguları yalnızca _doğrudan_ alt elemanları bulur. Bkz. [İçerik alt elemanları](#content-descendants).
 
 `contentChildren` fonksiyonu ile birden fazla sonuç için de sorgulama yapabilirsiniz.
 
@@ -245,7 +245,7 @@ Yukarıdaki örnek, `third-party-table` elemanının node injector'ını, yani a
 injector'ı alır. Bunu `ngTemplateOutletInjector` aracılığıyla `NgTemplateOutlet`'e geçmek, yansıtılan şablondaki
 direktiflerin üçüncü taraf bileşenin sağladığı değerleri enjekte edebilmesini sağlar.
 
-### İçerik alt elemanları
+### İçerik alt elemanları {#content-descendants}
 
 Varsayılan olarak, `contentChildren` sorguları yalnızca bileşenin _doğrudan_ alt elemanlarını bulur ve alt elemanların içerisine inmez.
 `contentChild` sorguları varsayılan olarak alt elemanların içerisine iner.

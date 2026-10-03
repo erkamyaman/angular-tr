@@ -721,6 +721,6 @@ Bu kalıp, uygulamanızda birden fazla formda kullandığınız standart alan ya
 
 Signal Forms hakkında daha fazla bilgi edinmek için şu ilgili kılavuzlara göz atın:
 
-- [Field State Management](guide/forms/signals/field-state-management) - Bu fonksiyonlar tarafından oluşturulan durum sinyallerini şablonlarınızda ve bileşen mantığınızda nasıl kullanacağınızı öğrenin
-- [Validation](guide/forms/signals/validation) - Doğrulama kuralları ve hata yönetimi hakkında bilgi edinin
-- [Custom Controls](guide/forms/signals/custom-controls) - Özel kontrollerin kendilerini otomatik olarak yapılandırmak için meta verileri ve durumu nasıl okuyabileceğini öğrenin
+- [Alan durumu yönetimi](guide/forms/signals/field-state-management) - Bu fonksiyonlar tarafından oluşturulan durum sinyallerini şablonlarınızda ve bileşen mantığınızda nasıl kullanacağınızı öğrenin
+- [Doğrulama](guide/forms/signals/validation) - Doğrulama kuralları ve hata yönetimi hakkında bilgi edinin
+- [Özel Kontroller](guide/forms/signals/custom-controls) - Özel kontrollerin kendilerini otomatik olarak yapılandırmak için meta verileri ve durumu nasıl okuyabileceğini öğrenin

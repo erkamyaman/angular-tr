@@ -15,7 +15,7 @@ Doğrulama geri bildirimi gösterelim!
 
 <docs-workflow>
 
-<docs-step title="Add error display for email field">
+<docs-step title="E-posta alanı için hata görüntüleme ekleyin">
 E-posta input'unun altına, koşullu hata görüntüleme ekleyin. Bu, yalnızca alan hem geçersiz hem de dokunulmuş (touched) olduğunda hataları gösterecektir:
 
 ```angular-html
@@ -35,7 +35,7 @@ E-posta input'unun altına, koşullu hata görüntüleme ekleyin. Bu, yalnızca 
 `loginForm.email()` çağrısı, alanın durum sinyaline erişir. `invalid()` metodu doğrulama başarısız olduğunda `true` döndürür, `touched()` kullanıcı alanla etkileşime girdikten sonra `true` döndürür ve `errors()` özel mesajlarıyla birlikte doğrulama hataları dizisi sağlar.
 </docs-step>
 
-<docs-step title="Add error display for password field">
+<docs-step title="Parola alanı için hata görüntüleme ekleyin">
 Parola input'unun altına, parola hataları için aynı deseni ekleyin:
 
 ```angular-html

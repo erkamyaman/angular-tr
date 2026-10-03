@@ -270,9 +270,8 @@ npm install @example/copy-file
           "options": {
             "outputPath": "dist/builder-test",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json"
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json"
           },
           "configurations": {
             "production": {

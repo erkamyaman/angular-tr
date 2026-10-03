@@ -61,7 +61,7 @@ Yerleşik doğrulayıcıların tam listesi için [Validators](api/forms/Validato
 
 Aktör formunu reaktif form olarak güncellemek için, aynı yerleşik doğrulayıcılardan bazılarını kullanın -- bu sefer, aşağıdaki örnekte olduğu gibi fonksiyon biçiminde.
 
-<docs-code header="actor-form-reactive.component.ts (validator functions)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="form-group"/>
+<docs-code header="actor-form-reactive.component.ts (doğrulayıcı fonksiyonları)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="form-group"/>
 
 Bu örnekte, `name` kontrolü iki yerleşik doğrulayıcı (`Validators.required` ve `Validators.minLength(4)`) ve bir özel doğrulayıcı (`forbiddenNameValidator`) ayarlar.
 
@@ -73,7 +73,7 @@ Reaktif bir formda, herhangi bir form kontrolüne her zaman üst grubundaki `get
 
 `name` girdisi için şablona tekrar bakarsanız, şablon odaklı örneğe oldukça benzerdir.
 
-<docs-code header="actor-form-reactive.component.html (name with error msg)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="name-with-error-msg"/>
+<docs-code header="actor-form-reactive.component.html (hata mesajlı name)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="name-with-error-msg"/>
 
 Bu form, şablon odaklı sürümden farklıdır çünkü artık herhangi bir direktif dışa aktarmaz. Bunun yerine, bileşen sınıfında tanımlanan `name` getter'ını kullanır.
 
@@ -104,7 +104,7 @@ Bir observable durumunda, observable tamamlanmalıdır; bu noktada form doğrula
 
 Reaktif formlarda, fonksiyonu doğrudan `FormControl`'a geçirerek özel bir doğrulayıcı ekleyin.
 
-<docs-code header="actor-form-reactive.component.ts (validator functions)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="custom-validator"/>
+<docs-code header="actor-form-reactive.component.ts (doğrulayıcı fonksiyonları)" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.1.ts" region="custom-validator"/>
 
 ### Template-driven form'lara özel doğrulayıcılar ekleme
 
@@ -119,7 +119,7 @@ Angular, aşağıdaki örnekte gösterildiği gibi direktifin kendisini `NG_VALI
 Direktif sınıfı daha sonra `Validator` arayüzünü uygular, böylece Angular formlarıyla kolayca entegre olabilir.
 Hepsinin nasıl bir araya geldiğini anlamanıza yardımcı olmak için direktifin geri kalanı burada.
 
-<docs-code header="forbidden-name.directive.ts (directive)" path="adev/src/content/examples/form-validation/src/app/shared/forbidden-name.directive.ts" region="directive"/>
+<docs-code header="forbidden-name.directive.ts (direktif)" path="adev/src/content/examples/form-validation/src/app/shared/forbidden-name.directive.ts" region="directive"/>
 
 `ForbiddenValidatorDirective` hazır olduğunda, etkinleştirmek için seçicisini `appForbiddenName`'i herhangi bir girdi öğesine ekleyebilirsiniz.
 Örneğin:
@@ -148,7 +148,7 @@ Form kontrol öğelerini formun durumuna göre stilize etmek için bu sınıflar
 
 Aşağıdaki örnekte, aktör formu her form kontrolünün kenar rengini ayarlamak için `.ng-valid` ve `.ng-invalid` sınıflarını kullanır.
 
-<docs-code header="forms.css (status classes)" path="adev/src/content/examples/form-validation/src/assets/forms.css"/>
+<docs-code header="forms.css (durum sınıfları)" path="adev/src/content/examples/form-validation/src/assets/forms.css"/>
 
 ## Çapraz alan doğrulama
 
@@ -370,7 +370,7 @@ Bir kontroldeki mevcut tüm senkron doğrulayıcıları değiştirmek için [`se
 toggleStrictNameValidation(isStrict: boolean) {
   const nameControl = this.profileForm.get('name');
 
-  if (enable) {
+  if (isStrict) {
     // Katı doğrulama kurallarını ayarla
     nameControl.setValidators([
       Validators.required,

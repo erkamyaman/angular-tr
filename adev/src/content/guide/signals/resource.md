@@ -49,11 +49,11 @@ Bir kaynak oluştururken bir `ResourceLoader` belirtirsiniz. Bu yükleyici, tek 
 
 `ResourceLoaderParams` nesnesi üç özellik içerir: `params`, `previous` ve `abortSignal`.
 
-| Property      | Description                                                                                                                                           |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `params`      | The value of the resource's `params` computation.                                                                                                     |
-| `previous`    | An object with a `status` property, containing the previous `ResourceStatus`.                                                                         |
-| `abortSignal` | An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). See [Aborting requests](#requestleri-iptal-etme) below for details. |
+| Özellik       | Açıklama                                                                                                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `params`      | Kaynağın `params` hesaplamasının değeri.                                                                                                                                        |
+| `previous`    | Önceki `ResourceStatus` değerini içeren, `status` özelliğine sahip bir nesne.                                                                                                   |
+| `abortSignal` | Bir [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). Ayrıntılar için aşağıdaki [Request'leri iptal etme](#requestleri-iptal-etme) bölümüne bakın. |
 
 `params` hesaplaması `undefined` döndürürse, yükleyici fonksiyon çalışmaz ve kaynak durumu `'idle'` olur.
 
@@ -90,7 +90,7 @@ const userResource = resource({
   loader: ({params, abortSignal}): Promise<User> => {
     // fetch, verilen `AbortSignal` request'in iptal edildiğini belirttiğinde
     // bekleyen tüm HTTP request'lerini iptal eder.
-    return fetch(`users/${params.id}`, {signal: abortSignal});
+    return fetch(`users/${params.id}`, {signal: abortSignal}).then((res) => res.json());
   },
 });
 ```
@@ -118,24 +118,24 @@ userResource.reload();
 
 Kaynak nesnesi, asenkron yükleyicinin durumunu okumak için çeşitli sinyal özelliklerine sahiptir.
 
-| Property    | Description                                                                                                     |
-| ----------- | --------------------------------------------------------------------------------------------------------------- |
-| `value`     | The most recent value of the resource, or `undefined` if no value has been received.                            |
-| `hasValue`  | Whether the resource has a value.                                                                               |
-| `error`     | The most recent error encountered while running the resource's loader, or `undefined` if no error has occurred. |
-| `isLoading` | Whether the resource loader is currently running.                                                               |
-| `status`    | The resource's specific `ResourceStatus`, as described below.                                                   |
+| Özellik     | Açıklama                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| `value`     | Kaynağın en son değeri veya henüz değer alınmadıysa `undefined`.                            |
+| `hasValue`  | Kaynağın bir değere sahip olup olmadığı.                                                    |
+| `error`     | Kaynağın yükleyicisi çalışırken karşılaşılan en son hata veya hata oluşmadıysa `undefined`. |
+| `isLoading` | Kaynak yükleyicisinin şu anda çalışıp çalışmadığı.                                          |
+| `status`    | Aşağıda açıklanan, kaynağın belirli `ResourceStatus` değeri.                                |
 
 `status` sinyali, kaynağın durumunu bir string sabiti kullanarak tanımlayan belirli bir `ResourceStatus` sağlar.
 
-| Status        | `value()`         | Description                                                                  |
-| ------------- | :---------------- | ---------------------------------------------------------------------------- |
-| `'idle'`      | `undefined`       | The resource has no valid request and the loader has not run.                |
-| `'error'`     | `undefined`       | The loader has encountered an error.                                         |
-| `'loading'`   | `undefined`       | The loader is running as a result of the `params` value changing.            |
-| `'reloading'` | Previous value    | The loader is running as a result of calling the resource's `reload` method. |
-| `'resolved'`  | Resolved value    | The loader has completed.                                                    |
-| `'local'`     | Locally set value | The resource's value has been set locally via `.set()` or `.update()`        |
+| Durum         | `value()`                    | Açıklama                                                               |
+| ------------- | :--------------------------- | ---------------------------------------------------------------------- |
+| `'idle'`      | `undefined`                  | Kaynağın geçerli bir isteği yok ve yükleyici çalışmadı.                |
+| `'error'`     | Hata fırlatır                | Yükleyici bir hatayla karşılaştı.                                      |
+| `'loading'`   | `undefined`                  | Yükleyici, `params` değerinin değişmesi sonucunda çalışıyor.           |
+| `'reloading'` | Önceki değer                 | Yükleyici, kaynağın `reload` metodunun çağrılması sonucunda çalışıyor. |
+| `'resolved'`  | Çözümlenen değer             | Yükleyici tamamlandı.                                                  |
+| `'local'`     | Yerel olarak ayarlanan değer | Kaynağın değeri `.set()` veya `.update()` ile yerel olarak ayarlandı.  |
 
 Bu durum bilgisini, yükleme göstergeleri ve hata mesajları gibi kullanıcı arayüzü öğelerini koşullu olarak görüntülemek için kullanabilirsiniz.
 

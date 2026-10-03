@@ -30,7 +30,7 @@ XML Yerelleştirme Değişim Dosyası Formatı \(XLIFF, sürüm 1.2\) hakkında 
 
 Kaynak dil dosyasının konumunu, formatını ve dosya adını değiştirmek için aşağıdaki [`extract-i18n`][CliExtractI18n] komut seçeneklerini kullanın.
 
-| Command option  | Details                            |
+| Komut seçeneği  | Ayrıntılar                         |
 | :-------------- | :--------------------------------- |
 | `--format`      | Çıktı dosyasının formatını ayarlar |
 | `--out-file`    | Çıktı dosyasının adını ayarlar     |
@@ -50,13 +50,13 @@ Aşağıdaki örnek, çıktı yolunu bir seçenek olarak belirtmektedir.
 
 `extract-i18n` komutu aşağıdaki çeviri formatlarında dosyalar oluşturur.
 
-| Translation format | Details                                                                                                          | File extension    |
-| :----------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------- |
-| ARB                | [Application Resource Bundle][GithubGoogleAppResourceBundleWikiApplicationresourcebundlespecification]           | `.arb`            |
-| JSON               | [JavaScript Object Notation][JsonMain]                                                                           | `.json`           |
-| XLIFF 1.2          | [XML Localization Interchange File Format, version 1.2][OasisOpenDocsXliffXliffCoreXliffCoreHtml]                | `.xlf`            |
-| XLIFF 2            | [XML Localization Interchange File Format, version 2][OasisOpenDocsXliffXliffCoreV20Cos01XliffCoreV20Cose01Html] | `.xlf`            |
-| XMB                | [XML Message Bundle][UnicodeCldrDevelopmentDevelopmentProcessDesignProposalsXmb]                                 | `.xmb` \(`.xtb`\) |
+| Çeviri formatı | Ayrıntılar                                                                                                       | Dosya uzantısı    |
+| :------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------- |
+| ARB            | [Application Resource Bundle][GithubGoogleAppResourceBundleWikiApplicationresourcebundlespecification]           | `.arb`            |
+| JSON           | [JavaScript Object Notation][JsonMain]                                                                           | `.json`           |
+| XLIFF 1.2      | [XML Localization Interchange File Format, version 1.2][OasisOpenDocsXliffXliffCoreXliffCoreHtml]                | `.xlf`            |
+| XLIFF 2        | [XML Localization Interchange File Format, version 2][OasisOpenDocsXliffXliffCoreV20Cos01XliffCoreV20Cose01Html] | `.xlf`            |
+| XMB            | [XML Message Bundle][UnicodeCldrDevelopmentDevelopmentProcessDesignProposalsXmb]                                 | `.xmb` \(`.xtb`\) |
 
 Çeviri formatını açıkça `--format` komut seçeneğiyle belirtin.
 
@@ -219,7 +219,7 @@ Aşağıdaki örnek, çeviriden sonra her iki çeviri birimini göstermektedir.
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/merge" title="Merge translations into the app"/>
+  <docs-pill href="guide/i18n/merge" title="Çevirileri uygulamaya birleştirme"/>
 </docs-pill-row>
 
 [CliMain]: cli 'CLI Overview and Command Reference | Angular'

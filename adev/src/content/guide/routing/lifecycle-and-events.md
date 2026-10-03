@@ -34,6 +34,7 @@ Belirli navigasyon yaşam döngüsü olayları sırasında kod çalıştırmak i
 // Router olaylarına abone olma örneği
 import {Component, inject, signal, effect} from '@angular/core';
 import {Event, Router, NavigationStart, NavigationEnd} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component(/* ... */)
 export class RouterEvents {

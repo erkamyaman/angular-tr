@@ -37,24 +37,24 @@ Bu derste, ayrıntılar sayfasına navigasyon yapabilmek için uygulamanızda y�
 2.  `main.ts` dosyasında, uygulamada yönlendirmeyi etkinleştirmek için aşağıdaki güncellemeleri yapın:
     1.  Routes dosyasını ve `provideRouter` fonksiyonunu içe aktarın:
 
-          <docs-code header="Import routing details in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[3,4]"/>
+          <docs-code header="src/main.ts içinde yönlendirme ayrıntılarını içe aktarın" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[3,4]"/>
 
     1.  `bootstrapApplication` çağrısını yönlendirme yapılandırmasını dahil edecek şekilde güncelleyin:
 
-          <docs-code header="Add router configuration in src/main.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[6,8]"/>
+          <docs-code header="src/main.ts içine yönlendirici yapılandırmasını ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[6,8]"/>
 
 3.  `src/app/app.ts` dosyasında, bileşeni yönlendirme kullanacak şekilde güncelleyin:
     1.  Router yönergeleri `RouterOutlet` ve `RouterLink` için dosya düzeyinde import'lar ekleyin:
 
-          <docs-code language="angular-ts" header="Import router directives in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[3]"/>
+          <docs-code language="angular-ts" header="src/app/app.ts içinde yönlendirici direktiflerini içe aktarın" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[3]"/>
 
     1.  `@Component` meta verileri imports'una `RouterOutlet` ve `RouterLink` ekleyin
 
-          <docs-code language="angular-ts" header="Add router directives to component imports in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[6]"/>
+          <docs-code language="angular-ts" header="src/app/app.ts içinde bileşen imports dizisine yönlendirici direktiflerini ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[6]"/>
 
     1.  `template` özelliğinde, `<app-home />` etiketini `<router-outlet>` yönergesiyle değiştirin ve ana sayfaya geri dönüş bağlantısı ekleyin. Kodunuz bu kodla eşleşmelidir:
 
-          <docs-code language="angular-ts" header="Add router-outlet in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[7,18]"/>
+          <docs-code language="angular-ts" header="src/app/app.ts içine router-outlet ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[7,18]"/>
 
 </docs-step>
 
@@ -64,10 +64,10 @@ Bu derste, ayrıntılar sayfasına navigasyon yapabilmek için uygulamanızda y�
 1. `routes.ts` dosyasında, bir rota oluşturmak için aşağıdaki güncellemeleri yapın.
    1. `Home`, `Details` ve rota tanımlarında kullanacağınız `Routes` türü için dosya düzeyinde import'lar ekleyin.
 
-      <docs-code header="Import components and Routes" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/routes.ts" visibleLines="[1,3]"/>
+      <docs-code header="Bileşenleri ve Routes'u içe aktarın" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/routes.ts" visibleLines="[1,3]"/>
 
    1. `Routes` türünde `routeConfig` adında bir değişken tanımlayın ve uygulama için iki rota tanımlayın:
-      <docs-code header="Add routes to the app" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/routes.ts" visibleLines="[5,18]"/>
+      <docs-code header="Uygulamaya rotaları ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/routes.ts" visibleLines="[5,18]"/>
 
       `routeConfig` dizisindeki girişler, uygulamadaki rotaları temsil eder. İlk giriş, URL `''` ile eşleştiğinde `Home` bileşenine navigasyon yapar. İkinci giriş, ilerideki bir derste tekrar ele alınacak bazı özel biçimlendirme kullanır.
 

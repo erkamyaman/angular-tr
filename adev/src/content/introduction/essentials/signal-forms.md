@@ -269,7 +269,7 @@ Signal Forms ve nasıl çalıştığı hakkında daha fazla bilgi edinmek için 
 
 - [Overview](guide/forms/signals/overview) - Signal Forms'a giriş ve ne zaman kullanılacağı
 - [Form models](guide/forms/signals/models) - Sinyallerle form verisi oluşturma ve yönetme
-- [Field state management](guide/forms/signals/field-state-management) - Doğrulama durumu, etkileşim takibi ve alan görünürlüğü ile çalışma
+- [Alan durumu yönetimi](guide/forms/signals/field-state-management) - Doğrulama durumu, etkileşim takibi ve alan görünürlüğü ile çalışma
 - [Validation](guide/forms/signals/validation) - Yerleşik doğrulayıcılar, özel doğrulama kuralları ve asenkron doğrulama
 
 <docs-pill-row>

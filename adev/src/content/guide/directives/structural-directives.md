@@ -122,29 +122,29 @@ keyExp = :key ":"? :expression ("as" :local)? ";"?
 let = "let" :local "=" :export ";"?
 ```
 
-| Keyword      | Details                                                         |
-| :----------- | :-------------------------------------------------------------- |
-| `prefix`     | HTML nitelik anahtarı                                           |
-| `key`        | HTML nitelik anahtarı                                           |
-| `local`      | Şablonda kullanılan yerel değişken adı                          |
-| `export`     | Direktif tarafından belirli bir ad altında dışa aktarılan değer |
-| `expression` | Standart Angular ifadesi                                        |
+| Anahtar kelime | Ayrıntılar                                                      |
+| :------------- | :-------------------------------------------------------------- |
+| `prefix`       | HTML nitelik anahtarı                                           |
+| `key`          | HTML nitelik anahtarı                                           |
+| `local`        | Şablonda kullanılan yerel değişken adı                          |
+| `export`       | Direktif tarafından belirli bir ad altında dışa aktarılan değer |
+| `expression`   | Standart Angular ifadesi                                        |
 
 ### Angular kısaltılmış sözdizimini nasıl çevirir
 
 Angular, yapısal direktif kısaltılmış sözdizimini normal bağlama sözdizimine şu şekilde çevirir:
 
-| Shorthand                       | Translation                                            |
-| :------------------------------ | :----------------------------------------------------- |
-| `prefix` and naked `expression` | `[prefix]="expression"`                                |
-| `keyExp`                        | `[prefixKey]="expression"` (`prefix`, `key`'e eklenir) |
-| `let local`                     | `let-local="export"`                                   |
+| Kısaltma                       | Çeviri                                                 |
+| :----------------------------- | :----------------------------------------------------- |
+| `prefix` ve yalın `expression` | `[prefix]="expression"`                                |
+| `keyExp`                       | `[prefixKey]="expression"` (`prefix`, `key`'e eklenir) |
+| `let local`                    | `let-local="export"`                                   |
 
 ### Kısaltılmış sözdizimi örnekleri
 
 Aşağıdaki tablo kısaltılmış örnekler sağlar:
 
-| Shorthand                                                             | How Angular interprets the syntax                                                                             |
+| Kısaltma                                                              | Angular sözdizimini nasıl yorumlar                                                                            |
 | :-------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
 | `*myDir="let item of [1,2,3]"`                                        | `<ng-template myDir let-item [myDirOf]="[1, 2, 3]">`                                                          |
 | `*myDir="let item of [1,2,3] as items; trackBy: myTrack; index as i"` | `<ng-template myDir let-item [myDirOf]="[1,2,3]" let-items="myDirOf" [myDirTrackBy]="myTrack" let-i="index">` |
@@ -236,7 +236,7 @@ export class SelectDirective<T> {
 ## Sırada ne var
 
 <docs-pill-row>
-  <docs-pill href="guide/directives/directive-composition-api" title="Direktif kompozisyon API'si"/>
-  <docs-pill href="guide/templates/ng-template" title="ng-template"/>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif bileşim API'si"/>
+  <docs-pill href="guide/templates/ng-template" title="ng-template ile şablon parçaları oluşturma"/>
   <docs-pill href="guide/templates/control-flow" title="Akış kontrolü"/>
 </docs-pill-row>

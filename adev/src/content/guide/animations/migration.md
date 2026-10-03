@@ -5,14 +5,14 @@
 ## Yerel CSS'de animasyonlar nasıl yazılır
 
 Daha önce yerel CSS animasyonları yazmadıysanız, başlangıç için bir dizi mükemmel rehber vardır. Bunlardan birkaçı:
-[MDN's CSS Animations guide](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations)
-[W3Schools CSS3 Animations guide](https://www.w3schools.com/css/css3_animations.asp)
-[The Complete CSS Animations Tutorial](https://www.lambdatest.com/blog/css-animations-tutorial/)
-[CSS Animation for Beginners](https://thoughtbot.com/blog/css-animation-for-beginners)
+[MDN CSS Animasyonları rehberi](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations)
+[W3Schools CSS3 Animasyonları rehberi](https://www.w3schools.com/css/css3_animations.asp)
+[Eksiksiz CSS Animasyonları Eğitimi](https://www.lambdatest.com/blog/css-animations-tutorial/)
+[Yeni Başlayanlar İçin CSS Animasyonu](https://thoughtbot.com/blog/css-animation-for-beginners)
 
 ve birkaç video:
-[Learn CSS Animation in 9 Minutes](https://www.youtube.com/watch?v=z2LQYsZhsFw)
-[Net Ninja CSS Animation Tutorial Playlist](https://www.youtube.com/watch?v=jgw82b5Y2MU&list=PL4cUxeGkcC9iGYgmEd2dm3zAKzyCGDtM5)
+[9 Dakikada CSS Animasyonu Öğrenin](https://www.youtube.com/watch?v=z2LQYsZhsFw)
+[Net Ninja CSS Animasyon Eğitimi Oynatma Listesi](https://www.youtube.com/watch?v=jgw82b5Y2MU&list=PL4cUxeGkcC9iGYgmEd2dm3zAKzyCGDtM5)
 
 Bu çeşitli rehber ve eğitimlerin bazılarına göz atın, ardından bu rehbere geri dönün.
 

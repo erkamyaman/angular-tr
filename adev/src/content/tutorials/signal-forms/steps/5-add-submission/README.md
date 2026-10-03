@@ -15,7 +15,7 @@ Formu tamamlayalım!
 
 <docs-workflow>
 
-<docs-step title="Import the submit function">
+<docs-step title="`submit` fonksiyonunu içe aktarın">
 `@angular/forms/signals` paketinden `submit` fonksiyonunu içe aktarın:
 
 ```ts
@@ -24,7 +24,7 @@ import {form, FormField, required, email, submit} from '@angular/forms/signals';
 
 </docs-step>
 
-<docs-step title="Add the onSubmit method">
+<docs-step title="`onSubmit` metodunu ekleyin">
 Bileşen sınıfınızda, form gönderimini yöneten bir `onSubmit()` metodu ekleyin:
 
 ```ts
@@ -41,7 +41,7 @@ onSubmit(event: Event) {
 `submit()` fonksiyonu, asenkron geri çağrınızı yalnızca form geçerli olduğunda çalıştırır. Ayrıca formun gönderim durumunu otomatik olarak yönetir.
 </docs-step>
 
-<docs-step title="Bind the submit handler to the form">
+<docs-step title="Gönderim yöneticisini forma bağlayın">
 Şablonunuzda, `onSubmit()` metodunu formun submit olayına bağlayın:
 
 ```html
@@ -50,7 +50,7 @@ onSubmit(event: Event) {
 
 </docs-step>
 
-<docs-step title="Disable the button when form is invalid">
+<docs-step title="Form geçersizken düğmeyi devre dışı bırakın">
 Form geçersiz olduğunda gönder düğmesini devre dışı bırakmak için güncelleyin:
 
 ```html

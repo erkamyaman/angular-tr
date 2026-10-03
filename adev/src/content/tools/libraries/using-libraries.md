@@ -122,7 +122,7 @@ import * as $ from 'jquery';
 Import ifadeleri kullanarak içe aktarırsanız, kütüphanenin iki farklı kopyasına sahip olursunuz: biri global kütüphane olarak içe aktarılan, diğeri modül olarak içe aktarılan.
 Bu, özellikle jQuery gibi eklentileri olan kütüphaneler için kötüdür çünkü her kopya farklı eklentiler içerir.
 
-Bunun yerine, kütüphaneniz için tip tanımlamalarını indirmek üzere `npm install @types/jquery` Angular CLI komutunu çalıştırın ve ardından kütüphane kurulum adımlarını izleyin.
+Bunun yerine, kütüphaneniz için tip tanımlamalarını indirmek üzere `npm install @types/jquery` komutunu çalıştırın, `tsconfig.app.json` içindeki `types` dizisine `"jquery"` ekleyin ve ardından kütüphane kurulum adımlarını izleyin.
 Bu, o kütüphane tarafından sunulan global değişkenlere erişmenizi sağlar.
 
 ### Çalışma zamanı global kütüphaneleri için tip tanımlamaları belirleme

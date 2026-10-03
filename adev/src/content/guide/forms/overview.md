@@ -269,7 +269,7 @@ Aşağıdaki testler, reaktif bir form için görünümden modele ve modelden g�
 1. Girdi için yeni değeri _Red_ olarak ayarlayın ve form girdi öğesinde "input" olayını gönderin.
 1. Bileşenin `favoriteColorControl` değerinin girdiden gelen değerle eşleştiğini doğrulayın.
 
-<docs-code header="Favorite color test - view to model" path="adev/src/content/examples/forms-overview/src/app/reactive/favorite-color/favorite-color.component.spec.ts" region="view-to-model"/>
+<docs-code header="Favori renk testi - görünümden modele" path="adev/src/content/examples/forms-overview/src/app/reactive/favorite-color/favorite-color.component.spec.ts" region="view-to-model"/>
 
 Sonraki örnek, modelden görünüme veri akışını doğrulamak için aşağıdaki adımları gerçekleştirir.
 
@@ -277,7 +277,7 @@ Sonraki örnek, modelden görünüme veri akışını doğrulamak için aşağı
 1. Form girdi öğesi için görünümü sorgulayın.
 1. Kontrolde ayarlanan yeni değerin girdideki değerle eşleştiğini doğrulayın.
 
-<docs-code header="Favorite color test - model to view" path="adev/src/content/examples/forms-overview/src/app/reactive/favorite-color/favorite-color.component.spec.ts" region="model-to-view"/>
+<docs-code header="Favori renk testi - modelden görünüme" path="adev/src/content/examples/forms-overview/src/app/reactive/favorite-color/favorite-color.component.spec.ts" region="model-to-view"/>
 
 ### Template-driven form'ları test etme
 
@@ -287,7 +287,7 @@ Aşağıdaki testler, şablon odaklı bir form için görünümden modele ve mod
 
 Aşağıdaki test, görünümden modele veri akışını doğrular.
 
-<docs-code header="Favorite color test - view to model" path="adev/src/content/examples/forms-overview/src/app/template/favorite-color/favorite-color.component.spec.ts" region="view-to-model"/>
+<docs-code header="Favori renk testi - görünümden modele" path="adev/src/content/examples/forms-overview/src/app/template/favorite-color/favorite-color.component.spec.ts" region="view-to-model"/>
 
 Görünümden modele testinde gerçekleştirilen adımlar şunlardır.
 
@@ -298,7 +298,7 @@ Görünümden modele testinde gerçekleştirilen adımlar şunlardır.
 
 Aşağıdaki test, modelden görünüme veri akışını doğrular.
 
-<docs-code header="Favorite color test - model to view" path="adev/src/content/examples/forms-overview/src/app/template/favorite-color/favorite-color.component.spec.ts" region="model-to-view"/>
+<docs-code header="Favori renk testi - modelden görünüme" path="adev/src/content/examples/forms-overview/src/app/template/favorite-color/favorite-color.component.spec.ts" region="model-to-view"/>
 
 Modelden görünüme testinde gerçekleştirilen adımlar şunlardır.
 
@@ -313,15 +313,15 @@ Modelden görünüme testinde gerçekleştirilen adımlar şunlardır.
 Reaktif formlar hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzlara bakın:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms/reactive-forms" title="Reactive forms"/>
-  <docs-pill href="guide/forms/form-validation#reactive-formlarda-girdiyi-doğrulama" title="Form validation"/>
-  <docs-pill href="guide/forms/dynamic-forms" title="Dynamic forms"/>
+  <docs-pill href="guide/forms/reactive-forms" title="Reactive Form'lar"/>
+  <docs-pill href="guide/forms/form-validation#reactive-formlarda-girdiyi-doğrulama" title="Form girdisini doğrulama"/>
+  <docs-pill href="guide/forms/dynamic-forms" title="Dinamik form'lar oluşturma"/>
 </docs-pill-row>
 
 Şablon odaklı formlar hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzlara bakın:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms/template-driven-forms" title="Template Driven Forms tutorial" />
-  <docs-pill href="guide/forms/form-validation#template-driven-formlarda-girdiyi-doğrulama" title="Form validation" />
-  <docs-pill href="api/forms/NgForm" title="NgForm directive API reference" />
+  <docs-pill href="guide/forms/template-driven-forms" title="Template-driven form oluşturma" />
+  <docs-pill href="guide/forms/form-validation#template-driven-formlarda-girdiyi-doğrulama" title="Form girdisini doğrulama" />
+  <docs-pill href="api/forms/NgForm" title="NgForm direktifi API referansı" />
 </docs-pill-row>

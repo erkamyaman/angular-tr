@@ -67,7 +67,7 @@ HELPFUL: [`group()`](api/animations/group) fonksiyonu, animasyonlu elemanlar yer
 
 Aşağıdaki örnek, iki farklı zamanlama yapılandırması için hem `:enter` hem de `:leave` üzerinde [`group()`](api/animations/group) kullanır, böylece aynı elemana paralel olarak iki bağımsız animasyon uygular.
 
-<docs-code header="hero-list-groups.ts (excerpt)" path="adev/src/content/examples/animations/src/app/hero-list-groups.ts" region="animationdef"/>
+<docs-code header="hero-list-groups.ts (alıntı)" path="adev/src/content/examples/animations/src/app/hero-list-groups.ts" region="animationdef"/>
 
 ## Sıralı ve paralel animasyonlar {#sequential-vs-parallel-animations}
 

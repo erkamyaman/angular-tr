@@ -157,7 +157,7 @@ Birkaç teknik dikkat çekicidir:
 
 ## Bir direktifi izole olarak test etme
 
-Bir direktif TestBed aracılığıyla oluşturulamaz; doğru davranması için bir bileşenin şablonu üzerinden render edilmesi gerekir.
+Bir direktif, bir `DirectiveFixture` döndüren `TestBed.createDirective()` ile tek başına oluşturulabilir. Alternatif olarak, bir bileşenin şablonu üzerinden de render edebilirsiniz.
 `Highlight` direktifi, direktifi kontrol etmek için yerel bir test bileşeninin girdisi kullanılarak bu şekilde test edilebilir.
 
 ```ts

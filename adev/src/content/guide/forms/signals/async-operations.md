@@ -211,19 +211,19 @@ onError: (error) => {
 
 ### HTTP seçenekleri
 
-HTTP isteğini `options` parametresiyle özelleştirin:
+HTTP isteğini, `request` fonksiyonundan bir `HttpResourceRequest` nesnesi döndürerek özelleştirin:
 
 ```ts
 import {HttpHeaders} from '@angular/common/http';
 
 validateHttp(schemaPath.field, {
-  request: ({value}) => `/api/validate?value=${value()}`,
-  options: {
+  request: ({value}) => ({
+    url: `/api/validate?value=${value()}`,
     headers: new HttpHeaders({
       Authorization: 'Bearer token',
     }),
     timeout: 5000,
-  },
+  }),
   onSuccess: (response: {valid: boolean}) =>
     response.valid
       ? null
@@ -597,7 +597,7 @@ Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndür�
 - `valid()` `false` döndürür
 - `invalid()` `false` döndürür
 - `errors()` boş bir dizi döndürür
-- `submit()` doğrulamanın tamamlanmasını bekler
+- `submit()` beklemez; varsayılan olarak `action` yine de çalışır (bkz. [`ignoreValidators`](guide/forms/signals/form-submission#doğrulama-kapısını-ignorevalidators-ile-kontrol-etme))
 
 Geri bildirim sağlamak için bekleyen durumu şablonunuzda gösterin:
 
@@ -780,8 +780,8 @@ Doğrulamanın ne zaman gerçekleştiğini göstermek için `pending()` sinyalin
 Bu kılavuz `validateHttp()` ve `validateAsync()` ile asenkron doğrulamayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms/signals/validation" title="Validation"/>
-  <docs-pill href="guide/forms/signals/field-state-management" title="Field State Management"/>
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama"/>
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi"/>
 </docs-pill-row>
 
 Ayrıntılı API dokümantasyonu için şunlara bakın:

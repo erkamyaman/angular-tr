@@ -100,7 +100,7 @@ IMPORTANT: `createComponent` çağrıldıktan sonra `TestBed`'i yeniden yapılan
 
 `createComponent` metodu mevcut `TestBed` tanımını dondurur ve daha fazla yapılandırmaya kapatır.
 
-Artık başka `TestBed` yapılandırma metotları, ne `configureTestingModule()`, ne `get()`, ne de herhangi bir `override...` metodu çağıramazsınız.
+Artık başka `TestBed` yapılandırma metotları, ne `configureTestingModule()`, ne de herhangi bir `override...` metodu çağıramazsınız.
 Denerseniz, `TestBed` bir hata fırlatır.
 
 ### `ComponentFixture`
@@ -156,7 +156,7 @@ Bir kurulum fonksiyonu, parametreler aracılığıyla özelleştirilebilme avant
 İşte bir kurulum fonksiyonunun nasıl görünebileceğine dair bir örnek:
 
 ```ts
-function setup(providers?: StaticProviders[]): ComponentFixture<Banner> {
+function setup(providers?: Provider[]): ComponentFixture<Banner> {
   TestBed.configureTestingModule({providers});
   return TestBed.createComponent(Banner);
 }

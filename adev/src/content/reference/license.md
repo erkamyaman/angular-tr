@@ -1,4 +1,4 @@
-# The MIT License
+# MIT Lisansı
 
 Telif Hakkı (c) 2010-2026 Google LLC. [https://angular.dev/license](/license)
 

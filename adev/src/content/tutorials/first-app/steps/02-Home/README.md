@@ -66,15 +66,15 @@ IDE'nizin **Edit** bölmesinde:
 1.  Editörde `app.ts` dosyasını açın.
 1.  `app.ts` dosyasında, bu satırı dosya düzeyindeki import'lara ekleyerek `Home`'u içe aktarın.
 
-      <docs-code header="Import Home in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[2]"/>
+      <docs-code header="src/app/app.ts içinde Home'u içe aktarın" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[2]"/>
 
 1.  `app.ts` dosyasında, `@Component` içindeki `imports` dizi özelliğini güncelleyin ve `Home`'u ekleyin.
 
-      <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[6]"/>
+      <docs-code header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[6]"/>
 
 1.  `app.ts` dosyasında, `@Component` içindeki `template` özelliğini aşağıdaki HTML kodunu içerecek şekilde güncelleyin.
 
-      <docs-code language="angular-ts" header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[7,16]"/>
+      <docs-code language="angular-ts" header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/app.ts" visibleLines="[7,16]"/>
 
 1.  Değişikliklerinizi `app.ts` dosyasına kaydedin.
 1.  `ng serve` çalışıyorsa, uygulama güncellenmelidir.
@@ -82,7 +82,7 @@ IDE'nizin **Edit** bölmesinde:
     Uygulamanızdaki _Hello world_ metni, `Home` bileşeninden gelen _home works!_ metniyle değişmelidir.
 1.  Tarayıcıda çalışan uygulamayı kontrol edin ve uygulamanın güncellendiğini doğrulayın.
 
-  <img alt="browser frame of page displaying the text 'home works!'" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-2.png">
+  <img alt="'home works!' metnini gösteren sayfanın tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-2.png">
 
 </docs-step>
 
@@ -120,17 +120,17 @@ IDE'nizin **Edit** bölmesinde:
 1.  `first-app` dizininde, editörde `home.ts` dosyasını açın.
 1.  `home.ts` dosyasında, `@Component` içindeki `template` özelliğini bu kodla güncelleyin.
 
-      <docs-code language="angular-ts" header="Replace in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.ts" visibleLines="[5,12]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.ts" visibleLines="[5,12]"/>
 
 1.  Ardından, editörde `home.css` dosyasını açın ve içeriği bu stillerle güncelleyin.
 
     NOTE: Tarayıcıda, bunlar `src/app/home/home.ts` dosyasındaki `styles` dizisine eklenebilir.
 
-       <docs-code header="Replace in src/app/home/home.css" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.css"/>
+       <docs-code header="src/app/home/home.css içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/03-HousingLocation/src/app/home/home.css"/>
 
 1.  Uygulamanın hatasız derlendiğini doğrulayın. Uygulamanızda filtre sorgu kutusunu ve düğmeyi bulmalı ve bunların stillendirilmiş olması gerekir. Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
-   <img alt="browser frame of homes-app displaying logo, filter text input box and search button" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-3.png">
+   <img alt="Logoyu, filtre metin giriş kutusunu ve arama düğmesini gösteren homes-app tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-02-step-3.png">
 </docs-step>
 
 </docs-workflow>

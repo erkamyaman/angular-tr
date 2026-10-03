@@ -64,7 +64,7 @@ Derleme için projenizin kaynak yerel ayarını değiştirmek üzere aşağıdak
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/format-data-locale" title="Format data based on locale"/>
+  <docs-pill href="guide/i18n/format-data-locale" title="Yerel ayara göre verileri biçimlendirme"/>
 </docs-pill-row>
 
 [GuideWorkspaceConfig]: reference/configs/workspace-config 'Angular workspace configuration | Angular'

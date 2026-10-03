@@ -24,13 +24,13 @@ export class Product {
 
 `ActivatedRoute`, rota hakkında farklı bilgiler sağlayabilir. Bazı yaygın özellikler şunlardır:
 
-| Özellik       | Ayrıntılar                                                                                                             |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `url`         | Rota yolunun her bir parçası için dize dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır.             |
-| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir.  |
-| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                             |
-| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                         |
-| `resources`   | Rotada tanımlanan `Resource` örneklerinden oluşan isteğe bağlı bir kayıt (`withRouterResources` etkinleştirildiğinde). |
+| Özellik       | Ayrıntılar                                                                                                                   |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `url`         | Rota yolunun her bir parçası için `UrlSegment` nesneleri dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır. |
+| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir.        |
+| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                                   |
+| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                               |
+| `resources`   | Rotada tanımlanan `Resource` örneklerinden oluşan isteğe bağlı bir kayıt (`withRouterResources` etkinleştirildiğinde).       |
 
 Rotada erişebileceğiniz şeylerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) göz atın.
 
@@ -59,7 +59,7 @@ export class UserProfile {
     // Birden fazla rota öğesine erişim
     const snapshot = this.route.snapshot;
     console.log({
-      url: snapshot.url, // https://www.angular.dev
+      url: snapshot.url, // Bu rota tarafından eşleştirilen UrlSegment dizisi
       // Rota parametreleri nesnesi: {id: '123'}
       params: snapshot.params,
       // Sorgu parametreleri nesnesi: {role: 'admin', status: 'active'}
@@ -255,9 +255,7 @@ Bu örnekte, Angular Router URL ilgili `routerLink` ile eşleştiğinde doğru b
 <a routerLink="/user/bob" [routerLinkActive]="['class1', 'class2']">Bob</a>
 ```
 
-routerLinkActive için bir değer belirttiğinizde, `ariaCurrentWhenActive` için de aynı değeri tanımlamış olursunuz. Bu, görme engelli kullanıcıların (uygulanan farklı stili algılayamayabilecek) aktif düğmeyi de tanımlayabilmesini sağlar.
-
-aria için farklı bir değer tanımlamak istiyorsanız, `ariaCurrentWhenActive` direktifini kullanarak değeri açıkça ayarlamanız gerekir.
+Yalnızca `routerLinkActive` ayarlamak `aria-current` değerini ayarlamaz. Görme engelli kullanıcıların (uygulanan farklı stili algılayamayabilecek) aktif bağlantıyı da tanımlayabilmesi için yukarıdaki örnekte olduğu gibi `ariaCurrentWhenActive` girişini ayarlayın.
 
 ### Route eşleştirme stratejisi
 

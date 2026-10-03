@@ -67,7 +67,7 @@ Angular Aria, yaygın etkileşimli kalıplar için kapsamlı dokümantasyon, ça
 
 ### Arama ve seçim
 
-| Component                               | Description                                                           |
+| Bileşen                                 | Açıklama                                                              |
 | --------------------------------------- | --------------------------------------------------------------------- |
 | [Autocomplete](guide/aria/autocomplete) | Kullanıcılar yazarken filtrelenmiş önerilerin göründüğü metin girişi  |
 | [Listbox](guide/aria/listbox)           | Klavye navigasyonu ile tekli veya çoklu seçim seçenek listeleri       |
@@ -77,7 +77,7 @@ Angular Aria, yaygın etkileşimli kalıplar için kapsamlı dokümantasyon, ça
 
 ### Navigasyon ve eylem çağrıları
 
-| Component                     | Description                                                       |
+| Bileşen                       | Açıklama                                                          |
 | ----------------------------- | ----------------------------------------------------------------- |
 | [Menu](guide/aria/menu)       | İç içe alt menüler ve klavye kısayolları ile açılır menüler       |
 | [Menubar](guide/aria/menubar) | Kalıcı uygulama menüleri için yatay navigasyon çubuğu             |
@@ -85,7 +85,7 @@ Angular Aria, yaygın etkileşimli kalıplar için kapsamlı dokümantasyon, ça
 
 ### İçerik düzenleme
 
-| Component                         | Description                                                             |
+| Bileşen                           | Açıklama                                                                |
 | --------------------------------- | ----------------------------------------------------------------------- |
 | [Accordion](guide/aria/accordion) | Tek tek veya özel olarak genişleyebilen daraltılabilir içerik panelleri |
 | [Tabs](guide/aria/tabs)           | Otomatik veya manuel etkinleştirme modlarıyla sekmeli arayüzler         |

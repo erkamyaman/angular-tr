@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/" title="Grid ARIA pattern"/>
-  <docs-pill href="/api?query=grid#angular_aria_grid" title="Grid API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/" title="Grid ARIA deseni"/>
+  <docs-pill href="/api?query=grid#angular_aria_grid" title="Grid API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış

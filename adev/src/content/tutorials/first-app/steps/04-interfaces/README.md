@@ -48,7 +48,7 @@ Bu adım, uygulamanızın bir konut konumunu temsil etmesi için gereken özelli
 1.  IDE'nizin **Edit** bölmesinde, `src/app/housinglocation.ts` dosyasını açın.
 1.  `housinglocation.ts` dosyasında, yeni arayüzünüzün bu örnekle eşleşmesi için varsayılan içeriği aşağıdaki kodla değiştirin.
 
-      <docs-code header="Update src/app/housinglocation.ts to match this code" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/housinglocation.ts" visibleLines="[1,10]" />
+      <docs-code header="src/app/housinglocation.ts dosyasını bu koda uyacak şekilde güncelleyin" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/housinglocation.ts" visibleLines="[1,10]" />
 
 1.  Değişikliklerinizi kaydedin ve uygulamanın herhangi bir hata görüntülemediğini doğrulayın. Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
@@ -66,11 +66,11 @@ Bunun gerçekleşmesi için tamamlanması gereken birkaç ders daha var.
 1.  IDE'nizin **Edit** bölmesinde, `src/app/home/home.ts` dosyasını açın.
 1.  `src/app/home/home.ts` dosyasında, `Home`'un yeni arayüzü kullanabilmesi için mevcut `import` ifadelerinden sonra bu import ifadesini ekleyin.
 
-      <docs-code language="angular-ts" header="Import Home in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[3]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içinde Home'u içe aktarın" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[3]"/>
 
 1.  `src/app/home/home.ts` dosyasında, bileşende yeni arayüzün tek bir örneğini oluşturmak için boş `export class Home {}` tanımını bu kodla değiştirin.
 
-      <docs-code language="angular-ts" header="Add sample data to src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[22,35]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içine örnek veri ekleyin" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[22,35]"/>
 
 1.  `home.ts` dosyanızın bu örnekle eşleştiğini doğrulayın.
 
@@ -80,7 +80,7 @@ Bunun gerçekleşmesi için tamamlanması gereken birkaç ders daha var.
 
 1.  Değişikliklerinizi kaydedin ve uygulamanın herhangi bir hatası olmadığını doğrulayın. Tarayıcıyı açın ve uygulamanızın hala "housing-location works!" mesajını görüntülediğini doğrulayın.
 
-      <img alt="browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!'" src="assets/images/tutorials/first-app/homes-app-lesson-03-step-2.png">
+      <img alt="Logoyu, filtre metin giriş kutusunu, arama düğmesini ve 'housing-location works!' mesajını gösteren homes-app tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-03-step-2.png">
 
 1.  Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
     </docs-step>

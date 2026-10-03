@@ -97,7 +97,7 @@ export class CustomSlider {
 }
 ```
 
-<docs-callout critical title="Prefer using the `host` property over the decorators">
+<docs-callout critical title="Dekoratörler yerine `host` özelliğini tercih edin">
   **Her zaman `@HostBinding` ve `@HostListener` yerine `host` özelliğini kullanmayı tercih edin.** Bu dekoratörler yalnızca geriye dönük uyumluluk için mevcuttur.
 </docs-callout>
 

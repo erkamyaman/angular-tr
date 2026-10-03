@@ -14,7 +14,7 @@ Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmek
 
 ### Sürüm güncellemeleri {#version-updates}
 
-`versionUpdates`, `SwUpdate`'in bir `Observable` özelliğidir ve beş olay türü yayar:
+`versionUpdates`, `SwUpdate`'in bir `Observable` özelliğidir ve dört olay türü yayar:
 
 | Olay türleri                     | Ayrıntılar                                                                                                                                                                                                    |
 | :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -22,7 +22,6 @@ Service worker desteğini etkinleştirmek, yalnızca service worker'ı kaydetmek
 | `NoNewVersionDetectedEvent`      | Service worker, sunucudaki uygulama sürümünü kontrol ettiğinde ve yeni bir sürüm bulamadığında yayılır.                                                                                                       |
 | `VersionReadyEvent`              | Uygulamanın yeni bir sürümü istemciler tarafından etkinleştirilmeye hazır olduğunda yayılır. Kullanıcıyı mevcut bir güncelleme hakkında bilgilendirmek veya sayfayı yenilemesini istemek için kullanılabilir. |
 | `VersionInstallationFailedEvent` | Yeni bir sürümün yüklemesi başarısız olduğunda yayılır. Günlükleme/izleme amaçlarıyla kullanılabilir.                                                                                                         |
-| `VersionFailedEvent`             | Bir sürüm, o sürümü kullanan tüm istemcileri etkileyen kritik bir hatayla (bozuk hash hataları gibi) karşılaştığında yayılır. Hata ayıklama ve şeffaflık için hata ayrıntıları sağlar.                        |
 
 <docs-code header="log-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/log-update.service.ts" region="sw-update"/>
 
@@ -39,7 +38,7 @@ Bunu `checkForUpdate()` metoduyla yapın:
 Bu metot, etkinleştirme için bir güncellemenin mevcut olup olmadığını belirten bir `Promise<boolean>` döndürür.
 Kontrol başarısız olabilir ve bu durumda `Promise` reddedilir.
 
-<docs-callout important title="Stabilization and service worker registration">
+<docs-callout important title="Stabilizasyon ve service worker kaydı">
 Sayfanın ilk oluşturulmasını olumsuz etkilememek için, varsayılan olarak Angular service worker servisi, ServiceWorker betiğini kaydetmeden önce uygulamanın kararlı hale gelmesi için 30 saniyeye kadar bekler.
 
 Güncellemeler için sürekli yoklama yapmak, örneğin [setInterval()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) veya RxJS'in [interval()](https://rxjs.dev/api/index/function/interval) fonksiyonu ile, uygulamanın kararlı hale gelmesini engeller ve ServiceWorker betiği 30 saniyelik üst sınıra ulaşılana kadar tarayıcıya kaydedilmez.
@@ -58,7 +57,7 @@ Kullanıcının ilerlemesini kesintiye uğratmamak için, genellikle kullanıcı
 
 <docs-code header="prompt-update.service.ts" path="adev/src/content/examples/service-worker-getting-started/src/app/prompt-update.service.ts" region="sw-version-ready"/>
 
-<docs-callout important title="Safety of updating without reloading">
+<docs-callout important title="Yeniden yüklemeden güncellemenin güvenliği">
 `activateUpdate()` çağrısı, bir sekmeyi sayfayı yeniden yüklemeden en son sürüme günceller, ancak bu uygulamayı bozabilir.
 
 Yeniden yüklemeden güncelleme, uygulama kabuğu ile tembel yüklenen parçalar gibi diğer sayfa kaynakları arasında bir sürüm uyumsuzluğu yaratabilir; bu dosyaların isimleri sürümler arasında değişebilir.
@@ -103,6 +102,6 @@ Bu hataları bildirim almak ve işlemek için `SwUpdate#unrecoverable`'a abone o
 Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
-  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push notifications"/>
-  <docs-pill href="ecosystem/service-workers/devops" title="Service Worker devops"/>
+  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push bildirimleri"/>
+  <docs-pill href="ecosystem/service-workers/devops" title="Service worker DevOps"/>
 </docs-pill-row>

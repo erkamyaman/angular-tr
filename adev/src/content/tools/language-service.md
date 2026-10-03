@@ -15,7 +15,7 @@ En son Dil Servisi özelliklerini etkinleştirmek için, aşağıdaki örnekte g
 
 ```
 
-Daha fazla bilgi için [Angular compiler options](reference/configs/angular-compiler-options) kılavuzuna bakın.
+Daha fazla bilgi için [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) kılavuzuna bakın.
 
 ## Özellikler
 
@@ -35,7 +35,7 @@ Otomatik tamamlama, yazarken bağlamsal olasılıklar ve ipuçları sunarak geli
 Bu örnek, bir enterpolasyondaki otomatik tamamlamayı göstermektedir.
 Yazarken tamamlamak için sekme tuşuna basabilirsiniz.
 
-<img alt="autocompletion" src="assets/images/guide/language-service/language-completion.gif">
+<img alt="otomatik tamamlama" src="assets/images/guide/language-service/language-completion.gif">
 
 Öğeler içinde de tamamlamalar mevcuttur.
 Bileşen seçici olarak sahip olduğunuz tüm öğeler tamamlama listesinde görünür.
@@ -45,14 +45,14 @@ Bileşen seçici olarak sahip olduğunuz tüm öğeler tamamlama listesinde gör
 Angular Dil Servisi, kodunuzdaki hataları önceden size bildirebilir.
 Bu örnekte Angular, `orders`'ın ne olduğunu veya nereden geldiğini bilmiyor.
 
-<img alt="error checking" src="assets/images/guide/language-service/language-error.gif">
+<img alt="hata denetimi" src="assets/images/guide/language-service/language-error.gif">
 
 ### Hızlı Bilgi ve Navigasyon
 
 Hızlı bilgi özelliği, bileşenlerin, direktiflerin ve modüllerin nereden geldiğini görmek için üzerine gelmenize olanak tanır.
 Ardından doğrudan tanıma gitmek için "Go to definition" seçeneğine tıklayabilir veya F12 tuşuna basabilirsiniz.
 
-<img alt="navigation" src="assets/images/guide/language-service/language-navigation.gif">
+<img alt="gezinme" src="assets/images/guide/language-service/language-navigation.gif">
 
 ## Editörünüzde Angular Dil Servisi
 

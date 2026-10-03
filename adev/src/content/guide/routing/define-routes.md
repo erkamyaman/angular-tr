@@ -42,7 +42,7 @@ export const routes: Routes = [
 ];
 ```
 
-Tip: Angular CLI ile bir proje oluşturduysanız, rotalarınız `src/app/app.routes.ts` dosyasında tanımlanmıştır.
+TIP: Angular CLI ile bir proje oluşturduysanız, rotalarınız `src/app/app.routes.ts` dosyasında tanımlanmıştır.
 
 ### Uygulamanıza Router ekleme
 
@@ -112,7 +112,7 @@ import {SocialMediaFeed} from './social-media-feed';
 
 const routes: Routes = [
   {path: 'user/:id/:social-media', component: SocialMediaFeed},
-  {path: 'user/:id/', component: UserProfile},
+  {path: 'user/:id', component: UserProfile},
 ];
 ```
 
@@ -140,7 +140,7 @@ const routes: Routes = [
 
 Bu rota dizisinde, kullanıcı `home` ve `user/:id` dışında herhangi bir yolu ziyaret ettiğinde uygulama `NotFound` bileşenini görüntüler.
 
-Tip: Joker rotalar genellikle rota dizisinin sonuna yerleştirilir.
+TIP: Joker rotalar genellikle rota dizisinin sonuna yerleştirilir.
 
 ## Angular URL'leri nasıl eşleştirir
 
@@ -216,7 +216,8 @@ Sayfa `title` özelliği, [`ResolveFn`](/api/router/ResolveFn) kullanılarak din
 ```ts
 const titleResolver: ResolveFn<string> = (route) => route.queryParams['id'];
 const routes: Routes = [
-  ...{
+  // ...
+  {
     path: 'products',
     component: Products,
     title: titleResolver,
@@ -331,7 +332,7 @@ Bir rota için veri çekmeniz gerektiğinde, Angular Router veri çözücülerin
 
 İç içe rotalar, alt rotalar olarak da bilinir ve URL'ye göre değişen bir alt görünüme sahip bir bileşen için daha karmaşık navigasyon rotalarını yönetmek için kullanılan yaygın bir tekniktir.
 
-<img alt="Diagram to illustrate nested routes" src="assets/images/guide/router/nested-routing-diagram.svg">
+<img alt="İç içe rotaları gösteren diyagram" src="assets/images/guide/router/nested-routing-diagram.svg">
 
 `children` özelliği ile herhangi bir rota tanımına alt rotalar ekleyebilirsiniz:
 
@@ -373,6 +374,6 @@ Yapılandırmaya alt rotalar ekledikten ve bileşene bir `<router-outlet>` ekled
 ## Sonraki adımlar
 
 <docs-pill-row>
-  <docs-pill href="/guide/routing/loading-strategies" title="Route Loading Strategies"/>
-  <docs-pill href="/guide/routing/show-routes-with-outlets" title="Display the contents of your routes with Outlets"/>
+  <docs-pill href="/guide/routing/loading-strategies" title="Route Yükleme Stratejileri"/>
+  <docs-pill href="/guide/routing/show-routes-with-outlets" title="Outlet'ler ile Route'ları Gösterme"/>
 </docs-pill-row>

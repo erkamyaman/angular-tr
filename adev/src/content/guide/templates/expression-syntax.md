@@ -47,43 +47,43 @@ Angular, belirli bağlamlarda ifadelerde kullanılmak üzere özel yerel değiş
 
 Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 
-| Operatör                      | Örnek(ler)                                     |
-| ----------------------------- | ---------------------------------------------- |
-| Add / Concatenate             | `1 + 2`                                        |
-| Subtract                      | `52 - 3`                                       |
-| Multiply                      | `41 * 6`                                       |
-| Divide                        | `20 / 4`                                       |
-| Remainder (Modulo)            | `17 % 5`                                       |
-| Exponentiation                | `10 ** 3`                                      |
-| Parenthesis                   | `9 * (8 + 4)`                                  |
-| Conditional (Ternary)         | `a > b ? true : false`                         |
-| And (Logical)                 | `&&`                                           |
-| Or (Logical)                  | `\|\|`                                         |
-| Not (Logical)                 | `!`                                            |
-| Nullish Coalescing            | `possiblyNullValue ?? 'default'`               |
-| Comparison Operators          | `<`, `<=`, `>`, `>=`, `==`, `===`, `!==`, `!=` |
-| Unary Negation                | `-x`                                           |
-| Unary Plus                    | `+y`                                           |
-| Property Accessor             | `person['name']`                               |
-| typeof                        | `typeof 42`                                    |
-| void                          | `void 1`                                       |
-| in                            | `'model' in car`                               |
-| instanceof                    | `car instanceof Automobile`                    |
-| Assignment                    | `a = b`                                        |
-| Increment                     | `a++`, `++a`                                   |
-| Decrement                     | `a--`, `--a`                                   |
-| Addition Assignment           | `a += b`                                       |
-| Subtraction Assignment        | `a -= b`                                       |
-| Multiplication Assignment     | `a *= b`                                       |
-| Division Assignment           | `a /= b`                                       |
-| Remainder Assignment          | `a %= b`                                       |
-| Exponentiation Assignment     | `a **= b`                                      |
-| Logical AND Assignment        | `a &&= b`                                      |
-| Logical OR Assignment         | `a \|\|= b`                                    |
-| Nullish Coalescing Assignment | `a ??= b`                                      |
-| Spread in object literals     | `{...obj, foo: 'bar'}`                         |
-| Spread in array literals      | `[...arr, 1, 2, 3]`                            |
-| Rest in function calls        | `fn(...args)`                                  |
+| Operatör                    | Örnek(ler)                                     |
+| --------------------------- | ---------------------------------------------- |
+| Toplama / Birleştirme       | `1 + 2`                                        |
+| Çıkarma                     | `52 - 3`                                       |
+| Çarpma                      | `41 * 6`                                       |
+| Bölme                       | `20 / 4`                                       |
+| Kalan (Mod)                 | `17 % 5`                                       |
+| Üs alma                     | `10 ** 3`                                      |
+| Parantez                    | `9 * (8 + 4)`                                  |
+| Koşullu (Üçlü)              | `a > b ? true : false`                         |
+| Ve (Mantıksal)              | `&&`                                           |
+| Veya (Mantıksal)            | `\|\|`                                         |
+| Değil (Mantıksal)           | `!`                                            |
+| Nullish birleştirme         | `possiblyNullValue ?? 'default'`               |
+| Karşılaştırma operatörleri  | `<`, `<=`, `>`, `>=`, `==`, `===`, `!==`, `!=` |
+| Tekli olumsuzlama           | `-x`                                           |
+| Tekli artı                  | `+y`                                           |
+| Özellik erişimi             | `person['name']`                               |
+| typeof                      | `typeof 42`                                    |
+| void                        | `void 1`                                       |
+| in                          | `'model' in car`                               |
+| instanceof                  | `car instanceof Automobile`                    |
+| Atama                       | `a = b`                                        |
+| Artırma                     | `a++`, `++a`                                   |
+| Azaltma                     | `a--`, `--a`                                   |
+| Toplama ataması             | `a += b`                                       |
+| Çıkarma ataması             | `a -= b`                                       |
+| Çarpma ataması              | `a *= b`                                       |
+| Bölme ataması               | `a /= b`                                       |
+| Kalan ataması               | `a %= b`                                       |
+| Üs alma ataması             | `a **= b`                                      |
+| Mantıksal VE ataması        | `a &&= b`                                      |
+| Mantıksal VEYA ataması      | `a \|\|= b`                                    |
+| Nullish birleştirme ataması | `a ??= b`                                      |
+| Nesne literallerinde spread | `{...obj, foo: 'bar'}`                         |
+| Dizi literallerinde spread  | `[...arr, 1, 2, 3]`                            |
+| Fonksiyon çağrılarında rest | `fn(...args)`                                  |
 
 Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekler:
 
@@ -110,13 +110,13 @@ NOTE: `$safeNavigationMigration`'ın kaldırılabilmesi için ifadelerinizi `nul
 
 ### Desteklenmeyen operatörler
 
-| Operatör              | Örnek(ler)                        |
-| --------------------- | --------------------------------- |
-| All bitwise operators | `&`, `&=`, `~`, `\|=`, `^=`, etc. |
-| Object destructuring  | `const { name } = person`         |
-| Array destructuring   | `const [firstItem] = items`       |
-| Comma operator        | `x = (x++, x)`                    |
-| new                   | `new Car()`                       |
+| Operatör                | Örnek(ler)                      |
+| ----------------------- | ------------------------------- |
+| Tüm bitwise operatörler | `&`, `&=`, `~`, `\|=`, `^=` vb. |
+| Nesne destructuring     | `const { name } = person`       |
+| Dizi destructuring      | `const [firstItem] = items`     |
+| Virgül operatörü        | `x = (x++, x)`                  |
+| new                     | `new Car()`                     |
 
 ## İfadeler için sözcüksel bağlam
 
@@ -128,12 +128,12 @@ Bileşen sınıf üyelerine referans verirken `this` her zaman ima edilir. Ancak
 
 Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasında şu durumlar yer alır ancak bunlarla sınırlı değildir:
 
-| Bildirimler     | Örnek(ler)                                  |
-| --------------- | ------------------------------------------- |
-| Variables       | `let label = 'abc'`, `const item = 'apple'` |
-| Functions       | `function myCustomFunction() { }`           |
-| Arrow Functions | `() => { }`                                 |
-| Classes         | `class Rectangle { }`                       |
+| Bildirimler        | Örnek(ler)                                  |
+| ------------------ | ------------------------------------------- |
+| Değişkenler        | `let label = 'abc'`, `const item = 'apple'` |
+| Fonksiyonlar       | `function myCustomFunction() { }`           |
+| Arrow fonksiyonlar | `() => { }`                                 |
+| Sınıflar           | `class Rectangle { }`                       |
 
 ## Olay dinleyici ifadeleri
 

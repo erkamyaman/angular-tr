@@ -45,7 +45,7 @@ Aşağıdaki örnekte, `@Component()` meta veri nesnesi ve sınıf yapıcısı A
 ```angular-ts
 @Component({
   selector: 'app-typical',
-  template: '<div>A typical component for {{data.name}}</div>',
+  template: '<div>A typical component for {{data().name}}</div>',
 })
 export class Typical {
   data = input.required<TypicalData>();
@@ -60,11 +60,11 @@ Bir `Typical` örneği oluşturması gerektiğinde, Angular fabrikayı çağır�
 
 AOT derlemesinin üç aşaması vardır.
 
-|     | Aşama               | Ayrıntılar                                                                                                                                                                                                                                                                                                                              |
-| :-- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | kod analizi         | Bu aşamada, TypeScript derleyicisi ve _AOT toplayıcısı_ kaynağın bir temsilini oluşturur. Toplayıcı, topladığı meta veriyi yorumlamaya çalışmaz. Meta veriyi olabildiğince iyi temsil eder ve bir meta veri sözdizimi ihlali tespit ettiğinde hataları kaydeder.                                                                        |
-| 2   | kod oluşturma       | Bu aşamada, derleyicinin `StaticReflector`'ı 1. aşamada toplanan meta veriyi yorumlar, meta verinin ek doğrulamasını yapar ve bir meta veri kısıtlama ihlali tespit ederse bir hata fırlatır.                                                                                                                                           |
-| 3   | şablon tür denetimi | Bu isteğe bağlı aşamada, Angular _şablon derleyicisi_ şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır. Bu aşamayı `strictTemplates` yapılandırma seçeneğini ayarlayarak açıkça etkinleştirebilirsiniz; [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın. |
+|     | Aşama               | Ayrıntılar                                                                                                                                                                                                                                                                                                                                    |
+| :-- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | kod analizi         | Bu aşamada, TypeScript derleyicisi ve _AOT toplayıcısı_ kaynağın bir temsilini oluşturur. Toplayıcı, topladığı meta veriyi yorumlamaya çalışmaz. Meta veriyi olabildiğince iyi temsil eder ve bir meta veri sözdizimi ihlali tespit ettiğinde hataları kaydeder.                                                                              |
+| 2   | kod oluşturma       | Bu aşamada, derleyicinin `StaticReflector`'ı 1. aşamada toplanan meta veriyi yorumlar, meta verinin ek doğrulamasını yapar ve bir meta veri kısıtlama ihlali tespit ederse bir hata fırlatır.                                                                                                                                                 |
+| 3   | şablon tür denetimi | Bu aşamada, Angular _şablon derleyicisi_ şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır. Bu aşamadaki katı denetim varsayılan olarak etkindir ve `strictTemplates` yapılandırma seçeneğiyle kontrol edilir; [Angular derleyici seçenekleri](reference/configs/angular-compiler-options) belgesine bakın. |
 
 ### Meta veri kısıtlamaları {#metadata-restrictions}
 
@@ -293,7 +293,7 @@ Makroların karmaşık [NgModules](guide/ngmodules/overview) yapılandırmasın�
 Angular derleyicisinin en yararlı özelliklerinden biri, şablonlardaki ifadeleri tür denetleme ve çalışma zamanında çökmelere neden olmadan önce hataları yakalama yeteneğidir.
 Şablon tür denetimi aşamasında, Angular şablon derleyicisi şablonlardaki bağlama ifadelerini doğrulamak için TypeScript derleyicisini kullanır.
 
-Bu aşamayı, projenin TypeScript yapılandırma dosyasındaki `"angularCompilerOptions"` içine `"strictTemplates"` derleyici seçeneğini ekleyerek açıkça etkinleştirin
+Bu aşamadaki katı denetim varsayılan olarak etkindir ve projenin TypeScript yapılandırma dosyasındaki `"angularCompilerOptions"` içindeki `"strictTemplates"` derleyici seçeneğiyle kontrol edilir
 ([Angular Derleyici Seçenekleri](reference/configs/angular-compiler-options) belgesine bakın).
 
 Şablon doğrulaması, bir şablon bağlama ifadesinde bir tür hatası tespit edildiğinde, TypeScript derleyicisinin `.ts` dosyasındaki koda karşı tür hatalarını bildirmesine benzer şekilde hata mesajları üretir.
@@ -327,7 +327,7 @@ Hata konumu, hatalı enterpolasyon ifadesini içeren metin düğümünün başla
 Hata `[value]="person.address.street"` gibi bir öznitelik bağlamasındaysa, hata konumu hatayı içeren özniteliğin konumudur.
 
 Doğrulama, tür doğrulamasının ne kadar ayrıntılı olacağını kontrol etmek için TypeScript tür denetleyicisini ve TypeScript derleyicisine sağlanan seçenekleri kullanır.
-Örneğin, `strictTypeChecks` belirtilmişse, yukarıdaki hata mesajının yanı sıra
+Örneğin, `strictNullChecks` TypeScript seçeneği etkinse, yukarıdaki hata mesajının yanı sıra
 
 ```shell {hideCopy}
 

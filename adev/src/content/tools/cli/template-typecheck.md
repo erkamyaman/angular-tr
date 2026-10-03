@@ -3,11 +3,11 @@
 ## Şablon tür denetimine genel bakış
 
 TypeScript'in kodunuzdaki tür hatalarını yakalaması gibi, Angular da uygulamanızın şablonlarındaki ifadeleri ve bağlamaları kontrol eder ve bulduğu tür hatalarını raporlayabilir.
-Angular şu anda bunu, [Angular'ın derleyici seçeneklerindeki](reference/configs/angular-compiler-options) `fullTemplateTypeCheck` ve `strictTemplates` bayraklarının değerine bağlı olarak üç modda yapmaktadır.
+Angular bunu, [Angular'ın derleyici seçeneklerindeki](reference/configs/angular-compiler-options) `strictTemplates` bayrağının değerine bağlı olarak iki modda yapmaktadır.
 
 ### Temel mod
 
-En temel tür denetimi modunda, `fullTemplateTypeCheck` bayrağı `false` olarak ayarlandığında, Angular bir şablondaki yalnızca üst düzey ifadeleri doğrular.
+Temel tür denetimi modunda, `strictTemplates` bayrağı `false` olarak ayarlandığında, Angular bir şablondaki yalnızca üst düzey ifadeleri doğrular.
 
 `<map [city]="user.address.city">` yazarsanız, derleyici şunları doğrular:
 
@@ -24,34 +24,17 @@ Derleyicinin bu modda bazı önemli sınırlamaları da vardır:
 
 Birçok durumda bunlar `any` türü olarak sonuçlanır ve bu da ifadenin sonraki bölümlerinin denetlenmemesine neden olabilir.
 
-### Tam mod
-
-`fullTemplateTypeCheck` bayrağı `true` olarak ayarlanırsa, Angular şablonlardaki tür denetiminde daha agresif davranır.
-Özellikle:
-
-- Gömülü görünümler \(`*ngIf` veya `*ngFor` içindekiler gibi\) denetlenir
-- Pipe'lar doğru dönüş türüne sahiptir
-- Direktif ve pipe'lara yapılan yerel referanslar doğru türe sahiptir \(herhangi bir genel parametre hariç, bunlar `any` olacaktır\)
-
-Aşağıdakiler hâlâ `any` türündedir.
-
-- DOM öğelerine yapılan yerel referanslar
-- `$event` nesnesi
-- Güvenli navigasyon ifadeleri
-
-IMPORTANT: `fullTemplateTypeCheck` bayrağı Angular 13'te kullanımdan kaldırılmıştır.
-Bunun yerine `strictTemplates` derleyici seçenekleri ailesi kullanılmalıdır.
-
 ### Katı mod
 
-Angular, `fullTemplateTypeCheck` bayrağının davranışını korur ve üçüncü bir "katı mod" sunar.
-Katı mod, tam modun bir üst kümesidir ve `strictTemplates` bayrağı true olarak ayarlanarak erişilir.
-Bu bayrak `fullTemplateTypeCheck` bayrağının yerini alır.
+Katı mod varsayılandır ve `strictTemplates` bayrağı `true` olduğunda ya da ayarlanmadığında etkindir.
 
-Tam mod davranışına ek olarak Angular şunları yapar:
+Katı modda Angular şunları yapar:
 
+- Gömülü görünümleri \(`*ngIf` veya `*ngFor` içindekiler gibi\) denetler
+- Pipe'ların doğru dönüş türünü çıkarsar
+- Direktif ve pipe'lara yapılan yerel referansların doğru türünü çıkarsar
 - Bileşen/direktif bağlamalarının `input()`'larına atanabilir olduğunu doğrular
-- Önceki modu doğrularken TypeScript'in `strictNullChecks` bayrağına uyar
+- Girdi bağlamalarını doğrularken TypeScript'in `strictNullChecks` bayrağına uyar
 - Genel türler dahil olmak üzere bileşenlerin/direktiflerin doğru türünü çıkarsar
 - Yapılandırıldığı yerlerde şablon bağlam türlerini çıkarsar \(örneğin, `NgFor`'un doğru tür denetimine izin verir\)
 - Bileşen/direktif, DOM ve animasyon olay bağlamalarında `$event`'in doğru türünü çıkarsar
@@ -59,7 +42,7 @@ Tam mod davranışına ek olarak Angular şunları yapar:
 
 ## `*ngFor` denetimi
 
-Tür denetiminin üç modu gömülü görünümleri farklı şekilde ele alır.
+Tür denetiminin iki modu gömülü görünümleri farklı şekilde ele alır.
 Aşağıdaki örneği inceleyin.
 
 ```ts {header:"User interface"}
@@ -81,12 +64,11 @@ interface User {
 
 `<h2>` ve `<span>`, `*ngFor` gömülü görünümü içindedir.
 Temel modda Angular bunların hiçbirini denetlemez.
-Ancak tam modda Angular, `config` ve `user`'ın var olduğunu kontrol eder ve `any` türünü varsayar.
 Katı modda Angular, `<span>` içindeki `user`'ın `User` türünde olduğunu ve `address`'in `string` türünde bir `city` özelliğine sahip bir nesne olduğunu bilir.
 
 ## Şablon hatalarını giderme
 
-Katı modda, önceki modların hiçbirinde ortaya çıkmayan şablon hatalarıyla karşılaşabilirsiniz.
+Katı modda, temel modda ortaya çıkmayan şablon hatalarıyla karşılaşabilirsiniz.
 Bu hatalar genellikle şablonlardaki, önceki araçlar tarafından yakalanmayan gerçek tür uyumsuzluklarını temsil eder.
 Bu durumda, hata mesajı sorunun şablonda nerede oluştuğunu açıkça belirtmelidir.
 
@@ -105,25 +87,25 @@ Bunlar gibi yanlış pozitif durumlarında birkaç seçenek vardır:
 - Diğer yönlerde katılığı korurken belirli tür denetimi işlemlerini bir _katılık bayrağını_ `false` olarak ayarlayarak ayrı ayrı devre dışı bırakın
 - `strictTemplates` ve `strictNullChecks`'i birlikte kullanmak istiyorsanız, `strictNullInputTypes` kullanarak özellikle girdi bağlamaları için katı null tür denetiminden çıkın
 
-Aksi belirtilmedikçe, aşağıdaki her seçenek `strictTemplates` için belirlenen değere ayarlanır \(`strictTemplates` `true` olduğunda `true` ve tersine, aksi yönde\).
+Aşağıdaki her seçenek `strictTemplates` için belirlenen değere ayarlanır \(`strictTemplates` `true` olduğunda `true` ve tersine, aksi yönde\):
 
-| Strictness flag              | Effect                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Katılık bayrağı              | Etki                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `strictInputTypes`           | Bir bağlama ifadesinin `@Input()` alanına atanabilirliğinin denetlenip denetlenmediği. Ayrıca direktif genel türlerinin çıkarımını da etkiler.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `strictInputAccessModifiers` | Bir bağlama ifadesini bir `@Input()` veya `input()`'a atarken `private`/`protected`/`readonly` gibi erişim belirleyicilerinin dikkate alınıp alınmadığı. Devre dışı bırakılırsa girdinin erişim belirleyicileri yok sayılır; yalnızca tür denetlenir. Bu seçenek, `strictTemplates` `true` olarak ayarlansa bile varsayılan olarak `false`'tur. Not: Bu denetim yalnızca girdilere uygulanır, çıktılara değil.                                                                                                                                                                                                                                                                                                                                             |
 | `strictNullInputTypes`       | `@Input()` bağlamaları denetlenirken \(`strictInputTypes`'a göre\) `strictNullChecks`'in dikkate alınıp alınmadığı. Bunu kapatmak, `strictNullChecks` gözetilmeden oluşturulmuş bir kütüphane kullanıldığında faydalı olabilir.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `strictAttributeTypes`       | Metin nitelikleri kullanılarak yapılan `@Input()` bağlamalarının denetlenip denetlenmediği. Örneğin, `<input matInput disabled="true">` \(`disabled` özelliğini `'true'` dizesine ayarlar\) ile `<input matInput [disabled]="true">` \(`disabled` özelliğini `true` boolean değerine ayarlar\) karşılaştırması.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `strictSafeNavigationTypes`  | Güvenli navigasyon işlemlerinin dönüş türünün \(örneğin, `user?.name` `user` türüne göre doğru şekilde çıkarılıp çıkarılmadığı\). Devre dışı bırakılırsa `user?.name` `any` türünde olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `strictDomLocalRefTypes`     | DOM öğelerine yapılan yerel referansların doğru türe sahip olup olmadığı. Devre dışı bırakılırsa `<input #ref>` için `ref` `any` türünde olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `strictOutputEventTypes`     | Bileşen/direktif `@Output()` veya animasyon olaylarına yapılan olay bağlamalarında `$event`'in doğru türe sahip olup olmadığı. Devre dışı bırakılırsa `any` olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `strictDomEventTypes`        | DOM olaylarına yapılan olay bağlamalarında `$event`'in doğru türe sahip olup olmadığı. Devre dışı bırakılırsa `any` olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `strictUnclaimedEventNames`  | Eleman üzerine uygulanan bir direktifin hiçbir çıktısıyla ya da bilinen hiçbir yerel DOM olayıyla (TypeScript'in `GlobalEventHandlersEventMap` içinde tanımlananlar, büyük/küçük harf ayrımı gözetmeksizin karşılaştırılır) eşleşmeyen olay bağlamalarının raporlanıp raporlanmayacağı; bu durum genellikle yanlış yazılmış bir çıktı adına işaret eder. Yalnızca tek tanımlayıcılı camelCase adlar kontrol edilir; alt elemanlar tarafından gönderilen özel olayların geleneksel olarak kullandığı tire ile ayrılmış adlar \(örneğin, `my-event`\) ve `CUSTOM_ELEMENTS_SCHEMA` kullanılırken eşleşen bir bileşeni olmayan elemanlar kapsam dışındadır. Bu seçenek, `strictTemplates` `true` olarak ayarlansa bile varsayılan olarak `false` değerindedir. |
 | `strictContextGenerics`      | Genel bileşenlerin tür parametrelerinin doğru şekilde çıkarılıp çıkarılmadığı \(herhangi bir genel sınır dahil\). Devre dışı bırakılırsa herhangi bir tür parametresi `any` olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `strictLiteralTypes`         | Şablonda bildirilen nesne ve dizi literallerinin türlerinin çıkarılıp çıkarılmadığı. Devre dışı bırakılırsa bu tür literallerin türü `any` olacaktır. Bu bayrak, `fullTemplateTypeCheck` veya `strictTemplates`'ten _biri_ `true` olarak ayarlandığında `true`'dur.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `strictLiteralTypes`         | Şablonda bildirilen nesne ve dizi literallerinin türlerinin çıkarılıp çıkarılmadığı. Devre dışı bırakılırsa bu tür literallerin türü `any` olacaktır.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Katılık bayrağı              | Etki                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `strictInputAccessModifiers` | Bir bağlama ifadesini bir `@Input()` veya `input()`'a atarken `private`/`protected`/`readonly` gibi erişim belirleyicilerinin dikkate alınıp alınmadığı. Devre dışı bırakılırsa girdinin erişim belirleyicileri yok sayılır; yalnızca tür denetlenir. Not: Bu denetim yalnızca girdilere uygulanır, çıktılara değil.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `strictUnclaimedEventNames`  | Eleman üzerine uygulanan bir direktifin hiçbir çıktısıyla ya da bilinen hiçbir yerel DOM olayıyla (TypeScript'in `GlobalEventHandlersEventMap` içinde tanımlananlar, büyük/küçük harf ayrımı gözetmeksizin karşılaştırılır) eşleşmeyen olay bağlamalarının raporlanıp raporlanmayacağı; bu durum genellikle yanlış yazılmış bir çıktı adına işaret eder. Yalnızca tek tanımlayıcılı camelCase adlar kontrol edilir; alt elemanlar tarafından gönderilen özel olayların geleneksel olarak kullandığı tire ile ayrılmış adlar \(örneğin, `my-event`\) ve `CUSTOM_ELEMENTS_SCHEMA` kullanılırken eşleşen bir bileşeni olmayan elemanlar kapsam dışındadır. Bu seçenek, `strictTemplates` `true` olarak ayarlansa bile varsayılan olarak `false` değerindedir. |
 
-Bu bayraklarla sorun giderme yaptıktan sonra hâlâ sorunlarınız varsa, `strictTemplates`'i devre dışı bırakarak tam moda geri dönün.
-
-Bu da işe yaramazsa, son çare olarak `fullTemplateTypeCheck: false` ile tam modu tamamen kapatma seçeneği vardır.
+Bu bayraklarla sorun giderme yaptıktan sonra hâlâ sorunlarınız varsa, son çare olarak `strictTemplates`'i devre dışı bırakarak temel moda geri dönebilirsiniz.
 
 Önerilen yöntemlerden hiçbiriyle çözemediğiniz bir tür denetimi hatası, şablon tür denetleyicisinin kendisindeki bir hatanın sonucu olabilir.
 Temel moda geri dönmeyi gerektiren hatalar alıyorsanız, bunun büyük olasılıkla böyle bir hata olduğunu gösterir.
@@ -141,7 +123,7 @@ export interface User {
 
 @Component({
   selector: 'user-detail',
-  template: '{{ user.name }}',
+  template: '{{ user().name }}',
 })
 export class UserDetailComponent {
   user = input.required<User>();
@@ -225,7 +207,7 @@ Aşağıdaki direktifi inceleyin:
   selector: 'submit-button',
   template: `
     <div class="wrapper">
-      <button [disabled]="disabled">Submit</button>
+      <button [disabled]="disabled()">Submit</button>
     </div>
   `,
 })

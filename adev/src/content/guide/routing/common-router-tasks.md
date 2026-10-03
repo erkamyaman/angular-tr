@@ -17,7 +17,7 @@ Bir rotadan bilgi almak için:
 
 <docs-workflow>
 
-<docs-step title="Add `withComponentInputBinding`">
+<docs-step title="`withComponentInputBinding` ekleyin">
 
 `provideRouter` yöntemine `withComponentInputBinding` özelliğini ekleyin.
 
@@ -27,17 +27,17 @@ providers: [provideRouter(appRoutes, withComponentInputBinding())];
 
 </docs-step>
 
-<docs-step title="Add an `input` to the component">
+<docs-step title="Bileşene bir `input` ekleyin">
 
 Bileşeni, parametre adıyla eşleşen bir `input()` özelliğine sahip olacak şekilde güncelleyin.
 
 ```ts
 id = input.required<string>();
-hero = computed(() => this.service.getHero(id()));
+hero = computed(() => this.service.getHero(this.id()));
 ```
 
 </docs-step>
-<docs-step title="Optional: Use a default value">
+<docs-step title="İsteğe bağlı: Varsayılan değer kullanın">
 `withComponentInputBinding` etkinleştirildiğinde yönlendirici, geçerli rotaya göre tüm girişlere değer atar.
 İsteğe bağlı bir sorgu parametresi eksik olduğunda gibi, giriş anahtarıyla eşleşen rota verisi yoksa yönlendirici `undefined` atar.
 Bir girişin rota tarafından eşleştirilmeme olasılığı olduğunda `input` türüne `undefined` dahil etmelisiniz.

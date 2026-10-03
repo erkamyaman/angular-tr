@@ -28,12 +28,12 @@ CRITICAL: İstek yöntemlerinin jenerik türü, sunucu tarafından döndürülen
 
 Varsayılan olarak, `HttpClient` sunucuların JSON verisi döndüreceğini varsayar. JSON olmayan bir API ile etkileşim kurarken, istek yaparken `HttpClient`'a hangi yanıt türünü bekleyeceğini söyleyebilirsiniz. Bu, `responseType` seçeneği ile yapılır.
 
-| **`responseType` value** | **Returned response type**                                                                                                                |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `'json'` (default)       | JSON data of the given generic type                                                                                                       |
-| `'text'`                 | string data                                                                                                                               |
-| `'arraybuffer'`          | [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) containing the raw response bytes |
-| `'blob'`                 | [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob) instance                                                                        |
+| **`responseType` değeri** | **Döndürülen yanıt türü**                                                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `'json'` (varsayılan)     | Verilen genel türde JSON verisi                                                                                                     |
+| `'text'`                  | string verisi                                                                                                                       |
+| `'arraybuffer'`           | [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) ham yanıt baytlarını içeren |
+| `'blob'`                  | [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob) örneği                                                                    |
 
 Örneğin, `HttpClient`'tan bir `.jpeg` görüntüsünün ham baytlarını bir `ArrayBuffer`'a indirmesini isteyebilirsiniz:
 
@@ -43,7 +43,7 @@ http.get('/images/dog.jpg', {responseType: 'arraybuffer'}).subscribe((buffer) =>
 });
 ```
 
-<docs-callout important title="Literal value for `responseType`">
+<docs-callout important title="`responseType` için literal değer">
 `responseType` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `responseType: 'text' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
@@ -63,14 +63,14 @@ http.post<Config>('/api/config', newConfig).subscribe((config) => {
 
 İsteğin `body`'si olarak birçok farklı türde değer sağlanabilir ve `HttpClient` bunları buna göre serileştirir:
 
-| **`body` type**                                                                                                               | **Serialized as**                                    |
-| ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| string                                                                                                                        | Plain text                                           |
-| number, boolean, array, or plain object                                                                                       | JSON                                                 |
-| [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)                       | raw data from the buffer                             |
-| [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)                                                                     | raw data with the `Blob`'s content type              |
-| [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                                             | `multipart/form-data` encoded data                   |
-| [`HttpParams`](api/common/http/HttpParams) or [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams) | `application/x-www-form-urlencoded` formatted string |
+| **`body` türü**                                                                                                               | **Serileştirme biçimi**                            |
+| ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| string                                                                                                                        | Düz metin                                          |
+| number, boolean, array veya düz nesne                                                                                         | JSON                                               |
+| [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)                       | buffer'daki ham veri                               |
+| [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)                                                                     | `Blob`'un içerik türüyle ham veri                  |
+| [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                                             | `multipart/form-data` olarak kodlanmış veri        |
+| [`HttpParams`](api/common/http/HttpParams) or [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams) | `application/x-www-form-urlencoded` biçimli string |
 
 IMPORTANT: İsteğin gerçekten gönderilmesi için değiştirici istek `Observable`'larına `.subscribe()` yapmayı unutmayın.
 
@@ -198,7 +198,7 @@ http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
 });
 ```
 
-<docs-callout important title="Literal value for `observe`">
+<docs-callout important title="`observe` için literal değer">
 `observe` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'response' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
@@ -208,31 +208,31 @@ http.get<Config>('/api/config', {observe: 'response'}).subscribe((res) => {
 
 Yanıt gövdesi veya yanıt nesnesine ek olarak, `HttpClient` istek yaşam döngüsündeki belirli anlara karşılık gelen ham _olaylar_ akışını da döndürebilir. Bu olaylar isteğin ne zaman gönderildiğini, yanıt başlığının ne zaman döndüğünü ve gövdenin ne zaman tamamlandığını içerir. Bu olaylar ayrıca büyük istek veya yanıt gövdeleri için yükleme ve indirme durumunu bildiren _ilerleme olaylarını_ da içerebilir.
 
-İlerleme olayları varsayılan olarak devre dışıdır (performans maliyeti olduğundan) ancak `reportProgress` seçeneği ile etkinleştirilebilir.
+İlerleme olayları varsayılan olarak devre dışıdır (performans maliyeti olduğundan) ancak `reportUploadProgress` ve `reportDownloadProgress` seçenekleri ile etkinleştirilebilir.
 
-NOTE: `HttpClient`'ın varsayılan fetch arka ucu _yükleme_ ilerleme olaylarını bildirmez. Uygulamanız yükleme ilerleme olaylarına ihtiyaç duyuyorsa, `HttpClient`'ı `provideHttpClient(...)` içinde `withXhr()` ile yapılandırın.
+NOTE: `HttpClient`'ın varsayılan fetch arka ucu _yükleme_ ilerleme olaylarını desteklemez ve `reportUploadProgress` ayarlarsanız hata fırlatır. Uygulamanız yükleme ilerleme olaylarına ihtiyaç duyuyorsa, `HttpClient`'ı `provideHttpClient(...)` içinde `withXhr()` ile yapılandırın.
 
 Olay akışını gözlemlemek için `observe` seçeneğini `'events'` olarak ayarlayın:
 
 ```ts
 http
-  .post('/api/upload', myData, {
-    reportProgress: true,
+  .get('/api/download', {
+    reportDownloadProgress: true,
     observe: 'events',
   })
   .subscribe((event) => {
     switch (event.type) {
-      case HttpEventType.UploadProgress:
-        console.log('Uploaded ' + event.loaded + ' out of ' + event.total + ' bytes');
+      case HttpEventType.DownloadProgress:
+        console.log('Downloaded ' + event.loaded + ' out of ' + event.total + ' bytes');
         break;
       case HttpEventType.Response:
-        console.log('Finished uploading!');
+        console.log('Finished downloading!');
         break;
     }
   });
 ```
 
-<docs-callout important title="Literal value for `observe`">
+<docs-callout important title="`observe` için literal değer">
 `observe` değeri `HttpClient` tarafından döndürülen türü etkilediğinden, bir `string` türü değil literal bir tür olmalıdır.
 
 İstek yöntemine iletilen seçenekler nesnesi bir literal nesne ise bu otomatik olarak gerçekleşir, ancak istek seçeneklerini bir değişkene veya yardımcı yönteme çıkarıyorsanız, bunu `observe: 'events' as const` gibi açıkça literal olarak belirtmeniz gerekebilir.
@@ -240,14 +240,14 @@ http
 
 Olay akışında bildirilen her `HttpEvent`, olayın neyi temsil ettiğini ayırt eden bir `type` özelliğine sahiptir:
 
-| **`type` value**                 | **Event meaning**                                                                  |
-| -------------------------------- | ---------------------------------------------------------------------------------- |
-| `HttpEventType.Sent`             | The request has been dispatched to the server                                      |
-| `HttpEventType.UploadProgress`   | An `HttpUploadProgressEvent` reporting progress on uploading the request body      |
-| `HttpEventType.ResponseHeader`   | The head of the response has been received, including status and headers           |
-| `HttpEventType.DownloadProgress` | An `HttpDownloadProgressEvent` reporting progress on downloading the response body |
-| `HttpEventType.Response`         | The entire response has been received, including the response body                 |
-| `HttpEventType.User`             | A custom event from an HTTP interceptor.                                           |
+| **`type` değeri**                | **Olay anlamı**                                                                |
+| -------------------------------- | ------------------------------------------------------------------------------ |
+| `HttpEventType.Sent`             | İstek sunucuya gönderildi                                                      |
+| `HttpEventType.UploadProgress`   | İstek gövdesinin yükleme ilerlemesini bildiren bir `HttpUploadProgressEvent`   |
+| `HttpEventType.ResponseHeader`   | Durum ve başlıklar dahil yanıtın başı alındı                                   |
+| `HttpEventType.DownloadProgress` | Yanıt gövdesinin indirme ilerlemesini bildiren bir `HttpDownloadProgressEvent` |
+| `HttpEventType.Response`         | Yanıt gövdesi dahil tüm yanıt alındı                                           |
+| `HttpEventType.User`             | Bir HTTP interceptor'dan gelen özel olay.                                      |
 
 ## İstek Hatalarını Yönetme {#handling-request-failure}
 
@@ -257,7 +257,7 @@ Bir HTTP isteğinin başarısız olmasının üç yolu vardır:
 - Zaman aşımı seçeneği ayarlandığında istek zamanında yanıt vermeyebilir.
 - Arka uç isteği alabilir ancak işlemekte başarısız olabilir ve bir hata yanıtı döndürebilir.
 
-`HttpClient` yukarıdaki tüm hata türlerini, `Observable`'ın hata kanalı aracılığıyla döndürdüğü bir `HttpErrorResponse` içinde yakalar. Ağ ve zaman aşımı hataları `0` `status` koduna ve [`ProgressEvent`](https://developer.mozilla.org/docs/Web/API/ProgressEvent) örneği olan bir `error`'a sahiptir. Arka uç hataları, arka uç tarafından döndürülen başarısız `status` koduna ve hata yanıtını `error` olarak içerir. Hatanın nedenini ve hatayı ele almak için uygun eylemi belirlemek üzere yanıtı inceleyin.
+`HttpClient` yukarıdaki tüm hata türlerini, `Observable`'ın hata kanalı aracılığıyla döndürdüğü bir `HttpErrorResponse` içinde yakalar. Ağ ve zaman aşımı hataları `0` `status` koduna sahiptir. Zaman aşımlarında `error`, `TimeoutError` adlı bir `DOMException`'dır; ağ hatalarında ise `fetch` tarafından fırlatılan hatadır (`withXhr()` kullanılırken bir [`ProgressEvent`](https://developer.mozilla.org/docs/Web/API/ProgressEvent)). Arka uç hataları, arka uç tarafından döndürülen başarısız `status` koduna ve hata yanıtını `error` olarak içerir. Hatanın nedenini ve hatayı ele almak için uygun eylemi belirlemek üzere yanıtı inceleyin.
 
 [RxJS kütüphanesi](https://rxjs.dev/) hata yönetimi için kullanışlı olabilecek çeşitli operatörler sunar.
 
@@ -671,7 +671,7 @@ export class UserProfile {
 
   private userService = inject(UserService);
 
-  constructor(): void {
+  constructor() {
     effect(() => {
       this.user$ = this.userService.getUser(this.userId());
     });

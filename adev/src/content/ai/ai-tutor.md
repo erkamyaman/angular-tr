@@ -1,4 +1,4 @@
-# Angular AI Tutor
+# Angular Yapay Zeka Eğitmeni
 
 Angular AI Tutor, sıfırdan eksiksiz, modern bir Angular uygulaması oluşturma sürecinde size adım adım etkileşimli olarak rehberlik etmek için tasarlanmıştır. Gerçek, somut bir proje oluşturarak en son kalıpları ve en iyi uygulamaları öğreneceksiniz: tarifleri oluşturmak ve yönetmek için bir **"Akıllı Tarif Kutusu"**.
 

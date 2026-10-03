@@ -9,7 +9,7 @@ Entegrasyon etkinleştirildiğinde, iki veri seti içeren bir [performans profil
 
 Her iki veri seti de aynı sekmede ancak ayrı izlerde birlikte sunulur:
 
-<img alt="Angular custom track in Chrome DevTools profiler" src="assets/images/best-practices/runtime-performance/angular-perf-in-chrome.png">
+<img alt="Chrome DevTools profiler'ında Angular özel izi" src="assets/images/best-practices/runtime-performance/angular-perf-in-chrome.png">
 
 Angular'a özgü veriler, bir tarayıcı tarafından yakalanan daha düşük düzeyli fonksiyon ve yöntem çağrılarının yanında framework kavramları (bileşenler, değişiklik algılama, yaşam döngüsü kancaları vb.) açısından ifade edilir. Bu iki veri seti birbiriyle ilişkilidir ve farklı görünümler ile ayrıntı düzeyleri arasında geçiş yapabilirsiniz.
 
@@ -47,7 +47,7 @@ bootstrapApplication(MyApp);
 
 Chrome DevTools performans panelindeki **Record** düğmesini kullanın:
 
-<img alt="Recording a profile" src="assets/images/best-practices/runtime-performance/recording-profile-in-chrome.png">
+<img alt="Profil kaydı alma" src="assets/images/best-practices/runtime-performance/recording-profile-in-chrome.png">
 
 Profil kaydetme hakkında daha fazla ayrıntı için [Chrome DevTools belgeleri](https://developer.chrome.com/docs/devtools/performance#record)'ne bakın.
 
@@ -56,7 +56,7 @@ Profil kaydetme hakkında daha fazla ayrıntı için [Chrome DevTools belgeleri]
 Bir profil kaydettikten sonra **Angular** izinde bir bileşen olayı seçin.
 **Summary** sekmesi, `angular-devtools://component/...` URL şemasını kullanan bir **Component** bağlantısı içerebilir.
 
-<img alt="Chrome DevTools Performance panel showing an Angular custom track with a selected _MainComponent event. The Summary tab displays a Component link that uses the angular-devtools://component URL scheme." src="assets/images/best-practices/runtime-performance/chrome-performance-deep-link.png">
+<img alt="Chrome DevTools Performance paneli, seçili bir _MainComponent olayıyla birlikte Angular özel izini gösteriyor. Summary sekmesi, angular-devtools://component URL şemasını kullanan bir Component bağlantısı içeriyor." src="assets/images/best-practices/runtime-performance/chrome-performance-deep-link.png">
 
 Angular DevTools'u açmak ve **Components** sekmesinde eşleşen bileşeni seçmek için bağlantıya tıklayın.
 Bu, tarayıcı düzeyindeki bir profilden seçilen bir olayın bileşen durumuna ve meta verilerine geçmenize yardımcı olur.
@@ -71,7 +71,7 @@ Performans sorunlarını hızla belirlemek ve teşhis etmek için "Angular" öze
 
 Angular ve Chrome verileri ayrı ancak ilişkili izlerde sunulduğu için, Angular'ın uygulama kodunun ne zaman çalıştırıldığını, başka bir tarayıcı işleminin (tipik olarak düzenleme ve boyama) veya aynı sayfada çalışan diğer betiklerin (bu durumda özel Angular izinde herhangi bir veri bulunmaz) aksine görebilirsiniz:
 
-<img alt="Profile data: Angular vs. 3rd party scripts execution" src="assets/images/best-practices/runtime-performance/profile-angular-vs-3rd-party.png">
+<img alt="Profil verisi: Angular ve 3. parti betiklerin çalışması" src="assets/images/best-practices/runtime-performance/profile-angular-vs-3rd-party.png">
 
 Bu, daha fazla araştırmanın Angular uygulama koduna mı yoksa kod tabanınızın veya bağımlılıklarınızın diğer bölümlerine mi odaklanması gerektiğini belirlemenize olanak tanır.
 
@@ -92,19 +92,19 @@ Uygulama bootstrap süreci genellikle şu öğelerden oluşur:
 - `bootstrapApplication` çağrısı, kök bileşenin örneklenmesi ve ilk değişiklik algılama gibi maviye işaretlenmiş tetikleyiciler
 - Bootstrap sırasında örneklenen, yeşile işaretlenmiş çeşitli DI servisleri.
 
-<img alt="Profile data: bootstrap application" src="assets/images/best-practices/runtime-performance/profile-bootstrap-application.png">
+<img alt="Profil verisi: uygulamanın bootstrap edilmesi" src="assets/images/best-practices/runtime-performance/profile-bootstrap-application.png">
 
 #### Örnek: Bileşen işleme
 
 Bir bileşenin işlenmesi tipik olarak bir giriş noktası (mavi) ve ardından şablon çalıştırması (mor) olarak temsil edilir. Bir şablon ise direktiflerin örneklenmesini ve yaşam döngüsü kancalarının çalıştırılmasını (yeşil) tetikleyebilir:
 
-<img alt="Profile data: component processing" src="assets/images/best-practices/runtime-performance/profile-component-processing.png">
+<img alt="Profil verisi: bileşen işleme" src="assets/images/best-practices/runtime-performance/profile-component-processing.png">
 
 #### Örnek: Değişiklik algılama
 
 Bir değişiklik algılama döngüsü genellikle bir veya daha fazla veri senkronizasyon geçişinden (mavi) oluşur; her geçiş bir bileşen alt kümesini gezer.
 
-<img alt="Profile data: change detection" src="assets/images/best-practices/runtime-performance/profile-change-detection.png">
+<img alt="Profil verisi: değişiklik algılama" src="assets/images/best-practices/runtime-performance/profile-change-detection.png">
 
 Bu veri görselleştirmesi ile, değişiklik algılamaya dahil olan bileşenler ve hangilerinin atlandığını (tipik olarak kirli olarak işaretlenmemiş `OnPush` bileşenleri) hemen belirlemek mümkündür.
 

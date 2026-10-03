@@ -14,6 +14,6 @@ HTTP istemci hizmeti aşağıdaki başlıca özellikleri sunar:
 ## Sırada Ne Var
 
 <docs-pill-row>
-  <docs-pill href="guide/http/setup" title="Setting up HttpClient"/>
-  <docs-pill href="guide/http/making-requests" title="Making HTTP requests"/>
+  <docs-pill href="guide/http/setup" title="`HttpClient` Kurulumu"/>
+  <docs-pill href="guide/http/making-requests" title="HTTP İstekleri Yapma"/>
 </docs-pill-row>

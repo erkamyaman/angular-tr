@@ -58,12 +58,12 @@ Sterilizasyon bağlama bağlıdır.
 
 Angular aşağıdaki güvenlik bağlamlarını tanımlar:
 
-| Security contexts | Details                                                                              |
-| :---------------- | :----------------------------------------------------------------------------------- |
-| HTML              | Bir değer HTML olarak yorumlandığında kullanılır, örneğin `innerHtml`'e bağlanırken. |
-| Style             | CSS'yi `style` özelliğine bağlarken kullanılır.                                      |
-| URL               | URL özellikleri için kullanılır, örneğin `<a href>`.                                 |
-| Resource URL      | Kod olarak yüklenen ve çalıştırılan bir URL, örneğin `<script src>` içinde.          |
+| Güvenlik bağlamları | Ayrıntılar                                                                           |
+| :------------------ | :----------------------------------------------------------------------------------- |
+| HTML                | Bir değer HTML olarak yorumlandığında kullanılır, örneğin `innerHtml`'e bağlanırken. |
+| Style               | CSS'yi `style` özelliğine bağlarken kullanılır.                                      |
+| URL                 | URL özellikleri için kullanılır, örneğin `<a href>`.                                 |
+| Resource URL        | Kod olarak yüklenen ve çalıştırılan bir URL, örneğin `<script src>` içinde.          |
 
 Angular, HTML ve URL'ler için güvenilmez değerleri sterilize eder. Kaynak URL'lerini sterilize etmek mümkün değildir çünkü rastgele kod içerirler.
 Geliştirme modunda Angular, sterilizasyon sırasında bir değeri değiştirmek zorunda kaldığında konsola bir uyarı yazdırır.
@@ -84,7 +84,7 @@ Bir saldırganın kontrol edebileceği bir değeri `innerHTML`'e bağlamanın no
 
 Angular değeri güvensiz olarak tanır ve otomatik olarak sterilize eder; `script` öğesini kaldırır ancak `<b>` öğesi gibi güvenli içeriği korur.
 
-<img alt="A screenshot showing interpolated and bound HTML values" src="assets/images/guide/security/binding-inner-html.png#small">
+<img alt="Interpolasyon yapılmış ve bağlanmış HTML değerlerini gösteren bir ekran görüntüsü" src="assets/images/guide/security/binding-inner-html.png#small">
 
 ### DOM API'lerinin doğrudan kullanımı ve açık sterilizasyon çağrıları {#direct-use-of-the-dom-apis-and-explicit-sanitization-calls}
 
@@ -123,7 +123,7 @@ Bunu önlemek için `bypassSecurityTrustUrl` çağrısını kullanarak URL değe
 
 <docs-code header="bypass-security.component.ts (trust-url)" path="adev/src/content/examples/security/src/app/bypass-security.component.ts" region="trust-url"/>
 
-<img alt="A screenshot showing an alert box created from a trusted URL" src="assets/images/guide/security/bypass-security-component.png#medium">
+<img alt="Güvenilir bir URL'den oluşturulan bir uyarı kutusunu gösteren bir ekran görüntüsü" src="assets/images/guide/security/bypass-security-component.png#medium">
 
 Kullanıcı girişini güvenilir bir değere dönüştürmeniz gerekiyorsa, bir bileşen yöntemi kullanın.
 Aşağıdaki şablon, kullanıcıların bir YouTube video kimliği girmesine ve ilgili videoyu bir `<iframe>` içinde yüklemesine olanak tanır.
@@ -150,7 +150,6 @@ Angular uygulamanızı sunarken, sunucu her istek için HTTP başlığına rastg
 Bu nonce'u Angular'a sağlamalısınız, böylece framework `<style>` öğelerini render edebilir.
 Angular için nonce'u aşağıdaki yollardan biriyle ayarlayabilirsiniz:
 
-1. [Çalışma alanı yapılandırmasında](reference/configs/workspace-config#ek-derleme-ve-test-seçenekleri) `autoCsp` seçeneğini `true` olarak ayarlayın.
 1. Kök uygulama öğesinde `ngCspNonce` niteliğini `<app ngCspNonce="randomNonceGoesHere"></app>` olarak ayarlayın. Yanıtı oluştururken nonce'u hem başlığa hem de `index.html`'ye ekleyebilen sunucu tarafı şablonlamaya erişiminiz varsa bu yaklaşımı kullanın.
 1. `CSP_NONCE` enjeksiyon token'ını kullanarak nonce'u sağlayın. Çalışma zamanında nonce'a erişiminiz varsa ve `index.html`'yi önbelleğe alabilmek istiyorsanız bu yaklaşımı kullanın.
 
@@ -180,18 +179,65 @@ Bir nonce'un "tek seferlik kullanım" bütünlüğünü korumak için, ideal ola
 
 </docs-callout>
 
-NOTE: Uygulamanızın [kritik CSS'ini satır içi yapmak](/tools/cli/build#kritik-css-satır-içi-yerleştirme) istiyorsanız, `CSP_NONCE` token'ını kullanamazsınız ve `autoCsp` seçeneğini veya kök uygulama öğesinde `ngCspNonce` niteliğini ayarlamayı tercih etmelisiniz.
+NOTE: Uygulamanızın [kritik CSS'ini satır içi yapmak](/tools/cli/build#kritik-css-satır-içi-yerleştirme) istiyorsanız, `CSP_NONCE` token'ını kullanamazsınız ve [çalışma alanı yapılandırmasındaki](reference/configs/workspace-config#ek-derleme-ve-test-seçenekleri) `security.autoCsp` seçeneğini veya kök uygulama öğesinde `ngCspNonce` niteliğini ayarlamayı tercih etmelisiniz.
 
 Projenizde nonce oluşturamıyorsanız, CSP başlığının `style-src` bölümüne `'unsafe-inline'` ekleyerek satır içi stillere izin verebilirsiniz.
 
-| Sections                                         | Details                                                                                                                                                                                                                           |
-| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `default-src 'self';`                            | Sayfanın gerekli tüm kaynaklarını aynı kaynaktan yüklemesine izin verir.                                                                                                                                                          |
-| `style-src 'self' 'nonce-randomNonceGoesHere';`  | Sayfanın global stilleri aynı kaynaktan \(`'self'`\) ve Angular tarafından `nonce-randomNonceGoesHere` ile eklenen stilleri yüklemesine izin verir.                                                                               |
-| `script-src 'self' 'nonce-randomNonceGoesHere';` | Sayfanın JavaScript'i aynı kaynaktan \(`'self'`\) ve Angular CLI tarafından `nonce-randomNonceGoesHere` ile eklenen komut dosyalarını yüklemesine izin verir. Bu yalnızca kritik CSS satır içi ekleme kullanıyorsanız gereklidir. |
+| Bölümler                                         | Ayrıntılar                                                                                                                                                                                                                                                                                                                                                                                              |
+| :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `default-src 'self';`                            | Sayfanın gerekli tüm kaynaklarını aynı kaynaktan yüklemesine izin verir.                                                                                                                                                                                                                                                                                                                                |
+| `style-src 'self' 'nonce-randomNonceGoesHere';`  | Sayfanın global stilleri aynı kaynaktan \(`'self'`\) ve Angular tarafından `nonce-randomNonceGoesHere` ile eklenen stilleri yüklemesine izin verir.                                                                                                                                                                                                                                                     |
+| `script-src 'self' 'nonce-randomNonceGoesHere';` | Sayfanın JavaScript'i aynı kaynaktan \(`'self'`\) ve Angular CLI tarafından `nonce-randomNonceGoesHere` ile eklenen komut dosyalarını yüklemesine izin verir. Yalnızca kritik CSS satır içi ekleme veya alt kaynak bütünlüğünü (dinamik olarak içe aktarılan parçaları doğrulamak için bir import map ekler) etkinleştirdiğinizde gereklidir, ikisi de `index.html`'ye satır içi komut dosyaları ekler. |
 
 Angular'ın düzgün çalışması için yalnızca bu ayarlar gereklidir.
 Projeniz büyüdükçe, uygulamanıza özgü ekstra özellikler için CSP ayarlarınızı genişletmeniz gerekebilir.
+
+#### Her yanıt için nonce olmadan statik barındırma
+
+Barındırma ortamınız veya CDN'iniz önbelleğe alınmış HTML içindeki bir yer tutucu token'ı uçta (örneğin SSI, ESI veya bir edge fonksiyonu kullanarak) değiştirebiliyorsa, `index.html`'yi `ngCspNonce` içinde bir yer tutucuyla (örneğin `<app ngCspNonce="__CSP_NONCE__"></app>`) derleyebilir ve her yanıtta bunu benzersiz bir nonce ile değiştirebilirsiniz.
+
+Uygulamanızı `index.html`'yi uçta dönüşüm yapmadan olduğu gibi sunan statik bir barındırıcıya dağıtıyorsanız, statik bir nonce'u koda sabit yazmayın. Bunun yerine aşağıdaki yaklaşımlardan birini kullanın:
+
+##### Satır içi komut dosyalarını `autoCsp` ile hash'leyin
+
+[Çalışma alanı yapılandırmasında](reference/configs/workspace-config#ek-derleme-ve-test-seçenekleri) `security.autoCsp` seçeneğini `true` olarak ayarlayın.
+Derleme zamanında Angular CLI, kritik CSS satır içi ekleme ve alt kaynak bütünlüğü tarafından eklenen komut dosyaları dahil olmak üzere `index.html` içindeki her satır içi komut dosyasının hash'ini hesaplar.
+CLI, `<script src>` öğelerini hash'lenmiş bir yükleyici komut dosyasıyla değiştirir ve `<head>` başında bir `<meta>` etiketi ekler:
+
+```txt
+script-src 'strict-dynamic' 'sha256-...' https: 'unsafe-inline'; object-src 'none'; base-uri 'self';
+```
+
+Hash'ler yalnızca komut dosyalarının içeriğine bağlı olduğundan, `index.html` her ziyaretçi için geçerli kalır ve önbelleğe alınabilir.
+Hash'leri ve `'strict-dynamic'` değerini destekleyen tarayıcılar, `https:` ve `'unsafe-inline'` yedek kaynaklarını yok sayar.
+
+`autoCsp` tarafından üretilen politikanın şu sınırlamaları vardır:
+
+- Yalnızca komut dosyalarını kapsar. `style-src` değerini ayrıca yapılandırmalısınız.
+- Tarayıcılar, `frame-ancestors`, `report-uri` ve `sandbox` gibi bazı direktifleri bir `<meta>` etiketinde göründüklerinde yok sayar. Bu direktifleri bir `Content-Security-Policy` HTTP başlığında gönderin.
+- Bir sayfada birden fazla politika olduğunda tarayıcı hepsini uygular. Ayrıca bir CSP başlığı gönderiyorsanız, hash'lenmiş satır içi komut dosyalarını engellememesi için başlıktan hem `script-src` hem de `default-src` direktiflerini çıkarın.
+- `autoCsp` seçeneğini sunucu tarafı render ile kullanamazsınız.
+
+##### Satır içi komut dosyalarından kaçının
+
+Angular CLI, `index.html`'ye yalnızca kritik CSS satır içi ekleme ve alt kaynak bütünlüğü (dinamik modül içe aktarmaları için bütünlük meta verisini taşıyan bir import map üretir) için satır içi komut dosyaları ekler.
+`optimization.styles.inlineCritical` seçeneğini `false` yapar ve `subresourceIntegrity` seçeneğini devre dışı bırakırsanız, `index.html` satır içi komut dosyası içermez. Bu durumda `script-src 'self'` ile bir `Content-Security-Policy` başlığı yapılandırabilirsiniz.
+
+NOTE: Kritik CSS satır içi eklemeyi devre dışı bırakmak uygulamanızın ilk render'ını yavaşlatabilir ve alt kaynak bütünlüğünü devre dışı bırakmak komut dosyası bütünlük denetimlerini kaldırır.
+
+##### Statik barındırma için stilleri yapılandırın
+
+Angular, bileşen stilleri için çalışma zamanında `<style>` öğeleri ekler ve kritik CSS satır içi ekleme `index.html`'ye bir `<style>` öğesi ekler.
+Ne `autoCsp` ne de satır içi komut dosyalarını devre dışı bırakmak bu stilleri kapsar. Her yanıt için bir nonce olmadan, `style-src` bölümüne `'unsafe-inline'` ekleyerek bunlara izin verin.
+Örneğin, derlemeniz satır içi komut dosyalarından kaçınıyorsa, barındırıcınızı aşağıdaki başlığı gönderecek şekilde yapılandırın:
+
+```txt
+default-src 'self'; style-src 'self' 'unsafe-inline';
+```
+
+`autoCsp` kullanıyorsanız, HTTP başlığında `default-src` veya `script-src` olmadan `style-src 'self' 'unsafe-inline'` gönderin.
+
+Her iki durumda da uygulama kodunuz ve üçüncü taraf kütüphaneler ek direktifler gerektirebilir.
 
 ### Güvenilir Türleri Zorlama
 
@@ -209,7 +255,7 @@ Güncel tarayıcı desteği için [caniuse.com/trusted-types](https://caniuse.co
 
 Uygulamanız için Güvenilir Türleri zorlamak amacıyla, uygulamanızın web sunucusunu aşağıdaki Angular politikalarından biriyle HTTP başlıkları yayacak şekilde yapılandırmanız gerekir:
 
-| Policies                 | Detail                                                                                                                                                                                                                                                                                                              |
+| Politikalar              | Ayrıntı                                                                                                                                                                                                                                                                                                             |
 | :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `angular`                | Bu politika, Angular'ın iç güvenlik incelemesinden geçmiş kodunda kullanılır ve Güvenilir Türler zorlandığında Angular'ın çalışması için gereklidir. Angular tarafından sterilize edilen tüm satır içi şablon değerleri veya içerikler bu politika tarafından güvenli olarak değerlendirilir.                       |
 | `angular#bundler`        | Bu politika, Angular CLI paketleyicisi tarafından tembel yük (lazy chunk) dosyaları oluştururken kullanılır.                                                                                                                                                                                                        |
@@ -310,7 +356,7 @@ Bu, yalnızca uygulamanızın bu çerez token'ını okuyabileceği ve özel baş
 
 Varsayılan olarak, bir interceptor bu başlığı tüm değiştirici isteklerde (örneğin `POST`) göreceli ve aynı kaynaklı URL'lere gönderir, ancak `GET` veya `HEAD` isteklerinde göndermez.
 
-<docs-callout helpful title="Why not protect GET requests?">
+<docs-callout helpful title="GET isteklerini neden korumuyoruz?">
 CSRF koruması yalnızca arka uçtaki durumu değiştirebilecek istekler için gereklidir. Doğası gereği, CSRF saldırıları alan sınırlarını aşar ve web'in [aynı kaynak politikası](https://developer.mozilla.org/docs/Web/Security/Same-origin_policy) saldıran bir sayfanın kimliği doğrulanmış `GET` isteklerinin sonuçlarını almasını engeller.
 </docs-callout>
 
@@ -318,7 +364,7 @@ Bundan yararlanmak için sunucunuzun sayfa yüklemesinde veya ilk GET isteğinde
 
 Birden fazla Angular uygulamasının aynı alan veya alt alanı paylaştığı ortamlarda çakışmaları önlemek için her uygulamaya benzersiz bir çerez adı verin.
 
-<docs-callout important title="HttpClient supports only the client half of the XSRF protection scheme">
+<docs-callout important title="HttpClient, XSRF koruma şemasının yalnızca istemci yarısını destekler">
   Arka uç hizmetiniz sayfanız için çerezi ayarlayacak ve tüm uygun isteklerde başlığın mevcut olduğunu doğrulayacak şekilde yapılandırılmalıdır. Bunu yapmamak Angular'ın varsayılan korumasını etkisiz kılar.
 </docs-callout>
 

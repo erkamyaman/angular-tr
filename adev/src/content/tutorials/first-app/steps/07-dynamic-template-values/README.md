@@ -27,7 +27,7 @@ Kod editöründe:
 1.  `src/app/housing-location/housing-location.ts` dosyasına gidin
 1.  `@Component` dekoratörünün template özelliğinde, mevcut HTML işaretlemesini aşağıdaki kodla değiştirin:
 
-    <docs-code language="angular-ts"  header="Update HousingLocation template in housing-location.ts" path="adev/src/content/tutorials/first-app/steps/08-ngFor/src/app/housing-location/housing-location.ts" visibleLines="[6,17]"/>
+    <docs-code language="angular-ts"  header="housing-location.ts içinde HousingLocation şablonunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/08-ngFor/src/app/housing-location/housing-location.ts" visibleLines="[6,17]"/>
 
 Bu güncellenmiş şablon kodunda, `housingLocation.photo` değerini `src` niteliğine bağlamak için özellik bağlama kullandınız. `alt` niteliği, görselin alt metnine daha fazla bağlam vermek için interpolasyon kullanır.
 
@@ -38,7 +38,7 @@ Bu güncellenmiş şablon kodunda, `housingLocation.photo` değerini `src` nitel
 <docs-step title="Değişikliklerin tarayıcıda görüntülendiğini doğrulayın">
 1.  Tüm değişiklikleri kaydedin.
 1.  Tarayıcıyı açın ve uygulamanın fotoğrafı, şehri ve eyalet örnek verisini işlediğini doğrulayın.
-    <img alt="browser frame of homes-app displaying logo, filter text input box, search button and the same housing location UI card" src="assets/images/tutorials/first-app/homes-app-lesson-07-step-2.png">
+    <img alt="Logoyu, filtre metin giriş kutusunu, arama düğmesini ve aynı konut konumu kartını gösteren homes-app tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-07-step-2.png">
 </docs-step>
 
 </docs-workflow>

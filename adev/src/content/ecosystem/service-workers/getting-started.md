@@ -72,7 +72,7 @@ Chrome'da:
 1. **Network sekmesine** gidin.
 1. **Throttling** açılır menüsünde **Offline**'ı seçin.
 
-<img alt="The offline option in the Network tab is selected" src="assets/images/guide/service-worker/offline-option.png">
+<img alt="Network sekmesinde çevrimdışı seçeneği seçili" src="assets/images/guide/service-worker/offline-option.png">
 
 Artık uygulamanın ağ etkileşimine erişimi yoktur.
 
@@ -83,7 +83,7 @@ Yenilemede sayfa normal şekilde yüklenir.
 
 Service worker'ın aktif olduğunu doğrulamak için Network sekmesine bakın.
 
-<img alt="Requests are marked as from ServiceWorker" src="assets/images/guide/service-worker/sw-active.png">
+<img alt="İstekler ServiceWorker kaynaklı olarak işaretlenmiş" src="assets/images/guide/service-worker/sw-active.png">
 
 HELPFUL: "Size" sütununun altında, istek durumu `(ServiceWorker)` olarak gösterilir.
 Bu, kaynakların ağdan yüklenmediği anlamına gelir.
@@ -133,7 +133,7 @@ Uygulamada bir değişiklik yapın ve service worker'ın güncellemeyi yükledi�
 1. Aynı pencerede [http://localhost:8080](http://localhost:8080) adresini tekrar açın.
    Ne olur?
 
-   <img alt="It still says Welcome to Service Workers!" src="assets/images/guide/service-worker/welcome-msg-en.png">
+   <img alt="Hâlâ Welcome to Service Workers! yazıyor" src="assets/images/guide/service-worker/welcome-msg-en.png">
 
    Ne yanlış gitti?
    _Aslında hiçbir şey!_
@@ -150,7 +150,7 @@ Uygulamada bir değişiklik yapın ve service worker'ın güncellemeyi yükledi�
 
 1. Sayfayı yenileyin.
 
-   <img alt="The text has changed to say Bienvenue à app!" src="assets/images/guide/service-worker/welcome-msg-fr.png">
+   <img alt="Metin Bienvenue à app! olarak değişti" src="assets/images/guide/service-worker/welcome-msg-fr.png">
 
    Service worker, uygulamanızın güncellenmiş sürümünü _arka planda_ yükledi ve sayfa bir sonraki yüklendiğinde veya yenilendiğinde, service worker en son sürüme geçer.
 
@@ -253,6 +253,7 @@ export const appConfig: ApplicationConfig = {
 Mevcut kayıt stratejileri:
 
 - **`'registerWhenStable:timeout'`** (varsayılan: `'registerWhenStable:30000'`) - Uygulama kararlı hale gelir gelmez (bekleyen mikro/makro görev kalmadığında) ancak belirtilen milisaniye cinsinden zaman aşımından geç olmamak üzere kaydeder
+  Zaman aşımı zorunludur. Zaman aşımı olmadan `'registerWhenStable'`, service worker'ı hemen kaydeder.
 - **`'registerImmediately'`** - Service worker'ı hemen kaydeder
 - **`'registerWithDelay:timeout'`** - Belirtilen milisaniye cinsinden bir gecikmeyle kaydeder
 
@@ -298,9 +299,9 @@ export const customConfig: ApplicationConfig = {
 Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
-  <docs-pill href="ecosystem/service-workers/config" title="Configuration file"/>
-  <docs-pill href="ecosystem/service-workers/communications" title="Communicating with the Service Worker"/>
-  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push notifications"/>
-  <docs-pill href="ecosystem/service-workers/devops" title="Service Worker devops"/>
-  <docs-pill href="ecosystem/service-workers/app-shell" title="App shell pattern"/>
+  <docs-pill href="ecosystem/service-workers/config" title="Service Worker yapılandırma dosyası"/>
+  <docs-pill href="ecosystem/service-workers/communications" title="Service Worker ile İletişim"/>
+  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push bildirimleri"/>
+  <docs-pill href="ecosystem/service-workers/devops" title="Service worker DevOps"/>
+  <docs-pill href="ecosystem/service-workers/app-shell" title="App shell kalıbı"/>
 </docs-pill-row>

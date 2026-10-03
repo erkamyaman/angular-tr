@@ -89,6 +89,6 @@ IMPORTANT: Bir eylemin karşılık gelen `onActionClick` girişi yoksa, bildirim
 Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
-  <docs-pill href="ecosystem/service-workers/communications" title="Communicating with the Service Worker"/>
-  <docs-pill href="ecosystem/service-workers/devops" title="Service Worker devops"/>
+  <docs-pill href="ecosystem/service-workers/communications" title="Service Worker ile İletişim"/>
+  <docs-pill href="ecosystem/service-workers/devops" title="Service worker DevOps"/>
 </docs-pill-row>

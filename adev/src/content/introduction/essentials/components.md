@@ -98,7 +98,7 @@ Bir bileşeni içe aktarmak ve kullanmak için şunları yapmanız gerekir:
 İşte bir `ProfilePhoto` bileşenini içe aktaran bir `UserProfile` bileşeni örneği:
 
 ```angular-ts {header: "user-profile.ts"}
-import {ProfilePhoto} from 'profile-photo.ts';
+import {ProfilePhoto} from './profile-photo';
 
 @Component({
   selector: 'user-profile',

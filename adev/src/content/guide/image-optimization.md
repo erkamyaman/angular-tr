@@ -308,7 +308,7 @@ Bir "yükleyici", belirli bir görsel dosyası için bir [görsel dönüştürme
 
 `NgOptimizedImage`, hiçbir dönüşüm uygulamayan genel bir yükleyicinin yanı sıra çeşitli üçüncü taraf görsel servisleri için yükleyiciler sağlar. Ayrıca kendi özel yükleyicinizi yazmayı da destekler.
 
-| Loader type                                      | Behavior                                                                                                                                                                                                                                       |
+| Yükleyici türü                                   | Davranış                                                                                                                                                                                                                                       |
 | :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Genel yükleyici                                  | Genel yükleyici tarafından döndürülen URL her zaman `src` değeriyle eşleşir. Başka bir deyişle, bu yükleyici hiçbir dönüşüm uygulamaz. Görselleri sunmak için Angular kullanan siteler, bu yükleyicinin birincil amaçlanan kullanım durumudur. |
 | Üçüncü taraf görsel servisleri için yükleyiciler | Üçüncü taraf görsel servisleri için yükleyiciler tarafından döndürülen URL, o belirli görsel servisi tarafından kullanılan API kurallarını izler.                                                                                              |
@@ -316,13 +316,13 @@ Bir "yükleyici", belirli bir görsel dosyası için bir [görsel dönüştürme
 
 Angular uygulamalarıyla yaygın olarak kullanılan görsel servislerine dayalı olarak, `NgOptimizedImage` aşağıdaki görsel servisleriyle çalışmak üzere önceden yapılandırılmış yükleyiciler sağlar:
 
-| Image Service             | Angular API               | Documentation                                                               |
+| Görsel servisi            | Angular API'si            | Dokümantasyon                                                               |
 | :------------------------ | :------------------------ | :-------------------------------------------------------------------------- |
-| Cloudflare Image Resizing | `provideCloudflareLoader` | [Documentation](https://developers.cloudflare.com/images/image-resizing/)   |
-| Cloudinary                | `provideCloudinaryLoader` | [Documentation](https://cloudinary.com/documentation/resizing_and_cropping) |
-| ImageKit                  | `provideImageKitLoader`   | [Documentation](https://docs.imagekit.io/)                                  |
-| Imgix                     | `provideImgixLoader`      | [Documentation](https://docs.imgix.com/)                                    |
-| Netlify                   | `provideNetlifyLoader`    | [Documentation](https://docs.netlify.com/image-cdn/overview/)               |
+| Cloudflare Image Resizing | `provideCloudflareLoader` | [Dokümantasyon](https://developers.cloudflare.com/images/image-resizing/)   |
+| Cloudinary                | `provideCloudinaryLoader` | [Dokümantasyon](https://cloudinary.com/documentation/resizing_and_cropping) |
+| ImageKit                  | `provideImageKitLoader`   | [Dokümantasyon](https://docs.imagekit.io/)                                  |
+| Imgix                     | `provideImgixLoader`      | [Dokümantasyon](https://docs.imgix.com/)                                    |
+| Netlify                   | `provideNetlifyLoader`    | [Dokümantasyon](https://docs.netlify.com/image-cdn/overview/)               |
 
 **Genel yükleyiciyi** kullanmak için ek kod değişikliği gerekmez. Bu varsayılan davranıştır.
 
@@ -480,6 +480,6 @@ Bu özelliği bekliyorsanız, lütfen [buradaki](https://github.com/angular/angu
 
 4. Alt panelde bir özet girişi görünmelidir. LCP öğesini "ilgili düğüm" satırında bulabilirsiniz. Üzerine tıklamak, Öğeler panelinde öğeyi gösterecektir.
 
-<img alt="LCP in the Chrome DevTools" src="assets/images/guide/image-optimization/devtools-lcp.png">
+<img alt="Chrome DevTools'ta LCP" src="assets/images/guide/image-optimization/devtools-lcp.png">
 
 NOTE: Bu yalnızca test ettiğiniz sayfanın görünüm alanı içindeki LCP öğesini tanımlar. Daha küçük ekranlar için LCP öğesini tanımlamak amacıyla mobil emülasyonu kullanmanız da önerilir.

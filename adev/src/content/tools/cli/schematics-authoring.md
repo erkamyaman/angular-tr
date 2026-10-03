@@ -258,7 +258,7 @@ Aşağıdaki JSON şeması, `x-prompt` alanı için uzun biçim sözdiziminin ek
 ## Schematics CLI'ı
 
 Şematikler kendi komut satırı aracıyla birlikte gelir.
-Node 6.9 veya üstünü kullanarak, Schematics komut satırı aracını global olarak yükleyin:
+Schematics komut satırı aracını global olarak yükleyin:
 
 ```shell
 
@@ -374,7 +374,7 @@ Bu koleksiyona yeni bir adlandırılmış şematik eklediğinizde, otomatik olar
 Ad ve açıklamaya ek olarak, her şematiğin şematiğin giriş noktasını tanımlayan bir `factory` özelliği vardır.
 Örnekte, ana dosyadaki `hello-world/index.ts` dosyasında `helloWorld()` fonksiyonunu çağırarak şematiğin tanımlı işlevselliğini çağırırsınız.
 
-<img alt="overview" src="assets/images/guide/schematics/collection-files.gif">
+<img alt="Koleksiyon dosyalarına genel bakış" src="assets/images/guide/schematics/collection-files.gif">
 
 Koleksiyondaki her adlandırılmış şematiğin aşağıdaki ana parçaları vardır.
 

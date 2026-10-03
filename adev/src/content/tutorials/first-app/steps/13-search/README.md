@@ -20,13 +20,13 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 1. `src/app/home/home.ts` dosyasında, sınıfa `filteredLocationList` adında yeni bir özellik ekleyin.
 
-   <docs-code header="Add the filteredLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[28]"/>
+   <docs-code header="home.ts içine filteredLocationList özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[28]"/>
 
    `filteredLocationList`, kullanıcı tarafından girilen arama kriterlerine uyan değerleri tutar.
 
 1. `filteredLocationList`, sayfa yüklendiğinde varsayılan olarak tüm konut konumu değerlerini içermelidir. `Home` bileşeninin `constructor`'ını değeri ayarlamak için güncelleyin.
 
-   <docs-code header="Set the value of filteredLocationList" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[29,32]"/>
+   <docs-code header="filteredLocationList değerini ayarlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[29,32]"/>
 
 </docs-step>
 
@@ -35,18 +35,18 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 1. `Home` şablonunu, `input` öğesinde `#filter` adında bir şablon değişkeni içerecek şekilde güncelleyin.
 
-   <docs-code language="angular-ts" header="Add a template variable to the input HTML element in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[12]"/>
+   <docs-code language="angular-ts" header="home.ts içinde input HTML öğesine bir şablon değişkeni ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[12]"/>
    Bu örnek, `input` öğesine değeri olarak erişmek için bir [şablon referans değişkeni](guide/templates) kullanır.
 
 1. Ardından, "Search" düğmesine bir olay işleyici eklemek için bileşen şablonunu güncelleyin.
 
-   <docs-code language="angular-ts" header="Bind the button click event to a method in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[13]"/>
+   <docs-code language="angular-ts" header="home.ts içinde düğme tıklama olayını bir metoda bağlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[13]"/>
 
    `button` öğesindeki `click` olayına bağlanarak, `filterResults` fonksiyonunu çağırabilirsiniz. Fonksiyonun argümanı, `filter` şablon değişkeninin `value` özelliğidir. Özellikle, `input` HTML öğesinden gelen `.value` özelliğidir.
 
 1. Son şablon güncellemesi `@for` yönergesi içindir. `@for` yönergesini `filteredLocationList` dizisindeki değerler üzerinde yineleme yapacak şekilde güncelleyin.
 
-   <docs-code language="angular-ts" header="Update the @for template directive in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]"/>
+   <docs-code language="angular-ts" header="home.ts içinde @for şablon direktifini güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]"/>
 
 </docs-step>
 
@@ -55,15 +55,15 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 1.  `Home` sınıfını `filterResults` fonksiyonunun uygulamasını içerecek şekilde güncelleyin.
 
-    <docs-code header="Add the filterResults function implementation" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[35,44]"/>
+    <docs-code header="filterResults fonksiyonunun uygulamasını ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[35,44]"/>
 
-    Bu fonksiyon, `text` parametresinin değerini `housingLocation.city` özelliğiyle karşılaştırmak için `String` `filter` fonksiyonunu kullanır. Eğlenceli bir alıştırma olarak bu fonksiyonu herhangi bir özellik veya birden fazla özellikle eşleşecek şekilde güncelleyebilirsiniz.
+    Bu fonksiyon, `text` parametresinin değerini `housingLocation.city` özelliğiyle karşılaştırmak için `Array` `filter` fonksiyonunu kullanır. Eğlenceli bir alıştırma olarak bu fonksiyonu herhangi bir özellik veya birden fazla özellikle eşleşecek şekilde güncelleyebilirsiniz.
 
 1.  Kodunuzu kaydedin.
 
 1.  Tarayıcıyı yenileyin ve metin girdikten sonra "Search" düğmesine tıkladığınızda konut konumu verilerini şehre göre arayabildiğinizi doğrulayın.
 
-       <img alt="filtered search results based on user input" src="assets/images/tutorials/first-app/homes-app-lesson-13-step-3.png">
+       <img alt="Kullanıcı girdisine göre filtrelenmiş arama sonuçları" src="assets/images/tutorials/first-app/homes-app-lesson-13-step-3.png">
 
     </docs-step>
 

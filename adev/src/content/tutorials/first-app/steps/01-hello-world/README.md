@@ -89,24 +89,24 @@ IDE'nizde:
 
 1. `index.html` dosyasında, uygulamanın başlığını güncellemek için `<title>` öğesini bu kodla değiştirin.
 
-   <docs-code header="Replace in src/index.html" path="adev/src/content/tutorials/first-app/steps/02-Home/src/index.html" visibleLines="[5]"/>
+   <docs-code header="src/index.html içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/02-Home/src/index.html" visibleLines="[5]"/>
 
    Ardından, `index.html` dosyasında yaptığınız değişiklikleri kaydedin.
 
 1. Sonra, `first-app/src/app/app.ts` dosyasını açın.
 1. `app.ts` dosyasında, `@Component` tanımındaki `template` satırını, uygulama bileşenindeki metni değiştirmek için bu kodla değiştirin.
 
-   <docs-code language="angular-ts" header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[6,8]"/>
+   <docs-code language="angular-ts" header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[6,8]"/>
 
 1. `app.ts` dosyasında, `App` sınıf tanımındaki `title` satırını, bileşen başlığını değiştirmek için bu kodla değiştirin.
 
-   <docs-code header="Replace in src/app/app.ts" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[10]"/>
+   <docs-code header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[10]"/>
 
    Ardından, `app.ts` dosyasında yaptığınız değişiklikleri kaydedin.
 
 1. 1. adımdaki `ng serve` komutunu durdurduysanız, IDE'nizin **Terminal** penceresinde `ng serve` komutunu tekrar çalıştırın.
 1. Tarayıcınızı açın ve `localhost:4200` adresine gidin; uygulamanın hatasız derlendiğini ve başlıkta _Homes_, gövdesinde _Hello world_ görüntülediğini doğrulayın:
-   <img alt="browser frame of page displaying the text 'Hello World'" src="assets/images/tutorials/first-app/homes-app-lesson-01-browser.png">
+   <img alt="'Hello World' metnini gösteren sayfanın tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-01-browser.png">
    </docs-step>
 
 </docs-workflow>

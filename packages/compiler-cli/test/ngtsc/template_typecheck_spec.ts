@@ -4763,6 +4763,122 @@ runInEachFileSystem(() => {
         expect(diags).toEqual([]);
       });
 
+      it('should report unknown element error when matched only by an attribute directive', () => {
+        env.tsconfig({strictTemplates: true, strictUnknownElements: true});
+        env.write(
+          'test.ts',
+          `
+          import {Component, Directive, Input} from '@angular/core';
+
+          @Directive({
+            selector: '[formControl]',
+          })
+          export class FormControlDir {
+            @Input() formControl!: any;
+          }
+
+          @Component({
+            selector: 'test-cmp',
+            imports: [FormControlDir],
+            template: '<tn-uploader [formControl]="ctrl"></tn-uploader>',
+          })
+          export class TestCmp {
+            ctrl = {};
+          }
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toBe(1);
+        expect(diags[0].messageText).toMatch(
+          /^'tn-uploader' is not a known element:\n1\. If 'tn-uploader' is an Angular component, then verify that it is included in the '@Component\.imports' of this component\.\n2\. If 'tn-uploader' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component\.schemas' of this component to suppress this message\. Find more at .*$/,
+        );
+      });
+
+      it('should not report unknown element error when matched by a directive targeting the tag name', () => {
+        env.tsconfig({strictTemplates: true, strictUnknownElements: true});
+        env.write(
+          'test.ts',
+          `
+          import {Component, Directive, Input} from '@angular/core';
+
+          @Directive({
+            selector: 'router-outlet',
+          })
+          export class RouterOutletDir {
+            @Input() name: string = '';
+          }
+
+          @Component({
+            selector: 'test-cmp',
+            imports: [RouterOutletDir],
+            template: '<router-outlet [name]="outletName"></router-outlet>',
+          })
+          export class TestCmp {
+            outletName = 'main';
+          }
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags).toEqual([]);
+      });
+
+      it('should not report unknown element error when matched by attribute directive with CUSTOM_ELEMENTS_SCHEMA', () => {
+        env.tsconfig({strictTemplates: true, strictUnknownElements: true});
+        env.write(
+          'test.ts',
+          `
+          import {Component, Directive, Input, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+
+          @Directive({
+            selector: '[formControl]',
+          })
+          export class FormControlDir {
+            @Input() formControl!: any;
+          }
+
+          @Component({
+            selector: 'test-cmp',
+            imports: [FormControlDir],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            template: '<tn-uploader [formControl]="ctrl"></tn-uploader>',
+          })
+          export class TestCmp {
+            ctrl = {};
+          }
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags).toEqual([]);
+      });
+
+      it('should not report unknown element error for standard HTML element with attribute directive', () => {
+        env.tsconfig({strictTemplates: true, strictUnknownElements: true});
+        env.write(
+          'test.ts',
+          `
+          import {Component, Directive, Input} from '@angular/core';
+
+          @Directive({
+            selector: '[matButton]',
+          })
+          export class MatButtonDir {
+            @Input() color: string = '';
+          }
+
+          @Component({
+            selector: 'test-cmp',
+            imports: [MatButtonDir],
+            template: '<button matButton [color]="btnColor">Click</button>',
+          })
+          export class TestCmp {
+            btnColor = 'primary';
+          }
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags).toEqual([]);
+      });
+
       it('should not produce diagnostics when using the NO_ERRORS_SCHEMA', () => {
         env.write(
           'test.ts',
@@ -5980,7 +6096,7 @@ suppress
 
           @Component({
             template: \`
-              @defer (on viewport({trigger: target, rootMargin: '10px', doesNotExist: true})) {
+              @defer (on viewport({trigger: target, rootMargin: '10px', scrollMargin: '20px', doesNotExist: true})) {
                 Content
               }
 
@@ -9761,6 +9877,31 @@ suppress
         const diags = env.driveDiagnostics();
         expect(diags.length).toBe(0);
       });
+
+      it('should not report unused directives on ng-template nested in an svg element', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Component} from '@angular/core';
+          import {CommonModule} from '@angular/common';
+
+
+          @Component({
+            template: \`
+              <ng-template #foo>foo</ng-template>
+              <svg>
+                <ng-template [ngTemplateOutlet]="foo"></ng-template>
+              </svg>
+            \`,
+            imports: [CommonModule]
+          })
+          export class MyComp {}
+        `,
+        );
+
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toBe(0);
+      });
     });
 
     describe('DOM event target type inference', () => {
@@ -10058,6 +10199,62 @@ suppress
         const diags = env.driveDiagnostics();
         expect(diags.length).toBe(0);
       });
+    });
+
+    it('should report a diagnostic when binding an incompatible type to an input inherited through an intermediate variable declaration in .d.ts', () => {
+      env.tsconfig({
+        paths: {'external': ['./dist/external']},
+        strictTemplates: true,
+      });
+      env.write(
+        'dist/external/index.d.ts',
+        `
+          import * as i0 from '@angular/core';
+
+          export interface ExpectedContext {
+            renderConfig: {component: unknown};
+            data: string;
+          }
+
+          export declare class BaseElement {
+            readonly contentInput: i0.InputSignal<ExpectedContext>;
+            static ɵdir: i0.ɵɵDirectiveDeclaration<BaseElement, "[base]", never, {"contentInput": {"alias": "context", "required": true, "isSignal": true}}, {}, never, never, true, never>;
+          }
+
+          declare const baseElement: typeof BaseElement;
+
+          export declare class ReproChildComponent extends baseElement {
+            static ɵcmp: i0.ɵɵComponentDeclaration<ReproChildComponent, "repro-child", never, {}, {}, never, never, true, never>;
+          }
+        `,
+      );
+      env.write(
+        'test.ts',
+        `
+          import {Component} from '@angular/core';
+          import {ReproChildComponent} from 'external';
+
+          export interface IncompatibleContext {
+            renderConfig?: {component: unknown};
+            data: string;
+          }
+
+          @Component({
+            selector: 'repro-parent',
+            imports: [ReproChildComponent],
+            template: '<repro-child [context]="context" />',
+          })
+          export class ReproParentComponent {
+            context: IncompatibleContext = {data: 'test'};
+          }
+        `,
+      );
+      const diags = env.driveDiagnostics();
+      expect(diags.length).toBe(1);
+      const text = ts.flattenDiagnosticMessageText(diags[0].messageText, ' ');
+      expect(text).toContain(
+        "Type 'IncompatibleContext' is not assignable to type 'ExpectedContext'",
+      );
     });
   });
 });

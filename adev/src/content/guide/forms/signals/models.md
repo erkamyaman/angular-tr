@@ -427,8 +427,8 @@ Bu kılavuz, modeller oluşturmayı ve değerleri güncellemeyi ele aldı. İlgi
 
 <!-- TODO: UNCOMMENT WHEN THE GUIDES ARE AVAILABLE -->
 <docs-pill-row>
-  <docs-pill href="guide/forms/signals/field-state-management" title="Field state management" />
-  <docs-pill href="guide/forms/signals/validation" title="Validation" />
-  <docs-pill href="guide/forms/signals/custom-controls" title="Custom controls" />
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />
+  <docs-pill href="guide/forms/signals/custom-controls" title="Özel Kontroller" />
   <!-- <docs-pill href="guide/forms/signals/arrays" title="Working with Arrays" /> -->
 </docs-pill-row>

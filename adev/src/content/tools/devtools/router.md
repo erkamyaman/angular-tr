@@ -2,7 +2,7 @@
 
 **Router Tree** sekmesi, uygulamanızın yönlendirme ağacını görselleştirmenizi sağlar. Rotaların nasıl iç içe yerleştirildiğini keşfedebilir ve belirli rotalar hakkındaki ayrıntıları görüntüleyebilirsiniz.
 
-<img src="assets/images/guide/devtools/router-tree.png" alt="A screenshot of the 'Router Tree' tab in Angular DevTools showing a tree of configured routes. The active routes are highlighted in green, while inactive ones are white.">
+<img src="assets/images/guide/devtools/router-tree.png" alt="Angular DevTools'taki 'Router Tree' sekmesinin, yapılandırılmış rotaların ağacını gösteren ekran görüntüsü. Aktif rotalar yeşil, aktif olmayanlar beyaz renkle vurgulanır.">
 
 ### Rota ayrıntılarını görüntüleme
 
@@ -21,10 +21,10 @@ Ağaçta belirli bir rotayı seçtiğinizde, Angular DevTools bu rotanın özell
 - **Auxiliary**: Rotanın bir yardımcı (auxiliary) rota olup olmadığını belirtir (örneğin adlandırılmış bir outlet içinde).
 - **Lazy**: Rotanın lazy olarak yüklenip yüklenmediğini belirtir.
 
-Note: Path Match, Data, Resolvers, Guards, Providers, Title ve RunGuardsAndResolvers gibi özellikler kenar çubuğunda yalnızca seçili rotada yapılandırıldıklarında görünür.
+NOTE: Path Match, Data, Resolvers, Guards, Providers, Title ve RunGuardsAndResolvers gibi özellikler kenar çubuğunda yalnızca seçili rotada yapılandırıldıklarında görünür.
 
 ### Belirli bir rotaya gitme
 
 Doğrudan DevTools üzerinden kolayca yönlendirme tetikleyebilirsiniz. Sağdaki kenar çubuğunda bir rotanın ayrıntılarını incelerken, yol dizesinin yanındaki **Navigate** simgesine tıklayın. Bu, Angular router'ı uygulamanızda o URL'ye yönlendirmeye tetikler.
 
-<img src="assets/images/guide/devtools/router-tree-navigate.png" alt="A screenshot showing the 'Navigate to' tooltip on the route path in the 'Routes Details' sidebar.">
+<img src="assets/images/guide/devtools/router-tree-navigate.png" alt="'Routes Details' kenar çubuğunda rota yolu üzerindeki 'Navigate to' ipucunu gösteren ekran görüntüsü.">

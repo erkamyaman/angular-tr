@@ -57,13 +57,13 @@ IDE'nizin **Edit** bölmesinde:
    1. `HousingService` sınıfı içinde, az önce kopyaladığınız veriden sonra bu fonksiyonları yapıştırın.
       Bu fonksiyonlar, bağımlılıkların servisin verilerine erişmesini sağlar.
 
-      <docs-code header="Service functions in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[110,116]"/>
+      <docs-code header="src/app/housing.service.ts içinde servis fonksiyonları" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[110,116]"/>
 
       Bu fonksiyonlara ilerideki bir derste ihtiyacınız olacak. Şimdilik, bu fonksiyonların belirli bir `HousingLocation`'ı id'ye göre veya tüm listeyi döndürdüğünü anlamak yeterlidir.
 
    1. `HousingLocation` için dosya düzeyinde bir import ekleyin.
 
-      <docs-code header="Import HousingLocation type in  src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[2]"/>
+      <docs-code header="src/app/housing.service.ts içinde HousingLocation tipini içe aktarın" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[2]"/>
 
 1. Uygulamanın hatasız derlendiğini doğrulayın.
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
@@ -77,17 +77,17 @@ IDE'nizin **Edit** bölmesinde, `src/app/home/home.ts` dosyasında:
 
 1.  `src/app/home/home.ts` dosyasının en üstünde, `@angular/core`'dan içe aktarılan öğelere `inject`'i ekleyin. Bu, `inject` fonksiyonunu `Home` sınıfına aktaracaktır.
 
-      <docs-code language="angular-ts" header="Update to src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[1]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts dosyasını güncelleyin" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[1]"/>
 
 1.  `HousingService` için yeni bir dosya düzeyinde import ekleyin:
 
-      <docs-code language="angular-ts" header="Add import to src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[4]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içine import ekleyin" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[4]"/>
 
 1.  `Home` bileşeninden `housingLocationList` dizi girişlerini silin ve `housingLocationList`'e boş dizi (`[]`) değerini atayın. Birkaç adım sonra verileri `HousingService`'ten çekmek için kodu güncelleyeceksiniz.
 
 1.  `Home` bileşeninde, yeni servisi enjekte etmek ve uygulama için verileri başlatmak üzere aşağıdaki kodu ekleyin. `constructor`, bu bileşen oluşturulduğunda çalışan ilk fonksiyondur. `constructor` içindeki kod, `housingLocationList`'e `getAllHousingLocations` çağrısından dönen değeri atayacaktır.
 
-      <docs-code language="angular-ts" header="Initialize data from service in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[23,30]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içinde verileri servisten başlatın" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[23,30]"/>
 
 1.  `src/app/home/home.ts` dosyasındaki değişiklikleri kaydedin ve uygulamanızın hatasız derlendiğini doğrulayın.
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.

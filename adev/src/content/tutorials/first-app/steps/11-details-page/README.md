@@ -29,7 +29,7 @@ Bu durumda, `:id` dinamiktir ve rotanın kod tarafından nasıl istendiğine ba�
 
 1.  `src/app/housing-location/housing-location.ts` dosyasında, `section` öğesine bir anchor etiketi ekleyin ve `routerLink` yönergesini dahil edin:
 
-    <docs-code language="angular-ts" header="Add anchor with a routerLink directive to housing-location.ts" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/housing-location/housing-location.ts" visibleLines="[18]"/>
+    <docs-code language="angular-ts" header="housing-location.ts içine routerLink direktifli bir bağlantı ekleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/housing-location/housing-location.ts" visibleLines="[18]"/>
 
     `routerLink` yönergesi, Angular'ın router'ının uygulamada dinamik bağlantılar oluşturmasını sağlar. `routerLink`'e atanan değer, iki girişli bir dizidir: yolun statik kısmı ve dinamik veri.
 
@@ -37,7 +37,7 @@ Bu durumda, `:id` dinamiktir ve rotanın kod tarafından nasıl istendiğine ba�
 
 1.  Bu noktada, uygulamanızda yönlendirmenin çalıştığını doğrulayabilirsiniz. Tarayıcıda, ana sayfayı yenileyin ve bir konut konumu için "Learn More" düğmesine tıklayın.
 
-      <img alt="details page displaying the text 'details works!'" src="assets/images/tutorials/first-app/homes-app-lesson-11-step-1.png">
+      <img alt="'details works!' metnini gösteren ayrıntılar sayfası" src="assets/images/tutorials/first-app/homes-app-lesson-11-step-1.png">
 
 </docs-step>
 
@@ -46,7 +46,7 @@ Bu adımda, `Details` bileşeninde rota parametresini alacaksınız. Şu anda uy
 
 1.  `src/app/details/details.ts` dosyasında, `Details` bileşeninde kullanacağınız fonksiyonları, sınıfları ve servisleri içe aktarmak için şablonu güncelleyin:
 
-      <docs-code header="Update file level imports" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[1,4]"/>
+      <docs-code header="Dosya düzeyindeki import'ları güncelleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[1,4]"/>
 
 1.  `housingLocationId` değerini görüntülemek için `@Component` dekoratörünün `template` özelliğini güncelleyin:
 
@@ -80,24 +80,24 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
 1. Şablon kodunu aşağıdaki kodla eşleşecek şekilde güncelleyin:
 
-   <docs-code language="angular-ts" header="Update the Details template in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[8,29]"/>
+   <docs-code language="angular-ts" header="src/app/details/details.ts içinde Details şablonunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[8,29]"/>
 
    `housingLocation` özelliklerine isteğe bağlı zincirleme operatörü `?` ile erişildiğine dikkat edin. Bu, `housingLocation` değeri null veya undefined ise uygulamanın çökmemesini sağlar.
 
 1. `Details` sınıfının gövdesini aşağıdaki kodla eşleşecek şekilde güncelleyin:
 
-   <docs-code language="angular-ts" header="Update the Details class in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[32,41]"/>
+   <docs-code language="angular-ts" header="src/app/details/details.ts içinde Details sınıfını güncelleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[32,41]"/>
 
    Artık bileşen, seçilen konut konumuna göre doğru bilgileri görüntülemek için gereken koda sahiptir. `constructor` artık rota parametresini `getHousingLocationById` servis fonksiyonuna argüman olarak aktarmak için `HousingService`'e bir çağrı içermektedir.
 
 1. Aşağıdaki stilleri `src/app/details/details.css` dosyasına kopyalayın:
 
-   <docs-code header="Add styles for the Details" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.css" visibleLines="[1,72]"/>
+   <docs-code header="Details için stilleri ekleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.css" visibleLines="[1,72]"/>
 
    ve değişikliklerinizi kaydedin
 
 1. `Details` bileşeninde, az önce oluşturulan `details.css` dosyasını stillerin kaynağı olarak kullanın:
-   <docs-code language="angular-ts" header="Update details.ts to use the created css file" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[30]"/>
+   <docs-code language="angular-ts" header="details.ts dosyasını oluşturulan css dosyasını kullanacak şekilde güncelleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[30]"/>
 
 1. Tarayıcıda sayfayı yenileyin ve belirli bir konut konumu için "Learn More" bağlantısına tıkladığınızda, ayrıntılar sayfasının seçilen öğenin verilerine göre doğru bilgileri görüntülediğini doğrulayın.
 
@@ -110,7 +110,7 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
 1.  Kodunuzun aşağıdakiyle eşleştiğini doğrulayın:
 
-      <docs-code language="angular-ts" header="Confirm the routerLink in app.ts" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/app.ts" visibleLines="[8,19]"/>
+      <docs-code language="angular-ts" header="app.ts içindeki routerLink'i doğrulayın" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/app.ts" visibleLines="[8,19]"/>
 
     Kodunuz zaten güncel olmalı ama emin olmak için doğrulayın.
 

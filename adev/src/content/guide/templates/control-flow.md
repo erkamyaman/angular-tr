@@ -1,4 +1,4 @@
-# Control flow
+# Kontrol akışı
 
 Angular şablonları, elemanları koşullu olarak göstermenize, gizlemenize ve tekrarlamanıza olanak tanıyan kontrol akışı bloklarını destekler.
 

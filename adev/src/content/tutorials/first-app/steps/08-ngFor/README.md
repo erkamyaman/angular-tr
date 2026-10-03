@@ -27,7 +27,7 @@ Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/template
 
 1. `src/app/home/home.ts` dosyasında, `Home` sınıfından `housingLocation` özelliğini kaldırın.
 1. `Home` sınıfını `housingLocationList` adında bir özelliğe sahip olacak şekilde güncelleyin. Kodunuzu aşağıdaki kodla eşleşecek şekilde güncelleyin:
-   <docs-code language="angular-ts"  header="Add housingLocationList property in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[26,127]"/>
+   <docs-code language="angular-ts"  header="home.ts içine housingLocationList özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[26,127]"/>
 
    IMPORTANT: `@Component` dekoratörünü kaldırmayın, bu kodu yaklaşan bir adımda güncelleyeceksiniz.
 
@@ -37,7 +37,7 @@ Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/template
 Artık uygulamanın tarayıcıdaki girişleri `@for` bloğunu kullanarak görüntülemek için kullanabileceği bir veri seti var.
 
 1. Şablon kodundaki `<app-housing-location>` etiketini şu şekilde güncelleyin:
-   <docs-code language="angular-ts"  header="Add @for to Home template in home.ts" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[15,19]"/>
+   <docs-code language="angular-ts"  header="home.ts içinde Home şablonuna @for ekleyin" path="adev/src/content/tutorials/first-app/steps/09-services/src/app/home/home.ts" visibleLines="[15,19]"/>
 
    Kodda `[housingLocation] = "housingLocation"` ifadesindeki `housingLocation` değerinin artık `@for` bloğunda kullanılan değişkene referans verdiğini unutmayın. Bu değişiklikten önce, `Home` sınıfındaki özelliğe referans veriyordu.
 
@@ -46,7 +46,7 @@ Artık uygulamanın tarayıcıdaki girişleri `@for` bloğunu kullanarak görün
 1. Tarayıcıyı yenileyin ve uygulamanın artık bir konut konumları ızgarası işlediğini doğrulayın.
 
 <section class="lightbox">
-<img alt="browser frame of homes-app displaying logo, filter text input box, search button and a grid of housing location cards" src="assets/images/tutorials/first-app/homes-app-lesson-08-step-2.png">
+<img alt="Logoyu, filtre metin giriş kutusunu, arama düğmesini ve konut konumu kartlarından oluşan bir ızgarayı gösteren homes-app tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-08-step-2.png">
 </section>
 
 </docs-step>

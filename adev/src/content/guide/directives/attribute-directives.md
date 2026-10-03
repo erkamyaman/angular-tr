@@ -98,5 +98,5 @@ Aşağıdaki örnekte, `appHighlight` direktifi hala aktiftir ancak Angular `{{ 
 
 <docs-pill-row>
   <docs-pill href="guide/directives/structural-directives" title="Yapısal direktifler"/>
-  <docs-pill href="guide/directives/directive-composition-api" title="Direktif kompozisyon API'si"/>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif bileşim API'si"/>
 </docs-pill-row>

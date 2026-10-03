@@ -18,7 +18,7 @@ Bu araçlar farklı girdileri anlayabilir ve gerektirebilir - bazı araçlar en 
 Angular dağıtım formatı, yaygın olarak kullanılan tüm geliştirme araçlarını ve iş akışlarını destekler ve daha küçük uygulama yük boyutu veya daha hızlı geliştirme iterasyon döngüsü \(derleme süresi\) ile sonuçlanan optimizasyonlara vurgu yapar.
 
 Geliştiriciler, Angular Paket Formatında paketler üretmek için Angular CLI'ye ve [ng-packagr](https://github.com/ng-packagr/ng-packagr)'a \(Angular CLI'nin kullandığı bir derleme aracı\) güvenebilir.
-Daha fazla ayrıntı için [Creating Libraries](tools/libraries/creating-libraries) kılavuzuna bakın.
+Daha fazla ayrıntı için [Kütüphane oluşturma](tools/libraries/creating-libraries) kılavuzuna bakın.
 
 ## Dosya Düzeni
 
@@ -105,7 +105,7 @@ Bu anahtarların farkında olan araçlar, `"exports"`'tan tercih edilen bir kod 
 
 Kütüphaneler, JavaScript tabanlı giriş noktalarının dışa aktarımları tarafından yakalanmayan Sass mixin'leri veya önceden derlenmiş CSS gibi ek statik dosyaları sunmak isteyebilir.
 
-Daha fazla bilgi için bkz. [Managing assets in a library](tools/libraries/creating-libraries#bir-kütüphanedeki-varlıkları-yönetme).
+Daha fazla bilgi için bkz. [Bir kütüphanedeki varlıkları yönetme](tools/libraries/creating-libraries#bir-kütüphanedeki-varlıkları-yönetme).
 
 ### Eski Çözümleme Anahtarları
 
@@ -198,7 +198,7 @@ Angular kodunu kısmen derlemek için `tsconfig.json`'unuzdaki `angularCompilerO
 
 Kısmen derlenmiş kütüphane kodu, daha sonra uygulama derleme sürecinde Angular CLI tarafından tam olarak derlenmiş koda dönüştürülür.
 
-Derleme süreciniz Angular CLI kullanmıyorsa [Consuming partial ivy code outside the Angular CLI](tools/libraries/creating-libraries#angular-cli-dışında-partial-ivy-kodunu-kullanma) kılavuzuna bakın.
+Derleme süreciniz Angular CLI kullanmıyorsa [Angular CLI dışında partial-Ivy kodunu kullanma](tools/libraries/creating-libraries#angular-cli-dışında-partial-ivy-kodunu-kullanma) kılavuzuna bakın.
 
 ### ES Modüllerinin Düzleştirilmesi
 
@@ -276,8 +276,8 @@ Angular framework'ünün npm paketleri, APF uyumlu kütüphane paketleri için i
 Dosya düzenine ve npm paketine UNPKG üzerinden göz atın:
 
 <docs-pill-row>
-  <docs-pill href="https://app.unpkg.com/@angular/core@latest" title="@angular/core package"/>
-  <docs-pill href="https://app.unpkg.com/@angular/material@latest" title="@angular/material package"/>
+  <docs-pill href="https://app.unpkg.com/@angular/core@latest" title="@angular/core paketi"/>
+  <docs-pill href="https://app.unpkg.com/@angular/material@latest" title="@angular/material paketi"/>
 </docs-pill-row>
 
 ## Terimlerin Tanımı

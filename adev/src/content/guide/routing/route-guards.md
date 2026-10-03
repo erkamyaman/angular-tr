@@ -62,7 +62,7 @@ export const authGuard: CanActivateFn = (
 };
 ```
 
-Tip: Kullanıcıyı yönlendirmeniz gerekiyorsa, bir [`URLTree`](api/router/UrlTree) veya [`RedirectCommand`](api/router/RedirectCommand) döndürün. `false` döndürüp ardından programatik olarak kullanıcıyı `navigate` etmeyin.
+TIP: Kullanıcıyı yönlendirmeniz gerekiyorsa, bir [`URLTree`](api/router/UrlTree) veya [`RedirectCommand`](api/router/RedirectCommand) döndürün. `false` döndürüp ardından programatik olarak kullanıcıyı `navigate` etmeyin.
 
 Daha fazla bilgi için [CanActivateFn API dokümanlarına](api/router/CanActivateFn) göz atın.
 

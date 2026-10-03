@@ -371,7 +371,7 @@ Döndürülen kontrol `AbstractControl` türünde olduğundan, form dizisi örne
 
 <docs-step title="Form dizisini şablonda görüntüleyin">
 
-Form modelinizdeki takma adları eklemek için bunları şablona eklemeniz gerekir. `FormGroupNameDirective` tarafından sağlanan `formGroupName` girdisine benzer şekilde, `formArrayName` form dizisi örneğinden şablona `FormArrayNameDirective` ile iletişimi bağlar.
+Form modelinizdeki takma adları eklemek için bunları şablona eklemeniz gerekir. `FormGroupName` tarafından sağlanan `formGroupName` girdisine benzer şekilde, `formArrayName` form dizisi örneğinden şablona `FormArrayName` ile iletişimi bağlar.
 
 `formGroupName` öğesini kapatan `<div>`'den sonra aşağıdaki şablon HTML'sini ekleyin.
 
@@ -520,7 +520,7 @@ control.events
 **Önce**
 
 ```ts
-import {combineLatest} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
 
 combineLatest([control.valueChanges, control.statusChanges]).subscribe(([value, status]) => {
   /* ... */

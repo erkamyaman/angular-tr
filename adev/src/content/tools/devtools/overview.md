@@ -11,7 +11,7 @@ Tarayıcı DevTools açık ve Angular DevTools yüklü olduğunda, "Angular" sek
 
 HELPFUL: Chrome'un yeni sekme sayfası yüklü uzantıları çalıştırmaz, bu nedenle Angular sekmesi DevTools'ta görünmez. Görmek için başka herhangi bir sayfayı ziyaret edin.
 
-<img src="assets/images/guide/devtools/devtools.png" alt="An overview of Angular DevTools showing a tree of components for an application.">
+<img src="assets/images/guide/devtools/devtools.png" alt="Bir uygulamanın bileşen ağacını gösteren Angular DevTools genel görünümü.">
 
 ## Uygulamanızı Açma
 
@@ -28,7 +28,7 @@ Uzantıyı açtığınızda dört ek sekme göreceksiniz:
 
 HELPFUL: Chromium tabanlı tarayıcı kullanıcıları için, [Performans paneli entegrasyonu](/best-practices/profiling-with-chrome-devtools) ilginizi çekebilir.
 
-<img src="assets/images/guide/devtools/devtools-tabs.png" alt="A screenshot of the top of Angular DevTools illustrating two tabs in the upper-left corner, one labeled 'Components' and another labeled 'Profiler'.">
+<img src="assets/images/guide/devtools/devtools-tabs.png" alt="Angular DevTools'un üst kısmının, sol üst köşede 'Components' ve 'Profiler' etiketli iki sekmeyi gösteren ekran görüntüsü.">
 
 Angular DevTools'un sağ üst köşesinde bir bilgi düğmesi bulunur ve bu düğme bir açılır pencere açar.
 Bilgi açılır penceresi, diğerlerinin yanı sıra sayfada hangi Angular sürümünün çalıştığını ve devtools sürümünü içerir.

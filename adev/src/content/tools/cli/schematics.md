@@ -25,14 +25,6 @@ ng generate my-schematic-collection:my-schematic-name
 
 ```
 
-veya
-
-```shell
-
-ng generate my-schematic-name --collection collection-name
-
-```
-
 ### CLI Schematics Yapılandırması
 
 Bir şematikle ilişkili bir JSON şeması, Angular CLI'a komutlar ve alt komutlar için hangi seçeneklerin mevcut olduğunu söyler ve varsayılanları belirler.
@@ -53,8 +45,8 @@ Bir kütüphane geliştiricisi olarak, kütüphanenizi Angular CLI ile entegre e
 Bunların nasıl göründüğü ve nasıl oluşturulacağı hakkında daha fazla ayrıntı için bakın:
 
 <docs-pill-row>
-  <docs-pill href="tools/cli/schematics-authoring" title="Authoring Schematics"/>
-  <docs-pill href="tools/cli/schematics-for-libraries" title="Schematics for Libraries"/>
+  <docs-pill href="tools/cli/schematics-authoring" title="Schematics Yazarlığı"/>
+  <docs-pill href="tools/cli/schematics-for-libraries" title="Kütüphaneler için Schematics"/>
 </docs-pill-row>
 
 ### Add Schematics

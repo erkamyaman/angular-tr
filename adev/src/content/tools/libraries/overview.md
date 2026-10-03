@@ -13,7 +13,7 @@ Benzer şekilde, bir Angular uygulamasına [service worker](ecosystem/service-wo
 [Angular Material](https://material.angular.dev), gelişmiş, yeniden kullanılabilir ve uyarlanabilir kullanıcı arayüzü bileşenleri sağlayan büyük, genel amaçlı bir kütüphane örneğidir.
 
 Herhangi bir uygulama geliştiricisi, Angular ekibi veya üçüncü taraflarca npm paketleri olarak yayınlanan bu ve diğer kütüphaneleri kullanabilir.
-Bkz. [Using Published Libraries](tools/libraries/using-libraries).
+Bkz. [npm'e yayınlanmış Angular kütüphanelerinin kullanımı](tools/libraries/using-libraries).
 
 HELPFUL: Kütüphaneler Angular uygulamaları tarafından kullanılmak üzere tasarlanmıştır. Angular olmayan web uygulamalarına Angular özellikleri eklemek için [Angular özel elemanlarını](guide/elements) kullanın.
 
@@ -22,7 +22,7 @@ HELPFUL: Kütüphaneler Angular uygulamaları tarafından kullanılmak üzere ta
 Yeniden kullanıma uygun özellikler geliştirdiyseniz, kendi kütüphanelerinizi oluşturabilirsiniz.
 Bu kütüphaneler çalışma alanınızda yerel olarak kullanılabilir veya diğer projeler ya da diğer Angular geliştiricileriyle paylaşmak için [npm paketleri](reference/configs/npm-packages) olarak yayınlayabilirsiniz.
 Bu paketler npm kayıt defterine, özel bir npm Enterprise kayıt defterine veya npm paketlerini destekleyen özel bir paket yönetim sistemine yayınlanabilir.
-Bkz. [Creating Libraries](tools/libraries/creating-libraries).
+Bkz. [Kütüphane oluşturma](tools/libraries/creating-libraries).
 
 Özellikleri kütüphane olarak paketlemeye karar vermek mimari bir karardır. Bir özelliğin bileşen mi yoksa servis mi olacağına veya bir bileşenin kapsamına karar vermeye benzer.
 

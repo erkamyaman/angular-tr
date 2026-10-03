@@ -24,7 +24,7 @@ Bu aktivitede, ertelenebilir görünümleri yüklemek için koşul belirlemede t
 
 <docs-workflow>
 
-<docs-step title="Add `on hover` trigger">
+<docs-step title="`on hover` tetikleyicisini ekleyin">
 `app.ts` dosyanızda, `@defer` bloğuna bir `on hover` tetikleyicisi ekleyin.
 
 ```angular-html {highlight:[1]}
@@ -42,7 +42,7 @@ Bu aktivitede, ertelenebilir görünümleri yüklemek için koşul belirlemede t
 Artık sayfa, yer tutucunun üzerine gelene kadar yorumlar bölümünü render etmeyecektir.
 </docs-step>
 
-<docs-step title="Add a 'Show all comments' button">
+<docs-step title="'Tüm yorumları göster' düğmesi ekleyin">
 Ardından, şablonu "Show all comments" etiketli bir düğme içerecek şekilde güncelleyin. Düğmeye `#showComments` adlı bir şablon değişkeni ekleyin.
 
 ```angular-html {highlight:[1]}
@@ -63,7 +63,7 @@ NOT: [şablon değişkenleri hakkında daha fazla bilgi için belgelere göz at�
 
 </docs-step>
 
-<docs-step title="Add `on interaction` trigger">
+<docs-step title="`on interaction` tetikleyicisini ekleyin">
 Şablondaki `@defer` bloğunu `on interaction` tetikleyicisini kullanacak şekilde güncelleyin. `interaction` parametresi olarak `showComments` şablon değişkenini sağlayın.
 
 ```angular-html {highlight:[3]}

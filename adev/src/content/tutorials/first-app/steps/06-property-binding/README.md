@@ -26,7 +26,7 @@ Kod editöründe:
 
 1.  `src/app/home/home.ts` dosyasına gidin
 1.  `@Component` dekoratörünün template özelliğinde, kodu aşağıdaki kodla eşleşecek şekilde güncelleyin:
-    <docs-code language="angular-ts" header="Add housingLocation property binding" path="adev/src/content/tutorials/first-app/steps/07-dynamic-template-values/src/app/home/home.ts" visibleLines="[15,17]"/>
+    <docs-code language="angular-ts" header="housingLocation özellik bağlamasını ekleyin" path="adev/src/content/tutorials/first-app/steps/07-dynamic-template-values/src/app/home/home.ts" visibleLines="[15,17]"/>
 
     Bir bileşen etiketine özellik bağlama eklerken, atanan değerin bir dize değeri değil, bileşen sınıfından bir özellik olarak ele alınması gerektiğini Angular'a bildirmek için `[attribute] = "value"` sözdizimini kullanırız.
 
@@ -46,5 +46,5 @@ SUMMARY: Bu derste, yeni bir özellik bağlama eklediniz ve bir sınıf özelli�
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="/guide/templates/binding#css-class-and-style-property-bindings" title="Property binding"/>
+  <docs-pill href="/guide/templates/binding#css-class-and-style-property-bindings" title="Dinamik metin, özellik ve nitelikleri bağlama"/>
 </docs-pill-row>

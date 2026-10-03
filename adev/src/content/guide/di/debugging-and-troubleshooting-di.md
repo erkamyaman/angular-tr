@@ -135,7 +135,7 @@ Her bileşen kendi `UserClient` örneğini alır. Bir bileşendeki değişiklikl
 **Çözüm:** Tekil örnekler için `@Service` kullanın.
 
 ```ts {prefer, header: 'Root-level singleton'}
-import {Injectable} from '@angular/core';
+import {Service} from '@angular/core';
 
 @Service()
 export class UserClient {
@@ -250,7 +250,7 @@ export class UserProfile {
 **Diğer kodun** `inject()` çağırmasını etkinleştirmek gerektiğinde `runInInjectionContext()` kullanın. Bu, bağımlılık enjeksiyonu kullanabilecek geri çağırmaları kabul ederken yararlıdır:
 
 ```angular-ts
-import {Component, inject, Injector, input} from '@angular/core';
+import {Component, inject, Injector, input, runInInjectionContext} from '@angular/core';
 
 @Component({
   selector: 'app-data-loader',
@@ -264,13 +264,13 @@ export class DataLoader {
     const callback = this.onLoad();
     if (callback) {
       // Geri çağırmanın inject() kullanmasını etkinleştir
-      this.injector.runInInjectionContext(callback);
+      runInInjectionContext(this.injector, callback);
     }
   }
 }
 ```
 
-`runInInjectionContext()` yöntemi geçici bir enjeksiyon bağlamı oluşturur ve geri çağırma içindeki kodun `inject()` çağırmasına olanak tanır.
+`runInInjectionContext()` fonksiyonu geçici bir enjeksiyon bağlamı oluşturur ve geri çağırma içindeki kodun `inject()` çağırmasına olanak tanır.
 
 IMPORTANT: Mümkün olduğunda bağımlılıkları her zaman sınıf seviyesinde yakalayın. Basit gecikmeli alma için `injector.get()` kullanın ve yalnızca harici kodun `inject()` çağırması gerektiğinde `runInInjectionContext()` kullanın.
 
@@ -440,7 +440,7 @@ TIP: Token'ları her zaman paylaşılan bir dosyadan dışa aktarın ve ihtiyaç
 
 Bir TypeScript arayüzü tanımladığınızda, yalnızca derleme sırasında tür denetimi için var olur. TypeScript, JavaScript'e derlerken tüm arayüz tanımlarını siler, bu nedenle çalışma zamanında Angular'ın enjeksiyon token'ı olarak kullanabileceği bir nesne yoktur. Bir arayüz türünü enjekte etmeye çalışırsanız, Angular'ın sağlayıcı yapılandırmasıyla eşleştireceği hiçbir şey yoktur.
 
-```angular-ts {avoid, header: "Can't inject interface"}
+```angular-ts {avoid, header: "Arayüz enjekte edilemez"}
 interface UserConfig {
   name: string;
   email: string;
@@ -671,7 +671,7 @@ Bu bölüm, karşılaşabileceğiniz belirli Angular DI hata kodları hakkında 
 
 ### NullInjectorError: [Service] için sağlayıcı yok {#nullinjectorerror-no-provider-for-service}
 
-**Hata kodu:** Yok (`NullInjectorError` olarak görüntülenir)
+**Hata kodu:** [NG0201](errors/NG0201)
 
 Bu hata, Angular enjektör hiyerarşisinde bir token için sağlayıcı bulamadığında oluşur. Hata mesajı, enjeksiyonun nerede denendiğini gösteren bir bağımlılık yolu içerir.
 
@@ -855,12 +855,12 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
    })
    export class UserProfile {
      private userService: UserClient;
+     user: ReturnType<UserClient['getUser']>;
 
      constructor() {
        this.userService = inject(UserClient); // Valid
+       this.user = this.userService.getUser();
      }
-
-     user = this.userService.getUser();
    }
    ```
 
@@ -882,7 +882,7 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
 4. **runInInjectionContext() içinde**
 
    ```angular-ts
-   import {Component, inject, Injector} from '@angular/core';
+   import {Component, inject, Injector, runInInjectionContext} from '@angular/core';
    import {UserClient} from './user-client';
 
    @Component({
@@ -893,7 +893,7 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
      private injector = inject(Injector);
 
      loadUser() {
-       this.injector.runInInjectionContext(() => {
+       runInInjectionContext(this.injector, () => {
          const userService = inject(UserClient); // Valid
          console.log(userService.getUser());
        });
@@ -934,7 +934,7 @@ private userService = inject(UserClient) // Capture at class level
 private injector = inject(Injector)
 
 someCallback() {
-  this.injector.runInInjectionContext(() => {
+  runInInjectionContext(this.injector, () => {
     const service = inject(MyClient)
   })
 }

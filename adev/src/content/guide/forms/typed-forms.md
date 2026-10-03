@@ -6,7 +6,7 @@ Bu kılavuzun arka planı olarak, [Angular Reaktif Formları](guide/forms/reacti
 
 ## Türlenmiş Form'lara genel bakış
 
-<docs-video src="https://www.youtube.com/embed/L-odCf4MfJc" title="Typed Forms in Angular" />
+<docs-video src="https://www.youtube.com/embed/L-odCf4MfJc" title="Angular'da Türlenmiş Form'lar" />
 
 Angular reaktif formlarıyla, bir _form modeli_ açıkça belirtirsiniz. Basit bir örnek olarak, bu temel kullanıcı giriş formunu düşünün:
 

@@ -13,7 +13,7 @@ Bu bölüm, bu tür koşulların nasıl belirleneceğini ve gereksiz değişikli
 
 Gereksiz değişiklik algılama çağrılarını Angular DevTools ile tespit edebilirsiniz. Genellikle profil çıkarıcının zaman çizelgesinde `setTimeout`, `setInterval`, `requestAnimationFrame` veya bir olay işleyicisi kaynaklı ardışık çubuklar olarak görünürler. Bu API'lerin uygulamanız içinde sınırlı çağrıları olduğunda, değişiklik algılama çağrısı genellikle bir üçüncü taraf kütüphanesi tarafından neden olur.
 
-<img alt="Angular DevTools profiler preview showing Zone pollution" src="assets/images/best-practices/runtime-performance/zone-pollution.png">
+<img alt="Zone kirliliğini gösteren Angular DevTools profiler önizlemesi" src="assets/images/best-practices/runtime-performance/zone-pollution.png">
 
 Yukarıdaki görüntüde, bir elemanla ilişkili olay işleyicileri tarafından tetiklenen bir dizi değişiklik algılama çağrısı vardır. Bu, `NgZone`'un varsayılan davranışını değiştirmeyen üçüncü taraf, yerel olmayan Angular bileşenleri kullanırken yaygın bir zorluktur.
 
@@ -25,7 +25,7 @@ Bu tür durumlarda, [NgZone](/api/core/NgZone) kullanarak Angular'a belirli bir 
 import { Component, NgZone, OnInit, inject } from '@angular/core';
 
 @Component(...)
-class AppComponent implements OnInit {
+class App implements OnInit {
   private ngZone = inject(NgZone);
 
   ngOnInit() {
@@ -43,7 +43,7 @@ import { Component, NgZone, OnInit, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
 @Component(...)
-class AppComponent implements OnInit {
+class App implements OnInit {
   private ngZone = inject(NgZone);
 
   ngOnInit() {
@@ -65,7 +65,7 @@ import { Component, NgZone, OnInit, output, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
 @Component(...)
-class AppComponent implements OnInit {
+class App implements OnInit {
   private ngZone = inject(NgZone);
 
   plotlyClick = output<Plotly.PlotMouseEvent>();
@@ -97,7 +97,7 @@ import { Component, NgZone, OnInit, output, inject } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
 @Component(...)
-class AppComponent implements OnInit {
+class App implements OnInit {
   private ngZone = inject(NgZone);
 
   plotlyClick = output<Plotly.PlotMouseEvent>();

@@ -133,7 +133,7 @@ SSR veya SSG kullanırken, Angular sunucu tarafında render edilmiş HTML'yi etk
 ## Sonraki adımlar
 
 <docs-pill-row>
-  <docs-pill href="/guide/ssr" title="Server-Side Rendering"/>
+  <docs-pill href="/guide/ssr" title="Sunucu ve hibrit render"/>
   <docs-pill href="/guide/hydration" title="Hydration"/>
-  <docs-pill href="/guide/incremental-hydration" title="Incremental Hydration"/>
+  <docs-pill href="/guide/incremental-hydration" title="Artımlı Hydration"/>
 </docs-pill-row>

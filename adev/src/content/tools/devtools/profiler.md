@@ -3,7 +3,7 @@
 **Profiler** sekmesi, Angular'ın değişiklik algılama (change detection) işleminin yürütülmesini görselleştirmenizi sağlar.
 Bu, değişiklik algılamanın uygulamanızın performansını ne zaman ve nasıl etkilediğini belirlemek için kullanışlıdır.
 
-<img src="assets/images/guide/devtools/profiler.png" alt="A screenshot of the 'Profiler' tab which reads 'Click the play button to start a new recording, or upload a json file containing profiler data.' Next to this is a record button to begin recording a new profile as well as a file picker to select an existing profile.">
+<img src="assets/images/guide/devtools/profiler.png" alt="'Click the play button to start a new recording, or upload a json file containing profiler data.' yazan 'Profiler' sekmesinin ekran görüntüsü. Bunun yanında yeni bir profil kaydını başlatmak için bir kayıt düğmesi ve mevcut bir profili seçmek için bir dosya seçici bulunuyor.">
 
 Profiler sekmesi, mevcut uygulamayı profillemeye başlamanızı veya önceki bir çalıştırmadan mevcut bir profili içe aktarmanızı sağlar.
 Uygulamanızı profillemeye başlamak için **Profiler** sekmesindeki sol üst köşedeki dairenin üzerine gelin ve **Start recording**'a tıklayın.
@@ -19,7 +19,7 @@ Bu özellik hakkında daha fazla bilgi için [Import recording](tools/devtools/p
 
 Bir profil kaydettikten veya içe aktardıktan sonra Angular DevTools, değişiklik algılama döngülerinin bir görselleştirmesini gösterir.
 
-<img src="assets/images/guide/devtools/default-profiler-view.png" alt="A screenshot of the 'Profiler' tab after a profile has been recorded or uploaded. It displays a bar chart illustrating various change detection cycles with some text which reads 'Select a bar to preview a particular change detection cycle'.">
+<img src="assets/images/guide/devtools/default-profiler-view.png" alt="Bir profil kaydedildikten veya yüklendikten sonra 'Profiler' sekmesinin ekran görüntüsü. Çeşitli değişiklik algılama döngülerini gösteren bir çubuk grafik ve 'Select a bar to preview a particular change detection cycle' yazan bir metin görüntüleniyor.">
 
 Sıradaki her çubuk, uygulamanızdaki bir değişiklik algılama döngüsünü temsil eder.
 Bir çubuk ne kadar uzunsa, uygulama bu döngüde değişiklik algılama çalıştırmak için o kadar fazla zaman harcamıştır.
@@ -29,7 +29,7 @@ Bir çubuğu seçtiğinizde DevTools, aşağıdakiler dahil olmak üzere hakkın
 - Angular'ın bu döngüde değişiklik algılama çalıştırmak için harcadığı süre
 - Kullanıcının deneyimlediği tahmini kare hızı (60fps'nin altındaysa)
 
-<img src="assets/images/guide/devtools/profiler-selected-bar.png" alt="A screenshot of the 'Profiler' tab. A single bar has been selected by the user and a nearby dropdown menu displays 'Bar chart`, showing a second bar chart underneath it. The new chart has two bars which take up the majority of the space, one labeled `TodosComponent` and the other labeled `NgForOf`. The other bars are small enough to be negligible in comparison.">
+<img src="assets/images/guide/devtools/profiler-selected-bar.png" alt="'Profiler' sekmesinin ekran görüntüsü. Kullanıcı tek bir çubuğu seçmiş ve yakındaki açılır menüde 'Bar chart' görüntülenerek altında ikinci bir çubuk grafik gösteriliyor. Yeni grafikte alanın çoğunu kaplayan iki çubuk var: biri `TodosComponent`, diğeri `NgForOf` etiketli. Diğer çubuklar karşılaştırıldığında ihmal edilebilecek kadar küçük.">
 
 ## Bileşen Çalışmasını Anlama
 
@@ -37,11 +37,11 @@ Bir değişiklik algılama döngüsüne tıkladıktan sonra gösterilen çubuk g
 
 Bu örnek, `NgForOf` direktifinin harcadığı toplam süreyi ve üzerinde hangi yöntemin çağrıldığını gösterir.
 
-<img src="assets/images/guide/devtools/directive-details.png" alt="A screenshot of the 'Profiler' tab where the `NgForOf` bar is selected. A detailed view of `NgForOf` is visible to the right where it lists 'Total time spent: 1.76 ms'. It includes a with exactly one row, listing `NgForOf` as a directives with an `ngDoCheck` method which took 1.76 ms. It also includes a list labeled 'Parent Hierarchy' containing the parent components of this directive.">
+<img src="assets/images/guide/devtools/directive-details.png" alt="'Profiler' sekmesinin, `NgForOf` çubuğu seçiliyken ekran görüntüsü. Sağda `NgForOf` için ayrıntılı bir görünüm var ve 'Total time spent: 1.76 ms' yazıyor. Görünümde, 1,76 ms süren bir `ngDoCheck` metoduna sahip direktif olarak `NgForOf`'u listeleyen tam olarak tek satırlık bir tablo ve bu direktifin üst bileşenlerini içeren 'Parent Hierarchy' etiketli bir liste bulunuyor.">
 
 ## Hiyerarşik Görünümler
 
-<img src="assets/images/guide/devtools/flame-graph-view.png" alt="A screenshot of the 'Profiler' tab. A single bar has been selected by the user and a nearby dropdown menu now displays 'Flame graph', showing a flame graph underneath it. The flame graph starts with a row called 'Entire application' and another row called 'AppComponent'. Beneath those, the rows start to break up into multiple items, starting with `[RouterOutlet]` and `DemoAppComponent` on the third row. A few layers deep, one cell is highlighted red.">
+<img src="assets/images/guide/devtools/flame-graph-view.png" alt="'Profiler' sekmesinin ekran görüntüsü. Kullanıcı tek bir çubuğu seçmiş ve yakındaki açılır menüde artık 'Flame graph' görüntülenerek altında bir alev grafiği gösteriliyor. Alev grafiği 'Entire application' adlı bir satır ve 'AppComponent' adlı başka bir satırla başlıyor. Bunların altında satırlar, üçüncü satırda `[RouterOutlet]` ve `DemoAppComponent` ile başlayarak birden çok öğeye ayrılıyor. Birkaç katman aşağıda bir hücre kırmızıyla vurgulanmış.">
 
 Değişiklik algılama yürütmesini alev grafiği (flame graph) benzeri bir görünümde de görselleştirebilirsiniz.
 
@@ -66,11 +66,11 @@ Bir değişiklik algılama karesinde yalnızca değişiklik algılama sürecinde
 
 Bu görünüm, değişiklik algılamadan geçen tüm bileşenleri vurgular ve yeniden render edilmeyen `OnPush` bileşenleri gibi geçmeyenleri gri renkte gösterir.
 
-<img src="assets/images/guide/devtools/debugging-onpush.png" alt="A screenshot of the 'Profiler' tab displaying a flame chart visualization of a change detection cycle. A checkbox labeled 'Show only change detection' is now checked. The flame graph looks very similar to before, however the color of components has changed from orange to blue. Several tiles labeled `[RouterOutlet]` are no longer highlighted with any color.">
+<img src="assets/images/guide/devtools/debugging-onpush.png" alt="Bir değişiklik algılama döngüsünün alev grafiği görselleştirmesini gösteren 'Profiler' sekmesinin ekran görüntüsü. 'Show only change detection' etiketli bir onay kutusu artık işaretli. Alev grafiği öncekine çok benziyor, ancak bileşenlerin rengi turuncudan maviye değişmiş. `[RouterOutlet]` etiketli birkaç kutucuk artık herhangi bir renkle vurgulanmıyor.">
 
 ## Kayıtları İçe ve Dışa Aktarma
 
 Dışa aktarmak için kaydedilmiş bir profilleme oturumunun sağ üst köşesindeki **Save Profile** düğmesine tıklayarak JSON dosyası olarak kaydedin.
 Daha sonra, profiler'ın başlangıç görünümünde **Choose file** girişine tıklayarak dosyayı içe aktarın.
 
-<img src="assets/images/guide/devtools/save-profile.png" alt="A screenshot of the 'Profiler' tab displaying change detection cycles. On the right side a 'Save Profile' button is visible.">
+<img src="assets/images/guide/devtools/save-profile.png" alt="Değişiklik algılama döngülerini gösteren 'Profiler' sekmesinin ekran görüntüsü. Sağ tarafta 'Save Profile' düğmesi görünüyor.">

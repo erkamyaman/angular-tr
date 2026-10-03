@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/" title="Menu ARIA pattern"/>
-  <docs-pill href="/api/aria/menu/Menu" title="Menu API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/" title="Menu ARIA deseni"/>
+  <docs-pill href="/api/aria/menu/Menu" title="Menu API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış

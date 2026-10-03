@@ -48,10 +48,10 @@ TIP: [Rota resource'ları](/guide/routing/data-fetching-with-resources#reloading
 
 `paramsInheritanceStrategy`, rota parametrelerinin ve verilerin üst rotalardan nasıl aktığını tanımlar.
 
-Varsayılan olarak (`'always'`), alt rotalar üst rotalardan parametreleri, rota verilerini ve çözümlenen değerleri otomatik olarak devralır.
+Varsayılan olarak (`'always'`), alt rotalar üst rotalardan parametreleri, rota verilerini ve çözümlenen değerleri otomatik olarak devralır. Bu, matris parametrelerinin, rota verilerinin ve çözümlenen değerlerin rota ağacında daha aşağıda kullanılabilir olmasını sağlar - şu gibi özellik alanları arasında bağlamsal tanımlayıcıları paylaştığınızda kullanışlıdır:
 
-```ts
-provideRouter(routes, withRouterConfig({paramsInheritanceStrategy: 'emptyOnly'}));
+```text {hideCopy}
+/org/:orgId/projects/:projectId/customers/:customerId
 ```
 
 ```ts
@@ -80,27 +80,28 @@ export const routes: Routes = [
 export class Customer {
   private route = inject(ActivatedRoute);
 
-  // Üst rota parametrelerine erişmek için üst zincirleme gerekli
-  orgId = this.route.parent?.parent?.snapshot.params['orgId'];
-  projectId = this.route.parent?.snapshot.params['projectId'];
+  // Tüm üst parametreler doğrudan kullanılabilir
+  orgId = this.route.snapshot.params['orgId'];
+  projectId = this.route.snapshot.params['projectId'];
   customerId = this.route.snapshot.params['customerId'];
 }
 ```
 
-Bu, matris parametrelerinin, rota verilerinin ve çözümlenen değerlerin rota ağacında daha aşağıda kullanılabilir olmasını sağlar - şu gibi özellik alanları arasında bağlamsal tanımlayıcıları paylaştığınızda kullanışlıdır:
+Eski davranışı geri yüklemek için `paramsInheritanceStrategy` değerini `'emptyOnly'` olarak ayarlayın. `'emptyOnly'` ile alt rotalar, parametreleri yalnızca yolları boş olduğunda veya üst rota bir bileşen bildirmediğinde devralır:
 
-```text {hideCopy}
-/org/:orgId/projects/:projectId/customers/:customerId
+```ts
+provideRouter(routes, withRouterConfig({paramsInheritanceStrategy: 'emptyOnly'}));
 ```
+
+Bu durumda `Customer` bileşeni, üst parametreleri atası olan rotalardan okumak zorundadır:
 
 ```ts
 @Component({/* ... */})
 export class Customer {
   private route = inject(ActivatedRoute);
 
-  // Tüm üst parametreler doğrudan kullanılabilir
-  orgId = this.route.snapshot.params['orgId'];
-  projectId = this.route.snapshot.params['projectId'];
+  orgId = this.route.parent?.parent?.snapshot.params['orgId'];
+  projectId = this.route.parent?.snapshot.params['projectId'];
   customerId = this.route.snapshot.params['customerId'];
 }
 ```
@@ -155,10 +156,10 @@ Bu stratejiler yalnızca tarayıcıya yazılan URL'yi etkiler.
 Angular Router, özelleştirme için dört ana alan sunar:
 
   <docs-pill-row>
-    <docs-pill href="#route-reuse-strategy" title="Route reuse strategy"/>
-    <docs-pill href="#preloading-strategy" title="Preloading strategy"/>
-    <docs-pill href="#url-handling-strategy" title="URL handling strategy"/>
-    <docs-pill href="#özel-route-eşleştiricileri" title="Custom route matchers"/>
+    <docs-pill href="#route-reuse-strategy" title="Rota yeniden kullanım stratejisi"/>
+    <docs-pill href="#preloading-strategy" title="Ön yükleme stratejisi"/>
+    <docs-pill href="#url-handling-strategy" title="URL yönetim stratejisi"/>
+    <docs-pill href="#özel-route-eşleştiricileri" title="Özel route eşleştiricileri"/>
   </docs-pill-row>
 
 ## Rota yeniden kullanım stratejisi {#route-reuse-strategy}
@@ -189,7 +190,7 @@ Angular'ın `RouteReuseStrategy` sınıfı, "ayrılmış rota tutamaçları" kav
 | [`shouldAttach`](api/router/RouteReuseStrategy#shouldAttach)                   | Saklanan bir rotanın navigasyon yapıldığında yeniden eklenip eklenmeyeceğini belirler                                  |
 | [`retrieve`](api/router/RouteReuseStrategy#retrieve)                           | Yeniden ekleme için daha önce saklanan rota tutamacını döndürür                                                        |
 | [`shouldReuseRoute`](api/router/RouteReuseStrategy#shouldReuseRoute)           | Yönlendiricinin navigasyon sırasında geçerli rota örneğini yok etmek yerine yeniden kullanıp kullanmayacağını belirler |
-| [`shouldDestroyInjector`](api/router/RouteReuseStrategy#shouldDestroyInjector) | (Deneysel) Yönlendiricinin artık saklanmayan ayrılmış bir rotanın enjektörünü yok edip etmeyeceğini belirler           |
+| [`shouldDestroyInjector`](api/router/RouteReuseStrategy#shouldDestroyInjector) | Yönlendiricinin artık saklanmayan ayrılmış bir rotanın enjektörünü yok edip etmeyeceğini belirler                      |
 
 Aşağıdaki örnek, rota meta verilerine göre bileşen durumunu seçici olarak koruyan özel bir rota yeniden kullanım stratejisini gösterir:
 
@@ -470,8 +471,7 @@ Bu strateji, URL alanında net sınırlar oluşturur. Angular `/app` ve `/admin`
 
 ```ts
 import {ApplicationConfig} from '@angular/core';
-import {provideRouter} from '@angular/router';
-import {UrlHandlingStrategy} from '@angular/router';
+import {provideRouter, UrlHandlingStrategy} from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
   providers: [

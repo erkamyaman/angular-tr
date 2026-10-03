@@ -202,7 +202,7 @@ export class Stats {
 
 Angular, `Stats` bileşenini o outlet'te etkinleştirdiğinde, enjekte edilen veri olarak `{ layout: 'sidebar' }` alır.
 
-NOTE: `routerOutletData` girişi ayarlanmadığında, enjekte edilen değer varsayılan olarak null'dur.
+NOTE: `routerOutletData` girişi ayarlanmadığında, enjekte edilen sinyalin değeri varsayılan olarak `undefined`'dır.
 
 ---
 

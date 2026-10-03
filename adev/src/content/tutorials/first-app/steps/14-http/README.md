@@ -156,27 +156,27 @@ Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna ba�
 
 1.  `url` adında bir string özelliği ekleyin ve değerini `'http://localhost:3000/locations'` olarak ayarlayın
 
-    <docs-code header="Add url property to housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[6]"/>
+    <docs-code header="housing.service.ts içine url özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[6]"/>
 
     Bu kod, dosyanın geri kalanında hatalara neden olacaktır çünkü `housingLocationList` özelliğine bağımlıdır. Servis metotlarını şimdi güncelleyeceğiz.
 
 1.  `getAllHousingLocations` fonksiyonunu, yapılandırdığınız web sunucusuna bir çağrı yapacak şekilde güncelleyin.
 
-     <docs-code header="Update the getAllHousingLocations method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[8,11]"/>
+     <docs-code header="housing.service.ts içinde getAllHousingLocations metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[8,11]"/>
 
     Kod artık HTTP üzerinden bir **GET** isteği yapmak için asenkron kod kullanmaktadır.
 
     HELPFUL: Bu örnek için kod `fetch` kullanmaktadır. Daha gelişmiş kullanım durumları için Angular tarafından sağlanan `HttpClient` kullanmayı düşünün.
 
-1.  `getHousingLocationsById` fonksiyonunu, yapılandırdığınız web sunucusuna bir çağrı yapacak şekilde güncelleyin.
+1.  `getHousingLocationById` fonksiyonunu, yapılandırdığınız web sunucusuna bir çağrı yapacak şekilde güncelleyin.
 
-    HELPFUL: `fetch` metodunun, eşleşen `id` özellik değerine sahip konum verilerini _sorgulamak_ için güncellendiğine dikkat edin. Daha fazla bilgi için [URL Arama Parametresi](https://developer.mozilla.org/en-US/docs/Web/API/URL/search) bölümüne bakın.
+    HELPFUL: `fetch` URL'sinin artık eşleşen `id` özellik değerine sahip konumu istemek için `id` değerini bir yol bölümü olarak eklediğine (`${this.url}/${id}`) dikkat edin.
 
-     <docs-code header="Update the getHousingLocationById method in housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[13,17]"/>
+     <docs-code header="housing.service.ts içinde getHousingLocationById metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[13,17]"/>
 
 1.  Tüm güncellemeler tamamlandığında, güncellenmiş servisiniz aşağıdaki kodla eşleşmelidir.
 
-     <docs-code header="Final version of housing.service.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[1,25]" />
+     <docs-code header="housing.service.ts dosyasının son hâli" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[1,25]" />
 
 </docs-step>
 
@@ -185,11 +185,11 @@ Sunucu artık HTTP isteğinden veri okuyor ancak servise bağımlı olan bileşe
 
 1.  `src/app/home/home.ts` dosyasında, `constructor`'ı yeni asenkron `getAllHousingLocations` metodu sürümünü kullanacak şekilde güncelleyin. Durumumuz için sinyaller kullanmadığımızdan, Angular'a bir değişiklik olduğunu ve senkronizasyon gerektirdiğini bildirmeniz gerekir. Bunu yapmak için `this.changeDetectorRef.markForCheck()` çağrısını yapın.
 
-      <docs-code header="Update constructor in home.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/home/home.ts" visibleLines="[30,38]"/>
+      <docs-code header="home.ts içinde constructor'ı güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/home/home.ts" visibleLines="[30,38]"/>
 
 1.  `src/app/details/details.ts` dosyasında, `constructor`'ı yeni asenkron `getHousingLocationById` metodu sürümünü kullanacak şekilde güncelleyin. Daha önce olduğu gibi, değişiklikleri Angular'a bildirmek için `this.changeDetectorRef.markForCheck()` çağrısını da yapmalısınız.
 
-      <docs-code header="Update constructor in details.ts" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/details/details.ts" visibleLines="[60,66]"/>
+      <docs-code header="details.ts içinde constructor'ı güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/details/details.ts" visibleLines="[60,66]"/>
 
 1.  Kodunuzu kaydedin.
 

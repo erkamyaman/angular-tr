@@ -128,7 +128,7 @@ Burada yalnızca son değer (3) günlüğe kaydedilir.
 
 ## Asenkron veri için `rxResource` kullanımı {#using-rxresource-for-async-data}
 
-Angular'ın [`resource` fonksiyonu](/guide/signals/resource), uygulamanızın sinyal tabanlı koduna asenkron veriyi dahil etmenin bir yolunu sunar. Bu kalıbın üzerine inşa edilen `rxResource`, veri kaynağınızı bir RxJS `Observable` cinsinden tanımladığınız bir kaynak tanımlamanıza olanak tanır. Bir `loader` fonksiyonu kabul etmek yerine, `rxResource` bir RxJS `Observable` kabul eden bir `stream` fonksiyonu alır.
+Angular'ın [`resource` fonksiyonu](/guide/signals/resource), uygulamanızın sinyal tabanlı koduna asenkron veriyi dahil etmenin bir yolunu sunar. Bu kalıbın üzerine inşa edilen `rxResource`, veri kaynağınızı bir RxJS `Observable` cinsinden tanımladığınız bir kaynak tanımlamanıza olanak tanır. Bir `loader` fonksiyonu kabul etmek yerine, `rxResource` bir RxJS `Observable` döndüren bir `stream` fonksiyonu alır.
 
 ```typescript
 import {Component, inject} from '@angular/core';

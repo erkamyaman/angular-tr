@@ -175,7 +175,7 @@ Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
 | `readonly`        | Alanın salt okunur olup olmadığı (görünür ama düzenlenemez) |
 | `hidden`          | Alanın görünümden gizli olup olmadığı                       |
 
-NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `field` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
+NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `fieldTree` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
 
 #### Doğrulama kısıtlamaları {#validation-constraints}
 
@@ -230,7 +230,7 @@ export class MyForm {
 }
 ```
 
-TIP: Form modellerini oluşturma ve yönetme konusunda kapsamlı bilgi için [Form Models kılavuzuna](guide/forms/signals/models) bakın.
+TIP: Form modellerini oluşturma ve yönetme konusunda kapsamlı bilgi için [Form Modelleri kılavuzuna](guide/forms/signals/models) bakın.
 
 `[formField]="userForm.username"` bağladığınızda, FormField direktifi:
 
@@ -548,8 +548,8 @@ Ayrıca kontroller, durum yönetimi için kendi effect'lerini kaydetmemelidir. F
 Bu kılavuz, Signal Forms ile entegre olan özel kontroller oluşturmayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms/signals/models" title="Form models" />
-  <docs-pill href="guide/forms/signals/field-state-management" title="Field state management" />
-  <docs-pill href="guide/forms/signals/validation" title="Validation" />
+  <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />
   <!-- <docs-pill href="guide/forms/signals/arrays" title="Working with Arrays" /> -->
 </docs-pill-row>

@@ -18,7 +18,7 @@ Aksi belirtilmedikçe, kalıplar dahili olarak regex'e dönüştürülecek **sı
 | `?`            | `/` hariç tam olarak bir karakterle eşleşir                                             |
 | `!` öneki      | Kalıbı negatif olarak işaretler, yani yalnızca kalıpla eşleşmeyen dosyalar dahil edilir |
 
-<docs-callout important title="Special characters need to be escaped">
+<docs-callout important title="Özel karakterlerin kaçırılması gerekir">
 Düzenli ifadede özel anlamı olan bazı karakterlerin kaçış karakteriyle yazılmadığına ve ayrıca dahili glob'dan regex'e dönüşümde kalıbın `^`/`$` ile sarılmadığına dikkat edin.
 
 `$`, regex'te dizenin sonuyla eşleşen özel bir karakterdir ve glob kalıbını düzenli ifadeye dönüştürürken otomatik olarak kaçış karakteriyle yazılmaz.
@@ -332,7 +332,7 @@ ServiceWorker, herhangi bir `asset` veya `data` grubuyla eşleşmeyen navigasyon
 Bir istek, aşağıdaki durumlarda navigasyon isteği olarak kabul edilir:
 
 - [Metodu](https://developer.mozilla.org/docs/Web/API/Request/method) `GET`'tir
-- [Modu](https://developer.mozilla.org/docs/Web/API/Request/mode) `navigation`'dır
+- [Modu](https://developer.mozilla.org/docs/Web/API/Request/mode) `navigate`'dir
 - `Accept` başlığının değerine göre belirlenen şekilde bir `text/html` yanıtını kabul eder
 - URL'si aşağıdaki kriterlere uygundur:
   - URL, son yol segmentinde bir dosya uzantısı (yani `.`) içermemelidir

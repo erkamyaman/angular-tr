@@ -6,7 +6,7 @@ NOTE: Injector Tree, Angular 17 veya üzeri sürümlerle oluşturulmuş Angular 
 
 **Injector Tree** sekmesi, uygulamanızda yapılandırılmış Injector'ların yapısını keşfetmenizi sağlar. Burada uygulamanızın [injector hiyerarşisini](guide/di/hierarchical-dependency-injection) temsil eden iki ağaç göreceksiniz. Bir ağaç ortam (environment) hiyerarşiniz, diğeri ise öğe (element) hiyerarşinizdir.
 
-<img src="assets/images/guide/devtools/di-injector-tree.png" alt="A screenshot of the 'Profiler' tab displaying the injector tree tab in Angular Devtools visualizing the injector graph for an example application.">
+<img src="assets/images/guide/devtools/di-injector-tree.png" alt="Angular DevTools'ta, örnek bir uygulamanın enjektör grafiğini görselleştiren enjektör ağacı sekmesini gösteren 'Profiler' sekmesinin ekran görüntüsü.">
 
 ## Çözümleme yollarını görselleştirin
 
@@ -14,10 +14,10 @@ Belirli bir injector seçildiğinde, Angular'ın bağımlılık enjeksiyonu algo
 
 Angular'ın çözümleme yollarını nasıl çözdüğü hakkında daha fazla ayrıntı için [resolution rules](guide/di/hierarchical-dependency-injection#çözümleme-kuralları) bölümüne bakın.
 
-<img src="assets/images/guide/devtools/di-injector-tree-selected.png" alt="A screenshot of the 'Profiler' tab displaying how the injector tree visualize highlights resolution paths when an injector is selected.">
+<img src="assets/images/guide/devtools/di-injector-tree-selected.png" alt="Bir enjektör seçildiğinde enjektör ağacı görselleştirmesinin çözümleme yollarını nasıl vurguladığını gösteren 'Profiler' sekmesinin ekran görüntüsü.">
 
 ## Injector sağlayıcılarını görüntüleyin
 
 Yapılandırılmış sağlayıcıları (providers) olan bir injector'a tıklamak, bu sağlayıcıları injector ağacı görünümünün sağında bir liste olarak görüntüler. Burada sağlanan token'ı ve türünü görebilirsiniz. Her sağlayıcının sağındaki düğme, sağlayıcıyı konsola yazdırmanıza olanak tanır.
 
-<img src="assets/images/guide/devtools/di-injector-tree-providers.png" alt="A screenshot of the 'Profiler' tab displaying how providers are made visible when an injector is selected.">
+<img src="assets/images/guide/devtools/di-injector-tree-providers.png" alt="Bir enjektör seçildiğinde provider'ların nasıl görünür hale geldiğini gösteren 'Profiler' sekmesinin ekran görüntüsü.">

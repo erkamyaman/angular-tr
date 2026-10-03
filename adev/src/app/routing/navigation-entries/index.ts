@@ -1773,6 +1773,11 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
         path: 'reference/migrations/common-to-standalone',
         contentPath: 'reference/migrations/common-to-standalone',
       },
+      {
+        label: "Injectable'dan Service'e",
+        path: 'reference/migrations/injectable-to-service',
+        contentPath: 'reference/migrations/injectable-to-service',
+      },
     ],
   },
 ];

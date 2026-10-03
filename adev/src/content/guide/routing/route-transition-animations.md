@@ -122,7 +122,7 @@ Bu callback'i, navigasyon bağlamına göre geçiş davranışını özelleştir
 
 ```ts
 import {inject} from '@angular/core';
-import {Router, withViewTransitions, isActive} from '@angular/router';
+import {Router, withViewTransitions, isActive, IsActiveMatchOptions} from '@angular/router';
 
 withViewTransitions({
   onViewTransitionCreated: ({transition}) => {
@@ -130,7 +130,7 @@ withViewTransitions({
     const targetUrl = router.currentNavigation()!.finalUrl!;
 
     // Yalnızca fragment veya sorgu parametreleri değişiyorsa geçişi atla
-    const config = {
+    const config: Partial<IsActiveMatchOptions> = {
       paths: 'exact',
       matrixParams: 'exact',
       fragment: 'ignored',

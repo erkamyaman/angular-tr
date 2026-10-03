@@ -215,9 +215,9 @@ export function authRedirectInterceptor(
 
 ## Response Türleriyle Çalışma
 
-`HttpClient` fetch arka ucunu kullandığında, yanıtlar tarayıcının CORS politikaları ve istek moduna göre yanıtı nasıl işlediğini gösteren bir `type` özelliği içerir. Bu özellik yerel Fetch API spesifikasyonu ile uyumludur ve CORS sorunlarını ayıklamak ve yanıt erişilebilirliğini anlamak için değerli bilgiler sağlar.
+`HttpClient` fetch arka ucunu kullandığında, yanıtlar tarayıcının CORS politikaları ve istek moduna göre yanıtı nasıl işlediğini gösteren bir `responseType` özelliği içerir. Bu özellik yerel Fetch API spesifikasyonu ile uyumludur ve CORS sorunlarını ayıklamak ve yanıt erişilebilirliğini anlamak için değerli bilgiler sağlar.
 
-Yanıt `type` özelliği aşağıdaki değerlere sahip olabilir:
+Yanıt `responseType` özelliği aşağıdaki değerlere sahip olabilir:
 
 - `'basic'` - Tüm başlıkların erişilebilir olduğu aynı kökenli yanıt
 - `'cors'` - CORS başlıkları doğru şekilde yapılandırılmış çapraz kökenli yanıt
@@ -233,7 +233,7 @@ export function responseTypeInterceptor(
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
   return next(req).pipe(
-    map((event) => {
+    tap((event) => {
       if (event.type === HttpEventType.Response) {
         // Farklı response türlerini uygun şekilde yönet
         switch (event.responseType) {

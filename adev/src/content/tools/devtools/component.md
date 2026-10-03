@@ -9,14 +9,14 @@ DOM'daki bileşen ve direktif örneklerini görselleştirebilir, durumlarını i
 
 Bileşen ağacı, uygulamanızdaki _bileşenler ve direktifler_ arasındaki hiyerarşik ilişkiyi gösterir.
 
-<img src="assets/images/guide/devtools/component-explorer.png" alt="A screenshot of the 'Components' tab showing a tree of Angular components and directives starting the root of the application.">
+<img src="assets/images/guide/devtools/component-explorer.png" alt="'Components' sekmesinin, uygulamanın kökünden başlayan Angular bileşenleri ve direktiflerinin ağacını gösteren ekran görüntüsü.">
 
 Bileşen gezgininde tek tek bileşenlere veya direktiflere tıklayarak bunları seçin ve özelliklerini önizleyin.
 Angular DevTools, özellikleri ve meta verileri bileşen ağacının sağ tarafında görüntüler.
 
 Bir bileşeni veya direktifi ada göre aramak için bileşen ağacının üzerindeki arama kutusunu kullanın.
 
-<img src="assets/images/guide/devtools/search.png" alt="A screenshot of the 'Components' tab. The filter bar immediately underneath the tab is searching for 'todo' and all components with 'todo' in the name are highlighted in the tree. `app-todos` is currently selected and a sidebar to the right displays information about the component's properties. This includes a section of `@Output` fields and another section for other properties.">
+<img src="assets/images/guide/devtools/search.png" alt="'Components' sekmesinin ekran görüntüsü. Sekmenin hemen altındaki filtre çubuğunda 'todo' aranıyor ve adında 'todo' geçen tüm bileşenler ağaçta vurgulanıyor. `app-todos` şu anda seçili ve sağdaki kenar çubuğu bileşenin özellikleri hakkında bilgi gösteriyor. Bu bilgiler arasında `@Output` alanlarına ayrılmış bir bölüm ve diğer özelliklere ayrılmış başka bir bölüm bulunuyor.">
 
 ### Ana düğüme gitme
 
@@ -28,7 +28,7 @@ Angular DevTools, Chrome'da Elements sekmesini veya Firefox'ta Inspector sekmesi
 Bileşenler için Angular DevTools, Sources sekmesinde (Chrome) ve Debugger sekmesinde (Firefox) bileşen tanımına gitmenizi sağlar.
 Belirli bir bileşeni seçtikten sonra, özellikler görünümünün sağ üst köşesindeki simgeye tıklayın:
 
-<img src="assets/images/guide/devtools/navigate-source.png" alt="A screenshot of the 'Components' tab. The properties view on the right is visible for a component and the mouse rests in the upper right corner of that view on top of a `<>` icon. An adjacent tooltip reads 'Open component source'.">
+<img src="assets/images/guide/devtools/navigate-source.png" alt="'Components' sekmesinin ekran görüntüsü. Sağdaki özellikler görünümü bir bileşen için açık ve fare, bu görünümün sağ üst köşesindeki `<>` simgesinin üzerinde duruyor. Yanındaki araç ipucunda 'Open component source' yazıyor.">
 
 ### Özellik değerini güncelleme
 
@@ -36,14 +36,14 @@ Tarayıcıların DevTools'unda olduğu gibi, özellikler görünümü bir input,
 Özellik değerine sağ tıklayın ve bu değer türü için düzenleme işlevi mevcutsa, bir metin girişi alanı görünecektir.
 Yeni değeri yazın ve özelliğe uygulamak için `Enter` tuşuna basın.
 
-<img src="assets/images/guide/devtools/update-property.png" alt="A screenshot of the 'Components' tab with the properties view open for a component. An `@Input` named `todo` contains a `label` property which is currently selected and has been manually updated to the value 'Buy milk'.">
+<img src="assets/images/guide/devtools/update-property.png" alt="'Components' sekmesinin, bir bileşen için özellikler görünümü açıkken ekran görüntüsü. `todo` adlı bir `@Input`, şu anda seçili olan ve elle 'Buy milk' değerine güncellenmiş bir `label` özelliği içeriyor.">
 
 ### Konsolda seçili bileşen veya direktife erişme
 
 Konsolda bir kısayol olarak Angular DevTools, son seçilen bileşen veya direktif örneklerine erişim sağlar.
 Şu anda seçili bileşenin veya direktifin örneğine referans almak için `$ng0` yazın, daha önce seçilen örnek için `$ng1`, ondan önce seçilen örnek için `$ng2` yazın ve bu şekilde devam edin.
 
-<img src="assets/images/guide/devtools/access-console.png" alt="A screenshot of the 'Components' tab with the browser console underneath. In the console, the user has typed three commands, `$ng0`, `$ng1`, and `$ng2` to view the three most recently selected elements. After each statement, the console prints a different component reference.">
+<img src="assets/images/guide/devtools/access-console.png" alt="'Components' sekmesinin, altında tarayıcı konsoluyla birlikte ekran görüntüsü. Konsolda kullanıcı, en son seçilen üç öğeyi görüntülemek için `$ng0`, `$ng1` ve `$ng2` olmak üzere üç komut yazmış. Her ifadeden sonra konsol farklı bir bileşen referansı yazdırıyor.">
 
 ### Bir direktif veya bileşen seçme
 
@@ -51,7 +51,7 @@ Tarayıcıların DevTools'una benzer şekilde, belirli bir bileşeni veya direkt
 Angular DevTools içinde sol üst köşedeki **_Inspect element_** simgesine tıklayın ve sayfadaki bir DOM öğesinin üzerine gelin.
 Uzantı, ilişkili direktifleri ve/veya bileşenleri tanır ve Bileşen ağacında karşılık gelen öğeyi seçmenize olanak tanır.
 
-<img src="assets/images/guide/devtools/inspect-element.png" alt="A screenshot of the 'Components' tab with an Angular todo application visible. In the very top-left corner of Angular DevTools, an icon of a screen with a mouse icon inside it is selected. The mouse rests on a todo element in the Angular application UI. The element is highlighted with a `<TodoComponent>` label displayed in an adjacent tooltip.">
+<img src="assets/images/guide/devtools/inspect-element.png" alt="'Components' sekmesinin, bir Angular todo uygulaması görünürken ekran görüntüsü. Angular DevTools'un en sol üst köşesinde, içinde fare simgesi bulunan bir ekran simgesi seçili. Fare, Angular uygulama arayüzündeki bir todo öğesinin üzerinde duruyor. Öğe, yanındaki araç ipucunda görüntülenen bir `<TodoComponent>` etiketiyle vurgulanmış.">
 
 ### Ertelenebilir görünümleri inceleme
 

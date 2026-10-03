@@ -29,16 +29,16 @@ Animasyonlar için ana Angular modülleri `@angular/animations` ve `@angular/pla
 Projenize Angular animasyonları eklemeye başlamak için, standart Angular işlevselliğiyle birlikte animasyona özel modülleri içe aktarın.
 
 <docs-workflow>
-<docs-step title="Enabling the animations module">
+<docs-step title="Animasyon modülünü etkinleştirme">
 `@angular/platform-browser/animations/async`'den `provideAnimationsAsync`'i içe aktarın ve `bootstrapApplication` fonksiyon çağrısındaki providers listesine ekleyin.
 
-```ts {header: "Enabling Animations", linenums}
+```ts {header: "Animasyonları etkinleştirme", linenums}
 bootstrapApplication(AppComponent, {
   providers: [provideAnimationsAsync()],
 });
 ```
 
-<docs-callout important title="If you need immediate animations in your application">
+<docs-callout important title="Uygulamanızda hemen animasyon gerekiyorsa">
   Uygulamanız yüklendiğinde hemen bir animasyonun gerçekleşmesi gerekiyorsa,
   hevesle yüklenen animasyonlar modülüne geçmek isteyeceksiniz. Bunun yerine `@angular/platform-browser/animations`'dan `provideAnimations`'i
   içeri aktarın ve `bootstrapApplication` fonksiyon çağrısında `provideAnimationsAsync` **yerine** `provideAnimations` kullanın.
@@ -48,7 +48,7 @@ bootstrapApplication(AppComponent, {
 
 <docs-code header="app.module.ts" path="adev/src/content/examples/animations/src/app/app.module.1.ts"/>
 </docs-step>
-<docs-step title="Importing animation functions into component files">
+<docs-step title="Animasyon fonksiyonlarını bileşen dosyalarına içe aktarma">
 Bileşen dosyalarında belirli animasyon fonksiyonları kullanmayı planlıyorsanız, bu fonksiyonları `@angular/animations`'dan içeri aktarın.
 
 <docs-code header="app.ts" path="adev/src/content/examples/animations/src/app/app.ts" region="imports"/>
@@ -56,7 +56,7 @@ Bileşen dosyalarında belirli animasyon fonksiyonları kullanmayı planlıyorsa
 Bu rehberin sonundaki tüm [kullanılabilir animasyon fonksiyonlarına](guide/legacy-animations#animasyonlar-api-özeti) bakın.
 
 </docs-step>
-<docs-step title="Adding the animation metadata property">
+<docs-step title="Animasyon metaveri özelliğini ekleme">
 Bileşen dosyasında, `@Component()` dekoratörü içinde `animations:` adında bir metaveri özelliği ekleyin.
 Bir animasyonu tanımlayan tetikleyiciyi `animations` metaveri özelliğinin içine yerleştirirsiniz.
 
@@ -257,7 +257,7 @@ Animasyonlar bölümünde Angular animasyonlarının daha gelişmiş özellikler
 `@angular/animations` modülü tarafından sağlanan fonksiyonel API, Angular uygulamalarında animasyonlar oluşturmak ve kontrol etmek için alana özgü bir dil \(DSL\) sağlar.
 Temel fonksiyonların ve ilgili veri yapılarının tam listesi ve sözdizimi ayrıntıları için [API referansına](api?package=angular_animations&status=8) bakın.
 
-| Function name                     | What it does                                                                                                                                                                                                                        |
+| Fonksiyon adı                     | Ne yapar                                                                                                                                                                                                                            |
 | :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `trigger()`                       | Animasyonu başlatır ve diğer tüm animasyon fonksiyon çağrıları için bir kapsayıcı görevi görür. HTML şablonu `triggerName`'e bağlanır. Benzersiz bir tetikleyici adı bildirmek için ilk argümanı kullanın. Dizi sözdizimi kullanır. |
 | `style()`                         | Animasyonlarda kullanılacak bir veya daha fazla CSS stili tanımlar. Animasyonlar sırasında HTML elemanlarının görsel görünümünü kontrol eder. Nesne sözdizimi kullanır.                                                             |
@@ -282,9 +282,9 @@ HELPFUL: AngularConnect konferansında Kasım 2017'de gösterilen bu [sunuma](ht
 Aşağıdakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
-  <docs-pill href="guide/legacy-animations/transition-and-triggers" title="Transition and triggers"/>
-  <docs-pill href="guide/legacy-animations/complex-sequences" title="Complex animation sequences"/>
-  <docs-pill href="guide/legacy-animations/reusable-animations" title="Reusable animations"/>
-  <docs-pill href="guide/routing/route-transition-animations" title="Route transition animations"/>
-  <docs-pill href="guide/animations/migration" title="Migrating to Native CSS Animations"/>
+  <docs-pill href="guide/legacy-animations/transition-and-triggers" title="Animasyon geçişleri ve tetikleyiciler"/>
+  <docs-pill href="guide/legacy-animations/complex-sequences" title="Karmaşık animasyon dizileri"/>
+  <docs-pill href="guide/legacy-animations/reusable-animations" title="Yeniden kullanılabilir animasyonlar"/>
+  <docs-pill href="guide/routing/route-transition-animations" title="Route Geçiş Animasyonları"/>
+  <docs-pill href="guide/animations/migration" title="Angular'ın Animasyon paketinden geçiş"/>
 </docs-pill-row>

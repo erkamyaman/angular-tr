@@ -30,9 +30,9 @@ Bu noktadan itibaren, yeniden kullanılabilir animasyon değişkenlerini bileşe
 Aşağıdakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
-  <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>
-  <docs-pill href="guide/legacy-animations/transition-and-triggers" title="Transition and triggers"/>
-  <docs-pill href="guide/legacy-animations/complex-sequences" title="Complex animation sequences"/>
-  <docs-pill href="guide/routing/route-transition-animations" title="Route transition animations"/>
-  <docs-pill href="guide/animations/migration" title="Migrating to Native CSS Animations"/>
+  <docs-pill href="guide/legacy-animations" title="Angular Animasyonlarına Giriş"/>
+  <docs-pill href="guide/legacy-animations/transition-and-triggers" title="Animasyon geçişleri ve tetikleyiciler"/>
+  <docs-pill href="guide/legacy-animations/complex-sequences" title="Karmaşık animasyon dizileri"/>
+  <docs-pill href="guide/routing/route-transition-animations" title="Route Geçiş Animasyonları"/>
+  <docs-pill href="guide/animations/migration" title="Angular'ın Animasyon paketinden geçiş"/>
 </docs-pill-row>

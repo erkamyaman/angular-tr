@@ -22,7 +22,7 @@ Daha fazla ayrıntı için [aşağıdaki](#vscode-eklentisi) bölüme bakın.
 2. Uygulamanızdaki geçirilen sorgulara yapılan referanslar, sinyali çağıracak şekilde güncellenir.
    - Bu, şablonlardaki, ana bağlamalardaki veya TypeScript kodundaki referansları içerir.
 
-**Before**
+**Önce**
 
 ```angular-ts
 import {Component, ContentChild} from '@angular/core';
@@ -41,7 +41,7 @@ export class MyComponent {
 }
 ```
 
-**After**
+**Sonra**
 
 ```angular-ts
 import {Component, contentChild} from '@angular/core';
@@ -99,7 +99,7 @@ referansın sessizce atlanacağını ve potansiyel olarak derlemenizi bozabilece
 
 ## VSCode eklentisi
 
-![Screenshot of the VSCode extension and clicking on an `@ViewChild` field](assets/images/migrations/signal-queries-vscode.png 'Screenshot of the VSCode extension and clicking on an `@ViewChild` field.')
+![VSCode eklentisinin ekran görüntüsü ve bir `@ViewChild` alanına tıklama](assets/images/migrations/signal-queries-vscode.png 'VSCode eklentisinin ekran görüntüsü ve bir `@ViewChild` alanına tıklama.')
 
 Geçiş, VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
 

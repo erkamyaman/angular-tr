@@ -25,7 +25,7 @@ IDE'nizin **Edit** bölmesinde:
 
 1.  `src/app/housing.service.ts` dosyasında, `HousingService` sınıfı içine bu metodu sınıf tanımının en altına yapıştırın.
 
-       <docs-code header="Submit method in src/app/housing.service.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[118,122]"/>
+       <docs-code header="src/app/housing.service.ts içinde gönderme metodu" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[118,122]"/>
 
 1.  Uygulamanın hatasız derlendiğini doğrulayın.
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
@@ -38,21 +38,21 @@ IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
 
 1.  Dosyanın en üstündeki `import` ifadelerinden sonra, Angular form sınıflarını içe aktarmak için aşağıdaki kodu ekleyin.
 
-      <docs-code header="Forms imports in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[5]"/>
+      <docs-code header="src/app/details/details.ts içinde form import'ları" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[5]"/>
 
 1.  `Details` dekoratörü meta verilerinde, `imports` özelliğini aşağıdaki kodla güncelleyin:
 
-      <docs-code header="imports directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[9]"/>
+      <docs-code header="src/app/details/details.ts içinde imports direktifi" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[9]"/>
 
 1.  `Details` sınıfında, `constructor()` metodundan önce form nesnesini oluşturmak için aşağıdaki kodu ekleyin.
 
-      <docs-code header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[52,56]"/>
+      <docs-code header="src/app/details/details.ts içinde template direktifi" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[52,56]"/>
 
     Angular'da `FormGroup` ve `FormControl`, form oluşturmanızı sağlayan türlerdir. `FormControl` türü, varsayılan bir değer sağlayabilir ve form verilerini şekillendirebilir. Bu örnekte `firstName` bir `string`'dir ve varsayılan değeri boş dizedir.
 
 1.  `Details` sınıfında, `constructor()` metodundan sonra **Şimdi Başvur** tıklamasını yönetmek için aşağıdaki kodu ekleyin.
 
-      <docs-code header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[62,68]"/>
+      <docs-code header="src/app/details/details.ts içinde template direktifi" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[62,68]"/>
 
     Bu düğme henüz mevcut değil - bir sonraki adımda ekleyeceksiniz. Yukarıdaki kodda, `FormControl`'ler `null` döndürebilir. Bu kod, değer `null` ise varsayılan olarak boş dize kullanmak için nullish birleştirme operatörünü kullanır.
 
@@ -67,14 +67,14 @@ IDE'nizin **Edit** bölmesinde, `src/app/details/details.ts` dosyasında:
 
 1. `Details` dekoratörü meta verilerinde, formun işaretlemesini eklemek için `template` HTML'ini aşağıdaki kodla eşleşecek şekilde güncelleyin.
 
-   <docs-code language="angular-ts" header="template directive in src/app/details/details.ts" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[10,45]"/>
+   <docs-code language="angular-ts" header="src/app/details/details.ts içinde template direktifi" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/details/details.ts" visibleLines="[10,45]"/>
 
    Şablon artık bir `(submit)="submitApplication()"` olay işleyicisi içermektedir. Angular, şablon kodunda olayları tanımlamak için olay adının etrafında parantez sözdizimi kullanır. Eşittir işaretinin sağ tarafındaki kod, bu olay tetiklendiğinde yürütülmesi gereken koddur. Tarayıcı olaylarına ve özel olaylara bağlanabilirsiniz.
 
 1. Uygulamanın hatasız derlendiğini doğrulayın.
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
-   <img alt="details page with a form for applying to live at this location" src="assets/images/tutorials/first-app/homes-app-lesson-12-step-3.png">
+   <img alt="Bu konumda yaşamak için başvuru formu bulunan ayrıntılar sayfası" src="assets/images/tutorials/first-app/homes-app-lesson-12-step-3.png">
 
 </docs-step>
 

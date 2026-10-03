@@ -87,11 +87,11 @@ Service worker'a hazır diğer tarayıcılar hakkında daha fazla bilgi edinmek 
 Bu bölümdeki diğer makaleler, service worker'ların Angular uygulamasını özellikle ele alır.
 
 <docs-pill-row>
-  <docs-pill href="ecosystem/service-workers/config" title="Configuration file"/>
-  <docs-pill href="ecosystem/service-workers/communications" title="Communicating with the Service Worker"/>
-  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push notifications"/>
-  <docs-pill href="ecosystem/service-workers/devops" title="Service Worker devops"/>
-  <docs-pill href="ecosystem/service-workers/app-shell" title="App shell pattern"/>
+  <docs-pill href="ecosystem/service-workers/config" title="Service Worker yapılandırma dosyası"/>
+  <docs-pill href="ecosystem/service-workers/communications" title="Service Worker ile İletişim"/>
+  <docs-pill href="ecosystem/service-workers/push-notifications" title="Push bildirimleri"/>
+  <docs-pill href="ecosystem/service-workers/devops" title="Service worker DevOps"/>
+  <docs-pill href="ecosystem/service-workers/app-shell" title="App shell kalıbı"/>
 </docs-pill-row>
 
 Genel olarak service worker'lar hakkında daha fazla bilgi için [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers) sayfasına bakın.
@@ -101,8 +101,8 @@ Tarayıcı desteği hakkında daha fazla bilgi için [Service Workers: an Introd
 Ek öneriler ve örnekler için bakınız:
 
 <docs-pill-row>
-  <docs-pill href="https://web.dev/precaching-with-the-angular-service-worker" title="Precaching with Angular Service Worker"/>
-  <docs-pill href="https://web.dev/creating-pwa-with-angular-cli" title="Creating a PWA with Angular CLI"/>
+  <docs-pill href="https://web.dev/precaching-with-the-angular-service-worker" title="Angular Service Worker ile ön önbellekleme"/>
+  <docs-pill href="https://web.dev/creating-pwa-with-angular-cli" title="Angular CLI ile PWA oluşturma"/>
 </docs-pill-row>
 
 ## Sonraki adım

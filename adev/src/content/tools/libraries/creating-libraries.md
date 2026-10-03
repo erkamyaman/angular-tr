@@ -31,10 +31,10 @@ Ayrıca kayıt defteri tüketicilerinin farklı JavaScript framework'lerinin kü
 
 `ng generate` komutu, çalışma alanınızda bir bileşen içeren `projects/my-lib` klasörünü oluşturur.
 
-HELPFUL: Bir kütüphane projesinin nasıl yapılandırıldığına ilişkin daha fazla ayrıntı için [Project File Structure kılavuzunun](reference/configs/file-structure) [Library project files](reference/configs/file-structure#kütüphane-proje-dosyaları) bölümüne bakın.
+HELPFUL: Bir kütüphane projesinin nasıl yapılandırıldığına ilişkin daha fazla ayrıntı için [Çalışma alanı ve proje dosya yapısı kılavuzunun](reference/configs/file-structure) [Kütüphane proje dosyaları](reference/configs/file-structure#kütüphane-proje-dosyaları) bölümüne bakın.
 
 Aynı çalışma alanını birden fazla proje için kullanmak üzere monorepo modelini kullanın.
-Bkz. [Setting up for a multi-project workspace](reference/configs/file-structure#çoklu-projeler).
+Bkz. [Çoklu proje çalışma alanı kurulumu](reference/configs/file-structure#çoklu-projeler).
 
 Yeni bir kütüphane oluşturduğunuzda, çalışma alanı yapılandırma dosyası `angular.json`, `library` türünde bir projeyle güncellenir.
 
@@ -183,7 +183,7 @@ Uygulama işlevselliğini bir kütüphaneye taşırken dikkate alınması gereke
   - Servisler, NgModule veya bir bileşende sağlayıcı bildirmek yerine kendi sağlayıcılarını bildirmelidir.
     Bir sağlayıcı bildirmek, o servisi _tree-shakable_ yapar.
     Bu uygulama, derleyicinin kütüphaneyi içe aktaran uygulamaya hiç enjekte edilmeyen servisi paket dışında bırakmasına olanak tanır.
-    Bu konuda daha fazla bilgi için bkz. [Tree-shakable providers](guide/di/lightweight-injection-tokens).
+    Bu konuda daha fazla bilgi için bkz. [Hafif enjeksiyon token'ları ile istemci uygulama boyutunu optimize etme](guide/di/lightweight-injection-tokens).
 
   - Global servis sağlayıcıları kaydediyorsanız bir `provideXYZ()` sağlayıcı fonksiyonu sunun.
   - Kütüphaneniz tüm istemci uygulamaları tarafından kullanılmayabilecek isteğe bağlı servisler sağlıyorsa, bu durum için [hafif token tasarım deseni](guide/di/lightweight-injection-tokens) kullanarak uygun tree-shaking desteği sağlayın
@@ -212,14 +212,14 @@ Bu form, kütüphanenizi kullanan geliştirici tarafından ek özelleştirme ger
 Ancak form her zaman aynı olacak ve geliştiriciler tarafından fazla özelleştirme gerektirmeyecekse, yapılandırmayı alan ve formu oluşturan dinamik bir bileşen oluşturabilirsiniz.
 Genel olarak, özelleştirme ne kadar karmaşıksa, şematik yaklaşımı o kadar kullanışlıdır.
 
-Daha fazla bilgi için bkz. [Schematics Overview](tools/cli/schematics) ve [Schematics for Libraries](tools/cli/schematics-for-libraries).
+Daha fazla bilgi için bkz. [Schematics kullanarak kod oluşturma](tools/cli/schematics) ve [Kütüphaneler için Schematics](tools/cli/schematics-for-libraries).
 
 ## Kütüphanenizi yayınlama
 
 Kütüphanenizi bir npm paketi olarak derlemek ve yayınlamak için Angular CLI'yi ve npm paket yöneticisini kullanın.
 
 Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/README.md) adlı bir araç kullanır.
-`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Building libraries with Ivy](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
+`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Kütüphaneleri yayınlama](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
 
 Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını kullanarak derlemelisiniz.
 Bu, oluşturulan çıktının uygun optimizasyonları ve npm için doğru paket formatını kullanmasını sağlar.

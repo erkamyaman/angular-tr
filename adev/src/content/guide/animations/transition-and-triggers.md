@@ -16,7 +16,7 @@ Bu, HTML elemanının başlangıç veya bitiş durumundan bağımsız olarak ge�
 
 Örneğin, `open => *` geçişi, elemanın durumu açık'tan başka herhangi bir şeye değiştiğinde geçerlidir.
 
-<img alt="wildcard state expressions" src="assets/images/guide/animations/wildcard-state-500.png">
+<img alt="joker karakter durum ifadeleri" src="assets/images/guide/animations/wildcard-state-500.png">
 
 Aşağıda, `open` ve `closed` durumlarını kullanan önceki örnekle birlikte joker karakter durumunu kullanan başka bir kod örneği bulunmaktadır.
 Her durum-durum geçiş çiftini tanımlamak yerine, `closed`'a herhangi bir geçiş 1 saniye sürer ve `open`'a herhangi bir geçiş 0.5 saniye sürer.
@@ -35,7 +35,7 @@ Her iki yönde durumdan duruma geçişleri belirtmek için çift ok sözdizimini
 Genel olarak, bir elemanın değişebileceği birden fazla potansiyel durumu olduğunda joker karakter durumlarını kullanın.
 Buton `open`'dan `closed`'a veya `inProgress` gibi bir şeye değişebilirse, joker karakter durumu kullanmak gereken kodlama miktarını azaltabilir.
 
-<img alt="wildcard state with 3 states" src="assets/images/guide/animations/wildcard-3-states.png">
+<img alt="3 durumlu joker karakter durumu" src="assets/images/guide/animations/wildcard-3-states.png">
 
 <docs-code header="open-close.ts" path="adev/src/content/examples/animations/src/app/open-close.ts" region="trigger-transition"/>
 
@@ -230,7 +230,7 @@ Bunları atlarsanız, eşit aralıklı offsetler otomatik olarak atanır.
 Örneğin, önceden tanımlanmış offsetleri olmayan üç anahtar kare 0, 0.5 ve 1 offsetlerini alır.
 Önceki örnekteki orta geçiş için 0.8 offseti belirtmek şu şekilde görünebilir.
 
-<img alt="keyframes with offset" src="assets/images/guide/animations/keyframes-offset-500.png">
+<img alt="offset değerli keyframe'ler" src="assets/images/guide/animations/keyframes-offset-500.png">
 
 Offsetleri belirtilmiş kod şu şekilde olur.
 
@@ -247,7 +247,7 @@ Nabız efekti oluşturmak için anahtar kareleri kullanmanın bir örneği:
 - Orijinal `open` ve `closed` durumları, 1 saniyelik bir zaman diliminde gerçekleşen orijinal yükseklik, renk ve opaklık değişiklikleri
 - Butonun aynı 1 saniyelik zaman diliminde düzensiz olarak nabız atıyormuş gibi görünmesine neden olan ortaya eklenmiş bir anahtar kare dizisi
 
-<img alt="keyframes with irregular pulsation" src="assets/images/guide/animations/keyframes-pulsation.png">
+<img alt="düzensiz nabız atışlı keyframe'ler" src="assets/images/guide/animations/keyframes-pulsation.png">
 
 Bu animasyon için kod parçası şu şekilde görünebilir.
 
@@ -297,9 +297,9 @@ Angular'daki `keyframes()` fonksiyonu, tek bir geçiş içinde birden fazla ara 
 Aşağıdakilerle de ilgilenebilirsiniz:
 
 <docs-pill-row>
-  <docs-pill href="guide/legacy-animations" title="Introduction to Angular animations"/>
-  <docs-pill href="guide/legacy-animations/complex-sequences" title="Complex animation sequences"/>
-  <docs-pill href="guide/legacy-animations/reusable-animations" title="Reusable animations"/>
-  <docs-pill href="guide/routing/route-transition-animations" title="Route transition animations"/>
-  <docs-pill href="guide/animations/migration" title="Migrating to Native CSS Animations"/>
+  <docs-pill href="guide/legacy-animations" title="Angular Animasyonlarına Giriş"/>
+  <docs-pill href="guide/legacy-animations/complex-sequences" title="Karmaşık animasyon dizileri"/>
+  <docs-pill href="guide/legacy-animations/reusable-animations" title="Yeniden kullanılabilir animasyonlar"/>
+  <docs-pill href="guide/routing/route-transition-animations" title="Route Geçiş Animasyonları"/>
+  <docs-pill href="guide/animations/migration" title="Angular'ın Animasyon paketinden geçiş"/>
 </docs-pill-row>

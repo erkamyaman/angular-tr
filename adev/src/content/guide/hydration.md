@@ -63,13 +63,19 @@ Ayrıca [Angular DevTools tarayıcı uzantısını](tools/devtools) kullanarak b
 
 ## Olayları yakalama ve yeniden oynatma {#capturing-and-replaying-events}
 
-Bir uygulama sunucuda render edildiğinde, üretilen HTML yüklenir yüklenmez tarayıcıda görünür hale gelir. Kullanıcılar sayfayla etkileşime geçebileceklerini varsayabilir, ancak olay dinleyicileri hidrasyon tamamlanana kadar eklenmez. v18'den itibaren, hidrasyon öncesinde gerçekleşen tüm olayları yakalayan ve hidrasyon tamamlandıktan sonra bu olayları yeniden oynatan Olay Tekrarı özelliğini etkinleştirebilirsiniz. Bunu `withEventReplay()` fonksiyonu ile etkinleştirebilirsiniz, örneğin:
+Bir uygulama sunucuda render edildiğinde, üretilen HTML yüklenir yüklenmez tarayıcıda görünür hale gelir. Kullanıcılar sayfayla etkileşime geçebileceklerini varsayabilir, ancak olay dinleyicileri hidrasyon tamamlanana kadar eklenmez. Olay Tekrarı özelliği, hidrasyon öncesinde gerçekleşen tüm olayları yakalar ve hidrasyon tamamlandıktan sonra bu olayları yeniden oynatır.
+
+Olay tekrarı, [artımlı hidrasyon](guide/incremental-hydration) ile birlikte etkinleştirilir. `withNoIncrementalHydration()` ile artımlı hidrasyonu devre dışı bırakırsanız, olay tekrarını yine de `withEventReplay()` fonksiyonu ile etkinleştirebilirsiniz:
 
 ```typescript
-import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withNoIncrementalHydration,
+} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
-  providers: [provideClientHydration(withEventReplay())],
+  providers: [provideClientHydration(withNoIncrementalHydration(), withEventReplay())],
 });
 ```
 
@@ -91,8 +97,6 @@ Olay Tekrarı üç ana aşamaya ayrılır:
 Olay tekrarı _yerel tarayıcı olaylarını_ destekler, örneğin `click`, `mouseover` ve `focusin`. Olay tekrarını güçlendiren kütüphane olan JSAction hakkında daha fazla bilgi edinmek istiyorsanız, [readme dosyasında](https://github.com/angular/angular/tree/main/packages/core/primitives/event-dispatch#readme) daha fazla bilgi bulabilirsiniz.
 
 Bu özellik, hidrasyon öncesinde gerçekleştirilen kullanıcı eylemlerinin göz ardı edilmesini önleyerek tutarlı bir kullanıcı deneyimi sağlar.
-
-NOTE: [Artımlı hidrasyon](guide/incremental-hydration) etkinleştirdiyseniz, olay tekrarı arka planda otomatik olarak etkinleştirilir.
 
 ## Kısıtlamalar
 

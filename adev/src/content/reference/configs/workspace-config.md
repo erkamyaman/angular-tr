@@ -41,7 +41,7 @@ Aşağıdaki özellikler, Angular CLI'yi özelleştiren bir dizi seçenektir.
 | `analytics`            | Angular Ekibi ile anonim kullanım verilerini paylaşır. Bir boolean değeri veri paylaşılıp paylaşılmayacağını belirtirken, bir UUID dizesi takma adlı bir tanımlayıcı kullanarak veri paylaşır. | `boolean` \| `string`                         | `false`          |
 | `cache`                | [Angular CLI Oluşturucuları](tools/cli/cli-builder) tarafından kullanılan [kalıcı disk önbelleğini](cli/cache) kontrol eder.                                                                   | [Önbellek seçenekleri](#önbellek-seçenekleri) | `{}`             |
 | `schematicCollections` | `ng generate`'da kullanılacak şematik koleksiyonlarını listeler.                                                                                                                               | `string[]`                                    | `[]`             |
-| `packageManager`       | Tercih edilen paket yöneticisi aracı.                                                                                                                                                          | `npm` \| `cnpm` \| `pnpm` \| `yarn`\| `bun`   | `npm`            |
+| `packageManager`       | Tercih edilen paket yöneticisi aracı.                                                                                                                                                          | `npm` \| `pnpm` \| `yarn` \| `bun`            | `npm`            |
 | `warnings`             | Angular CLI'ye özgü konsol uyarılarını kontrol eder.                                                                                                                                           | [Uyarı seçenekleri](#uyarı-seçenekleri)       | `{}`             |
 
 ### Önbellek seçenekleri
@@ -139,7 +139,7 @@ Angular CLI'yi genişletmek için yeni oluşturucular ve hedefler tanımlayabili
 ### Varsayılan Architect oluşturucuları ve hedefleri
 
 Angular, belirli komutlarla veya genel `ng run` komutuyla kullanılmak üzere varsayılan oluşturucular tanımlar.
-Bu oluşturucuların her biri için seçenekleri ve varsayılanları tanımlayan JSON şemaları [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/build_angular/builders.json) paketinde toplanmıştır.
+Bu oluşturucuların her biri için seçenekleri ve varsayılanları tanımlayan JSON şemaları [`@angular/build`](https://github.com/angular/angular-cli/blob/main/packages/angular/build/builders.json) paketinde toplanmıştır.
 Şemalar aşağıdaki oluşturucular için seçenekleri yapılandırır.
 
 ### Oluşturucu hedeflerini yapılandırma
@@ -285,7 +285,7 @@ Bir varlık belirtim nesnesi aşağıdaki alanlara sahip olabilir.
 | `ignore`         | Hariç tutulacak glob'ların bir listesi.                                                                                                                               |
 | `followSymlinks` | Glob kalıplarının sembolik bağlantı dizinlerini takip etmesine izin verir. Bu, sembolik bağlantının alt dizinlerinin aranmasını sağlar. Varsayılan değer `false`'tur. |
 
-Örneğin, varsayılan varlık yolları aşağıdaki nesneler kullanılarak daha ayrıntılı olarak temsil edilebilir.
+Örneğin, aşağıdaki varlık nesneleri `src/assets/` içeriğini `/assets/` dizinine, `src/favicon.ico` dosyasını ise çıktı köküne kopyalar.
 
 ```json
 {
@@ -461,8 +461,13 @@ Optimizasyonu birine veya diğerine uygulamak için aşağıdaki gibi bir değer
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "stylePreprocessorOptions": {
-              "includePaths": ["src/style-paths"]
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": true
+              },
+              "fonts": true
             }
           }
         }

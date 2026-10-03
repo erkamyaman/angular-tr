@@ -140,7 +140,7 @@ registrationForm = form(this.registrationModel, (schemaPath) => {
 
 Doğrulama kuralı yalnızca `when` fonksiyonu `true` döndürdüğünde çalışır.
 
-Not: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-and-maxlength) kullanın.
+NOTE: `required`, boş bir diziyi mevcut (geçerli) olarak kabul eder; bu yüzden dizilerde en az belirli sayıda öğe olmasını zorunlu kılmak için [`minLength()`](#minlength-and-maxlength) kullanın.
 
 ### email()
 
@@ -492,7 +492,7 @@ Doğrulayıcı fonksiyon şunları içeren bir `FieldContext` nesnesi alır:
 | --------------- | ---------- | -------------------------------------------- |
 | `value`         | Signal     | Mevcut alan değerini içeren sinyal           |
 | `state`         | FieldState | Alan durumu referansı                        |
-| `field`         | FieldTree  | Alan ağacı referansı                         |
+| `fieldTree`     | FieldTree  | Alan ağacı referansı                         |
 | `valueOf()`     | Yöntem     | Yola göre başka bir alanın değerini alma     |
 | `stateOf()`     | Yöntem     | Yola göre başka bir alanın durumunu alma     |
 | `fieldTreeOf()` | Yöntem     | Yola göre başka bir alanın alan ağacını alma |
@@ -668,7 +668,7 @@ import {Component, signal} from '@angular/core';
 import {form, FormField, required, validateHttp} from '@angular/forms/signals';
 
 @Component({
-  selector: 'app-username-form',|
+  selector: 'app-username-form',
   imports: [FormField],
   template: `
     <form novalidate>
@@ -781,8 +781,8 @@ export class DynamicSchema {
 Bu kılavuz doğrulama kuralları oluşturmayı ve uygulamayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
 <docs-pill-row>
-  <docs-pill href="guide/forms/signals/field-state-management" title="Field state management" />
-  <docs-pill href="guide/forms/signals/models" title="Form models" />
-  <docs-pill href="guide/forms/signals/form-logic" title="Adding form logic" />
-  <docs-pill href="guide/forms/signals/schemas" title="Schemas and schema composability" />
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
+  <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
+  <docs-pill href="guide/forms/signals/form-logic" title="Form mantığı ekleme" />
+  <docs-pill href="guide/forms/signals/schemas" title="Şemalar ve şema birleştirilebilirliği" />
 </docs-pill-row>

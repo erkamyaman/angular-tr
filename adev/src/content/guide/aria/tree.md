@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/" title="Tree ARIA pattern"/>
-  <docs-pill href="/api/aria/tree/Tree" title="Tree API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/" title="Tree ARIA deseni"/>
+  <docs-pill href="/api/aria/tree/Tree" title="Tree API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış

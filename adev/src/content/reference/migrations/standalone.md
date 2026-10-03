@@ -2,7 +2,7 @@
 
 **Standalone bileşenler**, Angular uygulamaları oluşturmanın basitleştirilmiş bir yolunu sağlar. Standalone bileşenler, direktifler ve pipe'lar, `NgModule`'lere olan ihtiyacı azaltarak yazım deneyimini kolaylaştırmayı amaçlar. Mevcut uygulamalar, herhangi bir kırıcı değişiklik olmadan isteğe bağlı ve aşamalı olarak yeni standalone stilini benimseyebilir.
 
-<docs-video src="https://www.youtube.com/embed/x5PZwb4XurU" title="Getting started with standalone components"/>
+<docs-video src="https://www.youtube.com/embed/x5PZwb4XurU" title="Standalone bileşenlere başlangıç"/>
 
 Bu şematik, mevcut projelerdeki bileşenleri, direktifleri ve pipe'ları standalone hale getirmek için dönüştürmeye yardımcı olur. Şematik mümkün olduğunca çok kodu otomatik olarak dönüştürmeyi amaçlar, ancak proje yazarı tarafından bazı manuel düzeltmeler gerektirebilir.
 
@@ -38,7 +38,7 @@ Geçişi aşağıda listelenen sırayla çalıştırın, her adım arasında kod
 
 1. `ng g @angular/core:standalone` çalıştırın ve "Convert all components, directives and pipes to standalone" seçeneğini seçin
 2. `ng g @angular/core:standalone` çalıştırın ve "Remove unnecessary NgModule classes" seçeneğini seçin
-3. `ng g @angular/core:standalone` çalıştırın ve "Bootstrap the project using standalone APIs" seçeneğini seçin
+3. `ng g @angular/core:standalone` çalıştırın ve "Bootstrap the application using standalone APIs" seçeneğini seçin
 4. Lint ve biçimlendirme kontrollerini çalıştırın, hataları düzeltin ve sonucu kaydedin
 
 ## Geçişten sonra

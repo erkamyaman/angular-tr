@@ -95,12 +95,6 @@ Etkinleştirildiğinde, `ngc`'nin `.js` çıktısı herhangi bir tembel yüklene
 
 Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
 
-### `enableLegacyTemplate`
-
-`true` olduğunda, `<ng-template>` yerine kullanımdan kaldırılmış `<template>` öğesini etkinleştirir.
-Varsayılan değer `false`'tur.
-Bazı üçüncü taraf Angular kütüphaneleri tarafından gerekli olabilir.
-
 ### `flatModuleId`
 
 Düz bir modülü içe aktarmak için kullanılan modül kimliği \(`flatModuleOutFile` `true` olduğunda\).
@@ -222,4 +216,4 @@ Varsayılan değer `true`'dur.
 
 Yapılandırma dosyasının yanı sıra, `ngc`'yi yapılandırmak için [`tsc` komut satırı seçeneklerini](https://www.typescriptlang.org/docs/handbook/compiler-options.html) de kullanabilirsiniz.
 
-[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'
+[GuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n/prepare#mark-text-in-component-template 'Bileşen şablonunda metin işaretleme - Bileşeni çeviriye hazırlama | Angular'

@@ -8,7 +8,7 @@ Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir k
 
 Şu anda Angular aşağıdaki genişletilmiş tanılamaları desteklemektedir:
 
-| Code     | Name                                                                  |
+| Kod      | Ad                                                                    |
 | :------- | :-------------------------------------------------------------------- |
 | `NG8101` | [`invalidBananaInBox`](extended-diagnostics/NG8101)                   |
 | `NG8102` | [`nullishCoalescingNotNullable`](extended-diagnostics/NG8102)         |
@@ -20,6 +20,7 @@ Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir k
 | `NG8108` | [`skipHydrationNotStatic`](extended-diagnostics/NG8108)               |
 | `NG8109` | [`interpolatedSignalNotInvoked`](extended-diagnostics/NG8109)         |
 | `NG8111` | [`uninvokedFunctionInEventBinding`](extended-diagnostics/NG8111)      |
+| `NG8112` | [`unusedLetDeclaration`](extended-diagnostics/NG8112)                 |
 | `NG8113` | [`unusedStandaloneImports`](extended-diagnostics/NG8113)              |
 | `NG8114` | [`unparenthesizedNullishCoalescing`](extended-diagnostics/NG8114)     |
 | `NG8115` | [`uninvokedTrackFunction`](extended-diagnostics/NG8115)               |
@@ -32,11 +33,11 @@ Angular derleyicisi, geliştiricileri olası sorunlar hakkında uyarmak ve bir k
 Genişletilmiş tanılamalar varsayılan olarak uyarıdır ve derlemeyi engellemez.
 Her tanılama şu şekilde yapılandırılabilir:
 
-| Error category | Effect                                                                                                                                                              |
-| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `warning`      | Varsayılan - Derleyici tanılamayı bir uyarı olarak verir ancak derlemeyi engellemez. Uyarılar verilse bile derleyici yine de 0 durum kodu ile çıkış yapar.          |
-| `error`        | Derleyici tanılamayı bir hata olarak verir ve derlemeyi başarısız kılar. Bir veya daha fazla hata verilirse derleyici sıfır olmayan bir durum kodu ile çıkış yapar. |
-| `suppress`     | Derleyici tanılamayı hiç _vermez_.                                                                                                                                  |
+| Hata kategorisi | Etki                                                                                                                                                                |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `warning`       | Varsayılan - Derleyici tanılamayı bir uyarı olarak verir ancak derlemeyi engellemez. Uyarılar verilse bile derleyici yine de 0 durum kodu ile çıkış yapar.          |
+| `error`         | Derleyici tanılamayı bir hata olarak verir ve derlemeyi başarısız kılar. Bir veya daha fazla hata verilirse derleyici sıfır olmayan bir durum kodu ile çıkış yapar. |
+| `suppress`      | Derleyici tanılamayı hiç _vermez_.                                                                                                                                  |
 
 Kontrol ciddiyeti bir [Angular derleyici seçeneği](reference/configs/angular-compiler-options) olarak yapılandırılabilir:
 
@@ -54,7 +55,7 @@ Kontrol ciddiyeti bir [Angular derleyici seçeneği](reference/configs/angular-c
 ```
 
 `checks` alanı, bireysel tanılamaların adlarını ilişkili kategorileriyle eşler.
-Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Diagnostics](#tanılamalar) bölümüne bakın.
+Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Tanılamalar](#tanılamalar) bölümüne bakın.
 
 `defaultCategory` alanı, `checks` altında açıkça listelenmemiş tüm tanılamalar için kullanılır.
 Ayarlanmazsa, bu tür tanılamalar `warning` olarak değerlendirilir.

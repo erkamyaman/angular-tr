@@ -56,17 +56,17 @@ console.log(emailValue); // Geçerli email dizesi
 
 `value()` dışında, alan durumu doğrulama, etkileşim takibi ve kullanılabilirlik kontrolü için sinyaller içerir:
 
-| Category                                | Signal       | Description                                                                           |
-| --------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
-| **[Validation](#doğrulama-durumu)**     | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
-|                                         | `invalid()`  | Alanın doğrulama hataları var                                                         |
-|                                         | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
-|                                         | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
-| **[Interaction](#etkileşim-durumu)**    | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
-|                                         | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
-| **[Availability](#availability-state)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
-|                                         | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |
-|                                         | `readonly()` | Alan salt okunur ve üst form durumunu etkilemiyor                                     |
+| Kategori                                     | Sinyal       | Açıklama                                                                              |
+| -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
+| **[Doğrulama](#doğrulama-durumu)**           | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
+|                                              | `invalid()`  | Alanın doğrulama hataları var                                                         |
+|                                              | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
+|                                              | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
+| **[Etkileşim](#etkileşim-durumu)**           | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
+|                                              | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
+| **[Kullanılabilirlik](#availability-state)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
+|                                              | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |
+|                                              | `readonly()` | Alan salt okunur ve üst form durumunu etkilemiyor                                     |
 
 Bu sinyaller, kullanıcı davranışına tepki veren, manuel olay işleme gerektirmeyen duyarlı form kullanıcı deneyimleri oluşturmanızı sağlar. Aşağıdaki bölümler her kategoriyi ayrıntılı olarak inceler.
 
@@ -99,7 +99,7 @@ export class Login {
 }
 ```
 
-| Signal      | Returns `true` when                                                 |
+| Sinyal      | `true` döndüğü durum                                                |
 | ----------- | ------------------------------------------------------------------- |
 | `valid()`   | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur |
 | `invalid()` | Alanın doğrulama hataları var                                       |
@@ -110,7 +110,7 @@ Kodda geçerlilik kontrol ederken, "hataları var" ile "doğrulama beklemede" du
 
 Doğrulama hatalarının dizisine `errors()` ile erişin. Her hata nesnesi şunları içerir:
 
-| Property    | Description                                                    |
+| Property    | Açıklama                                                       |
 | ----------- | -------------------------------------------------------------- |
 | `kind`      | Başarısız olan doğrulama kuralı ("required" veya "email" gibi) |
 | `message`   | İsteğe bağlı okunabilir hata mesajı                            |
@@ -265,14 +265,14 @@ export class Profile {
 
 Bu sinyaller farklı etkileşim durumu türlerini izler:
 
-| Signal      | When it becomes true                                                                                                      |
+| Sinyal      | Ne zaman true olur                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `touched()` | Kullanıcı etkileşimli bir alana odaklanmış ve odağı bırakmış ya da alan programatik olarak dokunulmuş olarak işaretlenmiş |
 | `dirty()`   | Kullanıcı etkileşimli bir alanı değiştirmiş (odağı hiç bırakmasa bile ve mevcut değer başlangıç değeriyle eşleşse bile)   |
 
 Bir alan farklı kombinasyonlarda olabilir:
 
-| State                      | Scenario                                                               |
+| Durum                      | Senaryo                                                                |
 | -------------------------- | ---------------------------------------------------------------------- |
 | Dokunulmuş ama kirli değil | Kullanıcı alana odaklanmış ve odağı bırakmış ancak değişiklik yapmamış |
 | Hem dokunulmuş hem kirli   | Kullanıcı alana odaklanmış, değeri değiştirmiş ve odağı bırakmış       |
@@ -407,11 +407,11 @@ Devre dışı ve gizli alanlar gibi, salt okunur alanlar da etkileşimsizdir ve 
 
 ### Her birini ne zaman kullanmalı
 
-| State        | Use when                                                                   | User can see it  | User can interact | Contributes to validation |
-| ------------ | -------------------------------------------------------------------------- | ---------------- | ----------------- | ------------------------- |
-| `disabled()` | Alan geçici olarak kullanılamaz (diğer alan değerlerine bağlı olarak gibi) | Evet             | Hayır             | Hayır                     |
-| `hidden()`   | Alan mevcut bağlamda ilgili değil                                          | Hayır (with @if) | Hayır             | Hayır                     |
-| `readonly()` | Değer görünür olmalı ama düzenlenemez                                      | Evet             | Hayır             | Hayır                     |
+| Durum        | Ne zaman kullanılır                                                        | Kullanıcı görebilir | Kullanıcı etkileşime girebilir | Doğrulamaya katkı sağlar |
+| ------------ | -------------------------------------------------------------------------- | ------------------- | ------------------------------ | ------------------------ |
+| `disabled()` | Alan geçici olarak kullanılamaz (diğer alan değerlerine bağlı olarak gibi) | Evet                | Hayır                          | Hayır                    |
+| `hidden()`   | Alan mevcut bağlamda ilgili değil                                          | Hayır (`@if` ile)   | Hayır                          | Hayır                    |
+| `readonly()` | Değer görünür olmalı ama düzenlenemez                                      | Evet                | Hayır                          | Hayır                    |
 
 ## Form düzeyinde durum
 
@@ -442,7 +442,7 @@ Bu örnekte, form yalnızca tüm alt alanlar geçerli olduğunda geçerlidir. Bu
 
 Kök form bir alan olduğu için, aynı sinyallere sahiptir (`valid()`, `invalid()`, `touched()`, `dirty()`, vb. gibi).
 
-| Signal      | Form-level behavior                                            |
+| Sinyal      | Form düzeyi davranış                                           |
 | ----------- | -------------------------------------------------------------- |
 | `valid()`   | Tüm etkileşimli alanlar geçerli ve bekleyen doğrulayıcı yok    |
 | `invalid()` | En az bir etkileşimli alanın doğrulama hataları var            |
@@ -878,8 +878,8 @@ Bu kılavuz, doğrulama ve kullanılabilirlik durumu işleme, etkileşim takibi 
 
 <!-- TODO: KILAVUZLAR MEVCUT OLDUĞUNDA YORUM İŞARETİNİ KALDIR -->
 <docs-pill-row>
-  <docs-pill href="guide/forms/signals/models" title="Form models" />
-  <docs-pill href="guide/forms/signals/validation" title="Validation" />
-  <docs-pill href="guide/forms/signals/custom-controls" title="Custom controls" />
+  <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />
+  <docs-pill href="guide/forms/signals/custom-controls" title="Özel Kontroller" />
   <!-- <docs-pill href="guide/forms/signals/arrays" title="Working with Arrays" /> -->
 </docs-pill-row>

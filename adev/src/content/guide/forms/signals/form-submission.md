@@ -314,7 +314,7 @@ submission: {
 
 ## Eşzamanlı gönderimler
 
-Bir gönderim devam ederken, aynı form veya üst formlarından herhangi biri için yapılan sonraki `submit()` çağrıları eylemi çalıştırmadan hemen `false` döndürür. Bu, bir kullanıcı gönderim eylemini kısa süre içinde birden çok kez tetiklerse mükerrer gönderimleri ve yan etkileri önler.
+Bir gönderim devam ederken, aynı form veya alt formlarından herhangi biri için yapılan sonraki `submit()` çağrıları eylemi çalıştırmadan hemen `false` döndürür. Bu, bir kullanıcı gönderim eylemini kısa süre içinde birden çok kez tetiklerse mükerrer gönderimleri ve yan etkileri önler.
 
 ## Sonraki adımlar
 

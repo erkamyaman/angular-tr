@@ -1,4 +1,4 @@
-# Angular without ZoneJS (Zoneless)
+# ZoneJS olmadan Angular (Zoneless)
 
 ## Neden Zoneless Kullanılmalı?
 
@@ -115,9 +115,9 @@ Bir şablon reactive forms durumuna bağlıysa, forms observable'larını bir de
 
 ### `TestBed`'de Zoneless Kullanımı
 
-`TestBed`, `zone.js` `polyfills` aracılığıyla yüklendiğinde varsayılan olarak Zone tabanlı değişiklik algılama kullanır.
+`TestBed`, `zone.js` `polyfills` aracılığıyla yüklendiğinde bile varsayılan olarak zoneless değişiklik algılama kullanır.
 
-`zone.js` mevcut değilse, `TestBed` varsayılan olarak zoneless çalışır. `zone.js` yüklendiğinde zoneless modunu zorlamak için `provideZonelessChangeDetection()` ekleyin:
+Bir testte Zone tabanlı değişiklik algılama kullanmak için `TestBed` sağlayıcılarına `provideZoneChangeDetection()` ekleyin. `provideZonelessChangeDetection()` eklemek isteğe bağlıdır:
 
 ```typescript
 TestBed.configureTestingModule({

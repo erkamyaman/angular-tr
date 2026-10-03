@@ -47,15 +47,15 @@ IDE'nizin **Edit** bölmesinde:
 1.  Editörde `home.ts` dosyasını açın.
 1.  `home.ts` dosyasında, bu satırı dosya düzeyindeki import'lara ekleyerek `HousingLocation`'ı içe aktarın.
 
-      <docs-code header="Import HousingLocation in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[2]"/>
+      <docs-code header="src/app/home/home.ts içinde HousingLocation'ı içe aktarın" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[2]"/>
 
 1.  Ardından `@Component` meta verilerinin `imports` özelliğini, diziye `HousingLocation` ekleyerek güncelleyin.
 
-      <docs-code  header="Add HousingLocation to imports array in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[6]"/>
+      <docs-code  header="src/app/home/home.ts içinde imports dizisine HousingLocation ekleyin" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[6]"/>
 
 1.  Artık bileşen, `Home` şablonunda kullanıma hazırdır. `@Component` meta verilerinin `template` özelliğini, `<app-housing-location>` etiketine bir referans içerecek şekilde güncelleyin.
 
-      <docs-code language="angular-ts" header="Add housing location to the component template in src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[7,17]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içinde bileşen şablonuna konut konumunu ekleyin" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/home/home.ts" visibleLines="[7,17]"/>
 
 </docs-step>
 
@@ -66,11 +66,11 @@ Bu adımda, uygulamanızın düzgün görüntülenmesi için `HousingLocation` b
 
    NOTE: Tarayıcıda, bunlar `src/app/housing-location/housing-location.ts` dosyasındaki `styles` dizisine eklenebilir.
 
-   <docs-code header="Add CSS styles to housing location to the component in src/app/housing-location/housing-location.css" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/housing-location/housing-location.css"/>
+   <docs-code header="src/app/housing-location/housing-location.css içinde bileşene CSS stilleri ekleyin" path="adev/src/content/tutorials/first-app/steps/04-interfaces/src/app/housing-location/housing-location.css"/>
 
 1. Kodunuzu kaydedin, tarayıcıya dönün ve uygulamanın hatasız derlendiğini doğrulayın. Ekranda "housing-location works!" mesajının görüntülendiğini görmelisiniz. Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
 
-   <img alt="browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!" src="assets/images/tutorials/first-app/homes-app-lesson-03-step-2.png">
+   <img alt="Logoyu, filtre metin giriş kutusunu, arama düğmesini ve 'housing-location works!' mesajını gösteren homes-app tarayıcı penceresi" src="assets/images/tutorials/first-app/homes-app-lesson-03-step-2.png">
 
 </docs-step>
 

@@ -76,6 +76,21 @@ httpResource.blob(() => ({ … })); // value() içinde bir Blob nesnesi döndür
 httpResource.arrayBuffer(() => ({ … })); // value() içinde bir ArrayBuffer döndürür
 ```
 
+### İndirme ilerlemesini izleme
+
+Yanıtın indirme ilerlemesini izlemek için istek nesnesinde `reportProgress: true` ayarlayın. En son `HttpProgressEvent`, resource'un `progress` sinyali üzerinden kullanılabilir:
+
+```ts
+file = httpResource.blob(() => ({
+  url: `/api/files/${fileId()}`,
+  reportProgress: true,
+}));
+
+downloaded = computed(() => this.file.progress()?.loaded ?? 0);
+```
+
+NOTE: `reportProgress` seçeneğinin `reportUploadProgress` ve `reportDownloadProgress` lehine kullanımdan kaldırıldığı `HttpClient`'ın aksine, `httpResource` tek `reportProgress` seçeneğini korur. Bu seçenek yalnızca indirme ilerleme olaylarını etkinleştirir.
+
 ## Response Ayrıştırma ve Doğrulama
 
 Veri alırken, yanıtları genellikle [Zod](https://zod.dev) veya [Valibot](https://valibot.dev) gibi popüler açık kaynak kütüphaneleri kullanarak önceden tanımlanmış bir şemaya göre doğrulamak isteyebilirsiniz. Doğrulama kütüphanelerini bu şekilde `httpResource` ile bir `parse` seçeneği belirterek entegre edebilirsiniz. `parse` fonksiyonunun dönüş türü, kaynağın `value` türünü belirler.

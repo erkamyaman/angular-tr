@@ -144,13 +144,13 @@ return this.show ? $localize`Show Tabs` : $localize`Hide tabs`;
 
 Aşağıdaki parametreler, çevirmeniniz için karışıklığı azaltmak amacıyla bağlam ve ek bilgi sağlar.
 
-| Metadata parameter | Details                                                |
-| :----------------- | :----------------------------------------------------- |
-| Custom ID          | Özel bir tanımlayıcı sağlar                            |
-| Description        | Ek bilgi veya bağlam sağlar                            |
-| Meaning            | Metnin belirli bağlamdaki anlamını veya amacını sağlar |
+| Meta veri parametresi | Ayrıntılar                                             |
+| :-------------------- | :----------------------------------------------------- |
+| Özel kimlik           | Özel bir tanımlayıcı sağlar                            |
+| Açıklama              | Ek bilgi veya bağlam sağlar                            |
+| Anlam                 | Metnin belirli bağlamdaki anlamını veya amacını sağlar |
 
-Özel kimlikler hakkında ek bilgi için [Manage marked text with custom IDs][GuideI18nOptionalManageMarkedText] bölümüne bakın.
+Özel kimlikler hakkında ek bilgi için [İşaretli metni özel kimliklerle yönetme][GuideI18nOptionalManageMarkedText] bölümüne bakın.
 
 ### Yardımcı açıklamalar ve anlamlar ekleme
 
@@ -190,7 +190,7 @@ $localize`:site header|An introduction header for this sample:Hello i18n!`;
 <docs-callout title="Anlamların metin çıkarmayı ve birleştirmeleri nasıl kontrol ettiği">
 
 Angular çıkarma aracı, bir şablondaki her `i18n` niteliği için bir çeviri birimi girişi oluşturur.
-Angular çıkarma aracı, her çeviri birimine _anlam_ ve _açıklamaya_ dayalı benzersiz bir kimlik atar.
+Angular çıkarma aracı, her çeviri birimine kaynak metnine ve _anlamına_ dayalı benzersiz bir kimlik atar. _Açıklama_ kimliği etkilemez.
 
 HELPFUL: Angular çıkarma aracı hakkında daha fazla bilgi için [Work with translation files](guide/i18n/translation-files) bölümüne bakın.
 
@@ -221,7 +221,7 @@ Bir ICU ifadesi, bir bileşen özelliği, bir ICU yan tümcesi ve açık süslü
 Bileşen özelliği değişkeni tanımlar.
 Bir ICU yan tümcesi koşullu metin türünü tanımlar.
 
-| ICU clause                                                           | Details                                                                       |
+| ICU yan tümcesi                                                      | Ayrıntılar                                                                    |
 | :------------------------------------------------------------------- | :---------------------------------------------------------------------------- |
 | [`plural`][GuideI18nCommonPrepareMarkPlurals]                        | Çoğul sayıların kullanımını işaretler                                         |
 | [`select`][GuideI18nCommonPrepareMarkAlternatesAndNestedExpressions] | Tanımladığınız dize değerlerine dayalı alternatif metin seçimlerini işaretler |
@@ -248,14 +248,14 @@ pluralization_category { }
 
 Aşağıdaki çoğullama kategorileri İngilizce için mevcuttur ve yerel ayara göre değişebilir.
 
-| Pluralization category | Details                  | Example                    |
-| :--------------------- | :----------------------- | :------------------------- |
-| `zero`                 | Miktar sıfır             | `=0 { }` <br /> `zero { }` |
-| `one`                  | Miktar 1                 | `=1 { }` <br /> `one { }`  |
-| `two`                  | Miktar 2                 | `=2 { }` <br /> `two { }`  |
-| `few`                  | Miktar 2 veya daha fazla | `few { }`                  |
-| `many`                 | Miktar büyük bir sayı    | `many { }`                 |
-| `other`                | Varsayılan miktar        | `other { }`                |
+| Çoğullama kategorisi | Ayrıntılar               | Örnek                      |
+| :------------------- | :----------------------- | :------------------------- |
+| `zero`               | Miktar sıfır             | `=0 { }` <br /> `zero { }` |
+| `one`                | Miktar 1                 | `=1 { }` <br /> `one { }`  |
+| `two`                | Miktar 2                 | `=2 { }` <br /> `two { }`  |
+| `few`                | Miktar 2 veya daha fazla | `few { }`                  |
+| `many`               | Miktar büyük bir sayı    | `many { }`                 |
+| `other`              | Varsayılan miktar        | `other { }`                |
 
 Çoğullama kategorilerinden hiçbiri eşleşmezse, Angular eksik bir kategori için standart geri dönüş olarak `other` kullanır.
 
@@ -310,7 +310,7 @@ Aşağıdaki kod örneği, önceki üç durumu bir `<span>` öğesinde ifade etm
 
 Önceki kod örneğindeki aşağıdaki ayrıntıları inceleyin.
 
-| Parameters                        | Details                                                                                                                    |
+| Parametreler                      | Ayrıntılar                                                                                                                 |
 | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
 | `minutes`                         | İlk parametre, bileşen özelliğinin `minutes` olduğunu belirtir ve dakika sayısını belirler.                                |
 | `plural`                          | İkinci parametre, ICU yan tümcesinin `plural` olduğunu belirtir.                                                           |
@@ -372,11 +372,11 @@ Aşağıdaki kod örneği, bileşenin `gender` özelliğinin nasıl bağlanacağ
 
 `gender` özelliği, çıktıları aşağıdaki dize değerlerinin her birine bağlar.
 
-| Value  | English value |
-| :----- | :------------ |
-| female | `female`      |
-| male   | `male`        |
-| other  | `other`       |
+| Değer  | İngilizce değer |
+| :----- | :-------------- |
+| female | `female`        |
+| male   | `male`          |
+| other  | `other`         |
 
 `select` yan tümcesi değerleri uygun çevirilere eşler.
 Aşağıdaki kod örneği, select yan tümcesiyle birlikte kullanılan `gender` özelliğini göstermektedir.
@@ -393,7 +393,7 @@ Aşağıdaki kod örneği, `gender` ve `minutes` örneklerine dayalı iç içe y
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/translation-files" title="Work with translation files"/>
+  <docs-pill href="guide/i18n/translation-files" title="Çeviri dosyalarıyla çalışma"/>
 </docs-pill-row>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API  | Angular'

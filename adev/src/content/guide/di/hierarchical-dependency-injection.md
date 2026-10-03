@@ -72,7 +72,7 @@ bootstrapApplication(App, appConfig);
 `bootstrapApplication()` yöntemi, `ApplicationConfig` örneği tarafından yapılandırılan platform enjektörünün bir alt enjektörünü oluşturur.
 Bu, `root` `EnvironmentInjector`'dır.
 
-`platformBrowserDynamic()` yöntemi, platforma özgü bağımlılıklar içeren bir `PlatformModule` tarafından yapılandırılmış bir enjektör oluşturur.
+`bootstrapApplication()` yöntemi ayrıca platforma özgü bağımlılıklar içeren platform enjektörünü oluşturur (veya yeniden kullanır).
 Bu, birden fazla uygulamanın bir platform yapılandırmasını paylaşmasına olanak tanır.
 Örneğin, bir tarayıcının kaç uygulama çalıştırırsanız çalıştırın yalnızca bir URL çubuğu vardır.
 `platformBrowser()` fonksiyonunu kullanarak `extraProviders` sağlayarak platform seviyesinde ek platforma özgü sağlayıcılar yapılandırabilirsiniz.
@@ -99,7 +99,7 @@ Router gibi dinamik olarak yüklenen bir bileşen oluşturulduğunda, alt `Envir
 
 Tüm istekler, `bootstrapApplication()` yöntemine iletilen `ApplicationConfig` örneği ile yapılandırdıysanız veya tüm sağlayıcıları kendi servislerinde `root` ile kaydettiyseniz, root enjektöre yönlendirilir.
 
-<docs-callout title="@Injectable() vs. ApplicationConfig">
+<docs-callout title="@Injectable() ve ApplicationConfig karşılaştırması">
 
 `bootstrapApplication`'ın `ApplicationConfig`'inde uygulama çapında bir sağlayıcı yapılandırırsanız, `@Injectable()` meta verilerinde `root` için yapılandırılmış olanı geçersiz kılar.
 Bunu, birden fazla uygulamayla paylaşılan bir servisin varsayılan olmayan bir sağlayıcısını yapılandırmak için yapabilirsiniz.

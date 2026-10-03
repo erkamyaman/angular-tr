@@ -15,17 +15,17 @@ HELPFUL: `package.json` ve `tsconfig.json` dosyaları hakkında daha fazla bilgi
 
 ## Seçenekler
 
-| OPTION             | DESCRIPTION                                                                                                                                                                             | VALUE TYPE | DEFAULT VALUE |
-| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
+| SEÇENEK            | AÇIKLAMA                                                                                                                                                                                | DEĞER TÜRÜ | VARSAYILAN VALUE |
+| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :--------------- |
 | `--project`        | Projenin adı.                                                                                                                                                                           | `string`   |
-| `--use-at-runtime` | Ayarlanırsa, `$localize` çalışma zamanında kullanılabilir. Ayrıca `@angular/localize`, varsayılan olan `devDependencies` yerine `package.json`'ın `dependencies` bölümüne dahil edilir. | `boolean`  | `false`       |
+| `--use-at-runtime` | Ayarlanırsa, `$localize` çalışma zamanında kullanılabilir. Ayrıca `@angular/localize`, varsayılan olan `devDependencies` yerine `package.json`'ın `dependencies` bölümüne dahil edilir. | `boolean`  | `false`          |
 
 Daha fazla mevcut seçenek için [Angular CLI][CliMain]'daki `ng add` bölümüne bakın.
 
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/locale-id" title="Refer to locales by ID"/>
+  <docs-pill href="guide/i18n/locale-id" title="Yerel ayarlara kimlik ile başvurma"/>
 </docs-pill-row>
 
 [CliMain]: cli 'CLI Overview and Command Reference | Angular'

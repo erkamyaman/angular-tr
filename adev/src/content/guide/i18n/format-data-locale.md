@@ -3,7 +3,7 @@
 Angular, aşağıdaki yerleşik veri dönüştürme [pipe'larını](guide/templates/pipes) sağlar.
 Veri dönüştürme pipe'ları, her yerel ayarın kurallarına göre verileri biçimlendirmek için [`LOCALE_ID`][ApiCoreLocaleId] token'ını kullanır.
 
-| Data transformation pipe                | Details                                      |
+| Veri dönüştürme pipe'ı                  | Ayrıntılar                                   |
 | :-------------------------------------- | :------------------------------------------- |
 | [`DatePipe`][ApiCommonDatepipe]         | Bir tarih değerini biçimlendirir.            |
 | [`CurrencyPipe`][ApiCommonCurrencypipe] | Bir sayıyı para birimi dizesine dönüştürür.  |
@@ -33,7 +33,7 @@ HELPFUL: `CurrencyPipe` için belirtilen yerel ayar, uygulamanızın global `LOC
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/prepare" title="Prepare component for translation"/>
+  <docs-pill href="guide/i18n/prepare" title="Bileşeni çeviriye hazırlama"/>
 </docs-pill-row>
 
 [ApiCommonCurrencypipe]: api/common/CurrencyPipe 'CurrencyPipe | Common - API | Angular'

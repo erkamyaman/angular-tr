@@ -168,8 +168,9 @@ Kendi `IdleService` implementasyonunuzu sağlayıp uygulamanızın provider'lar�
 ```ts
 @Service()
 class CustomIdleService implements IdleService {
-  requestOnIdle(callback: (deadline?: IdleDeadline) => void, options?: IdleRequestOptions) {
+  requestOnIdle(callback: (deadline?: IdleDeadline) => void, options?: IdleRequestOptions): number {
     // Özel boşta zamanlama mantığı burada uygulanabilir.
+    return requestIdleCallback(callback, options);
   }
 
   cancelOnIdle(id: number) {
@@ -211,12 +212,14 @@ Alternatif olarak, `@defer` bloğuyla aynı şablonda bir [şablon referans değ
 <div #greeting>Hello!</div>
 
 <!-- Seçenekler ve bir tetikleyici ile -->
-@defer (on viewport({trigger: greeting, rootMargin: '100px', threshold: 0.5})) {
+@defer (
+  on viewport({trigger: greeting, rootMargin: '100px', scrollMargin: '50px', threshold: 0.5})
+) {
   <greetings-cmp />
 }
 
 <!-- Seçenekler ve örtük bir tetikleyici ile -->
-@defer (on viewport({rootMargin: '100px', threshold: 0.5})) {
+@defer (on viewport({rootMargin: '100px', scrollMargin: '50px', threshold: 0.5})) {
   <greetings-cmp />
 } @placeholder {
   <div>Implied trigger</div>

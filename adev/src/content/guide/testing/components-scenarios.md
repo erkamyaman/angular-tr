@@ -445,7 +445,7 @@ Ardından alıntı öğesinin beklenen metni görüntülediğini doğrulayabilir
 
 TIP: Yerel asenkron test stratejileri veya Vitest veya Jasmine'den olanlar gibi diğer sahte zamanlayıcıları (sahte saat olarak da adlandırılır) kullanmayı tercih edin.
 
-IMPORTANT: Bu çalıştırıcı için `zone.js` yaması uygulanmadığından `fakeAsync` Vitest test çalıştırıcısı ile kullanılamaz.
+IMPORTANT: `fakeAsync` için `zone.js` gerekir. Vitest test çalıştırıcısı ile kullanmak için [Vitest geçiş kılavuzunda](guide/testing/migrating-to-vitest#zonejs-vitest-yaması) açıklandığı gibi `zone.js/plugins/vitest-patch` polyfill'ini ekleyin.
 
 ## Input ve output'lara sahip bileşen
 
@@ -557,7 +557,7 @@ it('should raise selected event when clicked (triggerEventHandler)', () => {
 });
 ```
 
-Bileşenin `selected` özelliği, tüketiciler için RxJS senkron `Observable`'ına benzeyen bir `EventEmitter` döndürür.
+Bileşenin `selected` özelliği, `subscribe` metodu abonelere senkron olarak bildirim gönderen bir `OutputEmitterRef`'tir.
 Test, ana bileşenin _örtük olarak_ yaptığı gibi buna _açıkça_ abone olur.
 
 Bileşen beklendiği gibi davranırsa, kahramanın öğesine tıklamak bileşenin `selected` özelliğine `hero` nesnesini yayınlamasını söylemelidir.
@@ -566,7 +566,7 @@ Test bu olayı `selected`'a aboneliği aracılığıyla algılar.
 
 ### `triggerEventHandler`
 
-Önceki testteki `heroDe`, kahraman `<div>`'ini temsil eden bir `DebugElement`'dir.
+Önceki testteki `heroDe`, kahraman `<button>`'ını temsil eden bir `DebugElement`'dir.
 
 Yerel öğeyle etkileşimi soyutlayan Angular özellikleri ve metotlarına sahiptir.
 Bu test, `DebugElement.triggerEventHandler`'ı "click" olay adıyla çağırır.
@@ -782,9 +782,7 @@ Bileşenin `ActivatedRoute.paramMap` observable'ına _abone olması_ ve yaşam s
 ```ts
 constructor() {
   // `id` parametresi değiştiğinde kahramanı al
-  this.route.paramMap
-    .pipe(takeUntilDestroyed())
-    .subscribe((pmap) => this.getHero(pmap.get('id')));
+  this.route.paramMap.subscribe((pmap) => this.getHero(pmap.get('id')));
 }
 ```
 

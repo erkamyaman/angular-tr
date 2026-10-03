@@ -58,7 +58,7 @@ isLoading = computed(() => this.userResource.status() === 'loading');
 hasError = computed(() => this.userResource.status() === 'error');
 ```
 
-Resource'lar; 'loading', 'success' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar.
+Resource'lar; 'loading', 'resolved' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar.
 </docs-step>
 
 <docs-step title="Düğmeleri bağlayın ve resource durumlarını görüntüleyin">

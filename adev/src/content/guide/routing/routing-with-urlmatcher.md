@@ -108,7 +108,7 @@ Angular Router ile kalıp eşleştirme, uygulamanızda dinamik URL'leriniz oldu�
 Angular Router hakkında daha fazla bilgi edinmek için aşağıdaki konulara bakın:
 
 <docs-pill-row>
-  <docs-pill href="guide/routing/common-router-tasks" title="In-app Routing and Navigation"/>
+  <docs-pill href="guide/routing/common-router-tasks" title="Diğer Yaygın Yönlendirme Görevleri"/>
   <docs-pill href="api/router/Router" title="Router API"/>
 </docs-pill-row>
 

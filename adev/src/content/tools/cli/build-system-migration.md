@@ -130,7 +130,6 @@ Aşağıdaki liste, ayarlanması gereken tüm `browser` builder seçeneklerini t
 - `resourcesOutputPath` kaldırılmalıdır, bu artık her zaman `media`'dır.
 - `vendorChunk` kaldırılmalıdır, çünkü bu artık gerekli olmayan bir performans optimizasyonuydu.
 - `commonChunk` kaldırılmalıdır, çünkü bu artık gerekli olmayan bir performans optimizasyonuydu.
-- `deployUrl` kaldırılmalıdır ve desteklenmez. Bunun yerine [`<base href>`](guide/routing/router-reference#base-href) tercih edin. Daha fazla bilgi için [dağıtım belgelerine](tools/cli/deployment#--deploy-url) bakın.
 - `ngswConfigPath`, `serviceWorker` olarak yeniden adlandırılmalıdır.
 
 Uygulama şu anda SSR kullanmıyorsa, `ng build`'in çalışması için bu son adım olmalıdır.

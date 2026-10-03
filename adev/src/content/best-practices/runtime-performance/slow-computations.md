@@ -10,7 +10,7 @@ Her değişiklik algılama döngüsünde Angular senkron olarak:
 
 Ağır hesaplamaları Angular DevTools'un profil çıkarıcısı ile belirleyebilirsiniz. Performans zaman çizelgesinde, belirli bir değişiklik algılama döngüsünü önizlemek için bir çubuğa tıklayın. Bu, her bileşen için framework'un değişiklik algılamada ne kadar zaman harcadığını gösteren bir çubuk grafik görüntüler. Bir bileşene tıkladığınızda, Angular'ın şablonunu ve yaşam döngüsü kancalarını değerlendirmek için ne kadar zaman harcadığını önizleyebilirsiniz.
 
-<img alt="Angular DevTools profiler preview showing slow computation" src="assets/images/best-practices/runtime-performance/slow-computations.png">
+<img alt="Yavaş hesaplamayı gösteren Angular DevTools profiler önizlemesi" src="assets/images/best-practices/runtime-performance/slow-computations.png">
 
 Örneğin, yukarıdaki ekran görüntüsünde, kaydedilen ikinci değişiklik algılama döngüsü seçilmiştir. Angular bu döngü için 573 ms'den fazla harcamış olup, zamanın büyük bölümü `EmployeeListComponent`'te harcanmıştır. Ayrıntı panelinde, Angular'ın `EmployeeListComponent`'in şablonunu değerlendirmek için 297 ms'den fazla harcadığını görebilirsiniz.
 

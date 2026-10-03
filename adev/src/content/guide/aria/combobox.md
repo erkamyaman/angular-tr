@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" title="Combobox ARIA pattern"/>
-  <docs-pill href="/api?query=combobox#angular_aria_combobox" title="Combobox API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" title="Combobox ARIA deseni"/>
+  <docs-pill href="/api?query=combobox#angular_aria_combobox" title="Combobox API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış

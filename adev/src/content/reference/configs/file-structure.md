@@ -12,7 +12,7 @@ ng new my-project
 
 Bu komutu çalıştırdığınızda, CLI gerekli Angular npm paketlerini ve diğer bağımlılıkları yeni bir çalışma alanına kurar ve _my-project_ adında bir kök düzey uygulama oluşturur.
 
-Varsayılan olarak, `ng new` çalışma alanının kök düzeyinde bir başlangıç iskelet uygulaması ve uçtan uca testlerini oluşturur.
+Varsayılan olarak, `ng new` çalışma alanının kök düzeyinde bir başlangıç iskelet uygulaması oluşturur.
 İskelet, çalıştırmaya hazır ve değiştirmesi kolay basit bir karşılama uygulaması içindir.
 Kök düzey uygulama çalışma alanıyla aynı ada sahiptir ve kaynak dosyaları çalışma alanının `src/` alt klasöründe bulunur.
 
@@ -46,7 +46,7 @@ Bir çalışma alanındaki tüm projeler bir [yapılandırmayı](reference/confi
 ## Uygulama proje dosyaları
 
 Varsayılan olarak, CLI komutu `ng new my-app` "my-app" adında bir çalışma alanı klasörü oluşturur ve çalışma alanının en üst düzeyinde bir `src/` klasöründe yeni bir uygulama iskeleti oluşturur.
-Yeni oluşturulan uygulama, bir kök bileşen ve şablonla birlikte bir kök modül için kaynak dosyaları içerir.
+Yeni oluşturulan uygulama, bir kök bileşen ve şablon için kaynak dosyaları içerir.
 
 Çalışma alanı dosya yapısı oluşturulduktan sonra, uygulamaya işlevsellik ve veri eklemek için komut satırında `ng generate` komutunu kullanabilirsiniz.
 Bu başlangıç kök düzey uygulaması, CLI komutları için _varsayılan uygulamadır_ ([ek uygulamalar](#çoklu-projeler) oluşturduktan sonra varsayılanı değiştirmediğiniz sürece).
@@ -62,7 +62,6 @@ Alt klasörler uygulama kaynağını ve uygulamaya özgü yapılandırmayı içe
 | Uygulama destek dosyaları | Amaç                                                                                                                                                                                                                                                |
 | :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `app/`                    | Uygulama mantığınızın ve verilerinizin tanımlandığı bileşen dosyalarını içerir. Ayrıntılar için aşağıya bakın.                                                                                                                                      |
-| `favicon.ico`             | Yer işareti çubuğunda bu uygulama için kullanılacak bir simge.                                                                                                                                                                                      |
 | `index.html`              | Birisi sitenizi ziyaret ettiğinde sunulan ana HTML sayfası. CLI, uygulamanızı derlerken tüm JavaScript ve CSS dosyalarını otomatik olarak ekler, bu nedenle genellikle burada manuel olarak `<script>` veya `<link>` etiketleri eklemeniz gerekmez. |
 | `main.ts`                 | Uygulamanızın ana giriş noktası.                                                                                                                                                                                                                    |
 | `styles.css`              | Tüm uygulamaya uygulanan genel CSS stilleri.                                                                                                                                                                                                        |
@@ -70,15 +69,15 @@ Alt klasörler uygulama kaynağını ve uygulamaya özgü yapılandırmayı içe
 `src` klasörünün içinde, `app` klasörü projenizin mantığını ve verilerini içerir.
 Angular bileşenleri, şablonları ve stilleri buraya yerleştirilir.
 
-| `src/app/` dosyaları    | Amaç                                                                                                                                                                                                                                                                                               |
-| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app.config.ts`         | Angular'a uygulamanın nasıl birleştirileceğini söyleyen uygulama yapılandırmasını tanımlar. Uygulamaya daha fazla sağlayıcı ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone` seçeneği kullanıldığında oluşturulur._                                                       |
-| `app.component.ts`      | Uygulamanın `AppComponent` adlı kök bileşenini tanımlar. Bu kök bileşenle ilişkili görünüm, uygulamanıza bileşenler ve servisler ekledikçe görünüm hiyerarşisinin kökü olur.                                                                                                                       |
-| `app.component.html`    | `AppComponent` ile ilişkili HTML şablonunu tanımlar.                                                                                                                                                                                                                                               |
-| `app.component.css`     | `AppComponent` için CSS stil sayfasını tanımlar.                                                                                                                                                                                                                                                   |
-| `app.component.spec.ts` | `AppComponent` için bir birim testi tanımlar.                                                                                                                                                                                                                                                      |
-| `app.module.ts`         | Angular'a uygulamanın nasıl birleştirileceğini söyleyen `AppModule` adlı kök modülü tanımlar. Başlangıçta yalnızca `AppComponent`'i bildirir. Uygulamaya daha fazla bileşen ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone false` seçeneği kullanıldığında oluşturulur._ |
-| `app.routes.ts`         | Uygulamanın yönlendirme yapılandırmasını tanımlar.                                                                                                                                                                                                                                                 |
+| `src/app/` dosyaları | Amaç                                                                                                                                                                                                                                                                                               |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.config.ts`      | Angular'a uygulamanın nasıl birleştirileceğini söyleyen uygulama yapılandırmasını tanımlar. Uygulamaya daha fazla sağlayıcı ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone` seçeneği kullanıldığında oluşturulur._                                                       |
+| `app.ts`             | Uygulamanın `App` adlı kök bileşenini tanımlar. Bu kök bileşenle ilişkili görünüm, uygulamanıza bileşenler ve servisler ekledikçe görünüm hiyerarşisinin kökü olur.                                                                                                                                |
+| `app.html`           | `App` ile ilişkili HTML şablonunu tanımlar.                                                                                                                                                                                                                                                        |
+| `app.css`            | `App` için CSS stil sayfasını tanımlar.                                                                                                                                                                                                                                                            |
+| `app.spec.ts`        | `App` için bir birim testi tanımlar.                                                                                                                                                                                                                                                               |
+| `app-module.ts`      | Angular'a uygulamanın nasıl birleştirileceğini söyleyen `AppModule` adlı kök modülü tanımlar. Başlangıçta yalnızca `App` bileşenini bildirir. Uygulamaya daha fazla bileşen ekledikçe, burada bildirilmeleri gerekir.<br><br>_Yalnızca `--standalone false` seçeneği kullanıldığında oluşturulur._ |
+| `app.routes.ts`      | Uygulamanın yönlendirme yapılandırmasını tanımlar.                                                                                                                                                                                                                                                 |
 
 ### Uygulama yapılandırma dosyaları
 

@@ -15,7 +15,7 @@ Signal Forms bu zorlukları şu yollarla ele alır:
 - **Tür güvenliği sağlama** - Kullanıcı arayüzü kontrolleri ile veri modeli arasında tamamen tür güvenli şemalar ve bağlamalar destekler
 - **Doğrulama mantığını merkezileştirme** - Tüm doğrulama kurallarını bir doğrulama şeması kullanarak tek bir yerde tanımlayın
 
-Signal Forms, sinyallerle oluşturulan yeni uygulamalarda en iyi şekilde çalışır. Reaktif formlar kullanan mevcut bir uygulamayla çalışıyorsanız veya üretim kararlılığı garantilerine ihtiyacınız varsa, reaktif formlar sağlam bir seçim olmaya devam eder.
+Signal Forms, sinyallerle oluşturulan yeni uygulamalarda en iyi şekilde çalışır. Reaktif formlar kullanan mevcut bir uygulamayla çalışıyorsanız, reaktif formlar sağlam bir seçim olmaya devam eder.
 
 NOTE: Şablon veya reaktif formlardan geliyorsanız, [karşılaştırma kılavuzuyla](guide/forms/signals/comparison) ilgilenebilirsiniz.
 
@@ -47,11 +47,11 @@ import {form, FormField, required, email} from '@angular/forms/signals';
 Signal Forms'un nasıl çalıştığı hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzlara göz atın:
 
 <docs-pill-row>
-  <docs-pill href="essentials/signal-forms" title="Signal forms essentials" />
-  <docs-pill href="guide/forms/signals/models" title="Form models" />
-  <docs-pill href="guide/forms/signals/model-design" title="Designing your form model" />
-  <docs-pill href="guide/forms/signals/field-state-management" title="Field state management" />
-  <docs-pill href="guide/forms/signals/validation" title="Validation" />
-  <docs-pill href="guide/forms/signals/custom-controls" title="Custom controls" />
-  <docs-pill href="guide/forms/signals/comparison" title="Comparison with other form systems" />
+  <docs-pill href="essentials/signal-forms" title="Sinyallerle formlar" />
+  <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
+  <docs-pill href="guide/forms/signals/model-design" title="Form modelinizi tasarlama" />
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />
+  <docs-pill href="guide/forms/signals/custom-controls" title="Özel Kontroller" />
+  <docs-pill href="guide/forms/signals/comparison" title="Diğer form yaklaşımlarıyla karşılaştırma" />
 </docs-pill-row>

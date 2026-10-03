@@ -4,25 +4,25 @@ Angular, form oluşturmak için üç yaklaşım sunar: Signal Forms, Reactive Fo
 
 ## Hızlı karşılaştırma
 
-| Feature          | Signal Forms                                | Reactive Forms                           | Template-driven Forms        |
-| ---------------- | ------------------------------------------- | ---------------------------------------- | ---------------------------- |
-| Source of truth  | Kullanıcı tanımlı yazılabilir sinyal modeli | `FormControl`/`FormGroup`                | Bileşendeki kullanıcı modeli |
-| Type safety      | Modelden çıkarılır                          | Tipli formlarla açık                     | Minimal                      |
-| Validation       | Yol tabanlı doğrulayıcılarla şema           | Kontrollere iletilen doğrulayıcı listesi | Direktif tabanlı             |
-| State management | Sinyal tabanlı                              | Observable tabanlı                       | Angular tarafından yönetilir |
-| Setup            | Sinyal + şema fonksiyonu                    | FormControl ağacı                        | Şablonda NgModel             |
-| Best for         | Sinyal tabanlı uygulamalar                  | Karmaşık formlar                         | Basit formlar                |
-| Learning curve   | Orta                                        | Orta-Yüksek                              | Düşük                        |
-| Status           | Kararlı (v22+)                              | Kararlı                                  | Kararlı                      |
+| Özellik               | Signal Form'lar                             | Reactive Form'lar                        | Template-driven Form'lar     |
+| --------------------- | ------------------------------------------- | ---------------------------------------- | ---------------------------- |
+| Tek doğruluk kaynağı  | Kullanıcı tanımlı yazılabilir sinyal modeli | `FormControl`/`FormGroup`                | Bileşendeki kullanıcı modeli |
+| Tür güvenliği         | Modelden çıkarılır                          | Tipli formlarla açık                     | Minimal                      |
+| Doğrulama             | Yol tabanlı doğrulayıcılarla şema           | Kontrollere iletilen doğrulayıcı listesi | Direktif tabanlı             |
+| Durum yönetimi        | Sinyal tabanlı                              | Observable tabanlı                       | Angular tarafından yönetilir |
+| Kurulum               | Sinyal + şema fonksiyonu                    | FormControl ağacı                        | Şablonda NgModel             |
+| En uygun olduğu durum | Sinyal tabanlı uygulamalar                  | Karmaşık formlar                         | Basit formlar                |
+| Öğrenme eğrisi        | Orta                                        | Orta-Yüksek                              | Düşük                        |
+| Durum                 | Kararlı (v22+)                              | Kararlı                                  | Kararlı                      |
 
 ## Örnekle: Giriş formu
 
 Farklılıkları anlamanın en iyi yolu, aynı formun her üç yaklaşımda uygulandığını görmektir.
 
 <docs-code-multifile>
-  <docs-code language="angular-ts" header="Signal forms" path="adev/src/content/examples/signal-forms/src/comparison/app/signal-forms.ts"/>
-  <docs-code header="Reactive forms" path="adev/src/content/examples/signal-forms/src/comparison/app/reactive-forms.ts"/>
-  <docs-code header="Template-driven forms" path="adev/src/content/examples/signal-forms/src/comparison/app/template-driven-forms.ts"/>
+  <docs-code language="angular-ts" header="Signal form'lar" path="adev/src/content/examples/signal-forms/src/comparison/app/signal-forms.ts"/>
+  <docs-code header="Reactive form'lar" path="adev/src/content/examples/signal-forms/src/comparison/app/reactive-forms.ts"/>
+  <docs-code header="Template-driven form'lar" path="adev/src/content/examples/signal-forms/src/comparison/app/template-driven-forms.ts"/>
 </docs-code-multifile>
 
 ## Farklılıkları anlama

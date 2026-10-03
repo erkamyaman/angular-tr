@@ -9,10 +9,12 @@
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   Directive,
   ElementRef,
+  ErrorHandler,
   EventEmitter,
   inject,
   Injector,
@@ -42,6 +44,7 @@ function isFirefox() {
 
 import {NG_STATUS_CLASSES} from '../../compat/public_api';
 import {
+  applyEach,
   debounce,
   disabled,
   form,
@@ -6146,6 +6149,126 @@ describe('field directive', () => {
       expect(input.value).toBe('initial');
       expect(cmp.f().value()).toEqual({child: 'initial'});
     });
+
+    it('should write a value pending a blur debounce when the control is destroyed', () => {
+      @Component({
+        imports: [FormField],
+        template: `
+          @if (show()) {
+            <input [formField]="f" />
+          }
+        `,
+      })
+      class TestCmp {
+        readonly show = signal(true);
+        readonly f = form(signal('initial'), (p) => {
+          debounce(p, 'blur');
+        });
+      }
+
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const input = fixture.nativeElement.querySelector('input');
+      const cmp = fixture.componentInstance;
+
+      act(() => {
+        input.value = 'typing';
+        input.dispatchEvent(new Event('input'));
+      });
+      expect(cmp.f().value()).toBe('initial');
+
+      act(() => cmp.show.set(false));
+      expect(cmp.f().value()).toBe('typing');
+      expect(cmp.f().touched()).toBe(false);
+    });
+
+    it('should write a value pending a blur debounce when the control is bound to another field', () => {
+      @Component({
+        imports: [FormField],
+        template: `<input [formField]="useFirst() ? f.first : f.second" />`,
+      })
+      class TestCmp {
+        readonly useFirst = signal(true);
+        readonly f = form(signal({first: '', second: ''}), (p) => {
+          debounce(p.first, 'blur');
+        });
+      }
+
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const input = fixture.nativeElement.querySelector('input');
+      const cmp = fixture.componentInstance;
+
+      act(() => {
+        input.value = 'typing';
+        input.dispatchEvent(new Event('input'));
+      });
+      expect(cmp.f().value()).toEqual({first: '', second: ''});
+
+      act(() => cmp.useFirst.set(false));
+      expect(cmp.f().value()).toEqual({first: 'typing', second: ''});
+    });
+
+    it('should not write a value pending a blur debounce when its field is removed', () => {
+      @Component({
+        imports: [FormField],
+        template: `
+          @for (item of f; track $index) {
+            <input [formField]="item" />
+          }
+        `,
+      })
+      class TestCmp {
+        readonly model = signal(['a', 'b']);
+        readonly f = form(this.model, (p) => {
+          applyEach(p, (item) => debounce(item, 'blur'));
+        });
+      }
+
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const input = fixture.nativeElement.querySelectorAll('input')[1];
+      const cmp = fixture.componentInstance;
+
+      act(() => {
+        input.value = 'typing';
+        input.dispatchEvent(new Event('input'));
+      });
+
+      act(() => cmp.model.set(['a']));
+      expect(cmp.model()).toEqual(['a']);
+    });
+
+    it('should not write a value pending a blur debounce while another control is still bound', () => {
+      @Component({
+        imports: [FormField],
+        template: `
+          @if (show()) {
+            <input id="first" [formField]="f" />
+          }
+          <input id="second" [formField]="f" />
+        `,
+      })
+      class TestCmp {
+        readonly show = signal(true);
+        readonly f = form(signal('initial'), (p) => {
+          debounce(p, 'blur');
+        });
+      }
+
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const second = fixture.nativeElement.querySelector('input#second');
+      const cmp = fixture.componentInstance;
+
+      act(() => {
+        second.value = 'typing';
+        second.dispatchEvent(new Event('input'));
+      });
+      expect(cmp.f().value()).toBe('initial');
+
+      act(() => cmp.show.set(false));
+      expect(cmp.f().value()).toBe('initial');
+
+      act(() => second.dispatchEvent(new Event('blur')));
+      expect(cmp.f().value()).toBe('typing');
+    });
   });
 
   describe('config', () => {
@@ -6300,6 +6423,54 @@ describe('field directive', () => {
       const textarea = fixture.nativeElement.querySelector('textarea');
       expect(input.classList.contains('multiline')).toBe(false);
       expect(textarea.classList.contains('multiline')).toBe(true);
+    });
+
+    it('should not apply classes to orphaned fields in a detached view', () => {
+      const errors: unknown[] = [];
+      TestBed.configureTestingModule({
+        providers: [
+          {provide: ErrorHandler, useValue: {handleError: (e: unknown) => errors.push(e)}},
+          provideSignalFormsConfig({
+            classes: NG_STATUS_CLASSES,
+          }),
+        ],
+      });
+
+      @Component({
+        selector: 'test-rows',
+        imports: [FormField],
+        template: `
+          @for (item of f.items; track item) {
+            <input [formField]="item.name" />
+          }
+        `,
+      })
+      class TestRows {
+        readonly changeDetectorRef = inject(ChangeDetectorRef);
+        readonly model = signal({items: [{name: 'a'}, {name: 'b'}]});
+        readonly f = form(this.model);
+      }
+
+      @Component({
+        imports: [TestRows],
+        template: `<test-rows />`,
+      })
+      class TestCmp {
+        readonly rows = viewChild.required(TestRows);
+      }
+
+      const fixture = act(() => TestBed.createComponent(TestCmp));
+      const rows = fixture.componentInstance.rows();
+      rows.changeDetectorRef.detach();
+
+      act(() => rows.model.set({items: [{name: 'c'}, {name: 'd'}]}));
+      expect(errors).toEqual([]);
+
+      rows.changeDetectorRef.reattach();
+      act(() => rows.changeDetectorRef.markForCheck());
+      const inputs = fixture.nativeElement.querySelectorAll('input');
+      expect(inputs[0].value).toBe('c');
+      expect(inputs[0].classList.contains('ng-valid')).toBe(true);
     });
   });
 

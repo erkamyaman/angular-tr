@@ -2,8 +2,8 @@
 </docs-decorative-header>
 
 <docs-pill-row>
-  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" title="Listbox pattern"/>
-  <docs-pill href="/api?query=listbox#angular_aria_listbox" title="Listbox API Reference"/>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" title="Listbox deseni"/>
+  <docs-pill href="/api?query=listbox#angular_aria_listbox" title="Listbox API Referansı"/>
 </docs-pill-row>
 
 ## Genel Bakış
@@ -126,7 +126,7 @@ Listbox, öğelerin ne zaman seçileceğini kontrol eden iki seçim modunu deste
   <docs-code header="app.html" path="adev/src/content/examples/aria/listbox/src/modes/app/follow/app.html" />
 </docs-code-multifile>
 
-| Mode         | Description                                                                                |
+| Mod          | Açıklama                                                                                   |
 | ------------ | ------------------------------------------------------------------------------------------ |
 | `'follow'`   | Odaklanan öğeyi otomatik olarak seçer, seçim sık değiştiğinde daha hızlı etkileşim sağlar  |
 | `'explicit'` | Seçimi onaylamak için Boşluk veya Enter gerektirir, gezinirken kazara değişiklikleri önler |

@@ -31,7 +31,7 @@ Bir proje için yerel ayarları tanımlamak üzere projenizin [`angular.json`][G
 
 Aşağıdaki alt seçenekler kaynak dili tanımlar ve derleyiciye proje için desteklenen çevirilerin nerede bulunacağını söyler.
 
-| Suboption      | Details                                                                                                                                                             |
+| Suboption      | Ayrıntılar                                                                                                                                                          |
 | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `sourceLocale` | Uygulama kaynak kodunuzda kullandığınız yerel ayar \(varsayılan olarak `en-US`\). Ayrıca `code`, `baseHref` ve `subPath` özelliklerine sahip bir nesne de olabilir. |
 | `locales`      | Yerel ayar tanımlayıcılarının çeviri dosyalarına eşlemesi. Her girdi ayrıca `translation`, `baseHref` ve `subPath` özelliklerine sahip bir nesne de olabilir.       |
@@ -112,11 +112,11 @@ Aşağıdaki kod örneği, Fransızca dil dosyasının nasıl sunulacağını g�
 Bir çeviri eksik olduğunda, derleme başarılı olur ancak `Missing translation for message "{translation_text}"` gibi bir uyarı oluşturur.
 Angular derleyicisi tarafından oluşturulan uyarı seviyesini yapılandırmak için aşağıdaki seviyelerden birini belirtin.
 
-| Warning level | Details                                             | Output                                                 |
-| :------------ | :-------------------------------------------------- | :----------------------------------------------------- |
-| `error`       | Bir hata fırlatır ve derleme başarısız olur         | n/a                                                    |
-| `ignore`      | Hiçbir şey yapmaz                                   | n/a                                                    |
-| `warning`     | Konsolda veya kabukta varsayılan uyarıyı görüntüler | `Missing translation for message "{translation_text}"` |
+| Uyarı seviyesi | Ayrıntılar                                          | Çıktı                                                  |
+| :------------- | :-------------------------------------------------- | :----------------------------------------------------- |
+| `error`        | Bir hata fırlatır ve derleme başarısız olur         | n/a                                                    |
+| `ignore`       | Hiçbir şey yapmaz                                   | n/a                                                    |
+| `warning`      | Konsolda veya kabukta varsayılan uyarıyı görüntüler | `Missing translation for message "{translation_text}"` |
 
 Uyarı seviyesini projenizin [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasındaki `build` hedefinin `options` bölümünde belirtin.
 
@@ -138,7 +138,7 @@ TLDR: Bir kez derleyin, ardından her yerel ayar için çevirin.
 ## Sıradaki
 
 <docs-pill-row>
-  <docs-pill href="guide/i18n/deploy" title="Deploy multiple locales"/>
+  <docs-pill href="guide/i18n/deploy" title="Birden fazla yerel ayarı dağıtma"/>
 </docs-pill-row>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API | Angular'

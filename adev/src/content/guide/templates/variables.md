@@ -201,7 +201,7 @@ Sorgular hakkında daha fazla bilgi için [Sorgularla alt elemanlara referans ve
 
 JavaScript veya TypeScript kodundaki değişkenler gibi, şablon değişkenleri de onları bildiren şablona kapsamlıdır.
 
-Benzer şekilde, [Yapısal direktifler](guide/directives/structural-directives) veya `<ng-template>` bildirimleri, tıpkı JavaScript'in `if` ve `for` gibi kontrol akışı ifadelerinin yeni sözcüksel kapsamlar oluşturması gibi, yeni bir iç içe şablon kapsamı oluşturur. Bu yapısal direktiflerden birinin içindeki şablon değişkenlerine sınırlarının dışından erişemezsiniz.
+Benzer şekilde, `@if` ve `@for` gibi [kontrol akışı blokları](guide/templates/control-flow), [yapısal direktifler](guide/directives/structural-directives) ve `<ng-template>` bildirimleri, tıpkı JavaScript'in `if` ve `for` gibi kontrol akışı ifadelerinin yeni sözcüksel kapsamlar oluşturması gibi, yeni bir iç içe şablon kapsamı oluşturur. Bu iç içe şablonlardan birinin içindeki şablon değişkenlerine sınırlarının dışından erişemezsiniz.
 
 HELPFUL: Çalışma zamanı değerinin öngörülebilir kalması için bir değişkeni şablonda yalnızca bir kez tanımlayın.
 
@@ -211,20 +211,24 @@ HELPFUL: Çalışma zamanı değerinin öngörülebilir kalması için bir deği
 
 Aşağıdaki örnekte, `<input>` içindeki metni değiştirmek `<span>` içindeki değeri değiştirir; çünkü Angular değişiklikleri `ref1` şablon değişkeni üzerinden anında günceller.
 
-```html
+```angular-html
 <input #ref1 type="text" [(ngModel)]="firstExample" />
 
-<span *ngIf="true">Value: {{ ref1.value }}</span>
+@if (true) {
+  <span>Value: {{ ref1.value }}</span>
+}
 ```
 
-Bu durumda, `<span>` üzerindeki `*ngIf`, üst kapsamından gelen `ref1` değişkenini içeren yeni bir şablon kapsamı oluşturur.
+Bu durumda, `@if` bloğu, üst kapsamından gelen `ref1` değişkenini içeren yeni bir şablon kapsamı oluşturur.
 
 Ancak, bir alt kapsamdaki şablon değişkenine üst şablondan erişmek işe yaramaz:
 
-```html {avoid}
-<input *ngIf="true" #ref2 type="text" [(ngModel)]="secondExample" />
+```angular-html {avoid}
+@if (true) {
+  <input #ref2 type="text" [(ngModel)]="secondExample" />
+}
 
 <span>Value: {{ ref2?.value }}</span>
 ```
 
-Burada `ref2`, `*ngIf` tarafından oluşturulan alt kapsamda bildirilmiştir ve üst şablondan erişilebilir değildir.
+Burada `ref2`, `@if` tarafından oluşturulan alt kapsamda bildirilmiştir ve üst şablondan erişilebilir değildir.

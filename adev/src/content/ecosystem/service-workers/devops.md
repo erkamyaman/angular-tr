@@ -328,6 +328,6 @@ Bunu düzeltmek için, önceki tekniklerden birini kullanarak eski worker'ı dev
 Aşağıdakiler de ilginizi çekebilir:
 
 <docs-pill-row>
-  <docs-pill href="ecosystem/service-workers/config" title="Configuration file"/>
-  <docs-pill href="ecosystem/service-workers/communications" title="Communicating with the Service Worker"/>
+  <docs-pill href="ecosystem/service-workers/config" title="Service Worker yapılandırma dosyası"/>
+  <docs-pill href="ecosystem/service-workers/communications" title="Service Worker ile İletişim"/>
 </docs-pill-row>

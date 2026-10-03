@@ -99,7 +99,7 @@ Bu tablo, `@angular/common/http`'den kullanılabilir NgModule'leri ve bunların 
 | `HttpClientXsrfModule.withOptions(...)` | `withXsrfConfiguration(...)`                             |
 | `HttpClientXsrfModule.disable()`        | `withNoXsrfProtection()`                                 |
 
-<docs-callout important title="Use caution when using HttpClientModule in multiple injectors">
+<docs-callout important title="Birden fazla enjektörde HttpClientModule kullanırken dikkatli olun">
 `HttpClientModule` birden fazla enjektörde bulunduğunda, yakalayıcıların davranışı belirsizdir ve tam seçenekler ile sağlayıcı/içe aktarma sıralamasına bağlıdır.
 
 Daha kararlı davranışa sahip olduğu için çoklu enjektör yapılandırmalarında `provideHttpClient`'ı tercih edin. Yukarıdaki `withRequestsMadeViaParent` özelliğine bakın.

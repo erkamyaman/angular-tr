@@ -2,7 +2,7 @@
 
 TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/outputs) aşina olduğunuzu varsayar.
 
-`@angular/rxjs-interop` paketi, bileşen ve direktif çıktılarıyla ilgili iki API sunar.
+`@angular/core/rxjs-interop` paketi, bileşen ve direktif çıktılarıyla ilgili iki API sunar.
 
 ## Bir RxJS Observable'a dayalı çıktı oluşturma
 

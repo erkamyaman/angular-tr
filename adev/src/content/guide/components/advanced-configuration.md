@@ -35,4 +35,4 @@ import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 export class ComponentWithCustomElements { }
 ```
 
-Angular şu anda başka hiçbir şemayı desteklememektedir.
+Angular ayrıca, herhangi bir elemana ve herhangi bir özelliğe izin veren `NO_ERRORS_SCHEMA`'yı da sağlar.

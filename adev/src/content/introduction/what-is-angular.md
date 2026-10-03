@@ -69,7 +69,7 @@
   <docs-card title="Varsayılan olarak güvenlikle kullanıcılarınızı koruyun" href="best-practices/security" link="Güvenlik" titleIconName="sensors">
     Google'ın dünya standartlarındaki güvenlik mühendisleriyle iş birliği içinde, Angular varsayılan olarak geliştirmeyi güvenli hale getirmeyi amaçlar. HTML temizleme ve güvenilir tür desteği dahil olmak üzere yerleşik güvenlik özellikleri, kullanıcılarınızı siteler arası betik çalıştırma ve siteler arası istek sahteciliği gibi yaygın güvenlik açıklarından korumaya yardımcı olur.
   </docs-card>
-  <docs-card title="Vite ve esbuild ile büyük ekipleri verimli tutun" href="tools/cli/build-system-migration" link="Vite and esbuild" titleIconName="sensors">
+  <docs-card title="Vite ve esbuild ile büyük ekipleri verimli tutun" href="tools/cli/build-system-migration" link="Vite ve esbuild" titleIconName="sensors">
     Angular CLI, Vite ve esbuild kullanan hızlı, modern bir derleme hattı içerir. Geliştiriciler, yüz binlerce satır kod içeren projeleri bir dakikadan kısa sürede derlediğini bildirmektedir.
   </docs-card>
   <docs-card title="Google'ın en büyük web uygulamalarında kanıtlanmış" titleIconName="sensors">

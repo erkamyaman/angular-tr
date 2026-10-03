@@ -67,7 +67,7 @@ Bileşen özellikleri ve mantığı doğrudan HTML niteliklerine ve tarayıcın�
 - Oluşturma API'si, giriş özelliklerini arayan bileşeni ayrıştırır ve özel öğe için karşılık gelen nitelikleri tanımlar.
   Özellik adlarını, büyük/küçük harf ayrımlarını tanımayan özel öğelerle uyumlu hale getirmek için dönüştürür.
   Sonuçtaki nitelik adları tire ile ayrılmış küçük harf kullanır.
-  Örneğin, `inputProp = input({alias: 'myInputProp'})` olan bir bileşen için karşılık gelen özel öğe `my-input-prop` niteliğini tanımlar.
+  Örneğin, `inputProp = input('', {alias: 'myInputProp'})` olan bir bileşen için karşılık gelen özel öğe `my-input-prop` niteliğini tanımlar.
 
 - Bileşen çıktıları, özel olayın adının çıktı adıyla eşleştiği HTML [Özel Olaylar](https://developer.mozilla.org/docs/Web/API/CustomEvent) olarak gönderilir.
   Örneğin, `valueChanged = output()` olan bir bileşen için karşılık gelen özel öğe "valueChanged" adıyla olaylar gönderir ve yayınlanan veriler olayın `detail` özelliğinde saklanır.

@@ -48,10 +48,10 @@ Varsayılan olarak tüm yönlendirmeler `prefix` stratejisini kullanır.
 ```ts
 export const routes: Routes = [
   // Bu redirect rotası şuna eşdeğerdir...
-  { path: 'news', redirectTo: 'blog },
+  {path: 'news', redirectTo: 'blog'},
 
   // Bu açıkça tanımlanmış rota redirect pathMatch
-  { path: 'news', redirectTo: 'blog', pathMatch: 'prefix' },
+  {path: 'news', redirectTo: 'blog', pathMatch: 'prefix'},
 ];
 ```
 
@@ -109,7 +109,7 @@ export const routes: Routes = [
 
       // Kullanıcının sorgu parametresi aracılığıyla belirli bir öğün isteyip istemediğini kontrol et
       if (activatedRouteSnapshot.queryParams['meal']) {
-        return `/restaurant/${location}/menu/${queryParams['meal']}`;
+        return `/restaurant/${location}/menu/${activatedRouteSnapshot.queryParams['meal']}`;
       }
 
       // Günün saatine göre otomatik redirect
