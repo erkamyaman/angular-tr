@@ -11,7 +11,7 @@ import path from 'path';
 import {parseMarkdownAsync} from '../shared/marked/parse.mjs';
 import {ApiEntries} from '../shared/linking.mjs';
 import {initHighlighter} from '../shared/shiki.mjs';
-import {hasUnknownAnchors} from './helpers.mjs';
+import {findMemberLink, hasUnknownAnchors} from './helpers.mjs';
 
 type ApiManifest = ApiManifestPackage[];
 interface ApiManifestPackage {
@@ -81,6 +81,13 @@ async function main() {
       if (unknownAnchor) {
         throw new Error(
           `The file "${filePath}" contains an anchor link to "${unknownAnchor}" which does not exist in the document.`,
+        );
+      }
+
+      const memberLink = findMemberLink(htmlOutputContent);
+      if (memberLink) {
+        throw new Error(
+          `The file "${filePath}" links "${memberLink}" in a code block although it is a member of another object. Member names must not be linked.`,
         );
       }
 

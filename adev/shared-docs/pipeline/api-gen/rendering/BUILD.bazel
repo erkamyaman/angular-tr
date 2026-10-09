@@ -32,6 +32,7 @@ ts_project(
     ),
     deps = [
         ":entities",
+        "//adev:node_modules/jsdom",
         "//adev:node_modules/marked",
         "//adev:node_modules/preact",
         "//adev:node_modules/preact-render-to-string",

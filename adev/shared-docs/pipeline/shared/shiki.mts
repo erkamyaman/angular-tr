@@ -8,7 +8,7 @@
 
 import ts from 'typescript';
 import {HighlighterGeneric, ShikiTransformer} from 'shiki';
-import {ApiEntries, getSymbolUrl} from './linking.mjs';
+import {ApiEntries, getSymbolUrl, isUnlinkableMember, MEMBER_ACCESS_WINDOW} from './linking.mjs';
 
 const scanner = ts.createScanner(ts.ScriptTarget.Latest, true);
 const LIGHT_THEME = 'github-light';
@@ -97,8 +97,16 @@ function linkApiEntriesTransformer(apiEntries?: ApiEntries): ShikiTransformer {
 
       while (token !== ts.SyntaxKind.EndOfFileToken) {
         if (token === ts.SyntaxKind.Identifier) {
-          const symbolUrl = getSymbolUrl(scanner.getTokenText(), apiEntries);
-          if (symbolUrl !== undefined) {
+          const symbol = scanner.getTokenText();
+          const start = scanner.getTokenStart();
+          const symbolUrl = getSymbolUrl(symbol, apiEntries);
+          if (
+            symbolUrl !== undefined &&
+            !isUnlinkableMember(
+              code.slice(Math.max(0, start - MEMBER_ACCESS_WINDOW), start),
+              symbol,
+            )
+          ) {
             options.decorations.push({
               transform: (el) => {
                 el.tagName = 'a';

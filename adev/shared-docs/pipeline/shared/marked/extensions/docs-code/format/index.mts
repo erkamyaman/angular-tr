@@ -11,7 +11,12 @@ import {highlightCode} from './highlight.mjs';
 import {extractRegions} from './region.mjs';
 import {JSDOM} from 'jsdom';
 import {expandRangeStringValues} from './range.mjs';
-import {ApiEntries, getSymbolUrl} from '../../../../linking.mjs';
+import {
+  ApiEntries,
+  getSymbolUrl,
+  isUnlinkableMember,
+  MEMBER_ACCESS_WINDOW,
+} from '../../../../linking.mjs';
 import {RendererContext} from '../../../renderer.mjs';
 
 /** Marked token for a custom docs element. */
@@ -82,7 +87,7 @@ export function processForApiLinks(fragment: Element, apiEntries: ApiEntries): v
     const [, before, symbol, after] = symbolMatch;
 
     const apiLink = getSymbolUrl(symbol, apiEntries);
-    if (apiLink) {
+    if (apiLink && !isUnlinkableMember(precedingText(span) + before, symbol)) {
       // Create a new link element
       const linkElement = fragment.ownerDocument!.createElement('a');
       linkElement.href = apiLink;
@@ -94,6 +99,18 @@ export function processForApiLinks(fragment: Element, apiEntries: ApiEntries): v
       span.append(fragment.ownerDocument!.createTextNode(after));
     }
   });
+}
+
+function precedingText(span: Element): string {
+  let text = '';
+  for (
+    let el = span.previousElementSibling;
+    el && text.length < MEMBER_ACCESS_WINDOW;
+    el = el.previousElementSibling
+  ) {
+    text = (el.textContent ?? '') + text;
+  }
+  return text;
 }
 
 /** Escapes text that is interpolated into an HTML string. */

@@ -41,6 +41,44 @@ const LINK_EXEMPT = new Set([
   'query',
 ]);
 
+export const MEMBER_ACCESS_WINDOW = 80;
+
+const MEMBER_ACCESS = /(?:([A-Za-z_$][\w$]*)\s*)?(?<!\.)\??\.$/;
+
+export function isUnlinkableMember(precedingText: string, memberName: string): boolean {
+  const access = MEMBER_ACCESS.exec(precedingText);
+  if (!access) {
+    return false;
+  }
+
+  const objectName = access[1] ?? '';
+  return !(/^[A-Z]/.test(objectName) && /^[A-Z]/.test(memberName));
+}
+
+const SHOW_TEXT = 4;
+
+export function findUnlinkableMemberLink(root: ParentNode): string | undefined {
+  for (const pre of Array.from(root.querySelectorAll('pre'))) {
+    const walker = pre.ownerDocument.createTreeWalker(pre, SHOW_TEXT);
+    let preceding = '';
+    let previousAnchor: Element | null = null;
+
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const anchor = node.parentElement?.closest('a[href^="/api/"]') ?? null;
+      const name = anchor?.textContent ?? '';
+      const context = preceding.slice(-MEMBER_ACCESS_WINDOW);
+      if (anchor && anchor !== previousAnchor && isUnlinkableMember(context, name)) {
+        return `${context.trimStart().split('\n').pop()}${name}`;
+      }
+
+      previousAnchor = anchor;
+      preceding += node.textContent;
+    }
+  }
+
+  return undefined;
+}
+
 export function shouldLinkSymbol(symbol: string): boolean {
   return !LINK_EXEMPT.has(symbol);
 }

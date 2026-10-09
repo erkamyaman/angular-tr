@@ -7,6 +7,7 @@
  */
 
 import {JSDOM} from 'jsdom';
+import {findUnlinkableMemberLink} from '../shared/linking.mjs';
 
 /** Whether the link provided is external to the application. */
 export function isExternalLink(href: string | undefined | null) {
@@ -37,4 +38,8 @@ export function hasUnknownAnchors(htmlString: string) {
     }
     return undefined;
   });
+}
+
+export function findMemberLink(htmlString: string): string | undefined {
+  return findUnlinkableMemberLink(JSDOM.fragment(htmlString));
 }

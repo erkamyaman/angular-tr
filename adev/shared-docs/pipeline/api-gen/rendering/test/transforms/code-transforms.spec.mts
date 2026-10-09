@@ -7,6 +7,7 @@
  */
 
 import {
+  addApiLinksToHtml,
   formatExtendsClause,
   getPropertyCodeLine,
   isSignalInput,
@@ -14,6 +15,7 @@ import {
   isSignalOutput,
   makeGenericsText,
 } from '../../transforms/code-transforms.mjs';
+import {setSymbols} from '../../symbol-context.mjs';
 
 describe('formatExtendsClause', () => {
   it('should return an empty string when extendsValue is undefined', () => {
@@ -426,5 +428,51 @@ describe('getPropertyCodeLine (signal models)', () => {
     expect(line).toBe(`value = model<string>();`);
     expect(line).not.toContain('@Input');
     expect(line).not.toContain('@Output');
+  });
+});
+
+describe('addApiLinksToHtml', () => {
+  beforeEach(() => {
+    setSymbols({createComponent: 'core', Scroll: 'router'});
+  });
+
+  afterEach(() => {
+    setSymbols({});
+  });
+
+  it('should link a span that holds a known symbol', () => {
+    const html = addApiLinksToHtml('<span>createComponent</span>');
+
+    expect(html).toBe('<span><a href="/api/core/createComponent">createComponent</a></span>');
+  });
+
+  it('should not link a symbol accessed on another object', () => {
+    const html = addApiLinksToHtml('<span>this.vcr.</span><span>createComponent</span>');
+
+    expect(html).not.toContain('<a');
+  });
+
+  it('should link a capitalized name accessed on a capitalized name', () => {
+    const html = addApiLinksToHtml('<span>EventType</span><span>.</span><span>Scroll</span>');
+
+    expect(html).toContain('<a href="/api/router/Scroll">Scroll</a>');
+  });
+
+  it('should link inline code that follows a sentence ending with a period', () => {
+    const html = addApiLinksToHtml('<p>See the value.</p><p><code>createComponent</code> is</p>');
+
+    expect(html).toContain('<a href="/api/core/createComponent">createComponent</a>');
+  });
+
+  it('should link a symbol in a table cell that follows a cell ending with a period', () => {
+    const html = addApiLinksToHtml('<td>value.</td><td><span>createComponent</span></td>');
+
+    expect(html).toContain('<a href="/api/core/createComponent">createComponent</a>');
+  });
+
+  it('should not link a symbol after an optional chaining access', () => {
+    const html = addApiLinksToHtml('<span>app</span><span>?.</span><span>createComponent</span>');
+
+    expect(html).not.toContain('<a');
   });
 });

@@ -41,6 +41,7 @@ import {
 } from '../shiki/shiki.mjs';
 import {getSymbolsAsApiEntries, getSymbolUrl} from '../symbol-context.mjs';
 
+import {isUnlinkableMember, MEMBER_ACCESS_WINDOW} from '../../../shared/linking.mjs';
 import {codeToHtml} from '../../../shared/shiki.mjs';
 import {formatJs} from './format-code.mjs';
 import {
@@ -652,6 +653,18 @@ function appendPrefixAndSuffix(entry: DocEntry, codeTocData: CodeTableOfContents
   }
 }
 
+function isMemberAccess(span: string, symbolName: string, offset: number, source: string): boolean {
+  if (
+    !span.startsWith('<span') ||
+    !source.slice(Math.max(0, offset - 7), offset).endsWith('</span>')
+  ) {
+    return false;
+  }
+
+  const preceding = source.slice(Math.max(0, offset - 400), offset).replace(/<[^>]*>/g, '');
+  return isUnlinkableMember(preceding.slice(-MEMBER_ACCESS_WINDOW), symbolName);
+}
+
 /**
  * Replaces any code block that isn't already wrapped by an anchor element
  * by a link if the symbol is known
@@ -663,9 +676,16 @@ export function addApiLinksToHtml(htmlString: string): string {
     // Their content are then replaced with a link if the symbol is known
     //                                         The captured content ==>  vvvvvvvv
     /(?<!<a[^>]*>)(<(?:(?:span)|(?:code))(?!\sdata-skip-anchor)[^>]*>\s*)([^<]*?)(\s*<\/(?:span|code)>)/g,
-    (type: string, span1: string, potentialSymbolName: string, span2: string) => {
+    (
+      type: string,
+      span1: string,
+      potentialSymbolName: string,
+      span2: string,
+      offset: number,
+      source: string,
+    ) => {
       const url = getSymbolUrl(potentialSymbolName);
-      if (url) {
+      if (url && !isMemberAccess(span1, potentialSymbolName, offset, source)) {
         return `${span1}<a href="${url}">${potentialSymbolName}</a>${span2}`;
       }
 

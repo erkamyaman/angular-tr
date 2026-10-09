@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {getSymbolUrl} from '../linking.mjs';
+import {getSymbolUrl, isUnlinkableMember} from '../linking.mjs';
 
 describe('getSymbolUrl', () => {
   it('should resolve class names to API URLs', () => {
@@ -98,5 +98,30 @@ describe('getSymbolUrl', () => {
     };
 
     expect(getSymbolUrl('model.required', apiEntries)).toBe('/api/core/model');
+  });
+});
+
+describe('isUnlinkableMember', () => {
+  it('should not unlink a plain reference', () => {
+    expect(isUnlinkableMember('const x = ', 'Router')).toBe(false);
+    expect(isUnlinkableMember('[...', 'Router')).toBe(false);
+    expect(isUnlinkableMember('// Bootstrap the app.\n', 'platformBrowser')).toBe(false);
+    expect(isUnlinkableMember('see the docs. ', 'TestBed')).toBe(false);
+    expect(isUnlinkableMember('inject(', 'Router')).toBe(false);
+  });
+
+  it('should unlink a member of an instance or a call result', () => {
+    expect(isUnlinkableMember('TestBed.', 'createComponent')).toBe(true);
+    expect(isUnlinkableMember('this.', 'model')).toBe(true);
+    expect(isUnlinkableMember('this.vcr?.', 'createComponent')).toBe(true);
+    expect(isUnlinkableMember('username().', 'metadata')).toBe(true);
+    expect(isUnlinkableMember('mod.', 'ROUTES')).toBe(true);
+    expect(isUnlinkableMember('fixture\n  .', 'detectChanges')).toBe(true);
+  });
+
+  it('should keep a capitalized member of a capitalized name', () => {
+    expect(isUnlinkableMember('type: EventType.', 'Scroll')).toBe(false);
+    expect(isUnlinkableMember('EventType?.', 'Scroll')).toBe(false);
+    expect(isUnlinkableMember('RouterFeature<RouterFeatureKind.', 'PreloadingFeature')).toBe(false);
   });
 });

@@ -7,6 +7,7 @@
  */
 
 import {mkdirSync, readFileSync, writeFileSync} from 'fs';
+import {JSDOM} from 'jsdom';
 import path from 'path';
 import {CliCommand} from './cli-entities.mjs';
 import {DocEntry} from './entities.mjs';
@@ -21,6 +22,7 @@ import {
 } from './symbol-context.mjs';
 import {setDefinedRoutes} from './defined-routes-context.mjs';
 import {CliCommandRenderable, DocEntryRenderable} from './entities/renderables.mjs';
+import {findUnlinkableMemberLink} from '../../shared/linking.mjs';
 import {initHighlighter} from '../../shared/shiki.mjs';
 import {setHighlighterInstance} from './shiki/shiki.mjs';
 
@@ -180,6 +182,13 @@ async function main() {
 
       // in case the output path is nested, ensure the directory exists
       mkdirSync(path.parse(outputPath).dir, {recursive: true});
+
+      const memberLink = findUnlinkableMemberLink(JSDOM.fragment(htmlOutputs[i]));
+      if (memberLink) {
+        throw new Error(
+          `The API page "${filename}" links "${memberLink}" in a code block although it is a member of another object. Member names must not be linked.`,
+        );
+      }
 
       writeFileSync(outputPath, htmlOutputs[i], {encoding: 'utf8'});
     }

@@ -20,3 +20,10 @@ const form = {
     // bar
   }
 </docs-code>
+
+<docs-code header="Member access should not be linked" language="ts">
+const router = inject(Router);
+const app = this.router.Router;
+const ref = this.app?.ApplicationRef;
+const kind = Router.ApplicationRef;
+</docs-code>
