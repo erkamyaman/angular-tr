@@ -5,7 +5,7 @@ IMPORTANT: `debounced` [deneyseldir](reference/releases#deneysel). Denemeniz iç
 Bir sinyalin değerine tepki vermeyi, değer değişmeyi durdurana kadar geciktirmek için `debounced` kullanın. Değeri, kaynak sinyalin gecikmeli (debounced) değerini yansıtan bir `Resource` döndürür.
 
 ```angular-ts
-import {debounced, resource, signal} from '@angular/core';
+import {Component, debounced, resource, signal} from '@angular/core';
 
 @Component({
   template: `

@@ -345,17 +345,20 @@ Angular, form kontrollerini yeniden oluşturmadan çalışma zamanında doğrula
 ### Doğrulayıcı ekleme ve kaldırma
 
 [`addValidators`](api/forms/AbstractControl#addValidators) ve [`removeValidators`](api/forms/AbstractControl#removeValidators) metotları, bir kontrolün doğrulayıcılarını başlatma işleminden sonra değiştirmenize olanak tanır.
+Angular doğrulayıcıları referansa göre eşleştirir, bu nedenle `removeValidators` metoduna `addValidators` metoduna verdiğiniz fonksiyonun aynısını geçirmelisiniz.
 
 ```ts
+private readonly usPostalCode = Validators.pattern(/^\d{5}$/);
+
 onCountryChange(country: string) {
     const postalCodeControl = this.profileForm.get('postalCode');
 
     if (country === 'US') {
       // ABD posta kodları için doğrulayıcı ekle
-      postalCodeControl.addValidators([Validators.required, Validators.pattern(/^\d{5}$/)]);
+      postalCodeControl.addValidators([Validators.required, this.usPostalCode]);
     } else {
       // ABD değilken doğrulayıcıları kaldır
-      postalCodeControl.removeValidators([Validators.required]);
+      postalCodeControl.removeValidators([Validators.required, this.usPostalCode]);
     }
 
     postalCodeControl.updateValueAndValidity();

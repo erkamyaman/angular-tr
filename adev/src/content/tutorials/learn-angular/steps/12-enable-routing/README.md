@@ -51,9 +51,7 @@ Son olarak, uygulamanızın Angular Router'ı kullanmaya hazır olduğundan emin
 
 `App` şablonunu `<router-outlet />` ekleyerek güncelleyin
 
-```angular-ts {highlight:[11]}
-import {RouterOutlet} from '@angular/router';
-
+```angular-ts {highlight:[9]}
 @Component({
 ...
 template: `

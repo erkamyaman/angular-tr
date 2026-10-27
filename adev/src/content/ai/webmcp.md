@@ -1,6 +1,6 @@
 # WebMCP
 
-Web Model Context Protocol (WebMCP), web uygulamalarının yapısal araçları doğrudan tarayıcıda yerel olarak çalışan yapay zeka ajanlarına sunmasına olanak tanıyan [yeni gelişen bir web standardıdır](https://github.com/webmachinelearning/webmcp/). Bir uygulama tarafından tanımlanan araçlar, yapay zeka asistanlarının uygulamayla doğrudan etkileşime geçmesini sağlar, ajana ek yetenekler kazandırır ve DOM etkileşimlerine olan ihtiyacı azaltır.
+WebMCP, web uygulamalarının yapısal araçları doğrudan tarayıcıda yerel olarak çalışan yapay zeka ajanlarına sunmasına olanak tanıyan [önerilen bir web standardıdır](https://github.com/webmachinelearning/webmcp/). Bir uygulama tarafından tanımlanan araçlar, yapay zeka asistanlarının uygulamayla doğrudan etkileşime geçmesini sağlar, ajana ek yetenekler kazandırır ve DOM etkileşimlerine olan ihtiyacı azaltır.
 
 Örneğin, yeni bir kullanıcı kaydeden bir uygulama, tarayıcının yapay zeka ajanının kullanıcıyı DOM etkileşimleri aracılığıyla karmaşık bir sihirbaz arayüzünde gezinmek yerine doğrudan oluşturmasını sağlayan bir WebMCP aracı sağlayabilir.
 
@@ -231,7 +231,7 @@ Bu örnekte Angular, aşağıdaki özelliklere sahip bir JSON şemasıyla bir We
 
 Girdi şemasını çıkarsamanın ötesinde, Angular WebMCP aracını formun doğrulama mantığına ve gönderim işleyicisine de bağlar. Bu, ajanın kendi girdilerinin tetiklediği doğrulama hatalarını veya gönderim sırasında oluşan başarısızlıkları gözlemleyebileceği anlamına gelir; böylece kendini düzeltebilir ve olası yeniden denemeler yapabilir.
 
-NOTE: Asenkron doğrulayıcılar tetiklenmez ve gönderim eylemi (submission action) tarafından ele alınmalıdır.
+NOTE: Varsayılan olarak asenkron doğrulayıcılar gönderimi engellemez: gönderim eylemi (submission action) onlar bitmeden çalışır, bu nedenle hataları ajana bildirilmez. Bu kontrolleri bunun yerine gönderim eyleminde ele alın.
 
 #### Kısıtlamalar
 

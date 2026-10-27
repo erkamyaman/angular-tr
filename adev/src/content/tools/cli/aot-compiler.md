@@ -40,6 +40,8 @@ Angular AOT derleyicisi, Angular'ın yönetmesi gereken uygulama parçalarını 
 Meta veriyi `@Component()` gibi **dekoratörlerde** açıkça veya dekoratör uygulanmış sınıfların yapıcı bildirimlerinde örtük olarak belirtebilirsiniz.
 Meta veri, Angular'a uygulama sınıflarınızın örneklerini nasıl oluşturacağını ve çalışma zamanında onlarla nasıl etkileşime geçeceğini söyler.
 
+AOT derleyicisi tarafından üretilen kod, **Derleyici ABI (Application Binary Interface)** olarak bilinen bir dahili çalışma zamanı API'leri kümesine bağlıdır. Angular, framework'ün tek bir minör sürümü içindeki tüm yama sürümleri arasında ABI kararlılığını korur. Bu, aynı minör sürümün farklı yama sürümleriyle derlenmiş uygulamaların veya kütüphanelerin, çalışma zamanında tek bir Angular çalışma zamanını güvenle paylaşabilmesini sağlar.
+
 Aşağıdaki örnekte, `@Component()` meta veri nesnesi ve sınıf yapıcısı Angular'a bir `Typical` örneğini nasıl oluşturacağını ve görüntüleyeceğini söyler.
 
 ```angular-ts

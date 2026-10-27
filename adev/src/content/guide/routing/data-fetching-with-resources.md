@@ -1,5 +1,7 @@
 # Resource'lar ile veri çekme
 
+IMPORTANT: Rota resource'ları [geliştirici önizlemesi](reference/releases#geliştirici-önizlemesi) aşamasındadır.
+
 Angular Router, `resources` rota yapılandırması aracılığıyla Angular sinyalleriyle entegre olur. Bu, `Resource` API'lerini kullanarak verileri reaktif olarak çekmenize olanak tanır.
 
 ## Neden rota resource'ları kullanılır? {#why-use-route-resources}
@@ -17,6 +19,7 @@ Rota resource'larını etkinleştirmek için router yapılandırmanıza `withRou
 
 ```ts
 import {provideRouter, withComponentInputBinding, withRouterResources} from '@angular/router';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [provideRouter(routes, withComponentInputBinding(), withRouterResources())],
@@ -61,7 +64,10 @@ export class UserProfile {
 
 ### `ResourceContext` nesnesi {#the-resourcecontext-object}
 
-`resources` fonksiyonu, reaktif rota sinyallerine erişim sağlayan bir `ResourceContext` alır: `params`, `queryParams`, `fragment` ve `data`.
+`resources` fonksiyonu, aşağıdakileri sağlayan bir `ResourceContext` alır:
+
+- Rota sinyalleri: `params`, `queryParams`, `fragment` ve `data`.
+- `resources`: üst rotalardan devralınan resource'ların bir sinyali. Bkz. [Resource kalıtımı](#resource-inheritance).
 
 ### Desteklenen resource uygulamaları {#supported-resource-implementations}
 
@@ -91,11 +97,13 @@ Resource'ları yapılandırmadan önce asenkron bir kurulum veya dinamik import 
 
 ```ts
 resources: async (ctx) => {
+  const injector = inject(Injector);
   const {fetchUserData} = await import('./user-api');
   return {
     user: resource({
       params: () => ctx.params()['id'],
       loader: ({params: id}) => fetchUserData(id),
+      injector,
     }),
   };
 },
@@ -123,7 +131,122 @@ TIP: Parametre nesnesinin tamamını (`ctx.params()` gibi) döndürmek yerine `c
 
 Veri resolver'ları üst rotadan alt rotaya doğru sırayla çalışır. Üst rota resolver'ı 200ms ve alt rota resolver'ı 300ms sürerse, navigasyon 500ms boyunca engellenir.
 
-Eşleşen rota hiyerarşisindeki rota resource'ları eşzamanlı olarak çalışır, bu nedenle aynı navigasyon en yavaş resource'un süresi olan 300ms içinde tamamlanır.
+Eşleşen rota hiyerarşisindeki rota resource'ları eşzamanlı olarak çalışır, bu nedenle aynı navigasyon en yavaş resource'un süresi olan 300ms içinde tamamlanır. Bir üst rotanın verisine bağlı olan resource'lar da beklemek yerine hemen kurulur; bkz. [Bir resource'u üst resource'a zincirleme](#chaining-a-resource-off-an-ancestor-resource).
+
+## Resource kalıtımı {#resource-inheritance}
+
+Her rota, üst rotalarının resource'larını devralır. Angular bu devralınan resource'ları iki biçimde sunar:
+
+| API                                                              | İçerik                                                     | Davranış                                                                                                 | Kullanım amacı                                                                 |
+| :--------------------------------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| Bir `resources` fonksiyonu içindeki `ctx.resources()`            | Yalnızca üst rotaların resource'ları                       | Üst rotaların `resources` fonksiyonlarının döndürdüğü ham resource'lar. Durumları her zaman canlıdır.    | Bir resource'u üst resource'a zincirlemek                                      |
+| `ActivatedRoute.resources` ve `ActivatedRouteSnapshot.resources` | Rotanın kendi resource'ları ve üst rotaların resource'ları | Router tarafından yönetilen salt okunur resource'lar. Bir navigasyon beklemedeyken durumları dondurulur. | Bir bileşen, direktif veya guard içinden veri okumak ya da `reload()` çağırmak |
+
+Bir rota, üst rotadaki bir resource ile aynı ada sahip bir resource tanımlarsa, rotanın kendi resource'u devralınan resource'u gölgeler.
+
+### Devralınan resource'ları bileşen input'larına bağlama
+
+`withComponentInputBinding()` ile router, hem devralınan resource'ları hem de rotanın kendi resource'larını eşleşen bileşen input'larına bağlar:
+
+```angular-ts
+import {Component, input, resource} from '@angular/core';
+import {Routes} from '@angular/router';
+
+interface Project {
+  id: string;
+  name: string;
+}
+
+interface Task {
+  id: string;
+  title: string;
+}
+
+const routes: Routes = [
+  {
+    path: 'projects/:projectId',
+    resources: (ctx) => ({
+      project: resource({
+        params: () => ctx.params()['projectId'],
+        loader: ({params: id}) => fetchProject(id),
+      }),
+    }),
+    children: [
+      {
+        path: 'tasks/:taskId',
+        component: TaskDetail,
+        resources: (ctx) => ({
+          task: resource({
+            params: () => ctx.params()['taskId'],
+            loader: ({params: id}) => fetchTask(id),
+          }),
+        }),
+      },
+    ],
+  },
+];
+
+@Component({
+  template: `
+    <h1>Project: {{ project().name }}</h1>
+    <h2>Task: {{ task().title }}</h2>
+  `,
+})
+export class TaskDetail {
+  // Üst 'projects/:projectId' rotasından devralındı
+  project = input.required<Project>();
+
+  // Rotanın kendi resource'undan bağlandı
+  task = input.required<Task>();
+}
+```
+
+NOTE: Router rota durumunu bileşen input'larına bağladığında, resource adları rota `data`'sından (çözümlenen değerler dahil), yol parametrelerinden ve sorgu parametrelerinden önceliklidir.
+
+### Bir resource'u üst resource'a zincirleme {#chaining-a-resource-off-an-ancestor-resource}
+
+Bir alt rota, kendi verisini yükleyebilmek için çoğu zaman bir üst rotanın verisine ihtiyaç duyar. Üst rotanın yüklenmesini beklemek yerine, alt rotanın `params` fonksiyonunu [`chain()`](/guide/signals/resource#chaining-resources) ile üst resource'a zincirleyin. Angular, her `params` fonksiyonuna `chain` içeren bir bağlam nesnesi geçirir:
+
+```ts
+import {Resource, resource} from '@angular/core';
+import {Routes} from '@angular/router';
+
+interface User {
+  id: string;
+  role: string;
+}
+
+const routes: Routes = [
+  {
+    path: 'user/:id',
+    resources: (ctx) => ({
+      user: resource({
+        params: () => ctx.params()['id'],
+        loader: ({params: id}) => fetchUser(id),
+      }),
+    }),
+    children: [
+      {
+        path: 'details',
+        component: UserDetails,
+        resources: (ctx) => ({
+          details: resource({
+            // Devralınan 'user' resource'u çözümlenene kadar yükleniyor durumunu korur
+            params: ({chain}) => chain(ctx.resources()['user'] as Resource<User>).role,
+            loader: ({params: role}) => fetchRoleDetails(role),
+          }),
+        }),
+      },
+    ],
+  },
+];
+```
+
+IMPORTANT: `ctx.resources()` fonksiyonunu dış `resources` fonksiyonunun gövdesinde doğrudan çağırmayın veya yapısını bozmayın (örneğin, `const {user} = ctx.resources()`). Üst rotalar paralel ve asenkron olarak başlatılabildiğinden, üst resource'lar rota kurulumu sırasında kullanılabilir değildir. Reaktif bağlam dışında `ctx.resources()` fonksiyonunu senkron olarak çağırmak hata fırlatır ve navigasyonu başarısız kılar. `ctx.resources()` fonksiyonunu her zaman bir resource'un `params` fonksiyonu içinde reaktif olarak okuyun.
+
+NOTE: `ctx.resources()` bir `Resource<unknown>` kaydı olarak tiplendiğinden, devralınan resource'u okurken değer tipine dönüştürün (örneğin `as Resource<User>`).
+
+`chain()` ayrıca üst resource'un durumunu da yayar. Üst resource hata verirse, zincirlenmiş resource `ResourceDependencyError` ile hata verir ve zincirlenmiş resource engelleyiciyse router navigasyonu iptal eder. Üst resource `idle` ise zincirlenmiş resource da `idle` olur.
 
 ## Engelleyen ve engellemeyen resource'lar {#blocking-and-non-blocking-resources}
 
@@ -240,6 +363,8 @@ Bir navigasyon beklemedeyken router, `ActivatedRoute` üzerinde sunduğu resourc
 `/user/1` adresinden `/user/2` adresine navigasyon yaparsanız ve router `UserProfile` bileşenini yeniden kullanırsa, bileşen `/user/2` çözümlenene kadar `/user/1` verilerini render etmeye devam eder. Ardından router resource'ların dondurmasını kaldırır ve UI, yükleme titremesi olmadan doğrudan yeni verilere geçer.
 
 Router bu resource'ları, `resources` fonksiyonu `resource()` gibi yazılabilir bir resource döndürse bile salt okunur olarak sunar. Resource sinyallerini okuyabilir ve `reload()` çağırabilirsiniz, ancak `set()` veya `update()` çağıramazsınız. Aktif bir navigasyon veya geri alma kurtarması sırasında yapılan bir `reload()` çağrısı, router'ın geçiş takibini kesintiye uğratamaması için `false` döndürür.
+
+NOTE: Dondurma yalnızca router'ın `ActivatedRoute` üzerinde sunduğu resource'lar için geçerlidir. `ctx.resources()` aracılığıyla erişilebilen ham resource'lar her zaman canlı durumlarını bildirir; zincirlenmiş bir resource'un navigasyon sırasında bir üst resource'a tepki verebilmesini sağlayan da budur.
 
 ### İptal durumunda geri alma kurtarması {#rollback-recovery-on-cancellation}
 

@@ -32,6 +32,8 @@ Geçiş, rotalardaki tüm bileşenleri kontrol edecek, standalone ve hevesli yü
 #### Önce
 
 ```typescript {header: "app.module.ts"}
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {Home} from './home';
 
 @NgModule({

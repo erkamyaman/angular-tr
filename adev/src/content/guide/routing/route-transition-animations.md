@@ -2,8 +2,6 @@
 
 Rota geçiş animasyonları, Angular uygulamanızda farklı görünümler arasında navigasyon yaparken yumuşak görsel geçişler sağlayarak kullanıcı deneyimini geliştirir. [Angular Router](/guide/routing), desteklenen tarayıcılarda rota değişiklikleri arasında sorunsuz animasyonlar sağlayan tarayıcının View Transitions API'si için yerleşik destek içerir.
 
-HELPFUL: Yönlendiricinin yerel View Transitions entegrasyonu şu anda [geliştirici önizlemesindedir](/reference/releases#geliştirici-önizlemesi). Yerel View Transitions, tüm tarayıcılarda sınırlı desteğe sahip nispeten yeni bir tarayıcı özelliğidir.
-
 ## View Transitions nasıl çalışır
 
 View transitions, uygulamanızın farklı durumları arasında yumuşak animasyonlar oluşturmak için tarayıcının yerel [`document.startViewTransition` API'sini](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition) kullanır. API şu şekilde çalışır:
@@ -147,6 +145,20 @@ withViewTransitions({
 ```
 
 Bu örnek, navigasyon yalnızca [URL fragment veya sorgu parametrelerini](/guide/routing/read-route-state#sorgu-parametreleri) değiştirdiğinde (aynı sayfa içindeki bağlantı bağlantıları gibi) view transition'ı atlar. `skipTransition()` yöntemi, navigasyonun tamamlanmasına izin verirken animasyonu engeller.
+
+## Kullanıcının hareket tercihlerine saygı gösterme
+
+Router, kullanıcının [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) ayarından bağımsız olarak view transition'ları çalıştırır. Azaltılmış hareket tercihi, kullanıcının hiç hareket istemediği anlamına gelmeyebilir; bu nedenle framework seçimi uygulamaya bırakır: bu kullanıcılar için [daha ince animasyonlar sağlayabilir](https://developer.chrome.com/docs/web-platform/view-transitions/same-document#react_to_the_reduced_motion_preference) veya geçişi `onViewTransitionCreated` callback'i ile tamamen atlayabilirsiniz:
+
+```ts
+withViewTransitions({
+  onViewTransitionCreated: ({transition}) => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      transition.skipTransition();
+    }
+  },
+});
+```
 
 ## Chrome açıklayıcısından Angular'a uyarlanan örnekler
 

@@ -64,8 +64,8 @@ Köşeli parantezler `[]`, mevcut sinyal değerlerini alt bileşene aktaran öze
 
 ```ts
 updateProduct() {
-  this.productName.set('Updated Product');
-  this.productPrice.set(149);
+  this.productName.set(`Product ${Math.floor(Math.random() * 100)}`);
+  this.productPrice.set(Math.floor(Math.random() * 500) + 50);
 }
 
 toggleAvailability() {
@@ -76,7 +76,7 @@ toggleAvailability() {
 ```html
 <!-- Add controls to test reactivity -->
 <div class="controls">
-  <button (click)="updateProduct()">Update Product Info</button>
+  <button (click)="updateProduct()">Update Product Data</button>
   <button (click)="toggleAvailability()">Toggle Availability</button>
 </div>
 ```

@@ -81,6 +81,10 @@ Ertelenebilir görünümlerin bir dizi tetikleme seçeneği vardır. İçeriğin
 ```angular-html {highlight:[1]}
 @defer (on viewport) {
   <comments />
+} @placeholder {
+  <p>Future comments</p>
+} @loading (minimum 2s) {
+  <p>Loading comments...</p>
 }
 ```
 

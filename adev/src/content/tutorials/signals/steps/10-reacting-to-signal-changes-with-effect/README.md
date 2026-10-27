@@ -80,17 +80,17 @@ constructor() {
 }
 ```
 
-Bu efekt, efektler yok edildiğinde veya yeniden çalıştırıldığında kaynakların nasıl temizlendiğini gösterir.
+Bu efekt çalışırken hiçbir sinyal okumaz, çünkü `this.theme()` yalnızca daha sonra `setInterval` callback'i içinde çağrılır. Bir kez çalışır ve bir daha yeniden çalışmaz, bu yüzden temizleme yalnızca bileşen yok edildiğinde gerçekleşir, örneğin önizleme yeniden yüklendiğinde.
 </docs-step>
 
 <docs-step title="Efektleri test edin">
 Tarayıcı konsolunu açın ve uygulama ile etkileşime geçin:
 
-- **Tema Değiştir** - localStorage kayıtlarını ve zamanlayıcı loglarını görün
+- **Tema Değiştir** - localStorage kayıtlarını görün
 - **Giriş/Çıkış** - Kullanıcı aktivite loglarını görün
 - **Zamanlayıcıyı İzle** - Her 5 saniyede bir periyodik tema loglamasını görün
 
-Efektler, izlenen sinyallerden herhangi biri değiştiğinde otomatik olarak çalışır!
+Efektler bileşen oluşturulduğunda bir kez çalışır, bu yüzden bu logların bir kısmı siz henüz bir şeye tıklamadan görünür. Bundan sonra, okudukları sinyaller değiştiğinde yeniden çalışırlar.
 </docs-step>
 
 </docs-workflow>

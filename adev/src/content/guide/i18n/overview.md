@@ -1,4 +1,5 @@
-# Angular Uluslararasılaştırma (i18n)
+<docs-decorative-header title="Angular Uluslararasılaştırma (i18n)" imgSrc="adev/src/assets/images/i18n.svg"> <!-- markdownlint-disable-line -->
+</docs-decorative-header>
 
 _Uluslararasılaştırma_, bazen i18n olarak da adlandırılır, projenizi dünya genelinde farklı yerel ayarlarda kullanım için tasarlama ve hazırlama sürecidir.
 _Yerelleştirme_, projenizin farklı yerel ayarlar için sürümlerini oluşturma sürecidir.

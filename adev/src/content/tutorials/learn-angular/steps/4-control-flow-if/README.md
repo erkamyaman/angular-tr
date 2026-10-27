@@ -31,7 +31,7 @@ export class App {
 Dikkat edilmesi gereken iki nokta:
 
 - `if` için `@` öneki vardır çünkü bu, [Angular şablon sözdizimi](guide/templates) adı verilen özel bir sözdizimi türüdür
-- v16 ve daha eski sürümleri kullanan uygulamalar için lütfen daha fazla bilgi edinmek üzere [NgIf için Angular belgelerine](guide/directives/structural-directives) bakın.
+- Hâlâ `*ngIf` kullanan uygulamalar için lütfen daha fazla bilgi edinmek üzere [NgIf için Angular belgelerine](guide/directives/structural-directives) bakın.
 
 <docs-workflow>
 

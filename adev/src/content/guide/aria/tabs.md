@@ -1,5 +1,4 @@
-<docs-decorative-header title="Tabs">
-</docs-decorative-header>
+# Tabs
 
 <docs-pill-row>
   <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" title="Tabs ARIA deseni"/>
@@ -60,7 +59,7 @@ Sekmeler, kullanıcıların farklı görünümler veya kategoriler arasında ge�
 - **Seçim modları** - Sekmeler odaklandığında otomatik olarak etkinleşir veya manuel etkinleştirme gerektirir
 - **Klavye navigasyonu** - Ok tuşları, Home ve End ile verimli sekme navigasyonu
 - **Yön** - Yatay veya dikey sekme listesi yerleşimi
-- **Tembel içerik** - Sekme panelleri yalnızca ilk etkinleştirildiğinde oluşturulur
+- **Tembel içerik** - Sekme panelleri yalnızca etkinleştirildiğinde oluşturulur
 - **Devre dışı sekmeler** - Odak yönetimiyle bireysel sekmeleri devre dışı bırakın
 - **Odak modları** - Dolaşan tabindex veya activedescendant odak stratejileri
 - **RTL desteği** - Sağdan sola dil navigasyonu
@@ -165,7 +164,7 @@ Sekme listesinde `[orientation]="'vertical'"` ayarlayın. Navigasyon Yukarı/Aş
 
 ### Tembel içerik render'ı
 
-Sekme panellerinin ilk gösterilene kadar render edilmesini ertelemek için bir `ng-template` üzerinde `ngTabContent` yönergesini kullanın.
+Sekme panellerinin gösterilene kadar render edilmesini ertelemek için bir `ng-template` üzerinde `ngTabContent` yönergesini kullanın.
 
 ```angular-html
 <div ngTabs>
@@ -176,21 +175,21 @@ Sekme panellerinin ilk gösterilene kadar render edilmesini ertelemek için bir 
 
   <div ngTabPanel value="tab1">
     <ng-template ngTabContent>
-      <!-- Bu içerik yalnızca Sekme 1 ilk gösterildiğinde render edilir -->
+      <!-- Bu içerik yalnızca Sekme 1 gösterildiğinde render edilir -->
       <app-heavy-component />
     </ng-template>
   </div>
 
   <div ngTabPanel value="tab2">
     <ng-template ngTabContent>
-      <!-- Bu içerik yalnızca Sekme 2 ilk gösterildiğinde render edilir -->
+      <!-- Bu içerik yalnızca Sekme 2 gösterildiğinde render edilir -->
       <app-another-component />
     </ng-template>
   </div>
 </div>
 ```
 
-Varsayılan olarak, panel gizlendikten sonra içerik DOM'da kalır. Panel devre dışı bırakıldığında içeriği DOM'dan kaldırmak için `[preserveContent]="false"` ayarlayın.
+Varsayılan olarak, panel gizlendiğinde içerik DOM'dan kaldırılır. Sekmeler arasında geçiş yaparken sıfırlanmaması gereken bir video içeren panel gibi durumlarda içeriği korumak için `[preserveContent]="true"` ayarlayın.
 
 ### Devre dışı sekmeler
 

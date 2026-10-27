@@ -93,7 +93,7 @@ Angular ayrıca yerleşik bir `code` soneki sağlayarak [klavye olayları için 
 
 ```angular-html
 <!-- Alt ve sol shift'e eşleşir -->
-<input type="text" (keydown.code.alt.shiftleft)="updateField($event)" />
+<input type="text" (keydown.code.alt.shift.shiftleft)="updateField($event)" />
 ```
 
 Bu, farklı işletim sistemlerinde klavye olaylarını tutarlı bir şekilde işlemek için faydalı olabilir. Örneğin, macOS cihazlarında Alt tuşunu kullanırken, `key` özelliği tuşu zaten Alt tuşu tarafından değiştirilmiş karaktere göre bildirir. Bu, Alt + S gibi bir kombinasyonun `'ß'` `key` değerini bildirmesi anlamına gelir. Ancak `code` özelliği, üretilen karakter yerine basılan fiziksel veya sanal butona karşılık gelir.
@@ -162,15 +162,15 @@ export class DebounceEventPlugin extends EventManagerPlugin {
   override addEventListener(element: HTMLElement, eventName: string, handler: Function) {
     // Olayı ayrıştır: örn. "click.debounce.500"
     // event: "click", delay: 500
-    const [event, method, delay = 300] = eventName.split('.');
+    const [event, , delay = '300'] = eventName.split('.');
 
-    let timeoutId: number;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
-    const listener = (event: Event) => {
+    const listener = (e: Event) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        handler(event);
-      }, delay);
+        handler(e);
+      }, Number(delay));
     };
 
     element.addEventListener(event, listener);
@@ -187,8 +187,7 @@ export class DebounceEventPlugin extends EventManagerPlugin {
 Özel eklentinizi uygulamanızın sağlayıcılarına `EVENT_MANAGER_PLUGINS` belirtecini kullanarak kaydedin:
 
 ```ts
-import {bootstrapApplication} from '@angular/platform-browser';
-import {EVENT_MANAGER_PLUGINS} from '@angular/platform-browser';
+import {bootstrapApplication, EVENT_MANAGER_PLUGINS} from '@angular/platform-browser';
 import {App} from './app';
 import {DebounceEventPlugin} from './debounce-event-plugin';
 

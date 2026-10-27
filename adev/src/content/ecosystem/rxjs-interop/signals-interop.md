@@ -91,8 +91,9 @@ export class EqualExample {
 Bir sinyalin değerini takip eden bir `Observable` oluşturmak için `toObservable` yardımcı fonksiyonunu kullanın. Sinyalin değeri, değiştiğinde Observable'a yayın yapan bir `effect` ile izlenir.
 
 ```ts
-import {Component, signal} from '@angular/core';
+import {Component, signal, Signal, inject} from '@angular/core';
 import {toObservable} from '@angular/core/rxjs-interop';
+import {switchMap} from 'rxjs';
 
 @Component(/* ... */)
 export class SearchResults {
@@ -131,7 +132,7 @@ Burada yalnızca son değer (3) günlüğe kaydedilir.
 Angular'ın [`resource` fonksiyonu](/guide/signals/resource), uygulamanızın sinyal tabanlı koduna asenkron veriyi dahil etmenin bir yolunu sunar. Bu kalıbın üzerine inşa edilen `rxResource`, veri kaynağınızı bir RxJS `Observable` cinsinden tanımladığınız bir kaynak tanımlamanıza olanak tanır. Bir `loader` fonksiyonu kabul etmek yerine, `rxResource` bir RxJS `Observable` döndüren bir `stream` fonksiyonu alır.
 
 ```typescript
-import {Component, inject} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {rxResource} from '@angular/core/rxjs-interop';
 
 @Component(/* ... */)

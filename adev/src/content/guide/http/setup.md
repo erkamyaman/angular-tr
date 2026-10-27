@@ -74,6 +74,12 @@ CRITICAL: Mevcut enjektörün üstünde bir `HttpClient` örneği yapılandırma
 
 ### `withJsonpSupport()`
 
+<docs-callout critical title="JSONP kullanımdan kaldırıldı">
+
+`withJsonpSupport`, `HttpClientJsonpModule` ve `HttpClient` üzerindeki `.jsonp()` yöntemi, JSONP siteler arası betik çalıştırma (XSS) güvenlik açıklarına yol açabildiği için kullanımdan kaldırılmıştır. Bunun yerine [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS) ile standart HTTP istekleri kullanın.
+
+</docs-callout>
+
 `withJsonpSupport` dahil edildiğinde, `HttpClient` üzerinde alan adları arası veri yükleme için [JSONP kuralı](https://en.wikipedia.org/wiki/JSONP) aracılığıyla GET isteği yapan `.jsonp()` yöntemi etkinleştirilir.
 
 HELPFUL: Mümkün olduğunda alan adları arası istekler yapmak için JSONP yerine [CORS](https://developer.mozilla.org/docs/Web/HTTP/CORS) kullanmayı tercih edin.
@@ -92,12 +98,14 @@ Bazı uygulamalar `HttpClient`'ı NgModule'lere dayalı eski API kullanarak yap�
 
 Bu tablo, `@angular/common/http`'den kullanılabilir NgModule'leri ve bunların yukarıdaki sağlayıcı yapılandırma fonksiyonlarıyla nasıl ilişkilendiğini listeler.
 
-| **NgModule**                            | `provideHttpClient()` equivalent                         |
-| --------------------------------------- | -------------------------------------------------------- |
-| `HttpClientModule`                      | `provideHttpClient(withInterceptorsFromDi(), withXhr())` |
-| `HttpClientJsonpModule`                 | `withJsonpSupport()`                                     |
-| `HttpClientXsrfModule.withOptions(...)` | `withXsrfConfiguration(...)`                             |
-| `HttpClientXsrfModule.disable()`        | `withNoXsrfProtection()`                                 |
+| **NgModule**                                     | `provideHttpClient()` equivalent                         |
+| ------------------------------------------------ | -------------------------------------------------------- |
+| `HttpClientModule`                               | `provideHttpClient(withInterceptorsFromDi(), withXhr())` |
+| `HttpClientJsonpModule` (kullanımdan kaldırıldı) | `withJsonpSupport()` (kullanımdan kaldırıldı)            |
+| `HttpClientXsrfModule.withOptions(...)`          | `withXsrfConfiguration(...)`                             |
+| `HttpClientXsrfModule.disable()`                 | `withNoXsrfProtection()`                                 |
+
+NOTE: `HttpClientModule` ve `HttpClientXsrfModule` da kullanımdan kaldırılmıştır. Bunun yerine ilgili özelliklerle birlikte `provideHttpClient` kullanın.
 
 <docs-callout important title="Birden fazla enjektörde HttpClientModule kullanırken dikkatli olun">
 `HttpClientModule` birden fazla enjektörde bulunduğunda, yakalayıcıların davranışı belirsizdir ve tam seçenekler ile sağlayıcı/içe aktarma sıralamasına bağlıdır.

@@ -40,12 +40,17 @@ Kendi yönettiğiniz bir sunucuya dağıtıyorsanız veya favori bulut platformu
 
 ## Uzak Sunucuya Manuel Dağıtım
 
-Uygulamanızı manuel olarak dağıtmak için bir üretim derlemesi oluşturun ve çıktı dizinini bir web sunucusuna veya içerik dağıtım ağına (CDN) kopyalayın.
+Uygulamanızı manuel olarak dağıtmak için bir üretim derlemesi oluşturun ve çıktı yapıtlarını barındırma ortamınıza dağıtın.
 Varsayılan olarak, `ng build` `production` yapılandırmasını kullanır.
 Derleme yapılandırmalarınızı özelleştirdiyseniz, dağıtımdan önce [üretim optimizasyonlarının](tools/cli/deployment#üretim-optimizasyonları) uygulandığını doğrulamak isteyebilirsiniz.
 
 `ng build` derlenen yapıtları varsayılan olarak `dist/my-app/` dizinine çıktılar, ancak bu yol `@angular/build:application` builder'ındaki `outputPath` seçeneğiyle yapılandırılabilir.
-Bu dizini sunucuya kopyalayın ve dizini sunacak şekilde yapılandırın.
+Dağıtmanız gereken şey, uygulamanızın nasıl oluşturulduğuna bağlıdır:
+
+- **Statik barındırma (istemci tarafı oluşturma veya `outputMode: "static"`):** `dist/my-app/browser/` dizinini bir web sunucusuna veya içerik dağıtım ağına (CDN) kopyalayın ve sunucuyu bu dizini sunacak şekilde yapılandırın.
+- **Sunucu tarafı oluşturma (`outputMode: "server"`):** Hem `dist/my-app/browser/` hem de `dist/my-app/server/` dizinlerini sunucuya kopyalayın, ardından `node dist/my-app/server/server.mjs` komutunu çalıştırın.
+
+Daha fazla ayrıntı için [Sunucu ve hibrit oluşturma](guide/ssr) bölümüne bakın.
 
 Bu minimal bir dağıtım çözümü olsa da, sunucunun Angular uygulamanızı doğru şekilde sunması için birkaç gereksinim vardır.
 

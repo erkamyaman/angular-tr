@@ -177,6 +177,7 @@ Angular uygulamasını başlatmak için [`platformBrowser`](api/platform-browser
 
 ```typescript
 import {platformBrowser} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 @NgModule({
   bootstrap: [MyApplication],

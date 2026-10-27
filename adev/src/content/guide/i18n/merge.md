@@ -57,7 +57,7 @@ HELPFUL: Bileşen şablonlarını yerelleştirmek için önceden derleme (AOT) g
 Bu ayarı değiştirdiyseniz, AOT kullanmak için `"aot"` değerini `true` olarak ayarlayın.
 
 HELPFUL: i18n'nin dağıtım karmaşıklıkları ve yeniden derleme süresini en aza indirme ihtiyacı nedeniyle, geliştirme sunucusu aynı anda yalnızca tek bir yerel ayarın yerelleştirilmesini destekler.
-`"localize"` seçeneğini `true` olarak ayarlar, birden fazla yerel ayar tanımlar ve `ng serve` kullanırsanız; bir hata oluşur.
+`"localize"` seçeneğini `true` olarak veya birden fazla yerel ayar içeren bir diziye ayarlar ve `ng serve` kullanırsanız, geliştirme sunucusu bir uyarı kaydeder ve yerelleştirmeyi devre dışı bırakır.
 Belirli bir yerel ayara karşı geliştirme yapmak istiyorsanız, `"localize"` seçeneğini belirli bir yerel ayara ayarlayın.
 Örneğin, Fransızca \(`fr`\) için `"localize": ["fr"]` belirtin.
 

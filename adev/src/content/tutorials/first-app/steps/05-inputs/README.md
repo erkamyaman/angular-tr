@@ -21,9 +21,9 @@ Daha fazla bilgi için [Input özellikleriyle veri alma](guide/components/inputs
 <docs-workflow>
 
 <docs-step title="input() fonksiyonunu içe aktarın">
-Kod editöründe, `@angular/core` paketinden `input` yardımcı metodunu `HousingLocation` bileşenine içe aktarın.
+Kod editöründe, `@angular/core` paketinden `input` yardımcı metodunu ve `../housinglocation` dosyasından `HousingLocationInfo` arayüzünü `HousingLocation` bileşenine içe aktarın.
 
-<docs-code header="housing-location.ts içinde input'u içe aktarın" path="adev/src/content/tutorials/first-app/steps/06-property-binding/src/app/housing-location/housing-location.ts" visibleLines="[1]"/>
+<docs-code header="housing-location.ts içinde input ve HousingLocationInfo'yu içe aktarın" path="adev/src/content/tutorials/first-app/steps/06-property-binding/src/app/housing-location/housing-location.ts" visibleLines="[1,2]"/>
 
 </docs-step>
 

@@ -77,7 +77,7 @@ export const routes: Routes = [
 
 ### ActivatedRoute kullanma
 
-Çözümlenen verilere, `ActivatedRoute`'tan `signal` fonksiyonunu kullanarak anlık görüntü verilerine erişerek bir bileşende ulaşabilirsiniz:
+Çözümlenen verilere, `ActivatedRoute`'taki `data` observable'ını `toSignal` fonksiyonuyla bir sinyale dönüştürerek bir bileşende ulaşabilirsiniz:
 
 ```angular-ts
 import {Component, inject, computed} from '@angular/core';
@@ -94,7 +94,7 @@ import type {User, Settings} from './types';
 })
 export class UserDetail {
   private route = inject(ActivatedRoute);
-  private data = toSignal(this.route.data);
+  private data = toSignal(this.route.data, {requireSync: true});
   user = computed(() => this.data().user as User);
   settings = computed(() => this.data().settings as Settings);
 }
@@ -162,8 +162,8 @@ bootstrapApplication(App, {
       withNavigationErrorHandler((error) => {
         const router = inject(Router);
 
-        if (error?.message) {
-          console.error('Navigation error occurred:', error.message);
+        if (error.error?.message) {
+          console.error('Navigation error occurred:', error.error.message);
         }
 
         router.navigate(['/error']);
@@ -190,12 +190,13 @@ export const userResolver: ResolveFn<User> = (route) => {
 
 ```angular-ts
 import {Component, inject, signal} from '@angular/core';
-import {Router, NavigationError} from '@angular/router';
+import {Router, NavigationError, RouterOutlet} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
 
 @Component({
   selector: 'app-root',
+  imports: [RouterOutlet],
   template: `
     @if (errorMessage()) {
       <div class="error-banner">
@@ -280,11 +281,12 @@ TIP: Navigasyonu engellemekten kaçınmak ve bileşenleri iskelet ya da yükleme
 Çözücü çalışması sırasında kullanıcı deneyimini iyileştirmek için router olaylarını dinleyebilir ve yükleme göstergeleri gösterebilirsiniz:
 
 ```angular-ts
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, computed, inject} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  imports: [RouterOutlet],
   template: `
     @if (isNavigating()) {
       <div class="loading-bar">Loading...</div>

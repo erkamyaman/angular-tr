@@ -58,6 +58,8 @@ Ardından doğrudan tanıma gitmek için "Go to definition" seçeneğine tıklay
 
 Angular Dil Servisi şu anda [Visual Studio Code](https://code.visualstudio.com), [WebStorm](https://www.jetbrains.com/webstorm), [Sublime Text](https://www.sublimetext.com), [Zed](https://zed.dev), [Neovim](https://neovim.io) ve [Eclipse IDE](https://www.eclipse.org/eclipseide) için bir uzantı olarak mevcuttur.
 
+NOTE: Visual Studio Code uzantısı Angular ekibi tarafından sürdürülür ve dağıtılır; Visual Studio Code ile Cursor ve Antigravity gibi VS Code tabanlı düzenleyicilerde desteklenir. Diğer düzenleyiciler için entegrasyonlar, ilgili düzenleyici sağlayıcıları veya topluluk tarafından sürdürülür. Bu entegrasyonlara özgü sorunları ilgili bakımcılara bildirin.
+
 ### Visual Studio Code
 
 [Visual Studio Code](https://code.visualstudio.com) içinde, uzantıyı [Extensions: Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)'ten yükleyin.
@@ -170,7 +172,7 @@ Angular Dil Servisi, [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 
 ### Zed
 
-[Zed](https://zed.dev) içinde, uzantıyı [Extensions: Marketplace](https://zed.dev/extensions/angular)'ten yükleyin.
+[Zed](https://zed.dev) içinde, topluluk tarafından sürdürülen uzantıyı [Extensions: Marketplace](https://zed.dev/extensions/angular)'ten yükleyin.
 
 ## Dil Servisi Nasıl Çalışır
 

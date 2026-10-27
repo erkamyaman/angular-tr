@@ -18,7 +18,6 @@ Angular'da bileşenler, özelliklerini tanımlayan meta verilere sahiptir.
 `Home` bileşeninizi oluştururken şu özellikleri kullanırsınız:
 
 - `selector`: Angular'ın şablonlarda bileşene nasıl başvurduğunu tanımlar.
-- `standalone`: bileşenin bir `NgModule` gerektirip gerektirmediğini tanımlar.
 - `imports`: bileşenin bağımlılıklarını tanımlar.
 - `template`: bileşenin HTML işaretlemesini ve düzenini tanımlar.
 - `styleUrls`: bileşenin kullandığı CSS dosyalarının URL'lerini bir dizi içinde listeler.
@@ -98,12 +97,12 @@ Bu adımın yalnızca arama öğelerini düzene eklediğini, henüz herhangi bir
 Başlangıç uygulamasını indirmek yerine yeni bir Angular projesinden başladıysanız
 (ng new): arama düğmesi ve giriş kenarlığının görünür olması için bu genel stilleri `src/styles.css` dosyasına ekleyin:
 
-```
+```css
 :root {
-  --primary-color: #605DC8;
-  --secondary-color: #8B89E6;
+  --primary-color: #605dc8;
+  --secondary-color: #8b89e6;
   --accent-color: #e8e7fa;
-  --shadow-color: #E8E8E8;
+  --shadow-color: #e8e8e8;
 }
 
 button.primary {

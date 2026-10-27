@@ -55,6 +55,7 @@ Bu yapılandırmayı [`withRoutes`](api/ssr/withRoutes 'API reference') fonksiyo
 
 ```typescript {header: "app.config.server.ts"}
 import {provideServerRendering, withRoutes} from '@angular/ssr';
+import {ApplicationConfig} from '@angular/core';
 import {serverRoutes} from './app.routes.server';
 
 const serverConfig: ApplicationConfig = {
@@ -69,6 +70,7 @@ const serverConfig: ApplicationConfig = {
 
 ```typescript
 import {provideServerRendering, withRoutes, withAppShell} from '@angular/ssr';
+import {ApplicationConfig} from '@angular/core';
 import {AppShell} from './app-shell';
 
 const serverConfig: ApplicationConfig = {
@@ -169,7 +171,7 @@ Yönlendirmeler, ön-render edilmiş HTML'de [`<meta http-equiv="refresh">`](htt
 
 [`RenderMode.Prerender`](api/ssr/RenderMode#Prerender 'API reference') ile her rota için, hangi belirli parametrelerin ayrı ön-render edilmiş belgeler üreteceğini kontrol etmenize olanak tanıyan bir [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu belirtebilirsiniz.
 
-[`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu, bir nesneler dizisine çözümlenen bir `Promise` döndürür. Her nesne, rota parametre adından değere bir anahtar-değer eşlemesidir. Örneğin, `post/:id` gibi bir rota tanımlarsanız, `getPrerenderParams` `[{id: 123}, {id: 456}]` dizisini döndürebilir ve böylece `post/123` ve `post/456` için ayrı belgeler render eder.
+[`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') fonksiyonu, bir nesneler dizisine çözümlenen bir `Promise` döndürür. Her nesne, rota parametre adından değere bir anahtar-değer eşlemesidir. Örneğin, `post/:id` gibi bir rota tanımlarsanız, `getPrerenderParams` `[{id: '123'}, {id: '456'}]` dizisini döndürebilir ve böylece `post/123` ve `post/456` için ayrı belgeler render eder.
 
 [`getPrerenderParams`](api/ssr/ServerRoutePrerenderWithParams#getPrerenderParams 'API reference') gövdesi, bağımlılıkları enjekte etmek ve hangi rotaların ön-render edileceğini belirlemek için herhangi bir iş yapmak üzere Angular'ın [`inject`](api/core/inject 'API reference') fonksiyonunu kullanabilir. Bu genellikle parametre değerleri dizisini oluşturmak için veri getirme isteklerinde bulunmayı içerir.
 
@@ -177,6 +179,7 @@ Bu fonksiyonu ayrıca catch-all rotalarla (örneğin, `/**`) kullanabilirsiniz; 
 
 ```ts {header: "app.routes.server.ts"}
 import {RenderMode, ServerRoute} from '@angular/ssr';
+import {inject} from '@angular/core';
 
 export const serverRoutes: ServerRoute[] = [
   {
@@ -228,7 +231,7 @@ export const serverRoutes: ServerRoute[] = [
       // This function returns an array of objects representing prerendered posts at the paths:
       // `/post/1`, `/post/2`, and `/post/3`.
       // The path `/post/4` will utilize the fallback behavior if it's requested.
-      return [{id: 1}, {id: 2}, {id: 3}];
+      return [{id: '1'}, {id: '2'}, {id: '3'}];
     },
   },
 ];
@@ -241,7 +244,7 @@ Bazı yaygın tarayıcı API'leri ve yetenekleri sunucuda mevcut olmayabilir. Uy
 Genel olarak, tarayıcıya özgü sembollere dayanan kod yalnızca tarayıcıda çalıştırılmalıdır, sunucuda değil. Bu, `afterEveryRender` ve `afterNextRender` yaşam döngüsü kancaları aracılığıyla sağlanabilir. Bunlar yalnızca tarayıcıda çalıştırılır ve sunucuda atlanır.
 
 ```angular-ts
-import {Component, viewChild, afterNextRender} from '@angular/core';
+import {Component, ElementRef, viewChild, afterNextRender} from '@angular/core';
 
 @Component({
   selector: 'my-cmp',
@@ -364,7 +367,7 @@ HELPFUL: Meta etiketlerini yönetmek için Angular `Meta` servisini sağlar.
 - **[`REQUEST_CONTEXT`](api/core/REQUEST_CONTEXT 'API reference'):** Mevcut istekle ilgili ek bağlam sağlar. Bu bağlam, [`handle`](api/ssr/AngularAppEngine#handle 'API reference') fonksiyonunun ikinci parametresi olarak geçirilebilir. Genellikle, standart Web API'sinin parçası olmayan ek istekle ilgili bilgi sağlamak için kullanılır.
 
 ```angular-ts
-import {inject, REQUEST} from '@angular/core';
+import {inject, REQUEST, Component} from '@angular/core';
 
 @Component({
   selector: 'app-my-component',
@@ -426,6 +429,7 @@ Uygulamanızın sunucu render'ı sırasında daha büyük yanıtlar alması gere
 
 ```ts
 import {provideServerRendering, withRoutes} from '@angular/ssr';
+import {ApplicationConfig} from '@angular/core';
 import {serverRoutes} from './app.routes.server';
 
 const serverConfig: ApplicationConfig = {
@@ -454,8 +458,11 @@ Bu yapılandırma, `provideClientHydration()` içinde `withHttpTransferCacheOpti
 Varsayılan olarak, `HttpClient` `Authorization`, `Proxy-Authorization` veya `Cookie` başlıkları içermeyen ve `withCredentials` ile ya da kimlik bilgisi gönderebilen Fetch API `credentials` modlarıyla gönderilmeyen tüm `HEAD` ve `GET` isteklerini önbelleğe alır. Ayrıca Angular, bir istek veya yanıt önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içerdiğinde ya da Fetch API `cache` seçeneği `no-store` veya `no-cache` olarak ayarlandığında transfer önbelleğini atlar. `Set-Cookie` başlığı taşıyan yanıtlar da atlanır. İstek filtreleme ayarlarını hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
 
 ```ts
-import {bootstrapApplication} from '@angular/platform-browser';
-import {provideClientHydration, withHttpTransferCacheOptions} from '@angular/platform-browser';
+import {
+  bootstrapApplication,
+  provideClientHydration,
+  withHttpTransferCacheOptions,
+} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [
@@ -620,7 +627,7 @@ import express from 'express';
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-app.use('*', (req, res, next) => {
+app.use((req, res, next) => {
   angularApp
     .handle(req)
     .then((response) => {

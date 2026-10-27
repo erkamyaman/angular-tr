@@ -408,10 +408,11 @@ Bu, form üst düzey bir `FormGroup` kullanmadığında ve dizinin kendisi tam f
 
 ```angular-ts
 import {Component} from '@angular/core';
-import {FormArray, FormControl} from '@angular/forms';
+import {FormArray, FormControl, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'form-array-example',
+  imports: [ReactiveFormsModule],
   template: `
     <form [formArray]="form">
       @for (control of form.controls; track $index) {

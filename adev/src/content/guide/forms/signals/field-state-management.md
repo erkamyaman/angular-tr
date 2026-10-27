@@ -108,7 +108,7 @@ Kodda geçerlilik kontrol ederken, "hataları var" ile "doğrulama beklemede" du
 
 ### Doğrulama hatalarını okuma
 
-Doğrulama hatalarının dizisine `errors()` ile erişin. Her hata nesnesi şunları içerir:
+Doğrulama hatalarının dizisine `errors()` ile veya tek bir hataya `getError()` ile erişin. Her hata nesnesi şunları içerir:
 
 | Property    | Açıklama                                                       |
 | ----------- | -------------------------------------------------------------- |
@@ -118,7 +118,7 @@ Doğrulama hatalarının dizisine `errors()` ile erişin. Her hata nesnesi şunl
 
 NOTE: `message` özelliği isteğe bağlıdır. Doğrulayıcılar özel hata mesajları sağlayabilir, ancak belirtilmezse hata `kind` değerlerini kendi mesajlarınızla eşlemeniz gerekebilir.
 
-İşte şablonunuzda hataları nasıl göstereceğinize dair bir örnek:
+İşte şablonunuzda hataları doğrulama hataları dizisi üzerinden nasıl göstereceğinize dair bir örnek:
 
 ```angular-ts
 @Component({
@@ -137,6 +137,24 @@ NOTE: `message` özelliği isteğe bağlıdır. Doğrulayıcılar özel hata mes
 ```
 
 Bu yaklaşım, bir alan için tüm hataları döngüye alarak her hata mesajını kullanıcıya gösterir.
+
+İşte şablonunuzda bir hatayı `getError()` ile nasıl göstereceğinize dair bir örnek:
+
+```angular-ts
+@Component({
+  template: `
+    <input type="email" [formField]="loginForm.email" />
+
+    @if (loginForm.email().getError('required'); as error) {
+      <div class="errors">
+        <p>{{ error.message }}</p>
+      </div>
+    }
+  `
+})
+```
+
+`getError()`, bir hatanın `kind` değeri olarak herhangi bir dizeyi kabul eder ve yerleşik doğrulama hata türlerini (ör. "required", "email", "minLength") tanır.
 
 ### Bekleyen doğrulama
 
@@ -690,7 +708,8 @@ Alan durumu genellikle kullanıcı etkileşimleri (yazma, odaklanma, odağı bı
 Signal Forms, form gönderimini basitleştiren bir `FormRoot` direktifi sağlar. Varsayılan tarayıcı form gönderim davranışını otomatik olarak engeller ve `<form>` elemanına `novalidate` niteliğini ayarlar.
 
 ```angular-ts
-import {FormField, FormRoot} from '@angular/forms/signals';
+import {FormField, FormRoot, form, required, email} from '@angular/forms/signals';
+import {Component, signal} from '@angular/core';
 
 @Component({
   imports: [FormRoot, FormField],
@@ -876,7 +895,6 @@ export class PasswordInput implements FormValueControl<string> {
 
 Bu kılavuz, doğrulama ve kullanılabilirlik durumu işleme, etkileşim takibi ve alan durumu yayılımını ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
 
-<!-- TODO: KILAVUZLAR MEVCUT OLDUĞUNDA YORUM İŞARETİNİ KALDIR -->
 <docs-pill-row>
   <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
   <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />

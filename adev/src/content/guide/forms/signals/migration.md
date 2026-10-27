@@ -65,12 +65,26 @@ const passwordErrors = f.password().errors(); // Mevcut doğrulayıcı başarıs
     @if (f.password().touched() && f.password().invalid()) {
       <div class="error-list">
         @for (error of f.password().errors(); track error) {
-          <p>{{ error.message || error.kind }}</p>
+          <p>{{ errorMessage(error) }}</p>
         }
       </div>
     }
   </div>
 </form>
+```
+
+Mevcut doğrulayıcılardan gelen hatalar `CompatValidationError` türündedir. Bunlar `message` ayarlamaz; doğrulayıcının döndürdüğü hata nesnesi bunun yerine `context` olarak erişilebilir:
+
+```typescript
+import {ValidationError} from '@angular/forms/signals';
+import {CompatValidationError} from '@angular/forms/signals/compat';
+
+errorMessage(error: ValidationError) {
+  if (error instanceof CompatValidationError) {
+    return (error.context as {message?: string} | null)?.message ?? error.kind;
+  }
+  return error.message ?? error.kind;
+}
 ```
 
 <docs-code-multifile preview path="adev/src/content/examples/signal-forms/src/compat-form-control-integration/app/app.ts">
@@ -86,6 +100,7 @@ Ayrıca bir `FormGroup`'un tamamını da sarmalayabilirsiniz. Bu, formun yeniden
 import {signal} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {compatForm} from '@angular/forms/signals/compat';
+import {required} from '@angular/forms/signals';
 
 // 1. Kendi doğrulama mantığına sahip mevcut bir adres grubu
 const addressGroup = new FormGroup({
@@ -309,6 +324,7 @@ disable/enable çağırmaya çalışmak bir hata fırlatır.
 
 ```typescript {avoid}
 import {signal, effect} from '@angular/core';
+import {SignalFormControl} from '@angular/forms/signals/compat';
 
 export class UserProfile {
   readonly emailControl = new SignalFormControl('');
@@ -410,6 +426,7 @@ Bu davranışı korumak istiyorsanız, `NG_STATUS_CLASSES` ön ayarını sağlay
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';
 import {NG_STATUS_CLASSES} from '@angular/forms/signals/compat';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [
@@ -424,6 +441,7 @@ Ayrıca kendi özel mantığınıza dayalı olarak istediğiniz sınıfları uyg
 
 ```typescript
 import {provideSignalFormsConfig} from '@angular/forms/signals';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [

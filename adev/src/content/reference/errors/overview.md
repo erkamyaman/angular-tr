@@ -30,7 +30,8 @@
 | `NG0602`  | [Reaktif bağlam içinde izin verilmeyen fonksiyon çağrısı](errors/NG0602)                 |
 | `NG0750`  | [@defer bağımlılıkları yüklenemedi](errors/NG0750)                                       |
 | `NG0751`  | [HMR etkinleştirildiğinde @defer davranışı](errors/NG0751)                               |
-| `NG0910`  | [Bir iframe öğesinde güvenli olmayan bağlamalar](errors/NG0910)                          |
+| `NG0904`  | [Kaynak URL bağlamında güvenli olmayan değer kullanıldı](errors/NG0904)                  |
+| `NG0910`  | [Bir öğede güvenli olmayan bağlamalar](errors/NG0910)                                    |
 | `NG0912`  | [Bileşen kimliği oluşturma çakışması](errors/NG0912)                                     |
 | `NG0913`  | [Çalışma Zamanı Performans Uyarıları](errors/NG0913)                                     |
 | `NG0919`  | [Döngüsel Bağımlılık Tespit Edildi](errors/NG0919)                                       |
@@ -40,6 +41,7 @@
 | `NG0956`  | [İzleme ifadesi DOM yapısının yeniden oluşturulmasına neden oldu.](errors/NG0956)        |
 | `NG0991`  | [Resource bir değer üretmeden tamamlandı](errors/NG0991)                                 |
 | `NG01002` | [Eksik Kontrol Değeri](errors/NG01002)                                                   |
+| `NG01055` | [`formControlName` için eksik kontrol](errors/NG01055)                                   |
 | `NG01101` | [Yanlış Asenkron Doğrulayıcı Dönüş Türü](errors/NG01101)                                 |
 | `NG01203` | [Eksik value accessor](errors/NG01203)                                                   |
 | `NG01902` | [Signal form'larda sahipsiz alan](errors/NG01902)                                        |
@@ -50,6 +52,7 @@
 | `NG05000` | [Desteklenmeyen Zone.js örneğiyle hidrasyon](errors/NG05000)                             |
 | `NG05104` | [Kök öğe bulunamadı](errors/NG05104)                                                     |
 | `NG05106` | [Ekleme referans düğümü bulunamadı](errors/NG05106)                                      |
+| `NG05201` | [DomSanitizer'a güvenli olmayan kaynak URL'si iletildi](errors/NG05201)                  |
 | `NG05703` | [Şüpheli URL kökeni değişikliği](errors/NG05703)                                         |
 
 ## Derleyici hataları

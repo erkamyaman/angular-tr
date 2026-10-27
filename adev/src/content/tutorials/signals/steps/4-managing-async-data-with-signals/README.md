@@ -54,11 +54,11 @@ Params sinyalini değiştirmek otomatik olarak yeniden yüklemeyi tetikler veya 
 Resource'un farklı durumlarına erişmek için computed sinyaller ekleyin.
 
 ```ts
-isLoading = computed(() => this.userResource.status() === 'loading');
+isLoading = this.userResource.isLoading;
 hasError = computed(() => this.userResource.status() === 'error');
 ```
 
-Resource'lar; 'loading', 'resolved' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar.
+Resource'lar; 'loading', 'reloading', 'resolved' veya 'error' olabilen bir `status()` sinyali, yüklenen veriler için bir `value()` sinyali ve verinin mevcut olup olmadığını güvenle kontrol eden bir `hasValue()` metodu sağlar. `isLoading()` sinyali hem 'loading' hem de 'reloading' durumunda true olur.
 </docs-step>
 
 <docs-step title="Düğmeleri bağlayın ve resource durumlarını görüntüleyin">

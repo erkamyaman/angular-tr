@@ -655,6 +655,8 @@ Bir bileşen içinde, veri yalnızca yüklenmesi tamamlandığında kullanıcı 
 
 ```angular-ts
 import {AsyncPipe} from '@angular/common';
+import {Component, input, inject, effect} from '@angular/core';
+import {Observable} from 'rxjs';
 
 @Component({
   imports: [AsyncPipe],

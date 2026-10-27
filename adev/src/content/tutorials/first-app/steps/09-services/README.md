@@ -51,9 +51,9 @@ Bu adım, yeni servisinize bazı örnek veriler ekler.
 
 IDE'nizin **Edit** bölmesinde:
 
-1. `src/app/home/home.ts` dosyasından, `Home` bileşenindeki `housingLocationList` değişkenini ve dizi değerini kopyalayın.
+1. `src/app/home/home.ts` dosyasından, `Home` bileşenindeki `baseUrl` değişkenini ve `housingLocationList` değişkenini dizi değeriyle birlikte kopyalayın.
 1. `src/app/housing.service.ts` dosyasında:
-   1. `HousingService` sınıfı içinde, önceki adımda `Home` bileşeninden kopyaladığınız değişkeni yapıştırın.
+   1. `HousingService` sınıfı içinde, önceki adımda `Home` bileşeninden kopyaladığınız değişkenleri yapıştırın.
    1. `HousingService` sınıfı içinde, az önce kopyaladığınız veriden sonra bu fonksiyonları yapıştırın.
       Bu fonksiyonlar, bağımlılıkların servisin verilerine erişmesini sağlar.
 
@@ -83,7 +83,7 @@ IDE'nizin **Edit** bölmesinde, `src/app/home/home.ts` dosyasında:
 
       <docs-code language="angular-ts" header="src/app/home/home.ts içine import ekleyin" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/home/home.ts" visibleLines="[4]"/>
 
-1.  `Home` bileşeninden `housingLocationList` dizi girişlerini silin ve `housingLocationList`'e boş dizi (`[]`) değerini atayın. Birkaç adım sonra verileri `HousingService`'ten çekmek için kodu güncelleyeceksiniz.
+1.  `Home` bileşeninden `baseUrl` değişkenini silin, `housingLocationList` dizi girişlerini silin ve `housingLocationList`'e boş dizi (`[]`) değerini atayın. Birkaç adım sonra verileri `HousingService`'ten çekmek için kodu güncelleyeceksiniz.
 
 1.  `Home` bileşeninde, yeni servisi enjekte etmek ve uygulama için verileri başlatmak üzere aşağıdaki kodu ekleyin. `constructor`, bu bileşen oluşturulduğunda çalışan ilk fonksiyondur. `constructor` içindeki kod, `housingLocationList`'e `getAllHousingLocations` çağrısından dönen değeri atayacaktır.
 

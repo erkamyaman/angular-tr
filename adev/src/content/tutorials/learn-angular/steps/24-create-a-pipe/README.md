@@ -64,7 +64,7 @@ export class ReversePipe implements PipeTransform {
 
 </docs-step>
 
-<docs-step title="Şablonda `ReversePipe`'ı kullanın"></docs-step>
+<docs-step title="Şablonda `ReversePipe`'ı kullanın">
 Pipe mantığı uygulandığına göre, son adım onu şablonda kullanmaktır. `app.ts` dosyasında pipe'ı şablona dahil edin ve bileşen imports dizisine ekleyin:
 
 ```angular-ts {highlight:[3,4]}
@@ -74,6 +74,8 @@ Pipe mantığı uygulandığına göre, son adım onu şablonda kullanmaktır. `
   imports: [ReversePipe]
 })
 ```
+
+</docs-step>
 
 </docs-workflow>
 

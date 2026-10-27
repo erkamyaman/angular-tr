@@ -1,5 +1,4 @@
-<docs-decorative-header title="Accordion">
-</docs-decorative-header>
+# Accordion
 
 <docs-pill-row>
   <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/accordion/" title="Accordion ARIA deseni"/>
@@ -38,7 +37,7 @@ Akordeonlar, kullanıcıların genellikle aynı anda bir bölümü görüntülem
 
 - **Genişleme modları** - Aynı anda bir veya birden fazla panelin açık olup olmayacağını kontrol edin
 - **Klavye navigasyonu** - Ok tuşları, Home ve End ile tetikleyiciler arasında gezinin
-- **Tembel render** - İçerik yalnızca bir panel ilk kez genişletildiğinde oluşturulur, ilk yükleme performansını iyileştirir
+- **Tembel render** - İçerik yalnızca bir panel genişletildiğinde oluşturulur, ilk yükleme performansını iyileştirir
 - **Devre dışı durumlar** - Tüm grubu veya bireysel tetikleyicileri devre dışı bırakın
 - **Odak yönetimi** - Devre dışı bırakılan öğelerin klavye odağı alıp alamayacağını kontrol edin
 - **Programatik kontrol** - Bileşen kodunuzdan panelleri genişletin, daraltın veya değiştirin
@@ -140,7 +139,7 @@ NOTE: `multiExpandable` girdisi varsayılan olarak `true`'dur. Tek genişleme da
 
 ### Tembel içerik render etme
 
-Panel ilk kez genişletilene kadar içerik render etmeyi ertelemek için bir `ng-template` üzerinde `ngAccordionContent` yönergesini kullanın. Bu, resimler, grafikler veya karmaşık bileşenler gibi ağır içerikli akordeonlar için performansı iyileştirir.
+Panel genişletilene kadar içerik render etmeyi ertelemek için bir `ng-template` üzerinde `ngAccordionContent` yönergesini kullanın. Bu, resimler, grafikler veya karmaşık bileşenler gibi ağır içerikli akordeonlar için performansı iyileştirir.
 
 ```angular-html
 <div ngAccordionGroup>
@@ -148,7 +147,7 @@ Panel ilk kez genişletilene kadar içerik render etmeyi ertelemek için bir `ng
     <button ngAccordionTrigger [panel]="panel1">Trigger Text</button>
     <div ngAccordionPanel #panel1="ngAccordionPanel">
       <ng-template ngAccordionContent>
-        <!-- Bu içerik yalnızca panel ilk açıldığında render edilir -->
+        <!-- Bu içerik yalnızca panel açıldığında render edilir -->
         <img src="large-image.jpg" alt="Description" />
         <app-expensive-component />
       </ng-template>
@@ -157,7 +156,7 @@ Panel ilk kez genişletilene kadar içerik render etmeyi ertelemek için bir `ng
 </div>
 ```
 
-Varsayılan olarak, panel daraltıldıktan sonra içerik DOM'da kalır. Panel kapatıldığında içeriği DOM'dan kaldırmak için `[preserveContent]="false"` ayarlayın.
+Varsayılan olarak, panel daraltıldığında içerik DOM'dan kaldırılır. İçeriği korumak için `[preserveContent]="true"` ayarlayın, örneğin panel daraltıldığında sıfırlanmaması gereken bir video içeriyorsa.
 
 ## Test etme
 

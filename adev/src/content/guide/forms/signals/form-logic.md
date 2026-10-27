@@ -695,7 +695,7 @@ Koşullu kurallar yalnızca koşul doğru olduğunda çalışır. Bu, doğrulama
 Yaygın kural yapılandırmalarını yeniden kullanılabilir fonksiyonlara çıkarın:
 
 ```ts
-import {SchemaPath, debounce, metadata, maxLength} from '@angular/forms/signals';
+import {SchemaPath, debounce, metadata, maxLength, form} from '@angular/forms/signals';
 import {PLACEHOLDER} from './metadata-keys';
 
 function emailFieldConfig(path: SchemaPath<string>) {

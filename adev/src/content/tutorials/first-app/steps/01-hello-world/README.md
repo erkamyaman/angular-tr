@@ -67,7 +67,7 @@ IDE'nizin **Explorer** bölmesinde:
       1. `app.css` bu bileşenin stil sayfasıdır.
       1. Yeni bileşenler bu dizine eklenir.
 
-   1. Dosya gezgininde uygulama tarafından kullanılan görselleri içeren görsel dizinini (`/assets`) bulun.
+   1. Dosya gezgininde uygulama tarafından kullanılan görselleri içeren görsel dizinini (`/public`) bulun.
    1. Dosya gezgininde bir Angular uygulamasının derlenmesi ve çalıştırılması için gereken, ancak normalde etkileşime girmediğiniz dosya ve dizinleri bulun.
       1. `.angular` Angular uygulamasını derlemek için gereken dosyaları içerir.
       1. `.e2e` uygulamayı test etmek için kullanılan dosyaları içerir.
@@ -96,7 +96,7 @@ IDE'nizde:
 1. Sonra, `first-app/src/app/app.ts` dosyasını açın.
 1. `app.ts` dosyasında, `@Component` tanımındaki `template` satırını, uygulama bileşenindeki metni değiştirmek için bu kodla değiştirin.
 
-   <docs-code language="angular-ts" header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[6,8]"/>
+   <docs-code language="angular-ts" header="src/app/app.ts içinde değiştirin" path="adev/src/content/tutorials/first-app/steps/02-Home/src/app/app.ts" visibleLines="[6]"/>
 
 1. `app.ts` dosyasında, `App` sınıf tanımındaki `title` satırını, bileşen başlığını değiştirmek için bu kodla değiştirin.
 

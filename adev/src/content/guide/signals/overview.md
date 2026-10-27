@@ -131,7 +131,7 @@ Angular aşağıdaki durumlarda otomatik olarak bir reaktif bağlama girer:
 - Bir `effect`, `afterRenderEffect` geri çağrısı yürütürken.
 - Bir `computed` sinyali değerlendirilirken.
 - Bir `linkedSignal` değerlendirilirken.
-- Bir `resource`'un params veya loader fonksiyonu değerlendirilirken.
+- Bir `resource`'un params fonksiyonu değerlendirilirken.
 - Bir bileşen şablonu oluşturulurken ([host özelliğindeki](guide/components/host-elements#binding-to-the-host-element) bağlamalar dahil).
 
 Bu işlemler sırasında Angular _canlı_ bir bağlantı oluşturur. İzlenen bir sinyal değişirse, Angular _sonunda_ tüketiciyi yeniden çalıştıracaktır.
@@ -235,6 +235,7 @@ Bir `OnPush` bileşeninin şablonunda bir sinyal okuduğunuzda, Angular sinyali 
 Bir sinyal oluştururken, isteğe bağlı olarak yeni değerin önceki değerden gerçekten farklı olup olmadığını kontrol etmek için kullanılacak bir eşitlik fonksiyonu sağlayabilirsiniz.
 
 ```ts
+import {signal} from '@angular/core';
 import isEqual from 'lodash/isEqual';
 
 const data = signal(['test'], {equal: isEqual});
@@ -275,3 +276,8 @@ isWritableSignal(doubled); // false
 ## Sinyalleri RxJS ile kullanma
 
 Sinyaller ve RxJS arasındaki birlikte çalışabilirlik hakkında ayrıntılar için [Angular sinyalleri ile RxJS birlikte çalışma](ecosystem/rxjs-interop) bölümüne bakın.
+
+## Sinyallerde hata ayıklama
+
+Angular DevTools, bir bileşenin veya direktifin sinyal grafiğini görselleştirebilir ve sinyallerin, computed değerlerin, effect'lerin ve diğer reaktif düğümlerin birbirine nasıl bağlı olduğunu gösterebilir.
+Grafiği nasıl açacağınızı, okuyacağınızı ve inceleyeceğinizi öğrenmek için [Sinyal grafiğinde hata ayıklama](tools/devtools/signals) bölümüne bakın.

@@ -121,6 +121,7 @@ export class MyComponent {}
 `someTemplate`'i başka bir modülden içe aktarırsanız ve orada başlatmayı ihmal ederseniz de bu hatayı alırsınız.
 
 ```ts
+import {Component} from '@angular/core';
 // HATA - orada da başlatılmamış
 import {someTemplate} from './config';
 
@@ -251,7 +252,7 @@ Bir ortam türünün örneğini enjekte etmeniz gerekiyorsa, sorunu dört adımd
 
 ```ts
 // DÜZELTİLMİŞ
-import { Inject } from '@angular/core';
+import {Inject, InjectionToken, Component} from '@angular/core';
 
 export const WINDOW = new InjectionToken('Window');
 export function _window() { return window; }
@@ -272,7 +273,7 @@ Yapıcıdaki `Window` türü artık derleyici için sorun değildir çünkü enj
 Angular, tarayıcının `document` nesnesini \(veya uygulamanın çalıştığı platforma bağlı olarak onun bir soyutlamasını\) enjekte edebilmeniz için `DOCUMENT` belirteci ile benzer bir şey yapar.
 
 ```ts
-import { Inject }   from '@angular/core';
+import {Inject, Component} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({ … })

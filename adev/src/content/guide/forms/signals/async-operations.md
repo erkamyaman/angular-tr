@@ -215,6 +215,7 @@ HTTP isteğini, `request` fonksiyonundan bir `HttpResourceRequest` nesnesi dönd
 
 ```ts
 import {HttpHeaders} from '@angular/common/http';
+import {validateHttp} from '@angular/forms/signals';
 
 validateHttp(schemaPath.field, {
   request: ({value}) => ({
@@ -445,7 +446,7 @@ form(this.registrationModel, (schemaPath) => {
 Bir sürenin veya `'blur'`'un ifade edemeyeceği zamanlama mantığı için bir `Debouncer` fonksiyonu geçirin. Fonksiyon, alan bağlamını ve bir [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) alır ve modelin ne zaman güncellenmesi gerektiğinde çözülen bir `Promise<void>` döndürür:
 
 ```ts
-import {debounce, type Debouncer} from '@angular/forms/signals';
+import {debounce, type Debouncer, form} from '@angular/forms/signals';
 
 const shorterWhenLonger: Debouncer<string> = ({value}, abortSignal) => {
   // Kullanıcı muhtemelen hâlâ yazdığından, kısa sorgular daha uzun bir gecikme alır.
@@ -635,6 +636,7 @@ Asenkron doğrulama yalnızca senkron doğrulama geçtikten sonra çalışır. B
 
 ```ts
 import {form, required, minLength, validateHttp} from '@angular/forms/signals';
+import {model} from '@angular/core';
 
 form(model, (schemaPath) => {
   // 1. Bu senkron doğrulama kuralları önce çalışır
@@ -673,6 +675,7 @@ Asenkron istekler yapmadan önce her zaman formatı doğrulayın. Bu, hataları 
 
 ```ts
 import {form, required, email, validateHttp} from '@angular/forms/signals';
+import {model} from '@angular/core';
 
 form(model, (schemaPath) => {
   // Önce formatı doğrula

@@ -70,11 +70,11 @@ Bunun gerçekleşmesi için tamamlanması gereken birkaç ders daha var.
 
 1.  `src/app/home/home.ts` dosyasında, bileşende yeni arayüzün tek bir örneğini oluşturmak için boş `export class Home {}` tanımını bu kodla değiştirin.
 
-      <docs-code language="angular-ts" header="src/app/home/home.ts içine örnek veri ekleyin" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[22,35]"/>
+      <docs-code language="angular-ts" header="src/app/home/home.ts içine örnek veri ekleyin" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[21,34]"/>
 
 1.  `home.ts` dosyanızın bu örnekle eşleştiğini doğrulayın.
 
-      <docs-code language="angular-ts" header="src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[[1,7],[9,36]]" />
+      <docs-code language="angular-ts" header="src/app/home/home.ts" path="adev/src/content/tutorials/first-app/steps/05-inputs/src/app/home/home.ts" visibleLines="[1,34]" />
 
     `Home` sınıfına `HousingLocation` türünde `housingLocation` özelliğini ekleyerek, verinin arayüzün tanımına uyduğunu doğrulayabilirsiniz. Eğer veri arayüzün tanımını karşılamazsa, IDE size faydalı hatalar verecek kadar bilgiye sahiptir.
 

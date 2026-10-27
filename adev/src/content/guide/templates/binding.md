@@ -56,7 +56,7 @@ Metin interpolasyonunu HTML'de normalde metin yazdığınız her yerde kullanabi
 
 Tüm ifade değerleri bir dizgeye dönüştürülür. Nesneler ve diziler değerin `toString` yöntemi kullanılarak dönüştürülür.
 
-## Dinamik özellik ve nitelikleri bağlama
+## Dinamik özellik ve nitelikleri bağlama {#binding-dynamic-properties-and-attributes}
 
 Angular, köşeli parantezlerle nesne özelliklerine ve HTML niteliklerine dinamik değerler bağlamayı destekler.
 

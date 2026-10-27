@@ -176,7 +176,7 @@ Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna ba�
 
 1.  Tüm güncellemeler tamamlandığında, güncellenmiş servisiniz aşağıdaki kodla eşleşmelidir.
 
-     <docs-code header="housing.service.ts dosyasının son hâli" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[1,25]" />
+     <docs-code header="housing.service.ts dosyasının son hâli" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[1,23]" />
 
 </docs-step>
 

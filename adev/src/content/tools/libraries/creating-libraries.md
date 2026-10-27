@@ -381,14 +381,14 @@ Bağlanmış kütüphaneleri kullanmak için uygulamanızın `angular.json` dosy
 
 Bir kütüphaneyi yayınlarken kullanılacak iki dağıtım formatı vardır:
 
-| Distribution formats        | Details                                                                                                                                                                                                                                                                                                           |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Partial-Ivy \(recommended\) | v12'den itibaren Angular'ın herhangi bir sürümüyle derlenen Ivy uygulamaları tarafından tüketilebilen taşınabilir kod içerir.                                                                                                                                                                                     |
-| Full-Ivy                    | Angular'ın farklı sürümleri arasında çalışması garanti edilmeyen özel Angular Ivy talimatları içerir. Bu format, kütüphanenin ve uygulamanın _tam olarak_ aynı Angular sürümüyle derlenmesini gerektirir. Bu format, tüm kütüphane ve uygulama kodunun doğrudan kaynaktan derlendiği ortamlar için kullanışlıdır. |
+| Distribution formats        | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Partial-Ivy \(recommended\) | v12'den itibaren Angular'ın herhangi bir sürümüyle derlenen Ivy uygulamaları tarafından tüketilebilen taşınabilir kod içerir.                                                                                                                                                                                                                                                                                                                             |
+| Full-Ivy                    | Özel Angular Ivy talimatları içerir. Derleyici ABI'si (bu talimatların çağırdığı dahili çalışma zamanı API'leri) yama sürümleri arasında kararlıdır ancak minör sürümler arasında değişebilir. Bu format, kütüphanenin ve uygulamanın aynı minör Angular sürümüyle derlenmesini gerektirir. Bu format, tüm kütüphane ve uygulama kodunun kaynaktan derlendiği veya bir mikro ön yüz (microfrontend) mimarisinde paylaşıldığı ortamlar için kullanışlıdır. |
 
 npm'e yayınlamak için, Angular'ın yama sürümleri arasında kararlı olduğu için partial-Ivy formatını kullanın.
 
-Oluşturulan Ivy talimatları Angular'ın genel API'sinin bir parçası olmadığından ve yama sürümleri arasında değişebileceğinden, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
+Oluşturulan Ivy talimatları minör sürümler arasında değişebilecek derleyici ABI'sine bağlı olduğundan, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
 
 ## Kütüphane sürüm uyumluluğunu sağlama
 
@@ -400,7 +400,7 @@ Kütüphanenizi npm'e yayınlamak istiyorsanız, `tsconfig.prod.json`'da `"compi
 Bu kısmi format, Angular'ın farklı sürümleri arasında kararlıdır, bu nedenle npm'e yayınlamak güvenlidir.
 Bu formattaki kod, uygulama derlemesi sırasında Angular derleyicisinin aynı sürümü kullanılarak işlenir ve uygulamanın ve tüm kütüphanelerinin tek bir Angular sürümü kullanmasını sağlar.
 
-Oluşturulan Ivy talimatları Angular'ın genel API'sinin bir parçası olmadığından ve yama sürümleri arasında değişebileceğinden, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
+Oluşturulan Ivy talimatları minör sürümler arasında değişebilecek derleyici ABI'sine bağlı olduğundan, npm'e yayınlıyorsanız kütüphaneleri full-Ivy koduyla derlemeyin.
 
 npm'de daha önce hiç paket yayınlamadıysanız, bir kullanıcı hesabı oluşturmanız gerekir.
 Daha fazla bilgi için bkz. [Publishing npm Packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).

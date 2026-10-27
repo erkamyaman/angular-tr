@@ -85,7 +85,7 @@ NOTE: Görsellerinizin boyutunu bilmiyorsanız, üst kapsayıcının boyutunu de
 </docs-step>
 </docs-workflow>
 
-## `fill` Modunu Kullanma
+## `fill` Modunu Kullanma {#using-fill-mode}
 
 Bir görselin bir kapsayıcı öğeyi doldurmasını istediğiniz durumlarda `fill` niteliğini kullanabilirsiniz. Bu, genellikle bir "arka plan görseli" davranışı elde etmek istediğinizde kullanışlıdır. Ayrıca görselinizin tam genişlik ve yüksekliğini bilmediğinizde, ancak görselinizi sığdırmak istediğiniz bilinen bir boyuta sahip bir üst kapsayıcınız olduğunda da yardımcı olabilir (aşağıdaki "object-fit" bölümüne bakın).
 
@@ -113,7 +113,7 @@ IMPORTANT: "fill" görselinin düzgün render edilmesi için üst öğesi `posit
 4. O öğeye `fill` niteliğini verin. Bir `height` ve `width` eklemeyin.
 5. Bu görselin [LCP öğeniz](https://web.dev/lcp/) olabileceğini düşünüyorsanız, görsel öğesine `priority` niteliğini ekleyin.
 
-Arka plan görselinin kapsayıcıyı nasıl doldurduğunu [Fill modunu kullanma](#fill-modunu-kullanma) bölümünde açıklandığı gibi ayarlayabilirsiniz.
+Arka plan görselinin kapsayıcıyı nasıl doldurduğunu [Fill modunu kullanma](#using-fill-mode) bölümünde açıklandığı gibi ayarlayabilirsiniz.
 
 ## Yer Tutucuları Kullanma {#using-placeholders}
 
@@ -216,7 +216,7 @@ Daha önce `sizes` kullanmadıysanız, görünüm alanı genişliğine göre aya
 
 Yukarıdakilerin istediğiniz görsel davranışını karşılamadığını fark ederseniz, [gelişmiş sizes değerleri](#gelişmiş-sizes-değerleri) belgelerine bakın.
 
-`NgOptimizedImage`'ın sağlanan `sizes` değerinin başına otomatik olarak `"auto"` eklediğini unutmayın. Bu, `sizes="auto"` destekleyen tarayıcılarda srcset seçiminin doğruluğunu artıran bir optimizasyondur ve desteklemeyen tarayıcılar tarafından göz ardı edilir.
+Tembel yüklenen görseller için `NgOptimizedImage`'ın sağlanan `sizes` değerinin başına otomatik olarak `"auto"` eklediğini unutmayın. Bu, `sizes="auto"` destekleyen tarayıcılarda srcset seçiminin doğruluğunu artıran bir optimizasyondur ve desteklemeyen tarayıcılar tarafından göz ardı edilir. `priority` görseller gibi tembel yüklenmeyen görseller, `sizes` değerini sağlandığı şekilde korur.
 
 Varsayılan olarak, duyarlı kesme noktaları şunlardır:
 
@@ -267,7 +267,7 @@ Varsayılan olarak, `NgOptimizedImage` `priority` olarak işaretlenmeyen tüm g�
 
 Varsayılan olarak, `NgOptimizedImage` tüm görseller için `decoding="auto"` ayarlar. Bu, tarayıcının bir görseli getirdikten sonra onu çözme için en uygun zamanı belirlemesine olanak tanır. Bir görsel `priority` olarak işaretlendiğinde, Angular otomatik olarak `decoding="sync"` ayarlayarak görselin en erken zamanda çözümlenmesini ve boyanmasını sağlar ve **Largest Contentful Paint (LCP)** performansını iyileştirmeye yardımcı olur.
 
-Bu davranışı açıkça `decoding` niteliğini ayarlayarak geçersiz kılabilirsiniz.
+Öncelikli olmayan görseller için varsayılan `auto` değerini, `decoding` niteliğini açıkça ayarlayarak geçersiz kılabilirsiniz. Öncelikli görseller her zaman `decoding="sync"` kullanır.
 [Ayrıntılar için standart görsel `decoding` niteliği belgelerine bakın](https://developer.mozilla.org/docs/Web/HTML/Element/img#decoding).
 
 ```html

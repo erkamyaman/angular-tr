@@ -67,9 +67,9 @@ MCP sunucusu etkinleştirildiğinde, yapay zeka ajanları aşağıdaki araçlara
 | Ad                          | Açıklama                                                                                                 |
 | :-------------------------- | :------------------------------------------------------------------------------------------------------- |
 | `ai_tutor`                  | Etkileşimli, yapay zeka destekli bir Angular eğitmeni başlatır.                                          |
-| `devserver.start`           | Bir geliştirme sunucusunu (`ng serve`) asenkron olarak başlatır. Hemen döner.                            |
-| `devserver.stop`            | Geliştirme sunucusunu durdurur.                                                                          |
-| `devserver.wait_for_build`  | Çalışan bir geliştirme sunucusundaki en son derlemenin günlüklerini döndürür.                            |
+| `devserver_start`           | Bir geliştirme sunucusunu (`ng serve`) asenkron olarak başlatır. Hemen döner.                            |
+| `devserver_stop`            | Geliştirme sunucusunu durdurur.                                                                          |
+| `devserver_wait_for_build`  | Çalışan bir geliştirme sunucusundaki en son derlemenin günlüklerini döndürür.                            |
 | `get_best_practices`        | Angular En İyi Uygulamalar Kılavuzunu getirir (standalone bileşenler, tipli formlar vb. için kritiktir). |
 | `list_projects`             | `angular.json` dosyasını okuyarak çalışma alanındaki tüm uygulama ve kütüphaneleri listeler.             |
 | `onpush_zoneless_migration` | Kodu analiz eder ve `OnPush` değişiklik algılamaya (zone'suz için ön koşul) geçiş için bir plan sunar.   |
@@ -97,10 +97,10 @@ Yapay zeka ajanı, yeni özellikler geliştirirken araştırma, uygulama ve doğ
 
 1. **API & Sözdizimi Araştırması**: Yapay zeka ajanı, Angular API'lerini veya sözdizimi kurallarını aramak için `search_documentation` kullanır (ör. `@defer` blok seçenekleri).
 2. **Kodlama Standartlarını Yükle**: Yapay zeka ajanı, Angular sürümüyle uyumlu kodlama kurallarını yüklemek için çalışma alanı yolu ile `get_best_practices` çağırır.
-3. **Yerel Geliştirme Sunucusunu Başlat**: Yapay zeka ajanı, `devserver.start` çağırarak arka planda bir sunucu başlatır.
-4. **Derlemeyi İzle**: Yapay zeka ajanı, kodu düzenlerken derleme günlüklerini izlemek ve derlemenin başarılı olduğundan emin olmak için `devserver.wait_for_build` kullanır.
+3. **Yerel Geliştirme Sunucusunu Başlat**: Yapay zeka ajanı, `devserver_start` çağırarak arka planda bir sunucu başlatır.
+4. **Derlemeyi İzle**: Yapay zeka ajanı, kodu düzenlerken derleme günlüklerini izlemek ve derlemenin başarılı olduğundan emin olmak için `devserver_wait_for_build` kullanır.
 5. **Test Yaz ve Çalıştır**: Yapay zeka ajanı, `list_projects` aracılığıyla projenin test çerçevesini (ör. Jasmine, Jest, Vitest) belirler, ilgili test dosyasını yazar ve `run_target` ile `"test"` kullanarak testleri çalıştırır.
-6. **Geliştirme Sunucusunu Durdur**: İşi bittiğinde, yapay zeka ajanı `devserver.stop` çağırarak etkin geliştirme sunucusunu durdurur.
+6. **Geliştirme Sunucusunu Durdur**: İşi bittiğinde, yapay zeka ajanı `devserver_stop` çağırarak etkin geliştirme sunucusunu durdurur.
 
 ### 3. Geliştirici Adaptasyonu ve Öğrenme
 

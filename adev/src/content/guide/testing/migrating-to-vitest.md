@@ -149,7 +149,7 @@ Angular CLI, Jasmine testlerinizi Vitest kullanacak şekilde otomatik olarak yen
 - `jasmine.any`'yi `expect.any` ile değiştirir.
 - `jasmine.createSpy`'ı `vi.fn` ile değiştirir.
 - `beforeAll`, `beforeEach`, `afterAll` ve `afterEach`'i Vitest eşdeğerlerine günceller.
-- `fail()`'i Vitest'in `vi.fail()`'ine dönüştürür.
+- `fail()`'i Vitest'in `expect.fail()`'ine dönüştürür.
 - Beklentileri Vitest API'leriyle eşleşecek şekilde ayarlar
 - Otomatik olarak dönüştürülemeyen kod için TODO yorumları ekler
 

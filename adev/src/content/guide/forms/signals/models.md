@@ -193,8 +193,7 @@ Alan durumu, her alanın değeri için reaktif sinyaller sağlar ve bu da onu al
 
 TIP: Alan durumu `value()` ötesinde birçok sinyal daha içerir; doğrulama durumu (örn. valid, invalid, errors), etkileşim takibi (örn. touched, dirty) ve görünürlük (örn. hidden, disabled) gibi.
 
-<!-- TODO: UNCOMMENT BELOW WHEN GUIDE IS AVAILABLE -->
-<!-- Tam kapsam için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın. -->
+Tam kapsam için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın.
 
 ## Form modellerini programatik olarak güncelleme
 
@@ -265,6 +264,37 @@ export class UserProfileComponent {
 ```
 
 Model değiştiğinde form alanları otomatik olarak güncellenir ve ek kod olmadan çekilen verileri görüntüler.
+
+### Örnek: Bir servisle senkronize etme
+
+Bazı kullanım senaryolarında bir servis form modelini saklayabilir:
+
+```ts
+@Service()
+export class FormService {
+  private readonly formModel = signal<UserFormModel>({ name: '', birthday: null });
+  public readonly model = this.formModel.asReadonly();
+
+  public syncFormModel(value: UserFormModel) {
+    this.formModel.set(value);
+  }
+
+  // Model, servis içinde başka bir yerde eşzamanlı veya eşzamansız olarak ayarlanır
+}
+
+@Component(...)
+export class UserForm {
+  private readonly formService = inject(FormService);
+
+  private readonly formModel = linkedSignal(() => this.formService.model(), {
+    set: (value) => this.formService.syncFormModel(value),
+  });
+
+  protected readonly form = form(this.formModel);
+}
+```
+
+`linkedSignal`'ın hesaplama fonksiyonu servisin form modelini okur, seçeneklerdeki `set` fonksiyonu ise bileşenin form modelinin servisin form modeliyle senkronize edilmesini sağlar. Servisin modeli değiştiğinde form alanları otomatik olarak güncellenir; form alanları bileşenin form modelini güncellediğinde de servisin form modeli otomatik olarak güncellenir.
 
 ## Çift yönlü veri bağlama
 
@@ -425,7 +455,6 @@ Nesne içeren dizi öğeleri otomatik olarak takip kimlikleri alır ve bu, öğe
 
 Bu kılavuz, modeller oluşturmayı ve değerleri güncellemeyi ele aldı. İlgili kılavuzlar, Signal Forms'un diğer yönlerini inceler:
 
-<!-- TODO: UNCOMMENT WHEN THE GUIDES ARE AVAILABLE -->
 <docs-pill-row>
   <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
   <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />

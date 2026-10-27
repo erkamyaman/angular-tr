@@ -129,10 +129,10 @@ Bu donanım yükleyicisinin kök öğesinin altındaki öğelerle etkileşim kur
 const myComponentHarness = await loader.getHarness(MyComponent);
 
 // '.child' seçicili alt öğenin ilk örneği için yükleyici al
-const childLoader = await myComponentHarness.getLoader('.child');
+const childLoader = await loader.getChildLoader('.child');
 
 // '.child' seçicili alt öğelerin tüm örnekleri için yükleyicileri al
-const allChildLoaders = await myComponentHarness.getAllChildLoaders('.child');
+const allChildLoaders = await loader.getAllChildLoaders('.child');
 ```
 
 ### Harness'ları filtreleme
@@ -187,7 +187,7 @@ Testlerinizde değişiklik algılama üzerinde daha ince taneli kontrole ihtiya�
 
 ```ts
 it('checks state while async action is in progress', async () => {
-  const buttonHarness = loader.getHarness(MyButtonHarness);
+  const buttonHarness = await loader.getHarness(MyButtonHarness);
   await manualChangeDetection(async () => {
     await buttonHarness.click();
     fixture.detectChanges();
@@ -212,7 +212,7 @@ Bazen birden fazla eylemi aynı anda gerçekleştirmek ve her birini sırayla ya
 
 ```ts
 it('reads properties in parallel', async () => {
-  const checkboxHarness = loader.getHarness(MyCheckboxHarness);
+  const checkboxHarness = await loader.getHarness(MyCheckboxHarness);
   // checked ve intermediate özelliklerini aynı anda oku.
   const [checked, indeterminate] = await parallel(() => [
     checkboxHarness.isChecked(),

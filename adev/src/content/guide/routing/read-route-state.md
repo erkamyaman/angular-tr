@@ -7,7 +7,7 @@ Angular Router, duyarlı ve bağlama duyarlı bileşenler oluşturmak için bir 
 `ActivatedRoute`, `@angular/router`'dan gelen ve geçerli rotayla ilişkili tüm bilgileri sağlayan bir servistir.
 
 ```angular-ts
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -24,13 +24,13 @@ export class Product {
 
 `ActivatedRoute`, rota hakkında farklı bilgiler sağlayabilir. Bazı yaygın özellikler şunlardır:
 
-| Özellik       | Ayrıntılar                                                                                                                   |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `url`         | Rota yolunun her bir parçası için `UrlSegment` nesneleri dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır. |
-| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir.        |
-| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                                   |
-| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                               |
-| `resources`   | Rotada tanımlanan `Resource` örneklerinden oluşan isteğe bağlı bir kayıt (`withRouterResources` etkinleştirildiğinde).       |
+| Özellik       | Ayrıntılar                                                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`         | Rota yolunun her bir parçası için `UrlSegment` nesneleri dizisi olarak temsil edilen, rota yollarının bir `Observable`'ıdır.                               |
+| `data`        | Rota için sağlanan `data` nesnesini içeren bir `Observable`. Ayrıca resolve guard'dan çözümlenen değerleri de içerir.                                      |
+| `params`      | Rotaya özgü zorunlu ve isteğe bağlı parametreleri içeren bir `Observable`.                                                                                 |
+| `queryParams` | Tüm rotalar için kullanılabilen sorgu parametrelerini içeren bir `Observable`.                                                                             |
+| `resources`   | Rotada tanımlanan veya rota tarafından devralınan salt okunur `Resource` örneklerinden oluşan isteğe bağlı bir kayıt (`withRouterResources()` gerektirir). |
 
 Rotada erişebileceğiniz şeylerin tam listesi için [`ActivatedRoute` API dokümanlarına](/api/router/ActivatedRoute) göz atın.
 
@@ -43,11 +43,12 @@ Rota anlık görüntüleri, parametreleri, verileri ve alt rotaları dahil olmak
 İşte bir rota anlık görüntüsüne nasıl erişeceğinize dair bir örnek:
 
 ```angular-ts
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component(/* ... */)
 export class UserProfile {
-  readonly userId: string;
+  readonly userId: string | null;
   private route = inject(ActivatedRoute);
 
   constructor() {
@@ -138,6 +139,7 @@ router.navigate(['/products'], {
 İşte bir ürün listesinin nasıl görüntüleneceğini etkileyen sorgu parametrelerini güncelleyen bir `ProductList` örneği:
 
 ```angular-ts
+import {Component, inject} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

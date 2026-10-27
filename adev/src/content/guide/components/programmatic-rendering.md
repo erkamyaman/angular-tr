@@ -14,6 +14,7 @@ HELPFUL: Tembel yükleme (lazy-loading) kullanım alanları için (örneğin ağ
 
 ```angular-ts
 import {NgComponentOutlet} from '@angular/common';
+import {Component, input, computed} from '@angular/core';
 
 @Component({/*...*/})
 export class AdminBio {
@@ -391,6 +392,8 @@ export class PopupService {
 ```
 
 ## Render hatalarını ele alma {#handling-rendering-errors}
+
+IMPORTANT: `onError` seçeneği ve `ErrorDetails` parametresi [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
 
 `ViewContainerRef.createComponent` veya bağımsız `createComponent` fonksiyonunu kullanarak bileşenleri dinamik olarak oluştururken, render veya değişiklik algılama aşamalarında oluşan hataları ele almak için seçenekler nesnesinde bir `onError` callback'i sağlayabilirsiniz. Bu, şablonlarda bir `@error` bloğu kullanmanın programatik karşılığıdır.
 

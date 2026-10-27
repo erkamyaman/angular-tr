@@ -195,7 +195,7 @@ Render geri çağrıları, sunucu tarafı render etme veya derleme zamanı ön-r
 `afterEveryRender` veya `afterNextRender` kullanırken, işi isteğe bağlı olarak aşamalara bölebilirsiniz. Aşama, DOM işlemlerinin sıralamasını kontrol etmenizi sağlar ve [düzeni bozmayı](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing) en aza indirmek için _yazma_ işlemlerini _okuma_ işlemlerinden önce sıralamanıza olanak tanır. Aşamalar arası iletişim için, bir aşama fonksiyonu sonraki aşamada erişilebilecek bir sonuç değeri döndürebilir.
 
 ```ts
-import {Component, ElementRef, afterNextRender} from '@angular/core';
+import {Component, ElementRef, afterNextRender, inject} from '@angular/core';
 
 @Component(/* ... */)
 export class UserProfile {

@@ -84,6 +84,11 @@ Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 | Nesne literallerinde spread | `{...obj, foo: 'bar'}`                         |
 | Dizi literallerinde spread  | `[...arr, 1, 2, 3]`                            |
 | Fonksiyon çağrılarında rest | `fn(...args)`                                  |
+| Arrow fonksiyon             | `items.filter((i) => i.active)`                |
+
+NOTE: Atama ve artırma/azaltma operatörleri yalnızca [olay dinleyici ifadelerinde](#olay-dinleyici-ifadeleri) geçerlidir. Bunları bir binding veya interpolation içinde kullanmak, bir arrow fonksiyonun içinde olmadıkları sürece derleme hatasıdır.
+
+Arrow fonksiyonların gövdesi bir ifade olmalıdır. Pipe'lar bir arrow fonksiyonun içinde kullanılamaz, ancak bir arrow fonksiyonu pipe'a argüman olarak geçirebilirsiniz.
 
 Angular ifadeleri ayrıca aşağıdaki standart dışı operatörleri de destekler:
 
@@ -128,12 +133,12 @@ Bileşen sınıf üyelerine referans verirken `this` her zaman ima edilir. Ancak
 
 Genel olarak, Angular ifadelerinde bildirimler desteklenmez. Bunlar arasında şu durumlar yer alır ancak bunlarla sınırlı değildir:
 
-| Bildirimler        | Örnek(ler)                                  |
-| ------------------ | ------------------------------------------- |
-| Değişkenler        | `let label = 'abc'`, `const item = 'apple'` |
-| Fonksiyonlar       | `function myCustomFunction() { }`           |
-| Arrow fonksiyonlar | `() => { }`                                 |
-| Sınıflar           | `class Rectangle { }`                       |
+| Bildirimler                     | Örnek(ler)                                  |
+| ------------------------------- | ------------------------------------------- |
+| Değişkenler                     | `let label = 'abc'`, `const item = 'apple'` |
+| Fonksiyonlar                    | `function myCustomFunction() { }`           |
+| Blok gövdeli arrow fonksiyonlar | `() => { }`                                 |
+| Sınıflar                        | `class Rectangle { }`                       |
 
 ## Olay dinleyici ifadeleri
 

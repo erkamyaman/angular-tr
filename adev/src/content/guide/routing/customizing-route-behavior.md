@@ -134,6 +134,7 @@ Tarayıcıya yazılan tüm URL'lere sondaki eğik çizgi eklenmesini zorlamak i�
 
 ```ts
 import {LocationStrategy, TrailingSlashPathLocationStrategy} from '@angular/common';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [{provide: LocationStrategy, useClass: TrailingSlashPathLocationStrategy}],
@@ -144,6 +145,7 @@ Tarayıcıya yazılan tüm URL'lerde asla sondaki eğik çizgi olmamasını zorl
 
 ```ts
 import {LocationStrategy, NoTrailingSlashPathLocationStrategy} from '@angular/common';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 bootstrapApplication(App, {
   providers: [{provide: LocationStrategy, useClass: NoTrailingSlashPathLocationStrategy}],
@@ -243,6 +245,8 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
 }
 ```
 
+IMPORTANT: Devralınan rota [kaynakları](guide/routing/data-fetching-with-resources#resource-inheritance), bir rotayı, kaynaklarına bağlı olduğu üst öğeleri de ayırmadan ayıran özel bir `RouteReuseStrategy` ile çalışmaz.
+
 ### Ayrılmış rota tutamaçlarını manuel olarak yok etme {#manually-destroying-detached-route-handles}
 
 Özel bir `RouteReuseStrategy` uygularken, yeniden eklemeden vazgeçtiğiniz bir `DetachedRouteHandle`'ı manuel olarak yok etmeniz gerekebilir. Örneğin, stratejinizin bir önbellek boyut sınırı varsa veya belirli bir süre sonra tutamaçların süresini doluruyorsa, bellek sızıntılarını önlemek için bileşenin ve durumunun düzgün şekilde yok edildiğinden emin olmalısınız.
@@ -272,6 +276,7 @@ Kullanılmayan rota enjektörlerinin otomatik temizlenmesini etkinleştirmek iç
 
 ```ts
 import {provideRouter, withAutoCleanupInjectors} from '@angular/router';
+import {ApplicationConfig} from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes, withAutoCleanupInjectors())],
@@ -303,7 +308,9 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   private readonly handles = new Map<Route, DetachedRouteHandle>();
 
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null) {
-    this.handles.set(route.routeConfig!, handle);
+    if (handle) {
+      this.handles.set(route.routeConfig!, handle);
+    }
   }
 
   retrieveStoredRouteHandles(): DetachedRouteHandle[] {
@@ -551,8 +558,7 @@ export const routes: Routes = [
 Bileşen, çıkarılan parametreleri rota girişleri aracılığıyla alır:
 
 ```angular-ts
-import {Component, input, inject} from '@angular/core';
-import {resource} from '@angular/core';
+import {Component, input, inject, resource} from '@angular/core';
 
 @Component({
   selector: 'app-documentation',

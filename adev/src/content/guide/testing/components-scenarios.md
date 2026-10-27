@@ -101,6 +101,7 @@ Girdilerdeki değişiklikleri yansıtmak ve çıktıları dinlemek için sinyall
 
 ```ts
 import {inputBinding, outputBinding} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
 
 const fixture = TestBed.createComponent(ValueDisplay, {
   bindings: [
@@ -396,41 +397,39 @@ Stub servisi asenkron observable'lar döndürdüğünde, testlerinizin çoğunun
 İşte gerçek dünyada beklediğiniz veri akışını gösteren bir test.
 
 ```ts
-it('should show quote after getQuote', async () => {
-  class MockTwainQuotes implements TwainQuotes {
-    private subject = new Subject<string>();
+class MockTwainQuotes implements TwainQuotes {
+  private subject = new Subject<string>();
 
-    getQuote() {
-      return this.subject.asObservable();
-    }
-
-    emit(val: string) {
-      this.subject.next(val);
-    }
+  getQuote() {
+    return this.subject.asObservable();
   }
 
-  it('should show quote after getQuote (success)', async () => {
-    vi.useFakeTimers();
+  emit(val: string) {
+    this.subject.next(val);
+  }
+}
 
-    TestBed.configureTestingModule({
-      providers: [{provide: TwainQuotes, useClass: MockTwainQuotes}],
-    });
+it('should show quote after getQuote (success)', async () => {
+  vi.useFakeTimers();
 
-    const fixture = TestBed.createComponent(TwainComponent);
-    const twainQuotes = TestBed.inject(TwainQuotes) as MockTwainQuotes;
-    await vi.runAllTimersAsync(); // alıntı alınmadan önce render et
-
-    const quoteEl = fixture.nativeElement.querySelector('.twain');
-    expect(quoteEl.textContent).toBe('...');
-
-    twainQuotes.emit('Twain Quote'); // alıntıyı yayınlar
-    await vi.runAllTimersAsync(); // alıntı alındıktan sonra render et
-
-    expect(quoteEl.textContent).toBe('Twain Quote');
-    expect(fixture.nativeElement.querySelector('.error')).toBeNull();
-
-    vi.useRealTimers(); // normal asenkron yürütmeye sıfırlar
+  TestBed.configureTestingModule({
+    providers: [{provide: TwainQuotes, useClass: MockTwainQuotes}],
   });
+
+  const fixture = TestBed.createComponent(TwainComponent);
+  const twainQuotes = TestBed.inject(TwainQuotes) as MockTwainQuotes;
+  await vi.runAllTimersAsync(); // alıntı alınmadan önce render et
+
+  const quoteEl = fixture.nativeElement.querySelector('.twain');
+  expect(quoteEl.textContent).toBe('...');
+
+  twainQuotes.emit('Twain Quote'); // alıntıyı yayınlar
+  await vi.runAllTimersAsync(); // alıntı alındıktan sonra render et
+
+  expect(quoteEl.textContent).toBe('Twain Quote');
+  expect(fixture.nativeElement.querySelector('.error')).toBeNull();
+
+  vi.useRealTimers(); // normal asenkron yürütmeye sıfırlar
 });
 ```
 

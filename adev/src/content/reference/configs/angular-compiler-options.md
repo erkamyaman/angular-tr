@@ -51,18 +51,18 @@ Varsayılan değer `false`'tur.
 Kullanılacak derleme modunu belirtir.
 Aşağıdaki modlar mevcuttur:
 
-| Modlar      | Ayrıntılar                                                                      |
-| :---------- | :------------------------------------------------------------------------------ |
-| `'full'`    | Şu anda kullanılmakta olan Angular sürümüne göre tam AOT derlenmiş kod üretir.  |
-| `'partial'` | Yayımlanmış bir kütüphane için uygun, kararlı ancak ara bir biçimde kod üretir. |
+| Modlar      | Ayrıntılar                                                                                                                                                  |
+| :---------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `'full'`    | Tam AOT derlenmiş kod üretir. Derleyici ABI'si (bu kodun kullandığı dahili çalışma zamanı API'leri), aynı minör sürümün yama sürümleri arasında kararlıdır. |
+| `'partial'` | Bağımsız olarak yayımlanan kütüphaneler için uygun, kararlı ancak ara bir biçimde kod üretir.                                                               |
 
 Varsayılan değer `'full'`'dur.
 
 Çoğu uygulama için `'full'` doğru derleme modudur.
 
 Bağımsız olarak yayımlanan kütüphaneler için, npm paketleri gibi, `'partial'` kullanın.
-`'partial'` derlemeleri, kütüphaneden farklı Angular sürümlerinde oluşturulan uygulamalar tarafından kullanımı daha iyi destekleyen kararlı, ara bir biçim çıktısı verir.
-Uygulamalarıyla birlikte "HEAD"de oluşturulan ve mono-depo gibi aynı Angular sürümünü kullanan kütüphaneler, sürüm uyumsuzluğu riski olmadığından `'full'` kullanabilir.
+`'partial'` derlemeleri, kütüphaneden farklı majör veya minör Angular sürümlerinde oluşturulan uygulamalar tarafından kullanımı daha iyi destekleyen kararlı, ara bir biçim çıktısı verir.
+Uygulamalarıyla birlikte "HEAD"de oluşturulan ve mono-depo gibi aynı Angular sürümünü kullanan kütüphaneler, minör sürümler arasında sürüm uyumsuzluğu riski olmadığından `'full'` kullanabilir. Derleyici ABI'sinin aynı minör sürümün yama sürümleri arasında kararlı olduğunu, bunun da farklı uygulamaların farklı yama düzeylerinde olabileceği mikro ön yüz mimarilerinde Angular çalışma zamanının güvenle paylaşılmasına olanak tanıdığını unutmayın.
 
 ### `disableTypeScriptVersionCheck`
 

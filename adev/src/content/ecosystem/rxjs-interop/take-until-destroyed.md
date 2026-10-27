@@ -7,6 +7,7 @@ TIP: Bu kılavuz, [bileşen ve direktif yaşam döngüsüne](guide/components/li
 ```typescript
 import {Component, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {Observable} from 'rxjs';
 import {NotificationDispatcher, CustomPopupShower} from './some-shared-project-code';
 
 @Component(/* ... */)

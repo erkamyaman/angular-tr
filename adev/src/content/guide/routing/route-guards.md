@@ -68,7 +68,7 @@ Daha fazla bilgi için [CanActivateFn API dokümanlarına](api/router/CanActivat
 
 ### CanActivateChild
 
-`CanActivateChild` koruyucusu, bir kullanıcının belirli bir üst rotanın alt rotalarına erişip erişemeyeceğini belirler. Bu, iç içe rotaların tüm bir bölümünü korumak istediğinizde kullanışlıdır. Başka bir deyişle, `canActivateChild` _tüm_ alt rotalar için çalışır. Altında başka bir alt bileşen bulunan bir alt bileşen varsa, `canActivateChild` her iki bileşen için de bir kez çalışır.
+`CanActivateChild` koruyucusu, bir kullanıcının belirli bir üst rotanın alt rotalarına erişip erişemeyeceğini belirler. Bu, iç içe rotaların tüm bir bölümünü korumak istediğinizde kullanışlıdır. Başka bir deyişle, `canActivateChild` _tüm_ alt rotalar için çalışır. Altında başka bir alt bileşen bulunan bir alt bileşen varsa, `canActivateChild` bunların her biri için birer kez çalışır.
 
 Aşağıdaki varsayılan argümanlara erişimi vardır:
 
@@ -165,7 +165,11 @@ Daha fazla bilgi için [CanMatchFn API dokümanlarına](api/router/CanMatchFn) g
 
 Rota koruyucularınızı oluşturduktan sonra, bunları rota tanımlarınızda yapılandırmanız gerekir.
 
-Koruyucular, tek bir rotaya birden fazla koruyucu uygulamanıza olanak tanımak için rota yapılandırmasında dizi olarak belirtilir. Dizide göründükleri sırayla çalıştırılırlar.
+Koruyucular, tek bir rotaya birden fazla koruyucu uygulamanıza olanak tanımak için rota yapılandırmasında dizi olarak belirtilir. Router koruyucuları dizide göründükleri sırayla başlatır, ancak bir sonrakini başlatmadan önce birinin bitmesini beklemez. Bu nedenle `Promise` veya `Observable` döndüren koruyucular eşzamanlı çalışır.
+
+Hangi sonucun öncelikli olacağını dizi sırası belirler. Navigasyon yalnızca her koruyucu `true` döndürürse devam eder. Aksi halde router, daha sonraki bir koruyucu daha erken bitmiş olsa bile, dizide `true` döndürmeyen ilk koruyucunun sonucunu kullanır.
+
+NOTE: Asenkron koruyucular eşzamanlı çalıştığından, bir koruyucu aynı dizideki önceki bir koruyucunun yaptığı işe (örneğin mevcut kullanıcıyı yüklemeye) güvenmemelidir. Bu işi her iki koruyucunun da kullandığı bir servise koyun veya kontrolleri tek bir koruyucuda birleştirin.
 
 ```ts
 import {Routes} from '@angular/router';

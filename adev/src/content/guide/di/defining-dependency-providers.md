@@ -39,7 +39,7 @@ NOTE: String parametresi (örn., `'api.url'`) tamamen hata ayıklama amaçlı bi
 `factory`'ye sahip bir `InjectionToken`, varsayılan olarak `providedIn: 'root'` ile sonuçlanır (ancak `providedIn` özelliği ile geçersiz kılınabilir).
 
 ```ts {header: "/app/config.token.ts"}
-import {InjectionToken} from '@angular/core';
+import {InjectionToken, Component, inject} from '@angular/core';
 
 export interface AppConfig {
   apiUrl: string;
@@ -548,7 +548,7 @@ class ApiClient {
 }
 
 // Kullanıcı seviyesine göre yapılandıran fabrika fonksiyonu
-import {inject} from '@angular/core';
+import {inject, Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 const apiClientFactory = () => {
   const http = inject(HttpClient);
@@ -786,6 +786,7 @@ Daha karmaşık senaryolar için, birden fazla yapılandırma yaklaşımını bi
 
 ```ts {header: "/libs/http-client/src/provider.ts"}
 import {Provider, InjectionToken, inject} from '@angular/core';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 // İsteğe bağlı işlevsellik için özellik bayrakları
 export enum HttpFeatures {

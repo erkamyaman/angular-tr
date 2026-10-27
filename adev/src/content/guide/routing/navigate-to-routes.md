@@ -8,6 +8,7 @@ Bir `href` özniteliğine sahip normal bağlantı öğeleri `<a>` kullanmak yeri
 
 ```angular-ts
 import {RouterLink} from '@angular/router';
+import {Component} from '@angular/core';
 
 @Component({
   template: `
@@ -80,6 +81,7 @@ Bir URL yol dizisi belirleyerek rotalar arasında programatik olarak gezinmek i�
 
 ```angular-ts
 import {Router} from '@angular/router';
+import {Component, inject} from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -112,6 +114,7 @@ Ayrıca `relativeTo` seçeneğini kullanarak yönlendirme ağacındaki bileşeni
 
 ```angular-ts
 import {Router, ActivatedRoute} from '@angular/router';
+import {Component, inject} from '@angular/core';
 
 @Component({
   selector: 'app-user-detail',
@@ -245,6 +248,23 @@ export class ProductList {
   // Adres çubuğunda görüntülenecek bir UrlTree oluştur
   displayUrl: UrlTree = this.router.createUrlTree(['/products', 'widget']);
 }
+```
+
+## RouterLink ile kaydırmayı denetleme
+
+Bellek içi kaydırma `withInMemoryScrolling({scrollPositionRestoration: 'enabled'})` (veya `'top'`) ile etkinleştirildiğinde, bağlantı yalnızca bir sorgu parametresini değiştirse bile router bir bağlantıya tıklandıktan sonra sayfanın en üstüne kaydırır. `RouterLink` direktifi, tek bir bağlantının bu davranışı devre dışı bırakmasını sağlayan bir `scroll` input'unu destekler:
+
+```angular-html
+<!-- Sayfanın en üstüne geri kaydırmadan sekmeleri değiştirir -->
+<a routerLink="/products/42" [queryParams]="{tab: 'reviews'}" scroll="manual">Reviews</a>
+```
+
+`scroll="manual"` ile router, o navigasyon için kaydırma yapmaz. Varsayılan değer olan `'after-transition'`, router'ın kaydırma yapılandırmasına göre kaydırır.
+
+Aynı seçenek programatik navigasyon için de kullanılabilir:
+
+```ts
+router.navigateByUrl('/products/42?tab=reviews', {scroll: 'manual'});
 ```
 
 ## Sonraki adımlar

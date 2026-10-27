@@ -61,7 +61,7 @@ Ayrıca sayısal alanlar, boş bir alanın boş olarak okunması için `0` yerin
 Şema da yapılandırmadan türetilir. Her girdiyi dolaşıp türüne uyan doğrulayıcıları uygulayabilirsiniz:
 
 ```ts
-import {required, min, max, SchemaFn} from '@angular/forms/signals';
+import {required, min, max, SchemaFn, SchemaPath} from '@angular/forms/signals';
 
 function buildSchema(configs: FieldConfig[]): SchemaFn<Record<string, string | number | null>> {
   return (path) => {
@@ -73,8 +73,9 @@ function buildSchema(configs: FieldConfig[]): SchemaFn<Record<string, string | n
       }
 
       if (config.kind === 'number') {
-        if (config.min !== undefined) min(fieldPath, config.min);
-        if (config.max !== undefined) max(fieldPath, config.max);
+        const numberPath = fieldPath as unknown as SchemaPath<number | null>;
+        if (config.min !== undefined) min(numberPath, config.min);
+        if (config.max !== undefined) max(numberPath, config.max);
       }
     }
   };
@@ -106,7 +107,7 @@ type FieldConfig =
 `buildSchema()`'yı `when`'i bir [`applyWhen()`](api/forms/signals/applyWhen) çağrısına çevirecek şekilde güncelleyin. Ortak kural uygulama mantığı küçük bir closure'a taşınır, böylece koşullu ve koşulsuz dallar aynı fonksiyonu çağırır:
 
 ```ts
-import {applyWhen, required, min, max, SchemaFn} from '@angular/forms/signals';
+import {applyWhen, required, min, max, SchemaFn, SchemaPath} from '@angular/forms/signals';
 
 function buildSchema(configs: FieldConfig[]): SchemaFn<Record<string, string | number | null>> {
   return (rootPath) => {
@@ -115,8 +116,9 @@ function buildSchema(configs: FieldConfig[]): SchemaFn<Record<string, string | n
         const fieldPath = path[config.name];
         if (config.required) required(fieldPath);
         if (config.kind === 'number') {
-          if (config.min !== undefined) min(fieldPath, config.min);
-          if (config.max !== undefined) max(fieldPath, config.max);
+          const numberPath = fieldPath as unknown as SchemaPath<number | null>;
+          if (config.min !== undefined) min(numberPath, config.min);
+          if (config.max !== undefined) max(numberPath, config.max);
         }
       };
 
@@ -291,9 +293,9 @@ removeItem(name: string, index: number) {
 }
 ```
 
-`addItem()` metodu modeli genişletir; form dizinin alanlarını otomatik olarak yeniden türetir. Yeni öğeler taze doğrulama durumuyla başlar. `removeItem()` modeli filtreler; kaldırılan öğenin alan durumu da onunla birlikte gider.
+`addItem()` metodu modeli genişletir; form dizinin alanlarını otomatik olarak yeniden türetir. Yeni öğeler taze doğrulama durumuyla başlar. `removeItem()` metodu modeli filtreler. İlkel değerlerin dizileri [konuma göre izlendiği](#tracking-item-identity) için alan durumu değere değil indekse bağlıdır: bir öğe kaldırıldığında sonraki değerler önceki konumlara kayar ve o konumların mevcut alan durumunu devralır, sondaki alan ise atılır.
 
-### Öğe kimliğini izleme
+### Öğe kimliğini izleme {#tracking-item-identity}
 
 Signal Forms, bir nesne dizisindeki her öğeyi kimliğine göre izler. Belirli bir konumdaki alana bir referans sakladığınızda, bu referans konumu değil, altındaki veriyi takip eder. Saklanan referans üzerinden durum okumak, veri taşınmış olsa bile veriyi döndürür:
 

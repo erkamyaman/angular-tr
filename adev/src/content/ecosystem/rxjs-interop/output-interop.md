@@ -11,6 +11,7 @@ TIP: Bu kılavuz, [bileşen ve direktif çıktılarına](guide/components/output
 ```ts {highlight:[9]}
 import {Directive} from '@angular/core';
 import {outputFromObservable} from '@angular/core/rxjs-interop';
+import {Observable} from 'rxjs';
 
 @Directive(/* ... */)
 class Draggable {
@@ -33,6 +34,7 @@ HELPFUL: Değerleri zorunlu olarak yayabiliyorsanız doğrudan `output()` kullan
 
 ```ts {highlight:[11]}
 import {outputToObservable} from '@angular/core/rxjs-interop';
+import {Component, output} from '@angular/core';
 
 @Component(/*...*/)
 class CustomSlider {

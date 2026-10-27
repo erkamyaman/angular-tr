@@ -38,7 +38,7 @@ ZoneJS'i derlemeden kaldırdıktan sonra, artık bir `zone.js` bağımlılığı
 npm uninstall zone.js
 ```
 
-## Zoneless Uyumluluğu İçin Gereksinimler
+## Zoneless Uyumluluğu İçin Gereksinimler {#requirements-for-zoneless-compatibility}
 
 Angular, değişiklik algılamayı ne zaman çalıştıracağını ve hangi görünümlerde çalıştıracağını belirlemek için çekirdek API'lerden gelen bildirimlere dayanır.
 Bu bildirimler şunları içerir:
@@ -113,7 +113,7 @@ Bir şablon reactive forms durumuna bağlıysa, forms observable'larını bir de
 
 ## Test Etme ve Hata Ayıklama
 
-### `TestBed`'de Zoneless Kullanımı
+### `TestBed`'de Zoneless Kullanımı {#using-zoneless-in-testbed}
 
 `TestBed`, `zone.js` `polyfills` aracılığıyla yüklendiğinde bile varsayılan olarak zoneless değişiklik algılama kullanır.
 
@@ -134,8 +134,12 @@ Testlerin üretim koduna en benzer davranışa sahip olmasını sağlamak için,
 
 Mevcut test setleri için `fixture.detectChanges()` kullanmak yaygın bir kalıptır ve bunları `await fixture.whenStable()`'a dönüştürmek muhtemelen çabaya değmez. `TestBed` yine de fixture'ın bileşeninin `OnPush` uyumlu olduğunu zorlayacak ve bir değişiklik bildirimi olmadan şablon değerlerinin güncellendiğini tespit ederse (yani `fixture.componentInstance.someValue = 'newValue';`) `ExpressionChangedAfterItHasBeenCheckedError` fırlatacaktır.
 Bileşen üretimde kullanılıyorsa, bu sorun bileşenin durum için sinyaller kullanacak şekilde güncellenmesi veya `ChangeDetectorRef.markForCheck()` çağrılması ile giderilmelidir.
-Bileşen yalnızca test sarmalayıcı olarak kullanılıyorsa ve bir uygulamada hiç kullanılmıyorsa, `fixture.changeDetectorRef.markForCheck()` kullanmak kabul edilebilir.
+Bileşen yalnızca test sarmalayıcı olarak kullanılıyorsa ve bir uygulamada hiç kullanılmıyorsa, bunun için `ChangeDetectionStrategy.Eager` kullanmak ve `fixture.changeDetectorRef.markForCheck()` çağırmak kabul edilebilir.
+
+IMPORTANT: `fixture.changeDetectorRef`, fixture'ın host görünümüne aittir; bu yüzden `markForCheck()` çağrısı `OnPush` bir bileşenin şablonunu yenilemez. Uygulama bileşenlerinizin testlerde buna ihtiyaç duymaması gerekir. Bir test buna ihtiyaç duyuyorsa, bileşen genellikle tam olarak reaktif değildir veya [zoneless uyumlu](#requirements-for-zoneless-compatibility) değildir.
 
 ### Güncellemelerin Algılandığından Emin Olmak İçin Hata Ayıklama Modu Kontrolü
+
+IMPORTANT: `provideCheckNoChangesConfig` [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
 
 Angular ayrıca bir uygulamanın durumu zoneless uyumlu bir şekilde güncellediğini doğrulamaya yardımcı olmak için ek bir araç sağlar. `provideCheckNoChangesConfig({exhaustive: true, interval: <milliseconds>}})` periyodik olarak hiçbir bağlamanın bir bildirim olmadan güncellenmediğinden emin olmak için kontrol etmek üzere kullanılabilir. Angular, zoneless değişiklik algılama tarafından yenilenmeyecek güncellenmiş bir bağlama varsa `ExpressionChangedAfterItHasBeenCheckedError` fırlatır.

@@ -33,7 +33,7 @@ Bu durumda, `:id` dinamiktir ve rotanın kod tarafından nasıl istendiğine ba�
 
     `routerLink` yönergesi, Angular'ın router'ının uygulamada dinamik bağlantılar oluşturmasını sağlar. `routerLink`'e atanan değer, iki girişli bir dizidir: yolun statik kısmı ve dinamik veri.
 
-    `routerLink`'in şablonda çalışması için, '@angular/router' paketinden `RouterLink` ve `RouterOutlet`'in dosya düzeyinde import'unu ekleyin, ardından bileşenin `imports` dizisini hem `RouterLink` hem de `RouterOutlet`'i içerecek şekilde güncelleyin.
+    `routerLink`'in şablonda çalışması için, '@angular/router' paketinden `RouterLink`'in dosya düzeyinde import'unu ekleyin, ardından bileşenin `imports` dizisini `RouterLink`'i içerecek şekilde güncelleyin.
 
 1.  Bu noktada, uygulamanızda yönlendirmenin çalıştığını doğrulayabilirsiniz. Tarayıcıda, ana sayfayı yenileyin ve bir konut konumu için "Learn More" düğmesine tıklayın.
 

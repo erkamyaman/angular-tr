@@ -127,6 +127,7 @@ Belirli bir yol için tüm rotaları yakalamanız gerektiğinde, çözüm çift 
 Yaygın bir örnek, Sayfa Bulunamadı bileşeni tanımlamaktır.
 
 ```ts
+import {Routes} from '@angular/router';
 import {Home} from './home/home';
 import {UserProfile} from './user-profile';
 import {NotFound} from './not-found';
@@ -171,6 +172,7 @@ Bir kullanıcı `/users/new` adresini ziyaret ederse, Angular yönlendirici aşa
 Bir bileşen render etmek yerine başka bir rotaya yönlendiren bir rota tanımlayabilirsiniz:
 
 ```ts
+import {Routes} from '@angular/router';
 import {Blog} from './home/blog';
 
 const routes: Routes = [

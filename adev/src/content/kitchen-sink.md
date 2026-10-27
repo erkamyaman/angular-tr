@@ -178,7 +178,6 @@ console.log('Awesome Angular Docs!');
 | `language`     | `string`             | Kod dili                                                                 |
 | `linenums`     | `boolean`            | (False) satır numaralarını görüntüler                                    |
 | `highlight`    | `string of number[]` | Vurgulanan satırlar                                                      |
-| `diff`         | `string`             | Değiştirilmiş kodun yolu                                                 |
 | `visibleLines` | `string of number[]` | Daraltma modu için satır aralığı                                         |
 | `region`       | `string`             | Yalnızca belirtilen bölgeyi gösterir.                                    |
 | `preview`      | `boolean`            | (False) önizlemeyi görüntüler                                            |
@@ -202,13 +201,12 @@ console.log('Awesome Angular Docs!');
 
 #### `<docs-code-multifile>` Attributes
 
-| Attributes    | Type      | Details                                                                  |
-| :------------ | :-------- | :----------------------------------------------------------------------- |
-| body contents | `string`  | İç içe geçmiş `docs-code` örnek sekmeleri                                |
-| `path`        | `string`  | Önizleme ve harici bağlantı için kod örneğinin yolu                      |
-| `preview`     | `boolean` | (False) önizlemeyi görüntüler                                            |
-| `hideCode`    | `boolean` | (False) Kod örneğinin varsayılan olarak daraltılıp daraltılmayacağı.     |
-| `hideDollar`  | `boolean` | (False) Shell kod örneklerinde dolar işaretinin gizlenip gizlenmeyeceği. |
+| Attributes    | Type      | Details                                                              |
+| :------------ | :-------- | :------------------------------------------------------------------- |
+| body contents | `string`  | İç içe geçmiş `docs-code` örnek sekmeleri                            |
+| `path`        | `string`  | Önizleme ve harici bağlantı için kod örneğinin yolu                  |
+| `preview`     | `boolean` | (False) önizlemeyi görüntüler                                        |
+| `hideCode`    | `boolean` | (False) Kod örneğinin varsayılan olarak daraltılıp daraltılmayacağı. |
 
 ### Adding `preview` to your code example
 

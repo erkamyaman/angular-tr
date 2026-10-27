@@ -19,7 +19,7 @@ contactForm = form(this.contactModel, (schemaPath) => {
 graph TD
     A["form(model, schemaFn)"] --> B["Şema fonksiyonu BİR KEZ çalışır"]
     B --> C["required(path)"]
-    B --> D["disabled(path, logicFn)"]
+    B --> D["disabled(path, {when: logicFn})"]
     B --> E["validate(path, logicFn)"]
     B --> F["apply(path, schema)"]
     C --> G["Reaktif: sinyal değişiminde yeniden hesaplanır"]
@@ -55,7 +55,7 @@ TIP: Kurallar yalnızca tek bir yerde görünüyorsa, satır içi bir şema fonk
 Yeniden kullanılabilir bir şemayı, `apply()` fonksiyonunu kullanarak bir formdaki belirli bir yola uygulayabilirsiniz. `apply()`'ı çağırdığınızda, şema yalnızca o alt yoldaki alanları gören kapsamlı bir yol alır:
 
 ```ts
-import {apply} from '@angular/forms/signals';
+import {apply, form} from '@angular/forms/signals';
 
 profileForm = form(this.profileModel, (schemaPath) => {
   apply(schemaPath.name, nameSchema);

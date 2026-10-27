@@ -131,7 +131,7 @@ Bir stub, bir bağımlılığın ne döndürdüğünü kontrol eder, ancak bazen
 
 ```ts { header: 'order-total.spec.ts' }
 import {TestBed} from '@angular/core/testing';
-import {beforeEach, describe, expect, it, vi, type Mocked} from 'vitest';
+import {afterEach, beforeEach, describe, expect, it, vi, type Mocked} from 'vitest';
 import {OrderTotal} from './order-total';
 import {TaxCalculator} from './tax-calculator';
 

@@ -56,7 +56,7 @@ imports: [NgOptimizedImage],
 
 Yukarıdaki kod örneğinde her resmin hem `width` hem de `height` niteliklerine sahip olduğuna dikkat edin. [Düzen kaymasını](https://web.dev/articles/cls) önlemek için `NgOptimizedImage` direktifi, her resimde her iki boyut niteliğini de gerektirir.
 
-Resimler için statik bir `height` ve `width` belirleyemediğiniz veya belirlemek istemediğiniz durumlarda, resme kapsayıcı öğesini dolduran bir "arka plan resmi" gibi davranmasını söylemek için [`fill` niteliğini](https://web.dev/articles/cls) kullanabilirsiniz:
+Resimler için statik bir `height` ve `width` belirleyemediğiniz veya belirlemek istemediğiniz durumlarda, resme kapsayıcı öğesini dolduran bir "arka plan resmi" gibi davranmasını söylemek için [`fill` niteliğini](/guide/image-optimization#using-fill-mode) kullanabilirsiniz:
 
 ```angular-html
 // Container div has 'position: "relative"'

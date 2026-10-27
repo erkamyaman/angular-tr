@@ -698,10 +698,10 @@ Bu dört bağlama, `providers` ve `viewProviders` arasındaki farkı gösterir.
 Köpek emojisinin <code>🐶</code> `Child`'ın `<#VIEW>` içinde bildirildiğini ve yansıtılmış içerik için görünür olmadığını unutmayın.
 Bunun yerine, yansıtılmış içerik balinayı <code>🐳</code> görür.
 
-Yansıtılan `<app-inspector>`'ın neden hâlâ `App`'in `viewProviders`'ından <code>🐳</code> değerini görebildiğini merak edebilirsiniz.
+Yansıtılan `<app-inspector>`'ın neden hâlâ kök düzeyde sağlanan `AnimalService` olan <code>🐳</code> değerini görebildiğini merak edebilirsiniz.
 Bunun nedeni, Angular DI'nın bir bileşenin nerede render edildiğini değil, **nerede bildirildiğini** izlemesidir.
-`<app-inspector>`, `App`'in şablonunda, yani `App`'in `<#VIEW>` içinde yer alır, bu yüzden `App`'in `viewProviders`'ına erişebilir.
-Onu `Child`'a yansıtmak, `Child`'ın `viewProviders`'ına (<code>🐶</code>) erişimi keser, ancak `App`'in sağlayıcılarına (<code>🐳</code>) ağaçta yukarı doğru hâlâ erişilebilir.
+`<app-inspector>`, `App`'in şablonunda, yani `App`'in `<#VIEW>` içinde yer alır, bu yüzden arama hiçbir zaman `Child`'ın `<#VIEW>`'ından geçmez.
+Onu `Child`'a yansıtmak, `Child`'ın `viewProviders`'ına (<code>🐶</code>) erişimi keser, ancak kök `AnimalService`'e (<code>🐳</code>) ağaçta yukarı doğru hâlâ erişilebilir.
 
 Ancak sonraki çıktı bölümünde, `Inspector` `Child`'ın gerçek bir alt bileşenidir, `Inspector` `<#VIEW>` içindedir, bu nedenle `AnimalService`'i istediğinde köpeği <code>🐶</code> görür.
 
@@ -740,7 +740,7 @@ Mantıksal ağaçta `AnimalService` şöyle görünecektir:
 ```
 
 Yansıtılan `<app-inspector>`, <code>🐳</code> değerini alır çünkü <code>🐶</code> `Child`'ın görünümüne aittir ve yansıtılmış içerik ona erişemez.
-<code>🐳</code> erişilebilirdir çünkü `<app-inspector>`, `App`'in şablonunda bildirilmiştir, dolayısıyla `App`'in `viewProviders`'ına kadar yukarı çıkabilir.
+<code>🐳</code> erişilebilirdir çünkü `<app-inspector>`, `App`'in şablonunda bildirilmiştir, dolayısıyla kök `AnimalService`'e kadar yukarı çıkabilir.
 
 `Child`'ın şablonunda doğrudan yer alan (yansıtılmamış) `<app-inspector>` ise <code>🐶</code> değerini alır; `<#VIEW>` içinde olduğu için aşılması gereken bir sınır yoktur.
 
@@ -1012,7 +1012,7 @@ Her vergi beyannamesi bileşeni şu özelliklere sahiptir:
 - Başka bir bileşendeki bir beyanı etkilemeden bir vergi beyannamesini değiştirebilir
 - Vergi beyannamesindeki değişiklikleri kaydetme veya iptal etme yeteneğine sahiptir
 
-`HeroTaxReturn`'ın değişiklikleri yönetme ve geri yükleme mantığına sahip olduğunu varsayalım.
+`HeroTaxReturnEditor`'ın değişiklikleri yönetme ve geri yükleme mantığına sahip olduğunu varsayalım.
 Bu, bir kahraman vergi beyannamesi için basit bir görev olurdu.
 Gerçek dünyada, zengin bir vergi beyannamesi veri modeli ile değişiklik yönetimi karmaşık olurdu.
 Bu yönetimi, bu örneğin yaptığı gibi bir yardımcı servise devredebilirsiniz.
@@ -1052,10 +1052,10 @@ export class HeroTaxReturnService {
 }
 ```
 
-İşte `HeroTaxReturnService`'i kullanan `HeroTaxReturn`.
+İşte `HeroTaxReturnService`'i kullanan `HeroTaxReturnEditor`.
 
 ```typescript
-import {Component, input, output} from '@angular/core';
+import {Component, effect, inject, input, output} from '@angular/core';
 import {HeroTaxReturn} from './hero';
 import {HeroTaxReturnService} from './hero-tax-return.service';
 
@@ -1065,24 +1065,20 @@ import {HeroTaxReturnService} from './hero-tax-return.service';
   styleUrls: ['./hero-tax-return.css'],
   providers: [HeroTaxReturnService],
 })
-export class HeroTaxReturn {
+export class HeroTaxReturnEditor {
   message = '';
 
   close = output<void>();
 
-  get taxReturn(): HeroTaxReturn {
-    return this.heroTaxReturnService.taxReturn;
-  }
-
   taxReturn = input.required<HeroTaxReturn>();
+
+  private heroTaxReturnService = inject(HeroTaxReturnService);
 
   constructor() {
     effect(() => {
       this.heroTaxReturnService.taxReturn = this.taxReturn();
     });
   }
-
-  private heroTaxReturnService = inject(HeroTaxReturnService);
 
   onCanceled() {
     this.flashMessage('Canceled');
@@ -1105,21 +1101,21 @@ export class HeroTaxReturn {
 }
 ```
 
-_Düzenlenecek vergi beyannamesi_, getter ve setter'larla uygulanan `input` özelliği aracılığıyla gelir.
-Setter, bileşenin kendi `HeroTaxReturnService` örneğini gelen beyan ile başlatır.
-Getter her zaman servisin kahramanın mevcut durumu olarak söylediğini döndürür.
+_Düzenlenecek vergi beyannamesi_, `taxReturn` sinyal girdisi (signal input) aracılığıyla gelir.
+Bir `effect`, girdi her değiştiğinde bileşenin kendi `HeroTaxReturnService` örneğini gelen beyan ile başlatır.
+Servisin getter'ı her zaman servisin kahramanın mevcut durumu olarak söylediğini döndürür.
 Bileşen ayrıca servisten bu vergi beyannamesini kaydetmesini ve geri yüklemesini ister.
 
 Servis uygulama çapında bir tekil olsaydı bu çalışmazdı.
 Her bileşen aynı servis örneğini paylaşırdı ve her bileşen başka bir kahramana ait vergi beyannamesinin üzerine yazardı.
 
-Bunu önlemek için, `HeroTaxReturn`'ın bileşen seviyesi enjektörünü, bileşen meta verisindeki `providers` özelliğini kullanarak servisi sağlayacak şekilde yapılandırın.
+Bunu önlemek için, `HeroTaxReturnEditor`'ın bileşen seviyesi enjektörünü, bileşen meta verisindeki `providers` özelliğini kullanarak servisi sağlayacak şekilde yapılandırın.
 
 ```typescript
 providers: [HeroTaxReturnService];
 ```
 
-`HeroTaxReturn`'ın `HeroTaxReturnService`'in kendi sağlayıcısı vardır.
+`HeroTaxReturnEditor`'ın `HeroTaxReturnService`'in kendi sağlayıcısı vardır.
 Her bileşen _örneğinin_ kendi enjektörü olduğunu hatırlayın.
 Servisi bileşen seviyesinde sağlamak, bileşenin _her_ örneğinin servisin özel bir örneğini almasını sağlar. Bu, hiçbir vergi beyannamesinin üzerine yazılmamasını garanti eder.
 

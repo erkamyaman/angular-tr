@@ -62,6 +62,7 @@ Hem `templateUrl` hem de `styleUrl`, bileşenin bulunduğu dizine göredir.
 Bir bileşen, [direktif](guide/directives) veya [pipe](guide/templates/pipes) kullanmak için, onu `@Component` dekoratöründeki `imports` dizisine eklemeniz gerekir:
 
 ```ts
+import {Component} from '@angular/core';
 import {ProfilePhoto} from './profile-photo';
 
 @Component({

@@ -29,12 +29,10 @@ Pekala, şimdi sıra sizde:
 <docs-workflow>
 
 <docs-step title="Bir olay yöneticisi ekleyin">
-`App` sınıfına `showSecretMessage()` olay yöneticisi fonksiyonunu ekleyin. Uygulama olarak aşağıdaki kodu kullanın:
+`App` sınıfında, mevcut `showSecretMessage()` metodunun gövdesini aşağıdaki kodla doldurun:
 
 ```ts
-showSecretMessage() {
-  this.message = 'Way to go 🚀';
-}
+this.message = 'Way to go 🚀';
 ```
 
 </docs-step>

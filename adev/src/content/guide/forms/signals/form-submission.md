@@ -13,7 +13,7 @@ Signal Forms, form gönderim yaşam döngüsünü yönetmenize yardımcı olan b
 1. **Eylemi çalıştırır** - `action` fonksiyonu formun geçerli değeriyle yürütülür. Çalışırken `submitting()` `true` döndürür.
 1. **Sonucu ele alır** - Eylem hatalar döndürürse, bunlar hedef alanlarına yönlendirilir. Hiçbir şey döndürmezse, gönderim başarılı kabul edilir.
 
-`submit()` fonksiyonu, eylem hatasız tamamlandığında `true`, doğrulama başarısız olduğunda veya eylem hatalar döndürdüğünde `false` değerine çözümlenen bir `Promise<boolean>` döndürür.
+`submit()` fonksiyonu, eylem hatasız tamamlandığında `true`, doğrulama başarısız olduğunda, eylem hatalar döndürdüğünde veya bir gönderim zaten devam ettiğinde `false` değerine çözümlenen bir `Promise<boolean>` döndürür. Eylem bir hata fırlatırsa promise o hatayla reddedilir.
 
 ## `FormRoot` ile form gönderimini kurma {#setting-up-form-submission-with-formroot}
 
@@ -23,7 +23,7 @@ Signal Forms, form gönderim yaşam döngüsünü yönetmenize yardımcı olan b
 
 1. **[`novalidate`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form#novalidate) ayarlar** - Tarayıcının yerleşik doğrulamasını devre dışı bırakır, böylece doğrulamayı Signal Forms yönetir
 1. **Varsayılanı engeller** - Tarayıcının form gönderiminde gezinmesini durdurur
-1. **`submit()` çağırır** - Kullanıcı formu gönderdiğinde gönderim akışını tetikler
+1. **`submit()` çağırır** - Kullanıcı formu gönderdiğinde, form bir `submission` seçeneğiyle oluşturulmuşsa gönderim akışını tetikler
 
 NOTE: `FormRoot` direktifi, `form` öğesindeki `novalidate` özniteliğini otomatik olarak ayarlar. `FormRoot` kullanırken bunu manuel olarak eklemeniz gerekmez.
 
@@ -271,7 +271,7 @@ export class Contact {
 
 ## Yan etkileri ele alma
 
-`submit()` fonksiyonu bir `Promise<boolean>` döndürür: eylem hatasız tamamlandığında `true`, doğrulama başarısız olduğunda veya eylem hatalar döndürdüğünde `false`. Gezinme veya bildirimler gibi yan etkileri tetiklemek için bunu kullanın.
+`submit()` fonksiyonu bir `Promise<boolean>` döndürür: eylem hatasız tamamlandığında `true`, doğrulama başarısız olduğunda, eylem hatalar döndürdüğünde veya bir gönderim zaten devam ettiğinde `false`. Eylem hata fırlatırsa promise reddedilir. Gezinme veya bildirimler gibi yan etkileri tetiklemek için bunu kullanın.
 
 ```ts
 async onSave() {

@@ -282,6 +282,8 @@ export const delayedConfig: ApplicationConfig = {
 Özel kayıt zamanlaması için bir Observable fabrika fonksiyonu da sağlayabilirsiniz:
 
 ```ts
+import {ApplicationConfig, isDevMode} from '@angular/core';
+import {provideServiceWorker} from '@angular/service-worker';
 import {timer} from 'rxjs';
 
 export const customConfig: ApplicationConfig = {

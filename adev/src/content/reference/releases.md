@@ -137,6 +137,14 @@ Angular'ın geriye dönük uyumluluğunu garanti etmek için herhangi bir deği�
 
 Genel API yüzeyindeki herhangi bir değişiklik, daha önce açıklanan versiyonlama, destek ve kullanımdan kaldırma politikalarına uygun olarak yapılır. Kritik güvenlik yamaları gibi istisnai durumlarda, düzeltmeler geriye dönük uyumsuz değişiklikler getirebilir. Bu tür istisnai durumlar, framework'ün resmi iletişim kanallarında açık bir bildirimle birlikte sunulur.
 
+### Derleyici ABI kararlılığı
+
+Genel API kararlılığına ek olarak Angular, aynı minör sürümün yama sürümleri arasında **Derleyici ABI (Application Binary Interface) kararlılığını** korur. ABI, Angular derleyicisi tarafından üretilen kodun kullandığı dahili çalışma zamanı API'lerinin (`ɵɵ` ile başlayanlar gibi) kümesini ifade eder. Bu kararlılık, Angular derleyicisinin `X.Y.A` sürümüyle derlenmiş kodun `X.Y.B` sürümündeki Angular çalışma zamanıyla uyumlu olmasını sağlar.
+
+Bu kararlılık, birden fazla uygulamanın farklı yama sürümleriyle bağımsız olarak derlenip tek bir Angular çalışma zamanını paylaşabildiği mikro ön yüz (microfrontend) gibi kullanım senaryolarının önünü açar. ABI kararlılığının minör sürümler arasında garanti edilmediğini unutmayın, çünkü yeni özellikler dahili API'lerde veya üretilen kodun biçiminde değişiklik gerektirebilir.
+
+HELPFUL: ABI uyumluluğunu korumaya çalışsak ve herhangi bir bozulmayı gerileme (regression) olarak ele alsak da, pratikte bu uyumluluğu tüm sürüm kombinasyonlarında doğrulamak zordur.
+
 ## Kırıcı değişiklik politikası ve güncelleme yolları
 
 Kırıcı değişiklik, sonraki durumun önceki durumla geriye dönük uyumlu olmaması nedeniyle çalışma yapmanızı gerektirir. Bu kuraldan nadir istisnaları [Uyumluluk politikası](#uyumluluk-politikası) bölümünde bulabilirsiniz. Kırıcı değişikliklerin örnekleri arasında genel API'lerin kaldırılması veya Angular'ın tür tanımının diğer değişiklikleri, çağrıların zamanlamasının değiştirilmesi veya Angular'ın bir bağımlılığının kendi başına kırıcı değişiklikler içeren yeni bir sürümüne güncelleme yer alır.

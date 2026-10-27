@@ -38,7 +38,7 @@ Signal Forms'ta doğrulama şu kalıbı takip eder:
 3. **Hata yayılımı** - Doğrulama hataları alan durumu sinyalleri aracılığıyla açığa çıkar
 4. **Reaktif güncellemeler** - Doğrulama durumu değiştiğinde kullanıcı arayüzü otomatik olarak güncellenir
 
-Doğrulama, etkileşimli alanlar için her değer değişikliğinde çalışır. Gizli ve devre dışı alanlar doğrulama çalıştırmaz -- alan tekrar etkileşimli olana kadar doğrulama kuralları atlanır.
+Doğrulama, etkileşimli alanlar için her değer değişikliğinde çalışır. Gizli, devre dışı ve salt okunur alanlar doğrulama çalıştırmaz -- alan tekrar etkileşimli olana kadar doğrulama kuralları atlanır.
 
 ### Doğrulama zamanlaması
 
@@ -224,6 +224,49 @@ ageForm = form(this.ageModel, (schemaPath) => {
 });
 ```
 
+### minDate() ve maxDate() {#mindate-and-maxdate}
+
+`minDate()` ve `maxDate()` doğrulama kuralları, `<input type="date">` öğesine bağlı bir alan gibi `Date` değerleriyle çalışır. Ayrıca o girdinin `min` ve `max` niteliklerini de ayarlarlar.
+
+```angular-ts
+import {Component, signal} from '@angular/core';
+import {form, FormField, minDate, maxDate} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-booking-form',
+  imports: [FormField],
+  template: `
+    <form novalidate>
+      <label>
+        Check-in
+        <input type="date" [formField]="bookingForm.checkIn" />
+      </label>
+    </form>
+  `,
+})
+export class BookingFormComponent {
+  bookingModel = signal<{checkIn: Date | null}>({checkIn: null});
+
+  bookingForm = form(this.bookingModel, (schemaPath) => {
+    minDate(schemaPath.checkIn, new Date('2026-06-01'), {message: 'Bookings open on June 1'});
+    maxDate(schemaPath.checkIn, new Date('2026-08-31'), {message: 'Bookings close on August 31'});
+  });
+}
+```
+
+IMPORTANT: Bir `<input type="date">`, tarayıcının `valueAsDate` çalışma biçimi nedeniyle kullanıcının saat diliminden bağımsız olarak `Date` değerlerini UTC gece yarısı olarak okur ve yazar. Sınırları da aynı şekilde oluşturun, örneğin `new Date('2026-06-01')` veya `new Date(Date.UTC(2026, 5, 1))` ile. `new Date(2026, 5, 1)` veya `new Date()` gibi yerel saatten oluşturulan bir `Date`, kullanıcının UTC farkı kadar kayar. Saat dilimine bağlı olarak `min` veya `max` niteliği bir gün sapabilir ve sınır tarihinin kendisi reddedilebilir.
+
+Bugünden önce olmayan bir tarih zorunlu kılmak için, kullanıcının saat dilimindeki bugünün takvim tarihini UTC gece yarısı olarak ifade ederek kullanın:
+
+```ts
+const now = new Date();
+const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+
+minDate(schemaPath.checkIn, today, {message: 'Check-in cannot be in the past'});
+```
+
+`new Date()` değerini doğrudan geçirmek bugünün tarihinin reddedilmesine yol açabilir, çünkü girdide seçilen değer UTC gece yarısıdır ve bu, geçerli saatten önce gelir. Bu durum UTC'de ve onun gerisindeki saat dilimlerinde yaşanır.
+
 ### minLength() ve maxLength() {#minlength-and-maxlength}
 
 `minLength()` ve `maxLength()` doğrulama kuralları dizeler ve dizilerle çalışır:
@@ -360,9 +403,7 @@ export class OrderComponent {
 
 Doğrulama kuralları başarısız olduğunda, neyin yanlış gittiğini tanımlayan hata nesneleri üretir. Hata yapısını anlamak, kullanıcılara net geri bildirim sağlamanıza yardımcı olur.
 
-<!-- TODO: Alan durumu yönetimi kılavuzu yayınlandığında yorumu kaldırın
-
-NOTE: Bu bölüm doğrulama kurallarının ürettiği hataları ele alır. Doğrulama hatalarını kullanıcı arayüzünüzde görüntüleme ve kullanma hakkında [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın. -->
+NOTE: Bu bölüm doğrulama kurallarının ürettiği hataları ele alır. Doğrulama hatalarını kullanıcı arayüzünüzde görüntüleme ve kullanma hakkında [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management) bakın.
 
 ### Hata yapısı
 
@@ -735,6 +776,7 @@ Signal Forms, [Zod](https://zod.dev/) veya [Valibot](https://valibot.dev/) gibi 
 
 ```ts
 import {form, validateStandardSchema} from '@angular/forms/signals';
+import {signal} from '@angular/core';
 import * as z from 'zod';
 
 // Şemanızı tanımlayın

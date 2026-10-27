@@ -149,10 +149,10 @@ Tüm özellikler isteğe bağlıdır. Yalnızca kontrolünüzün ihtiyaç duyduk
 
 Kullanıcıların kontrolünüzle ne zaman etkileşim kurduğunu takip edin:
 
-| Property  | Purpose                                           |
-| --------- | ------------------------------------------------- |
-| `touched` | Kullanıcının alanla etkileşim kurup kurmadığı     |
-| `dirty`   | Değerin başlangıç durumundan farklı olup olmadığı |
+| Property  | Purpose                                                        |
+| --------- | -------------------------------------------------------------- |
+| `touched` | Kullanıcının alanla etkileşim kurup kurmadığı                  |
+| `dirty`   | Kullanıcının değeri değiştirip değiştirmediği (geri alsa bile) |
 
 #### Doğrulama durumu
 
@@ -383,7 +383,7 @@ export class App {
 }
 ```
 
-IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (odak kontrolden ayrıldığında) yayın. `touch` çıktısı olmadan alan asla blur olarak kaydedilmez, bu nedenle `debounce('blur')` kontrolünüz üzerinde etkili olmaz.
+IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (odak kontrolden ayrıldığında) yayın. Kontrolünüz `touch` yayınlamazsa alan asla touched olarak işaretlenmez ve `debounce('blur')` kontrolünüzün yaydığı değeri form modeline asla yazmaz.
 
 ## Değer dönüşümü {#value-transformation}
 

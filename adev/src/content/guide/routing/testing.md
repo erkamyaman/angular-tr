@@ -59,7 +59,7 @@ Rota koruyucuları, kimlik doğrulama veya izinler gibi koşullara göre rotalar
 Aşağıdaki örnek, kimliği doğrulanmış kullanıcılar için navigasyona izin veren ve doğrulanmamış kullanıcıları giriş sayfasına yönlendiren bir `authGuard`'ı test eder.
 
 ```ts {header: 'auth.guard.spec.ts'}
-import {vi, type Mocked} from 'vitest';
+import {describe, expect, it, vi, type Mocked} from 'vitest';
 import {RouterTestingHarness} from '@angular/router/testing';
 import {provideRouter, Router} from '@angular/router';
 import {authGuard} from './auth.guard';

@@ -18,12 +18,8 @@ Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `serve
           "builder": "@angular/build:dev-server"
           // ...
         },
-        "build": {
-          /* ... */
-        },
-        "test": {
-          /* ... */
-        }
+        "build": {/* ... */},
+        "test": {/* ... */}
       }
     }
   }
@@ -70,14 +66,8 @@ Belirli URL'leri bir arka uç sunucusuna yönlendirmek için [proxy desteğini](
 
 NOTE: Proxy yapılandırma dosyanızda yapılan değişiklikleri uygulamak için `ng serve` sürecini yeniden başlatmanız gerekir.
 
-### Yol eşleme davranışı builder'a bağlıdır
+### Yol eşleme davranışı
 
-**`@angular/build:dev-server`** ([Vite](https://vite.dev/config/server-options#server-proxy) tabanlı)
-
-- `/api` yalnızca `/api` ile eşleşir.
-- `/api/*` `/api/users` ile eşleşir ancak `/api/users/123` ile eşleşmez.
-- `/api/**` hem `/api/users` hem de `/api/users/123` ile eşleşir.
-
-**`@angular-devkit/build-angular:dev-server`** ([Webpack DevServer](https://webpack.js.org/configuration/dev-server/#devserverproxy) tabanlı)
-
-- `/api` hem `/api` hem de tüm alt yollarla eşleşir (`/api/**` ile eşdeğer).
+- `/api`, `/api` ile ve onunla başlayan tüm yollarla (örneğin `/api/users/123` veya `/api-docs`) eşleşir.
+- `/api/*`, `/api/users` ile eşleşir ancak `/api` veya `/api/users/123` ile eşleşmez.
+- `/api/**`, `/api`, `/api/users` ve `/api/users/123` ile eşleşir ancak `/api-docs` ile eşleşmez.

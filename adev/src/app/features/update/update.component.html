@@ -11,7 +11,7 @@
           Sürüm
 
           <button type="button" [cdkMenuTriggerFor]="templatesMenuFrom">
-            <span>{{ from.name }}</span>
+            <span>{{ from().name }}</span>
             <docs-icon>expand_more</docs-icon>
           </button>
 
@@ -19,7 +19,7 @@
             <ul class="adev-template-dropdown" cdkMenu>
               @for (version of versions; track $index) {
                 <li>
-                  <button cdkMenuItem type="button" (click)="from = version; showUpdatePath()">
+                  <button cdkMenuItem type="button" (click)="from.set(version); showUpdatePath()">
                     <span>{{ version.name }}</span>
                   </button>
                 </li>
@@ -32,7 +32,7 @@
           <span class="adev-template-select">
             Sürüm
             <button type="button" [cdkMenuTriggerFor]="templatesMenuTo">
-              <span>{{ to.name }}</span>
+              <span>{{ to().name }}</span>
               <docs-icon>expand_more</docs-icon>
             </button>
 
@@ -40,7 +40,7 @@
               <ul class="adev-template-dropdown" cdkMenu>
                 @for (version of versions; track $index) {
                   <li>
-                    <button cdkMenuItem type="button" (click)="to = version; showUpdatePath()">
+                    <button cdkMenuItem type="button" (click)="to.set(version); showUpdatePath()">
                       <span>{{ version.name }}</span>
                     </button>
                   </li>
@@ -51,7 +51,7 @@
         </span>
       </div>
 
-      @if (from.number >= futureVersion || to.number >= futureVersion) {
+      @if (from().number >= futureVersion || to().number >= futureVersion) {
         <div class="docs-alert docs-alert-critical">
           <p>
             <strong>Uyarı:</strong>
@@ -61,7 +61,7 @@
         </div>
       }
 
-      @if (from.number > to.number) {
+      @if (from().number > to().number) {
         <div class="docs-alert docs-alert-critical">
           <p>
             <strong>Uyarı:</strong>
@@ -70,7 +70,7 @@
         </div>
       }
 
-      @if (to.number - from.number > 150 && from.number > 240) {
+      @if (to().number - from().number > 150 && from().number > 240) {
         <div class="docs-alert docs-alert-critical">
           <p>
             <strong>Uyarı:</strong>
@@ -84,19 +84,19 @@
 
       <h3>Uygulama karmaşıklığı</h3>
       <mat-button-toggle-group
-        (change)="level = $event.value; showUpdatePath()"
-        [value]="level"
+        (change)="level.set($event.value); showUpdatePath()"
+        [value]="level()"
         style="margin-bottom: 16px"
       >
         <mat-button-toggle [value]="1">Temel</mat-button-toggle>
         <mat-button-toggle [value]="2">Orta</mat-button-toggle>
         <mat-button-toggle [value]="3">İleri</mat-button-toggle>
       </mat-button-toggle-group>
-      @if (level === 1) {
+      @if (level() === 1) {
         <p>Tüm Angular geliştiricileri için bilgileri gösterir.</p>
-      } @else if (level === 2) {
+      } @else if (level() === 2) {
         <p>Daha ileri düzey Angular geliştiricilerinin ilgisini çekebilecek bilgileri gösterir.</p>
-      } @else if (level === 3) {
+      } @else if (level() === 3) {
         <p>Bu güncelleme hakkındaki tüm bilgileri gösterir.</p>
       }
 
@@ -111,7 +111,7 @@
         </div>
       }
 
-      @if (from.number < 600) {
+      @if (from().number < 600) {
         <h4>Paket Yöneticisi</h4>
         <mat-button-toggle-group
           (change)="packageManager = $event.value; showUpdatePath()"
@@ -159,8 +159,7 @@
             </span>
           </div>
         </div>
-      }
-      @if (beforeRecommendations.length <= 0) {
+      } @empty {
         <div>
           <em>Bu sürümler arasında geçiş yapmadan önce herhangi bir şey yapmanız gerekmiyor.</em>
         </div>
@@ -190,8 +189,7 @@
             </span>
           </div>
         </div>
-      }
-      @if (duringRecommendations.length <= 0) {
+      } @empty {
         <div>
           <em>Bu sürümler arasında geçiş için herhangi bir öneri bulunmuyor.</em>
         </div>
@@ -212,8 +210,7 @@
             </span>
           </div>
         </div>
-      }
-      @if (afterRecommendations.length <= 0) {
+      } @empty {
         <div>
           <em>Bu sürümler arasında geçiş yaptıktan sonra herhangi bir şey yapmanız gerekmiyor.</em>
         </div>

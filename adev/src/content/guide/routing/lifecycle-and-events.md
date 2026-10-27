@@ -65,7 +65,8 @@ Yönlendirici navigasyon sorunlarını olay dizisi hakkında görünürlük olma
 Bir Yönlendirici olay dizisini incelemeniz gerektiğinde, dahili navigasyon olayları için günlüğü etkinleştirebilirsiniz. Bunu, tüm yönlendirme olaylarının ayrıntılı konsol günlüğünü etkinleştiren bir yapılandırma seçeneği (`withDebugTracing()`) geçirerek yapılandırabilirsiniz.
 
 ```ts
-import {provideRouter, withDebugTracing} from '@angular/router';
+import {provideRouter, Routes, withDebugTracing} from '@angular/router';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 const appRoutes: Routes = [];
 bootstrapApplication(App, {
@@ -84,11 +85,12 @@ Router olayları, gerçek dünya uygulamalarında birçok pratik özelliği müm
 Navigasyon sırasında yükleme göstergeleri gösterme:
 
 ```angular-ts
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, computed, inject} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  imports: [RouterOutlet],
   template: `
     @if (isNavigating()) {
       <div class="loading-bar">Loading...</div>

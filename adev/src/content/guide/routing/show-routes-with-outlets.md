@@ -188,7 +188,7 @@ export class Dashboard {}
 Yönlendirilen bileşen, `ROUTER_OUTLET_DATA` kullanarak sağlanan outlet verisini enjekte edebilir:
 
 ```angular-ts
-import {Component, inject} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {ROUTER_OUTLET_DATA} from '@angular/router';
 
 @Component({

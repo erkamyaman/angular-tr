@@ -148,7 +148,7 @@ export class UserClient {
 Bazen bileşene özgü durum için bileşen başına ayrı örnekler isteyebilirsiniz.
 
 ```angular-ts {header: 'Intentional: Component-scoped state'}
-import {Injectable, signal} from '@angular/core';
+import {Injectable, signal, Component, inject} from '@angular/core';
 
 @Injectable() // providedIn yok - açıkça sağlanmalıdır
 export class FormStateStore {
@@ -390,6 +390,7 @@ export const APP_CONFIG = new InjectionToken<AppConfig>('app config');
 ```
 
 ```ts {header: 'app.config.ts'}
+import {bootstrapApplication} from '@angular/platform-browser';
 import {APP_CONFIG} from './config.token';
 
 export const appConfig: AppConfig = {
@@ -403,7 +404,7 @@ bootstrapApplication(App, {
 
 ```angular-ts {avoid, header: 'feature-view.ts'}
 // Aynı açıklamayla yeni token oluşturma
-import {InjectionToken, inject} from '@angular/core';
+import {InjectionToken, inject, Component} from '@angular/core';
 import {AppConfig} from './config.token';
 
 const APP_CONFIG = new InjectionToken<AppConfig>('app config');
@@ -422,7 +423,7 @@ Her iki token da `'app config'` açıklamasına sahip olsa da, farklı nesnelerd
 **Çözüm:** Aynı token örneğini içe aktarın.
 
 ```angular-ts {prefer, header: 'feature-view.ts'}
-import {inject} from '@angular/core';
+import {inject, Component} from '@angular/core';
 import {APP_CONFIG, AppConfig} from './config.token';
 
 @Component({
@@ -459,7 +460,8 @@ export class UserProfile {
 **Çözüm:** Arayüz türleri için `InjectionToken` kullanın.
 
 ```angular-ts {prefer, header: 'Use InjectionToken for interfaces'}
-import {InjectionToken, inject} from '@angular/core';
+import {InjectionToken, inject, Component} from '@angular/core';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 interface UserConfig {
   name: string;
@@ -676,11 +678,10 @@ Bu bölüm, karşılaşabileceğiniz belirli Angular DI hata kodları hakkında 
 Bu hata, Angular enjektör hiyerarşisinde bir token için sağlayıcı bulamadığında oluşur. Hata mesajı, enjeksiyonun nerede denendiğini gösteren bir bağımlılık yolu içerir.
 
 ```
-NullInjectorError: No provider for UserClient!
-  Dependency path: App -> AuthClient -> UserClient
+NG0201: No provider found for `UserClient`. Path: AuthClient -> UserClient.
 ```
 
-Bağımlılık yolu, `App`'ın `AuthClient`'ı enjekte ettiğini, onun da `UserClient`'ı enjekte etmeye çalıştığını ancak hiçbir sağlayıcı bulunamadığını gösterir.
+Bağımlılık yolu, `AuthClient`'ın `UserClient`'ı enjekte etmeye çalıştığını ancak hiçbir sağlayıcı bulunamadığını gösterir.
 
 #### Eksik `@Service` veya `@Injectable` dekoratörü {#missing-the-service--or-injectable-decorator}
 
@@ -749,7 +750,7 @@ import {UserClient} from './user-client';
 
 @Component({
   selector: 'app-profile',
-  template: '<p>User: {{user().name}}</p>',
+  template: '<p>User: {{user.name}}</p>',
 })
 export class UserProfile {
   private userService = inject(UserClient); // ERROR: No provider
@@ -765,7 +766,7 @@ import {UserClient} from './user-client';
 
 @Component({
   selector: 'app-profile',
-  template: '<p>User: {{user().name}}</p>',
+  template: '<p>User: {{user.name}}</p>',
 })
 export class UserProfile {
   private userService = inject(UserClient); // Works: providedIn: 'root'
@@ -778,16 +779,14 @@ export class UserProfile {
 Hata mesajındaki bağımlılık yolu, hataya yol açan enjeksiyon zincirini gösterir.
 
 ```
-NullInjectorError: No provider for LoggerStore!
-  Dependency path: App -> DataStore -> ApiClient -> LoggerStore
+NG0201: No provider found for `LoggerStore`. Path: DataStore -> ApiClient -> LoggerStore.
 ```
 
 Bu yol size şunu söyler:
 
-1. `App`, `DataStore`'u enjekte etti
-2. `DataStore`, `ApiClient`'ı enjekte etti
-3. `ApiClient`, `LoggerStore`'u enjekte etmeye çalıştı
-4. `LoggerStore` için sağlayıcı bulunamadı
+1. `DataStore`, `ApiClient`'ı enjekte etti
+2. `ApiClient`, `LoggerStore`'u enjekte etmeye çalıştı
+3. `LoggerStore` için sağlayıcı bulunamadı
 
 Araştırmanıza zincirin sonundan (`LoggerStore`) başlayın ve uygun yapılandırmaya sahip olduğunu doğrulayın.
 
@@ -818,9 +817,10 @@ export class DebugView {
 Bu hata, `inject()` fonksiyonunu geçerli bir enjeksiyon bağlamı dışında çağırdığınızda oluşur. Angular, `inject()` fonksiyonunun sınıf oluşturma veya fabrika yürütme sırasında senkron olarak çağrılmasını gerektirir.
 
 ```
-NG0203: inject() must be called from an injection context such as a
-constructor, a factory function, a field initializer, or a function
-used with `runInInjectionContext`.
+NG0203: The `UserClient` token injection failed. `inject()` function must
+be called from an injection context such as a constructor, a factory
+function, a field initializer, or a function used with
+`runInInjectionContext`.
 ```
 
 #### Geçerli enjeksiyon bağlamları {#valid-injection-contexts}
@@ -835,7 +835,7 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
 
    @Component({
      selector: 'app-profile',
-     template: '<p>User: {{user().name}}</p>',
+     template: '<p>User: {{user.name}}</p>',
    })
    export class UserProfile {
      private userService = inject(UserClient); // Valid
@@ -851,7 +851,7 @@ Angular şu konumlarda `inject()` kullanımına izin verir:
 
    @Component({
      selector: 'app-profile',
-     template: '<p>User: {{user().name}}</p>',
+     template: '<p>User: {{user.name}}</p>',
    })
    export class UserProfile {
      private userService: UserClient;
@@ -963,8 +963,7 @@ setTimeout(() => {
 Bu hata, iki veya daha fazla servis birbirine bağımlı olduğunda ve Angular'ın çözemediği döngüsel bir bağımlılık oluşturduğunda meydana gelir.
 
 ```
-NG0200: Circular dependency in DI detected for AuthClient
-  Dependency path: AuthClient -> UserClient -> AuthClient
+NG0200: Circular dependency detected for `AuthClient`. Path: AuthClient -> UserClient -> AuthClient.
 ```
 
 Bağımlılık yolu döngüyü gösterir: `AuthClient`, `UserClient`'a bağımlıdır ve o da `AuthClient`'a geri bağımlıdır.

@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 import {FileSystem} from '../../../src/ngtsc/file_system';
+import {shouldSkipComplianceInNgp} from '../../../src/ngtsc/file_system/testing';
 
 import {checkErrors, checkNoUnexpectedErrors} from './check_errors';
 import {checkExpectations} from './check_expectations';
@@ -66,8 +67,9 @@ export function runTests(
       }
 
       describe(`[${test.relativePath}]/${counter++}`, () => {
-        const itFn = test.focusTest ? fit : test.excludeTest ? xit : it;
-        itFn(test.description, () => {
+        const skipInNgp = shouldSkipComplianceInNgp(type, test.relativePath, test.description);
+        const itFn = test.focusTest ? fit : test.excludeTest || skipInNgp ? xit : it;
+        itFn(test.description, async () => {
           if (type === 'linked compile' && test.compilerOptions?.['target'] === 'ES5') {
             throw new Error(
               `The "${type}" scenario does not support ES5 output.\n` +
@@ -93,13 +95,14 @@ export function runTests(
               checkTypeDeclarations(fs, emittedFiles);
             } else {
               checkNoUnexpectedErrors(test.relativePath, errors);
-              checkExpectations(
+              await checkExpectations(
                 fs,
                 test.relativePath,
                 expectation.failureMessage,
                 expectation.files,
                 expectation.extraChecks,
                 options.skipMappingChecks,
+                type === 'linked compile',
               );
             }
           }

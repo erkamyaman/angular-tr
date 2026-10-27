@@ -65,6 +65,8 @@ Sürekli güncellenen bu veri kaynakları için `stream` kullanın. Her istek i�
 
 Bir HTTP uç noktasından veri almak gibi tek seferlik asenkron işlemler için `loader` kullanın.
 
+Bu örnekte `userUpdates`, WebSocket veya SSE bağlantısı gibi harici bir kaynağı simüle eder.
+
 ```typescript
 const userUpdates = signal({value: 'Alice'});
 
@@ -72,7 +74,7 @@ const userResource = resource({
   stream: () => userUpdates,
 });
 
-// Daha sonra, yeni veri geldiğinde:
+// Harici veri kaynağından yeni bir değerin geldiğini simüle edin:
 userUpdates.set({value: 'Bob'});
 ```
 
@@ -118,13 +120,13 @@ userResource.reload();
 
 Kaynak nesnesi, asenkron yükleyicinin durumunu okumak için çeşitli sinyal özelliklerine sahiptir.
 
-| Özellik     | Açıklama                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------- |
-| `value`     | Kaynağın en son değeri veya henüz değer alınmadıysa `undefined`.                            |
-| `hasValue`  | Kaynağın bir değere sahip olup olmadığı.                                                    |
-| `error`     | Kaynağın yükleyicisi çalışırken karşılaşılan en son hata veya hata oluşmadıysa `undefined`. |
-| `isLoading` | Kaynak yükleyicisinin şu anda çalışıp çalışmadığı.                                          |
-| `status`    | Aşağıda açıklanan, kaynağın belirli `ResourceStatus` değeri.                                |
+| Özellik     | Açıklama                                                                                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`     | Kaynağın en son değeri veya henüz değer alınmadıysa varsayılan değer (`defaultValue` ayarlanmadıysa `undefined`). Durum `'error'` iken `value()` okumak hata fırlatır. |
+| `hasValue`  | Kaynağın bir değere sahip olup olmadığı.                                                                                                                               |
+| `error`     | Kaynağın yükleyicisi çalışırken karşılaşılan en son hata veya hata oluşmadıysa `undefined`.                                                                            |
+| `isLoading` | Kaynak yükleyicisinin şu anda çalışıp çalışmadığı.                                                                                                                     |
+| `status`    | Aşağıda açıklanan, kaynağın belirli `ResourceStatus` değeri.                                                                                                           |
 
 `status` sinyali, kaynağın durumunu bir string sabiti kullanarak tanımlayan belirli bir `ResourceStatus` sağlar.
 
@@ -229,10 +231,20 @@ Her anlık görüntü bir `status` ve bir `value` veya `error` içerir.
 
 ### Snapshot'lar ile resource'ları birleştirme
 
+IMPORTANT: `resourceFromSnapshots` [deneyseldir](reference/releases#deneysel). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
+
 `resourceFromSnapshots` kullanarak anlık görüntülerden yeni kaynaklar oluşturabilirsiniz. Bu, kaynak davranışını dönüştürmek için `computed` ve `linkedSignal` gibi sinyal API'leri ile bileşimi mümkün kılar.
 
 ```ts
-import {linkedSignal, resourceFromSnapshots, Resource, ResourceSnapshot} from '@angular/core';
+import {
+  Component,
+  input,
+  linkedSignal,
+  resourceFromSnapshots,
+  Resource,
+  ResourceSnapshot,
+} from '@angular/core';
+import {httpResource} from '@angular/common/http';
 
 function withPreviousValue<T>(input: Resource<T>): Resource<T> {
   const derived = linkedSignal<ResourceSnapshot<T>, ResourceSnapshot<T>>({

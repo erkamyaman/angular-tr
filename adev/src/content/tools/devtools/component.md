@@ -74,3 +74,7 @@ Hydration durumu, kaplama (overlay) etkinleştirilerek uygulamanın kendisi üze
 <img src="assets/images/guide/devtools/hydration-overlay-ecom.png" />
 
 İşte bir Angular e-ticaret örnek uygulamasındaki hydration kaplamalarının bir gösterimi.
+
+### Sinyal grafiğinde hata ayıklama
+
+Bir bileşenin sinyallerinin, computed'larının ve effect'lerinin birbirine nasıl bağlı olduğunu görselleştirmek için [Sinyal grafiğinde hata ayıklama](tools/devtools/signals) bölümüne bakın.

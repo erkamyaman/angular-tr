@@ -180,7 +180,8 @@ Her iki kural da çalıştıktan sonra, `state.metadata(HELP)!()` yalnızca ikin
 Katkıları birleştirmek için `createMetadataKey()`'e bir indirgeyici geçirin. Bir indirgeyici, tek tek değerleri biriken bir sonuca nasıl katlayacağını açıklar:
 
 ```ts
-import {createMetadataKey, MetadataReducer} from '@angular/forms/signals';
+import {createMetadataKey, MetadataReducer, form, metadata} from '@angular/forms/signals';
+import {model} from '@angular/core';
 
 const HELP = createMetadataKey<string, string[]>(MetadataReducer.list());
 

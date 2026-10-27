@@ -5,7 +5,8 @@
 
 `href` özniteliğine sahip HTML `base` etiketi, göreli bağlantılar için temel URI'yi veya URL'yi belirtir.
 [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyasında `"localize"` seçeneğini `true` veya bir yerel ayar kimlikleri dizisine ayarlarsanız, CLI her uygulama sürümü için temel `href`'i ayarlar.
-Her uygulama sürümü için temel `href`'i ayarlamak amacıyla CLI, yapılandırılmış `"subPath"`'e yerel ayarı ekler.
+Her uygulama sürümü için temel `href`'i ayarlamak amacıyla CLI, yapılandırılmış `"subPath"` değerini yerel ayar için URL segmenti olarak kullanır.
+`"subPath"` ayarlamazsanız varsayılan olarak yerel ayar kimliği kullanılır.
 [`angular.json`][GuideWorkspaceConfig] çalışma alanı derleme yapılandırma dosyanızda her yerel ayar için `"subPath"` belirtin.
 Aşağıdaki örnek, boş bir dizeye ayarlanmış `"subPath"`'i gösterir.
 
