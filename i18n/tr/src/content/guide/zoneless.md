@@ -52,7 +52,7 @@ Bu bildirimler şunları içerir:
 
 ### `OnPush` Uyumlu Bileşenler {#onpush-compatible-components}
 
-Bir bileşenin yukarıdaki doğru bildirim mekanizmalarını kullandığından emin olmanın bir yolu [ChangeDetectionStrategy.OnPush](/best-practices/skipping-subtrees#onpush-kullanımı) kullanmaktır.
+Bir bileşenin yukarıdaki doğru bildirim mekanizmalarını kullandığından emin olmanın bir yolu [ChangeDetectionStrategy.OnPush](/best-practices/skipping-subtrees#using-onpush) kullanmaktır.
 
 `OnPush` değişiklik algılama stratejisi zorunlu değildir, ancak uygulama bileşenleri için zoneless uyumluluğuna doğru önerilen bir adımdır. Kütüphane bileşenlerinin `ChangeDetectionStrategy.OnPush` kullanması her zaman mümkün değildir.
 Bir kütüphane bileşeni, `ChangeDetectionStrategy.Eager`/`Default` kullanabilen kullanıcı bileşenleri için bir host olduğunda, `OnPush` kullanılamaz çünkü bu, alt bileşenin `OnPush` uyumlu olmaması ve değişiklik algılamayı tetiklemek için ZoneJS'e bağlı olması durumunda yenilenmesini engelleyecektir. Bileşenler, Angular'a değişiklik algılamanın ne zaman çalıştırılması gerektiğini bildirdikleri sürece (`markForCheck` çağırma, sinyal kullanma, `AsyncPipe` vb.) `Default` stratejisini kullanabilirler.
@@ -141,6 +141,6 @@ IMPORTANT: `fixture.changeDetectorRef`, fixture'ın host görünümüne aittir; 
 
 ### Güncellemelerin Algılandığından Emin Olmak İçin Hata Ayıklama Modu Kontrolü {#debug-mode-check-to-ensure-updates-are-detected}
 
-IMPORTANT: `provideCheckNoChangesConfig` [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
+IMPORTANT: `provideCheckNoChangesConfig` [geliştirici önizlemesindedir](reference/releases#developer-preview).
 
 Angular ayrıca bir uygulamanın durumu zoneless uyumlu bir şekilde güncellediğini doğrulamaya yardımcı olmak için ek bir araç sağlar. `provideCheckNoChangesConfig({exhaustive: true, interval: <milliseconds>}})` periyodik olarak hiçbir bağlamanın bir bildirim olmadan güncellenmediğinden emin olmak için kontrol etmek üzere kullanılabilir. Angular, zoneless değişiklik algılama tarafından yenilenmeyecek güncellenmiş bir bağlama varsa `ExpressionChangedAfterItHasBeenCheckedError` fırlatır.

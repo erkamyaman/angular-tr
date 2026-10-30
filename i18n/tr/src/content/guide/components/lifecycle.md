@@ -168,7 +168,7 @@ Bu yöntem çok sık çalışır ve sayfa performansınızı önemli ölçüde e
 
 `ngAfterViewInit` yöntemi, bileşenin şablonundaki tüm alt elemanlar (_görünümü_) başlatıldıktan sonra bir kez çalışır.
 
-Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/queries#decorator-view-queries)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/queries#view-queries)'nın sonuçlarını okumak için kullanabilirsiniz. Bu sorguların başlatılmış durumuna erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
 ### ngAfterViewChecked
 
@@ -176,7 +176,7 @@ Bu yaşam döngüsü kancasını [görünüm sorguları](guide/components/querie
 
 Bu yöntem çok sık çalışır ve sayfa performansınızı önemli ölçüde etkileyebilir. Bu kancayı mümkün olduğunda tanımlamaktan kaçının ve yalnızca başka bir alternatifiniz olmadığında kullanın.
 
-[Görünüm sorguları](guide/components/queries#decorator-view-queries)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
+[Görünüm sorguları](guide/components/queries#view-queries)'nın güncellenmiş durumuna burada erişebilirsiniz, ancak bu yöntemde herhangi bir durumu değiştirmeye çalışmak [ExpressionChangedAfterItHasBeenCheckedError](errors/NG0100) hatasına neden olur.
 
 ### afterEveryRender ve afterNextRender {#aftereveryrender-and-afternextrender}
 

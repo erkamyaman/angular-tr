@@ -49,7 +49,7 @@ ng e2e
 
 ```
 
-Entegre e2e paketlerinden herhangi biriyle testlerinizi çalıştırmanın "özel" bir tarafı olmadığını unutmayın. `ng e2e` komutu aslında arka planda `e2e` builder'ını çalıştırmaktadır. `e2e` adında her zaman [kendi özel builder'ınızı oluşturabilir](tools/cli/cli-builder#builder-oluşturma) ve `ng e2e` kullanarak çalıştırabilirsiniz.
+Entegre e2e paketlerinden herhangi biriyle testlerinizi çalıştırmanın "özel" bir tarafı olmadığını unutmayın. `ng e2e` komutu aslında arka planda `e2e` builder'ını çalıştırmaktadır. `e2e` adında her zaman [kendi özel builder'ınızı oluşturabilir](tools/cli/cli-builder#creating-a-builder) ve `ng e2e` kullanarak çalıştırabilirsiniz.
 
 ## Uçtan Uca Test Araçları Hakkında Daha Fazla Bilgi {#more-information-on-end-to-end-testing-tools}
 

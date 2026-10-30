@@ -11,7 +11,7 @@ Otomatik yeniden düzenleme şemasını kullanmadan önce, projenizi Vitest test
 
 ### 1. Bağımlılıkları yükleme {#1-install-dependencies}
 
-`vitest` ve bir DOM emülasyon kütüphanesi yükleyin. Tarayıcı testi hâlâ mümkün olsa da ([adım 5](#5-tarayıcı-modunu-yapılandırma-isteğe-bağlı) bakın), Vitest daha hızlı test yürütme için Node.js içinde tarayıcı ortamını simüle etmek üzere varsayılan olarak bir DOM emülasyon kütüphanesi kullanır. CLI, yüklüyse `happy-dom`'u otomatik olarak algılayıp kullanır; aksi takdirde `jsdom`'a geri döner. Bu paketlerden birinin yüklü olması gerekir.
+`vitest` ve bir DOM emülasyon kütüphanesi yükleyin. Tarayıcı testi hâlâ mümkün olsa da ([adım 5](#5-configure-browser-mode-optional) bakın), Vitest daha hızlı test yürütme için Node.js içinde tarayıcı ortamını simüle etmek üzere varsayılan olarak bir DOM emülasyon kütüphanesi kullanır. CLI, yüklüyse `happy-dom`'u otomatik olarak algılayıp kullanır; aksi takdirde `jsdom`'a geri döner. Bu paketlerden birinin yüklü olması gerekir.
 
 <docs-code-multifile>
   <docs-code header="npm" language="shell">
@@ -230,7 +230,7 @@ Varsayılan ayarları geçersiz kılmak için özel bir Vitest yapılandırma do
 
 Yine de, mevcut test paketlerinizi yerel `async` ve Vitest sahte zamanlayıcılarına dönüştürmeyi planlamaya başlamanızı kuvvetle öneririz; çünkü yerleşik yaklaşım budur.
 
-Vitest ile sahte zamanlayıcı kullanımı için [burada bir örneğe](/guide/testing/components-scenarios#vitest-sahte-zamanlayıcıları-ile-asenkron-test) bakın.
+Vitest ile sahte zamanlayıcı kullanımı için [burada bir örneğe](/guide/testing/components-scenarios#async-test-with-a-vitest-fake-timers) bakın.
 
 ## Hata raporları {#bug-reports}
 

@@ -153,7 +153,7 @@ TypeScript, atamayı kendi tür sistemine göre kontrol eder ve uygulamada yapı
 
 Şablon tür denetleyicisine daha spesifik şablon içi tür gereksinimleri sağlayarak çalışma zamanı tür hatalarından kaçının.
 Direktif tanımında şablon koruma fonksiyonları sağlayarak kendi direktifleriniz için girdi türü gereksinimlerini mümkün olduğunca spesifik hale getirin.
-Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) bölümüne bakın.
+Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) bölümüne bakın.
 
 ### Katı null denetimleri {#strict-null-checks}
 
@@ -198,7 +198,7 @@ Bu örnekte, derleyici TypeScript kodunda olduğu gibi nullability'deki tür uyu
 Bir kütüphane yazarı olarak, kullanıcılarınız için en iyi deneyimi sağlamak adına birkaç önlem alabilirsiniz.
 İlk olarak, `strictNullChecks`'i etkinleştirmek ve girdinin türüne uygun şekilde `null` dahil etmek, tüketicilerinize nullable bir değer sağlayıp sağlayamayacaklarını iletir.
 Ek olarak, şablon tür denetleyicisine özel tür ipuçları sağlamak da mümkündür.
-Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) ve [Input setter coercion](#girdi-setter-zorlaması) bölümlerine bakın.
+Bu kılavuzdaki [Improving template type checking for custom directives](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) ve [Input setter coercion](#input-setter-coercion) bölümlerine bakın.
 
 ## Girdi setter zorlaması {#input-setter-coercion}
 

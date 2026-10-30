@@ -58,7 +58,7 @@ Joker karakter, animasyonu yapılan durum tetikleyici içinde bildirilmemişse k
 ### Void durumu {#void-state}
 
 Sayfaya giren veya sayfadan ayrılan bir eleman için geçişleri yapılandırmak için `void` durumunu kullanın.
-[Görünüme girme ve görünümden ayrılma animasyonları](guide/legacy-animations/transition-and-triggers#enter-ve-leave-takma-adları) konusuna bakın.
+[Görünüme girme ve görünümden ayrılma animasyonları](guide/legacy-animations/transition-and-triggers#aliases-enter-and-leave) konusuna bakın.
 
 ### Joker karakter ve void durumlarını birleştirme {#combine-wildcard-and-void-states}
 

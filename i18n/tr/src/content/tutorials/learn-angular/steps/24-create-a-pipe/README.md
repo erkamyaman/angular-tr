@@ -3,7 +3,7 @@
 
 Veri dönüştürme ihtiyaçlarınıza uygun özel pipe'lar oluşturabilirsiniz.
 
-NOTE: [Detaylı kılavuzda özel pipe oluşturma](/guide/templates/pipes#özel-pipelar-oluşturma) hakkında daha fazla bilgi edinin.
+NOTE: [Detaylı kılavuzda özel pipe oluşturma](/guide/templates/pipes#creating-custom-pipes) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, özel bir pipe oluşturacak ve şablonunuzda kullanacaksınız.
 

@@ -15,7 +15,7 @@ Aşağıdaki durumlarda kullanılabilir bir enjeksiyon bağlamınız olur:
 
 Bir enjeksiyon bağlamında ne zaman olduğunuzu bilmek, bağımlılıkları almak için [`inject`](api/core/inject) fonksiyonunu kullanmanıza olanak tanır.
 
-NOTE: Sınıf constructor'larında ve alan başlatıcılarında `inject()` kullanmanın temel örnekleri için [genel bakış kılavuzuna](/guide/di#inject-nerede-kullanılabilir) bakın.
+NOTE: Sınıf constructor'larında ve alan başlatıcılarında `inject()` kullanmanın temel örnekleri için [genel bakış kılavuzuna](/guide/di#where-can-inject-be-used) bakın.
 
 ## Bağlamdaki yığın çerçevesi {#stack-frame-in-context}
 

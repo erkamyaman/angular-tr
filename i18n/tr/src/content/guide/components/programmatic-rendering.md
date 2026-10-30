@@ -394,7 +394,7 @@ export class PopupService {
 
 ## Render hatalarını ele alma {#handling-rendering-errors}
 
-IMPORTANT: `onError` seçeneği ve `ErrorDetails` parametresi [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
+IMPORTANT: `onError` seçeneği ve `ErrorDetails` parametresi [geliştirici önizlemesindedir](reference/releases#developer-preview).
 
 `ViewContainerRef.createComponent` veya bağımsız `createComponent` fonksiyonunu kullanarak bileşenleri dinamik olarak oluştururken, render veya değişiklik algılama aşamalarında oluşan hataları ele almak için seçenekler nesnesinde bir `onError` callback'i sağlayabilirsiniz. Bu, şablonlarda bir `@error` bloğu kullanmanın programatik karşılığıdır.
 

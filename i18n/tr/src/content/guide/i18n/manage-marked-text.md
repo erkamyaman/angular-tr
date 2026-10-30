@@ -83,4 +83,4 @@ Her iki öğe de artık aynı çeviriyi \(`Bonjour`\) kullanır, çünkü her ik
 <docs-code path="adev/src/content/examples/i18n/doc-files/rendered-output.html"/>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API | Angular'
-[GuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges]: guide/i18n/prepare#h1-örneği 'How meanings control text extraction and merges - Prepare components for translations | Angular'
+[GuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges]: guide/i18n/prepare#h1-example 'How meanings control text extraction and merges - Prepare components for translations | Angular'

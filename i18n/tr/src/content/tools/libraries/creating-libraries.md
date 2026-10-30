@@ -21,7 +21,7 @@ ng generate library my-lib
 <docs-callout title="Kütüphanenizi adlandırma">
 
 Kütüphanenizi daha sonra npm gibi herkese açık bir paket kayıt defterinde yayınlamak istiyorsanız, adını seçerken çok dikkatli olmalısınız.
-Bkz. [Publishing your library](tools/libraries/creating-libraries#kütüphanenizi-yayınlama).
+Bkz. [Publishing your library](tools/libraries/creating-libraries#publishing-your-library).
 
 `ng-library` gibi `ng-` ön ekiyle başlayan bir ad kullanmaktan kaçının.
 `ng-` ön eki, Angular framework'ü ve kütüphaneleri tarafından kullanılan ayrılmış bir anahtar kelimedir.
@@ -32,10 +32,10 @@ Ayrıca kayıt defteri tüketicilerinin farklı JavaScript framework'lerinin kü
 
 `ng generate` komutu, çalışma alanınızda bir bileşen içeren `projects/my-lib` klasörünü oluşturur.
 
-HELPFUL: Bir kütüphane projesinin nasıl yapılandırıldığına ilişkin daha fazla ayrıntı için [Çalışma alanı ve proje dosya yapısı kılavuzunun](reference/configs/file-structure) [Kütüphane proje dosyaları](reference/configs/file-structure#kütüphane-proje-dosyaları) bölümüne bakın.
+HELPFUL: Bir kütüphane projesinin nasıl yapılandırıldığına ilişkin daha fazla ayrıntı için [Çalışma alanı ve proje dosya yapısı kılavuzunun](reference/configs/file-structure) [Kütüphane proje dosyaları](reference/configs/file-structure#library-project-files) bölümüne bakın.
 
 Aynı çalışma alanını birden fazla proje için kullanmak üzere monorepo modelini kullanın.
-Bkz. [Çoklu proje çalışma alanı kurulumu](reference/configs/file-structure#çoklu-projeler).
+Bkz. [Çoklu proje çalışma alanı kurulumu](reference/configs/file-structure#multiple-projects).
 
 Yeni bir kütüphane oluşturduğunuzda, çalışma alanı yapılandırma dosyası `angular.json`, `library` türünde bir projeyle güncellenir.
 
@@ -195,7 +195,7 @@ Bir kütüphane genellikle bir projeye aktardığınız bileşenler, servisler v
 Bir kütüphane, yayınlama ve paylaşım için bir npm paketine paketlenir.
 Bu paket ayrıca, CLI'nin `ng generate component` ile genel yeni bir bileşen oluşturmasıyla aynı şekilde, doğrudan projenizde kod oluşturmak veya dönüştürmek için talimatlar sağlayan şematikler de içerebilir.
 Bir kütüphaneyle paketlenmiş bir şematik, örneğin Angular CLI'ye, o kütüphanede tanımlanmış belirli bir özelliği veya özellik kümesini yapılandıran ve kullanan bir bileşen oluşturmak için gereken bilgileri sağlayabilir.
-Bunun bir örneği, CDK'nın [BreakpointObserver](https://material.angular.dev/cdk/layout/overview#breakpointobserver)'ını yapılandıran ve bunu Material'in [MatSideNav](https://material.angular.dev/components/sidenav/overview) ve [MatToolbar](https://material.angular.dev/components/toolbar/overview) bileşenleriyle kullanan [Angular Material'in navigasyon şematiği](https://material.angular.dev/guide/schematics#navigation-schematic)dir.
+Bunun bir örneği, CDK'nın [BreakpointObserver](https://material.angular.dev/cdk/layout/overview#navigation-schematic)'ını yapılandıran ve bunu Material'in [MatSideNav](https://material.angular.dev/components/sidenav/overview) ve [MatToolbar](https://material.angular.dev/components/toolbar/overview) bileşenleriyle kullanan [Angular Material'in navigasyon şematiği](https://material.angular.dev/guide/schematics#breakpointobserver)dir.
 
 Aşağıdaki türde şematikler oluşturun ve dahil edin:
 
@@ -220,7 +220,7 @@ Daha fazla bilgi için bkz. [Schematics kullanarak kod oluşturma](tools/cli/sch
 Kütüphanenizi bir npm paketi olarak derlemek ve yayınlamak için Angular CLI'yi ve npm paket yöneticisini kullanın.
 
 Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/README.md) adlı bir araç kullanır.
-`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Kütüphaneleri yayınlama](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
+`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Kütüphaneleri yayınlama](tools/libraries/creating-libraries#publishing-libraries).
 
 Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını kullanarak derlemelisiniz.
 Bu, oluşturulan çıktının uygun optimizasyonları ve npm için doğru paket formatını kullanmasını sağlar.

@@ -111,4 +111,4 @@ Angular Aria her senaryoya uymayabilir:
 
 ## Sonraki adımlar {#next-steps}
 
-Yan navigasyondan veya [yukarıdaki listeden](#neler-dahil) bir bileşene göz atın veya Angular Aria yönergelerinin nasıl çalıştığının tam bir örneğini görmek için [Toolbar](guide/aria/toolbar) ile başlayın!
+Yan navigasyondan veya [yukarıdaki listeden](#whats-included) bir bileşene göz atın veya Angular Aria yönergelerinin nasıl çalıştığının tam bir örneğini görmek için [Toolbar](guide/aria/toolbar) ile başlayın!

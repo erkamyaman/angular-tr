@@ -40,7 +40,7 @@ const firstName = computed(() => {
 
 `params` özelliği, bir parametre değeri üreten reaktif bir hesaplama tanımlar. Bu hesaplamada okunan sinyaller değiştiğinde, kaynak `computed`'a benzer şekilde yeni bir parametre değeri üretir.
 
-`loader` özelliği bir `ResourceLoader` tanımlar-- bir miktar durum alan asenkron bir fonksiyon. Kaynak, `params` hesaplaması yeni bir değer ürettiğinde yükleyiciyi çağırır ve o değeri yükleyiciye iletir. Daha fazla ayrıntı için aşağıdaki [Resource yükleyicileri](#resource-loaderları) bölümüne bakın.
+`loader` özelliği bir `ResourceLoader` tanımlar-- bir miktar durum alan asenkron bir fonksiyon. Kaynak, `params` hesaplaması yeni bir değer ürettiğinde yükleyiciyi çağırır ve o değeri yükleyiciye iletir. Daha fazla ayrıntı için aşağıdaki [Resource yükleyicileri](#resource-loaders) bölümüne bakın.
 
 `Resource`, yükleyicinin sonuçlarını içeren bir `value` sinyaline sahiptir.
 
@@ -54,7 +54,7 @@ Bir kaynak oluştururken bir `ResourceLoader` belirtirsiniz. Bu yükleyici, tek 
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `params`      | Kaynağın `params` hesaplamasının değeri.                                                                                                                                        |
 | `previous`    | Önceki `ResourceStatus` değerini içeren, `status` özelliğine sahip bir nesne.                                                                                                   |
-| `abortSignal` | Bir [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). Ayrıntılar için aşağıdaki [Request'leri iptal etme](#requestleri-iptal-etme) bölümüne bakın. |
+| `abortSignal` | Bir [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). Ayrıntılar için aşağıdaki [Request'leri iptal etme](#aborting-requests) bölümüne bakın. |
 
 `params` hesaplaması `undefined` döndürürse, yükleyici fonksiyon çalışmaz ve kaynak durumu `'idle'` olur.
 
@@ -232,7 +232,7 @@ Her anlık görüntü bir `status` ve bir `value` veya `error` içerir.
 
 ### Snapshot'lar ile resource'ları birleştirme {#composing-resources-with-snapshots}
 
-IMPORTANT: `resourceFromSnapshots` [deneyseldir](reference/releases#deneysel). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
+IMPORTANT: `resourceFromSnapshots` [deneyseldir](reference/releases#experimental). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
 
 `resourceFromSnapshots` kullanarak anlık görüntülerden yeni kaynaklar oluşturabilirsiniz. Bu, kaynak davranışını dönüştürmek için `computed` ve `linkedSignal` gibi sinyal API'leri ile bileşimi mümkün kılar.
 

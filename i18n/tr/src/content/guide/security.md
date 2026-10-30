@@ -22,7 +22,7 @@ Angular uygulamanızın güvenli olmasını sağlamak için bazı en iyi uygulam
 
 1. **En son Angular kütüphane sürümleriyle güncel kalın** - Angular kütüphaneleri düzenli olarak güncellenir ve bu güncellemeler önceki sürümlerde keşfedilen güvenlik açıklarını düzeltebilir. Güvenlikle ilgili güncellemeler için Angular [değişiklik günlüğünü](https://github.com/angular/angular/blob/main/CHANGELOG.md) kontrol edin.
 2. **Angular kopyanızı değiştirmeyin** - Özel, kişiselleştirilmiş Angular sürümleri mevcut sürümün gerisinde kalma eğilimindedir ve önemli güvenlik düzeltmeleri ve iyileştirmeler içermeyebilir. Bunun yerine, Angular iyileştirmelerinizi toplulukla paylaşın ve bir pull request yapın.
-3. **Belgelerde "_Güvenlik Riski_" olarak işaretlenmiş Angular API'lerinden kaçının** - Daha fazla bilgi için bu sayfanın [Güvenli değerlere güvenme](#güvenli-değerlere-güvenme) bölümüne bakın.
+3. **Belgelerde "_Güvenlik Riski_" olarak işaretlenmiş Angular API'lerinden kaçının** - Daha fazla bilgi için bu sayfanın [Güvenli değerlere güvenme](#trusting-safe-values) bölümüne bakın.
 
 ## Siteler arası komut dosyası çalıştırmayı (XSS) önleme {#preventing-cross-site-scripting-xss}
 
@@ -39,16 +39,16 @@ Saldırgan kontrollü veriler DOM'a girerse, güvenlik açıkları bekleyin.
 
 XSS hatalarını sistematik olarak engellemek için Angular, varsayılan olarak tüm değerleri güvenilmez olarak değerlendirir.
 Bir değer şablon bağlayıcı veya enterpolasyon yoluyla DOM'a eklendiğinde, Angular güvenilmez değerleri sterilize eder ve kaçırır.
-Bir değer Angular dışında zaten sterilize edilmişse ve güvenli kabul ediliyorsa, değeri [güvenilir olarak işaretleyerek](#güvenli-değerlere-güvenme) bunu Angular'a bildirin.
+Bir değer Angular dışında zaten sterilize edilmişse ve güvenli kabul ediliyorsa, değeri [güvenilir olarak işaretleyerek](#trusting-safe-values) bunu Angular'a bildirin.
 
 Render için kullanılacak değerlerin aksine, Angular şablonları varsayılan olarak güvenilir kabul edilir ve çalıştırılabilir kod olarak değerlendirilmelidir.
 Asla kullanıcı girişi ve şablon sözdizimini birleştirerek şablonlar oluşturmayın.
 Bunu yapmak, saldırganların uygulamanıza [rastgele kod enjekte etmesine](https://en.wikipedia.org/wiki/Code_injection) olanak tanır.
-Bu güvenlik açıklarını önlemek için üretim dağıtımlarında her zaman varsayılan [Ahead-Of-Time (AOT) şablon derleyicisini](#aot-şablon-derleyicisini-kullanın) kullanın.
+Bu güvenlik açıklarını önlemek için üretim dağıtımlarında her zaman varsayılan [Ahead-Of-Time (AOT) şablon derleyicisini](#use-the-aot-template-compiler) kullanın.
 
 İçerik güvenlik politikası ve Güvenilir Türler kullanımıyla ek bir koruma katmanı sağlanabilir.
 Bu web platform özellikleri, XSS sorunlarını önlemek için en etkili yer olan DOM düzeyinde çalışır. Burada diğer, daha düşük seviyeli API'ler kullanılarak atlanamaz.
-Bu nedenle, bu özelliklerden yararlanmanız kesinlikle teşvik edilir. Bunu yapmak için uygulama için [içerik güvenlik politikasını](#content-security-policy) yapılandırın ve [güvenilir tür uygulamasını](#güvenilir-türleri-zorlama) etkinleştirin.
+Bu nedenle, bu özelliklerden yararlanmanız kesinlikle teşvik edilir. Bunu yapmak için uygulama için [içerik güvenlik politikasını](#content-security-policy) yapılandırın ve [güvenilir tür uygulamasını](#enforcing-trusted-types) etkinleştirin.
 
 ### Sterilizasyon ve güvenlik bağlamları {#sanitization-and-security-contexts}
 
@@ -96,7 +96,7 @@ DOM ile doğrudan etkileşimden kaçının ve mümkün olduğunda Angular şablo
 
 Bunun kaçınılmaz olduğu durumlar için yerleşik Angular sterilizasyon fonksiyonlarını kullanın.
 Güvenilmez değerleri [DomSanitizer.sanitize](api/platform-browser/DomSanitizer#sanitize) yöntemi ve uygun `SecurityContext` ile sterilize edin.
-Bu fonksiyon ayrıca `bypassSecurityTrust` fonksiyonları kullanılarak güvenilir olarak işaretlenmiş değerleri de kabul eder ve [aşağıda açıklandığı](#güvenli-değerlere-güvenme) gibi bunları sterilize etmez.
+Bu fonksiyon ayrıca `bypassSecurityTrust` fonksiyonları kullanılarak güvenilir olarak işaretlenmiş değerleri de kabul eder ve [aşağıda açıklandığı](#trusting-safe-values) gibi bunları sterilize etmez.
 
 ### Güvenli değerlere güvenme {#trusting-safe-values}
 
@@ -180,7 +180,7 @@ Bir nonce'un "tek seferlik kullanım" bütünlüğünü korumak için, ideal ola
 
 </docs-callout>
 
-NOTE: Uygulamanızın [kritik CSS'ini satır içi yapmak](/tools/cli/build#kritik-css-satır-içi-yerleştirme) istiyorsanız, `CSP_NONCE` token'ını kullanamazsınız ve [çalışma alanı yapılandırmasındaki](reference/configs/workspace-config#ek-derleme-ve-test-seçenekleri) `security.autoCsp` seçeneğini veya kök uygulama öğesinde `ngCspNonce` niteliğini ayarlamayı tercih etmelisiniz.
+NOTE: Uygulamanızın [kritik CSS'ini satır içi yapmak](/tools/cli/build#critical-css-inlining) istiyorsanız, `CSP_NONCE` token'ını kullanamazsınız ve [çalışma alanı yapılandırmasındaki](reference/configs/workspace-config#extra-build-and-test-options) `security.autoCsp` seçeneğini veya kök uygulama öğesinde `ngCspNonce` niteliğini ayarlamayı tercih etmelisiniz.
 
 Projenizde nonce oluşturamıyorsanız, CSP başlığının `style-src` bölümüne `'unsafe-inline'` ekleyerek satır içi stillere izin verebilirsiniz.
 
@@ -201,7 +201,7 @@ Uygulamanızı `index.html`'yi uçta dönüşüm yapmadan olduğu gibi sunan sta
 
 ##### Satır içi komut dosyalarını `autoCsp` ile hash'leyin {#hash-inline-scripts-with-autocsp}
 
-[Çalışma alanı yapılandırmasında](reference/configs/workspace-config#ek-derleme-ve-test-seçenekleri) `security.autoCsp` seçeneğini `true` olarak ayarlayın.
+[Çalışma alanı yapılandırmasında](reference/configs/workspace-config#extra-build-and-test-options) `security.autoCsp` seçeneğini `true` olarak ayarlayın.
 Derleme zamanında Angular CLI, kritik CSS satır içi ekleme ve alt kaynak bütünlüğü tarafından eklenen komut dosyaları dahil olmak üzere `index.html` içindeki her satır içi komut dosyasının hash'ini hesaplar.
 CLI, `<script src>` öğelerini hash'lenmiş bir yükleyici komut dosyasıyla değiştirir ve `<head>` başında bir `<meta>` etiketi ekler:
 
@@ -515,4 +515,4 @@ IMPORTANT: `trustProxyHeaders` özelliğini yalnızca uygulamanız bu başlıkla
 ## Angular uygulamalarını denetleme {#auditing-angular-applications}
 
 Angular uygulamaları, normal web uygulamalarıyla aynı güvenlik ilkelerine uymalı ve bu şekilde denetlenmelidir.
-Güvenlik incelemesinde denetlenmesi gereken [_bypassSecurityTrust_](#güvenli-değerlere-güvenme) yöntemleri gibi Angular'a özgü API'ler, belgelerde güvenlik açısından hassas olarak işaretlenmiştir.
+Güvenlik incelemesinde denetlenmesi gereken [_bypassSecurityTrust_](#trusting-safe-values) yöntemleri gibi Angular'a özgü API'ler, belgelerde güvenlik açısından hassas olarak işaretlenmiştir.

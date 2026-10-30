@@ -6,7 +6,7 @@ açıklar.
 
 ## Aktif olarak desteklenen sürümler {#actively-supported-versions}
 
-Bu tablo, [aktif destek altındaki Angular sürümlerini](reference/releases#aktif-olarak-desteklenen-sürümler) kapsar.
+Bu tablo, [aktif destek altındaki Angular sürümlerini](reference/releases#actively-supported-versions) kapsar.
 
 | Angular                        | Node.js                             | TypeScript     | RxJS               |
 | ------------------------------ | ----------------------------------- | -------------- | ------------------ |
@@ -113,7 +113,7 @@ HELPFUL: Polyfill'ler eski, yavaş bir tarayıcıyı sihirli bir şekilde modern
 ## CLI projeleri ile polyfill'leri etkinleştirme {#enabling-polyfills-with-cli-projects}
 
 [Angular CLI](tools/cli), polyfill'ler için destek sağlar.
-Projelerinizi oluşturmak için CLI kullanmıyorsanız, [CLI olmayan kullanıcılar için polyfill talimatlarına](#cli-kullanmayan-kullanıcılar-için-polyfilller) bakın.
+Projelerinizi oluşturmak için CLI kullanmıyorsanız, [CLI olmayan kullanıcılar için polyfill talimatlarına](#polyfills-for-non-cli-users) bakın.
 
 [Tarayıcı ve test oluşturucusu](tools/cli/cli-builder)'nun `polyfills` seçenekleri bir dosyanın tam yolu \(Örnek: `src/polyfills.ts`\) veya,
 geçerli çalışma alanına göreceli veya modül belirleyicisi \(Örnek: `zone.js`\) olabilir.

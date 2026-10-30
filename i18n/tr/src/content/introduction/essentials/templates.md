@@ -138,7 +138,7 @@ Angular'ın `@for` bloğu ile bir şablonun bir kısmını birden fazla kez tekr
 </ul>
 ```
 
-Angular, yukarıdaki örnekte gösterilen `track` anahtar kelimesini, `@for` tarafından oluşturulan DOM elementleriyle verileri ilişkilendirmek için kullanır. Daha fazla bilgi için [_@for bloklarında track neden önemlidir?_](guide/templates/control-flow#for-bloklarında-track-neden-önemlidir) bölümüne bakın.
+Angular, yukarıdaki örnekte gösterilen `track` anahtar kelimesini, `@for` tarafından oluşturulan DOM elementleriyle verileri ilişkilendirmek için kullanır. Daha fazla bilgi için [_@for bloklarında track neden önemlidir?_](guide/templates/control-flow#why-is-track-in-for-blocks-important) bölümüne bakın.
 
 TIP: Angular şablonları hakkında daha fazla bilgi edinmek ister misiniz? Tüm ayrıntılar için [Detaylı Şablonlar kılavuzuna](guide/templates) bakın.
 

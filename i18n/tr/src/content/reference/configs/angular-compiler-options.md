@@ -133,7 +133,7 @@ Fabrika özetleri kullanırken bunu yapın.
 `false` olduğunda (varsayılan), derlenmiş şablonlardan boş metin düğümlerini kaldırır, bu da daha küçük yayılan şablon fabrika modülleriyle sonuçlanır.
 Boş metin düğümlerini korumak için `true` olarak ayarlayın.
 
-HELPFUL: Hidrasyon kullanırken, varsayılan değer olan `preserveWhitespaces: false` kullanmanız önerilir. Boşlukları korumayı `preserveWhitespaces: true` ekleyerek etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir. Bunun sunucu ve istemci tsconfig dosyaları arasında tutarlı bir şekilde ayarlandığından emin olun. Daha fazla ayrıntı için [hidrasyon kılavuzuna](guide/hydration#boşlukları-koruma-yapılandırması) bakın.
+HELPFUL: Hidrasyon kullanırken, varsayılan değer olan `preserveWhitespaces: false` kullanmanız önerilir. Boşlukları korumayı `preserveWhitespaces: true` ekleyerek etkinleştirmeyi seçerseniz, hidrasyon ile ilgili sorunlarla karşılaşabilirsiniz. Bu henüz tam olarak desteklenen bir yapılandırma değildir. Bunun sunucu ve istemci tsconfig dosyaları arasında tutarlı bir şekilde ayarlandığından emin olun. Daha fazla ayrıntı için [hidrasyon kılavuzuna](guide/hydration#preserve-whitespaces-configuration) bakın.
 
 ### `skipMetadataEmit`
 
@@ -188,10 +188,10 @@ Angular CLI komutu `ng new --strict` kullandığınızda, oluşturulan projenin 
 
 ### `strictTemplates`
 
-`true` olduğunda, [katı şablon tür denetimini](tools/cli/template-typecheck#katı-mod) etkinleştirir.
+`true` olduğunda, [katı şablon tür denetimini](tools/cli/template-typecheck#strict-mode) etkinleştirir.
 
 Bu seçeneğin etkinleştirdiği katılık bayrakları, belirli katı şablon tür denetimi türlerini açıp kapatmanıza olanak tanır.
-[Şablon hatalarını giderme](tools/cli/template-typecheck#şablon-hatalarını-giderme) bölümüne bakın.
+[Şablon hatalarını giderme](tools/cli/template-typecheck#troubleshooting-template-errors) bölümüne bakın.
 Varsayılan değer `true`.
 
 ### `strictStandalone`

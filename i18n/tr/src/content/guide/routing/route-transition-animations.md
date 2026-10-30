@@ -26,7 +26,7 @@ Tarayıcı API'si hakkında daha fazla bilgi için [Chrome Açıklayıcısına](
 
 Angular Router, sorunsuz rota değişiklikleri oluşturmak için view transitions'ı navigasyon yaşam döngüsüne entegre eder. Navigasyon sırasında Yönlendirici:
 
-1. **Navigasyon hazırlığını tamamlar** - Rota eşleştirme, [tembel yükleme](guide/routing/loading-strategies#tembel-yüklenen-bileşenler-ve-routelar), [koruyucular](/guide/routing/route-guards), [kaynaklar](/guide/routing/data-fetching-with-resources) ve [çözücüler](/guide/routing/data-resolvers) çalışır
+1. **Navigasyon hazırlığını tamamlar** - Rota eşleştirme, [tembel yükleme](guide/routing/loading-strategies#lazily-loaded-components-and-routes), [koruyucular](/guide/routing/route-guards), [kaynaklar](/guide/routing/data-fetching-with-resources) ve [çözücüler](/guide/routing/data-resolvers) çalışır
 2. **View transition'ı başlatır** - Rotalar etkinleştirmeye hazır olduğunda Yönlendirici `startViewTransition` çağırır
 3. **DOM'u günceller** - Yönlendirici, geçiş callback'i içinde yeni rotaları etkinleştirir ve eskileri devre dışı bırakır
 4. **Geçişi sonlandırır** - Angular render'ı tamamladığında geçiş Promise'i çözümlenir
@@ -35,7 +35,7 @@ Yönlendiricinin view transition entegrasyonu, [aşamalı geliştirme](https://d
 
 ## Router'da View Transitions'ı etkinleştirme {#enabling-view-transitions-in-the-router}
 
-[Yönlendirici yapılandırmanıza](/guide/routing/define-routes#uygulamanıza-router-ekleme) `withViewTransitions` özelliğini ekleyerek view transitions'ı etkinleştirin. Angular hem standalone hem de NgModule başlatma yaklaşımlarını destekler:
+[Yönlendirici yapılandırmanıza](/guide/routing/define-routes#adding-the-router-to-your-application) `withViewTransitions` özelliğini ekleyerek view transitions'ı etkinleştirin. Angular hem standalone hem de NgModule başlatma yaklaşımlarını destekler:
 
 ### Standalone başlatma {#standalone-bootstrap}
 
@@ -145,7 +145,7 @@ withViewTransitions({
 });
 ```
 
-Bu örnek, navigasyon yalnızca [URL fragment veya sorgu parametrelerini](/guide/routing/read-route-state#sorgu-parametreleri) değiştirdiğinde (aynı sayfa içindeki bağlantı bağlantıları gibi) view transition'ı atlar. `skipTransition()` yöntemi, navigasyonun tamamlanmasına izin verirken animasyonu engeller.
+Bu örnek, navigasyon yalnızca [URL fragment veya sorgu parametrelerini](/guide/routing/read-route-state#query-parameters) değiştirdiğinde (aynı sayfa içindeki bağlantı bağlantıları gibi) view transition'ı atlar. `skipTransition()` yöntemi, navigasyonun tamamlanmasına izin verirken animasyonu engeller.
 
 ## Kullanıcının hareket tercihlerine saygı gösterme {#respecting-the-users-motion-preferences}
 

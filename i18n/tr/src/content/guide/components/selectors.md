@@ -112,6 +112,6 @@ export class YouTubeUploadButton { }
 Bu yaklaşım, bileşenin tüketicilerinin ek çaba harcamadan elemanın tüm standart API'lerini doğrudan kullanmalarına olanak tanır. Bu özellikle `aria-label` gibi ARIA nitelikleri için değerlidir.
 
 Angular, mevcut bir bileşenle eşleşmeyen özel niteliklerle karşılaştığında hata bildirmez. Nitelik seçicileri kullanan bileşenlerde, tüketiciler bileşeni veya NgModule'unu içerir (import) etmeyi unutabilir ve bileşen render edilmeyebilir.
-Daha fazla bilgi için [Bileşenleri içeri aktarma ve kullanma](guide/components#component-dekoratöründe-importlar) belgesine bakın.
+Daha fazla bilgi için [Bileşenleri içeri aktarma ve kullanma](guide/components#imports-in-the-component-decorator) belgesine bakın.
 
 Nitelik seçicileri tanımlayan bileşenler küçük harf, tire ile ayrılmış nitelikler kullanmalıdır. Yukarıda açıklanan aynı önek önerilerini takip edebilirsiniz.

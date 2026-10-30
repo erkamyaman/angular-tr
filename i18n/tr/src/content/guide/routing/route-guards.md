@@ -13,7 +13,7 @@ Angular CLI kullanarak bir rota koruyucusu oluşturabilirsiniz:
 ng generate guard CUSTOM_NAME
 ```
 
-Bu, hangi [rota koruyucusu türünü](#route-guard-türleri) kullanacağınızı seçmenizi isteyecek ve ardından ilgili `CUSTOM_NAME-guard.ts` dosyasını oluşturacaktır.
+Bu, hangi [rota koruyucusu türünü](#types-of-route-guards) kullanacağınızı seçmenizi isteyecek ve ardından ilgili `CUSTOM_NAME-guard.ts` dosyasını oluşturacaktır.
 
 TIP: Angular projenizde ayrı bir TypeScript dosyası oluşturarak da elle bir rota koruyucusu oluşturabilirsiniz. Geliştiriciler genellikle dosyayı diğer dosyalardan ayırt etmek için dosya adına `-guard.ts` son eki ekler.
 
@@ -51,7 +51,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `route`: `ActivatedRouteSnapshot` - Etkinleştirilen rota hakkında bilgi içerir
 - `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const authGuard: CanActivateFn = (
@@ -76,7 +76,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `childRoute`: `ActivatedRouteSnapshot` - Etkinleştirilen alt rotanın "gelecek" anlık görüntüsü (yani yönlendiricinin navigasyon yapmaya çalıştığı durum) hakkında bilgi içerir
 - `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const adminChildGuard: CanActivateChildFn = (
@@ -101,7 +101,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `currentState`: `RouterStateSnapshot` - Geçerli yönlendirici durumunu içerir
 - `nextState`: `RouterStateSnapshot` - Navigasyon yapılan sonraki yönlendirici durumunu içerir
 
-[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir.
 
 ```ts
 export const unsavedChangesGuard: CanDeactivateFn<Form> = (
@@ -128,7 +128,7 @@ Aşağıdaki varsayılan argümanlara erişimi vardır:
 - `segments`: `UrlSegment[]` - Önceki üst rota değerlendirmeleri tarafından tüketilmemiş URL segmentleri
 - `currentSnapshot: PartialMatchRouteSnapshot` - Eşleştirme sürecinde bu noktaya kadarki mevcut rota anlık görüntüsü
 
-[Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir, ancak `false` döndürdüğünde Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
+[Standart koruyucu dönüş türlerini](#route-guard-return-types) döndürebilir, ancak `false` döndürdüğünde Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
 
 ```ts
 export const featureToggleGuard: CanMatchFn = (

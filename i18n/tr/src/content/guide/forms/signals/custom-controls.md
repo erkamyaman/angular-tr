@@ -7,7 +7,7 @@ Tarayıcının yerleşik form kontrolleri (input, select, textarea gibi) yaygın
 
 Signal Forms, belirli arayüzleri uygulayan herhangi bir bileşenle çalışır. Bir **kontrol arayüzü**, bileşeninizin form sistemiyle iletişim kurmasını sağlayan özellikleri ve sinyalleri tanımlar. Bileşeniniz bu arayüzlerden birini uyguladığında, `[formField]` direktifi kontrolünüzü otomatik olarak form durumu, doğrulama ve veri bağlamaya bağlar.
 
-HELPFUL: Özel Signal Form Kontrolleri, ek uyumluluk kodu olmadan Signal, Reactive ve Template-Driven Forms ile [kullanılabilir](guide/forms/signals/migration#özel-kontroller).
+HELPFUL: Özel Signal Form Kontrolleri, ek uyumluluk kodu olmadan Signal, Reactive ve Template-Driven Forms ile [kullanılabilir](guide/forms/signals/migration#custom-controls).
 
 ## Temel bir özel kontrol oluşturma {#creating-a-basic-custom-control}
 
@@ -197,7 +197,7 @@ Formdan doğrulama kısıtlama değerlerini alın:
 | -------- | -------------------------------------------------------------------- |
 | `name`   | Alanın name niteliği (formlar ve uygulamalar genelinde benzersizdir) |
 
-Aşağıdaki "[Adding state signals](#durum-sinyalleri-ekleme)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
+Aşağıdaki "[Adding state signals](#adding-state-signals)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
 
 ### FormField direktifi nasıl çalışır {#how-the-formfield-directive-works}
 

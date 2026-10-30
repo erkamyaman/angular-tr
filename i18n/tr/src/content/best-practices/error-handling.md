@@ -67,7 +67,7 @@ Ne uygulama kodu ne de framework'un uygulama örneği tarafından yakalanmayan h
 
 ### İstemci taraflı renderlama {#client-side-rendering}
 
-[ApplicationConfig](guide/di/defining-dependency-providers#uygulama-başlatma)'e [`provideBrowserGlobalErrorListeners()`](/api/core/provideBrowserGlobalErrorListeners) eklemek, tarayıcı penceresine `'error'` ve `'unhandledrejection'` dinleyicileri ekler ve bu hataları `ErrorHandler`'a iletir. Angular CLI, bu sağlayıcı ile yeni uygulamalar oluşturur. Angular ekibi, çoğu uygulama için framework'un yerleşik dinleyicileri veya kendi özel dinleyicilerinizle bu global hataların işlenmesini önerir. Özel dinleyiciler sağlarsanız, `provideBrowserGlobalErrorListeners`'i kaldırabilirsiniz.
+[ApplicationConfig](guide/di/defining-dependency-providers#application-bootstrap)'e [`provideBrowserGlobalErrorListeners()`](/api/core/provideBrowserGlobalErrorListeners) eklemek, tarayıcı penceresine `'error'` ve `'unhandledrejection'` dinleyicileri ekler ve bu hataları `ErrorHandler`'a iletir. Angular CLI, bu sağlayıcı ile yeni uygulamalar oluşturur. Angular ekibi, çoğu uygulama için framework'un yerleşik dinleyicileri veya kendi özel dinleyicilerinizle bu global hataların işlenmesini önerir. Özel dinleyiciler sağlarsanız, `provideBrowserGlobalErrorListeners`'i kaldırabilirsiniz.
 
 ### Sunucu taraflı ve hibrit renderlama {#server-side-and-hybrid-rendering}
 

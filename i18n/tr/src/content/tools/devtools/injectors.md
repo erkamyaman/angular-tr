@@ -13,7 +13,7 @@ NOTE: Injector Tree, Angular 17 veya üzeri sürümlerle oluşturulmuş Angular 
 
 Belirli bir injector seçildiğinde, Angular'ın bağımlılık enjeksiyonu algoritmasının o injector'dan köke kadar izlediği yol vurgulanır. Öğe injector'ları için bu, bir bağımlılık öğe hiyerarşisinde çözümlenemediğinde bağımlılık enjeksiyonu algoritmasının atladığı ortam injector'larının vurgulanmasını da içerir.
 
-Angular'ın çözümleme yollarını nasıl çözdüğü hakkında daha fazla ayrıntı için [resolution rules](guide/di/hierarchical-dependency-injection#çözümleme-kuralları) bölümüne bakın.
+Angular'ın çözümleme yollarını nasıl çözdüğü hakkında daha fazla ayrıntı için [resolution rules](guide/di/hierarchical-dependency-injection#resolution-rules) bölümüne bakın.
 
 <img src="assets/images/guide/devtools/di-injector-tree-selected.png" alt="Bir enjektör seçildiğinde enjektör ağacı görselleştirmesinin çözümleme yollarını nasıl vurguladığını gösteren 'Profiler' sekmesinin ekran görüntüsü.">
 

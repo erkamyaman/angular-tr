@@ -1,7 +1,7 @@
 <!-- source: 9766071b2099bd4e934dba5fbe1a6c92349ac1b8 -->
 # `debounced` ile sinyalleri geciktirme
 
-IMPORTANT: `debounced` [deneyseldir](reference/releases#deneysel). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
+IMPORTANT: `debounced` [deneyseldir](reference/releases#experimental). Denemeniz için hazırdır, ancak kararlı hale gelmeden önce değişebilir.
 
 Bir sinyalin değerine tepki vermeyi, değer değişmeyi durdurana kadar geciktirmek için `debounced` kullanın. Değeri, kaynak sinyalin gecikmeli (debounced) değerini yansıtan bir `Resource` döndürür.
 
@@ -38,7 +38,7 @@ export class Search {
 
 Gecikme zamanlayıcısı geri sayım yaparken `status()` `'loading'` olur ve `value()` önceden çözümlenmiş değeri döndürür. Zamanlayıcı sona erdiğinde kaynak `'resolved'` durumuna yerleşir. Kaynak sinyal bir hata fırlatırsa, kaynak hiçbir zamanlayıcı çalışmadan anında `'error'` durumuna geçer.
 
-Durumların tam listesi ve `value()` davranışları için [Kaynak durumu](/guide/signals/resource#resource-durumu) bölümüne bakın.
+Durumların tam listesi ve `value()` davranışları için [Kaynak durumu](/guide/signals/resource#resource-status) bölümüne bakın.
 
 ## Özel bekleme fonksiyonu {#custom-wait-function}
 

@@ -18,7 +18,7 @@ LCP görselinin yüklenmesini optimize etmenin yanı sıra, `NgOptimizedImage` a
 - `width` veya `height` yanlış ayarlanmışsa uyarı verme
 - Görsel render edildiğinde görsel olarak bozulacaksa uyarı verme
 
-CSS'te bir arka plan görseli kullanıyorsanız, [buradan başlayın](#arka-plan-görselinizi-nasıl-taşırsınız).
+CSS'te bir arka plan görseli kullanıyorsanız, [buradan başlayın](#how-to-migrate-your-background-image).
 
 NOTE: `NgOptimizedImage` direktifi Angular sürüm 15'te kararlı bir özellik haline getirilmiş olsa da, geriye taşınmış ve 13.4.0 ile 14.3.0 sürümlerinde de kararlı bir özellik olarak mevcuttur.
 
@@ -45,7 +45,7 @@ imports: [
 <docs-step title="(İsteğe bağlı) Bir Yükleyici kurun {#optional-set-up-a-loader}">
 NgOptimizedImage'ı kullanmak için bir görsel yükleyici **gerekli** değildir, ancak bir görsel CDN ile birini kullanmak, görselleriniz için otomatik `srcset`'ler dahil güçlü performans özelliklerini etkinleştirir.
 
-Bir yükleyici kurma hakkında kısa bir kılavuz, bu sayfanın sonundaki [Görsel Yükleyici Yapılandırma](#ngoptimizedimage-için-görsel-yükleyici-yapılandırma) bölümünde bulunabilir.
+Bir yükleyici kurma hakkında kısa bir kılavuz, bu sayfanın sonundaki [Görsel Yükleyici Yapılandırma](#configuring-an-image-loader-for-ngoptimizedimage) bölümünde bulunabilir.
 </docs-step>
 <docs-step title="Direktifi etkinleştirin {#enable-the-directive}">
 `NgOptimizedImage` direktifini etkinleştirmek için görselinizin `src` niteliğini `ngSrc` ile değiştirin.
@@ -54,7 +54,7 @@ Bir yükleyici kurma hakkında kısa bir kılavuz, bu sayfanın sonundaki [Görs
 <img ngSrc="cat.jpg" />
 ```
 
-Bir [yerleşik üçüncü taraf yükleyici](#yerleşik-yükleyiciler) kullanıyorsanız, yükleyici tarafından otomatik olarak ekleneceği için `src`'den temel URL yolunu çıkardığınızdan emin olun.
+Bir [yerleşik üçüncü taraf yükleyici](#built-in-loaders) kullanıyorsanız, yükleyici tarafından otomatik olarak ekleneceği için `src`'den temel URL yolunu çıkardığınızdan emin olun.
 </docs-step>
 <docs-step title="Resimleri `priority` olarak işaretleyin {#mark-images-as-priority}">
 Yüklenmesini önceliklendirmek için sayfanızdaki [LCP görselini](https://web.dev/lcp/#what-elements-are-considered) her zaman `priority` olarak işaretleyin.
@@ -177,7 +177,7 @@ NgOptimizedImage, uygulamanızda yükleme performansını artırmak için tasarl
 
 Görsel kaynağınız için bir [`preconnect` kaynak ipucu](https://web.dev/preconnect-and-dns-prefetch), LCP görselinin mümkün olduğunca hızlı yüklenmesini sağlar.
 
-Preconnect bağlantıları, bir [yükleyiciye](#ngoptimizedimage-için-görsel-yükleyici-yapılandırma) argüman olarak sağlanan alanlar için otomatik olarak oluşturulur. Bir görsel kaynağı otomatik olarak tanımlanamıyorsa ve LCP görseli için bir preconnect bağlantısı algılanmıyorsa, `NgOptimizedImage` geliştirme sırasında uyarı verir. Bu durumda, belge başlığına manuel olarak bir kaynak ipucu eklemelisiniz. Belgenin `<head>` bölümünde, aşağıda gösterildiği gibi `rel="preconnect"` ile bir `link` etiketi ekleyin:
+Preconnect bağlantıları, bir [yükleyiciye](#optional-set-up-a-loader) argüman olarak sağlanan alanlar için otomatik olarak oluşturulur. Bir görsel kaynağı otomatik olarak tanımlanamıyorsa ve LCP görseli için bir preconnect bağlantısı algılanmıyorsa, `NgOptimizedImage` geliştirme sırasında uyarı verir. Bu durumda, belge başlığına manuel olarak bir kaynak ipucu eklemelisiniz. Belgenin `<head>` bölümünde, aşağıda gösterildiği gibi `rel="preconnect"` ile bir `link` etiketi ekleyin:
 
 ```html
 <link rel="preconnect" href="https://my.cdn.origin" />
@@ -193,7 +193,7 @@ providers: [
 
 ```
 
-Otomatik preconnect oluşturma hakkında daha fazla bilgi için [buraya](#görsel-alanım-için-neden-bir-preconnect-öğesi-oluşturulmuyor) bakın.
+Otomatik preconnect oluşturma hakkında daha fazla bilgi için [buraya](#why-is-a-preconnect-element-not-being-generated-for-my-image-domain) bakın.
 
 ### Otomatik `srcset` ile Doğru Boyutta Görsel İsteme {#request-images-at-the-correct-size-with-automatic-srcset}
 
@@ -215,7 +215,7 @@ Görselinizin duyarlı olması gerekiyorsa (yani görünüm alanı boyutuna gör
 
 Daha önce `sizes` kullanmadıysanız, görünüm alanı genişliğine göre ayarlamak iyi bir başlangıç noktasıdır. Örneğin, CSS'iniz görselin görünüm alanı genişliğinin %100'ünü doldurmasına neden oluyorsa, `sizes`'ı `100vw` olarak ayarlayın ve tarayıcı `srcset`'teki görünüm alanı genişliğine en yakın görseli seçecektir (piksel yoğunluğunu hesaba kattıktan sonra). Görselinizin yalnızca ekranın yarısını kaplayacağı tahmin ediliyorsa (örneğin bir kenar çubuğunda), tarayıcının daha küçük bir görsel seçmesini sağlamak için `sizes`'ı `50vw` olarak ayarlayın. Ve böyle devam eder.
 
-Yukarıdakilerin istediğiniz görsel davranışını karşılamadığını fark ederseniz, [gelişmiş sizes değerleri](#gelişmiş-sizes-değerleri) belgelerine bakın.
+Yukarıdakilerin istediğiniz görsel davranışını karşılamadığını fark ederseniz, [gelişmiş sizes değerleri](#advanced-sizes-values) belgelerine bakın.
 
 Tembel yüklenen görseller için `NgOptimizedImage`'ın sağlanan `sizes` değerinin başına otomatik olarak `"auto"` eklediğini unutmayın. Bu, `sizes="auto"` destekleyen tarayıcılarda srcset seçiminin doğruluğunu artıran bir optimizasyondur ve desteklemeyen tarayıcılar tarafından göz ardı edilir. `priority` görseller gibi tembel yüklenmeyen görseller, `sizes` değerini sağlandığı şekilde korur.
 
@@ -437,7 +437,7 @@ Yukarıdaki örnekte, özel yükleyicimizin bir özelliğini kontrol etmek için
 
 NgOptimizedImage, `background-image` CSS özelliğini doğrudan desteklemez, ancak bir görselin başka bir öğenin arka planı olarak kullanılması durumunu kolayca karşılamak için tasarlanmıştır.
 
-`background-image`'dan `NgOptimizedImage`'a geçiş için adım adım bir süreç için yukarıdaki [Arka plan görselinizi nasıl geçirirsiniz](#arka-plan-görselinizi-nasıl-taşırsınız) bölümüne bakın.
+`background-image`'dan `NgOptimizedImage`'a geçiş için adım adım bir süreç için yukarıdaki [Arka plan görselinizi nasıl geçirirsiniz](#how-to-migrate-your-background-image) bölümüne bakın.
 
 ### `NgOptimizedImage` ile neden `src` kullanamıyorum? {#why-cant-i-use-src-with-ngoptimizedimage}
 
@@ -453,13 +453,13 @@ providers: [
 ],
 ```
 
-Alan dizesini yükleyiciye geçirmek için bir değişken kullanırsanız veya bir yükleyici kullanmıyorsanız, statik analiz alanı tanımlayamaz ve hiçbir preconnect bağlantısı oluşturulmaz. Bu durumda, [yukarıda açıklandığı gibi](#kaynak-ipuçları-ekleme) belge başlığına manuel olarak bir preconnect bağlantısı eklemelisiniz.
+Alan dizesini yükleyiciye geçirmek için bir değişken kullanırsanız veya bir yükleyici kullanmıyorsanız, statik analiz alanı tanımlayamaz ve hiçbir preconnect bağlantısı oluşturulmaz. Bu durumda, [yukarıda açıklandığı gibi](#add-resource-hints) belge başlığına manuel olarak bir preconnect bağlantısı eklemelisiniz.
 
 ### Aynı sayfada iki farklı görsel alanı kullanabilir miyim? {#can-i-use-two-different-image-domains-in-the-same-page}
 
-[Görsel yükleyicileri](#ngoptimizedimage-için-görsel-yükleyici-yapılandırma) sağlayıcı kalıbı, bir bileşen içinde yalnızca tek bir görsel CDN kullanmanın yaygın kullanım durumu için mümkün olduğunca basit olacak şekilde tasarlanmıştır. Ancak, tek bir sağlayıcı kullanarak birden fazla görsel CDN'yi yönetmek yine de oldukça mümkündür.
+[Görsel yükleyicileri](#configuring-an-image-loader-for-ngoptimizedimage) sağlayıcı kalıbı, bir bileşen içinde yalnızca tek bir görsel CDN kullanmanın yaygın kullanım durumu için mümkün olduğunca basit olacak şekilde tasarlanmıştır. Ancak, tek bir sağlayıcı kullanarak birden fazla görsel CDN'yi yönetmek yine de oldukça mümkündür.
 
-Bunu yapmak için, hangi görsel CDN'sinin kullanılacağını belirten bir bayrak geçirmek üzere [`loaderParams` özelliğini](#loaderparams-özelliği) kullanan bir [özel görsel yükleyici](#özel-yükleyiciler) yazmanızı ve ardından bu bayrağa göre uygun yükleyiciyi çağırmanızı öneririz.
+Bunu yapmak için, hangi görsel CDN'sinin kullanılacağını belirten bir bayrak geçirmek üzere [`loaderParams` özelliğini](#custom-loaders) kullanan bir [özel görsel yükleyici](#the-loaderparams-property) yazmanızı ve ardından bu bayrağa göre uygun yükleyiciyi çağırmanızı öneririz.
 
 ### Tercih ettiğim CDN için yeni bir yerleşik yükleyici ekleyebilir misiniz? {#can-you-add-a-new-built-in-loader-for-my-preferred-cdn}
 

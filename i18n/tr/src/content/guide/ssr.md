@@ -21,7 +21,7 @@ Mevcut bir projeye `ng add` komutuyla sunucu tarafı render ekleyerek de hibrit 
 ng add @angular/ssr
 ```
 
-NOTE: Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve bir sunucu dosyası oluşturur. Bunu devre dışı bırakıp tamamen statik bir uygulama oluşturmak için `outputMode`'u `static` olarak ayarlayın. SSR'yi etkinleştirmek için sunucu rotalarını `RenderMode.Server` kullanacak şekilde güncelleyin. Daha fazla ayrıntı için [`Server routing`](#sunucu-yönlendirme) ve [`Generate a fully static application`](#generate-a-fully-static-application) bölümlerine bakın.
+NOTE: Varsayılan olarak, Angular tüm uygulamanızı ön-render eder ve bir sunucu dosyası oluşturur. Bunu devre dışı bırakıp tamamen statik bir uygulama oluşturmak için `outputMode`'u `static` olarak ayarlayın. SSR'yi etkinleştirmek için sunucu rotalarını `RenderMode.Server` kullanacak şekilde güncelleyin. Daha fazla ayrıntı için [`Server routing`](#server-routing) ve [`Generate a fully static application`](#generate-a-fully-static-application) bölümlerine bakın.
 
 ## Sunucu yönlendirme {#server-routing}
 
@@ -668,4 +668,4 @@ export const reqHandler = createRequestHandler(async (req: Request) => {
 
 ## Güvenlik {#security}
 
-Sunucu Tarafı İstek Sahteciliğini (SSRF) önleme ve izin verilen ana bilgisayarları yapılandırma hakkında ayrıntılı bilgi için [Sunucu tarafı güvenlik](best-practices/security#sunucu-tarafı-istek-sahteciliğini-ssrf-önleme) kılavuzuna bakın.
+Sunucu Tarafı İstek Sahteciliğini (SSRF) önleme ve izin verilen ana bilgisayarları yapılandırma hakkında ayrıntılı bilgi için [Sunucu tarafı güvenlik](best-practices/security#preventing-server-side-request-forgery-ssrf) kılavuzuna bakın.

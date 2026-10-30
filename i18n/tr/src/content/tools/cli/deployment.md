@@ -43,7 +43,7 @@ Kendi yönettiğiniz bir sunucuya dağıtıyorsanız veya favori bulut platformu
 
 Uygulamanızı manuel olarak dağıtmak için bir üretim derlemesi oluşturun ve çıktı yapıtlarını barındırma ortamınıza dağıtın.
 Varsayılan olarak, `ng build` `production` yapılandırmasını kullanır.
-Derleme yapılandırmalarınızı özelleştirdiyseniz, dağıtımdan önce [üretim optimizasyonlarının](tools/cli/deployment#üretim-optimizasyonları) uygulandığını doğrulamak isteyebilirsiniz.
+Derleme yapılandırmalarınızı özelleştirdiyseniz, dağıtımdan önce [üretim optimizasyonlarının](tools/cli/deployment#production-optimizations) uygulandığını doğrulamak isteyebilirsiniz.
 
 `ng build` derlenen yapıtları varsayılan olarak `dist/my-app/` dizinine çıktılar, ancak bu yol `@angular/build:application` builder'ındaki `outputPath` seçeneğiyle yapılandırılabilir.
 Dağıtmanız gereken şey, uygulamanızın nasıl oluşturulduğuna bağlıdır:
@@ -83,7 +83,7 @@ Bazı sunucular bu yedek davranışı "Tek Sayfa Uygulaması" (SPA) modu olarak 
 Tarayıcı uygulamayı yüklediğinde, Angular yönlendirici hangi sayfada olduğunu belirlemek için URL'yi okuyacak ve `/users/42` sayfasını doğru şekilde görüntüleyecektir.
 
 `http://my-app.test/does-not-exist` gibi "gerçek" 404 sayfaları için sunucunun ek yapılandırma gerektirmez.
-[Angular yönlendiricide uygulanan 404 sayfaları](guide/routing/common-router-tasks#404-sayfası-görüntüleme) doğru şekilde görüntülenecektir.
+[Angular yönlendiricide uygulanan 404 sayfaları](guide/routing/common-router-tasks#displaying-a-404-page) doğru şekilde görüntülenecektir.
 
 ### Farklı Bir Sunucudan Veri İsteme (CORS) {#requesting-data-from-a-different-server-cors}
 
@@ -101,7 +101,7 @@ Belirli sunucular için CORS'u nasıl etkinleştireceğinizi öğrenmek için [e
 | Özellikler                                                                | Ayrıntılar                                                                                                         |
 | :------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
 | [Ahead-of-Time (AOT) Derleme](tools/cli/aot-compiler)                     | Angular bileşen şablonlarını önceden derler.                                                                       |
-| [Üretim modu](tools/cli/deployment#yalnızca-geliştirmeye-özgü-özellikler) | En iyi çalışma zamanı performansı için uygulamayı optimize eder                                                    |
+| [Üretim modu](tools/cli/deployment#development-only-features) | En iyi çalışma zamanı performansı için uygulamayı optimize eder                                                    |
 | Paketleme                                                                 | Birçok uygulama ve kütüphane dosyanızı minimum sayıda dağıtım dosyasına birleştirir.                               |
 | Küçültme                                                                  | Fazla boşlukları, yorumları ve isteğe bağlı belirteçleri kaldırır.                                                 |
 | Karıştırma                                                                | Fonksiyonları, sınıfları ve değişkenleri daha kısa, rastgele tanımlayıcılar kullanacak şekilde yeniden adlandırır. |

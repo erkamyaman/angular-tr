@@ -84,7 +84,7 @@ Parametreli URL'ler, aynı bileşene birden fazla URL'nin erişmesine izin verir
 Bu tür bir kalıbı, rotanızın `path` dizesine parametreler ekleyerek ve her parametreyi iki nokta üst üste (`:`) karakteriyle ön eklendirerek tanımlayabilirsiniz.
 
 IMPORTANT: Parametreler, URL'nin [sorgu dizesindeki](https://en.wikipedia.org/wiki/Query_string) bilgilerden farklıdır.
-[Bu kılavuzda Angular'daki sorgu parametreleri](/guide/routing/read-route-state#sorgu-parametreleri) hakkında daha fazla bilgi edinin.
+[Bu kılavuzda Angular'daki sorgu parametreleri](/guide/routing/read-route-state#query-parameters) hakkında daha fazla bilgi edinin.
 
 Aşağıdaki örnek, URL aracılığıyla geçirilen kullanıcı kimliğine göre bir kullanıcı profili bileşeni görüntüler.
 

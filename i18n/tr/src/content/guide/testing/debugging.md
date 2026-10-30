@@ -16,6 +16,6 @@ Varsayılan Node.js ortamında hata ayıklama, tarayıcıya özgü API'ler veya 
 
 ## Tarayıcıda hata ayıklama {#debugging-in-a-browser}
 
-Node'da bir hata ayıklama oturumu başlattığınız şekilde, Vitest ve [tarayıcı modu](/guide/testing/migrating-to-vitest#5-tarayıcı-modunu-yapılandırma-isteğe-bağlı) ile `ng test`'i `--debug` bayrağı ile kullanabilirsiniz.
+Node'da bir hata ayıklama oturumu başlattığınız şekilde, Vitest ve [tarayıcı modu](/guide/testing/migrating-to-vitest#5-configure-browser-mode-optional) ile `ng test`'i `--debug` bayrağı ile kullanabilirsiniz.
 
 Test çalıştırıcısı hata ayıklama modunda başlar ve testleri hata ayıklamak için tarayıcı geliştirici araçlarını açmanızı bekler.

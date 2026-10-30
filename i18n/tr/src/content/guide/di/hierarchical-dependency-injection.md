@@ -3,7 +3,7 @@
 
 Bu kılavuz, Angular'ın hiyerarşik bağımlılık enjeksiyonu sistemi hakkında çözümleme kuralları, değiştiriciler ve gelişmiş desenler dahil olmak üzere derinlemesine bilgi sağlar.
 
-NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#angularda-injector-hiyerarşisi) bakın.
+NOTE: Enjektör hiyerarşisi ve sağlayıcı kapsamı hakkında temel kavramlar için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injector-hierarchy-in-angular) bakın.
 
 ## Injector hiyerarşi türleri {#types-of-injector-hierarchies}
 
@@ -105,7 +105,7 @@ Tüm istekler, `bootstrapApplication()` yöntemine iletilen `ApplicationConfig` 
 `bootstrapApplication`'ın `ApplicationConfig`'inde uygulama çapında bir sağlayıcı yapılandırırsanız, `@Injectable()` meta verilerinde `root` için yapılandırılmış olanı geçersiz kılar.
 Bunu, birden fazla uygulamayla paylaşılan bir servisin varsayılan olmayan bir sağlayıcısını yapılandırmak için yapabilirsiniz.
 
-İşte bileşen yönlendirici yapılandırmasının, `ApplicationConfig`'in `providers` listesinde sağlayıcısını listeleyerek varsayılan olmayan bir [konum stratejisi](guide/routing/common-router-tasks#locationstrategy-ve-tarayıcı-url-stilleri) içerdiği bir örnek.
+İşte bileşen yönlendirici yapılandırmasının, `ApplicationConfig`'in `providers` listesinde sağlayıcısını listeleyerek varsayılan olmayan bir [konum stratejisi](guide/routing/common-router-tasks#locationstrategy-and-browser-url-styles) içerdiği bir örnek.
 
 ```ts
 providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}];
@@ -130,10 +130,10 @@ Angular, her DOM elemanı için örtük olarak `ElementInjector` hiyerarşileri 
 export class TestComponent
 ```
 
-HELPFUL: `EnvironmentInjector` ağacı, `ModuleInjector` ve `ElementInjector` ağacı arasındaki ilişkiyi anlamak için [çözümleme kuralları](#çözümleme-kuralları) bölümüne bakın.
+HELPFUL: `EnvironmentInjector` ağacı, `ModuleInjector` ve `ElementInjector` ağacı arasındaki ilişkiyi anlamak için [çözümleme kuralları](#resolution-rules) bölümüne bakın.
 
 Bir bileşende servisler sağladığınızda, bu servis o bileşen örneğindeki `ElementInjector` aracılığıyla kullanılabilir.
-[Çözümleme kuralları](#çözümleme-kuralları) bölümünde açıklanan görünürlük kurallarına göre alt bileşen/direktiflerde de görünür olabilir.
+[Çözümleme kuralları](#resolution-rules) bölümünde açıklanan görünürlük kurallarına göre alt bileşen/direktiflerde de görünür olabilir.
 
 Bileşen örneği yok edildiğinde, o servis örneği de yok edilir.
 
@@ -535,7 +535,7 @@ Enjektörün enjektör ağacında daha ileriye bakması gerekmez.
 HELPFUL: Adımlar, `viewProviders` dizisini kullanma dışında `providers` dizisini kullanmakla aynıdır.
 
 Adım adım talimatlar için bu bölümle devam edin.
-Kendiniz ayarlayabiliyorsanız, [Servis kullanılabilirliğini değiştirme](#sağlanan-tokenların-görünürlüğü) bölümüne atlayın.
+Kendiniz ayarlayabiliyorsanız, [Servis kullanılabilirliğini değiştirme](#visibility-of-provided-tokens) bölümüne atlayın.
 
 Gösterim için, `viewProviders`'ı göstermek amacıyla bir `AnimalService` oluşturuyoruz.
 İlk olarak, balina <code>🐳</code> `emoji` özelliğine sahip bir `AnimalService` oluşturun:

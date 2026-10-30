@@ -162,7 +162,7 @@ Angular Router, özelleştirme için dört ana alan sunar:
     <docs-pill href="#route-reuse-strategy" title="Rota yeniden kullanım stratejisi"/>
     <docs-pill href="#preloading-strategy" title="Ön yükleme stratejisi"/>
     <docs-pill href="#url-handling-strategy" title="URL yönetim stratejisi"/>
-    <docs-pill href="#özel-route-eşleştiricileri" title="Özel route eşleştiricileri"/>
+    <docs-pill href="#custom-route-matchers" title="Özel route eşleştiricileri"/>
   </docs-pill-row>
 
 ## Rota yeniden kullanım stratejisi {#route-reuse-strategy}

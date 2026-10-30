@@ -7,7 +7,7 @@ WebMCP, web uygulamalarının yapısal araçları doğrudan tarayıcıda yerel o
 
 Angular, WebMCP için deneysel destek sunar; bu sayede uygulamanızın bağımlılık enjeksiyonu yaşam döngüsüne bağlı araçları kolayca kaydedebilir ve Signal Form'larınızı otomatik olarak yapay zekaya hazır araçlara dönüştürebilirsiniz.
 
-IMPORTANT: WebMCP spesifikasyonu yaşam döngüsünün çok erken bir aşamasındadır ve sık sık değişikliklere uğramaktadır. Bu nedenle, Angular'daki WebMCP desteği şu anda [**deneyseldir**](reference/releases#deneysel). API'ler ana sürümler dışında bile değişikliğe tabidir.
+IMPORTANT: WebMCP spesifikasyonu yaşam döngüsünün çok erken bir aşamasındadır ve sık sık değişikliklere uğramaktadır. Bu nedenle, Angular'daki WebMCP desteği şu anda [**deneyseldir**](reference/releases#experimental). API'ler ana sürümler dışında bile değişikliğe tabidir.
 
 ## Uygulama için araç sağlama {#provide-tools-for-the-application}
 
@@ -161,7 +161,7 @@ export class Counter {
 }
 ```
 
-`declareExperimentalWebMcpTool` herhangi bir enjeksiyon bağlamında çalışsa da, [ad çakışmalarına](#ad-çakışmaları) dikkat edin ve onu kök servislerde kullanmayı tercih edin.
+`declareExperimentalWebMcpTool` herhangi bir enjeksiyon bağlamında çalışsa da, [ad çakışmalarına](#name-collisions) dikkat edin ve onu kök servislerde kullanmayı tercih edin.
 
 ## Signal Form'larda örtük araçlar {#implicit-tools-in-signal-forms}
 

@@ -114,17 +114,17 @@ Constructor parametre enjeksiyonu yerine [`inject`](/api/core/inject) fonksiyonu
 ### Bileşen seçicilerini seçme {#choosing-component-selectors}
 
 Bileşen seçimleri hakkında ayrıntılar için
-[Bileşenler kılavuzuna](guide/components/selectors#seçici-seçme) bakın.
+[Bileşenler kılavuzuna](guide/components/selectors#choosing-a-selector) bakın.
 
 ### Bileşen ve direktif üyelerini adlandırma {#naming-component-and-directive-members}
 
 Bileşenler kılavuzunda
-[giriş özelliklerini adlandırma](guide/components/inputs#girdi-adlarını-seçme)
-ve [çıkış özelliklerini adlandırma](guide/components/outputs#olay-adlarını-seçme) hakkında ayrıntılar için bakın.
+[giriş özelliklerini adlandırma](guide/components/inputs#choosing-input-names)
+ve [çıkış özelliklerini adlandırma](guide/components/outputs#choosing-event-names) hakkında ayrıntılar için bakın.
 
 ### Direktif seçicilerini seçme {#choosing-directive-selectors}
 
-Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#seçici-önekleri) kullanmalıdır.
+Direktifler, bileşenlerinizle aynı [uygulamaya özgü öneki](guide/components/selectors#selector-prefixes) kullanmalıdır.
 
 Bir direktif için özellik seçici kullanırken camelCase özellik adı kullanın. Örneğin,
 uygulamanız "MovieReel" olarak adlandırılıyorsa ve bir elemana araç ipucu ekleyen bir direktif oluşturuyorsanız, `[mrTooltip]` seçicisini kullanabilirsiniz.

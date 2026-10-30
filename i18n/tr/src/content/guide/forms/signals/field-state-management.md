@@ -59,11 +59,11 @@ console.log(emailValue); // Geçerli email dizesi
 
 | Kategori                                     | Sinyal       | Açıklama                                                                              |
 | -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
-| **[Doğrulama](#doğrulama-durumu)**           | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
+| **[Doğrulama](#validation-state)**           | `valid()`    | Alan tüm doğrulama kurallarını geçer ve bekleyen doğrulayıcı yoktur                   |
 |                                              | `invalid()`  | Alanın doğrulama hataları var                                                         |
 |                                              | `errors()`   | Doğrulama hata nesneleri dizisi                                                       |
 |                                              | `pending()`  | Asenkron doğrulama devam ediyor                                                       |
-| **[Etkileşim](#etkileşim-durumu)**           | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
+| **[Etkileşim](#interaction-state)**           | `touched()`  | Kullanıcı alana odaklanmış ve odağı bırakmış (etkileşimli ise)                        |
 |                                              | `dirty()`    | Kullanıcı alanı değiştirmiş (etkileşimli ise), değer başlangıç durumuyla eşleşse bile |
 | **[Kullanılabilirlik](#availability-state)** | `disabled()` | Alan devre dışı ve üst form durumunu etkilemiyor                                      |
 |                                              | `hidden()`   | Alanın gizlenmesi gerektiğini belirtir; şablonda görünürlük `@if` ile kontrol edilir  |

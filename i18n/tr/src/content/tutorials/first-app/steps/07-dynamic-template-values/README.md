@@ -16,7 +16,7 @@ Bu adımda, interpolasyon kullanarak `input` özelliklerinden okunan değerleri 
 
 Angular şablonlarında `{{ expression }}` kullanarak, özelliklerden, `input`'lardan ve geçerli JavaScript ifadelerinden değerleri işleyebilirsiniz.
 
-Daha ayrıntılı bir açıklama için lütfen [İnterpolasyon ile değerleri görüntüleme](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) kılavuzuna bakın.
+Daha ayrıntılı bir açıklama için lütfen [İnterpolasyon ile değerleri görüntüleme](guide/templates/binding#render-dynamic-text-with-text-interpolation) kılavuzuna bakın.
 
 <docs-workflow>
 
@@ -57,5 +57,5 @@ Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates" title="Şablon sözdizimi"/>
-  <docs-pill href="guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme" title="İnterpolasyon ile değerleri görüntüleme"/>
+  <docs-pill href="guide/templates/binding#render-dynamic-text-with-text-interpolation" title="İnterpolasyon ile değerleri görüntüleme"/>
 </docs-pill-row>

@@ -357,7 +357,7 @@ class MyComponent {
 
 `*ngIf` kullanmak, TypeScript derleyicisinin bağlama ifadesinde kullanılan `person`'ın asla `undefined` olmayacağını çıkarsamasına olanak tanır.
 
-Girdi tür daraltma hakkında daha fazla bilgi için [Özel direktifler için şablon tür denetimini iyileştirme](/guide/directives/structural-directives#özel-direktifler-için-şablon-tür-denetimini-iyileştirme) belgesine bakın.
+Girdi tür daraltma hakkında daha fazla bilgi için [Özel direktifler için şablon tür denetimini iyileştirme](/guide/directives/structural-directives#improving-template-type-checking-for-custom-directives) belgesine bakın.
 
 ### Non-null tür doğrulama operatörü {#non-null-type-assertion-operator}
 

@@ -51,7 +51,7 @@ import {Service} from '@angular/core';
 export class MyService {}
 ```
 
-Daha fazla ayrıntı için [Otomatik sağlamadan vazgeçme](guide/di/creating-and-using-services#otomatik-sağlamadan-vazgeçme) bölümüne bakın.
+Daha fazla ayrıntı için [Otomatik sağlamadan vazgeçme](guide/di/creating-and-using-services#opting-out-of-automatic-provisioning) bölümüne bakın.
 
 ## Yapılandırma seçenekleri {#configuration-options}
 

@@ -57,7 +57,7 @@ Uygulama içi URL'ler sunucu URL'lerinden ayırt edilemez olabilir.
 Modern HTML5 tarayıcıları `pushState`'i destekleyen ilk tarayıcılardı, bu yüzden birçok kişi bu URL'lere "HTML5 stili" URL'ler der.
 
 HELPFUL: HTML5 stili navigasyon, yönlendiricinin varsayılanıdır.
-[LocationStrategy ve tarayıcı URL stilleri](guide/routing/common-router-tasks#locationstrategy-ve-tarayıcı-url-stilleri) bölümünde, HTML5 stilinin neden tercih edildiğini, davranışının nasıl ayarlanacağını ve gerekirse eski hash \(`#`\) stiline nasıl geçileceğini öğrenin.
+[LocationStrategy ve tarayıcı URL stilleri](guide/routing/common-router-tasks#locationstrategy-and-browser-url-styles) bölümünde, HTML5 stilinin neden tercih edildiğini, davranışının nasıl ayarlanacağını ve gerekirse eski hash \(`#`\) stiline nasıl geçileceğini öğrenin.
 
 `pushState` yönlendirmesinin çalışması için uygulamanızın `index.html` dosyasına bir [`<base href>` öğesi](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') eklemeniz gerekir.
 Tarayıcı, CSS dosyalarına, betiklere ve resimlere referans verirken göreceli URL'leri öneklemek için `<base href>` değerini kullanır.

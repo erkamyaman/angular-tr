@@ -165,7 +165,7 @@ Operatör önceliği belirsiz olabilecek ifadelerinizde her zaman parantez kulla
 
 Varsayılan olarak, tüm pipe'lar `pure` (saf) olarak kabul edilir, yani yalnızca ilkel bir giriş değeri (`String`, `Number`, `Boolean` veya `Symbol` gibi) veya bir nesne referansı (`Array`, `Object`, `Function` veya `Date` gibi) değiştiğinde çalıştırılır. Saf pipe'lar, geçirilen değer değişmediyse Angular'ın dönüşüm fonksiyonunu çağırmaktan kaçınmasını sağlayarak bir performans avantajı sunar.
 
-Sonuç olarak bu, nesne özelliklerindeki veya dizi öğelerindeki mutasyonların, tüm nesne veya dizi referansı farklı bir örnekle değiştirilmedikçe algılanmadığı anlamına gelir. Bu düzey değişiklik algılaması istiyorsanız, [diziler veya nesneler içindeki değişiklikleri algılama](#diziler-veya-nesneler-içindeki-değişiklikleri-algılama) bölümüne bakın.
+Sonuç olarak bu, nesne özelliklerindeki veya dizi öğelerindeki mutasyonların, tüm nesne veya dizi referansı farklı bir örnekle değiştirilmedikçe algılanmadığı anlamına gelir. Bu düzey değişiklik algılaması istiyorsanız, [diziler veya nesneler içindeki değişiklikleri algılama](#detecting-change-within-arrays-or-objects) bölümüne bakın.
 
 ## Özel pipe'lar oluşturma {#creating-custom-pipes}
 

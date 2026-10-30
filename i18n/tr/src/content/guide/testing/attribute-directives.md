@@ -43,7 +43,7 @@ Uygulama genelinde kullanılır, belki de en basit şekilde `About` bileşeninde
 export class About {}
 ```
 
-`About` bileşeni içindeki `Highlight` yönergesinin belirli kullanımını test etmek, yalnızca [Bileşen test senaryolarının](guide/testing/components-scenarios) ["İç içe bileşen testleri"](guide/testing/components-scenarios#iç-içe-bileşen-testleri) bölümünde incelenen teknikleri gerektirir.
+`About` bileşeni içindeki `Highlight` yönergesinin belirli kullanımını test etmek, yalnızca [Bileşen test senaryolarının](guide/testing/components-scenarios) ["İç içe bileşen testleri"](guide/testing/components-scenarios#nested-component-tests) bölümünde incelenen teknikleri gerektirir.
 
 ```ts
 let fixture: ComponentFixture<About>;

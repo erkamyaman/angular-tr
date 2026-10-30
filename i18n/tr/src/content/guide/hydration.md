@@ -56,7 +56,7 @@ IMPORTANT: `provideClientHydration()` çağrısının **sunucuda** uygulamayı b
 
 Hidrasyonu yapılandırdıktan ve sunucunuzu başlattıktan sonra, uygulamanızı tarayıcıda yükleyin.
 
-HELPFUL: Hidrasyonun tam olarak çalışması için muhtemelen Doğrudan DOM Manipülasyonu örneklerini düzeltmeniz gerekecektir; bunun için Angular yapılarına geçiş yapabilir veya `ngSkipHydration` kullanabilirsiniz. Daha fazla ayrıntı için [Kısıtlamalar](#kısıtlamalar), [Doğrudan DOM Manipülasyonu](#doğrudan-dom-manipülasyonu) ve [Belirli bileşenler için hidrasyon nasıl atlanır](#belirli-bileşenler-için-hydration-nasıl-atlanır) bölümlerine bakın.
+HELPFUL: Hidrasyonun tam olarak çalışması için muhtemelen Doğrudan DOM Manipülasyonu örneklerini düzeltmeniz gerekecektir; bunun için Angular yapılarına geçiş yapabilir veya `ngSkipHydration` kullanabilirsiniz. Daha fazla ayrıntı için [Kısıtlamalar](#constraints), [Doğrudan DOM Manipülasyonu](#direct-dom-manipulation) ve [Belirli bileşenler için hidrasyon nasıl atlanır](#how-to-skip-hydration-for-particular-components) bölümlerine bakın.
 
 Uygulamanızı geliştirme modunda çalıştırırken, tarayıcınızda Geliştirici Araçları'nı açarak ve konsolu görüntüleyerek hidrasyonun etkin olduğunu doğrulayabilirsiniz. Hidrasyon ile ilgili istatistikleri içeren bir mesaj görmelisiniz; örneğin hidrasyon yapılan bileşen ve düğüm sayısı gibi. Angular, bir sayfada render edilen tüm bileşenlere dayalı olarak istatistikleri hesaplar ve bunlara üçüncü taraf kütüphanelerden gelen bileşenler de dahildir.
 
@@ -112,9 +112,9 @@ Sunucu ve istemci DOM ağaç yapıları arasında bir uyumsuzluk varsa, hidrasyo
 
 Yerel DOM API'lerini kullanarak DOM'u manipüle eden veya `innerHTML` ya da `outerHTML` kullanan bileşenleriniz varsa, hidrasyon işlemi hatalarla karşılaşır. DOM manipülasyonunun sorun olduğu belirli durumlar `document`'e erişme, belirli öğeleri sorgulama ve `appendChild` kullanarak ek düğümler ekleme gibi durumlardır. DOM düğümlerini ayırma ve başka konumlara taşıma da hatalara neden olur.
 
-Bunun nedeni, Angular'ın bu DOM değişikliklerinden haberdar olmaması ve hidrasyon işlemi sırasında bunları çözememesidir. Angular belirli bir yapı bekler, ancak hidrasyon yapmaya çalışırken farklı bir yapıyla karşılaşır. Bu uyumsuzluk, hidrasyon hatasına neden olur ve bir DOM uyumsuzluk hatası fırlatır ([aşağıya bakın](#hatalar)).
+Bunun nedeni, Angular'ın bu DOM değişikliklerinden haberdar olmaması ve hidrasyon işlemi sırasında bunları çözememesidir. Angular belirli bir yapı bekler, ancak hidrasyon yapmaya çalışırken farklı bir yapıyla karşılaşır. Bu uyumsuzluk, hidrasyon hatasına neden olur ve bir DOM uyumsuzluk hatası fırlatır ([aşağıya bakın](#errors)).
 
-Bileşeninizi bu tür DOM manipülasyonundan kaçınmak için yeniden düzenlemeniz en iyisidir. Mümkünse bu işi yapmak için Angular API'lerini kullanmayı deneyin. Bu davranışı yeniden düzenleyemiyorsanız, hidrasyon dostu bir çözüme geçene kadar `ngSkipHydration` niteliğini ([aşağıda açıklanmıştır](#belirli-bileşenler-için-hydration-nasıl-atlanır)) kullanın.
+Bileşeninizi bu tür DOM manipülasyonundan kaçınmak için yeniden düzenlemeniz en iyisidir. Mümkünse bu işi yapmak için Angular API'lerini kullanmayı deneyin. Bu davranışı yeniden düzenleyemiyorsanız, hidrasyon dostu bir çözüme geçene kadar `ngSkipHydration` niteliğini ([aşağıda açıklanmıştır](#how-to-skip-hydration-for-particular-components)) kullanın.
 
 ### Geçerli HTML yapısı {#valid-html-structure}
 
@@ -146,13 +146,13 @@ Hidrasyon, uygulama içinde kararlı hale geldiğinde Zone.js'den gelen bir siny
 
 ## Hatalar {#errors}
 
-Düğüm uyumsuzluklarından `ngSkipHydration`'ın geçersiz bir ana düğümde kullanıldığı durumlara kadar karşılaşabileceğiniz birkaç hidrasyon ile ilgili hata vardır. Oluşabilecek en yaygın hata durumu, yerel API'ler kullanılarak doğrudan DOM manipülasyonu nedeniyle hidrasyonun istemcide sunucu tarafından render edilen beklenen DOM ağaç yapısını bulamaması veya eşleştirememesidir. Bu tür bir hatayla karşılaşabileceğiniz diğer durum, daha önce [Geçerli HTML yapısı](#geçerli-html-yapısı) bölümünde belirtilmiştir. Bu nedenle, şablonlarınızdaki HTML'in geçerli bir yapı kullandığından emin olun ve bu hata durumundan kaçınmış olursunuz.
+Düğüm uyumsuzluklarından `ngSkipHydration`'ın geçersiz bir ana düğümde kullanıldığı durumlara kadar karşılaşabileceğiniz birkaç hidrasyon ile ilgili hata vardır. Oluşabilecek en yaygın hata durumu, yerel API'ler kullanılarak doğrudan DOM manipülasyonu nedeniyle hidrasyonun istemcide sunucu tarafından render edilen beklenen DOM ağaç yapısını bulamaması veya eşleştirememesidir. Bu tür bir hatayla karşılaşabileceğiniz diğer durum, daha önce [Geçerli HTML yapısı](#valid-html-structure) bölümünde belirtilmiştir. Bu nedenle, şablonlarınızdaki HTML'in geçerli bir yapı kullandığından emin olun ve bu hata durumundan kaçınmış olursunuz.
 
 Hidrasyon ile ilgili hataların tam referansı için [Hatalar Referans Kılavuzu](/errors)'nu ziyaret edin.
 
 ## Belirli bileşenler için hydration nasıl atlanır {#how-to-skip-hydration-for-particular-components}
 
-Yukarıda bahsedilen [Doğrudan DOM Manipülasyonu](#doğrudan-dom-manipülasyonu) gibi bazı sorunlar nedeniyle bazı bileşenler hidrasyon etkinleştirildiğinde düzgün çalışmayabilir. Geçici çözüm olarak, bileşenin tamamının hidrasyon yapılmasını atlamak için bileşenin etiketine `ngSkipHydration` niteliğini ekleyebilirsiniz.
+Yukarıda bahsedilen [Doğrudan DOM Manipülasyonu](#direct-dom-manipulation) gibi bazı sorunlar nedeniyle bazı bileşenler hidrasyon etkinleştirildiğinde düzgün çalışmayabilir. Geçici çözüm olarak, bileşenin tamamının hidrasyon yapılmasını atlamak için bileşenin etiketine `ngSkipHydration` niteliğini ekleyebilirsiniz.
 
 ```angular-html
 <app-example ngSkipHydration />

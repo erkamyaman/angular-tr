@@ -1,7 +1,7 @@
 <!-- source: b7d8839f444b463b95e45f98f78ea82832730758 -->
 # Resource'lar ile veri çekme
 
-IMPORTANT: Rota resource'ları [geliştirici önizlemesi](reference/releases#geliştirici-önizlemesi) aşamasındadır.
+IMPORTANT: Rota resource'ları [geliştirici önizlemesi](reference/releases#developer-preview) aşamasındadır.
 
 Angular Router, `resources` rota yapılandırması aracılığıyla Angular sinyalleriyle entegre olur. Bu, `Resource` API'lerini kullanarak verileri reaktif olarak çekmenize olanak tanır.
 

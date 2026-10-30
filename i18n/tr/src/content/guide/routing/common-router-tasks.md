@@ -114,7 +114,7 @@ Diğer mevcut ayarlar hakkında ayrıntılar için [yönlendirici yapılandırma
 
 ## 404 sayfası görüntüleme {#displaying-a-404-page}
 
-404 sayfası görüntülemek için, `component` özelliğini 404 sayfanız için kullanmak istediğiniz bileşene ayarlayarak bir [joker rota](guide/routing/define-routes#joker-karakterler) kurun:
+404 sayfası görüntülemek için, `component` özelliğini 404 sayfanız için kullanmak istediğiniz bileşene ayarlayarak bir [joker rota](guide/routing/define-routes#wildcards) kurun:
 
 ```ts
 const routes: Routes = [
@@ -155,7 +155,7 @@ Bir rota parametresi belirtilirken aşağıdaki iki elemanlı bir dizidir:
 <a [routerLink]="['/crisis-center', {foo: 'foo'}]">Crisis Center</a>
 ```
 
-Bu söz dizimi, belirli bir URL segmentiyle ilişkili isteğe bağlı parametreler olan matris parametrelerini aktarır. [Matris parametreleri](/guide/routing/read-route-state#matris-parametreleri) hakkında daha fazla bilgi edinin.
+Bu söz dizimi, belirli bir URL segmentiyle ilişkili isteğe bağlı parametreler olan matris parametrelerini aktarır. [Matris parametreleri](/guide/routing/read-route-state#matrix-parameters) hakkında daha fazla bilgi edinin.
 
 Bu üç örnek, tek seviyeli yönlendirmeye sahip bir uygulamanın ihtiyaçlarını karşılar.
 Ancak, kriz merkezi gibi bir alt yönlendirici ile yeni bağlantı dizisi olasılıkları oluşturursunuz.

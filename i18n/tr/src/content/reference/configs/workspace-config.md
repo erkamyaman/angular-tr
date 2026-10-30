@@ -16,8 +16,8 @@ Aşağıdaki özellikler, dosyanın en üst düzeyinde çalışma alanını yap�
 | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `version`        | Yapılandırma dosyası sürümü.                                                                                                                                                                     |
 | `newProjectRoot` | `ng generate application` veya `ng generate library` gibi araçlarla yeni projelerin oluşturulduğu yol. Yol mutlak veya çalışma alanı dizinine göreceli olabilir. Varsayılan değer `projects`'tir |
-| `cli`            | [Angular CLI](tools/cli)'yi özelleştiren bir dizi seçenek. Aşağıdaki [Angular CLI yapılandırma seçenekleri](#angular-cli-yapılandırma-seçenekleri) bölümüne bakın.                               |
-| `schematics`     | Bu çalışma alanı için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi [şematik](tools/cli/schematics). Aşağıdaki [şematikler](#şematikler) bölümüne bakın.                |
+| `cli`            | [Angular CLI](tools/cli)'yi özelleştiren bir dizi seçenek. Aşağıdaki [Angular CLI yapılandırma seçenekleri](#angular-cli-configuration-options) bölümüne bakın.                               |
+| `schematics`     | Bu çalışma alanı için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi [şematik](tools/cli/schematics). Aşağıdaki [şematikler](#schematics) bölümüne bakın.                |
 | `projects`       | Çalışma alanındaki her uygulama veya kütüphane için projeye özgü yapılandırma seçenekleri içeren bir alt bölüm içerir.                                                                           |
 
 `ng new app-name` ile oluşturduğunuz ilk uygulama "projects" altında listelenir:
@@ -40,10 +40,10 @@ Aşağıdaki özellikler, Angular CLI'yi özelleştiren bir dizi seçenektir.
 | Özellik                | Ayrıntılar                                                                                                                                                                                     | Değer türü                                    | Varsayılan değer |
 | :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- | :--------------- |
 | `analytics`            | Angular Ekibi ile anonim kullanım verilerini paylaşır. Bir boolean değeri veri paylaşılıp paylaşılmayacağını belirtirken, bir UUID dizesi takma adlı bir tanımlayıcı kullanarak veri paylaşır. | `boolean` \| `string`                         | `false`          |
-| `cache`                | [Angular CLI Oluşturucuları](tools/cli/cli-builder) tarafından kullanılan [kalıcı disk önbelleğini](cli/cache) kontrol eder.                                                                   | [Önbellek seçenekleri](#önbellek-seçenekleri) | `{}`             |
+| `cache`                | [Angular CLI Oluşturucuları](tools/cli/cli-builder) tarafından kullanılan [kalıcı disk önbelleğini](cli/cache) kontrol eder.                                                                   | [Önbellek seçenekleri](#cache-options) | `{}`             |
 | `schematicCollections` | `ng generate`'da kullanılacak şematik koleksiyonlarını listeler.                                                                                                                               | `string[]`                                    | `[]`             |
 | `packageManager`       | Tercih edilen paket yöneticisi aracı.                                                                                                                                                          | `npm` \| `pnpm` \| `yarn` \| `bun`            | `npm`            |
-| `warnings`             | Angular CLI'ye özgü konsol uyarılarını kontrol eder.                                                                                                                                           | [Uyarı seçenekleri](#uyarı-seçenekleri)       | `{}`             |
+| `warnings`             | Angular CLI'ye özgü konsol uyarılarını kontrol eder.                                                                                                                                           | [Uyarı seçenekleri](#warnings-options)       | `{}`             |
 
 ### Önbellek seçenekleri {#cache-options}
 
@@ -69,9 +69,9 @@ Aşağıdaki üst düzey yapılandırma özellikleri, `projects['project-name']`
 | `projectType` | "application" veya "library" değerlerinden biri. Bir uygulama tarayıcıda bağımsız olarak çalışabilir, ancak bir kütüphane çalışamaz.                                                                                                                       | `application` \| `library`                                                                 | Yok (gerekli)    |
 | `sourceRoot`  | Bu projenin kaynak dosyaları için kök dizin.                                                                                                                                                                                                               | `string`                                                                                   | `''`             |
 | `prefix`      | `ng generate` kullanarak yeni bileşenler, direktifler ve pipe'lar oluştururken Angular'ın seçicilerin başına eklediği bir dize. Bir uygulamayı veya özellik alanını tanımlamak için özelleştirilebilir.                                                    | `string`                                                                                   | `'app'`          |
-| `i18n`        | Proje için uluslararasılaştırma seçenekleri. Kaynak yerel ayarını ve oluşturulacak ek yerel ayarları tanımlar. [Oluşturma yapılandırmasında yerel ayarları tanımlama](guide/i18n/merge#derleme-yapılandırmasında-yerel-ayarları-tanımlama) bölümüne bakın. | [i18n seçenekleri](#i18n-seçenekleri) bölümüne bakın                                       | `{}`             |
-| `schematics`  | Bu proje için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi şematik. [Oluşturma şematikleri](#şematikler) bölümüne bakın.                                                                                                         | [Şematikler](#şematikler) bölümüne bakın                                                   | `{}`             |
-| `architect`   | Bu proje için Architect oluşturucu hedefleri yapılandırma varsayılanları.                                                                                                                                                                                  | [Oluşturucu hedeflerini yapılandırma](#oluşturucu-hedeflerini-yapılandırma) bölümüne bakın | `{}`             |
+| `i18n`        | Proje için uluslararasılaştırma seçenekleri. Kaynak yerel ayarını ve oluşturulacak ek yerel ayarları tanımlar. [Oluşturma yapılandırmasında yerel ayarları tanımlama](guide/i18n/merge#define-locales-in-the-build-configuration) bölümüne bakın. | [i18n seçenekleri](#i18n-options) bölümüne bakın                                       | `{}`             |
+| `schematics`  | Bu proje için `ng generate` alt komut seçenek varsayılanlarını özelleştiren bir dizi şematik. [Oluşturma şematikleri](#schematics) bölümüne bakın.                                                                                                         | [Şematikler](#schematics) bölümüne bakın                                                   | `{}`             |
+| `architect`   | Bu proje için Architect oluşturucu hedefleri yapılandırma varsayılanları.                                                                                                                                                                                  | [Oluşturucu hedeflerini yapılandırma](#configuring-builder-targets) bölümüne bakın | `{}`             |
 
 ## i18n seçenekleri {#i18n-options}
 
@@ -79,8 +79,8 @@ Uygulamanın kaynak yerel ayarını ve oluşturulacak ek yerel ayarları tanıml
 
 | Özellik        | Ayrıntılar                                                                                                                                        | Değer türü                                                | Varsayılan değer |
 | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------- | :--------------- |
-| `sourceLocale` | Uygulama kaynak kodunda kullanılan yerel ayar. Bir yerel ayar tanımlayıcı dizesi veya bir [yapılandırma nesnesi](#sourcelocale-nesnesi) olabilir. | `string` \| [sourceLocale nesnesi](#sourcelocale-nesnesi) | `"en-US"`        |
-| `locales`      | Yerel ayar tanımlayıcılarını çeviri dosyalarına veya [yerel ayar yapılandırma nesnelerine](#yerel-ayar-nesnesi) eşleyen bir harita.               | `object`                                                  | `{}`             |
+| `sourceLocale` | Uygulama kaynak kodunda kullanılan yerel ayar. Bir yerel ayar tanımlayıcı dizesi veya bir [yapılandırma nesnesi](#sourcelocale-object) olabilir. | `string` \| [sourceLocale nesnesi](#sourcelocale-object) | `"en-US"`        |
+| `locales`      | Yerel ayar tanımlayıcılarını çeviri dosyalarına veya [yerel ayar yapılandırma nesnelerine](#locale-object) eşleyen bir harita.               | `object`                                                  | `{}`             |
 
 ### `sourceLocale` nesnesi {#sourcelocale-object}
 
@@ -151,11 +151,11 @@ Diğer hedefler `ng run` komutu kullanılarak yürütülebilir ve kendi hedefler
 
 Her hedef nesnesi, o hedef için `builder`'ı belirtir; bu, Architect'in çalıştırdığı araç için npm paketidir.
 Her hedefin ayrıca hedef için varsayılan seçenekleri yapılandıran bir `options` bölümü ve hedef için alternatif yapılandırmaları adlandıran ve belirten bir `configurations` bölümü vardır.
-Aşağıdaki [Derleme hedefi](#derleme-hedefi) bölümündeki örneğe bakın.
+Aşağıdaki [Derleme hedefi](#build-target) bölümündeki örneğe bakın.
 
 | Özellik        | Ayrıntılar                                                                                                                                                                                                |
 | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build`        | `ng build` komutunun seçenekleri için varsayılanları yapılandırır. Daha fazla bilgi için [Derleme hedefi](#derleme-hedefi) bölümüne bakın.                                                                |
+| `build`        | `ng build` komutunun seçenekleri için varsayılanları yapılandırır. Daha fazla bilgi için [Derleme hedefi](#build-target) bölümüne bakın.                                                                |
 | `serve`        | Derleme varsayılanlarını geçersiz kılar ve `ng serve` komutu için ek sunma varsayılanları sağlar. `ng build` komutu için mevcut seçeneklerin yanı sıra, uygulamanın sunulmasıyla ilgili seçenekler ekler. |
 | `e2e`          | `ng e2e` komutu kullanılarak uçtan uca test uygulamaları derlemek için derleme varsayılanlarını geçersiz kılar.                                                                                           |
 | `test`         | Test derlemeleri için derleme varsayılanlarını geçersiz kılar ve `ng test` komutu için ek test çalıştırma varsayılanları sağlar.                                                                          |
@@ -172,7 +172,7 @@ HELPFUL: Yapılandırma dosyasındaki tüm seçenekler, komut satırında kullan
 | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `builder`        | Bu hedefi oluşturmak için kullanılan CLI oluşturucusu, `<package-name>:<builder-name>` biçimindedir.                                                                                                                                                                                 |
 | `options`        | Derleme hedefi varsayılan seçenekleri.                                                                                                                                                                                                                                               |
-| `configurations` | Hedefi yürütmek için alternatif yapılandırmalar. Her yapılandırma, hedeflenen ortam için varsayılan seçenekleri ayarlar ve `options` altındaki ilişkili değeri geçersiz kılar. Aşağıdaki [Alternatif derleme yapılandırmaları](#alternatif-derleme-yapılandırmaları) bölümüne bakın. |
+| `configurations` | Hedefi yürütmek için alternatif yapılandırmalar. Her yapılandırma, hedeflenen ortam için varsayılan seçenekleri ayarlar ve `options` altındaki ilişkili değeri geçersiz kılar. Aşağıdaki [Alternatif derleme yapılandırmaları](#alternate-build-configurations) bölümüne bakın. |
 
 Örneğin, optimizasyonları devre dışı bırakılmış bir derleme yapılandırmak için:
 
@@ -243,14 +243,14 @@ Bu seçeneklerin ve olası değerlerinin ayrıntıları için [Angular CLI Refer
 
 | Seçenek özellikleri        | Ayrıntılar                                                                                                                                                                                                                                                                                           |
 | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assets`                   | Uygulama ile birlikte sunulacak statik varlıklara giden yolları içeren bir nesne. Varsayılan yollar projenin `public` dizinine işaret eder. Daha fazla bilgi için [Varlık yapılandırması](#varlık-yapılandırması) bölümüne bakın.                                                                    |
-| `styles`                   | Projenin genel bağlamına eklenecek CSS dosyalarından oluşan bir dizi. Angular CLI, CSS içe aktarmalarını ve tüm önemli CSS ön işlemcilerini destekler. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#stiller-ve-betikler-yapılandırması) bölümüne bakın.                               |
-| `stylePreprocessorOptions` | Stil ön işlemcilerine iletilecek seçenek-değer çiftlerini içeren bir nesne. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#stiller-ve-betikler-yapılandırması) bölümüne bakın.                                                                                                          |
+| `assets`                   | Uygulama ile birlikte sunulacak statik varlıklara giden yolları içeren bir nesne. Varsayılan yollar projenin `public` dizinine işaret eder. Daha fazla bilgi için [Varlık yapılandırması](#assets-configuration) bölümüne bakın.                                                                    |
+| `styles`                   | Projenin genel bağlamına eklenecek CSS dosyalarından oluşan bir dizi. Angular CLI, CSS içe aktarmalarını ve tüm önemli CSS ön işlemcilerini destekler. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                               |
+| `stylePreprocessorOptions` | Stil ön işlemcilerine iletilecek seçenek-değer çiftlerini içeren bir nesne. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                                                                                                          |
 | `inlineStyleLanguage`      | Uygulamanın satır içi bileşen stilleri için kullanılacak stil sayfası dili. `css`, `less`, `sass` veya `scss` değerlerini kabul eder, varsayılanı `css`'tir.                                                                                                                                         |
-| `scripts`                  | Uygulamaya eklenecek JavaScript dosyalarını içeren bir nesne. Betikler, tam olarak `index.html` içinde `<script>` etiketi eklemiş gibi yüklenir. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#stiller-ve-betikler-yapılandırması) bölümüne bakın.                                     |
-| `budgets`                  | Uygulamanızın tamamı veya bölümleri için varsayılan boyut bütçesi türü ve eşikleri. Çıktı bir eşik boyutuna ulaştığında veya aştığında oluşturucuyu uyarı veya hata bildirmeye yapılandırabilirsiniz. [Boyut bütçeleri yapılandırma](tools/cli/build#boyut-bütçelerini-yapılandırma) bölümüne bakın. |
-| `fileReplacements`         | Dosyaları ve derleme zamanı değiştirmelerini içeren bir nesne. Daha fazla bilgi için [Hedefe özgü dosya değiştirmelerini yapılandırma](tools/cli/environments#ortama-özgü-varsayılan-değerleri-yapılandırma) bölümüne bakın.                                                                         |
-| `index`                    | Uygulamayı yükleyen temel HTML belgesi. Daha fazla bilgi için [Dizin yapılandırması](#dizin-yapılandırması) bölümüne bakın.                                                                                                                                                                          |
+| `scripts`                  | Uygulamaya eklenecek JavaScript dosyalarını içeren bir nesne. Betikler, tam olarak `index.html` içinde `<script>` etiketi eklemiş gibi yüklenir. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#styles-and-scripts-configuration) bölümüne bakın.                                     |
+| `budgets`                  | Uygulamanızın tamamı veya bölümleri için varsayılan boyut bütçesi türü ve eşikleri. Çıktı bir eşik boyutuna ulaştığında veya aştığında oluşturucuyu uyarı veya hata bildirmeye yapılandırabilirsiniz. [Boyut bütçeleri yapılandırma](tools/cli/build#configuring-size-budgets) bölümüne bakın. |
+| `fileReplacements`         | Dosyaları ve derleme zamanı değiştirmelerini içeren bir nesne. Daha fazla bilgi için [Hedefe özgü dosya değiştirmelerini yapılandırma](tools/cli/environments#configure-environment-specific-defaults) bölümüne bakın.                                                                         |
+| `index`                    | Uygulamayı yükleyen temel HTML belgesi. Daha fazla bilgi için [Dizin yapılandırması](#index-configuration) bölümüne bakın.                                                                                                                                                                          |
 | `security`                 | `true` veya `false` olarak ayarlanabilen `autoCsp` anahtarını içeren bir nesne                                                                                                                                                                                                                       |
 
 ### Ek sunma seçenekleri {#extra-serve-options}
@@ -417,7 +417,7 @@ Bu dizindeki dosyalar, örneğin `src/style-paths/_variables.scss`, projenizin h
 ```
 
 HELPFUL: Birim testleri için ihtiyacınız varsa, stilleri veya betikleri `test` oluşturucusuna da eklemeniz gerekir.
-Ayrıca [Uygulamanızda çalışma zamanı global kütüphanelerini kullanma](tools/libraries/using-libraries#uygulamanızda-çalışma-zamanı-global-kütüphanelerini-kullanma) bölümüne de bakın.
+Ayrıca [Uygulamanızda çalışma zamanı global kütüphanelerini kullanma](tools/libraries/using-libraries#using-runtime-global-libraries-inside-your-app) bölümüne de bakın.
 
 ### Optimizasyon yapılandırması {#optimization-configuration}
 
@@ -427,7 +427,7 @@ Bu seçenek, derleme çıktısının aşağıdaki gibi çeşitli optimizasyonlar
 - Betik ve stillerin küçültülmesi
 - Tree-shaking
 - Ölü kod eliminasyonu
-- [Kritik CSS satır içi ekleme](/tools/cli/build#kritik-css-satır-içi-yerleştirme)
+- [Kritik CSS satır içi ekleme](/tools/cli/build#critical-css-inlining)
 - Font satır içi ekleme
 
 Bir uygulamanın optimizasyonunu ince ayarlamak için çeşitli seçenekler kullanılabilir.
@@ -435,8 +435,8 @@ Bir uygulamanın optimizasyonunu ince ayarlamak için çeşitli seçenekler kull
 | Seçenekler | Ayrıntılar                                                             | Değer türü                                                                   | Varsayılan değer |
 | :--------- | :--------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :--------------- |
 | `scripts`  | Betik çıktısının optimizasyonunu etkinleştirir.                        | `boolean`                                                                    | `true`           |
-| `styles`   | Stil çıktısının optimizasyonunu etkinleştirir.                         | `boolean` \| [Stil optimizasyon seçenekleri](#stil-optimizasyon-seçenekleri) | `true`           |
-| `fonts`    | Fontlar için optimizasyonu etkinleştirir. İnternet erişimi gerektirir. | `boolean` \| [Font optimizasyon seçenekleri](#font-optimizasyon-seçenekleri) | `true`           |
+| `styles`   | Stil çıktısının optimizasyonunu etkinleştirir.                         | `boolean` \| [Stil optimizasyon seçenekleri](#styles-optimization-options) | `true`           |
+| `fonts`    | Fontlar için optimizasyonu etkinleştirir. İnternet erişimi gerektirir. | `boolean` \| [Font optimizasyon seçenekleri](#fonts-optimization-options) | `true`           |
 
 #### Stil optimizasyon seçenekleri {#styles-optimization-options}
 

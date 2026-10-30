@@ -31,10 +31,10 @@ Aşağıdaki tablo, reaktif ve şablon odaklı formlar arasındaki temel farklar
 
 |                                                     | Reaktif                             | Şablon odaklı                         |
 | :-------------------------------------------------- | :---------------------------------- | :------------------------------------ |
-| [Form modelinin kurulumu](#form-modelini-kurma)     | Açık, bileşen sınıfında oluşturulur | Örtük, direktiflerle oluşturulur      |
-| [Veri modeli](#veri-modelinin-değiştirilebilirliği) | Yapılandırılmış ve değişmez         | Yapılandırılmamış ve değiştirilebilir |
-| [Veri akışı](#formlarda-veri-akışı)                 | Senkron                             | Asenkron                              |
-| [Form doğrulama](#form-doğrulama)                   | Fonksiyonlar                        | Direktifler                           |
+| [Form modelinin kurulumu](#setting-up-the-form-model)     | Açık, bileşen sınıfında oluşturulur | Örtük, direktiflerle oluşturulur      |
+| [Veri modeli](#mutability-of-the-data-model) | Yapılandırılmış ve değişmez         | Yapılandırılmamış ve değiştirilebilir |
+| [Veri akışı](#data-flow-in-forms)                 | Senkron                             | Asenkron                              |
+| [Form doğrulama](#form-validation)                   | Fonksiyonlar                        | Direktifler                           |
 
 ### Ölçeklenebilirlik {#scalability}
 
@@ -42,11 +42,11 @@ Formlar uygulamanızın merkezi bir parçasıysa, ölçeklenebilirlik çok önem
 Form modellerini bileşenler arasında yeniden kullanabilmek kritiktir.
 
 Reaktif formlar, şablon odaklı formlardan daha ölçeklenebilirdir.
-Altta yatan form API'sine doğrudan erişim sağlarlar ve görünüm ile veri modeli arasında [senkron veri akışı](#reactive-formlarda-veri-akışı) kullanırlar, bu da büyük ölçekli formlar oluşturmayı kolaylaştırır.
+Altta yatan form API'sine doğrudan erişim sağlarlar ve görünüm ile veri modeli arasında [senkron veri akışı](#data-flow-in-reactive-forms) kullanırlar, bu da büyük ölçekli formlar oluşturmayı kolaylaştırır.
 Reaktif formlar test için daha az kurulum gerektirir ve form güncellemelerini ve doğrulamayı düzgün bir şekilde test etmek için değişiklik algılamanın derinlemesine anlaşılmasını gerektirmez.
 
 Şablon odaklı formlar basit senaryolara odaklanır ve yeniden kullanılabilirlik açısından sınırlıdır.
-Altta yatan form API'sini soyutlarlar ve görünüm ile veri modeli arasında [asenkron veri akışı](#template-driven-formlarda-veri-akışı) kullanırlar.
+Altta yatan form API'sini soyutlarlar ve görünüm ile veri modeli arasında [asenkron veri akışı](#data-flow-in-template-driven-forms) kullanırlar.
 Şablon odaklı formların soyutlaması test etmeyi de etkiler.
 Testler düzgün çalışması için manuel değişiklik algılama yürütmesine derinden bağımlıdır ve daha fazla kurulum gerektirir.
 
@@ -244,7 +244,7 @@ Doğrulama, herhangi bir form kümesini yönetmenin ayrılmaz bir parçasıdır.
 | Reaktif formlar       | Özel doğrulayıcıları, doğrulanacak bir kontrol alan **fonksiyonlar** olarak tanımlayın                           |
 | Şablon odaklı formlar | Şablon **direktiflerine** bağlıdır ve doğrulama fonksiyonlarını saran özel doğrulayıcı direktifleri sağlamalıdır |
 
-Daha fazla bilgi için [Form Doğrulama](guide/forms/form-validation#reactive-formlarda-girdiyi-doğrulama) bölümüne bakın.
+Daha fazla bilgi için [Form Doğrulama](guide/forms/form-validation#validating-input-in-reactive-forms) bölümüne bakın.
 
 ## Test etme {#testing}
 
@@ -315,7 +315,7 @@ Reaktif formlar hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzla
 
 <docs-pill-row>
   <docs-pill href="guide/forms/reactive-forms" title="Reactive Form'lar"/>
-  <docs-pill href="guide/forms/form-validation#reactive-formlarda-girdiyi-doğrulama" title="Form girdisini doğrulama"/>
+  <docs-pill href="guide/forms/form-validation#validating-input-in-reactive-forms" title="Form girdisini doğrulama"/>
   <docs-pill href="guide/forms/dynamic-forms" title="Dinamik form'lar oluşturma"/>
 </docs-pill-row>
 
@@ -323,6 +323,6 @@ Reaktif formlar hakkında daha fazla bilgi edinmek için aşağıdaki kılavuzla
 
 <docs-pill-row>
   <docs-pill href="guide/forms/template-driven-forms" title="Template-driven form oluşturma" />
-  <docs-pill href="guide/forms/form-validation#template-driven-formlarda-girdiyi-doğrulama" title="Form girdisini doğrulama" />
+  <docs-pill href="guide/forms/form-validation#validating-input-in-template-driven-forms" title="Form girdisini doğrulama" />
   <docs-pill href="api/forms/NgForm" title="NgForm direktifi API referansı" />
 </docs-pill-row>

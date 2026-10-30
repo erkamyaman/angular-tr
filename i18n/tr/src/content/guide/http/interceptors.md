@@ -5,7 +5,7 @@
 
 TLDR: Yakalayıcılar, yeniden deneme, önbellekleme, günlükleme ve kimlik doğrulama gibi yaygın kalıpların bireysel isteklerden soyutlanmasına olanak tanıyan ara yazılımlardır.
 
-`HttpClient` iki tür yakalayıcıyı destekler: fonksiyonel ve DI tabanlı. Önerimiz, özellikle karmaşık kurulumlarda daha öngörülebilir davranışa sahip olan fonksiyonel yakalayıcıları kullanmanızdır. Bu kılavuzdaki örneklerimiz fonksiyonel yakalayıcıları kullanır ve [DI tabanlı yakalayıcıları](#di-tabanlı-interceptorlar) sonunda kendi bölümlerinde ele alırız.
+`HttpClient` iki tür yakalayıcıyı destekler: fonksiyonel ve DI tabanlı. Önerimiz, özellikle karmaşık kurulumlarda daha öngörülebilir davranışa sahip olan fonksiyonel yakalayıcıları kullanmanızdır. Bu kılavuzdaki örneklerimiz fonksiyonel yakalayıcıları kullanır ve [DI tabanlı yakalayıcıları](#di-based-interceptors) sonunda kendi bölümlerinde ele alırız.
 
 ## Interceptor'lar {#interceptors}
 

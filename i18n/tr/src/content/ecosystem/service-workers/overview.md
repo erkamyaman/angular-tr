@@ -49,7 +49,7 @@ Bu davranışları desteklemek için Angular service worker sunucudan bir _manif
 Uygulamaya bir güncelleme dağıtıldığında, manifestin içeriği değişir ve service worker'a uygulamanın yeni bir sürümünün indirilip önbelleğe alınması gerektiğini bildirir.
 Bu manifest, `ngsw-config.json` adlı CLI tarafından oluşturulan bir yapılandırma dosyasından üretilir.
 
-Angular service worker'ı yüklemek, [bir Angular CLI komutu çalıştırmak](ecosystem/service-workers/getting-started#projenize-service-worker-ekleme) kadar basittir.
+Angular service worker'ı yüklemek, [bir Angular CLI komutu çalıştırmak](ecosystem/service-workers/getting-started#adding-a-service-worker-to-your-project) kadar basittir.
 Tarayıcıya Angular service worker'ı kaydetmenin yanı sıra, bu işlem aynı zamanda service worker ile etkileşime giren ve onu kontrol etmek için kullanılabilecek birkaç servisi enjeksiyon için kullanılabilir hale getirir.
 Örneğin, bir uygulama yeni bir güncelleme mevcut olduğunda bildirilmeyi isteyebilir veya uygulama, service worker'dan sunucuda mevcut güncellemeleri kontrol etmesini isteyebilir.
 

@@ -210,7 +210,7 @@ Daha iyi kullanıcı deneyimi sağlamak için, form geçersiz olduğunda şablon
 
 <docs-code header="actor-form-reactive.component.html" path="adev/src/content/examples/form-validation/src/app/reactive/actor-form-reactive.component.html" region="cross-validation-error-message"/>
 
-Bu `@if`, `FormGroup`'ta `unambiguousRoleValidator` doğrulayıcısı tarafından döndürülen çapraz doğrulama hatası varsa hatayı görüntüler, ancak yalnızca kullanıcı [formla etkileşimi tamamladıysa](#kontrol-durumu-css-sınıfları).
+Bu `@if`, `FormGroup`'ta `unambiguousRoleValidator` doğrulayıcısı tarafından döndürülen çapraz doğrulama hatası varsa hatayı görüntüler, ancak yalnızca kullanıcı [formla etkileşimi tamamladıysa](#control-status-css-classes).
 
 ### Template-driven form'lara çapraz doğrulama ekleme {#adding-cross-validation-to-template-driven-forms}
 

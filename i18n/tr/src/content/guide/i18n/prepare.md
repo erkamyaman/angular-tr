@@ -119,7 +119,7 @@ $localize`:{i18n_metadata}:string_to_translate`;
 
 ### Enterpolasyonlu metin ekleme {#include-interpolated-text}
 
-Bir [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesine [enterpolasyonlar](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) ekleyin.
+Bir [`$localize`][ApiLocalizeInitLocalize] etiketli mesaj dizesine [enterpolasyonlar](guide/templates/binding#render-dynamic-text-with-text-interpolation) ekleyin.
 
 ```ts
 $localize`string_to_translate ${variable_name}`;
@@ -304,7 +304,7 @@ updated just now
 updated one minute ago
 ```
 
-HTML işaretlemesi ve [enterpolasyonlar](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) kullanın.
+HTML işaretlemesi ve [enterpolasyonlar](guide/templates/binding#render-dynamic-text-with-text-interpolation) kullanın.
 Aşağıdaki kod örneği, önceki üç durumu bir `<span>` öğesinde ifade etmek için `plural` yan tümcesinin nasıl kullanılacağını göstermektedir.
 
 <docs-code header="app.component.html" path="adev/src/content/examples/i18n/src/app/app.component.html" region="i18n-plural"/>
@@ -319,7 +319,7 @@ Aşağıdaki kod örneği, önceki üç durumu bir `<span>` öğesinde ifade etm
 | `=1 {one minute}`                 | Bir dakika için çoğullama kategorisi `=1`'dir. Değer `one minute`'dir.                                                     |
 | `other {{{minutes}} minutes ago}` | Eşleşmeyen herhangi bir kardinalite için varsayılan çoğullama kategorisi `other`'dır. Değer `{{minutes}} minutes ago`'dur. |
 
-`{{minutes}}` bir [enterpolasyondur](guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme).
+`{{minutes}}` bir [enterpolasyondur](guide/templates/binding#render-dynamic-text-with-text-interpolation).
 
 ### Alternatifleri ve iç içe ifadeleri işaretleme {#mark-alternates-and-nested-expressions}
 
@@ -398,8 +398,8 @@ Aşağıdaki kod örneği, `gender` ve `minutes` örneklerine dayalı iç içe y
 </docs-pill-row>
 
 [ApiLocalizeInitLocalize]: api/localize/init/$localize '$localize | init - localize - API  | Angular'
-[GuideI18nCommonPrepareMarkAlternatesAndNestedExpressions]: guide/i18n/prepare#alternatifleri-ve-iç-içe-ifadeleri-işaretleme 'Mark alternates and nested expressions - Prepare templates for translation | Angular'
-[GuideI18nCommonPrepareMarkPlurals]: guide/i18n/prepare#çoğulları-işaretleme 'Mark plurals - Prepare component for translation | Angular'
+[GuideI18nCommonPrepareMarkAlternatesAndNestedExpressions]: guide/i18n/prepare#mark-alternates-and-nested-expressions 'Mark alternates and nested expressions - Prepare templates for translation | Angular'
+[GuideI18nCommonPrepareMarkPlurals]: guide/i18n/prepare#mark-plurals 'Mark plurals - Prepare component for translation | Angular'
 [GuideI18nOptionalManageMarkedText]: guide/i18n/manage-marked-text 'Manage marked text with custom IDs | Angular'
 [GithubAngularAngularBlobEcffc3557fe1bff9718c01277498e877ca44588dPackagesCoreSrcI18nLocaleEnTsL14L18]: https://github.com/angular/angular/blob/ecffc3557fe1bff9718c01277498e877ca44588d/packages/core/src/i18n/locale_en.ts#L14-L18 'Line 14 to 18 - angular/packages/core/src/i18n/locale_en.ts | angular/angular | GitHub'
 [GithubUnicodeOrgIcuUserguideFormatParseMessages]: https://unicode-org.github.io/icu/userguide/format_parse/messages 'ICU Message Format - ICU Documentation | Unicode | GitHub'

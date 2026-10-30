@@ -3,7 +3,7 @@
 
 Bu kılavuz, Angular'da bağımlılık enjeksiyonunun (DI) ek özelliklerini inceler.
 
-NOTE: InjectionToken ve özel sağlayıcıların kapsamlı açıklaması için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injection-tokenlar) bakın.
+NOTE: InjectionToken ve özel sağlayıcıların kapsamlı açıklaması için [bağımlılık sağlayıcılarını tanımlama kılavuzuna](guide/di/defining-dependency-providers#injection-tokens) bakın.
 
 ## Bileşenin DOM elemanını enjekte etme {#inject-the-components-dom-element}
 

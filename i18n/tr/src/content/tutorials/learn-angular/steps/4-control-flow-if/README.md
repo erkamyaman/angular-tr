@@ -5,7 +5,7 @@ Kullanıcıya ekranda neyin gösterileceğine karar vermek, uygulama geliştirme
 
 Şablonlarda koşullu gösterimi ifade etmek için Angular, `@if` şablon sözdizimini kullanır.
 
-NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#if-ve-for-ile-kontrol-akışı) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#control-flow-with-if-and-for) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, şablonlarda koşullu ifadelerin nasıl kullanılacağını öğreneceksiniz.
 

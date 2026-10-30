@@ -153,7 +153,7 @@ export class UserProfile {
 }
 ```
 
-`stream` özelliği, bir RxJS `Observable` için bir fabrika fonksiyonu kabul eder. Bu fabrika fonksiyonuna kaynağın `params` değeri geçirilir ve bir `Observable` döndürür. Kaynak, `params` hesaplaması her yeni değer ürettiğinde bu fabrika fonksiyonunu çağırır. Fabrika fonksiyonuna geçirilen parametreler hakkında daha fazla bilgi için [Kaynak yükleyiciler](/guide/signals/resource#resource-loaderları) bölümüne bakın.
+`stream` özelliği, bir RxJS `Observable` için bir fabrika fonksiyonu kabul eder. Bu fabrika fonksiyonuna kaynağın `params` değeri geçirilir ve bir `Observable` döndürür. Kaynak, `params` hesaplaması her yeni değer ürettiğinde bu fabrika fonksiyonunu çağırır. Fabrika fonksiyonuna geçirilen parametreler hakkında daha fazla bilgi için [Kaynak yükleyiciler](/guide/signals/resource#resource-loaders) bölümüne bakın.
 
 Diğer tüm açılardan, `rxResource`, parametreleri belirlemek, değerleri okumak, yükleme durumunu kontrol etmek ve hataları incelemek için `resource` ile aynı şekilde davranır ve aynı API'leri sağlar.
 

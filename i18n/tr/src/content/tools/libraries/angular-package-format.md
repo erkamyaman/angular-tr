@@ -52,12 +52,12 @@ Bu tablo, dosya ve dizinlerin amacını açıklamak için açıklamalı `node_mo
 
 Birincil `package.json` aşağıdakiler dahil olmak üzere önemli paket meta verilerini içerir:
 
-- Paketi EcmaScript Modülü \(ESM\) formatında olduğunu [bildirir](#esm-bildirimi)
+- Paketi EcmaScript Modülü \(ESM\) formatında olduğunu [bildirir](#esm-declaration)
 - Tüm giriş noktalarının mevcut kaynak kodu formatlarını tanımlayan bir `"exports"` alanı içerir
-- `"exports"`'u anlamayan araçlar için birincil `@angular/core` giriş noktasının mevcut kaynak kodu formatlarını tanımlayan [anahtarlar](#eski-çözümleme-anahtarları) içerir.
+- `"exports"`'u anlamayan araçlar için birincil `@angular/core` giriş noktasının mevcut kaynak kodu formatlarını tanımlayan [anahtarlar](#legacy-resolution-keys) içerir.
   Bu anahtarlar kullanımdan kaldırılmış olarak kabul edilir ve `"exports"` desteği ekosistem genelinde yaygınlaştıkça kaldırılabilir.
 
-- Paketin [yan etkileri](#yan-etkiler) içerip içermediğini bildirir
+- Paketin [yan etkileri](#side-effects) içerip içermediğini bildirir
 
 ### ESM Bildirimi {#esm-declaration}
 
@@ -106,7 +106,7 @@ Bu anahtarların farkında olan araçlar, `"exports"`'tan tercih edilen bir kod 
 
 Kütüphaneler, JavaScript tabanlı giriş noktalarının dışa aktarımları tarafından yakalanmayan Sass mixin'leri veya önceden derlenmiş CSS gibi ek statik dosyaları sunmak isteyebilir.
 
-Daha fazla bilgi için bkz. [Bir kütüphanedeki varlıkları yönetme](tools/libraries/creating-libraries#bir-kütüphanedeki-varlıkları-yönetme).
+Daha fazla bilgi için bkz. [Bir kütüphanedeki varlıkları yönetme](tools/libraries/creating-libraries#managing-assets-in-a-library).
 
 ### Eski Çözümleme Anahtarları {#legacy-resolution-keys}
 
@@ -124,7 +124,7 @@ Daha fazla bilgi için bkz. [Bir kütüphanedeki varlıkları yönetme](tools/li
 
 ### Yan Etkiler {#side-effects}
 
-`package.json`'ın son işlevi, paketin [yan etkileri](#sideeffects-bayrağı) içerip içermediğini bildirmektir.
+`package.json`'ın son işlevi, paketin [yan etkileri](#sideeffects-flag) içerip içermediğini bildirmektir.
 
 ```js
 {
@@ -199,7 +199,7 @@ Angular kodunu kısmen derlemek için `tsconfig.json`'unuzdaki `angularCompilerO
 
 Kısmen derlenmiş kütüphane kodu, daha sonra uygulama derleme sürecinde Angular CLI tarafından tam olarak derlenmiş koda dönüştürülür.
 
-Derleme süreciniz Angular CLI kullanmıyorsa [Angular CLI dışında partial-Ivy kodunu kullanma](tools/libraries/creating-libraries#angular-cli-dışında-partial-ivy-kodunu-kullanma) kılavuzuna bakın.
+Derleme süreciniz Angular CLI kullanmıyorsa [Angular CLI dışında partial-Ivy kodunu kullanma](tools/libraries/creating-libraries#consuming-partial-ivy-code-outside-the-angular-cli) kılavuzuna bakın.
 
 ### ES Modüllerinin Düzleştirilmesi {#flattening-of-es-modules}
 

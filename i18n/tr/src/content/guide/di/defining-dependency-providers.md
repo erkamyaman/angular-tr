@@ -3,7 +3,7 @@
 
 Angular, servisleri enjeksiyon için kullanılabilir hale getirmenin iki yolunu sunar:
 
-1. **Otomatik sağlama** - `@Injectable` dekoratöründe `providedIn` kullanarak, [`@Service`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) dekoratörü ile veya `InjectionToken` yapılandırmasında bir fabrika sağlayarak
+1. **Otomatik sağlama** - `@Injectable` dekoratöründe `providedIn` kullanarak, [`@Service`](guide/di/creating-and-using-services#using-the-service-vs-injectable-decorator) dekoratörü ile veya `InjectionToken` yapılandırmasında bir fabrika sağlayarak
 2. **Manuel sağlama** - Bileşenlerde, direktiflerde, rotalarda veya uygulama yapılandırmasında `providers` dizisini kullanarak
 
 [Önceki kılavuzda](/guide/di/creating-and-using-services), çoğu yaygın kullanım durumunu ele alan `providedIn: 'root'` kullanarak servislerin nasıl oluşturulacağını öğrendiniz. Bu kılavuz, hem otomatik hem de manuel sağlayıcı yapılandırması için ek desenleri inceler.
@@ -275,8 +275,8 @@ Her sağlayıcı yapılandırma nesnesinin iki temel parçası vardır:
 
 Sağlayıcı tanımlayıcıları, Angular'ın bağımlılık enjeksiyonu (DI) sisteminin benzersiz bir kimlik aracılığıyla bir bağımlılığı almasına olanak tanır. Sağlayıcı tanımlayıcılarını iki şekilde oluşturabilirsiniz:
 
-1. [Sınıf adları](#sınıf-adları)
-2. [Enjeksiyon token'ları](#injection-tokenlar)
+1. [Sınıf adları](#class-names)
+2. [Enjeksiyon token'ları](#injection-tokens)
 
 #### Sınıf adları {#class-names}
 
@@ -611,8 +611,8 @@ providers: [
 
 Angular, sağlayıcıları kaydedebileceğiniz birkaç seviye sunar ve her birinin kapsam, yaşam döngüsü ve performans için farklı etkileri vardır:
 
-- [**Uygulama başlatma**](#uygulama-başlatma) - Her yerde kullanılabilir global tekil örnekler
-- [**Bir eleman üzerinde (bileşen veya direktif)**](#bileşen-veya-direktif-providerları) - Belirli bileşen ağaçları için izole örnekler
+- [**Uygulama başlatma**](#application-bootstrap) - Her yerde kullanılabilir global tekil örnekler
+- [**Bir eleman üzerinde (bileşen veya direktif)**](#component-or-directive-providers) - Belirli bileşen ağaçları için izole örnekler
 - [**Rota**](#route-providers) - Tembel yüklenen modüller için özelliğe özgü servisler
 
 ### Uygulama başlatma {#application-bootstrap}

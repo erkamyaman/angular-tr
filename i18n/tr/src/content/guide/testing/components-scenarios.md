@@ -202,7 +202,7 @@ Bu test paketinde `UserAuthentication`'ın _tek_ sağlayıcısı kök test modü
 userAuth = TestBed.inject(UserAuthentication);
 ```
 
-HELPFUL: `TestBed.inject()`'in çalışmadığı bir kullanım durumu için, servisi neden ve ne zaman bileşenin enjektöründen almanız gerektiğini açıklayan [_Bileşen sağlayıcılarını geçersiz kılma_](#bileşen-providerlarını-geçersiz-kılma) bölümüne bakın.
+HELPFUL: `TestBed.inject()`'in çalışmadığı bir kullanım durumu için, servisi neden ve ne zaman bileşenin enjektöründen almanız gerektiğini açıklayan [_Bileşen sağlayıcılarını geçersiz kılma_](#override-component-providers) bölümüne bakın.
 
 ### Son kurulum ve test'ler {#final-setup-and-tests}
 
@@ -445,7 +445,7 @@ Ardından alıntı öğesinin beklenen metni görüntülediğini doğrulayabilir
 
 TIP: Yerel asenkron test stratejileri veya Vitest veya Jasmine'den olanlar gibi diğer sahte zamanlayıcıları (sahte saat olarak da adlandırılır) kullanmayı tercih edin.
 
-IMPORTANT: `fakeAsync` için `zone.js` gerekir. Vitest test çalıştırıcısı ile kullanmak için [Vitest geçiş kılavuzunda](guide/testing/migrating-to-vitest#zonejs-vitest-yaması) açıklandığı gibi `zone.js/plugins/vitest-patch` polyfill'ini ekleyin.
+IMPORTANT: `fakeAsync` için `zone.js` gerekir. Vitest test çalıştırıcısı ile kullanmak için [Vitest geçiş kılavuzunda](guide/testing/migrating-to-vitest#zonejs-vitest-patch) açıklandığı gibi `zone.js/plugins/vitest-patch` polyfill'ini ekleyin.
 
 ## Input ve output'lara sahip bileşen {#component-with-inputs-and-outputs}
 
@@ -1161,7 +1161,7 @@ beforeEach(async () => {
 });
 ```
 
-`TestBed.configureTestingModule`'un artık sahte bir `HeroService` sağlamadığına dikkat edin çünkü buna [ihtiyaç yoktur](#bir-spy-stub-sağlama-herodetailservicespy).
+`TestBed.configureTestingModule`'un artık sahte bir `HeroService` sağlamadığına dikkat edin çünkü buna [ihtiyaç yoktur](#provide-a-spy-stub-herodetailservicespy).
 
 ### `overrideComponent` metodu {#the-overridecomponent-method}
 
@@ -1174,7 +1174,7 @@ beforeEach(async () => {
 ```
 
 İki argüman alır: geçersiz kılınacak bileşen tipi \(`HeroDetail`\) ve bir geçersiz kılma meta veri nesnesi.
-[Geçersiz kılma meta veri nesnesi](/guide/testing/utility-apis#testbed-sınıf-özeti) şu şekilde tanımlanan bir genel tiptir:
+[Geçersiz kılma meta veri nesnesi](/guide/testing/utility-apis#testbed-class-summary) şu şekilde tanımlanan bir genel tiptir:
 
 ```ts
 type MetadataOverride<T> = {

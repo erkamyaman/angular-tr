@@ -420,7 +420,7 @@ export class UserProfile {
 
 ## Otomatik durum sınıfları {#automatic-status-classes}
 
-Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#kontrol-durumlarını-takip-etme) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
+Reactive/Template Forms, kontrol durumlarının stillendirilmesini kolaylaştırmak için otomatik olarak [class nitelikleri](/guide/forms/template-driven-forms#track-control-states) ekler (`.ng-valid` veya `.ng-dirty` gibi). Signal Forms bunu yapmaz.
 
 Bu davranışı korumak istiyorsanız, `NG_STATUS_CLASSES` ön ayarını sağlayabilirsiniz:
 

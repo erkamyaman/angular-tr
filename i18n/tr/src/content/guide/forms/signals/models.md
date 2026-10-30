@@ -73,7 +73,7 @@ IMPORTANT: TypeScript bunları kabul etse de, sınıf örnekleri, `Map` ve `Set`
 - **Diziler içindeki genişletilemeyen veya dondurulmuş nesneler**, Signal Forms öğe kimliğini yeniden sıralamalar boyunca korumak için bir izleme sembolü atadığında hata fırlatır.
 - **`Map` ve `Set`**, Signal Forms alt öğeleri `Object.keys` ile sıraladığından boş alan ağaçları üretir.
 
-Uygulamanız alan modellemesi için sınıflar kullanıyorsa, form sınırında düz nesnelere dönüştürün. Bkz. [Form modeli ve alan modeli arasında dönüşüm](guide/forms/signals/model-design#form-modeli-ve-alan-modeli-arasında-dönüşüm).
+Uygulamanız alan modellemesi için sınıflar kullanıyorsa, form sınırında düz nesnelere dönüştürün. Bkz. [Form modeli ve alan modeli arasında dönüşüm](guide/forms/signals/model-design#translating-between-form-model-and-domain-model).
 
 ### TypeScript türlerini kullanma {#using-typescript-types}
 

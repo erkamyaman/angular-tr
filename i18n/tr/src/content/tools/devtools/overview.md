@@ -46,4 +46,4 @@ Doğru web sayfasını incelediğinizden ve Angular uygulamasının çalıştı�
 Üretim için derleme yaparken, Angular CLI performansı artırmak için sayfadaki JavaScript miktarını en aza indirmek amacıyla çeşitli hata ayıklama özelliklerini kaldırır. Bu, DevTools ile iletişim kurmak için gereken özellikleri de içerir.
 
 DevTools'u çalıştırmak için uygulamanızı optimizasyonlar devre dışı bırakılmış şekilde derlemeniz gerekir. `ng serve` bunu varsayılan olarak yapar.
-Dağıtılmış bir uygulamada hata ayıklamanız gerekiyorsa, yapılandırmanızda [`optimization` yapılandırma seçeneği](reference/configs/workspace-config#optimizasyon-yapılandırması) (`{"optimization": false}`) ile optimizasyonları devre dışı bırakın.
+Dağıtılmış bir uygulamada hata ayıklamanız gerekiyorsa, yapılandırmanızda [`optimization` yapılandırma seçeneği](reference/configs/workspace-config#optimization-configuration) (`{"optimization": false}`) ile optimizasyonları devre dışı bırakın.

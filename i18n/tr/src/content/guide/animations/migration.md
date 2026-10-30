@@ -49,7 +49,7 @@ Aynı davranış, anahtar kare animasyonu veya geçiş stili kullanan CSS sını
 
 `open` veya `closed` durumunu tetiklemek, bileşeninizdeki eleman üzerinde sınıfları değiştirerek yapılır. Bunu nasıl yapacağınıza dair örnekleri [şablon rehberimizde](guide/templates/binding#css-class-and-style-property-bindings) bulabilirsiniz.
 
-[Stilleri doğrudan animasyonlama](guide/templates/binding#css-stil-özellikleri) için şablon rehberinde benzer örnekler görebilirsiniz.
+[Stilleri doğrudan animasyonlama](guide/templates/binding#css-style-properties) için şablon rehberinde benzer örnekler görebilirsiniz.
 
 ### Geçişler, zamanlama ve yumuşatma {#transitions-timing-and-easing}
 

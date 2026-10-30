@@ -87,7 +87,7 @@ Angular, standart JavaScript'ten aşağıdaki operatörleri destekler.
 | Fonksiyon çağrılarında rest | `fn(...args)`                                  |
 | Arrow fonksiyon             | `items.filter((i) => i.active)`                |
 
-NOTE: Atama ve artırma/azaltma operatörleri yalnızca [olay dinleyici ifadelerinde](#olay-dinleyici-ifadeleri) geçerlidir. Bunları bir binding veya interpolation içinde kullanmak, bir arrow fonksiyonun içinde olmadıkları sürece derleme hatasıdır.
+NOTE: Atama ve artırma/azaltma operatörleri yalnızca [olay dinleyici ifadelerinde](#event-listener-statements) geçerlidir. Bunları bir binding veya interpolation içinde kullanmak, bir arrow fonksiyonun içinde olmadıkları sürece derleme hatasıdır.
 
 Arrow fonksiyonların gövdesi bir ifade olmalıdır. Pipe'lar bir arrow fonksiyonun içinde kullanılamaz, ancak bir arrow fonksiyonu pipe'a argüman olarak geçirebilirsiniz.
 

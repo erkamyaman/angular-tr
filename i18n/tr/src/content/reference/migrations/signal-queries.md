@@ -14,7 +14,7 @@ ng generate @angular/core:signal-queries-migration
 
 Alternatif olarak, geçiş VSCode'da bir [kod yeniden düzenleme eylemi](https://code.visualstudio.com/docs/typescript/typescript-refactoring#_refactoring) olarak mevcuttur.
 VSCode uzantısının en son sürümünü kurun ve örneğin bir `@ViewChild` alanına tıklayın.
-Daha fazla ayrıntı için [aşağıdaki](#vscode-eklentisi) bölüme bakın.
+Daha fazla ayrıntı için [aşağıdaki](#vscode-extension) bölüme bakın.
 
 ## Geçiş ne değiştirir? {#what-does-the-migration-change}
 

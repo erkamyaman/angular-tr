@@ -83,7 +83,7 @@ export class Contact {
 }
 ```
 
-`action` fonksiyonu yalnızca hiçbir doğrulama kuralı başarısız olmadığında çalışır. Varsayılan olarak, beklemedeki asenkron doğrulayıcılar gönderimi engellemez (daha fazla ayrıntı için [Doğrulama kapısını `ignoreValidators` ile kontrol etme](#doğrulama-kapısını-ignorevalidators-ile-kontrol-etme) bölümüne bakın). Eylem, alan ağacını ve `root` ile `submitted` alan ağaçlarını içeren bir `detail` nesnesi alır; bu, bir alt form gönderirken kullanışlıdır.
+`action` fonksiyonu yalnızca hiçbir doğrulama kuralı başarısız olmadığında çalışır. Varsayılan olarak, beklemedeki asenkron doğrulayıcılar gönderimi engellemez (daha fazla ayrıntı için [Doğrulama kapısını `ignoreValidators` ile kontrol etme](#controlling-validation-gating-with-ignorevalidators) bölümüne bakın). Eylem, alan ağacını ve `root` ile `submitted` alan ağaçlarını içeren bir `detail` nesnesi alır; bu, bir alt form gönderirken kullanışlıdır.
 
 Doğrulama geçtikten sonra, eylemin kendisi yine de bir ağ hatası veya mükerrer kayıt gibi senaryolar nedeniyle başarısız olabilir. Bu durumlarda, hatayı veya hataları döndürerek başarısızlığı gösterebilirsiniz. Öte yandan, başarıyı belirtmek için yalnızca `null` ya da `undefined` döndürmeniz veya boş bir `return` çağırmanız yeterlidir.
 

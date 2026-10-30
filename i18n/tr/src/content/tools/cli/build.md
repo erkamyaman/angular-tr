@@ -10,7 +10,7 @@ Angular CLI, genellikle `build` hedefleri olarak kullanılan dört builder içer
 | Builder                                         | Amaç                                                                                                                                                                                                                                      |
 | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@angular/build:application`                    | [esbuild](https://esbuild.github.io/) ile istemci tarafı paketi, bir Node sunucusu ve derleme zamanı önceden işlenmiş rotalar içeren bir uygulama derler.                                                                                 |
-| `@angular-devkit/build-angular:browser-esbuild` | [esbuild](https://esbuild.github.io/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler. Daha fazla bilgi için [`browser-esbuild` belgelerine](tools/cli/build-system-migration#uyumluluk-builderına-manuel-geçiş) bakın. |
+| `@angular-devkit/build-angular:browser-esbuild` | [esbuild](https://esbuild.github.io/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler. Daha fazla bilgi için [`browser-esbuild` belgelerine](tools/cli/build-system-migration#manual-migration-to-the-compatibility-builder) bakın. |
 | `@angular-devkit/build-angular:browser`         | [webpack](https://webpack.js.org/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler.                                                                                                                                     |
 | `@angular/build:ng-packagr`                     | [Angular Paket Formatı](tools/libraries/angular-package-format)'na uygun bir Angular kütüphanesi derler.                                                                                                                                  |
 
@@ -178,6 +178,6 @@ Tailwind CSS'i Angular CLI ile entegre etmek için [Angular ile Tailwind CSS kul
 ## Kritik CSS satır içi yerleştirme {#critical-css-inlining}
 
 Angular, [First Contentful Paint (FCP)](https://web.dev/first-contentful-paint) performansını artırmak için uygulamanızın kritik CSS tanımlarını satır içine alabilir.
-Bu seçenek varsayılan olarak etkindir. Bu satır içi yerleştirmeyi [`styles` özelleştirme seçeneklerinde](reference/configs/workspace-config#stil-optimizasyon-seçenekleri) devre dışı bırakabilirsiniz.
+Bu seçenek varsayılan olarak etkindir. Bu satır içi yerleştirmeyi [`styles` özelleştirme seçeneklerinde](reference/configs/workspace-config#styles-optimization-options) devre dışı bırakabilirsiniz.
 
 Bu optimizasyon, başlangıç görünüm alanını oluşturmak için gereken CSS'i çıkarır ve doğrudan oluşturulan HTML'ye satır içi olarak yerleştirir, böylece tarayıcının tam stil sayfalarının yüklenmesini beklemeden içeriği daha hızlı görüntülemesini sağlar. Kalan CSS daha sonra arka planda asenkron olarak yüklenir. Angular CLI, uygulamanızın HTML ve stillerini analiz etmek için [Beasties](https://github.com/danielroe/beasties) kullanır.

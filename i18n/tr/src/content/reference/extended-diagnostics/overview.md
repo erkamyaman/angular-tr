@@ -57,12 +57,12 @@ Kontrol ciddiyeti bir [Angular derleyici seçeneği](reference/configs/angular-c
 ```
 
 `checks` alanı, bireysel tanılamaların adlarını ilişkili kategorileriyle eşler.
-Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Tanılamalar](#tanılamalar) bölümüne bakın.
+Tam bir genişletilmiş tanılama listesi ve bunları yapılandırmak için kullanılacak adlar için [Tanılamalar](#diagnostics) bölümüne bakın.
 
 `defaultCategory` alanı, `checks` altında açıkça listelenmemiş tüm tanılamalar için kullanılır.
 Ayarlanmazsa, bu tür tanılamalar `warning` olarak değerlendirilir.
 
-Genişletilmiş tanılamalar [`strictTemplates`](tools/cli/template-typecheck#katı-mod) etkinleştirildiğinde verilir.
+Genişletilmiş tanılamalar [`strictTemplates`](tools/cli/template-typecheck#strict-mode) etkinleştirildiğinde verilir.
 Bu, derleyicinin Angular şablon türlerini daha iyi anlamasını ve doğru ve anlamlı tanılamalar sağlamasını mümkün kılmak için gereklidir.
 
 ## Semantik Versiyonlama {#semantic-versioning}
@@ -73,7 +73,7 @@ Bu, ekibin özellikleri daha hızlı sunmasını ve genişletilmiş tanılamalar
 
 Ancak, `"defaultCategory": "error"` ayarı bu tür uyarıları kesin hatalara yükseltir.
 Bu, bir minor sürüm yükseltmesinin derleme hataları oluşturmasına neden olabilir ve bu durum semver uyumlu olmayan bir kırılma değişikliği olarak görülebilir.
-Herhangi bir yeni tanılama, yukarıdaki [yapılandırma](#yapılandırma) aracılığıyla bastırılabilir veya uyarılara düşürülebilir, bu nedenle genişletilmiş tanılamaları varsayılan olarak hata olarak değerlendiren projeler üzerindeki etkisi minimum olmalıdır.
+Herhangi bir yeni tanılama, yukarıdaki [yapılandırma](#configuration) aracılığıyla bastırılabilir veya uyarılara düşürülebilir, bu nedenle genişletilmiş tanılamaları varsayılan olarak hata olarak değerlendiren projeler üzerindeki etkisi minimum olmalıdır.
 Varsayılan olarak hata kullanmak çok güçlü bir araçtır; projeniz için `error`'ın doğru varsayılan olup olmadığına karar verirken bu semver uyarısını göz önünde bulundurun.
 
 ## Yeni Tanılamalar {#new-diagnostics}

@@ -58,7 +58,7 @@ Bir terminal açın ([Visual Studio Code](https://code.visualstudio.com/) kullan
     </docs-code>
 </docs-code-multifile>
 
-Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#angular-cliı-yükleme) göz atın.
+Bu komutu Windows veya Unix'te çalıştırırken sorun yaşıyorsanız, daha fazla bilgi için [CLI dokümantasyonuna](/tools/cli/setup-local#install-the-angular-cli) göz atın.
 
 #### Yeni Bir Proje Oluşturun {#create-a-new-project}
 

@@ -1,7 +1,7 @@
 <!-- source: 25b1d708a3b2b933ee7cb5f708e767147be9d69d -->
 # Service'leri lazy loading ile yükleme
 
-IMPORTANT: Lazy loading'in çalışması için, yüklediğiniz servisin otomatik olarak sağlanması (auto-provided) gerekir. Onu `@Injectable({providedIn: 'root'})` veya [`@Service()`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) ile süsleyin. Otomatik sağlama olmadan Angular'ın, servis yüklendikten sonra onu oluşturmasının bir yolu yoktur.
+IMPORTANT: Lazy loading'in çalışması için, yüklediğiniz servisin otomatik olarak sağlanması (auto-provided) gerekir. Onu `@Injectable({providedIn: 'root'})` veya [`@Service()`](guide/di/creating-and-using-services#using-the-service-vs-injectable-decorator) ile süsleyin. Otomatik sağlama olmadan Angular'ın, servis yüklendikten sonra onu oluşturmasının bir yolu yoktur.
 
 Angular'ın `injectAsync` fonksiyonu, bir servisi yalnızca gerçekten ihtiyaç duyulduğunda, talep üzerine yüklemenize olanak tanır. Bu, bir servis büyük bir kütüphaneye ya da nadiren kullanılan bir özelliğe bağlı olduğunda ve bunun bedelini ilk sayfa yüklemesinde ödemek istemediğinizde kullanışlıdır.
 

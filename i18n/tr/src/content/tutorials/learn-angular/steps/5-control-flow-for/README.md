@@ -3,7 +3,7 @@
 
 Web uygulamaları geliştirirken sıklıkla belirli bir kodu belirli sayıda tekrarlamanız gerekir - örneğin, bir isim dizisi verildiğinde her ismi bir `<p>` etiketinde göstermek isteyebilirsiniz.
 
-NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#if-ve-for-ile-kontrol-akışı) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kontrol akışı](/essentials/templates#control-flow-with-if-and-for) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, bir şablonda öğeleri tekrarlamak için `@for` kullanmayı öğreneceksiniz.
 

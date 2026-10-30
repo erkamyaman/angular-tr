@@ -75,7 +75,7 @@ Aşağıdaki örnek, şablonda interpolasyon kullanarak geçerli değerin nasıl
 Görüntülenen değer, form kontrol öğesini güncellediğinizde değişir.
 
 Reaktif formlar, her örnekle sağlanan özellikler ve yöntemler aracılığıyla belirli bir kontrol hakkında bilgiye erişim sağlar.
-Altta yatan [AbstractControl](api/forms/AbstractControl 'API reference') sınıfının bu özellikleri ve yöntemleri, form durumunu kontrol etmek ve [girdi doğrulamasını](#form-girdisini-doğrulama 'Learn more about validating form input') yönetirken mesajların ne zaman görüntüleneceğini belirlemek için kullanılır.
+Altta yatan [AbstractControl](api/forms/AbstractControl 'API reference') sınıfının bu özellikleri ve yöntemleri, form durumunu kontrol etmek ve [girdi doğrulamasını](#validating-form-input 'Learn more about validating form input') yönetirken mesajların ne zaman görüntüleneceğini belirlemek için kullanılır.
 
 Diğer `FormControl` özellikleri ve yöntemleri hakkında [API Referansı](api/forms/FormControl 'Detailed syntax reference') bölümünden bilgi alabilirsiniz.
 
@@ -106,7 +106,7 @@ Reaktif formlar, birden fazla ilişkili kontrolü tek bir girdi formunda gruplam
 
 | Form grupları | Ayrıntılar                                                                                                                                                                                                                                                                              |
 | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Form grubu    | Birlikte yönetebileceğiniz sabit bir kontrol kümesi ile bir form tanımlar. Form grubu temelleri bu bölümde tartışılmaktadır. Daha karmaşık formlar oluşturmak için [form gruplarını iç içe yerleştirebilirsiniz](#iç-içe-form-grupları-oluşturma 'See more about nesting groups').      |
+| Form grubu    | Birlikte yönetebileceğiniz sabit bir kontrol kümesi ile bir form tanımlar. Form grubu temelleri bu bölümde tartışılmaktadır. Daha karmaşık formlar oluşturmak için [form gruplarını iç içe yerleştirebilirsiniz](#creating-nested-form-groups 'See more about nesting groups').      |
 | Form dizisi   | Çalışma zamanında kontroller ekleyip kaldırabileceğiniz dinamik bir form tanımlar. Daha karmaşık formlar oluşturmak için form dizilerini de iç içe yerleştirebilirsiniz. Bu seçenek hakkında daha fazla bilgi için [Dinamik formlar oluşturma](#creating-dynamic-forms) bölümüne bakın. |
 
 Bir form kontrol örneğinin tek bir girdi alanı üzerinde kontrol sağlaması gibi, bir form grubu örneği de bir form kontrol örnekleri grubunun form durumunu takip eder \(örneğin, bir form\).
@@ -162,7 +162,7 @@ Form gönderimini tetiklemek için formun altına bir düğme eklemek üzere bir
 
 <docs-code header="profile-editor.component.html (submit button)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.html" region="submit-button"/>
 
-Önceki kod parçacığındaki düğme, `profileForm` geçersiz olduğunda düğmeyi devre dışı bırakmak için kendisine bağlı bir `disabled` bağlamasına da sahiptir. Henüz herhangi bir doğrulama yapmıyorsunuz, bu nedenle düğme her zaman etkindir. Temel form doğrulama, [Form girdisini doğrulama](#form-girdisini-doğrulama) bölümünde ele alınmaktadır.
+Önceki kod parçacığındaki düğme, `profileForm` geçersiz olduğunda düğmeyi devre dışı bırakmak için kendisine bağlı bir `disabled` bağlamasına da sahiptir. Henüz herhangi bir doğrulama yapmıyorsunuz, bu nedenle düğme her zaman etkindir. Temel form doğrulama, [Form girdisini doğrulama](#validating-form-input) bölümünde ele alınmaktadır.
 </docs-step>
 
 <docs-step title="Bileşeni görüntüleyin {#display-the-component-form-group}">
@@ -655,7 +655,7 @@ updatePostalCodeValidator(country: string) {
 }
 ```
 
-HELPFUL: Çalışma zamanında validatorları dinamik olarak yönetmek için Form Doğrulama kılavuzundaki [Reaktif formlarda validatorları dinamik olarak yönetme](guide/forms/form-validation#reaktif-formlarda-doğrulayıcıları-dinamik-olarak-yönetme) bölümüne bakın.
+HELPFUL: Çalışma zamanında validatorları dinamik olarak yönetmek için Form Doğrulama kılavuzundaki [Reaktif formlarda validatorları dinamik olarak yönetme](guide/forms/form-validation#managing-validators-dynamically-in-reactive-forms) bölümüne bakın.
 
 ## Form kontrol türlerini daraltmak için yardımcı fonksiyonlar {#utility-functions-for-narrowing-form-control-types}
 

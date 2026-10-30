@@ -34,7 +34,7 @@ Angular'ın derleyicisi, `@defer` bloğunda kullanılan her bileşen, direktif v
 
 ### `@defer`
 
-Bu, tembel olarak yüklenen içerik bölümünü tanımlayan birincil bloktur. Başlangıçta işlenmez - ertelenmiş içerik, belirtilen [tetikleyici](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) oluştuğunda veya `when` koşulu karşılandığında yüklenir ve işlenir.
+Bu, tembel olarak yüklenen içerik bölümünü tanımlayan birincil bloktur. Başlangıçta işlenmez - ertelenmiş içerik, belirtilen [tetikleyici](#controlling-deferred-content-loading-with-triggers) oluştuğunda veya `when` koşulu karşılandığında yüklenir ve işlenir.
 
 Varsayılan olarak, bir `@defer` bloğu tarayıcı durumu [boşta](/guide/templates/defer#idle) olduğunda tetiklenir.
 
@@ -58,7 +58,7 @@ Varsayılan olarak, defer blokları tetiklenmeden önce herhangi bir içerik iş
 }
 ```
 
-İsteğe bağlı olsa da, belirli tetikleyiciler çalışabilmek için bir `@placeholder` veya bir [şablon referans değişkeni](/guide/templates/variables#template-reference-variables) bulunmasını gerektirebilir. Daha fazla bilgi için [Tetikleyiciler](#tetikleyicilerle-ertelenmiş-içerik-yüklemeyi-kontrol-etme) bölümüne bakın.
+İsteğe bağlı olsa da, belirli tetikleyiciler çalışabilmek için bir `@placeholder` veya bir [şablon referans değişkeni](/guide/templates/variables#template-reference-variables) bulunmasını gerektirebilir. Daha fazla bilgi için [Tetikleyiciler](#controlling-deferred-content-loading-with-triggers) bölümüne bakın.
 
 Angular, yükleme tamamlandığında yer tutucu içeriği ana içerikle değiştirir. Yer tutucu bölümünde düz HTML, bileşenler, direktifler ve pipe'lar dahil herhangi bir içerik kullanabilirsiniz. _Yer tutucu bloğunun bağımlılıkların istekli olarak yüklendiğini_ unutmayın.
 

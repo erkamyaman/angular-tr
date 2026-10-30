@@ -109,7 +109,7 @@ export class AppDashboard {
 }
 ```
 
-`router.navigate()` hem basit hem de karmaşık yönlendirme senaryolarını destekler ve rota parametreleri, [sorgu parametreleri](/guide/routing/read-route-state#sorgu-parametreleri) geçirmenize ve navigasyon davranışını kontrol etmenize olanak tanır.
+`router.navigate()` hem basit hem de karmaşık yönlendirme senaryolarını destekler ve rota parametreleri, [sorgu parametreleri](/guide/routing/read-route-state#query-parameters) geçirmenize ve navigasyon davranışını kontrol etmenize olanak tanır.
 
 Ayrıca `relativeTo` seçeneğini kullanarak yönlendirme ağacındaki bileşeninizin konumuna göre dinamik navigasyon yolları oluşturabilirsiniz.
 

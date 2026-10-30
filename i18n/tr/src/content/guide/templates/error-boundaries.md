@@ -1,7 +1,7 @@
 <!-- source: 3a3bac481c7c34b131b840087cfe5e908b80fe74 -->
 # `@boundary` ile hata sınırları
 
-IMPORTANT: `@boundary` [geliştirici önizlemesindedir](reference/releases#geliştirici-önizlemesi).
+IMPORTANT: `@boundary` [geliştirici önizlemesindedir](reference/releases#developer-preview).
 
 Angular şablonları, render etme ve değişiklik algılama sırasında oluşan çalışma zamanı hatalarını zarif bir şekilde ele almak için hata sınırlarını destekler.
 

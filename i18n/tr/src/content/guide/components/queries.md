@@ -7,7 +7,7 @@ Bir bileşen, alt elemanları bulan ve injector'larından değer okuyan **sorgul
 
 Geliştiriciler en yaygın olarak alt bileşenlere, direktiflere, DOM elemanlarına ve daha fazlasına referanslar almak için sorguları kullanır.
 
-Tüm sorgu fonksiyonları, en güncel sonuçları yansıtan sinyaller döndürür. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contextler) dahil olmak üzere sinyal fonksiyonunu çağırarak sonucu okuyabilirsiniz.
+Tüm sorgu fonksiyonları, en güncel sonuçları yansıtan sinyaller döndürür. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contexts) dahil olmak üzere sinyal fonksiyonunu çağırarak sonucu okuyabilirsiniz.
 
 İki sorgu kategorisi vardır: **görünüm sorguları** ve **içerik sorguları.**
 

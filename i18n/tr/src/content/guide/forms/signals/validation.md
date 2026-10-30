@@ -65,7 +65,7 @@ NOTE: Signal Forms'un yerel geçerlilik durumunu okuduğu tek bir durum vardır:
 
 IMPORTANT: `:valid` ve `:invalid` CSS sözde sınıfları, elemanın `validity` özelliği veya `validationMessage` gibi yerel geçerlilik özelliklerine güvenmeyin. Tarayıcı, yansıtılan niteliklerin bir yan etkisi olarak bazı girdileri geçersiz bildirebilir (örneğin değeri `min`'in altında olan bir sayı girdisi), ancak bu davranış doğrulama kuralına ve girdi türüne göre değişir ve doğrulama durumunu gözlemlemenin desteklenen bir yolu değildir.
 
-Kontrolleri doğrulama durumuna göre biçimlendirmek için sınıfları alan durumu sinyallerine bağlayın ([Alan durumu yönetimi](guide/forms/signals/field-state-management#koşullu-hata-gösterimi) bölümüne bakın) veya otomatik durum sınıflarını yapılandırın ([Otomatik durum sınıfları](guide/forms/signals/migration#automatic-status-classes) bölümüne bakın).
+Kontrolleri doğrulama durumuna göre biçimlendirmek için sınıfları alan durumu sinyallerine bağlayın ([Alan durumu yönetimi](guide/forms/signals/field-state-management#conditional-error-display) bölümüne bakın) veya otomatik durum sınıflarını yapılandırın ([Otomatik durum sınıfları](guide/forms/signals/migration#automatic-status-classes) bölümüne bakın).
 
 ## Yerleşik doğrulama kuralları {#built-in-validation-rules}
 
@@ -479,7 +479,7 @@ signupForm = form(this.signupModel, (schemaPath) => {
 
 E-posta alanı boşsa, yalnızca `required()` hatası görünür. Kullanıcı "a@b" yazarsa, hem `email()` hem de `minLength()` hataları görünür. Tüm doğrulama kuralları çalışır -- doğrulama ilk başarısızlıktan sonra durmaz.
 
-TIP: Hataların kullanıcılar alanla etkileşime girmeden önce görünmesini önlemek için şablonlarınızda `touched() && invalid()` kalıbını kullanın. Doğrulama hatalarını görüntüleme hakkında kapsamlı rehberlik için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management#koşullu-hata-gösterimi) bakın.
+TIP: Hataların kullanıcılar alanla etkileşime girmeden önce görünmesini önlemek için şablonlarınızda `touched() && invalid()` kalıbını kullanın. Doğrulama hatalarını görüntüleme hakkında kapsamlı rehberlik için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management#conditional-error-display) bakın.
 
 ## Özel doğrulama kuralları {#custom-validation-rules}
 
@@ -692,7 +692,7 @@ Bazen bir doğrulama kuralı yalnızca belirli koşullar altında uygulanmalıd�
 
 Doğrulama kuralları şema fonksiyonu içinde yer aldığından, bunları şemaları oluşturan aynı yapısal fonksiyonlarla koşullu olarak uygularsınız:
 
-- Diğer alanların değerleri dahil olmak üzere reaktif form durumuna dayalı bir kural grubunu etkinleştirmek için [`applyWhen()`](guide/forms/signals/form-logic#applywhen-ile-koşullu-mantık) kullanın.
+- Diğer alanların değerleri dahil olmak üzere reaktif form durumuna dayalı bir kural grubunu etkinleştirmek için [`applyWhen()`](guide/forms/signals/form-logic#conditional-logic-with-applywhen) kullanın.
 - Bir alanın kendi değerine dayalı kurallar uygulamak için [`applyWhenValue()`](guide/forms/signals/schemas#type-narrowing-with-applywhenvalue) kullanın. Yüklem (predicate) bir tür koruyucusu (type guard) olduğunda, kurallar daraltılmış değere göre tiplenir; bu da onu ayrımcı birleşimleri (discriminated unions) ve diğer varyant türlerini doğrulamanın önerilen yolu yapar.
 
 Yeniden kullanılabilir şemalar ve ayrımcı birleşimler dahil tam örnekler için [Şemalar ve şema bileştirilebilirliği kılavuzuna](guide/forms/signals/schemas) bakın.

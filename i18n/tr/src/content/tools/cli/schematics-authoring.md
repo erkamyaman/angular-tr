@@ -34,7 +34,7 @@ Bir değişiklik kabul edilebilir, görmezden gelinebilir veya bir istisna fırl
 
 ### Kuralları ve Eylemleri Tanımlama {#defining-rules-and-actions}
 
-[Schematics CLI](#schematics-cliı) ile yeni bir boş şematik oluşturduğunuzda, üretilen giriş fonksiyonu bir _kural fabrikasıdır_.
+[Schematics CLI](#schematics-cli) ile yeni bir boş şematik oluşturduğunuzda, üretilen giriş fonksiyonu bir _kural fabrikasıdır_.
 Bir `RuleFactory` nesnesi, bir `Rule` oluşturan üst düzey bir fonksiyon tanımlar.
 
 ```ts {header: "index.ts"}

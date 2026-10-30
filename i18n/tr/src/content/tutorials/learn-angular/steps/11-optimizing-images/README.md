@@ -82,7 +82,7 @@ Yükleme performansı için en önemli optimizasyonlardan biri, sayfa yüklendi�
 
 <docs-step title="İsteğe bağlı: Bir resim yükleyici kullanın {#optional-use-an-image-loader}">
 
-`NgOptimizedImage`, direktifin resimleriniz için URL'leri nasıl biçimlendireceğini belirten bir [resim yükleyici](guide/image-optimization#ngoptimizedimage-için-görsel-yükleyici-yapılandırma) belirtmenize olanak tanır. Yükleyici kullanmak, resimlerinizi kısa, göreli URL'lerle tanımlamanızı sağlar:
+`NgOptimizedImage`, direktifin resimleriniz için URL'leri nasıl biçimlendireceğini belirten bir [resim yükleyici](guide/image-optimization#configuring-an-image-loader-for-ngoptimizedimage) belirtmenize olanak tanır. Yükleyici kullanmak, resimlerinizi kısa, göreli URL'lerle tanımlamanızı sağlar:
 
 ```ts
 providers: [provideImgixLoader('https://my.base.url/')],
@@ -94,7 +94,7 @@ Son URL 'https://my.base.url/image.png' olacaktır
 <img ngSrc="image.png" height="600" width="800" />
 ```
 
-Resim yükleyicileri sadece kolaylık sağlamak için değildir -- `NgOptimizedImage`'ın tüm yeteneklerini kullanmanızı sağlarlar. Bu optimizasyonlar ve popüler CDN'ler için yerleşik yükleyiciler hakkında daha fazla bilgiyi [burada](guide/image-optimization#ngoptimizedimage-için-görsel-yükleyici-yapılandırma) bulabilirsiniz.
+Resim yükleyicileri sadece kolaylık sağlamak için değildir -- `NgOptimizedImage`'ın tüm yeteneklerini kullanmanızı sağlarlar. Bu optimizasyonlar ve popüler CDN'ler için yerleşik yükleyiciler hakkında daha fazla bilgiyi [burada](guide/image-optimization#configuring-an-image-loader-for-ngoptimizedimage) bulabilirsiniz.
 
 </docs-step>
 

@@ -25,7 +25,7 @@ Yaygın hata olayları şunlardır:
 | [`NavigationCancel`](api/router/NavigationCancel) | Yönlendirici navigasyonu iptal ettiğinde gerçekleşir. Genellikle bir koruyucunun false döndürmesinden kaynaklanır.                        |
 | [`NavigationError`](api/router/NavigationError)   | Navigasyon başarısız olduğunda gerçekleşir. Geçersiz rotalar, çözücü hataları veya reddedilen engelleyen resource'lardan kaynaklanabilir. |
 
-Tüm yaşam döngüsü olaylarının listesi için [bu kılavuzun tam tablosuna](#tüm-router-olayları) göz atın.
+Tüm yaşam döngüsü olaylarının listesi için [bu kılavuzun tam tablosuna](#all-router-events) göz atın.
 
 ## Router olaylarına nasıl abone olunur {#how-to-subscribe-to-router-events}
 

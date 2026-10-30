@@ -44,7 +44,7 @@ Ayrıca sorun giderme bilgileri ve yeni sürümden en iyi şekilde yararlanmanı
 Basit güncellemeler için CLI komutu [`ng update`](cli/update) ihtiyacınız olan tek şeydir.
 Ek argüman olmadan, [`ng update`](cli/update) mevcut güncellemeleri listeler ve uygulamanızı en güncel sürüme güncellemek için önerilen adımları sağlar.
 
-[Angular Versiyonlama ve Yayınlar](reference/releases#angular-versiyonlama 'Angular Release Practices, Versioning'), bir sürümün sürüm numarasına göre bekleyebileceğiniz değişiklik düzeyini tanımlar.
+[Angular Versiyonlama ve Yayınlar](reference/releases#angular-versioning 'Angular Release Practices, Versioning'), bir sürümün sürüm numarasına göre bekleyebileceğiniz değişiklik düzeyini tanımlar.
 Ayrıca desteklenen güncelleme yollarını da tanımlar.
 
 ## Kaynak özeti {#resource-summary}

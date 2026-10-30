@@ -3,7 +3,7 @@
 
 Servisler genellikle bileşenlerin dayandığı uygulamanızın iş mantığını içerir. Servisleri test etmek, mantığın herhangi bir bileşen veya şablondan bağımsız olarak doğru çalıştığını doğrular.
 
-Bu kılavuz, Angular CLI projelerinin varsayılan olarak içerdiği [Vitest](https://vitest.dev/)'i kullanır. Test kurulumu hakkında daha fazla bilgi için [test genel bakış kılavuzuna](guide/testing#test-için-kurulum) bakın.
+Bu kılavuz, Angular CLI projelerinin varsayılan olarak içerdiği [Vitest](https://vitest.dev/)'i kullanır. Test kurulumu hakkında daha fazla bilgi için [test genel bakış kılavuzuna](guide/testing#set-up-for-testing) bakın.
 
 ## Bir servisi test etme {#testing-a-service}
 

@@ -346,7 +346,7 @@ HELPFUL: Navigasyon isteklerinin ağa gönderilip gönderilmeyeceğini yapıland
 Bu varsayılan kriterler çoğu durumda yeterli olsa da, bazen farklı kurallar yapılandırmak istenebilir.
 Örneğin, Angular uygulamasının parçası olmayan belirli rotaları yok saymak ve bunları sunucuya iletmek isteyebilirsiniz.
 
-Bu alan, çalışma zamanında eşleştirilen URL'ler ve [glob benzeri](#yapılandırmayı-değiştirme) URL kalıplarının bir dizisini içerir.
+Bu alan, çalışma zamanında eşleştirilen URL'ler ve [glob benzeri](#modifying-the-configuration) URL kalıplarının bir dizisini içerir.
 Hem negatif kalıpları (yani `!` ile başlayan kalıplar) hem de negatif olmayan kalıpları ve URL'leri içerebilir.
 
 Yalnızca URL'leri negatif olmayan URL'lerden/kalıplardan _herhangi biriyle_ eşleşen ve negatif olanların _hiçbiriyle_ eşleşmeyen istekler navigasyon istekleri olarak kabul edilir.

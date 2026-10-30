@@ -38,7 +38,7 @@ Karmaşık animasyonların çoğu, alt elemanları bulmak ve onlara animasyon uy
 
 Tüm alt elemanlar aslında giren/ayrılan olarak kabul edilmez; bu bazen karşı-sezgisel ve kafa karıştırıcı olabilir. Daha fazla bilgi için lütfen [query api belgelerine](api/animations/query#entering-and-leaving-elements) bakın.
 
-Ayrıca bunu animasyonlar örneğinde \(animasyonlar [giriş bölümünde](guide/legacy-animations#bu-rehber-hakkında) tanıtılan\) Sorgulama sekmesi altında görebilirsiniz.
+Ayrıca bunu animasyonlar örneğinde \(animasyonlar [giriş bölümünde](guide/legacy-animations#about-this-guide) tanıtılan\) Sorgulama sekmesi altında görebilirsiniz.
 
 </docs-callout>
 

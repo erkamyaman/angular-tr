@@ -63,7 +63,7 @@ export class AnalyticsLogger {
 
 NOTE: `@Service`, bu servisi tüm uygulamanız boyunca tekil (singleton) olarak kullanılabilir hale getirir. Bu, çoğu servis için önerilen yaklaşımdır.
 
-HELPFUL: [`@Service`](guide/di/creating-and-using-services#service-ve-injectable-dekoratörlerini-kullanma) dekoratörü, `@Injectable({providedIn: 'root'})` için ergonomik bir kısaltmadır.
+HELPFUL: [`@Service`](guide/di/creating-and-using-services#using-the-service-vs-injectable-decorator) dekoratörü, `@Injectable({providedIn: 'root'})` için ergonomik bir kısaltmadır.
 
 ## `inject()` ile bağımlılıkları enjekte etme {#injecting-dependencies-with-inject}
 

@@ -3,7 +3,7 @@
 
 Formlarınız Angular ile kurulduğuna göre, bir sonraki adım form kontrollerindeki değerlere erişmektir.
 
-NOTE: [Detaylı kılavuzda temel form kontrolü ekleme](/guide/forms/reactive-forms#temel-bir-form-kontrolü-ekleme) hakkında daha fazla bilgi edinin.
+NOTE: [Detaylı kılavuzda temel form kontrolü ekleme](/guide/forms/reactive-forms#adding-a-basic-form-control) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, form giriş alanınızdan değeri nasıl alacağınızı öğreneceksiniz.
 

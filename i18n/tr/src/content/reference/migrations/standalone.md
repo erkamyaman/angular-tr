@@ -25,7 +25,7 @@ ng generate @angular/core:standalone
 
 | Seçenek | Ayrıntılar                                                                                                                       |
 | :------ | :------------------------------------------------------------------------------------------------------------------------------- |
-| `mode`  | Gerçekleştirilecek dönüşüm. Mevcut seçenekler hakkında ayrıntılar için aşağıdaki [Geçiş modları](#geçiş-modları) bölümüne bakın. |
+| `mode`  | Gerçekleştirilecek dönüşüm. Mevcut seçenekler hakkında ayrıntılar için aşağıdaki [Geçiş modları](#migration-modes) bölümüne bakın. |
 | `path`  | Proje köküne göre geçirilecek yol. Projenizi aşamalı olarak geçirmek için bu seçeneği kullanabilirsiniz.                         |
 
 ## Geçiş adımları {#migrations-steps}
@@ -46,7 +46,7 @@ Geçişi aşağıda listelenen sırayla çalıştırın, her adım arasında kod
 
 Tebrikler, uygulamanız standalone'a dönüştürüldü! Şimdi yapmak isteyebileceğiniz bazı isteğe bağlı takip adımları:
 
-- Kalan tüm `NgModule` bildirimlerini bulun ve kaldırın: ["Gereksiz NgModule'leri kaldır" adımı](#gereksiz-ngmoduleleri-kaldırma) tüm modülleri otomatik olarak kaldıramadığından, kalan bildirimleri manuel olarak kaldırmanız gerekebilir.
+- Kalan tüm `NgModule` bildirimlerini bulun ve kaldırın: ["Gereksiz NgModule'leri kaldır" adımı](#remove-unnecessary-ngmodules) tüm modülleri otomatik olarak kaldıramadığından, kalan bildirimleri manuel olarak kaldırmanız gerekebilir.
 - Projenin birim testlerini çalıştırın ve hataları düzeltin.
 - Proje otomatik biçimlendirme kullanıyorsa, kod biçimlendiricilerini çalıştırın.
 - Projenizdeki linter'ları çalıştırın ve yeni uyarıları düzeltin. Bazı linter'lar, bazı uyarılarınızı otomatik olarak çözebilen bir `--fix` bayrağını destekler.
@@ -64,7 +64,7 @@ Geçişin aşağıdaki modları vardır:
 
 Bu modda, geçiş tüm bileşenleri, direktifleri ve pipe'ları `standalone: false`'u kaldırarak ve bağımlılıkları `imports` dizilerine ekleyerek standalone'a dönüştürür.
 
-HELPFUL: Şematik, bir bileşeni önyükleyen NgModule'leri bu adım sırasında yok sayar çünkü bunlar büyük olasılıkla standalone uyumlu `bootstrapApplication` yerine `bootstrapModule` tarafından kullanılan kök modüllerdir. Şematik bu bildirimleri ["Standalone önyükleme API'sine geç"](#standalone-önyükleme-apisine-geçiş) adımının parçası olarak otomatik olarak dönüştürür.
+HELPFUL: Şematik, bir bileşeni önyükleyen NgModule'leri bu adım sırasında yok sayar çünkü bunlar büyük olasılıkla standalone uyumlu `bootstrapApplication` yerine `bootstrapModule` tarafından kullanılan kök modüllerdir. Şematik bu bildirimleri ["Standalone önyükleme API'sine geç"](#switch-to-standalone-bootstrapping-api) adımının parçası olarak otomatik olarak dönüştürür.
 
 **Önce:**
 

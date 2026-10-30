@@ -60,7 +60,7 @@ Ardından, şablonu "Show all comments" etiketli bir düğme içerecek şekilde 
 }
 ```
 
-NOTE: [şablon değişkenleri hakkında daha fazla bilgi için belgelere göz atın](/guide/templates/variables#şablon-referans-değişkeni-bildirme).
+NOTE: [şablon değişkenleri hakkında daha fazla bilgi için belgelere göz atın](/guide/templates/variables#declaring-a-template-reference-variable).
 
 </docs-step>
 

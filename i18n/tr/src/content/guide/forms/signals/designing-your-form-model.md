@@ -28,7 +28,7 @@ Formlar, alan modelini doğrudan yeniden kullanmak yerine, girdi deneyimine uygu
 
 ### Belirli türler kullanın {#use-specific-types}
 
-[TypeScript türlerini kullanma](/guide/forms/signals/models#typescript-türlerini-kullanma) bölümünde gösterildiği gibi modelleriniz için her zaman arayüzler veya türler tanımlayın. Açık türler daha iyi IntelliSense sağlar, derleme zamanında hataları yakalar ve formun hangi verileri içerdiğine dair belge görevi görür.
+[TypeScript türlerini kullanma](/guide/forms/signals/models#using-typescript-types) bölümünde gösterildiği gibi modelleriniz için her zaman arayüzler veya türler tanımlayın. Açık türler daha iyi IntelliSense sağlar, derleme zamanında hataları yakalar ve formun hangi verileri içerdiğine dair belge görevi görür.
 
 ### Tüm alanları başlatın {#initialize-all-fields}
 
@@ -364,7 +364,7 @@ class MyForm {
 }
 ```
 
-Yukarıdaki örnekler, form modelinin doğrudan alan modelinden saf bir türetilmesini gösterir. Ancak, bazı durumlarda yeni alan modeli değeri ile önceki alan modeli ve form modeli değerleri arasında daha gelişmiş bir fark (diff) işlemi yapmak isteyebilirsiniz. Bu, `linkedSignal` [önceki durum](/guide/signals/linked-signal#önceki-durumu-dikkate-alma) özelliğine dayalı olarak uygulanabilir.
+Yukarıdaki örnekler, form modelinin doğrudan alan modelinden saf bir türetilmesini gösterir. Ancak, bazı durumlarda yeni alan modeli değeri ile önceki alan modeli ve form modeli değerleri arasında daha gelişmiş bir fark (diff) işlemi yapmak isteyebilirsiniz. Bu, `linkedSignal` [önceki durum](/guide/signals/linked-signal#accounting-for-previous-state) özelliğine dayalı olarak uygulanabilir.
 
 ### Form modelinden alan modeline {#form-model-to-domain-model}
 

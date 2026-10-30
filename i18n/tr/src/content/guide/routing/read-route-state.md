@@ -81,7 +81,7 @@ Geliştiricilerin bir rotadan kullanabileceği iki tür parametre vardır: rota 
 
 Rota parametreleri, URL aracılığıyla bir bileşene veri aktarmanıza olanak tanır. Bu, URL'deki bir kullanıcı kimliği veya ürün kimliği gibi bir tanımlayıcıya göre belirli içerik görüntülemek istediğinizde kullanışlıdır.
 
-Parametre adını iki nokta üst üste (`:`) ile ön ekleyerek [rota parametreleri tanımlayabilirsiniz](/guide/routing/define-routes#route-parametreleri-ile-url-yolları-tanımlama).
+Parametre adını iki nokta üst üste (`:`) ile ön ekleyerek [rota parametreleri tanımlayabilirsiniz](/guide/routing/define-routes#define-url-paths-with-route-parameters).
 
 ```angular-ts
 import {Routes} from '@angular/router';

@@ -24,7 +24,7 @@ Yeni uygulamalar, `application` builder'ı aracılığıyla varsayılan olarak b
 
 Projenin gereksinimlerine bağlı olarak hem otomatik hem de manuel prosedürler mevcuttur.
 v18'den başlayarak, güncelleme süreci otomatik geçiş aracılığıyla mevcut uygulamaları yeni derleme sistemini kullanmaya geçirmek isteyip istemediğinizi soracaktır.
-Geçiş yapmadan önce, projeniz için ilgili bilgiler içerebilecek [Bilinen Sorunlar](#bilinen-sorunlar) bölümünü incelemeyi düşünün.
+Geçiş yapmadan önce, projeniz için ilgili bilgiler içerebilecek [Bilinen Sorunlar](#known-issues) bölümünü incelemeyi düşünün.
 
 HELPFUL: SSR kullanıyorsanız, uygulama sunucu kodundaki `require`, `__filename`, `__dirname` veya [CommonJS modül kapsamındaki](https://nodejs.org/api/modules.html#the-module-scope) diğer yapılar gibi CommonJS varsayımlarını kaldırmayı unutmayın. Tüm uygulama kodu ESM uyumlu olmalıdır. Bu, üçüncü taraf bağımlılıklar için geçerli değildir.
 
@@ -48,7 +48,7 @@ Geçiş şunları yapar:
 - Mevcut `browser` veya `browser-esbuild` hedefini `application`'a dönüştürür
 - Önceki SSR builder'larını kaldırır (çünkü `application` artık bunu yapar).
 - Yapılandırmayı buna göre günceller.
-- `tsconfig.server.json`'ı `tsconfig.app.json` ile birleştirir ve `express` import'larının [ESM uyumlu](#esm-varsayılan-importları-ile-namespace-importları-karşılaştırması) olmasını sağlamak için TypeScript seçeneği `"esModuleInterop": true`'yu ekler.
+- `tsconfig.server.json`'ı `tsconfig.app.json` ile birleştirir ve `express` import'larının [ESM uyumlu](#esm-default-imports-vs-namespace-imports) olmasını sağlamak için TypeScript seçeneği `"esModuleInterop": true`'yu ekler.
 - Uygulama sunucu kodunu yeni önyükleme ve çıktı dizin yapısını kullanacak şekilde günceller.
 - `@import`/`url()` içindeki tilde veya şapka gibi webpack'e özgü builder stil sayfası kullanımlarını kaldırır ve eşdeğer davranışı sağlamak için yapılandırmayı günceller
 - Başka bir `@angular-devkit/build-angular` kullanımı bulunamazsa, yeni daha az bağımlılığa sahip `@angular/build` Node.js paketini kullanmaya dönüştürür.
@@ -219,7 +219,7 @@ Bu süreç, her yeniden derlemede veya geliştirme sunucusu yürütüldüğünde
 
 Çoğu durumda ek özelleştirme gerekmez. Ancak, gerekebilecek bazı durumlar şunlardır:
 
-- Bağımlılık içindeki import'lar için yükleyici davranışını özelleştirme, örneğin [`loader` seçeneği](#dosya-uzantısı-yükleyici-özelleştirmesi)
+- Bağımlılık içindeki import'lar için yükleyici davranışını özelleştirme, örneğin [`loader` seçeneği](#file-extension-loader-customization)
 - Bir bağımlılığı yerel geliştirme için yerel koda sembolik olarak bağlama, örneğin [`npm link`](https://docs.npmjs.com/cli/v10/commands/npm-link)
 - Bir bağımlılığın ön paketlemesi sırasında karşılaşılan bir hatanın giderilmesi
 
@@ -383,7 +383,7 @@ Varsayılan proje yapılandırması, proje kaynak dizinlerinde bulunan herhangi 
 Yalnızca belirli dosyaların belirli bir şekilde yüklenmesi gereken durumlar için, yükleme davranışı üzerinde dosya bazında kontrol mevcuttur.
 Bu, hem import deyimleri hem de ifadeleriyle kullanılabilen bir `loader` [import özniteliği](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with) ile gerçekleştirilir.
 Import özniteliğinin varlığı, JS/TS ve herhangi bir `loader` derleme seçeneği değerleri dahil tüm diğer yükleme davranışlarına göre önceliklidir.
-Desteklenmeyen bir dosya türünün tüm dosyaları için genel yükleme için [`loader`](#dosya-uzantısı-yükleyici-özelleştirmesi) derleme seçeneği önerilir.
+Desteklenmeyen bir dosya türünün tüm dosyaları için genel yükleme için [`loader`](#file-extension-loader-customization) derleme seçeneği önerilir.
 
 Import özniteliği için aşağıdaki yükleyici değerleri desteklenir:
 
@@ -567,7 +567,7 @@ IMPORTANT: Kullanılan derleme sisteminden bağımsız olarak, mümkün olduğun
 ### Çıktı konumu değişiklikleri {#output-location-changes}
 
 Varsayılan olarak, application builder'ın başarılı bir derlemesinden sonra paket `dist/<project-name>/browser` dizininde bulunur (browser builder'ı için `dist/<project-name>` yerine).
-Bu, önceki konuma dayanan bazı araç zincirlerini bozabilir. Bu durumda, ihtiyaçlarınıza uygun şekilde [çıktı yolunu yapılandırabilirsiniz](reference/configs/workspace-config#çıktı-yolu-yapılandırması).
+Bu, önceki konuma dayanan bazı araç zincirlerini bozabilir. Bu durumda, ihtiyaçlarınıza uygun şekilde [çıktı yolunu yapılandırabilirsiniz](reference/configs/workspace-config#output-path-configuration).
 
 ## Hata raporları {#bug-reports}
 

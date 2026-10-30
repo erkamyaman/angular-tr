@@ -9,7 +9,7 @@ Amacımız eleştirel düşünmeyi teşvik etmek ve öğrendiklerinizi kalıcı 
 
 Yapay zeka eğitmenine [Angular MCP sunucusu](ai/mcp) aracılığıyla erişebilirsiniz.
 
-1. Angular MCP sunucusunu [kurun](ai/mcp#başlarken)
+1. Angular MCP sunucusunu [kurun](ai/mcp#get-started)
 2. Yeni bir Angular projesi oluşturun `ng new <project-name>`
 3. [Gemini CLI](https://geminicli.com/) gibi yapay zeka destekli bir düzenleyici veya araçta yeni projenize gidin (`cd <project-name>`)
 4. `launch the Angular AI tutor` gibi bir prompt girin

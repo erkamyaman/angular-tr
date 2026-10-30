@@ -10,7 +10,7 @@ Aşağıdaki projeler belirli bir Angular sürümüyle ilişkili değildir. Tama
 Şu anda Angular'ın framework için üç hedefi vardır:
 
 1. [Geliştiriciler için yapay zeka deneyimini](/ai) iyileştirmek
-1. [Angular geliştirici deneyimini](#angular-geliştirici-deneyimini-iyileştirme) iyileştirmek
+1. [Angular geliştirici deneyimini](#improving-the-angular-developer-experience) iyileştirmek
 1. Framework'ün performansını iyileştirmek
 
 Bu hedefleri belirli proje çalışmalarıyla nasıl sunmayı planladığımızı öğrenmek için okumaya devam edin.

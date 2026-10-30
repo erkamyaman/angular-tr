@@ -16,7 +16,7 @@ Angular service worker bağlamında, bir "sürüm", Angular uygulamasının beli
 Uygulamanın yeni bir derlemesi dağıtıldığında, service worker bu derlemeyi uygulamanın yeni bir sürümü olarak ele alır.
 Bu, yalnızca tek bir dosya güncellense bile geçerlidir.
 Herhangi bir zamanda, service worker önbelleğinde uygulamanın birden fazla sürümü olabilir ve bunları aynı anda sunuyor olabilir.
-Daha fazla bilgi için [Uygulama sekmeleri](#uygulama-sekmeleri) bölümüne bakın.
+Daha fazla bilgi için [Uygulama sekmeleri](#application-tabs) bölümüne bakın.
 
 Uygulama bütünlüğünü korumak için Angular service worker, tüm dosyaları bir sürümde birlikte gruplar.
 Bir sürümde gruplanan dosyalar genellikle HTML, JS ve CSS dosyalarını içerir.
@@ -78,7 +78,7 @@ Bu sayede bozuk hash'siz kaynaklar, yapılandırılmış yaşam sürelerinin öt
 ### Uygulama sekmeleri {#application-tabs}
 
 Aldığı kaynakların sürümü aniden veya uyarı olmadan değişirse bir uygulama için sorunlu olabilir.
-Bu tür sorunların bir açıklaması için [Uygulama sürümleri](#uygulama-sürümleri) bölümüne bakın.
+Bu tür sorunların bir açıklaması için [Uygulama sürümleri](#application-versions) bölümüne bakın.
 
 Angular service worker bir garanti sağlar: çalışan bir uygulama, uygulamanın aynı sürümünü çalıştırmaya devam eder.
 Uygulamanın başka bir örneği yeni bir web tarayıcısı sekmesinde açılırsa, uygulamanın en güncel sürümü sunulur.
@@ -138,7 +138,7 @@ Başlık veya sorgu parametresinin değeri yok sayılır ve boş olabilir veya a
 
 ### Sunucuya ulaşılamadığında service worker istekleri {#service-worker-requests-when-the-server-cant-be-reached}
 
-Service worker, [service worker açıkça atlanmadıkça](#service-workerı-atlama) tüm istekleri işler.
+Service worker, [service worker açıkça atlanmadıkça](#bypassing-the-service-worker) tüm istekleri işler.
 Service worker, önbelleğin durumuna ve yapılandırmasına bağlı olarak önbelleğe alınmış bir yanıt döndürür veya isteği sunucuya gönderir.
 Service worker yalnızca `GET` ve `HEAD` gibi değiştirici olmayan isteklere verilen yanıtları önbelleğe alır.
 
@@ -322,7 +322,7 @@ Eski konumdan, bu örnekte `example.com`'dan yeni konuma `www.example.com`'a bir
 Ayrıca, siteyi tamamen Service Worker'dan yükleyen kullanıcılar için yönlendirme tetiklenmez bile.
 `example.com`'da kayıtlı olan eski worker, güncelleme yapmaya çalışır ve eski konum `example.com`'a bir istek gönderir. Bu istek yeni konum `www.example.com`'a yönlendirilir ve hatayı oluşturur: `The script resource is behind a redirect, which is disallowed`.
 
-Bunu düzeltmek için, önceki tekniklerden birini kullanarak eski worker'ı devre dışı bırakmanız gerekebilir: [Fail-safe](#güvenli-mod) veya [Safety Worker](#güvenlik-workerı).
+Bunu düzeltmek için, önceki tekniklerden birini kullanarak eski worker'ı devre dışı bırakmanız gerekebilir: [Fail-safe](#fail-safe) veya [Safety Worker](#safety-worker).
 
 ## Angular service worker'lar hakkında daha fazlası {#more-on-angular-service-workers}
 

@@ -130,7 +130,7 @@ Bu gibi durumlarda, hangi değerin kazanacağını aşağıdaki kurallar belirle
 ## CSS özel özellikleri ile stillendirme {#styling-with-css-custom-properties}
 
 Geliştiriciler, bileşen stillerinin esnek yapılandırılmasını sağlamak için sıklıkla [CSS Özel Özellikleri](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)'ne güvenirler.
-Bu tür özel özellikleri host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-stil-özellikleri) ile ayarlayabilirsiniz.
+Bu tür özel özellikleri host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-style-properties) ile ayarlayabilirsiniz.
 
 ```angular-ts
 @Component({
@@ -148,7 +148,7 @@ Bu örnekte, `--my-background` CSS özel özelliği `color` sinyaline bağlıdı
 
 ### Alt bileşenlerde özel özellikleri ayarlama {#setting-custom-properties-on-children-components}
 
-Alternatif olarak, alt bileşenlerin host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-stil-özellikleri) ile CSS özel özelliklerini ayarlamak da mümkündür.
+Alternatif olarak, alt bileşenlerin host elemanı üzerinde bir [stil bağlaması](guide/templates/binding#css-style-properties) ile CSS özel özelliklerini ayarlamak da mümkündür.
 
 ```angular-ts
 @Component({

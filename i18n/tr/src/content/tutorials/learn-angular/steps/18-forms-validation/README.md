@@ -3,7 +3,7 @@
 
 Formlarla çalışırken karşılaşılan bir diğer yaygın senaryo, doğru verilerin gönderildiğinden emin olmak için girdilerin doğrulanması gerekliliğidir.
 
-NOTE: [Detaylı kılavuzda form girdisi doğrulama](/guide/forms/reactive-forms#form-girdisini-doğrulama) hakkında daha fazla bilgi edinin.
+NOTE: [Detaylı kılavuzda form girdisi doğrulama](/guide/forms/reactive-forms#validating-form-input) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, reaktif formlarla formları nasıl doğrulayacağınızı öğreneceksiniz.
 

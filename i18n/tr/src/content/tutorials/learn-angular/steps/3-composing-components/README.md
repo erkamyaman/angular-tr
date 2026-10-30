@@ -5,7 +5,7 @@ Bileşen şablonunu, bileşen mantığını ve bileşen stillerini güncellemeyi
 
 Bileşen yapılandırmasının `selector` özelliği, bileşene başka bir şablonda referans verirken kullanabileceğiniz bir ad sağlar. `selector`'ı bir HTML etiketi gibi kullanırsınız; örneğin `app-user`, şablonda `<app-user />` şeklinde olur.
 
-NOTE: [Temel bilgiler kılavuzundaki bileşen kullanımı](/essentials/components#bileşenleri-kullanma) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki bileşen kullanımı](/essentials/components#using-components) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, bileşenleri nasıl bir araya getireceğinizi öğreneceksiniz.
 

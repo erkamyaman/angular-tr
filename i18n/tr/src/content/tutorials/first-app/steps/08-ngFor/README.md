@@ -18,7 +18,7 @@ Angular'da `@for`, bir şablonda verileri dinamik olarak tekrarlamak için kulla
 
 `@for` kullanarak diziler ve hatta asenkron değerler üzerinde yineleme yapabilirsiniz. Bu derste, üzerinde yineleme yapılacak yeni bir veri dizisi ekleyeceksiniz.
 
-Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama) kılavuzuna bakın.
+Daha ayrıntılı bir açıklama için lütfen [kontrol akışı](guide/templates/control-flow#repeat-content-with-the-for-block) kılavuzuna bakın.
 
 <docs-workflow>
 
@@ -62,6 +62,6 @@ Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
   <docs-pill href="guide/templates/control-flow" title="Kontrol akışı blokları"/>
-  <docs-pill href="guide/templates/control-flow#for-bloğu-ile-içeriği-tekrarlama" title="@for rehberi"/>
+  <docs-pill href="guide/templates/control-flow#repeat-content-with-the-for-block" title="@for rehberi"/>
   <docs-pill href="/api/core/@for" title="@for"/>
 </docs-pill-row>

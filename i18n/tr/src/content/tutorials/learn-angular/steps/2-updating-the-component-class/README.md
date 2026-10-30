@@ -3,9 +3,9 @@
 
 Angular'da, bileşenin mantığı ve davranışı bileşenin TypeScript sınıfında tanımlanır.
 
-NOTE: [Temel bilgiler rehberinde dinamik metin gösterme](/essentials/templates#dinamik-metin-gösterme) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler rehberinde dinamik metin gösterme](/essentials/templates#showing-dynamic-text) hakkında daha fazla bilgi edinin.
 
-Bu aktivitede, bileşen sınıfını nasıl güncelleyeceğinizi ve [interpolasyon](/guide/templates/binding#metin-interpolasyonu-ile-dinamik-metin-işleme) kullanmayı öğreneceksiniz.
+Bu aktivitede, bileşen sınıfını nasıl güncelleyeceğinizi ve [interpolasyon](/guide/templates/binding#render-dynamic-text-with-text-interpolation) kullanmayı öğreneceksiniz.
 
 <hr />
 

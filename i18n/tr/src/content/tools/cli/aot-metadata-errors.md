@@ -97,7 +97,7 @@ export class MyComponent {}
 
 Derleyicinin bileşen fabrikasını oluşturmak için `template` özelliğinin değerine _hemen şimdi_ ihtiyacı vardır.
 Tek başına değişken referansı yetersizdir.
-Bildirimin başına `export` eklemek yalnızca yeni bir hata üretir: "[`Only initialized variables and constants can be referenced`](#yalnızca-başlatılmış-değişkenler-ve-sabitler)".
+Bildirimin başına `export` eklemek yalnızca yeni bir hata üretir: "[`Only initialized variables and constants can be referenced`](#only-initialized-variables-and-constants)".
 
 ## Yalnızca başlatılmış değişkenler ve sabitler {#only-initialized-variables-and-constants}
 

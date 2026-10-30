@@ -251,7 +251,7 @@ Yalnızca `context.scheduleTarget()` metodu, yapılandırma ve overrides'ı `ang
 
 Hedef yapılandırmalarını bağlama yerleştiren basit bir `angular.json` dosyası oluşturalım.
 
-Builder'ı npm'e yayınlayabilir ([Kütüphanenizi Yayınlama](tools/libraries/creating-libraries#kütüphanenizi-yayınlama) belgesine bakın) ve aşağıdaki komutla yükleyebilirsiniz:
+Builder'ı npm'e yayınlayabilir ([Kütüphanenizi Yayınlama](tools/libraries/creating-libraries#publishing-your-library) belgesine bakın) ve aşağıdaki komutla yükleyebilirsiniz:
 
 ```shell
 

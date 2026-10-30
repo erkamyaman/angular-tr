@@ -5,7 +5,7 @@ Angular'da özellik bağlama, HTML öğelerinin, Angular bileşenlerinin ve daha
 
 Özellikler ve nitelikler için dinamik olarak değer ayarlamak üzere özellik bağlamayı kullanın. Buton özelliklerini değiştirme, resim yollarını programatik olarak ayarlama ve bileşenler arasında değer paylaşma gibi işlemler yapabilirsiniz.
 
-NOTE: [Temel bilgiler kılavuzundaki dinamik özellik ve nitelik ayarlama](/essentials/templates#dinamik-özellikler-ve-öznitelikler-ayarlama) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki dinamik özellik ve nitelik ayarlama](/essentials/templates#setting-dynamic-properties-and-attributes) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, şablonlarda özellik bağlamayı nasıl kullanacağınızı öğreneceksiniz.
 

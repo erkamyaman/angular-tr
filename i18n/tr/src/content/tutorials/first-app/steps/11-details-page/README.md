@@ -132,7 +132,7 @@ Artık şunları biliyorsunuz:
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 
 <docs-pill-row>
-  <docs-pill href="guide/routing/read-route-state#activatedroute-ile-geçerli-rota-hakkında-bilgi-alma" title="Rota Parametreleri"/>
+  <docs-pill href="guide/routing/read-route-state#get-information-about-the-current-route-with-activatedroute" title="Rota Parametreleri"/>
   <docs-pill href="guide/routing" title="Angular'da Routing'e Genel Bakış"/>
   <docs-pill href="guide/routing/common-router-tasks" title="Yaygın Routing Görevleri"/>
   <docs-pill href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Optional_chaining" title="Opsiyonel Zincirleme Operatörü"/>

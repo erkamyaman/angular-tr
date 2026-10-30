@@ -9,7 +9,7 @@ Bu ilk ders, bu eğitimdeki her dersin eksiksiz bir Angular uygulaması oluştur
 
 Uygulamanız tarayıcıda başarıyla çalışıyorsa ve yürütülen içeriği hatasız görüntülüyorsa, geliştirme ortamınızın ve IDE'nizin bir Angular uygulaması oluşturmaya başlamak için doğru şekilde kurulduğunu doğrular.
 
-NOTE: Gömülü editörle çalışıyorsanız, [dördüncü adıma](#hello-world-oluşturun) atlayın.
+NOTE: Gömülü editörle çalışıyorsanız, [dördüncü adıma](#create-hello-world) atlayın.
 Tarayıcı oyun alanında çalışırken, uygulamayı çalıştırmak için `ng serve` komutunu kullanmanıza gerek yoktur. `ng generate` gibi diğer komutlar sağınızdaki konsol penceresinde çalıştırılabilir.
 
 <docs-workflow>

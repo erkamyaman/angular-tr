@@ -20,11 +20,11 @@ Kök düzey uygulama çalışma alanıyla aynı ada sahiptir ve kaynak dosyalar�
 Bu varsayılan davranış, her uygulamanın kendi çalışma alanında bulunduğu tipik bir "multi-repo" geliştirme stili için uygundur.
 Başlangıç ve orta düzey kullanıcıların her uygulama için ayrı bir çalışma alanı oluşturmak üzere `ng new` kullanmaları teşvik edilir.
 
-Angular ayrıca [birden fazla projeli](#çoklu-projeler) çalışma alanlarını da destekler.
+Angular ayrıca [birden fazla projeli](#multiple-projects) çalışma alanlarını da destekler.
 Bu tür bir geliştirme ortamı, paylaşılabilir kütüphaneler geliştiren ileri düzey kullanıcılar ve tüm Angular projeleri için tek bir depo ve genel yapılandırma kullanan "monorepo" geliştirme stilini benimseyen kuruluşlar için uygundur.
 
 Bir monorepo çalışma alanı kurmak için kök uygulama oluşturmayı atlamalısınız.
-Aşağıdaki [Çoklu proje çalışma alanı kurulumu](#çoklu-projeler) bölümüne bakın.
+Aşağıdaki [Çoklu proje çalışma alanı kurulumu](#multiple-projects) bölümüne bakın.
 
 ## Çalışma alanı yapılandırma dosyaları {#workspace-configuration-files}
 
@@ -50,7 +50,7 @@ Varsayılan olarak, CLI komutu `ng new my-app` "my-app" adında bir çalışma a
 Yeni oluşturulan uygulama, bir kök bileşen ve şablon için kaynak dosyaları içerir.
 
 Çalışma alanı dosya yapısı oluşturulduktan sonra, uygulamaya işlevsellik ve veri eklemek için komut satırında `ng generate` komutunu kullanabilirsiniz.
-Bu başlangıç kök düzey uygulaması, CLI komutları için _varsayılan uygulamadır_ ([ek uygulamalar](#çoklu-projeler) oluşturduktan sonra varsayılanı değiştirmediğiniz sürece).
+Bu başlangıç kök düzey uygulaması, CLI komutları için _varsayılan uygulamadır_ ([ek uygulamalar](#multiple-projects) oluşturduktan sonra varsayılanı değiştirmediğiniz sürece).
 
 Tek uygulamalı bir çalışma alanı için, çalışma alanının `src` alt klasörü kök uygulama için kaynak dosyalarını (uygulama mantığı, veri ve varlıklar) içerir.
 Çoklu proje çalışma alanı için, `projects` klasöründeki ek projeler aynı yapıya sahip bir `project-name/src/` alt klasörü içerir.

@@ -6,13 +6,13 @@ NOTE: Bu kılavuz Vitest için güncellenirken, yardımcı API'lerin bazı açı
 Bu sayfa en kullanışlı Angular test özelliklerini açıklar.
 
 Angular test araçları `TestBed`, `ComponentFixture` ve test ortamını kontrol eden bir avuç fonksiyon içerir.
-[`TestBed`](#testbed-sınıf-özeti) ve [`ComponentFixture`](#componentfixture) sınıfları ayrı ayrı ele alınmaktadır.
+[`TestBed`](#testbed-class-summary) ve [`ComponentFixture`](#the-componentfixture) sınıfları ayrı ayrı ele alınmaktadır.
 
 İşte bağımsız fonksiyonların olası kullanım sırasına göre bir özeti:
 
 | Fonksiyon    | Ayrıntılar                                                                                                                                                                                                                                                                      |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`inject`]   | Mevcut `TestBed` enjektöründen bir veya daha fazla servisi bir test fonksiyonuna enjekte eder. Bileşenin kendisi tarafından sağlanan bir servisi enjekte edemez. [debugElement.injector](guide/testing/components-scenarios#enjekte-edilen-servisleri-alma) tartışmasına bakın. |
+| [`inject`]   | Mevcut `TestBed` enjektöründen bir veya daha fazla servisi bir test fonksiyonuna enjekte eder. Bileşenin kendisi tarafından sağlanan bir servisi enjekte edemez. [debugElement.injector](guide/testing/components-scenarios#get-injected-services) tartışmasına bakın. |
 | `getTestBed` | `TestBed`'in mevcut örneğini alır. Genellikle gereksizdir çünkü `TestBed` sınıfının statik sınıf metotları genellikle yeterlidir. `TestBed` örneği, statik metotlar olarak mevcut olmayan nadiren kullanılan birkaç üyeyi ortaya çıkarır.                                       |
 
 Karmaşık asenkron senaryoları ele almak veya eski Zone.js tabanlı uygulamaları test etmek için [Zone.js Test Araçları](guide/testing/zone-js-testing-utilities) kılavuzuna bakın.

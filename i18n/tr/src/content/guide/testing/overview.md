@@ -44,7 +44,7 @@ Angular CLI, Vitest yapılandırmasının çoğunu sizin için yönetir. `angula
 - `setupFiles`: Testlerinizden önce çalıştırılan global kurulum dosyalarına (ör. polyfill'ler veya global mock'lar) giden yolların listesi.
 - `providersFile`: Test ortamı için varsayılan bir Angular sağlayıcı dizisi dışa aktaran bir dosyanın yolu. Bu, testlerinize enjekte edilen global test sağlayıcılarını ayarlamak için kullanışlıdır.
 - `coverage`: Kod kapsam raporlamasını etkinleştirmek veya devre dışı bırakmak için bir boolean değer. Varsayılan olarak `false` değerindedir.
-- `browsers`: Testleri gerçek bir tarayıcıda çalıştırmak için tarayıcı adları dizisi (ör. `["chromium"]`). Bir tarayıcı sağlayıcısının yüklenmesini gerektirir. Daha fazla ayrıntı için [Testleri tarayıcıda çalıştırma](#tarayıcıda-test-çalıştırma) bölümüne bakın.
+- `browsers`: Testleri gerçek bir tarayıcıda çalıştırmak için tarayıcı adları dizisi (ör. `["chromium"]`). Bir tarayıcı sağlayıcısının yüklenmesini gerektirir. Daha fazla ayrıntı için [Testleri tarayıcıda çalıştırma](#running-tests-in-a-browser) bölümüne bakın.
 
 ### Global test kurulumu ve provider'lar {#global-test-setup-and-providers}
 
@@ -204,7 +204,7 @@ ng test --browsers=chromeHeadless
   </docs-code>
 </docs-code-multifile>
 
-HELPFUL: Daha gelişmiş tarayıcıya özgü yapılandırma için [Gelişmiş Vitest yapılandırması](#gelişmiş-vitest-yapılandırması) bölümüne bakın.
+HELPFUL: Daha gelişmiş tarayıcıya özgü yapılandırma için [Gelişmiş Vitest yapılandırması](#advanced-vitest-configuration) bölümüne bakın.
 
 ## Diğer test framework'leri {#other-test-frameworks}
 

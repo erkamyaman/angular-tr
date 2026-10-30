@@ -8,7 +8,7 @@ Bu eğitim, şablon odaklı bir formun nasıl oluşturulacağını gösterir. Fo
 <docs-callout helpful title="Template-driven ve Reactive form'lar">
 Angular, etkileşimli formlar için iki tasarım yaklaşımını destekler. Şablon odaklı formlar, Angular şablonunuzda forma özgü direktifler kullanmanıza olanak tanır. Reaktif formlar, form oluşturmak için model odaklı bir yaklaşım sağlar.
 
-Şablon odaklı formlar küçük veya basit formlar için harika bir seçimdir, reaktif formlar ise daha ölçeklenebilir ve karmaşık formlar için uygundur. İki yaklaşımın karşılaştırması için [Bir yaklaşım seçme](guide/forms#bir-yaklaşım-seçme) bölümüne bakın
+Şablon odaklı formlar küçük veya basit formlar için harika bir seçimdir, reaktif formlar ise daha ölçeklenebilir ve karmaşık formlar için uygundur. İki yaklaşımın karşılaştırması için [Bir yaklaşım seçme](guide/forms#choosing-an-approach) bölümüne bakın
 </docs-callout>
 
 Angular şablonuyla hemen hemen her türlü formu oluşturabilirsiniz -- giriş formları, iletişim formları ve hemen hemen her iş formu.

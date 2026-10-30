@@ -210,7 +210,7 @@ export class MediaControls {
 
 Yukarıdaki örnekte, `CustomSlider` kendi `value` model girdisine değer yazabilir ve bu değerler `MediaControls`'daki `volume` sinyaline geri yayılır. Bu bağlama, `value` ve `volume` değerlerini senkronize tutar. Bağlama işleminin sinyal _örneğini_ ilettiğine, sinyalin _değerini_ değil, dikkat edin.
 
-Diğer açılardan, model girdileri standart girdilere benzer şekilde çalışır. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contextler) dahil olmak üzere sinyal fonksiyonunu çağırarak değeri okuyabilirsiniz.
+Diğer açılardan, model girdileri standart girdilere benzer şekilde çalışır. `computed` ve `effect` gibi [reaktif bağlamlar](guide/signals#reactive-contexts) dahil olmak üzere sinyal fonksiyonunu çağırarak değeri okuyabilirsiniz.
 
 Şablonlarda iki yönlü bağlama hakkında daha fazla bilgi için [İki yönlü bağlama](guide/templates/two-way-binding) belgesine bakın.
 

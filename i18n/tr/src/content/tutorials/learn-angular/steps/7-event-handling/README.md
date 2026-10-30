@@ -3,7 +3,7 @@
 
 Olay yönetimi, web uygulamalarında etkileşimli özellikleri mümkün kılar. Geliştirici olarak buton tıklamaları, form gönderimleri ve daha fazlası gibi kullanıcı eylemlerine yanıt verme imkanı sağlar.
 
-NOTE: [Temel bilgiler kılavuzundaki kullanıcı etkileşimini yönetme](/essentials/templates#kullanıcı-etkileşimini-yönetme) hakkında daha fazla bilgi edinin.
+NOTE: [Temel bilgiler kılavuzundaki kullanıcı etkileşimini yönetme](/essentials/templates#handling-user-interaction) hakkında daha fazla bilgi edinin.
 
 Bu aktivitede, bir olay yöneticisi eklemeyi öğreneceksiniz.
 

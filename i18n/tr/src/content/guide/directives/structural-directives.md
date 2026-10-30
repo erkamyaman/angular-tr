@@ -51,7 +51,7 @@ Bu şekilde kullanıldığında, `<ng-template>`'e yalnızca yapısal direktif v
 </ng-template>
 ```
 
-Kısaltılmış sözdizimi bir dizi kural aracılığıyla genişletilir. Daha kapsamlı bir [gramer](#yapısal-direktif-sözdizimi-referansı) aşağıda tanımlanmıştır, ancak yukarıdaki örnekte bu dönüşüm şu şekilde açıklanabilir:
+Kısaltılmış sözdizimi bir dizi kural aracılığıyla genişletilir. Daha kapsamlı bir [gramer](#structural-directive-syntax-reference) aşağıda tanımlanmıştır, ancak yukarıdaki örnekte bu dönüşüm şu şekilde açıklanabilir:
 
 `*select` ifadesinin ilk kısmı `let data`'dır ve bir şablon değişkeni `data` bildirir. Ardından bir atama gelmediği için, şablon değişkeni şablon bağlam özelliği `$implicit`'e bağlanır.
 
@@ -103,7 +103,7 @@ Angular direktifi başlattığında veriyi yükler ve ardından `createEmbeddedV
 
 NOTE: Bu örnek şablonunu, direktif başlatıldığında yalnızca bir kez render eder. Bağlanan veri kaynağı değiştiğinde yeniden render etmez.
 
-Direktif çalışır duruma geldiğinde [şablon tür denetimi desteği eklemeyi](#direktifin-bağlamını-türlendirme) düşünün.
+Direktif çalışır duruma geldiğinde [şablon tür denetimi desteği eklemeyi](#typing-the-directives-context) düşünün.
 
 HELPFUL: [`ng generate directive`](tools/cli/schematics) CLI komutu, bir direktifi test dosyasıyla birlikte oluşturur.
 

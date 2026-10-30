@@ -210,7 +210,7 @@ Yukarıdaki örnekte, iç içe geçmiş `@defer` bloğunun üzerine gelinmesi hi
 
 ## Kısıtlamalar {#constraints}
 
-Artımlı hidrasyon, doğrudan DOM manipülasyonu sınırlamaları ve geçerli HTML yapısı gerekliliği dahil olmak üzere tam uygulama hidrasyonu ile aynı kısıtlamalara sahiptir. Daha fazla ayrıntı için [Hidrasyon kılavuzu kısıtlamaları](guide/hydration#kısıtlamalar) bölümünü ziyaret edin.
+Artımlı hidrasyon, doğrudan DOM manipülasyonu sınırlamaları ve geçerli HTML yapısı gerekliliği dahil olmak üzere tam uygulama hidrasyonu ile aynı kısıtlamalara sahiptir. Daha fazla ayrıntı için [Hidrasyon kılavuzu kısıtlamaları](guide/hydration#constraints) bölümünü ziyaret edin.
 
 ## Hâlâ `@placeholder` blokları belirtmem gerekiyor mu? {#do-i-still-need-to-specify-placeholder-blocks}
 

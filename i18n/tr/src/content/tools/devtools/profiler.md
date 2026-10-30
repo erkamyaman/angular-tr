@@ -14,7 +14,7 @@ Değişiklik algılamayı tetiklemek ve Angular DevTools'un kullanabileceği ver
 Kaydı bitirmek için daireye tekrar tıklayarak **Stop recording** yapın.
 
 Mevcut bir kaydı da içe aktarabilirsiniz.
-Bu özellik hakkında daha fazla bilgi için [Import recording](tools/devtools/profiler#kayıtları-içe-ve-dışa-aktarma) bölümünü okuyun.
+Bu özellik hakkında daha fazla bilgi için [Import recording](tools/devtools/profiler#import-and-export-recordings) bölümünü okuyun.
 
 ## Uygulamanızın Çalışmasını Anlama {#understand-your-applications-execution}
 

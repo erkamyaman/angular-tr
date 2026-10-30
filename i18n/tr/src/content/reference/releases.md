@@ -91,7 +91,7 @@ Tüm ana sürümler tipik olarak 24 ay desteklenir.
 | Destek aşaması      | Destek zamanlaması | Ayrıntılar                                                                       |
 | :------------------ | :----------------- | :------------------------------------------------------------------------------- |
 | Aktif               | 12 ay              | Düzenli olarak planlanmış güncellemeler ve yamalar yayınlanır                    |
-| Uzun vadeli \(LTS\) | 12 ay              | Yalnızca [kritik düzeltmeler ve güvenlik yamaları](#lts-düzeltmeleri) yayınlanır |
+| Uzun vadeli \(LTS\) | 12 ay              | Yalnızca [kritik düzeltmeler ve güvenlik yamaları](#lts-fixes) yayınlanır |
 
 ### Aktif olarak desteklenen sürümler {#actively-supported-versions}
 
@@ -148,7 +148,7 @@ HELPFUL: ABI uyumluluğunu korumaya çalışsak ve herhangi bir bozulmayı geril
 
 ## Kırıcı değişiklik politikası ve güncelleme yolları {#breaking-change-policy-and-update-paths}
 
-Kırıcı değişiklik, sonraki durumun önceki durumla geriye dönük uyumlu olmaması nedeniyle çalışma yapmanızı gerektirir. Bu kuraldan nadir istisnaları [Uyumluluk politikası](#uyumluluk-politikası) bölümünde bulabilirsiniz. Kırıcı değişikliklerin örnekleri arasında genel API'lerin kaldırılması veya Angular'ın tür tanımının diğer değişiklikleri, çağrıların zamanlamasının değiştirilmesi veya Angular'ın bir bağımlılığının kendi başına kırıcı değişiklikler içeren yeni bir sürümüne güncelleme yer alır.
+Kırıcı değişiklik, sonraki durumun önceki durumla geriye dönük uyumlu olmaması nedeniyle çalışma yapmanızı gerektirir. Bu kuraldan nadir istisnaları [Uyumluluk politikası](#compatibility-policy) bölümünde bulabilirsiniz. Kırıcı değişikliklerin örnekleri arasında genel API'lerin kaldırılması veya Angular'ın tür tanımının diğer değişiklikleri, çağrıların zamanlamasının değiştirilmesi veya Angular'ın bir bağımlılığının kendi başına kırıcı değişiklikler içeren yeni bir sürümüne güncelleme yer alır.
 
 Angular'daki kırıcı değişiklikler durumunda sizi desteklemek için:
 

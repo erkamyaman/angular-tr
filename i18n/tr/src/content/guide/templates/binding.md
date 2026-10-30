@@ -261,4 +261,4 @@ Angular, ARIA niteliklerine dizge değerleri bağlamayı destekler.
 
 Angular, dizge değerini elemanın `aria-label` niteliğine yazar ve bağlı değer `null` olduğunda kaldırır.
 
-Bazı ARIA özellikleri, yapılı değerler (örneğin eleman referansları) kabul eden DOM özellikleri veya direktif girişleri sunar. Bu durumlar için standart özellik bağlamalarını kullanın. Örnekler ve ek rehberlik için [erişilebilirlik rehberine](/best-practices/a11y#aria-özellikleri-ve-nitelikleri) bakın.
+Bazı ARIA özellikleri, yapılı değerler (örneğin eleman referansları) kabul eden DOM özellikleri veya direktif girişleri sunar. Bu durumlar için standart özellik bağlamalarını kullanın. Örnekler ve ek rehberlik için [erişilebilirlik rehberine](/best-practices/a11y#aria-attributes-and-properties) bakın.

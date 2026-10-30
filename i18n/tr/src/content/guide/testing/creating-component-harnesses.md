@@ -54,7 +54,7 @@ class MyPopupHarness extends ComponentHarness {
 }
 ```
 
-`ComponentHarness` alt sınıfları yalnızca `hostSelector` özelliğini gerektirse de, çoğu donanım `HarnessPredicate` örnekleri oluşturmak için statik bir `with` metodu da uygulamalıdır. [Donanımları filtreleme bölümü](guide/testing/using-component-harnesses#harnessları-filtreleme) bunu daha ayrıntılı ele alır.
+`ComponentHarness` alt sınıfları yalnızca `hostSelector` özelliğini gerektirse de, çoğu donanım `HarnessPredicate` örnekleri oluşturmak için statik bir `with` metodu da uygulamalıdır. [Donanımları filtreleme bölümü](guide/testing/using-component-harnesses#filtering-harnesses) bunu daha ayrıntılı ele alır.
 
 ## Bileşenin DOM'unda öğeleri bulma {#finding-elements-in-the-components-dom}
 

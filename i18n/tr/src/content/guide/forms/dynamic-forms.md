@@ -136,6 +136,6 @@ Aşağıdaki şekil son formu gösterir.
 ## Sonraki adımlar {#next-steps}
 
 <docs-pill-row>
-  <docs-pill title="Form girdisini doğrulama" href="guide/forms/reactive-forms#form-girdisini-doğrulama" />
+  <docs-pill title="Form girdisini doğrulama" href="guide/forms/reactive-forms#validating-form-input" />
   <docs-pill title="Form doğrulama kılavuzu" href="guide/forms/form-validation" />
 </docs-pill-row>

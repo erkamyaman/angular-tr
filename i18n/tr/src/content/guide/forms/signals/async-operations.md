@@ -599,7 +599,7 @@ Asenkron doğrulama çalışırken, alanın `pending()` sinyali `true` döndür�
 - `valid()` `false` döndürür
 - `invalid()` `false` döndürür
 - `errors()` boş bir dizi döndürür
-- `submit()` beklemez; varsayılan olarak `action` yine de çalışır (bkz. [`ignoreValidators`](guide/forms/signals/form-submission#doğrulama-kapısını-ignorevalidators-ile-kontrol-etme))
+- `submit()` beklemez; varsayılan olarak `action` yine de çalışır (bkz. [`ignoreValidators`](guide/forms/signals/form-submission#controlling-validation-gating-with-ignorevalidators))
 
 Geri bildirim sağlamak için bekleyen durumu şablonunuzda gösterin:
 

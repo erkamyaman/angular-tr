@@ -71,13 +71,13 @@ Mümkünse kaçınılması gereken durumlar:
 | **Derleme süresi**        | Daha uzun - tüm sayfaları önceden oluşturur |
 | **İçerik güncellemeleri** | Yeniden derleme ve dağıtım gerektirir       |
 
-**Uygulama:** SSR kılavuzundaki [Derleme zamanı ön render'ı özelleştirme](guide/ssr#derleme-zamanı-ön-renderı-ssg-özelleştirme) bölümüne bakın.
+**Uygulama:** SSR kılavuzundaki [Derleme zamanı ön render'ı özelleştirme](guide/ssr#customizing-build-time-prerendering-ssg) bölümüne bakın.
 
 ## Sunucu Tarafında Render (SSR) {#server-side-rendering-ssr}
 
 **SSR, bir rota için ilk istek sırasında sunucuda HTML oluşturur** ve iyi SEO ile dinamik içerik sağlar. Sunucu HTML'yi render eder ve istemciye gönderir.
 
-İstemci sayfayı render ettikten sonra, Angular uygulamayı [hidratasyon](/guide/hydration#hydration-nedir) ile canlandırır ve ardından uygulama geleneksel bir SPA gibi tamamen tarayıcıda çalışır - sonraki navigasyon, rota değişiklikleri ve API çağrıları ek sunucu render'ı olmadan istemci tarafında gerçekleşir.
+İstemci sayfayı render ettikten sonra, Angular uygulamayı [hidratasyon](/guide/hydration#what-is-hydration) ile canlandırır ve ardından uygulama geleneksel bir SPA gibi tamamen tarayıcıda çalışır - sonraki navigasyon, rota değişiklikleri ve API çağrıları ek sunucu render'ı olmadan istemci tarafında gerçekleşir.
 
 ### SSR ne zaman kullanılmalı {#when-to-use-ssr}
 
@@ -103,7 +103,7 @@ Mümkünse kaçınılması gereken durumlar:
 | **Kişiselleştirme**    | Kullanıcı bağlamına tam erişim                      |
 | **Sunucu maliyetleri** | Daha yüksek - bir rota için ilk istekte render eder |
 
-**Uygulama:** SSR kılavuzundaki [Sunucu yönlendirme](guide/ssr#sunucu-yönlendirme) ve [Sunucu uyumlu bileşenler yazma](guide/ssr#authoring-server-compatible-components) bölümlerine bakın.
+**Uygulama:** SSR kılavuzundaki [Sunucu yönlendirme](guide/ssr#server-routing) ve [Sunucu uyumlu bileşenler yazma](guide/ssr#authoring-server-compatible-components) bölümlerine bakın.
 
 ## Doğru Stratejiyi Seçme {#choosing-the-right-strategy}
 

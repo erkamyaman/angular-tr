@@ -187,7 +187,7 @@ Testleriniz beklediğiniz gibi çalışmıyorsa, bunları tarayıcıda inceleyeb
 
 Karma test çalıştırıcısı ile bir uygulamada hata ayıklamak için:
 
-1.  Karma tarayıcı penceresini açın. Bu adımda yardıma ihtiyacınız varsa [Test için kurulum](guide/testing#test-için-kurulum) bölümüne bakın.
+1.  Karma tarayıcı penceresini açın. Bu adımda yardıma ihtiyacınız varsa [Test için kurulum](guide/testing#set-up-for-testing) bölümüne bakın.
 2.  Yeni bir tarayıcı sekmesi açmak ve testleri yeniden çalıştırmak için **DEBUG** düğmesine tıklayın.
 3.  Tarayıcının **Geliştirici Araçlarını** açın. Windows'ta `Ctrl-Shift-I` tuşlarına basın. macOS'ta `Command-Option-I` tuşlarına basın.
 4.  **Sources** bölümünü seçin.

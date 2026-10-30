@@ -54,7 +54,7 @@ Bileşen dosyalarında belirli animasyon fonksiyonları kullanmayı planlıyorsa
 
 <docs-code header="app.ts" path="adev/src/content/examples/animations/src/app/app.ts" region="imports"/>
 
-Bu rehberin sonundaki tüm [kullanılabilir animasyon fonksiyonlarına](guide/legacy-animations#animasyonlar-api-özeti) bakın.
+Bu rehberin sonundaki tüm [kullanılabilir animasyon fonksiyonlarına](guide/legacy-animations#animations-api-summary) bakın.
 
 </docs-step>
 <docs-step title="Animasyon metaveri özelliğini ekleme {#adding-the-animation-metadata-property}">
