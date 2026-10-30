@@ -1,0 +1,246 @@
+diff --git a/adev/src/app/core/layout/footer/footer.component.html b/adev/src/app/core/layout/footer/footer.component.html
+index ef45a87..906773c 100644
+--- a/adev/src/app/core/layout/footer/footer.component.html
++++ b/adev/src/app/core/layout/footer/footer.component.html
+@@ -1,4 +1,5 @@
+ <div class="adev-footer-container">
++  <adev-rosetta-switcher />
+   <div class="adev-footer-columns">
+     <div>
+       <h2>Social Media</h2>
+diff --git a/adev/src/app/core/layout/footer/footer.component.ts b/adev/src/app/core/layout/footer/footer.component.ts
+index 1a231b1..805c947 100644
+--- a/adev/src/app/core/layout/footer/footer.component.ts
++++ b/adev/src/app/core/layout/footer/footer.component.ts
+@@ -10,10 +10,11 @@ import {Component, VERSION} from '@angular/core';
+ import {ExternalLink} from '@angular/docs';
+ import {RouterLink} from '@angular/router';
+ import {ANGULAR_LINKS} from '../../constants/links';
++import {RosettaSwitcher} from '../../../rosetta/language-switcher.component';
+ 
+ @Component({
+   selector: 'footer[adev-footer]',
+-  imports: [ExternalLink, RouterLink],
++  imports: [ExternalLink, RouterLink, RosettaSwitcher],
+   templateUrl: './footer.component.html',
+   styleUrls: ['./footer.component.scss'],
+ })
+diff --git a/adev/src/app/features/docs/docs.component.html b/adev/src/app/features/docs/docs.component.html
+index 245163d..0013073 100644
+--- a/adev/src/app/features/docs/docs.component.html
++++ b/adev/src/app/features/docs/docs.component.html
+@@ -1,5 +1,6 @@
+ @let docContent = this.docContent();
+ @if (docContent) {
++  <adev-rosetta-banner [pageId]="docContent.id" />
+   <main
+     docsViewer
+     class="docs-viewer"
+diff --git a/adev/src/app/features/docs/docs.component.ts b/adev/src/app/features/docs/docs.component.ts
+index c8e2b24..b99edae 100644
+--- a/adev/src/app/features/docs/docs.component.ts
++++ b/adev/src/app/features/docs/docs.component.ts
+@@ -8,10 +8,11 @@
+ 
+ import {Component, computed, input} from '@angular/core';
+ import {DocContent, DocViewer} from '@angular/docs';
++import {RosettaBanner} from '../../rosetta/translation-banner.component';
+ 
+ @Component({
+   selector: 'docs-docs',
+-  imports: [DocViewer],
++  imports: [DocViewer, RosettaBanner],
+   styleUrls: ['./docs.component.scss'],
+   templateUrl: './docs.component.html',
+   host: {
+diff --git a/adev/src/app/rosetta/README.md b/adev/src/app/rosetta/README.md
+new file mode 100644
+index 0000000..e6875f7
+--- /dev/null
++++ b/adev/src/app/rosetta/README.md
+@@ -0,0 +1,4 @@
++# rosetta
++
++Components added by angular-docs-rosetta (tools/adev-patches/010-rosetta-ui.patch). `rosetta-config.ts` is
++generated at build time from `i18n/<lang>/site.json`; never commit it upstream.
+diff --git a/adev/src/app/rosetta/language-switcher.component.ts b/adev/src/app/rosetta/language-switcher.component.ts
+new file mode 100644
+index 0000000..dc1f326
+--- /dev/null
++++ b/adev/src/app/rosetta/language-switcher.component.ts
+@@ -0,0 +1,66 @@
++/*!
++ * angular-docs-rosetta: language switcher shown in the footer of a translated angular.dev.
++ * Links to the same page on angular.dev (and on the other languages of this repository).
++ * Values come from rosetta-config.ts, generated at build time from i18n/<lang>/site.json.
++ */
++import {Location} from '@angular/common';
++import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
++import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
++import {NavigationEnd, Router} from '@angular/router';
++import {filter} from 'rxjs';
++import {ROSETTA} from './rosetta-config';
++
++@Component({
++  selector: 'adev-rosetta-switcher',
++  changeDetection: ChangeDetectionStrategy.OnPush,
++  template: `
++    <nav class="rosetta-switcher" [attr.aria-label]="strings.otherLanguages">
++      <span class="rosetta-notice">{{ notice }}</span>
++      <a class="rosetta-link" [href]="englishUrl()" rel="alternate" hreflang="en">{{ strings.readInEnglish }}</a>
++      @for (l of others; track l.lang) {
++        <a class="rosetta-link" [href]="l.url + path()" rel="alternate" [attr.hreflang]="l.lang">{{ l.name }}</a>
++      }
++    </nav>
++  `,
++  styles: `
++    .rosetta-switcher {
++      display: flex;
++      flex-wrap: wrap;
++      align-items: center;
++      gap: 0.5rem 1.25rem;
++      padding: 0.75rem 0 1.25rem;
++      margin-bottom: 1.25rem;
++      border-bottom: 1px solid var(--senary-contrast, rgba(128, 128, 128, 0.3));
++      font-size: 0.875rem;
++      color: var(--quaternary-contrast, inherit);
++    }
++    .rosetta-link {
++      color: var(--primary-contrast, inherit);
++      text-decoration: underline;
++      text-underline-offset: 0.2em;
++    }
++  `,
++})
++export class RosettaSwitcher {
++  private readonly location = inject(Location);
++
++  protected readonly strings = ROSETTA.strings;
++  protected readonly notice = ROSETTA.notice;
++  protected readonly others = ROSETTA.languages.filter((l) => l.lang !== ROSETTA.lang);
++  protected readonly path = signal(this.currentPath());
++  protected readonly englishUrl = computed(() => `${ROSETTA.upstreamSite}${this.path()}`);
++
++  constructor() {
++    inject(Router)
++      .events.pipe(
++        filter((e) => e instanceof NavigationEnd),
++        takeUntilDestroyed(),
++      )
++      .subscribe(() => this.path.set(this.currentPath()));
++  }
++
++  private currentPath(): string {
++    const path = this.location.path().split('?')[0].split('#')[0];
++    return path.startsWith('/') ? path : `/${path}`;
++  }
++}
+diff --git a/adev/src/app/rosetta/translation-banner.component.ts b/adev/src/app/rosetta/translation-banner.component.ts
+new file mode 100644
+index 0000000..ffe0b8a
+--- /dev/null
++++ b/adev/src/app/rosetta/translation-banner.component.ts
+@@ -0,0 +1,103 @@
++/*!
++ * angular-docs-rosetta: per-page banner for outdated or untranslated pages.
++ * Reads assets/others/translation-status.json, written by `pnpm build` from `pnpm status`.
++ */
++import {Location, isPlatformBrowser} from '@angular/common';
++import {ChangeDetectionStrategy, Component, PLATFORM_ID, computed, inject, input, signal} from '@angular/core';
++import {ROSETTA} from './rosetta-config';
++
++interface TranslationStatus {
++  lang: string;
++  origin: string;
++  generatedAt: string;
++  pages: Record<string, string>;
++}
++
++let statusRequest: Promise<TranslationStatus | null> | undefined;
++
++function loadStatus(): Promise<TranslationStatus | null> {
++  statusRequest ??= fetch(ROSETTA.statusUrl)
++    .then((response) => (response.ok ? (response.json() as Promise<TranslationStatus>) : null))
++    .catch(() => null);
++  return statusRequest;
++}
++
++/** `guide/signals/overview.md.html` (DocContent id) -> `guide/signals/overview` (status key). */
++function pageKey(id: string | undefined): string | undefined {
++  if (!id) return undefined;
++  const key = id
++    .replace(/^\/+/, '')
++    .replace(/\.md\.html$/, '')
++    .replace(/\.(md|html)$/, '')
++    .replace(/\/$/, '');
++  return key || undefined;
++}
++
++@Component({
++  selector: 'adev-rosetta-banner',
++  changeDetection: ChangeDetectionStrategy.OnPush,
++  template: `
++    @let s = state();
++    @if (s === 'outdated' || s === 'stale-snapshot' || s === 'untranslated') {
++      <aside class="rosetta-banner" [class.rosetta-banner-untranslated]="s === 'untranslated'" role="note">
++        <span>{{ s === 'untranslated' ? strings.untranslatedBanner : strings.outdatedBanner }}</span>
++        <a [href]="englishUrl()" rel="alternate" hreflang="en">{{ strings.readInEnglish }}</a>
++        <a [href]="issueUrl" rel="noopener">{{ strings.reportIssue }}</a>
++      </aside>
++    }
++  `,
++  styles: `
++    .rosetta-banner {
++      display: flex;
++      flex-wrap: wrap;
++      align-items: center;
++      gap: 0.5rem 1rem;
++      margin: 0 0 1.5rem;
++      padding: 0.75rem 1rem;
++      border: 1px solid var(--senary-contrast, rgba(128, 128, 128, 0.3));
++      border-left: 4px solid var(--symbolic-yellow, #f4c20d);
++      border-radius: 0.5rem;
++      background: var(--octonary-contrast, rgba(128, 128, 128, 0.06));
++      font-size: 0.875rem;
++    }
++    .rosetta-banner-untranslated {
++      border-left-color: var(--orange-red, #f4511e);
++    }
++    .rosetta-banner a {
++      color: var(--primary-contrast, inherit);
++      text-decoration: underline;
++      text-underline-offset: 0.2em;
++    }
++  `,
++})
++export class RosettaBanner {
++  readonly pageId = input<string | undefined>();
++
++  private readonly status = signal<TranslationStatus | null>(null);
++
++  protected readonly strings = ROSETTA.strings;
++  protected readonly issueUrl = ROSETTA.issueUrl;
++  protected readonly state = computed<string | undefined>(() => {
++    const status = this.status();
++    const key = pageKey(this.pageId());
++    if (!status || !key) return undefined;
++    return status.pages[key];
++  });
++  private readonly location = inject(Location);
++  /**
++   * The same route on the upstream site: routes and content paths differ (`/guide/signals` serves
++   * `guide/signals/overview.md`), so the link is built from the current URL, not from the page id.
++   * Reading `pageId` makes the computed re-evaluate on every navigation.
++   */
++  protected readonly englishUrl = computed(() => {
++    this.pageId();
++    const route = this.location.path().split('?')[0].replace(/^\/+/, '');
++    return `${ROSETTA.upstreamSite}/${route}`;
++  });
++
++  constructor() {
++    if (isPlatformBrowser(inject(PLATFORM_ID))) {
++      loadStatus().then((status) => this.status.set(status));
++    }
++  }
++}

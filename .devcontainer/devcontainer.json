@@ -1,0 +1,25 @@
+{
+  "name": "angular-docs-rosetta (translate)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:26",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "postCreateCommand": "pnpm install && pnpm bootstrap",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "yzhang.markdown-all-in-one",
+        "taichi.vscode-textlint"
+      ],
+      "settings": {
+        "files.trimTrailingWhitespace": false,
+        "editor.renderWhitespace": "boundary"
+      }
+    }
+  },
+  "hostRequirements": {
+    "memory": "4gb",
+    "storage": "16gb"
+  }
+}

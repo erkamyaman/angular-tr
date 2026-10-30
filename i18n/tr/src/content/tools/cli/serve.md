@@ -1,0 +1,74 @@
+<!-- source: 29e4b4219f1d7f6349aa0f6c954b72de670657b0 -->
+# Geliştirme için Angular uygulamalarını sunma
+
+Angular CLI uygulamanızı `ng serve` komutuyla sunabilirsiniz.
+Bu, uygulamanızı derler, gereksiz optimizasyonları atlar, bir geliştirme sunucusu başlatır ve sonraki değişiklikleri otomatik olarak yeniden derler ve canlı yeniden yükler.
+Sunucuyu `Ctrl+C` tuşlarına basarak durdurabilirsiniz.
+
+`ng serve` yalnızca `angular.json` içinde belirtilen varsayılan projedeki `serve` hedefi için builder'ı çalıştırır. Burada herhangi bir builder kullanılabilir, ancak en yaygın (ve varsayılan) builder `@angular/build:dev-server`'dır.
+
+Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `serve` hedefine bakarak belirleyebilirsiniz.
+
+```json
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        // `ng serve`, `serve` adlı Architect hedefini çalıştırır.
+        "serve": {
+          "builder": "@angular/build:dev-server"
+          // ...
+        },
+        "build": {/* ... */},
+        "test": {/* ... */}
+      }
+    }
+  }
+}
+```
+
+## Arka uç sunucusuna proxy ile yönlendirme {#proxying-to-a-backend-server}
+
+Belirli URL'leri bir arka uç sunucusuna yönlendirmek için [proxy desteğini](https://vite.dev/config/server-options#server-proxy) kullanın; bunun için `--proxy-config` derleme seçeneğine bir dosya geçirin.
+Örneğin, `http://localhost:4200/api` için yapılan tüm çağrıları `http://localhost:3000/api` üzerinde çalışan bir sunucuya yönlendirmek için aşağıdaki adımları izleyin.
+
+1. Projenizin `src/` klasöründe bir `proxy.conf.json` dosyası oluşturun.
+1. Yeni proxy dosyasına aşağıdaki içeriği ekleyin:
+
+```json
+{
+  "/api/**": {
+    "target": "http://localhost:3000",
+    "secure": false
+  }
+}
+```
+
+1. CLI yapılandırma dosyası `angular.json` içinde, `serve` hedefine `proxyConfig` seçeneğini ekleyin:
+
+```json
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+1. Geliştirme sunucusunu bu proxy yapılandırmasıyla çalıştırmak için `ng serve` komutunu çağırın.
+
+NOTE: Proxy yapılandırma dosyanızda yapılan değişiklikleri uygulamak için `ng serve` sürecini yeniden başlatmanız gerekir.
+
+### Yol eşleme davranışı {#path-matching-behavior}
+
+- `/api`, `/api` ile ve onunla başlayan tüm yollarla (örneğin `/api/users/123` veya `/api-docs`) eşleşir.
+- `/api/*`, `/api/users` ile eşleşir ancak `/api` veya `/api/users/123` ile eşleşmez.
+- `/api/**`, `/api`, `/api/users` ve `/api/users/123` ile eşleşir ancak `/api-docs` ile eşleşmez.

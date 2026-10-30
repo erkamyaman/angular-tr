@@ -1,0 +1,82 @@
+name: Sync upstream
+
+# Level-2 automation ("CI radar"): move the pin to the head of the latest release branch,
+# refresh the English snapshots and open or update the "Update origin" PR whose body is the
+# per-language work queue. No AI involved; translation happens on the PR branch.
+
+on:
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'latest, a release branch (22.3.x) or a SHA'
+        required: false
+        default: 'latest'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    if: github.repository != 'openng-org/angular-docs-rosetta'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm bootstrap
+      - name: Update origin
+        id: update
+        run: |
+          BEFORE=$(git -C origin rev-parse HEAD)
+          pnpm update-origin "${{ github.event.inputs.target || 'latest' }}" | tee /tmp/update.log
+          AFTER=$(git -C origin rev-parse HEAD)
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+          echo "after=$AFTER" >> "$GITHUB_OUTPUT"
+          echo "short=${AFTER:0:10}" >> "$GITHUB_OUTPUT"
+          echo "changed=$([ "$BEFORE" != "$AFTER" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Status reports
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          {
+            echo "Upstream moved from \`${{ steps.update.outputs.before }}\` to \`${{ steps.update.outputs.after }}\`."
+            echo
+            echo '<details><summary>update-origin log</summary>'
+            echo
+            echo '```'
+            cat /tmp/update.log
+            echo '```'
+            echo '</details>'
+            for lang in $(node tools/cli.mjs languages); do
+              echo
+              pnpm --silent status "$lang" --md
+            done
+            echo
+            echo '---'
+            echo 'Next: triage (class a mechanical, b/c to translators or the adev-translation skill, d scheduled), `pnpm check <lang>`, merge with a merge commit. See docs/maintenance.md.'
+          } > /tmp/pr-body.md
+      - name: Open or update the sync PR
+        if: steps.update.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          # A PR opened with the default GITHUB_TOKEN does not trigger the Check workflow;
+          # set SYNC_TOKEN (fine-grained PAT: contents, pull requests and workflows, write) to get CI on it.
+          token: ${{ secrets.SYNC_TOKEN || github.token }}
+          branch: sync/upstream
+          delete-branch: true
+          commit-message: 'sync: update origin to ${{ steps.update.outputs.short }}'
+          title: 'sync: update origin to ${{ steps.update.outputs.short }}'
+          body-path: /tmp/pr-body.md
+          labels: |
+            type:sync
+          add-paths: |
+            origin
+            i18n

@@ -1,0 +1,227 @@
+<!-- source: c9afdf9ec3224ff0e4e261c19f86e9737c518119 -->
+# Autocomplete
+
+## Genel Bakış {#overview}
+
+Kullanıcılar yazarken seçenekleri filtreleyen ve öneren, bir listeden değer bulmalarına ve seçmelerine yardımcı olan erişilebilir bir giriş alanı.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+## Kullanım {#usage}
+
+Otomatik tamamlama, kullanıcıların yazmanın kaydırmadan daha hızlı olduğu büyük bir seçenek kümesinden seçim yapması gerektiğinde en iyi çalışır. Şu durumlarda otomatik tamamlama kullanmayı düşünün:
+
+- **Seçenek listesi uzun** (20'den fazla öğe) - Yazmak, bir açılır menüyü kaydırmaya göre seçimleri daha hızlı daraltır
+- **Kullanıcılar ne aradıklarını biliyor** - Beklenen değerin bir kısmını yazabilirler (il adı, ürün veya kullanıcı adı gibi)
+- **Seçenekler tahmin edilebilir kalıpları takip ediyor** - Kullanıcılar kısmi eşleşmeleri tahmin edebilir (ülke kodları, e-posta alanları veya kategoriler gibi)
+- **Hız önemli** - Formlar kapsamlı navigasyon olmadan hızlı seçimden faydalanır
+
+Şu durumlarda otomatik tamamlamadan kaçının:
+
+- Listede 10'dan az seçenek var - Düzgün bir açılır menü veya radyo grubu daha iyi görünürlük sağlar
+- Kullanıcıların seçeneklere göz atması gerekiyor - Keşfetmek önemliyse, tüm seçenekleri önceden gösterin
+- Seçenekler bilinmiyor - Kullanıcılar listede var olduğunu bilmedikleri şeyleri yazamaz
+
+## Özellikler {#features}
+
+Angular'ın otomatik tamamlaması, tam erişilebilir bir combobox uygulaması sağlar:
+
+- **Klavye Navigasyonu** - Ok tuşlarıyla seçenekler arasında gezinin, Enter ile seçin, Escape ile kapatın
+- **Ekran Okuyucu Desteği** - Yardımcı teknolojiler için yerleşik ARIA nitelikleri
+- **Dinamik Vurgulama Davranışı** - Satır içi seçim önerileri için yerleşik destek
+- **Sinyal Tabanlı Reaktivite** - Angular sinyalleri kullanan reaktif durum yönetimi
+- **Popover API Entegrasyonu** - Optimum konumlandırma için yerel HTML Popover API'sinden yararlanır
+- **Çift Yönlü Metin Desteği** - Sağdan sola (RTL) dilleri otomatik olarak işler
+
+## Örnekler {#examples}
+
+### Otomatik seçim modu {#auto-select-mode}
+
+Kısmi metin yazan kullanıcılar, girdilerinin mevcut bir seçenekle eşleştiğine dair anında onay bekler. Otomatik seçim modu, kullanıcılar yazarken giriş değerini ilk filtrelenmiş seçenekle eşleşecek şekilde günceller, gereken tuş vuruşu sayısını azaltır ve aramalarının doğru yolda olduğuna dair anında geri bildirim sağlar.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+### Manuel seçim modu {#manual-selection-mode}
+
+Manuel seçim modu, kullanıcılar öneri listesinde gezinirken yazılan metni değiştirmeden tutar ve otomatik güncellemelerden kaynaklanan karışıklığı önler. Giriş, yalnızca kullanıcılar seçimlerini Enter veya tıklamayla açıkça onayladıklarında değişir.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/manual/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/manual/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/manual/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/manual/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/manual/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/manual/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/manual/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/manual/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/manual/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/manual/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/manual/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/manual/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+### Vurgulama modu {#highlight-mode}
+
+Vurgulama modu, kullanıcının Enter veya tıklama ile açıkça yeni bir seçenek seçene kadar, ok tuşlarıyla seçenekler arasında gezinirken giriş değerini değiştirmeden gezinmesine olanak tanır.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/highlight/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/highlight/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/highlight/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/highlight/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/highlight/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/highlight/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/highlight/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/highlight/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/highlight/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/highlight/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/highlight/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/highlight/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+### Signal Forms Entegrasyonu {#signal-forms-integration}
+
+Angular Aria, sinyal tabanlı [Signal Forms](guide/forms/signals/overview) API'siyle sorunsuz şekilde entegre olur. Karmaşık girdileri, `FormValueControl` uygulayan yeniden kullanılabilir özel kontrol bileşenlerinde kapsülleyebilirsiniz.
+
+Aşağıdaki örnek, `FormValueControl<string>` uygulayan, `[formField]` ile üst forma bağlanan ve şema doğrulama kurallarıyla korunan bir ülke seçici bileşenini gösterir.
+
+<docs-code-multifile preview hideCode path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/app.ts">
+  <docs-code header="app.ts" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/app.ts"/>
+  <docs-code header="app.html" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/app.html"/>
+  <docs-code header="country-selector.ts" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/country-selector.ts"/>
+  <docs-code header="country-selector.html" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/country-selector.html"/>
+  <docs-code header="country-selector.css" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/country-selector.css"/>
+  <docs-code header="app.css" path="adev/src/content/examples/aria/autocomplete/src/signal-forms/app/app.css"/>
+</docs-code-multifile>
+
+## Test Etme {#testing}
+
+Otomatik tamamlama deseni, `@angular/aria/combobox/testing` ve `@angular/aria/listbox/testing` paketlerinden `ComboboxHarness` ve `ListboxHarness` birleşimiyle test edilebilir.
+Bir otomatik tamamlama bileşenini test etmek için harness'lerin nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {ComboboxHarness} from '@angular/aria/combobox/testing';
+import {ListboxHarness} from '@angular/aria/listbox/testing';
+import {MyAutocompleteComponent} from './my-autocomplete'; // Bileşeniniz
+
+describe('MyAutocompleteComponent', () => {
+  let fixture: ComponentFixture<MyAutocompleteComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyAutocompleteComponent],
+    });
+
+    fixture = TestBed.createComponent(MyAutocompleteComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should filter options based on input', async () => {
+    const combobox = await loader.getHarness(ComboboxHarness);
+
+    // Filtrelemeyi tetiklemek için girişe yazın
+    await combobox.setValue('ap');
+    expect(await combobox.isOpen()).toBe(true);
+
+    // Açılır pencereden listbox harness'ini alın
+    const listbox = await combobox.getPopupWidget(ListboxHarness);
+    const options = await listbox.getOptions();
+
+    // Seçeneklerin filtrelendiğini doğrulayın (örn. 'Apple', 'Apricot')
+    expect(options.length).toBe(2);
+    expect(await options[0].getText()).toBe('Apple');
+
+    // İlk seçeneği seçin
+    await options[0].click();
+
+    // Giriş değerinin güncellendiğini ve açılır pencerenin kapandığını doğrulayın
+    expect(await combobox.isOpen()).toBe(false);
+    expect(await combobox.getValue()).toBe('Apple');
+  });
+});
+```
+
+## API referansı {#api-reference}
+
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
+
+- [`Combobox`](/api/aria/combobox/Combobox)
+- [`ComboboxPopup`](/api/aria/combobox/ComboboxPopup)
+- [`ComboboxWidget`](/api/aria/combobox/ComboboxWidget)
+- [`Listbox`](/api/aria/listbox/Listbox)
+- [`Option`](/api/aria/listbox/Option)

@@ -1,0 +1,356 @@
+// source: 793ed71ce7a31b6533839678ad1293427ef8a1b3
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.dev/license
+ */
+
+import {Clipboard} from '@angular/cdk/clipboard';
+import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
+import {afterNextRender, Component, inject, input, linkedSignal, signal} from '@angular/core';
+import {IconComponent} from '@angular/docs';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ActivatedRoute, Router} from '@angular/router';
+import {marked} from 'marked';
+import {ApplicationComplexity, RECOMMENDATIONS, Step} from './recommendations';
+
+/**
+ * marked'ı özel bir bağlantı oluşturucuyla yapılandırın; böylece güncelleme
+ * rehberindeki dış bağlantılar yeni bir sekmede açılır ve adev'in başka
+ * yerlerinde `ExternalLink` yönergesiyle uygulanan kurala uyar.
+ */
+marked.use({
+  renderer: {
+    link({href, title, text}) {
+      const titleAttr = title ? ` title="${title}"` : '';
+      return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+    },
+  },
+});
+
+interface Option {
+  id: keyof Step;
+  name: string;
+  description: string;
+}
+
+const isWindows = typeof window !== 'undefined' && window.navigator.userAgent.includes('Windows');
+
+/** Versions selected when the URL doesn't specify any. */
+const DEFAULT_FROM_VERSION = '21.0';
+const DEFAULT_TO_VERSION = '22.0';
+
+@Component({
+  selector: 'adev-update-guide',
+  templateUrl: './update.component.html',
+  styleUrl: './update.component.scss',
+  imports: [
+    MatCheckbox,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    CdkMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    IconComponent,
+  ],
+  host: {
+    '(click)': 'copyCode($event)',
+  },
+})
+export default class UpdateComponent {
+  private readonly snackBar = inject(MatSnackBar);
+
+  protected title = signal('');
+
+  /** The application complexity level, initialized from the `l` query param. */
+  protected readonly level = linkedSignal(() => parseInt(this.levelParam() ?? '', 10) || 1);
+  protected options: Record<string, boolean> = {
+    ngUpgrade: false,
+    material: false,
+    windows: isWindows,
+  };
+
+  protected readonly optionList: Option[] = [
+    {id: 'ngUpgrade', name: 'ngUpgrade', description: 'to combine AngularJS & Angular'},
+    {id: 'material', name: 'Angular Material', description: ''},
+    {id: 'windows', name: 'Windows', description: ''},
+  ];
+
+  protected packageManager: 'npm install' | 'yarn add' = 'npm install';
+
+  protected beforeRecommendations: Step[] = [];
+  protected duringRecommendations: Step[] = [];
+  protected afterRecommendations: Step[] = [];
+
+  protected readonly versions = [
+    {name: '22.0', number: 2200},
+    {name: '21.0', number: 2100},
+    {name: '20.0', number: 2000},
+    {name: '19.0', number: 1900},
+    {name: '18.0', number: 1800},
+    {name: '17.0', number: 1700},
+    {name: '16.0', number: 1600},
+    {name: '15.0', number: 1500},
+    {name: '14.0', number: 1400},
+    {name: '13.0', number: 1300},
+    {name: '12.0', number: 1200},
+    {name: '11.0', number: 1100},
+    {name: '10.2', number: 1020},
+    {name: '10.1', number: 1010},
+    {name: '10.0', number: 1000},
+    {name: '9.1', number: 910},
+    {name: '9.0', number: 900},
+    {name: '8.2', number: 820},
+    {name: '8.1', number: 810},
+    {name: '8.0', number: 800},
+    {name: '7.2', number: 720},
+    {name: '7.1', number: 710},
+    {name: '7.0', number: 700},
+    {name: '6.1', number: 610},
+    {name: '6.0', number: 600},
+    {name: '5.2', number: 520},
+    {name: '5.1', number: 510},
+    {name: '5.0', number: 500},
+    {name: '4.4', number: 440},
+    {name: '4.3', number: 430},
+    {name: '4.2', number: 420},
+    {name: '4.1', number: 410},
+    {name: '4.0', number: 400},
+    {name: '2.4', number: 204},
+    {name: '2.3', number: 203},
+    {name: '2.2', number: 202},
+    {name: '2.1', number: 201},
+    {name: '2.0', number: 200},
+  ];
+  /** The versions to update from and to, initialized from the `v` query param. */
+  protected readonly from = linkedSignal(
+    () =>
+      this.findVersion(this.versionsParam()?.split('-')[0]) ??
+      this.findVersion(DEFAULT_FROM_VERSION)!,
+  );
+  protected readonly to = linkedSignal(
+    () =>
+      this.findVersion(this.versionsParam()?.split('-')[1]) ??
+      this.findVersion(DEFAULT_TO_VERSION)!,
+  );
+  protected futureVersion = 2300;
+
+  protected readonly steps: Step[] = RECOMMENDATIONS;
+
+  private readonly clipboard = inject(Clipboard);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
+  /** Bound from the `v` query param, in the `<from>-<to>` format (e.g. `21.0-22.0`). */
+  readonly versionsParam = input<string>(undefined, {alias: 'v'});
+  /** Bound from the `l` query param, the application complexity level. */
+  readonly levelParam = input<string>(undefined, {alias: 'l'});
+
+  constructor() {
+    // Show the update path right away when the versions are provided in the URL.
+    afterNextRender(() => {
+      if (this.versionsParam()) {
+        this.showUpdatePath();
+      }
+    });
+  }
+
+  private findVersion(name: string | undefined) {
+    return this.versions.find((version) => version.name === name);
+  }
+
+  copyCode(event: Event) {
+    const {tagName, textContent} = event.target as Element;
+
+    if (tagName === 'CODE') {
+      this.clipboard.copy(textContent!);
+      this.snackBar.open('Copied to clipboard', '', {duration: 2000});
+    }
+  }
+
+  protected toggleRecommendation(event: MouseEvent, checkbox: MatCheckbox): void {
+    const target = event.target as Element | null;
+
+    // Keep links in the recommendation independently operable.
+    if (target?.closest('a')) {
+      return;
+    }
+
+    checkbox.toggle();
+    checkbox.focus();
+  }
+
+  async showUpdatePath() {
+    this.beforeRecommendations = [];
+    this.duringRecommendations = [];
+    this.afterRecommendations = [];
+
+    // Refuse to generate recommendations for downgrades
+    if (this.to().number < this.from().number) {
+      alert('Angular sürümlerini düşürmeyi desteklemiyoruz.');
+      return;
+    }
+
+    const labelTitle = 'Angular uygulamanızı güncelleme rehberi';
+    const labelBasic = 'temel uygulamalar';
+    const labelMedium = 'orta düzey uygulamalar';
+    const labelAdvanced = 'ileri düzey uygulamalar';
+
+    this.title.set(`${labelTitle} v${this.from().name} -> v${this.to().name}
+    ${this.level() < 2 ? labelBasic : this.level() < 3 ? labelMedium : labelAdvanced} için`);
+
+    // Find applicable steps and organize them into before, during, and after upgrade
+    for (const step of this.steps) {
+      if (step.level <= this.level() && step.necessaryAsOf > this.from().number) {
+        // Check Options
+        // Only show steps that don't have a required option
+        // Or when the user has a matching option selected
+        let skip = false;
+        for (const option of this.optionList) {
+          // Skip steps which require an option not set by the user.
+          if (step[option.id] && !this.options[option.id]) {
+            skip = true;
+          }
+
+          // Skip steps which require **not** using an option which **is** set
+          // by the user.
+          if (step[option.id] === false && this.options[option.id]) {
+            skip = true;
+          }
+        }
+        if (skip) {
+          continue;
+        }
+
+        // Render and replace variables
+        step.renderedStep = await marked(this.replaceVariables(step.action));
+
+        // If you could do it before now, but didn't have to finish it before now
+        if (step.possibleIn <= this.from().number && step.necessaryAsOf >= this.from().number) {
+          this.beforeRecommendations.push(step);
+          // If you couldn't do it before now, and you must do it now
+        } else if (step.possibleIn > this.from().number && step.necessaryAsOf <= this.to().number) {
+          this.duringRecommendations.push(step);
+        } else if (step.possibleIn <= this.to().number) {
+          this.afterRecommendations.push(step);
+        }
+      }
+    }
+
+    // Update the URL so users can link to this transition
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {v: `${this.from().name}-${this.to().name}`, l: this.level()},
+      queryParamsHandling: 'merge',
+    });
+
+    // Tell everyone how to upgrade for v6 or earlier
+    this.renderPreV6Instructions();
+  }
+
+  private getAdditionalDependencies(version: number): string {
+    if (version < 500) {
+      return `typescript@'>=2.1.0 <2.4.0'`;
+    } else if (version < 600) {
+      return `typescript@2.4.2 rxjs@^5.5.2`;
+    } else {
+      return `typescript@2.7.x rxjs@^6.0.0`;
+    }
+  }
+
+  private getAngularVersion(version: number): string {
+    if (version < 400) {
+      return `'^2.0.0'`;
+    } else {
+      const major = Math.floor(version / 100);
+      const minor = Math.floor((version - major * 100) / 10);
+      return `^${major}.${minor}.0`;
+    }
+  }
+
+  private async renderPreV6Instructions(): Promise<void> {
+    let upgradeStep: Step;
+    const additionalDeps = this.getAdditionalDependencies(this.to().number);
+    const angularVersion = this.getAngularVersion(this.to().number);
+    const angularPackages = [
+      'animations',
+      'common',
+      'compiler',
+      'compiler-cli',
+      'core',
+      'forms',
+      'http',
+      'platform-browser',
+      'platform-browser-dynamic',
+      'platform-server',
+      'router',
+    ];
+
+    // Provide npm/yarn instructions for versions before 6
+    if (this.to().number < 600) {
+      const actionMessage = `Update all of your dependencies to the latest Angular and the right version of TypeScript.`;
+
+      if (isWindows) {
+        const packages =
+          angularPackages
+            .map((packageName) => `@angular/${packageName}@${angularVersion}`)
+            .join(' ') +
+          ' ' +
+          additionalDeps;
+
+        upgradeStep = {
+          step: 'General Update',
+          action: `${actionMessage}
+          If you are using Windows, you can use:
+
+\`${this.packageManager} ${packages}\``,
+        } as Step;
+      } else {
+        const packages = `@angular/{${angularPackages.join(',')}}@${angularVersion} ${additionalDeps}`;
+        upgradeStep = {
+          step: 'General update',
+          action: `${actionMessage}
+          If you are using Linux/Mac, you can use:
+
+\`${this.packageManager} ${packages}\``,
+        } as Step;
+      }
+
+      // Npm installs typescript wrong in v5, let's manually specify
+      // https://github.com/npm/npm/issues/16813
+      if (this.packageManager === 'npm install' && this.to().number === 500) {
+        upgradeStep.action += `
+
+\`npm install typescript@2.4.2 --save-exact\``;
+      }
+
+      upgradeStep.renderedStep = await marked(upgradeStep.action);
+
+      this.duringRecommendations.push(upgradeStep);
+    }
+  }
+
+  protected getComplexityLevelName(level: ApplicationComplexity): string {
+    const names: Record<ApplicationComplexity, string> = {
+      [ApplicationComplexity.Basic]: 'Temel',
+      [ApplicationComplexity.Medium]: 'Orta',
+      [ApplicationComplexity.Advanced]: 'İleri',
+    };
+
+    return names[level] ?? 'Bilinmeyen';
+  }
+
+  private replaceVariables(action: string): string {
+    let newAction = action;
+    newAction = newAction.replace(
+      '${packageManagerGlobalInstall}',
+      this.packageManager === 'npm install' ? 'npm install -g' : 'yarn global add',
+    );
+    newAction = newAction.replace('${packageManagerInstall}', this.packageManager);
+    return newAction;
+  }
+}

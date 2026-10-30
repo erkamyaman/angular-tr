@@ -1,0 +1,23 @@
+name: Translation error on the site
+description: A mistranslation, a typo or an outdated passage on the published site.
+labels: [type:translation, bug]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      placeholder: https://…/guide/signals
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Quote the sentence and say what it should be. The English original helps.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source marker (optional)
+      description: The `source` hash at the top of the page's Markdown file, if you have it, or the date you saw the page.

@@ -1,0 +1,37 @@
+<div class="adev-footer-container">
+  <div class="adev-footer-columns">
+    <div>
+      <h2>Social Media</h2>
+      <ul>
+        <li>
+          <a [href]="ngLinks.MEDIUM" title="Angular blog">Blog</a>
+        </li>
+        <li>
+          <a
+            [href]="ngLinks.DISCORD"
+            title="Join the discussions at Angular Community Discord server."
+          >
+            Discord
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h2>Community</h2>
+      <ul>
+        <li>
+          <a href="https://github.com/angular/angular/blob/main/CONTRIBUTING.md" title="Contribute to Angular">
+            Contribute
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Legal line -->
+  <p class="adev-footer-legal">
+    Super-powered by Google ©2010-{{ currentYear }}.
+    <code>v{{ version }}</code>
+    <docs-icon>open_in_new</docs-icon>
+    <i class="material-symbols-outlined">more_horiz</i>
+  </p>
+</div>

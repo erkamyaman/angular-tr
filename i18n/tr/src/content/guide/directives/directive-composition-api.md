@@ -1,0 +1,272 @@
+<!-- source: 47b132a262676fbfe9c21991d301feea291beda2 -->
+# Direktif bileşim API'si
+
+Angular direktifleri, yeniden kullanılabilir davranışları kapsüllemek için harika bir yol sunar -- direktifler bir elemana nitelikler, CSS sınıfları ve olay dinleyicileri uygulayabilir.
+
+_Direktif bileşim API'si_, bileşen TypeScript sınıfı _içinden_ bir bileşenin ana elemanına direktifler uygulamanıza olanak tanır.
+
+## Bir bileşene direktif ekleme {#adding-directives-to-a-component}
+
+Bir bileşenin dekoratörüne `hostDirectives` özelliği ekleyerek bileşenlere direktifler uygularsınız. Bu tür direktiflere _ana direktifler_ diyoruz.
+
+Bu örnekte, `MenuBehavior` direktifini `AdminMenu`'nun ana elemanına uyguluyoruz. Bu, bir şablonda `<admin-menu>` elemanına `MenuBehavior`'ı uygulamaya benzer şekilde çalışır.
+
+```ts
+@Component({
+  selector: 'admin-menu',
+  templateUrl: './admin-menu.html',
+  hostDirectives: [MenuBehavior],
+})
+export class AdminMenu {}
+```
+
+Framework bir bileşeni render ettiğinde, Angular her ana direktifin de bir örneğini oluşturur. Direktiflerin ana bağlamaları bileşenin ana elemanına uygulanır. Varsayılan olarak, ana direktif girdileri ve çıktıları bileşenin genel API'sinin bir parçası olarak sunulmaz. Daha fazla bilgi için aşağıdaki [Girdiler ve çıktıları dahil etme](#including-inputs-and-outputs) bölümüne bakın.
+
+Ana direktifler aşağıdaki kısıtlamalarla gelir:
+
+- **Angular, ana direktifleri derleme zamanında statik olarak uygular.** Çalışma zamanında dinamik olarak
+  direktif ekleyemezsiniz.
+- **`hostDirectives`'de kullanılan direktifler `standalone: false` belirtemez.**
+- **Angular, `hostDirectives` özelliğinde uygulanan direktiflerin `selector`'ını yok sayar.**
+
+## Input ve output'ları dahil etme {#including-inputs-and-outputs}
+
+Bileşeninize `hostDirectives` uyguladığınızda, ana direktiflerden gelen girdiler ve çıktılar varsayılan olarak bileşeninizin API'sine dahil edilmez. `hostDirectives` içindeki girişi genişleterek girdileri ve çıktıları bileşeninizin API'sine açıkça dahil edebilirsiniz:
+
+```ts
+@Component({
+  selector: 'admin-menu',
+  templateUrl: './admin-menu.html',
+  hostDirectives: [
+    {
+      directive: MenuBehavior,
+      inputs: ['menuId'],
+      outputs: ['menuClosed'],
+    },
+  ],
+})
+export class AdminMenu {}
+```
+
+Girdileri ve çıktıları açıkça belirterek, `hostDirectives` ile bileşenin tüketicileri bunları bir şablonda bağlayabilir:
+
+```angular-html
+<admin-menu menuId="top-menu" (menuClosed)="logMenuClosed()"></admin-menu>
+```
+
+Ayrıca, bileşeninizin API'sini özelleştirmek için bir ana direktiften girdileri ve çıktıları takma adlarla kullanabilirsiniz:
+
+```ts
+@Component({
+  selector: 'admin-menu',
+  templateUrl: './admin-menu.html',
+  hostDirectives: [
+    {
+      directive: MenuBehavior,
+      inputs: ['menuId: id'],
+      outputs: ['menuClosed: closed'],
+    },
+  ],
+})
+export class AdminMenu {}
+```
+
+```angular-html
+<admin-menu id="top-menu" (closed)="logMenuClosed()"></admin-menu>
+```
+
+## Başka bir direktife direktif ekleme {#adding-directives-to-another-directive}
+
+Bileşenlere ek olarak diğer direktiflere de `hostDirectives` ekleyebilirsiniz. Bu, birden fazla davranışın geçişli olarak birleştirilmesini sağlar.
+
+Aşağıdaki örnekte, `Menu` ve `Tooltip` olmak üzere iki direktif tanımlıyoruz. Ardından bu iki direktifin davranışını `MenuWithTooltip`'te birleştiriyoruz. Son olarak, `MenuWithTooltip`'i `SpecializedMenuWithTooltip`'e uyguluyoruz.
+
+`SpecializedMenuWithTooltip` bir şablonda kullanıldığında, `Menu`, `Tooltip` ve `MenuWithTooltip`'in tümünün örneklerini oluşturur. Bu direktiflerin her birinin ana bağlamaları, `SpecializedMenuWithTooltip`'in ana elemanına uygulanır.
+
+```ts
+@Directive({/* ... */})
+export class Menu {}
+
+@Directive({/* ... */})
+export class Tooltip {}
+
+// MenuWithTooltip birden fazla başka direktiften davranışları birleştirebilir
+@Directive({
+  hostDirectives: [Tooltip, Menu],
+})
+export class MenuWithTooltip {}
+
+// CustomWidget, MenuWithTooltip'te halihazırda birleştirilmiş davranışları uygulayabilir
+@Directive({
+  hostDirectives: [MenuWithTooltip],
+})
+export class SpecializedMenuWithTooltip {}
+```
+
+## Ana direktif semantiği {#host-directive-semantics}
+
+### Direktif çalıştırma sırası {#directive-execution-order}
+
+Ana direktifler, doğrudan bir şablonda kullanılan bileşenler ve direktiflerle aynı yaşam döngüsünden geçer. Ancak, ana direktifler her zaman constructor'larını, yaşam döngüsü kancalarını ve bağlamalarını uygulandıkları bileşen veya direktiften _önce_ yürütür.
+
+Aşağıdaki örnek, bir ana direktifin minimal kullanımını gösterir:
+
+```ts
+@Component({
+  selector: 'admin-menu',
+  templateUrl: './admin-menu.html',
+  hostDirectives: [MenuBehavior],
+})
+export class AdminMenu {}
+```
+
+Buradaki yürütme sırası:
+
+1. `MenuBehavior` örneklendi
+2. `AdminMenu` örneklendi
+3. `MenuBehavior` girdileri alır (`ngOnInit`)
+4. `AdminMenu` girdileri alır (`ngOnInit`)
+5. `MenuBehavior` ana bağlamalarını uygular
+6. `AdminMenu` ana bağlamalarını uygular
+
+Bu işlem sırası, `hostDirectives` ile bileşenlerin bir ana direktif tarafından belirtilen herhangi bir ana bağlamayı geçersiz kılabileceği anlamına gelir.
+
+Bu işlem sırası, aşağıdaki örnekte gösterildiği gibi iç içe ana direktif zincirlerine de uzanır.
+
+```ts
+@Directive({...})
+export class Tooltip { }
+
+@Directive({
+  hostDirectives: [Tooltip],
+})
+export class CustomTooltip { }
+
+@Directive({
+  hostDirectives: [CustomTooltip],
+})
+export class EvenMoreCustomTooltip { }
+```
+
+Yukarıdaki örnekte yürütme sırası:
+
+1. `Tooltip` örneklendi
+2. `CustomTooltip` örneklendi
+3. `EvenMoreCustomTooltip` örneklendi
+4. `Tooltip` girdileri alır (`ngOnInit`)
+5. `CustomTooltip` girdileri alır (`ngOnInit`)
+6. `EvenMoreCustomTooltip` girdileri alır (`ngOnInit`)
+7. `Tooltip` ana bağlamalarını uygular
+8. `CustomTooltip` ana bağlamalarını uygular
+9. `EvenMoreCustomTooltip` ana bağlamalarını uygular
+
+### Bağımlılık enjeksiyonu {#dependency-injection}
+
+`hostDirectives` belirten bir bileşen veya direktif, bu ana direktiflerin örneklerini enjekte edebilir ve tersi de geçerlidir.
+
+Bir bileşene ana direktifler uygulanırken, hem bileşen hem de ana direktifler sağlayıcılar tanımlayabilir.
+
+`hostDirectives` ile bir bileşen veya direktif ve bu ana direktifler aynı enjeksiyon token'ını sağlıyorsa, `hostDirectives` ile sınıf tarafından tanımlanan sağlayıcılar, ana direktifler tarafından tanımlanan sağlayıcılara göre öncelik kazanır.
+
+### Ana direktif tekilleştirmesi {#host-directive-de-duplication}
+
+Aynı direktif, çözümlenen ana direktif ağacında birden fazla kez yer aldığında, bir hata fırlatmak yerine otomatik olarak tekilleştirilir. Hangi eşleşmenin kalacağına karar vermek için iki deterministik kural kullanılır.
+
+#### Şablon eşleşmesi öncelik kazanır {#template-match-takes-precedence}
+
+Bir direktif bir elemanı bir kez **şablon seçicisi (selector)** aracılığıyla eşleştirir ve aynı zamanda bir **ana direktif** olarak da yer alırsa, Angular yalnızca şablon eşleşmesini tutar ve tüm ana direktif eşleşmelerini atar.
+
+Zihinsel model şudur: bir ana direktif eşleşmesi `Partial<YourDirective>`'i temsil eder, yani yalnızca `hostDirectives` içinde açıkça listelenen girdi ve çıktıların sunulduğu kısmi bir uygulamadır; bir şablon eşleşmesi ise tam genel API'siyle birlikte direktifin tamamını temsil eder.
+
+```ts
+@Directive({selector: '[hoverable]'})
+export class Hoverable {}
+
+@Component({
+  selector: 'app-button',
+  hostDirectives: [Hoverable],
+})
+export class Button {}
+```
+
+```angular-html
+<!-- Hoverable, hem selector ile hem de Button'ın ana direktifi olarak eşleşir. -->
+<!-- Angular yalnızca, tam genel API'ye sahip olan selector eşleşmesini tutar. -->
+<app-button hoverable></app-button>
+```
+
+#### Birden fazla ana direktif eşleşmesi birleştirilir {#multiple-host-directive-matches-are-merged}
+
+Aynı direktif **ana direktif olarak birden fazla kez** yer alırsa, örneğin iki direktif de `hostDirectives` içinde ortak bir bağımlılık bildirdiğinde, Angular tüm örnekleri tek bir direktif örneğinde birleştirir. Tüm örneklerden gelen girdi ve çıktı eşlemeleri birleştirilir.
+
+Bu, ana direktif bileşimindeki klasik [elmas problemini](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem) çözer:
+
+```ts
+// Her iki tetikleyicinin de ihtiyaç duyduğu paylaşılan bir davranış
+@Directive({
+  host: {
+    '[attr.data-trigger-id]': 'triggerId()',
+  },
+})
+export class TriggerRef {
+  readonly triggerId = input(`trigger-${crypto.randomUUID()}`);
+}
+
+// Her biri TriggerRef'i ana direktif olarak bildiren iki ayrı tetikleyici
+@Directive({
+  selector: '[popoverTrigger]',
+  hostDirectives: [TriggerRef],
+})
+export class PopoverTrigger {
+  readonly triggerRef = inject(TriggerRef);
+}
+
+@Directive({
+  selector: '[dropdownTrigger]',
+  hostDirectives: [TriggerRef],
+})
+export class DropdownTrigger {
+  readonly triggerRef = inject(TriggerRef);
+}
+```
+
+```angular-html
+<!-- Angular, her iki tetikleyici tarafından paylaşılan tek bir TriggerRef örneği tutar. -->
+<button popoverTrigger dropdownTrigger>Actions</button>
+```
+
+HELPFUL: Angular paylaşılan direktifin yalnızca tek bir örneğini ürettiği için, `PopoverTrigger` ve `DropdownTrigger` enjekte ettiklerinde aynı `TriggerRef` örneğini alır.
+
+#### Çakışan takma adlar {#conflicting-aliases}
+
+Angular, yinelenen ana direktif eşleşmelerini birleştirirken bunların girdi ve çıktı eşlemelerini de birleştirir. Aynı ana direktifin iki örneği **aynı girdi veya çıktıyı farklı takma adlar altında** sunarsa, Angular derleme zamanında bir hata fırlatır ([NG8024](errors/NG8024)).
+
+```ts
+@Directive({
+  selector: '[popoverTrigger]',
+  hostDirectives: [{directive: TriggerRef, inputs: ['triggerId: popoverTriggerId']}],
+})
+export class PopoverTrigger {}
+
+@Directive({
+  selector: '[dropdownTrigger]',
+  hostDirectives: [
+    {directive: TriggerRef, inputs: ['triggerId: dropdownTriggerId']}, // farklı takma ad!
+  ],
+})
+export class DropdownTrigger {}
+```
+
+```angular-html
+<!-- Hata: triggerId hem "popoverTriggerId" hem de "dropdownTriggerId" olarak sunuluyor. -->
+<button popoverTrigger dropdownTrigger></button>
+```
+
+Bunu çözmek için, her iki yolun da paylaşılan girdi veya çıktıyı aynı takma ad altında sunmasını sağlayın veya hiç sunmayın.
+
+## Sırada ne var {#whats-next}
+
+<docs-pill-row>
+  <docs-pill href="guide/directives/structural-directives" title="Yapısal direktifler"/>
+  <docs-pill href="guide/components/host-elements" title="Bileşen host elemanları"/>
+</docs-pill-row>

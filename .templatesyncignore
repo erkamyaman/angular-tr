@@ -1,0 +1,12 @@
+# Files the template-sync workflow never overwrites in repositories created from the template:
+# everything that belongs to the instance (languages, pins, hosting, owners, front page).
+i18n/
+languages.json
+origin
+.gitmodules
+firebase.json
+.firebaserc
+CODEOWNERS
+README.md
+.github/workflows/template-canary.yml
+.github/workflows/template-cleanup.yml

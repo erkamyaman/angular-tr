@@ -1,0 +1,556 @@
+<!-- source: 720661a01edff1ba2bcae770dc737a4f93d0af83 -->
+# Özel Kontroller
+
+NOTE: Bu kılavuz, [Signal Forms temelleri](essentials/signal-forms) konusuna aşinalık olduğunu varsayar.
+
+Tarayıcının yerleşik form kontrolleri (input, select, textarea gibi) yaygın durumları karşılar, ancak uygulamalar genellikle özelleştirilmiş girdilere ihtiyaç duyar. Takvim arayüzüne sahip bir tarih seçici, biçimlendirme araç çubuğuna sahip bir zengin metin düzenleyici veya otomatik tamamlamalı bir etiket seçici, hepsi özel uygulamalar gerektirir.
+
+Signal Forms, belirli arayüzleri uygulayan herhangi bir bileşenle çalışır. Bir **kontrol arayüzü**, bileşeninizin form sistemiyle iletişim kurmasını sağlayan özellikleri ve sinyalleri tanımlar. Bileşeniniz bu arayüzlerden birini uyguladığında, `[formField]` direktifi kontrolünüzü otomatik olarak form durumu, doğrulama ve veri bağlamaya bağlar.
+
+HELPFUL: Özel Signal Form Kontrolleri, ek uyumluluk kodu olmadan Signal, Reactive ve Template-Driven Forms ile [kullanılabilir](guide/forms/signals/migration#özel-kontroller).
+
+## Temel bir özel kontrol oluşturma {#creating-a-basic-custom-control}
+
+Minimal bir uygulama ile başlayalım ve ihtiyaç duydukça özellikler ekleyelim.
+
+### Minimal girdi kontrolü {#minimal-input-control}
+
+Temel bir özel girdi yalnızca `FormValueControl` arayüzünü uygulamak ve gerekli `value` model sinyalini tanımlamak zorundadır.
+
+```angular-ts
+import {Component, model} from '@angular/core';
+import {FormValueControl} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-basic-input',
+  template: `
+    <div class="basic-input">
+      <input
+        type="text"
+        [value]="value()"
+        (input)="value.set($event.target.value)"
+        placeholder="Enter text..."
+      />
+    </div>
+  `,
+})
+export class BasicInput implements FormValueControl<string> {
+  /** Geçerli girdi değeri */
+  value = model('');
+}
+```
+
+### Minimal onay kutusu kontrolü {#minimal-checkbox-control}
+
+Bir onay kutusu tarzı kontrol iki şeye ihtiyaç duyar:
+
+1. `FormField` direktifinin onu bir form kontrolü olarak tanıması için `FormCheckboxControl` arayüzünü uygulaması
+2. Bir `checked` model sinyali sağlaması
+
+```angular-ts
+import {Component, model, ChangeDetectionStrategy} from '@angular/core';
+import {FormCheckboxControl} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-basic-toggle',
+  template: `
+    <button type="button" [class.active]="checked()" (click)="toggle()">
+      <span class="toggle-slider"></span>
+    </button>
+  `,
+})
+export class BasicToggle implements FormCheckboxControl {
+  /** Geçiş düğmesinin işaretli olup olmadığı */
+  checked = model<boolean>(false);
+
+  toggle() {
+    this.checked.update((val) => !val);
+  }
+}
+```
+
+### Özel kontrolünüzü kullanma {#using-your-custom-control}
+
+Bir kontrol oluşturduktan sonra, `FormField` direktifini ekleyerek yerleşik bir girdi kullanacağınız her yerde kullanabilirsiniz:
+
+```angular-ts
+import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
+import {form, FormField, required} from '@angular/forms/signals';
+import {BasicInput} from './basic-input';
+import {BasicToggle} from './basic-toggle';
+
+@Component({
+  imports: [FormField, BasicInput, BasicToggle],
+  template: `
+    <form novalidate>
+      <label>
+        Email
+        <app-basic-input [formField]="registrationForm.email" />
+      </label>
+
+      <label>
+        Accept terms
+        <app-basic-toggle [formField]="registrationForm.acceptTerms" />
+      </label>
+
+      <button type="submit" [disabled]="registrationForm().invalid()">Register</button>
+    </form>
+  `,
+})
+export class Registration {
+  registrationModel = signal({
+    email: '',
+    acceptTerms: false,
+  });
+
+  registrationForm = form(this.registrationModel, (schemaPath) => {
+    required(schemaPath.email, {message: 'Email is required'});
+    required(schemaPath.acceptTerms, {message: 'You must accept the terms'});
+  });
+}
+```
+
+NOTE: Şema geri çağırma parametresi (bu örneklerde `schemaPath`), formunuzdaki tüm alanlara yollar sağlayan bir `SchemaPathTree` nesnesidir. Bu parametreyi istediğiniz gibi adlandırabilirsiniz.
+
+`[formField]` direktifi, özel kontroller ve yerleşik girdiler için aynı şekilde çalışır. Signal Forms bunlara aynı şekilde davranır - doğrulama çalışır, durum güncellenir ve veri bağlama otomatik olarak gerçekleşir.
+
+## Kontrol arayüzlerini anlama {#understanding-control-interfaces}
+
+Özel kontrolleri çalışırken gördüğünüze göre, şimdi Signal Forms ile nasıl entegre olduklarını inceleyelim.
+
+### Kontrol arayüzleri {#control-interfaces}
+
+Oluşturduğunuz `BasicInput` ve `BasicToggle` bileşenleri, Signal Forms'a onlarla nasıl etkileşim kuracağını söyleyen belirli kontrol arayüzlerini uygular.
+
+#### FormValueControl
+
+`FormValueControl`, çoğu girdi türü için arayüzdür - metin girdileri, sayı girdileri, tarih seçiciler, seçim açılır menüleri ve tek bir değeri düzenleyen herhangi bir kontrol. Bileşeniniz bu arayüzü uyguladığında:
+
+- **Gerekli özellik**: Bileşeniniz bir `value` model sinyali sağlamalıdır
+- **FormField direktifinin yaptığı**: Form alanının değerini kontrolünüzün `value` sinyaline bağlar
+
+IMPORTANT: `FormValueControl` uygulayan kontrollerde `checked` özelliği bulunmamalıdır
+
+#### FormCheckboxControl
+
+`FormCheckboxControl`, onay kutusu benzeri kontroller için arayüzdür - geçiş düğmeleri, anahtarlar ve boolean açık/kapalı durumunu temsil eden herhangi bir kontrol. Bileşeniniz bu arayüzü uyguladığında:
+
+- **Gerekli özellik**: Bileşeniniz bir `checked` model sinyali sağlamalıdır
+- **FormField direktifinin yaptığı**: Form alanının değerini kontrolünüzün `checked` sinyaline bağlar
+
+IMPORTANT: `FormCheckboxControl` uygulayan kontrollerde `value` özelliği bulunmamalıdır
+
+### İsteğe bağlı durum özellikleri {#optional-state-properties}
+
+Hem `FormValueControl` hem de `FormCheckboxControl`, form durumuyla entegrasyon için isteğe bağlı özellikler sağlayan temel arayüz `FormUiControl`'ü genişletir.
+
+Tüm özellikler isteğe bağlıdır. Yalnızca kontrolünüzün ihtiyaç duyduklarını uygulayın.
+
+#### Etkileşim durumu {#interaction-state}
+
+Kullanıcıların kontrolünüzle ne zaman etkileşim kurduğunu takip edin:
+
+| Property  | Purpose                                                        |
+| --------- | -------------------------------------------------------------- |
+| `touched` | Kullanıcının alanla etkileşim kurup kurmadığı                  |
+| `dirty`   | Kullanıcının değeri değiştirip değiştirmediği (geri alsa bile) |
+
+#### Doğrulama durumu {#validation-state}
+
+Kullanıcılara doğrulama geri bildirimi gösterin:
+
+| Property  | Purpose                                   |
+| --------- | ----------------------------------------- |
+| `errors`  | Mevcut doğrulama hatalarının dizisi       |
+| `invalid` | Alanın doğrulama hataları olup olmadığı   |
+| `pending` | Asenkron doğrulamanın devam edip etmediği |
+
+#### Kullanılabilirlik durumu {#availability-state}
+
+Kullanıcıların alanınızla etkileşim kurup kuramayacağını kontrol edin:
+
+| Property          | Purpose                                                     |
+| ----------------- | ----------------------------------------------------------- |
+| `disabled`        | Alanın devre dışı olup olmadığı                             |
+| `disabledReasons` | Alanın neden devre dışı olduğunun nedenleri                 |
+| `readonly`        | Alanın salt okunur olup olmadığı (görünür ama düzenlenemez) |
+| `hidden`          | Alanın görünümden gizli olup olmadığı                       |
+
+NOTE: `disabledReasons`, `DisabledReason` nesnelerinden oluşan bir dizidir. Her nesnenin bir `fieldTree` özelliği (alan ağacına referans) ve isteğe bağlı bir `message` özelliği vardır. Mesaja `reason.message` üzerinden erişin.
+
+#### Doğrulama kısıtlamaları {#validation-constraints}
+
+Formdan doğrulama kısıtlama değerlerini alın:
+
+| Property    | Purpose                                              |
+| ----------- | ---------------------------------------------------- |
+| `required`  | Alanın zorunlu olup olmadığı                         |
+| `min`       | Minimum sayısal değer (kısıtlama yoksa `undefined`)  |
+| `max`       | Maksimum sayısal değer (kısıtlama yoksa `undefined`) |
+| `minLength` | Minimum dize uzunluğu (kısıtlama yoksa undefined)    |
+| `maxLength` | Maksimum dize uzunluğu (kısıtlama yoksa undefined)   |
+| `pattern`   | Eşleştirilecek düzenli ifade kalıpları dizisi        |
+
+#### Alan metadata'sı {#field-metadata}
+
+| Property | Purpose                                                              |
+| -------- | -------------------------------------------------------------------- |
+| `name`   | Alanın name niteliği (formlar ve uygulamalar genelinde benzersizdir) |
+
+Aşağıdaki "[Adding state signals](#durum-sinyalleri-ekleme)" bölümü, bu özelliklerin kontrollerinizde nasıl uygulanacağını gösterir.
+
+### FormField direktifi nasıl çalışır {#how-the-formfield-directive-works}
+
+`[formField]` direktifi, kontrolünüzün hangi arayüzü uyguladığını algılar ve uygun sinyalleri otomatik olarak bağlar:
+
+```angular-ts
+import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
+import {form, FormField, required} from '@angular/forms/signals';
+import {CustomInput} from './custom-input';
+import {CustomToggle} from './custom-toggle';
+
+@Component({
+  selector: 'app-my-form',
+  imports: [FormField, CustomInput, CustomToggle],
+  template: `
+    <form novalidate>
+      <app-custom-input [formField]="userForm.username" />
+      <app-custom-toggle [formField]="userForm.subscribe" />
+    </form>
+  `,
+})
+export class MyForm {
+  formModel = signal({
+    username: '',
+    subscribe: false,
+  });
+
+  userForm = form(this.formModel, (schemaPath) => {
+    required(schemaPath.username, {message: 'Username is required'});
+  });
+}
+```
+
+TIP: Form modellerini oluşturma ve yönetme konusunda kapsamlı bilgi için [Form Modelleri kılavuzuna](guide/forms/signals/models) bakın.
+
+`[formField]="userForm.username"` bağladığınızda, FormField direktifi:
+
+1. Kontrolünüzün `FormValueControl` uyguladığını algılar
+2. Dahili olarak `userForm.username().value()` değerine erişir ve bunu kontrolünüzün `value` model sinyaline bağlar
+3. Form durum sinyallerini (`disabled()`, `errors()`, vb.) kontrolünüzün isteğe bağlı girdi sinyallerine bağlar
+4. Güncellemeler sinyal reaktivitesi aracılığıyla otomatik olarak gerçekleşir
+
+## Durum sinyalleri ekleme {#adding-state-signals}
+
+Yukarıda gösterilen minimal kontroller çalışır, ancak form durumuna tepki vermezler. Kontrollerinizin devre dışı durumuna tepki vermesi, doğrulama hatalarını göstermesi ve kullanıcı etkileşimini izlemesi için isteğe bağlı girdi sinyalleri ekleyebilirsiniz.
+
+İşte yaygın durum özelliklerini uygulayan kapsamlı bir örnek:
+
+```angular-ts
+import {Component, model, input, output, ChangeDetectionStrategy} from '@angular/core';
+import {
+  FormValueControl,
+  WithOptionalFieldTree,
+  ValidationError,
+  DisabledReason,
+} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-stateful-input',
+  template: `
+    @if (!hidden()) {
+      <div class="input-container">
+        <input
+          type="text"
+          [value]="value()"
+          (input)="value.set($event.target.value)"
+          [disabled]="disabled()"
+          [readonly]="readonly()"
+          [class.invalid]="invalid()"
+          [attr.aria-invalid]="invalid()"
+          (blur)="touch.emit()"
+        />
+
+        @if (invalid()) {
+          <div class="error-messages" role="alert">
+            @for (error of errors(); track error) {
+              <span class="error">{{ error.message }}</span>
+            }
+          </div>
+        }
+
+        @if (disabled() && disabledReasons().length > 0) {
+          <div class="disabled-reasons">
+            @for (reason of disabledReasons(); track reason) {
+              <span>{{ reason.message }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  `,
+})
+export class StatefulInput implements FormValueControl<string> {
+  // Gerekli
+  value = model<string>('');
+
+  // Yazılabilir etkileşim durumu - kontrol bunları günceller
+  touched = input<boolean>(false);
+  touch = output<void>();
+
+  // Salt okunur durum - form sistemi bunları yönetir
+  disabled = input<boolean>(false);
+  disabledReasons = input<readonly WithOptionalFieldTree<DisabledReason>[]>([]);
+  readonly = input<boolean>(false);
+  hidden = input<boolean>(false);
+  invalid = input<boolean>(false);
+  errors = input<readonly WithOptionalFieldTree<ValidationError>[]>([]);
+}
+```
+
+Sonuç olarak, kontrolü doğrulama ve durum yönetimi ile kullanabilirsiniz:
+
+```angular-ts
+import {Component, signal, ChangeDetectionStrategy} from '@angular/core';
+import {form, FormField, required, email} from '@angular/forms/signals';
+import {StatefulInput} from './stateful-input';
+
+@Component({
+  imports: [FormField, StatefulInput],
+  template: `
+    <form novalidate>
+      <label>
+        Email
+        <app-stateful-input [formField]="loginForm.email" />
+      </label>
+    </form>
+  `,
+})
+export class Login {
+  loginModel = signal({email: ''});
+
+  loginForm = form(this.loginModel, (schemaPath) => {
+    required(schemaPath.email, {message: 'Email is required'});
+    email(schemaPath.email, {message: 'Enter a valid email address'});
+  });
+}
+```
+
+Kullanıcı geçersiz bir e-posta yazdığında, FormField direktifi `invalid()` ve `errors()` değerlerini otomatik olarak günceller. Kontrolünüz doğrulama geri bildirimini gösterebilir.
+
+### `debounce('blur')` ile çalışma {#working-with-debounceblur}
+
+[`debounce('blur')`](api/forms/signals/debounce) kuralı, UI'dan form modeline yapılan güncellemeleri her tuş vuruşunda uygulamak yerine alan odağı kaybedene (blur) kadar geciktirir. Yerleşik kontroller bir blur'u forma otomatik olarak bildirir. Özel bir kontrol yalnızca yerel [`blur` olayına](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) yanıt olarak `touch` çıktısını yaydığında bu sürece katılır:
+
+```angular-ts
+import {Component, model, output} from '@angular/core';
+import {FormValueControl} from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-custom-input',
+  template: `
+    <input
+      type="text"
+      [value]="value()"
+      (input)="value.set($event.target.value)"
+      (blur)="touch.emit()"
+    />
+  `,
+})
+export class CustomInput implements FormValueControl<string> {
+  value = model('');
+  touch = output<void>();
+}
+```
+
+`touch` çıktısı yerinde olduğunda, `debounce('blur')` kontrolünüz için yerleşik girdilerde olduğu gibi davranır:
+
+```angular-ts
+import {Component, signal} from '@angular/core';
+import {debounce, form, FormField} from '@angular/forms/signals';
+import {CustomInput} from './custom-input';
+
+@Component({
+  selector: 'app-root',
+  imports: [CustomInput, FormField],
+  template: `<app-custom-input [formField]="userForm.name" />`,
+})
+export class App {
+  userModel = signal({name: ''});
+
+  userForm = form(this.userModel, (schemaPath) => {
+    debounce(schemaPath.name, 'blur');
+  });
+}
+```
+
+IMPORTANT: `touch` çıktısını `focus` üzerinde değil, `blur` üzerinde (odak kontrolden ayrıldığında) yayın. Kontrolünüz `touch` yayınlamazsa alan asla touched olarak işaretlenmez ve `debounce('blur')` kontrolünüzün yaydığı değeri form modeline asla yazmaz.
+
+## Değer dönüşümü {#value-transformation}
+
+Kontroller bazen değerleri form modelinin sakladığından farklı şekilde görüntüler - bir tarih seçici "2024-01-15" saklarken "15 Ocak 2024" gösterebilir veya bir para birimi girdisi 1234.56 saklarken "$1,234.56" gösterebilir.
+
+`transformedValue()` (`@angular/forms/signals`'tan) kullanarak kullanıcı arayüzünde gösterilen ham değeri model değeriyle senkronize tutun. Bu fonksiyon, kontrolün `value` model sinyalini ve bir `parse` ile bir `format` fonksiyonunu alır; ham değeri tutan yazılabilir bir sinyal döndürür:
+
+- `format`, model değerini şablonun render ettiği ham değere dönüştürür.
+- `parse`, kullanıcının yazdığını tekrar bir model değerine dönüştürür ve bunun yerine ayrıştırma hataları da bildirebilir.
+
+```angular-ts
+import {Component, model} from '@angular/core';
+import {FormValueControl, transformedValue} from '@angular/forms/signals';
+
+@Component({
+  selector: 'number-input',
+  template: `
+    <input type="text" [value]="rawValue()" (input)="rawValue.set($event.target.value)" />
+  `,
+})
+export class NumberInput implements FormValueControl<number | null> {
+  readonly value = model.required<number | null>();
+
+  protected readonly rawValue = transformedValue(this.value, {
+    parse: (val: string): {value: number | null} => ({value: val ? Number(val) : null}),
+    format: (val: number | null): string => val?.toString() ?? '',
+  });
+}
+```
+
+Döndürülen sinyale yazmak (`rawValue.set(...)`) `parse` fonksiyonunu çalıştırır ve sonucu `value` içine yazar. Model başka bir yerden değiştiğinde (bir `reset()`, bir şema kuralı veya uygulamanın başka bir bölümü tarafından) `format` yeniden çalışır ve ham değer buna uyacak şekilde güncellenir.
+
+### Ayrıştırma hatalarını bildirme {#reporting-parse-errors}
+
+Bazen ham değerin geçerli bir model karşılığı yoktur: yarım yazılmış bir tarih veya sayısal bir alandaki harfler gibi. Yukarıdaki `NumberInput` bu soruna sahiptir: `Number('abc')` sonucu `NaN` olur ve `parse` bunu gönül rahatlığıyla modele yazar.
+
+Bunun yerine `{error}` döndürün:
+
+```ts
+export class NumberInput implements FormValueControl<number | null> {
+  readonly value = model.required<number | null>();
+
+  protected readonly rawValue = transformedValue(this.value, {
+    parse: (val) => {
+      const parsed = val ? Number(val) : null;
+
+      return Number.isNaN(parsed)
+        ? {error: {kind: 'parse', message: `${val} is not a number`}}
+        : {value: parsed};
+    },
+    format: (val) => val?.toString() ?? '',
+  });
+}
+```
+
+Modeli güncellemek _ve_ bir sorunu işaretlemek istediğinizde hem `value` hem de `error` döndürün.
+
+Kontrol `[formField]` ile bağlandığında, ayrıştırma hataları otomatik olarak alana bildirilir; böylece doğrulama hatalarıyla birlikte alanın `errors()` sinyalinde görünürler:
+
+```angular-ts
+@Component({
+  imports: [NumberInput, FormField],
+  template: `
+    <number-input [formField]="orderForm.amount" />
+
+    @for (error of orderForm.amount().errors(); track $index) {
+      <!-- {kind: 'parse', message: '...'} de burada bildirilir -->
+      <p class="error">{{ error.message }}</p>
+    }
+  `,
+})
+export class Order {
+  orderModel = signal<{amount: number | null}>({amount: null});
+  orderForm = form(this.orderModel);
+}
+```
+
+Ayrıştırma hatası olan bir alan geçersizdir ve bu, başarısız bir doğrulama kuralının yaptığı gibi gönderimi engeller.
+
+HELPFUL: Signal Forms, yerel girdiler için de aynı mekanizmayı kullanır. Tarayıcı bir değeri ayrıştıramadığında (örneğin `<input type="date">` içinde kısmen yazılmış bir tarih), bu durum alanda bir `parse` hatası olarak ortaya çıkar. Ayrıntılar için [Yerel HTML doğrulaması](guide/forms/signals/validation#native-html-validation) bölümüne bakın.
+
+### Sıfırlama {#resetting}
+
+Alan üzerinde `reset()` çağırmak bekleyen ayrıştırma hatalarını temizler ve ham değeri modelden yeniden biçimlendirir; böylece ayrıştırılamayan bir durumda bırakılmış bir kontrol temiz bir görüntüleme değerine döner:
+
+```ts
+orderForm.amount().reset();
+```
+
+## Doğrulama entegrasyonu {#validation-integration}
+
+Kontroller doğrulama durumunu görüntüler ancak doğrulama gerçekleştirmez. Doğrulama form şemasında gerçekleşir - kontrolünüz FormField direktifinden `invalid()` ve `errors()` sinyallerini alır ve bunları görüntüler (yukarıdaki StatefulInput örneğinde gösterildiği gibi).
+
+FormField direktifi ayrıca `required`, `min`, `max`, `minLength`, `maxLength` ve `pattern` gibi doğrulama kısıtlama değerlerini de iletir. Kontrolünüz bunları arayüzü geliştirmek için kullanabilir:
+
+```ts
+export class NumberInput implements FormValueControl<number> {
+  value = model<number>(0);
+
+  // Şema doğrulama kurallarından kısıtlama değerleri
+  required = input<boolean>(false);
+  min = input<number | undefined>(undefined);
+  max = input<number | undefined>(undefined);
+}
+```
+
+Şemaya `min()` ve `max()` doğrulama kuralları eklediğinizde, FormField direktifi bu değerleri kontrolünüze iletir. Bunları HTML5 nitelikleri uygulamak veya şablonunuzda kısıtlama ipuçları göstermek için kullanın.
+
+IMPORTANT: Kontrolünüzde doğrulama mantığı uygulamayın. Doğrulama kurallarını form şemasında tanımlayın ve kontrolünüzün sonuçları göstermesini sağlayın:
+
+```ts {avoid}
+// Kaçının: Kontrolde doğrulama
+export class BadControl implements FormValueControl<string> {
+  value = model<string>('');
+  isValid() {
+    return this.value().length >= 8;
+  } // Bunu yapmayın!
+}
+```
+
+```ts {prefer}
+// İyi: Şemada doğrulama, kontrol sonuçları gösterir
+accountForm = form(this.accountModel, (schemaPath) => {
+  minLength(schemaPath.password, 8, {message: 'Password must be at least 8 characters'});
+});
+```
+
+## Kontrolleri yeniden kullanılabilir hale getirme {#making-controls-reusable}
+
+Özel bir kontrol çoğu zaman doğrulama konusunda örtük beklentiler taşır. Bir e-posta girdisi, kendisini kullanan her formda `required` ve `email` kurallarına ihtiyaç duyar. Bu kuralları her tüketicinin yeniden bildirmesine güvenmek yerine, kontrolün yanına eşlik eden bir şema paketleyin ve ikisini de aynı modülden dışa aktarın:
+
+```ts {header: 'email-input.ts'}
+import {schema, required, email} from '@angular/forms/signals';
+
+export const emailFieldSchema = schema<string>((path) => {
+  required(path, {message: 'Email is required'});
+  email(path, {message: 'Enter a valid email address'});
+});
+```
+
+Tüketici, eşlik eden şemayı içe aktarır ve `apply()` ile formuna dahil eder:
+
+```ts {header: 'registration.ts'}
+import {form, apply} from '@angular/forms/signals';
+import {emailFieldSchema} from './email-input';
+
+registrationForm = form(this.registrationModel, (path) => {
+  apply(path.email, emailFieldSchema);
+});
+```
+
+`apply()`, eşlik eden şemanın kurallarını belirtilen yolda üst formla birleştirir. `apply()` diğer kuralları değiştirmek yerine onlarla birleştiği için tüketici aynı alana daha fazla kural eklemeye devam edebilir. `schema()`, `apply()` ve `applyWhen()` ile koşullu birleştirmenin tamamı için [Şemalar kılavuzuna](guide/forms/signals/schemas) bakın.
+
+### Tasarım hususları {#design-considerations}
+
+Tüketicinin modeli her alanı tanımlı bir değerle başlatmalıdır. Signal Forms'ta `undefined`, boş bir değeri değil bir alanın yokluğunu ifade eder. Yeniden kullanılabilir bir e-posta kontrolü için bu, tüketicinin başlangıç değeri olarak `''` kullanması ve özelliği tanımsız bırakmaması gerektiği anlamına gelir. Başlangıç değerlerini seçme hakkında ayrıntılar için [Form Modelleri kılavuzuna](guide/forms/signals/models) bakın.
+
+Ayrıca kontroller, durum yönetimi için kendi effect'lerini kaydetmemelidir. Form sistemi alan durumunu dahili effect'ler aracılığıyla yönetir. Bu, kontrolünüzün durum güncellemelerini girdi sinyalleri aracılığıyla aldığı anlamına gelir. Bir kontrolün değerleri dönüştürmesi gerekiyorsa, bir `effect()` yerine "[Değer dönüşümü](#value-transformation)" bölümünde gösterildiği gibi `transformedValue()` kullanın.
+
+## Sonraki adımlar {#next-steps}
+
+Bu kılavuz, Signal Forms ile entegre olan özel kontroller oluşturmayı ele aldı. İlgili kılavuzlar Signal Forms'un diğer yönlerini inceler:
+
+<docs-pill-row>
+  <docs-pill href="guide/forms/signals/models" title="Form modelleri" />
+  <docs-pill href="guide/forms/signals/field-state-management" title="Alan durumu yönetimi" />
+  <docs-pill href="guide/forms/signals/validation" title="Doğrulama" />
+  <!-- <docs-pill href="guide/forms/signals/arrays" title="Working with Arrays" /> -->
+</docs-pill-row>

@@ -1,0 +1,24 @@
+<!-- source: 256ddd9a91c3558043cb2e00226ec821be02eba1 -->
+# Angular'ı daha fazla keşfetmeye hazır mısınız?
+
+<div class="docs-tutorial-mascot">
+  <img class="docs-tutorial-mascot__angie" src="assets/images/angie/superhero.svg" aria-hidden="true">
+  <p class="docs-tutorial-mascot__bubble">Başardınız! Angular'ı Öğrenin öğreticisini tamamladınız ve uygulama geliştirmenin temellerini öğrendiniz.</p>
+</div>
+
+Ayrıca [kılavuzlarımızda](overview) ve [referanslar](api) bölümünde daha fazla bilgi edinebilir veya `ng new` komutunu kullanabilirsiniz.
+
+<docs-card-container>
+  <docs-card title="Angular Nedir?" href="overview">
+  Angular, modern uygulamalar geliştirmek için kullanılan web geliştirme framework'üdür!
+  </docs-card>
+  <docs-card title="Angular Yol Haritası" href="roadmap">
+  Mevcut, gelecek ve tamamlanmış projeler dahil olmak üzere Angular'ın açık kaynak yol haritasını okuyun.
+  </docs-card>
+  <docs-card title="Oyun Alanı" href="playground" link="Oynamaya başla">
+  Angular ile tarayıcınızda oynayın!
+  </docs-card>
+  <docs-card title="Angular YouTube Kursu" href="https://youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF" link="Öğrenmeye başla">
+  Videolar, kurslar ve daha fazlası için resmi Angular YouTube kanalına göz atın!
+  </docs-card>
+</docs-card-container>

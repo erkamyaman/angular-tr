@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/openng-org/angular-docs-rosetta/tools/site.schema.json",
+  "title": "Language site configuration",
+  "type": "object",
+  "required": [
+    "lang",
+    "name",
+    "englishName",
+    "direction",
+    "domain",
+    "repo",
+    "firebase"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lang": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+      "description": "BCP-47 tag used for <html lang> and hreflang, e.g. fr, pt-BR, zh-Hans"
+    },
+    "name": {
+      "type": "string",
+      "description": "Language name in the language itself"
+    },
+    "englishName": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "ltr",
+        "rtl"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "description": "Host name of the published site, without scheme",
+      "pattern": "^[a-z0-9.-]+$"
+    },
+    "upstreamSite": {
+      "type": "string",
+      "default": "https://angular.dev"
+    },
+    "repo": {
+      "type": "object",
+      "required": [
+        "owner",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string",
+          "default": "main"
+        }
+      }
+    },
+    "firebase": {
+      "type": "object",
+      "required": [
+        "projectId",
+        "target"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Firebase project that hosts the production site"
+        },
+        "target": {
+          "type": "string",
+          "description": "Hosting target name (firebase target:apply hosting <target> <site>)"
+        },
+        "site": {
+          "type": "string",
+          "description": "Hosting site id when it differs from the project id"
+        },
+        "stagingProjectId": {
+          "type": "string"
+        },
+        "stagingTarget": {
+          "type": "string"
+        }
+      }
+    },
+    "search": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Site search. `none` keeps upstream's English index (results in English, links stay on this site); `docsearch` or `algolia` use your own index, see docs/search.md",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "none",
+            "docsearch",
+            "algolia"
+          ],
+          "default": "none"
+        },
+        "appId": {
+          "type": "string",
+          "description": "Algolia application id"
+        },
+        "indexName": {
+          "type": "string",
+          "description": "Index the crawler writes to, e.g. angular_fr"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "Search-only API key (public, ships in the bundle); never an admin or write key"
+        },
+        "crawlerId": {
+          "type": "string",
+          "description": "Crawler UUID from the Crawler dashboard URL; lets `pnpm search-index <lang> --reindex` and the deploy workflow trigger a crawl"
+        }
+      },
+      "if": {
+        "properties": {
+          "provider": {
+            "enum": [
+              "docsearch",
+              "algolia"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "then": {
+        "required": [
+          "appId",
+          "indexName",
+          "apiKey"
+        ]
+      }
+    },
+    "analytics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "`none` ships no analytics at all (tools/adev-patches/020-optional-analytics.patch); `ga4` uses your own Google Analytics 4 measurement id. Upstream's id is never kept",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "none",
+            "ga4"
+          ],
+          "default": "none"
+        },
+        "id": {
+          "type": "string",
+          "description": "GA4 measurement id, G-XXXXXXXXXX",
+          "pattern": "^G-[A-Z0-9]+$"
+        }
+      },
+      "if": {
+        "properties": {
+          "provider": {
+            "const": "ga4"
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "then": {
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "community": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chat": {
+          "type": "string"
+        },
+        "maintainers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "GitHub handles without @"
+        }
+      }
+    },
+    "notice": {
+      "type": "string",
+      "description": "Short community-translation notice shown in the footer, in the language"
+    },
+    "strings": {
+      "type": "object",
+      "description": "UI strings of the language switcher and banners added by tools/adev-patches/010-rosetta-ui.patch, in the language",
+      "additionalProperties": false,
+      "properties": {
+        "readInEnglish": {
+          "type": "string"
+        },
+        "otherLanguages": {
+          "type": "string"
+        },
+        "outdatedBanner": {
+          "type": "string"
+        },
+        "untranslatedBanner": {
+          "type": "string"
+        },
+        "reportIssue": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

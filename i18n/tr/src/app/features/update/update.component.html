@@ -1,0 +1,221 @@
+<!-- source: a9afd70f1499a16d3ab0b951a21ac3850a3ea211 -->
+<main class="page docs-viewer">
+  <h1 class="page-header" tabindex="-1">Güncelleme Rehberi</h1>
+  <div class="wizard">
+    <div>
+      <h2>Güncellemenize uygun seçenekleri belirleyin</h2>
+
+      <h3>Angular sürümleri</h3>
+
+      <div class="adev-version-selector">
+        <span class="adev-template-select">
+          Sürüm
+
+          <button type="button" [cdkMenuTriggerFor]="templatesMenuFrom">
+            <span>{{ from().name }}</span>
+            <docs-icon>expand_more</docs-icon>
+          </button>
+
+          <ng-template #templatesMenuFrom>
+            <ul class="adev-template-dropdown" cdkMenu>
+              @for (version of versions; track $index) {
+                <li>
+                  <button cdkMenuItem type="button" (click)="from.set(version); showUpdatePath()">
+                    <span>{{ version.name }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          </ng-template>
+        </span>
+
+        <span>
+          <span class="adev-template-select">
+            Sürüm
+            <button type="button" [cdkMenuTriggerFor]="templatesMenuTo">
+              <span>{{ to().name }}</span>
+              <docs-icon>expand_more</docs-icon>
+            </button>
+
+            <ng-template #templatesMenuTo>
+              <ul class="adev-template-dropdown" cdkMenu>
+                @for (version of versions; track $index) {
+                  <li>
+                    <button cdkMenuItem type="button" (click)="to.set(version); showUpdatePath()">
+                      <span>{{ version.name }}</span>
+                    </button>
+                  </li>
+                }
+              </ul>
+            </ng-template>
+          </span>
+        </span>
+      </div>
+
+      @if (from().number >= futureVersion || to().number >= futureVersion) {
+        <div class="docs-alert docs-alert-critical">
+          <p>
+            <strong>Uyarı:</strong>
+            Mevcut ana sürümden sonraki sürümler için planlar kesinleşmemiştir ve değişebilir. Bu
+            öneriler planlanan kullanımdan kaldırmalara dayanmaktadır.
+          </p>
+        </div>
+      }
+
+      @if (from().number > to().number) {
+        <div class="docs-alert docs-alert-critical">
+          <p>
+            <strong>Uyarı:</strong>
+            Angular sürümlerini düşürmeyi desteklemiyoruz.
+          </p>
+        </div>
+      }
+
+      @if (to().number - from().number > 150 && from().number > 240) {
+        <div class="docs-alert docs-alert-critical">
+          <p>
+            <strong>Uyarı:</strong>
+            Uygulamanızı yeni sürüme geçirmek için aşağıdaki rehberi takip ettiğinizden emin olun.
+            Aynı anda birden fazla ana sürüm atlamak için
+            <code>ng update</code>
+            kullanamazsınız.
+          </p>
+        </div>
+      }
+
+      <h3>Uygulama karmaşıklığı</h3>
+      <mat-button-toggle-group
+        (change)="level.set($event.value); showUpdatePath()"
+        [value]="level()"
+        style="margin-bottom: 16px"
+      >
+        <mat-button-toggle [value]="1">Temel</mat-button-toggle>
+        <mat-button-toggle [value]="2">Orta</mat-button-toggle>
+        <mat-button-toggle [value]="3">İleri</mat-button-toggle>
+      </mat-button-toggle-group>
+      @if (level() === 1) {
+        <p>Tüm Angular geliştiricileri için bilgileri gösterir.</p>
+      } @else if (level() === 2) {
+        <p>Daha ileri düzey Angular geliştiricilerinin ilgisini çekebilecek bilgileri gösterir.</p>
+      } @else if (level() === 3) {
+        <p>Bu güncelleme hakkındaki tüm bilgileri gösterir.</p>
+      }
+
+      <h3>Diğer bağımlılıklar</h3>
+      @for (option of optionList; track $index) {
+        <div>
+          <mat-checkbox
+            (change)="options[option.id] = $event.checked; showUpdatePath()"
+            [checked]="options[option.id]"
+            >{{ option.name }} {{ option.description }} kullanıyorum</mat-checkbox
+          >
+        </div>
+      }
+
+      @if (from().number < 600) {
+        <h4>Paket Yöneticisi</h4>
+        <mat-button-toggle-group
+          (change)="packageManager = $event.value; showUpdatePath()"
+          [value]="packageManager"
+        >
+          <mat-button-toggle value="npm install">npm</mat-button-toggle>
+          <mat-button-toggle value="yarn add">yarn</mat-button-toggle>
+        </mat-button-toggle-group>
+      }
+
+      <button
+        type="button"
+        (click)="showUpdatePath()"
+        class="docs-primary-btn show-button"
+        [attr.text]="'Nasıl güncelleyeceğimi göster!'"
+      >
+        Nasıl güncelleyeceğimi göster!
+      </button>
+    </div>
+  </div>
+
+  <hr />
+  <!-- ÖNERİLER BÖLÜMÜ -->
+
+  @if (
+    beforeRecommendations.length > 0 ||
+    duringRecommendations.length > 0 ||
+    afterRecommendations.length > 0
+  ) {
+    <div class="recommendations">
+      <h2>{{ title() }}</h2>
+
+      <h3>Güncellemeden önce</h3>
+      @for (r of beforeRecommendations; track $index) {
+        <div class="adev-recommendation-item">
+          <mat-checkbox #checkbox [aria-labelledby]="'adev-before-recommendation-' + $index" />
+          <div
+            class="adev-recommendation-content"
+            [id]="'adev-before-recommendation-' + $index"
+            (click)="toggleRecommendation($event, checkbox)"
+          >
+            <div [innerHTML]="r.renderedStep"></div>
+            <span class="adev-complexity-badge" [class]="'adev-complexity-' + r.level">
+              {{ getComplexityLevelName(r.level) }}
+            </span>
+          </div>
+        </div>
+      } @empty {
+        <div>
+          <em>Bu sürümler arasında geçiş yapmadan önce herhangi bir şey yapmanız gerekmiyor.</em>
+        </div>
+      }
+
+      <h3>Yeni sürüme güncelle</h3>
+      @if (duringRecommendations.length > 0) {
+        <div>
+          <em
+            >Bu değişiklikleri inceleyin ve uygulamanızı güncellemek için gerekli işlemleri
+            yapın.</em
+          >
+        </div>
+      }
+
+      @for (r of duringRecommendations; track $index) {
+        <div class="adev-recommendation-item">
+          <mat-checkbox #checkbox [aria-labelledby]="'adev-during-recommendation-' + $index" />
+          <div
+            class="adev-recommendation-content"
+            [id]="'adev-during-recommendation-' + $index"
+            (click)="toggleRecommendation($event, checkbox)"
+          >
+            <div [innerHTML]="r.renderedStep"></div>
+            <span class="adev-complexity-badge" [class]="'adev-complexity-' + r.level">
+              {{ getComplexityLevelName(r.level) }}
+            </span>
+          </div>
+        </div>
+      } @empty {
+        <div>
+          <em>Bu sürümler arasında geçiş için herhangi bir öneri bulunmuyor.</em>
+        </div>
+      }
+
+      <h3>Güncelledikten sonra</h3>
+      @for (r of afterRecommendations; track $index) {
+        <div class="adev-recommendation-item">
+          <mat-checkbox #checkbox [aria-labelledby]="'adev-after-recommendation-' + $index" />
+          <div
+            class="adev-recommendation-content"
+            [id]="'adev-after-recommendation-' + $index"
+            (click)="toggleRecommendation($event, checkbox)"
+          >
+            <div [innerHTML]="r.renderedStep"></div>
+            <span class="adev-complexity-badge" [class]="'adev-complexity-' + r.level">
+              {{ getComplexityLevelName(r.level) }}
+            </span>
+          </div>
+        </div>
+      } @empty {
+        <div>
+          <em>Bu sürümler arasında geçiş yaptıktan sonra herhangi bir şey yapmanız gerekmiyor.</em>
+        </div>
+      }
+    </div>
+  }
+</main>

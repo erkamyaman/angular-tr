@@ -1,0 +1,40 @@
+name: Template cleanup
+
+# Runs once in a repository created from the template: removes the template-only material
+# (the example language, the canary workflow, this workflow) through a pull request.
+# `pnpm create-language` offers to do the same locally; whichever comes first wins.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cleanup:
+    if: github.repository != 'openng-org/angular-docs-rosetta'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: detect
+        run: |
+          if [ -d i18n/_example ] || [ -f .github/workflows/template-canary.yml ]; then echo "needed=true" >> "$GITHUB_OUTPUT"; else echo "needed=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.detect.outputs.needed == 'true'
+        run: |
+          git rm -rq --ignore-unmatch i18n/_example .github/workflows/template-canary.yml .github/workflows/template-cleanup.yml
+          sed -i 's#\*\*Use this template\*\*#the template#' README.md || true
+      - if: steps.detect.outputs.needed == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: chore/template-cleanup
+          delete-branch: true
+          commit-message: 'chore: remove template-only files'
+          title: 'chore: remove template-only files'
+          body: |
+            This repository was created from [angular-docs-rosetta](https://github.com/openng-org/angular-docs-rosetta).
+            This PR removes the example language and the template's own workflows. Merge it after running `pnpm create-language <lang>`.

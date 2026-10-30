@@ -1,39 +1,37 @@
----
-trigger: always_on
----
+# Guide for AI agents working in this repository
 
-This is the source code for the Angular framework. This guide outlines standard practices for AI agents working in this repository.
+This repository translates the Angular documentation site (angular.dev, the `adev/` app of `angular/angular`) into one or more languages. Upstream lives in the `origin/` submodule and is **read-only**: never edit a file under `origin/`.
 
-## Environment
+## Where things go
 
-- Use `pnpm` for package management.
-- Use `pnpm bazel test //target` to run tests.
+- `i18n/<lang>/src/**` mirrors `origin/adev/src/**`. A translated file `x.md` always has a sibling snapshot `x.en.md` (the English it was translated from) and starts with `<!-- source: <hash> -->` where `<hash>` is the git blob hash of that snapshot (`git hash-object x.en.md`). Same rule for app templates (`x.html` + `x.en.html`, marker `<!-- source: … -->`) and TypeScript overlays (`x.ts` + `x.en.ts`, marker `// source: …`).
+- `i18n/<lang>/LANGUAGE.md` holds the language rules (front matter is machine-checked), `glossary.json` the terminology (its `forbidden` renderings fail `pnpm check`), `dictionaries/*.json` the UI strings. Read them before translating anything.
+- JSON overlays cannot carry a comment: their marker lives in `<file>.source` next to them (`pnpm status --init` and `--mark` handle it).
+- `tools/` holds the scripts; `tools/adev-patches/` the code patches applied at build time; `.agents/skills/` the skills.
 
-## Key Documentation
+## Skills
 
-- [Building and Testing](contributing-docs/building-and-testing-angular.md): definitive guide for running targets.
-- [Coding Standards](contributing-docs/coding-standards.md): style guide for TypeScript and other files.
-- [Commit Guidelines](contributing-docs/commit-message-guidelines.md): format for commit messages and PR titles.
+- `.agents/skills/adev-translation/SKILL.md`: translate a new page, update an outdated page from its English diff, review a translation.
+- `.agents/skills/adev-i18n-maintenance/SKILL.md`: sync with upstream (`pnpm update-origin`), triage the queue, build, deploy, switch release branch, refresh a patch.
 
-## Testing
+## Commands you will use
 
-- Create standalone component/directives by default, DO NOT introduce new NgModules/non-standalone components even if sibling tests use them.
-- Prefer current best practices over existing authoring styles in the same file
-- Test components usually do not need selectors unless they are used in templates
-- Components are `OnPush` by default, prefer signals for test component state
-- **Zoneless & Async-First:** Assume a zoneless environment where state changes schedule updates asynchronously.
-  - **Do NOT** use `fixture.detectChanges()` to manually trigger updates.
-  - **ALWAYS** use the "Act, Wait, Assert" pattern:
-    1. **Act:** Update state or perform an action.
-    2. **Wait:** `await fixture.whenStable()` to allow the framework to process the scheduled update.
-    3. **Assert:** Verify the output.
-- To keep tests fast, minimize the need for waiting:
-  - Use `useAutoTick()` (from `packages/private/testing/src/utils.ts`) to fast-forward time via the mock clock.
-- When waiting is necessary, use real async tests (`it('...', async () => { ... })`) along with:
-  - `await timeout(ms)` (from `packages/private/testing/src/utils.ts`) to wait a specific number of milliseconds.
-  - `await fixture.whenStable()` to wait for framework stability.
-  - Use the `waitFor` helper function exposed by `@angular/private/testing`
+```bash
+pnpm bootstrap                     # once per clone: shallow fetch of the pinned upstream into origin/ (status, check and --init read it)
+pnpm status <lang> [--md|--json]   # what is outdated / untranslated / removed, with diff classes
+pnpm status <lang> --init <rel>    # start a page: snapshot + marked copy (rel is relative to adev/src)
+pnpm status <lang> --diff <rel>    # the English diff an outdated page needs
+pnpm status <lang> --mark <rel>    # marker -> current snapshot, once the hunks are translated
+pnpm check <lang> [paths…]         # must pass before you open a PR (structure, anchors, glossary via textlint, typography)
+pnpm update-origin latest          # maintainers only: move the upstream pin
+pnpm build <lang>                  # full production build (Node 26 like everything else; Bazel and pnpm pick upstream's own versions)
+```
 
-## Pull Requests
+## Rules that are not negotiable
 
-- Use the `gh` CLI (GitHub CLI) for creating and managing pull requests.
+1. Never edit `origin/`, never rewrite `main` history, never commit `build/`.
+2. A translated file must keep the line count, headings, `docs-*` elements, code blocks, links and alert keywords (`NOTE: `, `TIP: `…, English with a plain colon) of its snapshot; every translated heading carries `{#english-anchor}`.
+3. Only change the passages the English diff touches; unchanged translated prose stays byte-identical.
+4. Update the `source` marker to the new snapshot hash in the same change.
+5. Run `pnpm check` and report what you translated, what you left in English (deferred) and any glossary gap.
+6. Stop and ask a human when a patch fails to apply, a dictionary pair no longer matches, upstream changed `adev/shared-docs/pipeline` or `adev/BUILD.bazel`, or a page would ship with mixed languages outside the deferred list.

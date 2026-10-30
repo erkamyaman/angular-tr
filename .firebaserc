@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "angular-tr"
+  },
+  "targets": {
+    "angular-tr": {
+      "hosting": {
+        "docs-tr": [
+          "angular-tr"
+        ]
+      }
+    }
+  }
+}

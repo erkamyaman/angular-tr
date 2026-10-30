@@ -1,0 +1,39 @@
+name: Translation request / claim
+description: Claim a page to translate, or ask for one to be translated.
+labels: [type:translation]
+body:
+  - type: input
+    id: lang
+    attributes:
+      label: Language
+      placeholder: fr
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page (path relative to adev/src)
+      placeholder: content/guide/signals/overview.md
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - New page (untranslated)
+        - Outdated page (sync)
+        - Deferred section from a previous PR
+    validations:
+      required: true
+  - type: checkboxes
+    id: claim
+    attributes:
+      label: Claim
+      options:
+        - label: I am translating this page myself (assign me)
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Terminology questions, sections to defer, anything a reviewer should know.

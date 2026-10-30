@@ -1,0 +1,9 @@
+# Code owners. `pnpm create-language` appends a line per language.
+# Tooling, skills and workflows are reviewed by the repository maintainers.
+/tools/             @erkamyaman/angular-tr-tr
+/.agents/           @erkamyaman/angular-tr-tr
+/.github/           @erkamyaman/angular-tr-tr
+/docs/              @erkamyaman/angular-tr-tr
+# languages:start
+/i18n/tr/   @erkamyaman/angular-tr-tr
+# languages:end

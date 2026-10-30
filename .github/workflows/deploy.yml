@@ -1,0 +1,121 @@
+name: Deploy
+
+# Builds every configured language on push to main (and nightly, to pick up upstream-only
+# changes in the pinned commit's dependencies) and deploys each to its Firebase Hosting target.
+#
+# Required secret: FIREBASE_SERVICE_ACCOUNT - JSON key of a service account with the
+# "Firebase Hosting Admin" role on the project(s) named in i18n/*/site.json.
+# Optional secrets: ALGOLIA_CRAWLER_USER_ID and ALGOLIA_CRAWLER_API_KEY (Crawler dashboard >
+# Settings) to re-crawl the site after each deploy; see docs/search.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!**/*.md'
+      - 'i18n/**'
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      lang:
+        description: 'Language to deploy (empty = all)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  languages:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.langs.outputs.matrix }}
+      count: ${{ steps.langs.outputs.count }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+      - run: pnpm install --frozen-lockfile
+      - id: langs
+        env:
+          ONLY: ${{ github.event.inputs.lang }}
+        run: |
+          if [ -n "$ONLY" ]; then
+            echo "matrix={\"include\":[{\"lang\":\"$ONLY\"}]}" >> "$GITHUB_OUTPUT"; echo "count=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "matrix=$(node tools/cli.mjs languages --matrix)" >> "$GITHUB_OUTPUT"
+            echo "count=$(node tools/cli.mjs languages --json | node -e 'process.stdin.on("data",d=>console.log(JSON.parse(d).length))')" >> "$GITHUB_OUTPUT"
+          fi
+
+  build-deploy:
+    name: ${{ matrix.lang }}
+    needs: languages
+    if: needs.languages.outputs.count != '0' && github.repository != 'openng-org/angular-docs-rosetta'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.languages.outputs.matrix) }}
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm bootstrap
+      - uses: bazel-contrib/setup-bazel@8cb04a772ab4c1eb984e9c1b493a182e96c5e425 # 0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: build-${{ matrix.lang }}
+          repository-cache: true
+          bazelrc: |
+            build --local_resources=memory=4096
+            build --local_resources=cpu=2
+            build --jobs=1
+            build --discard_analysis_cache
+            build --nokeep_state_after_build
+            build --sandbox_default_allow_network
+      - name: Build
+        run: pnpm build ${{ matrix.lang }}
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Read Firebase target
+        id: fb
+        run: |
+          node -e '
+            const s = require("./i18n/${{ matrix.lang }}/site.json");
+            const out = `project=${s.firebase.projectId}\ntarget=${s.firebase.target}\n`;
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, out);
+          '
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then echo "::error::FIREBASE_SERVICE_ACCOUNT secret is not set"; exit 1; fi
+          echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx --yes firebase-tools@14 deploy --only "hosting:${{ steps.fb.outputs.target }}" --project "${{ steps.fb.outputs.project }}" --non-interactive --message "${{ github.sha }}"
+          rm -f "$RUNNER_TEMP/sa.json"
+      # Re-crawl the site so search reflects this deploy. A no-op until site.json has
+      # search.crawlerId and the two Crawler secrets exist (docs/search.md).
+      - name: Refresh the search index
+        env:
+          ALGOLIA_CRAWLER_USER_ID: ${{ secrets.ALGOLIA_CRAWLER_USER_ID }}
+          ALGOLIA_CRAWLER_API_KEY: ${{ secrets.ALGOLIA_CRAWLER_API_KEY }}
+        run: pnpm search-index ${{ matrix.lang }} --reindex

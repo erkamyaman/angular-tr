@@ -1,0 +1,36 @@
+name: Template sync
+
+# Repositories created from the template have no git link back to it. This workflow opens a PR
+# when the template's tooling, skills, workflows or docs change. Translations (i18n/**) and
+# repository-specific files are never touched (see .templatesyncignore).
+
+on:
+  schedule:
+    - cron: '37 5 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    if: github.repository != 'openng-org/angular-docs-rosetta'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: AndreasAugustin/actions-template-sync@6e1d0089686f8940604fc15baae62367bf6ee860 # v2.6.0
+        with:
+          source_repo_path: openng-org/angular-docs-rosetta
+          upstream_branch: main
+          # The default token may not change files under .github/workflows (the push is refused),
+          # and the template's updates usually touch them: SYNC_TOKEN is a fine-grained PAT with
+          # contents, pull requests and workflows write (the same secret the sync-upstream workflow uses).
+          target_gh_token: ${{ secrets.SYNC_TOKEN || github.token }}
+          pr_title: 'chore: sync tooling with angular-docs-rosetta'
+          # A label nothing else uses: is_pr_cleanup closes every open PR carrying it.
+          pr_labels: 'type:template-sync'
+          pr_commit_msg: 'chore: sync tooling with angular-docs-rosetta'
+          is_pr_cleanup: true

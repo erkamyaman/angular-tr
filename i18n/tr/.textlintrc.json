@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "prh": {
+      "rulePaths": [
+        "./prh.yml"
+      ],
+      "checkLink": true,
+      "checkEmphasis": true,
+      "checkBlockQuote": true
+    }
+  }
+}

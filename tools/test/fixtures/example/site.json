@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../site.schema.json",
+  "lang": "fr",
+  "name": "Français (exemple)",
+  "englishName": "French (template example)",
+  "direction": "ltr",
+  "domain": "example.invalid",
+  "upstreamSite": "https://angular.dev",
+  "repo": {
+    "owner": "openng-org",
+    "name": "angular-docs-rosetta",
+    "branch": "main"
+  },
+  "firebase": {
+    "projectId": "rosetta-example",
+    "target": "docs-example"
+  },
+  "search": {
+    "provider": "none"
+  },
+  "analytics": {
+    "provider": "none"
+  },
+  "community": {
+    "chat": "",
+    "maintainers": []
+  },
+  "notice": "Traduction communautaire de angular.dev, non affiliée à Google.",
+  "strings": {
+    "readInEnglish": "Lire cette page en anglais",
+    "otherLanguages": "Autres langues",
+    "outdatedBanner": "Cette traduction est en retard sur la page anglaise ; certains passages peuvent être obsolètes.",
+    "untranslatedBanner": "Cette page n'est pas encore traduite ; elle est affichée en anglais.",
+    "reportIssue": "Signaler un problème de traduction"
+  }
+}

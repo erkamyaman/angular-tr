@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@angular/compiler": "workspace:*",
-    "@angular/compiler-cli": "workspace:*"
-  }
-}

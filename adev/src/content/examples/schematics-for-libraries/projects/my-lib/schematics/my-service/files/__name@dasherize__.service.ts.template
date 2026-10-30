@@ -1,8 +1,0 @@
-// #docregion template
-import { Service } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-@Service()
-export class <%= classify(name) %>Service {
-  private http = inject(HttpClient);
-}

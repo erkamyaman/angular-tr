@@ -1,9 +1,22 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Every text file is LF in the working tree on every platform: the source markers hash the
+# English snapshots as git stores them, and a CRLF checkout would change every hash and show
+# every page as outdated. (The tooling also normalizes CRLF before hashing, as a second guard.)
+* text=auto eol=lf
 
-# JS and TS files must always use LF for tools to work
-*.js eol=lf
-*.ts eol=lf
+# Patches are applied byte for byte.
+*.patch -text
 
-# Preserve verbatim line endings for NGP golden test fixtures
-packages/compiler-cli/preprocessor/test/golden/** -text
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+*.zip binary

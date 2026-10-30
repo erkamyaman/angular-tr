@@ -1,0 +1,17 @@
+diff --git a/adev/src/app/core/services/analytics/analytics.service.ts b/adev/src/app/core/services/analytics/analytics.service.ts
+index f4a80c8..9144b2d 100644
+--- a/adev/src/app/core/services/analytics/analytics.service.ts
++++ b/adev/src/app/core/services/analytics/analytics.service.ts
+@@ -34,7 +34,11 @@ export class AnalyticsService {
+ 
+   constructor() {
+     if (this.isBrowser) {
+-      this._installGlobalSiteTag();
++      // rosetta: a community site ships no analytics unless site.json names its own GA4 id
++      // (tools/lib/search.mjs writes it into environment.ts; empty means none).
++      if (this.environment.googleAnalyticsId) {
++        this._installGlobalSiteTag();
++      }
+       this._installWindowErrorHandler();
+     }
+   }

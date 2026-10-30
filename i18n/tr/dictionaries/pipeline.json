@@ -1,0 +1,92 @@
+[
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "NOTE = 'NOTE',",
+    "replace": "NOTE = 'Not',",
+    "note": "label of `NOTE:` alerts (translate the quoted text only; the keyword in Markdown stays NOTE)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "TIP = 'TIP',",
+    "replace": "TIP = 'İpucu',",
+    "note": "label of `TIP:` alerts (translate the quoted text only; the keyword in Markdown stays TIP)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "TODO = 'TODO',",
+    "replace": "TODO = 'Yapılacak',",
+    "note": "label of `TODO:` alerts (translate the quoted text only; the keyword in Markdown stays TODO)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "QUESTION = 'QUESTION',",
+    "replace": "QUESTION = 'Soru',",
+    "note": "label of `QUESTION:` alerts (translate the quoted text only; the keyword in Markdown stays QUESTION)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "SUMMARY = 'SUMMARY',",
+    "replace": "SUMMARY = 'Özet',",
+    "note": "label of `SUMMARY:` alerts (translate the quoted text only; the keyword in Markdown stays SUMMARY)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "TLDR = 'TL;DR',",
+    "replace": "TLDR = 'Özetle',",
+    "note": "label of `TLDR:` alerts (translate the quoted text only; the keyword in Markdown stays TLDR)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "CRITICAL = 'CRITICAL',",
+    "replace": "CRITICAL = 'Kritik',",
+    "note": "label of `CRITICAL:` alerts (translate the quoted text only; the keyword in Markdown stays CRITICAL)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "IMPORTANT = 'IMPORTANT',",
+    "replace": "IMPORTANT = 'Önemli',",
+    "note": "label of `IMPORTANT:` alerts (translate the quoted text only; the keyword in Markdown stays IMPORTANT)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-alert.mts",
+    "find": "HELPFUL = 'HELPFUL',",
+    "replace": "HELPFUL = 'Faydalı',",
+    "note": "label of `HELPFUL:` alerts (translate the quoted text only; the keyword in Markdown stays HELPFUL)"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-card/docs-card.mts",
+    "find": ": 'Learn more'}",
+    "replace": ": 'Daha fazla bilgi'}",
+    "note": "link text of a docs-card that has no link text of its own"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-video.mts",
+    "find": "'Play video'",
+    "replace": "'Videoyu oynat'",
+    "note": "accessible label of the video play button"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-video.mts",
+    "find": "`Play video: ${",
+    "replace": "`Videoyu oynat: ${",
+    "note": "same, followed by the video title; keep the `${`"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/extensions/docs-code/format/index.mts",
+    "find": "? 'Prefer' : 'Avoid'",
+    "replace": "? 'Tercih edin' : 'Kaçının'",
+    "note": "headers of prefer/avoid code comparisons"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/transformations/heading.mts",
+    "find": "title=\"Edit this page\" aria-label=\"Edit this page\"",
+    "replace": "title=\"Bu sayfayı düzenle\" aria-label=\"Bu sayfayı düzenle\"",
+    "note": "tooltip and accessible label of the edit icon next to page titles"
+  },
+  {
+    "file": "shared-docs/pipeline/shared/marked/transformations/heading.mts",
+    "find": "aria-label=\"Link to ${",
+    "replace": "aria-label=\"Bağlantı: ${",
+    "note": "accessible label of heading anchors, followed by the heading; keep the `${`"
+  }
+]

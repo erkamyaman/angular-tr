@@ -1,8 +1,0 @@
-import * as i0 from "@angular/core";
-export declare class TestComp {
-    sigA: import("@angular/core").WritableSignal<number>;
-    sigB: import("@angular/core").WritableSignal<number>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TestComp, "ng-component", never, {}, {}, never, never, true, never>;
-}
-

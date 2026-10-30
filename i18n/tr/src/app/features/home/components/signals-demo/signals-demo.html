@@ -1,0 +1,52 @@
+<!-- source: 19575c5c4debe72574577b807a75a808bc38609f -->
+<div class="two-column-step">
+  <div class="step-description">
+    <div class="header">Sinyaller: İnce Taneli Reaktivite</div>
+    <div class="description">
+      Listeyi filtrelemek için arama kutusuna yazın. Bir
+      <code>computed</code> sinyali, <code>searchTerm</code> sinyali her değiştiğinde
+      <code>filteredItems</code>'ı otomatik olarak yeniden hesaplar.
+    </div>
+
+    <div class="demo-display">
+      <input
+        [value]="searchTerm()"
+        (input)="onSearch($event.target.value)"
+        placeholder="Meyve ara..."
+        class="demo-input"
+      />
+      <div class="demo-list">
+        @for (item of filteredItems(); track item) {
+          <div class="demo-item">{{ item }}</div>
+        }
+      </div>
+    </div>
+
+    <button
+      class="docs-primary-btn"
+      [attr.text]="'Sinyaller hakkında daha fazla bilgi edinin'"
+      routerLink="/guide/signals"
+    >
+      Sinyaller hakkında daha fazla bilgi edinin
+    </button>
+  </div>
+
+  <div class="step-code">
+    <div class="code-block">
+      <div class="code-header">
+        <span>component.ts</span>
+        <span class="copy-icon"></span>
+      </div>
+
+      <adev-code-block [code]="tsExample" />
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span>component.html</span>
+        <span class="copy-icon"></span>
+      </div>
+      <adev-code-block [code]="htmlExample" language="angular-html" />
+    </div>
+  </div>
+</div>

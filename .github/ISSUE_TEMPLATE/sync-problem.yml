@@ -1,0 +1,30 @@
+name: Sync or tooling problem
+description: update-origin, check, build or deploy misbehaves; a patch or an index.html pair no longer applies.
+labels: [type:sync]
+body:
+  - type: input
+    id: pin
+    attributes:
+      label: Upstream pin
+      description: Output of `git -C origin rev-parse HEAD`
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - update-origin / snapshots
+        - status / check
+        - dictionaries
+        - patches
+        - build (Bazel)
+        - deploy (Firebase)
+        - workflows

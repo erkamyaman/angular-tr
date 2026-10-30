@@ -1,0 +1,36 @@
+{
+  "$schema": "../../tools/site.schema.json",
+  "lang": "tr",
+  "name": "Türkçe",
+  "englishName": "Turkish",
+  "direction": "ltr",
+  "domain": "angular-docs.tr",
+  "upstreamSite": "https://angular.dev",
+  "repo": {
+    "owner": "erkamyaman",
+    "name": "angular-tr",
+    "branch": "main"
+  },
+  "firebase": {
+    "projectId": "angular-tr",
+    "target": "docs-tr"
+  },
+  "search": {
+    "provider": "none"
+  },
+  "analytics": {
+    "provider": "none"
+  },
+  "community": {
+    "chat": "",
+    "maintainers": []
+  },
+  "notice": "angular.dev'in topluluk çevirisidir, Google ile bağlantılı değildir.",
+  "strings": {
+    "readInEnglish": "Bu sayfayı İngilizce okuyun",
+    "otherLanguages": "Diğer diller",
+    "outdatedBanner": "Bu çeviri İngilizce sayfanın gerisinde kalmıştır; bazı bölümler güncel olmayabilir.",
+    "untranslatedBanner": "Bu sayfa henüz çevrilmemiştir; İngilizce olarak gösterilmektedir.",
+    "reportIssue": "Çeviri sorunu bildirin"
+  }
+}

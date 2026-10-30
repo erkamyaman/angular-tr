@@ -1,0 +1,11 @@
+<!-- source: b2ed207e3be11beabd60efd1eb8ae6c6f63b057d -->
+@if (docContent(); as docContent) {
+  <main
+    docsViewer
+    [docContent]="docContent.contents"
+    [hasToc]="true"
+    (contentLoaded)="onContentLoaded()"
+  ></main>
+}
+
+<div id="jump-msg" class="cdk-visually-hidden">Detaylara atla</div>

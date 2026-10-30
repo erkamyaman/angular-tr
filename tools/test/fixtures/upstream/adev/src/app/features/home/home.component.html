@@ -1,0 +1,18 @@
+<div class="adev-home">
+  <h1>The web development framework for building modern apps.</h1>
+  @if (isUwu) {
+    <img class="uwu-logo" src="assets/images/uwu.png" alt="Angular UwU logo" />
+  } @else {
+    <a class="docs-primary-btn" routerLink="/overview" aria-label="Get started with Angular">
+      <span>Get Started</span>
+    </a>
+  }
+  @for (card of cards; track card.title) {
+    <article>{{ card.title }}</article>
+  }
+  <button type="button" (click)="copy()" title="Copy">
+    <docs-icon>content_copy</docs-icon>
+  </button>
+  <input placeholder="Search docs" aria-label="Search" />
+  <pre>ng new my-app</pre>
+</div>

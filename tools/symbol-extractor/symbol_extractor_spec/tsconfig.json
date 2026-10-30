@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "module": "ESNext",
-    "target": "ES2022",
-    "sourceMap": true,
-    "declaration": true
-  }
-}

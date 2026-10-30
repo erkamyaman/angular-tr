@@ -1,0 +1,31 @@
+<!-- source: cbec93488a42af82ba0cbea263ce11bbe52d49eb -->
+<div class="adev-preview-error docs-light-mode docs-mini-scroll-track">
+  <img
+    class="adev-preview-error-angie"
+    src="assets/images/angie/error.svg"
+    alt=""
+    aria-hidden="true"
+  />
+  @if (error()?.type === ErrorType.UNSUPPORTED_BROWSER_ENVIRONMENT) {
+    @if (isIos) {
+      <p>Tarayıcınızda kod yazabilmek için angular.dev'i masaüstünde açın.</p>
+    }
+  } @else if (error()?.type === ErrorType.COOKIES || error()?.type === ErrorType.UNKNOWN) {
+    <p>
+      Eğitim uygulamasını başlatamadık. Lütfen bu site için üçüncü taraf çerezlerinin etkin
+      olduğundan emin olun.
+    </p>
+  } @else if (error()?.type === ErrorType.OUT_OF_MEMORY) {
+    <p>
+      Tarayıcınızın belleği yetersiz olduğu için eğitim uygulamasını başlatamadık. Bellek boşaltmak
+      için diğer sekme veya pencerelerdeki angular.dev eğitimlerini kapatın ve sayfayı yenileyin.
+    </p>
+  }
+
+  @if (error()?.message) {
+    <small>
+      Hata mesajı:
+      <code>{{ error()!.message }}</code>
+    </small>
+  }
+</div>

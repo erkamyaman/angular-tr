@@ -1,0 +1,224 @@
+<!-- source: 1cd3e8ae3a57ae3c523d1cbce9cbf4dda5363a3f -->
+# Menubar
+
+<docs-pill-row>
+  <docs-pill href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/" title="Menubar ARIA deseni"/>
+  <docs-pill href="/api/aria/menu/MenuBar" title="Menubar API Referansı"/>
+</docs-pill-row>
+
+## Genel Bakış {#overview}
+
+Menü çubuğu, uygulama menülerine kalıcı erişim sağlayan yatay bir navigasyon çubuğudur. Menü çubukları komutları Dosya, Düzenle ve Görüntüle gibi mantıksal kategorilere düzenleyerek kullanıcıların klavye veya fare etkileşimi aracılığıyla uygulama özelliklerini keşfetmesine ve çalıştırmasına yardımcı olur.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+## Kullanım {#usage}
+
+Menü çubukları, uygulama komutlarını kalıcı ve keşfedilebilir navigasyona düzenlemek için iyi çalışır.
+
+**Menü çubuğu kullanın:**
+
+- Uygulama komut çubukları oluştururken (Dosya, Düzenle, Görüntüle, Ekle, Biçimlendir gibi)
+- Arayüz genelinde görünen kalıcı navigasyon oluştururken
+- Komutları mantıksal üst düzey kategorilere düzenlerken
+- Klavye destekli yatay menü navigasyonuna ihtiyaç duyulduğunda
+- Masaüstü tarzı uygulama arayüzleri oluştururken
+
+**Menü çubuğundan kaçının:**
+
+- Bireysel eylemler için açılır menüler oluştururken (bunun yerine [tetikleyicili Menu](guide/aria/menu) kullanın)
+- Bağlam menüleri oluştururken ([Menu](guide/aria/menu) rehber kalıbını kullanın)
+- Basit bağımsız eylem listeleri için (bunun yerine [Menu](guide/aria/menu) kullanın)
+- Yatay alanın sınırlı olduğu mobil arayüzlerde
+- Navigasyon bir kenar çubuğu veya başlık navigasyon kalıbına ait olduğunda
+
+## Özellikler {#features}
+
+- **Yatay navigasyon** - Sol/Sağ ok tuşları üst düzey kategoriler arasında hareket eder
+- **Kalıcı görünürlük** - Her zaman görünür, modal veya kapatılabilir değil
+- **Üzerine gelindiğinde açma** - İlk klavye veya tıklama etkileşiminden sonra alt menüler üzerine gelindiğinde açılır
+- **İç içe alt menüler** - Birden fazla menü derinlik seviyesini destekler
+- **Klavye navigasyonu** - Ok tuşları, Enter/Boşluk, Escape ve yazarak arama
+- **Devre dışı durumlar** - Tüm menü çubuğunu veya bireysel öğeleri devre dışı bırakın
+- **RTL desteği** - Otomatik sağdan sola dil navigasyonu
+
+## Örnekler {#examples}
+
+### Temel menü çubuğu {#basic-menubar}
+
+Bir menü çubuğu, üst düzey kategorilere düzenlenmiş uygulama komutlarına kalıcı erişim sağlar. Kullanıcılar kategoriler arasında Sol/Sağ ok tuşlarıyla gezinir ve menüleri Enter veya Aşağı ok tuşuyla açar.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/basic/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+Dosya, Düzenle ve Görüntüle arasında hareket etmek için Sağ ok tuşuna basın. Bir menüyü açmak ve alt menü öğeleri arasında Yukarı/Aşağı ok tuşlarıyla gezinmek için Enter veya Aşağı ok tuşuna basın.
+
+### Devre dışı menü çubuğu öğeleri {#disabled-menubar-items}
+
+Etkileşimi engellemek için belirli menü öğelerini veya tüm menü çubuğunu devre dışı bırakın. Devre dışı öğelerin klavye navigasyonu sırasında klavye odağı alıp alamayacağını `softDisabled` girişi ile kontrol edin.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/disabled/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/disabled/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/disabled/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/disabled/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/disabled/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/disabled/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/disabled/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/disabled/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/disabled/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/disabled/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/disabled/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/disabled/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+Menü çubuğunda `[softDisabled]="true"` olduğunda, devre dışı öğeler odak alabilir ancak etkinleştirilemez. `[softDisabled]="false"` olduğunda, devre dışı öğeler klavye navigasyonu sırasında atlanır.
+
+### RTL desteği {#rtl-support}
+
+Menü çubukları sağdan sola (RTL) dillere otomatik olarak uyum sağlar. Ok tuşu navigasyonu yönünü tersine çevirir ve alt menüler sol tarafa konumlanır.
+
+<docs-tab-group>
+  <docs-tab label="Basic">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/rtl/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/rtl/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/rtl/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/rtl/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Material">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/rtl/material/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/rtl/material/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/rtl/material/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/rtl/material/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+
+  <docs-tab label="Retro">
+    <docs-code-multifile preview hideCode path="adev/src/content/examples/aria/menubar/src/rtl/retro/app/app.ts">
+      <docs-code header="app.ts" path="adev/src/content/examples/aria/menubar/src/rtl/retro/app/app.ts"/>
+      <docs-code header="app.html" path="adev/src/content/examples/aria/menubar/src/rtl/retro/app/app.html"/>
+      <docs-code header="app.css" path="adev/src/content/examples/aria/menubar/src/rtl/retro/app/app.css"/>
+    </docs-code-multifile>
+  </docs-tab>
+</docs-tab-group>
+
+`dir="rtl"` niteliği RTL modunu etkinleştirir. Sol ok sağa, sağ ok sola hareket eder ve RTL dil kullanıcıları için doğal navigasyonu korur.
+
+## Test etme {#testing}
+
+Angular Aria, menü çubuğu bileşenlerini test etmek için bileşen harness'leri sağlar.
+İşte harness'lerin bir bileşen testinde nasıl kullanılacağına dair bir örnek:
+
+```typescript
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {MenuHarness} from '@angular/aria/menu/testing';
+import {MyMenubarComponent} from './my-menubar'; // Sizin bileşeniniz
+
+describe('MyMenubarComponent', () => {
+  let fixture: ComponentFixture<MyMenubarComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [MyMenubarComponent],
+    });
+
+    fixture = TestBed.createComponent(MyMenubarComponent);
+    await fixture.whenStable();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should interact with menubar items', async () => {
+    // Menü çubuğu harness'ini yükle ('[ngMenuBar]' seçicisine sahip bir MenuHarness'tir)
+    const menubar = await loader.getHarness(MenuHarness.with({selector: '[ngMenuBar]'}));
+
+    // Menü çubukları kalıcıdır ve her zaman "açık" durumdadır
+    expect(await menubar.isOpen()).toBe(true);
+    expect(await menubar.isMenuBar()).toBe(true);
+
+    // Üst düzey öğeleri al
+    const items = await menubar.getItems();
+    expect(items.length).toBe(2);
+    expect(await items[0].getText()).toBe('File');
+    expect(await items[1].getText()).toBe('Edit');
+
+    // Açılır menüsünü açmak için bir öğeye tıkla
+    await items[0].click();
+
+    const fileMenu = await items[0].getSubmenu();
+    expect(fileMenu).toBeTruthy();
+    expect(await fileMenu!.isOpen()).toBe(true);
+  });
+});
+```
+
+## API referansı {#api-reference}
+
+Ayrıntılı API belgeleri için aşağıdaki API referanslarını inceleyin:
+
+- [`MenuBar`](/api/aria/menu/MenuBar)
+- [`MenuItem`](/api/aria/menu/MenuItem)
+- [`MenuTrigger`](/api/aria/menu/MenuTrigger)
+- [`Menu`](/api/aria/menu/Menu)

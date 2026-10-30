@@ -1,0 +1,80 @@
+<!-- source: c2c4dc6cc21f718607222908b68042742200f22c -->
+# Uygulamanıza arama özelliği ekleyin
+
+Bu eğitim dersi, Angular uygulamanıza arama işlevselliğinin nasıl ekleneceğini gösterir.
+
+Uygulama, kullanıcıların uygulamanız tarafından sağlanan veriler arasında arama yapmasını ve yalnızca girilen terimle eşleşen sonuçları görüntülemesini sağlayacaktır.
+
+<docs-video src="https://www.youtube.com/embed/5K10oYJ5Y-E?si=TiuNKx_teR9baO7k&amp;start=457"/>
+
+IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriyoruz.
+
+## Neler öğreneceksiniz {#what-youll-learn}
+
+- Uygulamanız, eşleşen konut konumlarını aramak için bir formdaki verileri kullanacak
+- Uygulamanız yalnızca eşleşen konut konumlarını görüntüleyecek
+
+<docs-workflow>
+
+<docs-step title="Home bileşeninin özelliklerini güncelleyin {#update-the-home-component-properties}">
+Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri depolamak üzere `Home` sınıfını güncelleyeceksiniz.
+
+1. `src/app/home/home.ts` dosyasında, sınıfa `filteredLocationList` adında yeni bir özellik ekleyin.
+
+   <docs-code header="home.ts içine filteredLocationList özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[28]"/>
+
+   `filteredLocationList`, kullanıcı tarafından girilen arama kriterlerine uyan değerleri tutar.
+
+1. `filteredLocationList`, sayfa yüklendiğinde varsayılan olarak tüm konut konumu değerlerini içermelidir. `Home` bileşeninin `constructor`'ını değeri ayarlamak için güncelleyin.
+
+   <docs-code header="filteredLocationList değerini ayarlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[29,32]"/>
+
+</docs-step>
+
+<docs-step title="Home bileşeninin şablonunu güncelleyin {#update-the-home-component-template}">
+`Home` bileşeninde, kullanıcıdan girdi almak için kullanacağınız bir girdi alanı zaten var. Bu dize metin, sonuçları filtrelemek için kullanılacaktır.
+
+1. `Home` şablonunu, `input` öğesinde `#filter` adında bir şablon değişkeni içerecek şekilde güncelleyin.
+
+   <docs-code language="angular-ts" header="home.ts içinde input HTML öğesine bir şablon değişkeni ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[12]"/>
+   Bu örnek, `input` öğesine değeri olarak erişmek için bir [şablon referans değişkeni](guide/templates) kullanır.
+
+1. Ardından, "Search" düğmesine bir olay işleyici eklemek için bileşen şablonunu güncelleyin.
+
+   <docs-code language="angular-ts" header="home.ts içinde düğme tıklama olayını bir metoda bağlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[13]"/>
+
+   `button` öğesindeki `click` olayına bağlanarak, `filterResults` fonksiyonunu çağırabilirsiniz. Fonksiyonun argümanı, `filter` şablon değişkeninin `value` özelliğidir. Özellikle, `input` HTML öğesinden gelen `.value` özelliğidir.
+
+1. Son şablon güncellemesi `@for` yönergesi içindir. `@for` yönergesini `filteredLocationList` dizisindeki değerler üzerinde yineleme yapacak şekilde güncelleyin.
+
+   <docs-code language="angular-ts" header="home.ts içinde @for şablon direktifini güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[17,19]"/>
+
+</docs-step>
+
+<docs-step title="Olay işleyici fonksiyonunu uygulayın {#implement-the-event-handler-function}">
+Şablon, `filterResults` fonksiyonunu `click` olayına bağlamak için güncellendi. Sıradaki göreviniz, `Home` sınıfında `filterResults` fonksiyonunu uygulamaktır.
+
+1.  `Home` sınıfını `filterResults` fonksiyonunun uygulamasını içerecek şekilde güncelleyin.
+
+    <docs-code header="filterResults fonksiyonunun uygulamasını ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[35,44]"/>
+
+    Bu fonksiyon, `text` parametresinin değerini `housingLocation.city` özelliğiyle karşılaştırmak için `Array` `filter` fonksiyonunu kullanır. Eğlenceli bir alıştırma olarak bu fonksiyonu herhangi bir özellik veya birden fazla özellikle eşleşecek şekilde güncelleyebilirsiniz.
+
+1.  Kodunuzu kaydedin.
+
+1.  Tarayıcıyı yenileyin ve metin girdikten sonra "Search" düğmesine tıkladığınızda konut konumu verilerini şehre göre arayabildiğinizi doğrulayın.
+
+       <img alt="Kullanıcı girdisine göre filtrelenmiş arama sonuçları" src="assets/images/tutorials/first-app/homes-app-lesson-13-step-3.png">
+
+    </docs-step>
+
+</docs-workflow>
+
+SUMMARY: Bu derste, şablon değerleriyle etkileşim kurmak için şablon değişkenleri kullanmak üzere uygulamanızı güncellediniz ve olay bağlama ile dizi fonksiyonları kullanarak arama işlevselliği eklediniz.
+
+Bu derste ele alınan konular hakkında daha fazla bilgi için:
+
+<docs-pill-row>
+  <docs-pill href="guide/templates" title="Şablon Değişkenleri"/>
+  <docs-pill href="guide/templates/event-listeners" title="Olay Yönetimi"/>
+</docs-pill-row>

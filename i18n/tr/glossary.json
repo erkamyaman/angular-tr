@@ -1,0 +1,462 @@
+[
+  {
+    "term": "component",
+    "translation": "",
+    "note": "seen 2650× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "form",
+    "translation": "",
+    "note": "seen 1718× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "template",
+    "translation": "",
+    "note": "seen 1168× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "signal",
+    "translation": "",
+    "note": "seen 1042× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "service",
+    "translation": "",
+    "note": "seen 931× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "input",
+    "translation": "",
+    "note": "seen 773× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "directive",
+    "translation": "",
+    "note": "seen 770× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "route",
+    "translation": "",
+    "note": "seen 710× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "animation",
+    "translation": "",
+    "note": "seen 708× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "validation",
+    "translation": "",
+    "note": "seen 529× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "build",
+    "translation": "",
+    "note": "seen 518× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "model",
+    "translation": "",
+    "note": "seen 454× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "resource",
+    "translation": "",
+    "note": "seen 445× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "binding",
+    "translation": "",
+    "note": "seen 411× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "schematic",
+    "translation": "",
+    "note": "seen 388× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "attribute",
+    "translation": "",
+    "note": "seen 383× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "router",
+    "translation": "",
+    "note": "seen 356× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "package",
+    "translation": "",
+    "note": "seen 336× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "provider",
+    "translation": "",
+    "note": "seen 331× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "library",
+    "translation": "",
+    "note": "seen 316× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "view",
+    "translation": "",
+    "note": "seen 303× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "service worker",
+    "translation": "",
+    "note": "seen 276× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "module",
+    "translation": "",
+    "note": "seen 270× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "output",
+    "translation": "",
+    "note": "seen 257× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "host",
+    "translation": "",
+    "note": "seen 241× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "hydration",
+    "translation": "",
+    "note": "seen 230× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "pipe",
+    "translation": "",
+    "note": "seen 226× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "injector",
+    "translation": "",
+    "note": "seen 211× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "effect",
+    "translation": "",
+    "note": "seen 201× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "validator",
+    "translation": "",
+    "note": "seen 200× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "metadata",
+    "translation": "",
+    "note": "seen 195× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "environment",
+    "translation": "",
+    "note": "seen 187× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "change detection",
+    "translation": "",
+    "note": "seen 182× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "query",
+    "translation": "",
+    "note": "seen 179× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "locale",
+    "translation": "",
+    "note": "seen 178× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "selector",
+    "translation": "",
+    "note": "seen 175× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "workspace",
+    "translation": "",
+    "note": "seen 175× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "migration",
+    "translation": "",
+    "note": "seen 172× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "routing",
+    "translation": "",
+    "note": "seen 160× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "decorator",
+    "translation": "",
+    "note": "seen 150× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "performance",
+    "translation": "",
+    "note": "seen 148× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "observable",
+    "translation": "",
+    "note": "seen 135× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "devtools",
+    "translation": "",
+    "note": "seen 134× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "signal forms",
+    "translation": "",
+    "note": "seen 128× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "placeholder",
+    "translation": "",
+    "note": "seen 125× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "computed",
+    "translation": "",
+    "note": "seen 119× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "dependency injection",
+    "translation": "",
+    "note": "seen 97× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "guard",
+    "translation": "",
+    "note": "seen 97× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "reactive forms",
+    "translation": "",
+    "note": "seen 97× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "form control",
+    "translation": "",
+    "note": "seen 95× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "bundle",
+    "translation": "",
+    "note": "seen 95× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "standalone",
+    "translation": "",
+    "note": "seen 94× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "interceptor",
+    "translation": "",
+    "note": "seen 88× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "zone",
+    "translation": "",
+    "note": "seen 78× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "caching",
+    "translation": "",
+    "note": "seen 70× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "resolver",
+    "translation": "",
+    "note": "seen 62× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "injection token",
+    "translation": "",
+    "note": "seen 61× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "server-side rendering",
+    "translation": "",
+    "note": "seen 59× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "promise",
+    "translation": "",
+    "note": "seen 56× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "host element",
+    "translation": "",
+    "note": "seen 56× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "template-driven forms",
+    "translation": "",
+    "note": "seen 51× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "interpolation",
+    "translation": "",
+    "note": "seen 50× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "lifecycle hook",
+    "translation": "",
+    "note": "seen 49× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "form group",
+    "translation": "",
+    "note": "seen 49× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "bootstrap",
+    "translation": "",
+    "note": "seen 47× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "accessibility",
+    "translation": "",
+    "note": "seen 44× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "language service",
+    "translation": "",
+    "note": "seen 43× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "control flow",
+    "translation": "",
+    "note": "seen 42× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "zoneless",
+    "translation": "",
+    "note": "seen 42× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "property binding",
+    "translation": "",
+    "note": "seen 37× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "two-way binding",
+    "translation": "",
+    "note": "seen 37× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "host binding",
+    "translation": "",
+    "note": "seen 35× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "unit test",
+    "translation": "",
+    "note": "seen 35× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "deferrable views",
+    "translation": "",
+    "note": "seen 29× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "event listener",
+    "translation": "",
+    "note": "seen 28× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "deployment",
+    "translation": "",
+    "note": "seen 27× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "event binding",
+    "translation": "",
+    "note": "seen 24× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "subscription",
+    "translation": "",
+    "note": "seen 24× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "stylesheet",
+    "translation": "",
+    "note": "seen 21× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "lazy loading",
+    "translation": "",
+    "note": "seen 20× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "end-to-end",
+    "translation": "",
+    "note": "seen 20× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "prerendering",
+    "translation": "",
+    "note": "seen 19× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "content projection",
+    "translation": "",
+    "note": "seen 19× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "internationalization",
+    "translation": "",
+    "note": "seen 18× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "linked signal",
+    "translation": "",
+    "note": "seen 13× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "slot",
+    "translation": "",
+    "note": "seen 11× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "localization",
+    "translation": "",
+    "note": "seen 10× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "view encapsulation",
+    "translation": "",
+    "note": "seen 9× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "dev server",
+    "translation": "",
+    "note": "seen 8× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "test harness",
+    "translation": "",
+    "note": "seen 8× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "shadow dom",
+    "translation": "",
+    "note": "seen 6× in the docs; translate or set keep: true"
+  },
+  {
+    "term": "image optimization",
+    "translation": "",
+    "note": "seen 4× in the docs; translate or set keep: true"
+  }
+]

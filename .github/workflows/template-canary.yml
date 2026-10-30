@@ -1,0 +1,52 @@
+name: Template canary
+
+# Runs only in the template repository: builds the example language against the head of the
+# latest release branch every night, so an upstream change that breaks the tooling shows up
+# here before it reaches the repositories created from the template.
+
+on:
+  schedule:
+    - cron: '41 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canary:
+    if: github.repository == 'openng-org/angular-docs-rosetta'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm bootstrap
+      - name: Move to the latest release branch head (not committed)
+        run: pnpm update-origin latest
+      - name: Dictionaries still extract, checks still pass
+        run: |
+          pnpm dictionaries _example
+          pnpm check _example --allow-outdated   # the example page may lag the moving head; tooling breakage is what matters here
+          pnpm status _example --md >> "$GITHUB_STEP_SUMMARY"
+      - uses: bazel-contrib/setup-bazel@8cb04a772ab4c1eb984e9c1b493a182e96c5e425 # 0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: canary
+          repository-cache: true
+          bazelrc: |
+            build --local_resources=memory=4096
+            build --local_resources=cpu=2
+            build --jobs=1
+            build --discard_analysis_cache
+            build --nokeep_state_after_build
+            build --sandbox_default_allow_network
+      - name: Build the example language
+        run: pnpm build _example
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096

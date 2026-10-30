@@ -1,0 +1,46 @@
+<!-- source: 3d402700b8957ae9a599b07df3873c3ff9bd4efe -->
+# LLM promptları ve yapay zeka IDE kurulumu
+
+Büyük dil modelleri (LLM'ler) ile kod üretmek, geliştiriciler için hızla büyüyen bir ilgi alanıdır. LLM'ler genellikle çalışan kod üretebilse de, Angular gibi sürekli gelişen framework'ler için tutarlı kod üretmek zor olabilir.
+
+Gelişmiş talimatlar ve prompting, alan spesifik ayrıntılarla modern kod üretimini desteklemek için ortaya çıkan bir standarttır. Bu bölüm, Angular ve LLM'ler için daha doğru kod üretimini desteklemek üzere özenle hazırlanmış içerik ve kaynaklar içerir.
+
+## Özel Promptlar ve Sistem Talimatları {#custom-prompts-and-system-instructions}
+
+Aşağıdaki özel, alan spesifik dosyalardan birini kullanarak LLM'lerle kod üretme deneyiminizi iyileştirin.
+
+NOTE: Bu dosyalar, Angular'ın kurallarıyla güncel kalacak şekilde düzenli olarak güncellenecektir.
+
+İşte LLM'lerin Angular en iyi uygulamalarını takip eden doğru kod üretmesine yardımcı olacak bir dizi talimat. Bu dosya, yapay zeka araçlarınıza sistem talimatları olarak eklenebilir veya bağlam olarak promptunuzla birlikte dahil edilebilir.
+
+<docs-code language="md" path="packages/core/resources/best-practices.md" class="compact"/>
+
+<a download href="/assets/context/best-practices.md" target="_blank">best-practices.md dosyasını indirmek için buraya tıklayın.</a>
+
+## Kural Dosyaları {#rules-files}
+
+<a href="https://antigravity.google?utm_source=adev&utm_medium=website&utm_campaign=BUILD_WITH_AI_ANGULAR&utm_term=angular_devrel&utm_content=build_with_ai_angular_antigravity" target="_blank">Antigravity</a> gibi birçok araç, LLM'lere kritik bağlam sağlamak için yararlı kural dosyalarına sahiptir.
+
+| Environment/IDE      | Rules File                                                                                                             | Installation Instructions                                                                                                                                       |
+| :------------------- | :--------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Antigravity          | <a download href="/assets/context/GEMINI.md" target="_blank">GEMINI.md</a>                                             | <a href="https://antigravity.google/docs/rules-workflows" target="_blank">Configure `GEMINI.md`</a>                                                             |
+| Copilot powered IDEs | <a download="copilot-instructions.md" href="/assets/context/guidelines.md" target="_blank">copilot-instructions.md</a> | <a href="https://code.visualstudio.com/docs/copilot/copilot-customization#_custom-instructions" target="_blank">Configure `.github/copilot-instructions.md`</a> |
+| Cursor               | <a download href="/assets/context/angular-20.mdc" target="_blank">cursor.md</a>                                        | <a href="https://docs.cursor.com/context/rules" target="_blank">Configure `cursorrules.md`</a>                                                                  |
+| JetBrains IDEs       | <a download href="/assets/context/AGENTS.md" target="_blank">AGENTS.md</a>                                             | <a href="https://junie.jetbrains.com/docs/guidelines-and-memory.html#how-junie-cli-discovers-guidelines" target="_blank">Configure `AGENTS.md`</a>              |
+| VS Code              | <a download=".instructions.md" href="/assets/context/guidelines.md" target="_blank">.instructions.md</a>               | <a href="https://code.visualstudio.com/docs/copilot/copilot-customization#_custom-instructions" target="_blank">Configure `.instructions.md`</a>                |
+| Windsurf             | <a download href="/assets/context/guidelines.md" target="_blank">guidelines.md</a>                                     | <a href="https://docs.windsurf.com/windsurf/cascade/memories#rules" target="_blank">Configure `guidelines.md`</a>                                               |
+
+## Angular CLI MCP Sunucusu kurulumu {#angular-cli-mcp-server-setup}
+
+Angular CLI, geliştirme ortamınızdaki yapay zeka asistanlarının Angular CLI ile etkileşime geçmesini sağlayan deneysel bir [Model Context Protocol (MCP) sunucusu](https://modelcontextprotocol.io/) içerir.
+
+[**Angular CLI MCP Sunucusunu nasıl kuracağınızı öğrenin**](/ai/mcp)
+
+## `llms.txt` ile Bağlam Sağlama {#providing-context-with-llmstxt}
+
+`llms.txt`, LLM'lerin içeriklerini daha iyi anlamasına ve işlemesine yardımcı olmak için tasarlanmış web siteleri için önerilen bir standarttır. Angular ekibi, LLM'lerin ve kod üretimi için LLM kullanan araçların daha iyi modern Angular kodu oluşturmasına yardımcı olmak için bu dosyanın iki versiyonunu geliştirmiştir.
+
+- <a href="/llms.txt" target="_blank">llms.txt</a> - anahtar dosyalara ve kaynaklara bağlantılar sağlayan bir indeks dosyası.
+- <a href="/assets/context/llms-full.txt" target="_blank">llms-full.txt</a> - Angular'ın nasıl çalıştığını ve Angular uygulamalarının nasıl oluşturulacağını açıklayan daha kapsamlı derlenmiş bir kaynak seti.
+
+Yapay zekayı Angular uygulamalarınıza nasıl entegre edeceğiniz hakkında daha fazla bilgi için [genel bakış sayfasına](/ai) göz atın.

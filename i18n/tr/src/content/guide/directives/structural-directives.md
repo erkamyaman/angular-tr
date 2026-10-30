@@ -1,0 +1,243 @@
+<!-- source: 13ce47f57f88bde057177ee438ec3b19ca55f2e8 -->
+# Yapısal direktifler
+
+Yapısal direktifler, bir `<ng-template>` elemanına uygulanan ve o `<ng-template>`'in içeriğini koşullu veya tekrarlı olarak render eden direktiflerdir.
+
+Günlük koşullu ve tekrarlı render için Angular'ın yerleşik [akış kontrolü bloklarını](guide/templates/control-flow) (`@if`, `@for` ve `@switch`) kullanın. Akış kontrolünün kapsamadığı, örneğin içeriği bir izin denetiminin arkasına almak veya bir şablona dış kaynaktan veri sağlamak gibi yeniden kullanılabilir render davranışına ihtiyaç duyduğunuzda yapısal direktif yazın.
+
+## Örnek kullanım durumu {#example-use-case}
+
+Bu kılavuz, çalışan örnek olarak `SelectDirective` adlı bir direktifi kullanır. Direktif, belirli bir veri kaynağından veri getirir ve bu veri mevcut olduğunda şablonunu render eder. Adını SQL anahtar kelimesi `SELECT`'ten alır ve `[select]` nitelik seçicisi ile eşleştirilir.
+
+`SelectDirective`, kullanılacak veri kaynağını adlandıran ve `selectFrom` olarak anılan bir girdiye sahiptir. Bu girdi için `select` öneki, [kısaltılmış sözdizimi](#structural-directive-shorthand) açısından önemlidir. Direktif, seçilen veriyi sağlayan bir şablon bağlamı ile `<ng-template>`'ini örneklendirir.
+
+Bu direktifin doğrudan bir `<ng-template>` üzerinde kullanılması şöyle görünür:
+
+```angular-html
+<ng-template select let-data [selectFrom]="source">
+  <p>The data is: {{ data }}</p>
+</ng-template>
+```
+
+Yapısal direktif, verinin kullanılabilir olmasını bekleyebilir ve ardından `<ng-template>`'ini render edebilir.
+
+HELPFUL: Angular'ın `<ng-template>` elemanı, varsayılan olarak hiçbir şey render etmeyen bir şablon tanımlar. Elemanları yapısal bir direktif uygulamadan bir `<ng-template>` içine sararsanız, bu elemanlar render edilmez.
+
+Daha fazla bilgi için [ng-template API](api/core/ng-template) belgelerine bakın.
+
+## Yapısal direktif kısaltılmış sözdizimi {#structural-directive-shorthand}
+
+Angular, açıkça bir `<ng-template>` elemanı yazmak gereğinden kaçınan yapısal direktifler için kısaltılmış sözdizimini destekler.
+
+Yapısal direktifler, direktif nitelik seçicisinin önüne yıldız işareti (`*`) eklenerek doğrudan bir elemana uygulanabilir, örneğin `*select`. Angular, bir yapısal direktifin önündeki yıldız işaretini, direktifi barındıran ve elemanı ile alt öğelerini çevreleyen bir `<ng-template>`'e dönüştürür.
+
+Bunu `SelectDirective` ile aşağıdaki gibi kullanabilirsiniz:
+
+```angular-html
+<p *select="let data; from: source">The data is: {{ data }}</p>
+```
+
+Bu örnek, bazen _mikrosözdizimi_ olarak adlandırılan yapısal direktif kısaltılmış sözdiziminin esnekliğini gösterir.
+
+Bu şekilde kullanıldığında, `<ng-template>`'e yalnızca yapısal direktif ve bağlamaları uygulanır. `<p>` etiketindeki diğer nitelikler veya bağlamalar olduğu gibi bırakılır. Örneğin, bu iki form eşdeğerdir:
+
+```angular-html
+<!-- Kısaltılmış sözdizimi: -->
+<p class="data-view" *select="let data; from: source">The data is: {{ data }}</p>
+
+<!-- Uzun biçimli sözdizimi: -->
+<ng-template select let-data [selectFrom]="source">
+  <p class="data-view">The data is: {{ data }}</p>
+</ng-template>
+```
+
+Kısaltılmış sözdizimi bir dizi kural aracılığıyla genişletilir. Daha kapsamlı bir [gramer](#yapısal-direktif-sözdizimi-referansı) aşağıda tanımlanmıştır, ancak yukarıdaki örnekte bu dönüşüm şu şekilde açıklanabilir:
+
+`*select` ifadesinin ilk kısmı `let data`'dır ve bir şablon değişkeni `data` bildirir. Ardından bir atama gelmediği için, şablon değişkeni şablon bağlam özelliği `$implicit`'e bağlanır.
+
+Sözdiziminin ikinci parçası, `from source` anahtar-ifade çiftidir. `from` bir bağlama anahtarıdır ve `source` normal bir şablon ifadesidir. Bağlama anahtarları, PascalCase'e dönüştürülerek ve yapısal direktif seçicisi eklenerek özelliklere eşlenir. `from` anahtarı `selectFrom`'a eşlenir ve ardından `source` ifadesine bağlanır. Bu nedenle birçok yapısal direktifin, yapısal direktifin seçicisi ile ön eklenmiş girdileri olacaktır.
+
+## Her eleman için tek bir yapısal direktif {#one-structural-directive-per-element}
+
+Kısaltılmış sözdizimini kullanırken her elemana yalnızca bir yapısal direktif uygulayabilirsiniz. Bunun nedeni, o direktifin açıldığı yalnızca bir `<ng-template>` elemanı olmasıdır. Birden fazla direktif, birden fazla iç içe `<ng-template>` gerektirir ve hangi direktifin önce olması gerektiği belirsizdir. Birden fazla yapısal direktifin aynı fiziksel DOM elemanı veya bileşen etrafında uygulanması gerektiğinde, kullanıcının iç içe yapıyı tanımlamasına olanak tanıyan sarma katmanları oluşturmak için `<ng-container>` kullanılabilir.
+
+## Yapısal direktif oluşturma {#creating-a-structural-directive}
+
+Yapısal bir direktif, iki bağımlılık enjekte eden bir direktif sınıfıdır:
+
+- [`TemplateRef`](api/core/TemplateRef) direktife, uygulandığı `<ng-template>`'in içeriğine erişim verir.
+- [`ViewContainerRef`](api/core/ViewContainerRef) direktifin o şablonu render edebileceği DOM konumunu temsil eder.
+
+Direktif, görünüm kapsayıcısında şablondan gömülü görünümler oluşturarak ya da oluşturmayarak render'ı kontrol eder. Tamamlanmış `SelectDirective` şöyle görünür:
+
+```ts
+import {Directive, TemplateRef, ViewContainerRef, inject, input} from '@angular/core';
+
+export interface DataSource<T> {
+  load(): Promise<T>;
+}
+
+@Directive({
+  selector: '[select]',
+})
+export class SelectDirective {
+  private templateRef = inject(TemplateRef);
+  private viewContainerRef = inject(ViewContainerRef);
+
+  selectFrom = input.required<DataSource<unknown>>();
+
+  async ngOnInit() {
+    const data = await this.selectFrom().load();
+    this.viewContainerRef.createEmbeddedView(this.templateRef, {
+      // `$implicit` anahtarı aracılığıyla veriyi içeren bir bağlam nesnesiyle
+      // gömülü görünümü oluşturun.
+      $implicit: data,
+    });
+  }
+}
+```
+
+`selectFrom` girdisi, direktifin okuduğu veri kaynağını adlandırır. Direktif bir veri kaynağı olmadan işe yarar bir şey yapamayacağı için [`input.required()`](guide/components/inputs#required-inputs) kullanır.
+
+Angular direktifi başlattığında veriyi yükler ve ardından `createEmbeddedView()` çağrısıyla şablonu render eder. İkinci argüman, şablonun _bağlam nesnesidir_: şablonun `let` bildirimleriyle bağlanabileceği değerler. Veriyi `$implicit` anahtarına atamak, onu `let-data`'nın (veya kısaltılmış sözdiziminde `let data`'nın) aldığı varsayılan değer yapar.
+
+NOTE: Bu örnek şablonunu, direktif başlatıldığında yalnızca bir kez render eder. Bağlanan veri kaynağı değiştiğinde yeniden render etmez.
+
+Direktif çalışır duruma geldiğinde [şablon tür denetimi desteği eklemeyi](#direktifin-bağlamını-türlendirme) düşünün.
+
+HELPFUL: [`ng generate directive`](tools/cli/schematics) CLI komutu, bir direktifi test dosyasıyla birlikte oluşturur.
+
+## Yapısal direktif sözdizimi referansı {#structural-directive-syntax-reference}
+
+Kendi yapısal direktiflerinizi yazarken aşağıdaki sözdizimini kullanın:
+
+```ts {hideCopy}
+_: prefix = "( :let | :expression ) (';' | ',')? ( :let | :as | :keyExp )_";
+```
+
+Aşağıdaki desenler, yapısal direktif gramerinin her bölümünü tanımlar:
+
+```ts
+as = :export "as" :local ";"?
+keyExp = :key ":"? :expression ("as" :local)? ";"?
+let = "let" :local "=" :export ";"?
+```
+
+| Anahtar kelime | Ayrıntılar                                                      |
+| :------------- | :-------------------------------------------------------------- |
+| `prefix`       | HTML nitelik anahtarı                                           |
+| `key`          | HTML nitelik anahtarı                                           |
+| `local`        | Şablonda kullanılan yerel değişken adı                          |
+| `export`       | Direktif tarafından belirli bir ad altında dışa aktarılan değer |
+| `expression`   | Standart Angular ifadesi                                        |
+
+### Angular kısaltılmış sözdizimini nasıl çevirir {#how-angular-translates-shorthand}
+
+Angular, yapısal direktif kısaltılmış sözdizimini normal bağlama sözdizimine şu şekilde çevirir:
+
+| Kısaltma                       | Çeviri                                                 |
+| :----------------------------- | :----------------------------------------------------- |
+| `prefix` ve yalın `expression` | `[prefix]="expression"`                                |
+| `keyExp`                       | `[prefixKey]="expression"` (`prefix`, `key`'e eklenir) |
+| `let local`                    | `let-local="export"`                                   |
+
+### Kısaltılmış sözdizimi örnekleri {#shorthand-examples}
+
+Aşağıdaki tablo kısaltılmış örnekler sağlar:
+
+| Kısaltma                                                              | Angular sözdizimini nasıl yorumlar                                                                            |
+| :-------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| `*myDir="let item of [1,2,3]"`                                        | `<ng-template myDir let-item [myDirOf]="[1, 2, 3]">`                                                          |
+| `*myDir="let item of [1,2,3] as items; trackBy: myTrack; index as i"` | `<ng-template myDir let-item [myDirOf]="[1,2,3]" let-items="myDirOf" [myDirTrackBy]="myTrack" let-i="index">` |
+| `*ngComponentOutlet="componentClass"`                                 | `<ng-template [ngComponentOutlet]="componentClass">`                                                          |
+| `*ngComponentOutlet="componentClass; inputs: myInputs"`               | `<ng-template [ngComponentOutlet]="componentClass" [ngComponentOutletInputs]="myInputs">`                     |
+| `*myDir="exp as value"`                                               | `<ng-template [myDir]="exp" let-value="myDir">`                                                               |
+
+## Özel direktifler için şablon tür denetimini iyileştirme {#improving-template-type-checking-for-custom-directives}
+
+Direktif tanımınıza şablon korumaları ekleyerek özel direktifler için şablon tür denetimini iyileştirebilirsiniz.
+Bu korumalar, Angular şablon tür denetleyicisinin şablondaki hataları derleme zamanında bulmasına yardımcı olur ve çalışma zamanı hatalarından kaçınabilir.
+İki farklı koruma türü mümkündür:
+
+- `ngTemplateGuard_(input)`, belirli bir girdinin türüne göre bir girdi ifadesinin nasıl daraltılacağını kontrol etmenize olanak tanır.
+- `ngTemplateContextGuard`, direktifin kendi türüne göre şablon için bağlam nesnesinin türünü belirlemek için kullanılır.
+
+Bu bölüm her iki koruma türü için örnekler sağlar.
+Daha fazla bilgi için [Şablon tür denetimi](tools/cli/template-typecheck 'Template type-checking guide') bölümüne bakın.
+
+### Şablon korumaları ile tür daraltma {#type-narrowing-with-template-guards}
+
+Bir şablondaki yapısal direktif, o şablonun çalışma zamanında render edilip edilmeyeceğini kontrol eder. Bazı yapısal direktifler, girdi ifadesinin türüne göre tür daraltma yapmak ister.
+
+Girdi korumaları ile iki daraltma mümkündür:
+
+- Girdi ifadesini TypeScript tür doğrulama fonksiyonuna göre daraltma.
+- Girdi ifadesini doğruluk değerine göre daraltma.
+
+Bir tür doğrulama fonksiyonu tanımlayarak girdi ifadesini daraltmak için:
+
+```ts
+// Bu direktif şablonunu yalnızca aktör bir kullanıcı olduğunda render eder.
+// Şablon içinde `actor` ifadesinin türünün `User`'a
+// daraltıldığını doğrulamak istiyorsunuz.
+@Directive(...)
+class ActorIsUser {
+  actor = input<User | Robot>();
+
+  static ngTemplateGuard_actor(dir: ActorIsUser, expr: User | Robot): expr is User {
+    // Return ifadesi pratikte gereksizdir, ancak TypeScript hatalarını
+    // önlemek için dahil edilmiştir.
+    return true;
+  }
+}
+```
+
+Tür denetimi, şablonda `ngTemplateGuard_actor`'ın girdiye bağlanan ifade üzerinde doğrulandığı gibi davranacaktır.
+
+Bazı direktifler şablonlarını yalnızca bir girdi doğru (truthy) olduğunda render eder. Doğruluk değerinin tam semantiğini bir tür doğrulama fonksiyonunda yakalamak mümkün değildir, bu nedenle şablon tür denetleyicisine bağlama ifadesinin kendisinin koruma olarak kullanılması gerektiğini belirtmek için `'binding'` literal türü kullanılabilir:
+
+```ts
+@Directive(...)
+class CustomIf {
+  condition = input.required<boolean>();
+
+  static ngTemplateGuard_condition: 'binding';
+}
+```
+
+Şablon tür denetleyicisi, `condition`'a bağlanan ifadenin şablon içinde doğru olarak doğrulandığı gibi davranacaktır.
+
+### Direktifin bağlamını türlendirme {#typing-the-directives-context}
+
+Yapısal direktifiniz örneklenen şablona bir bağlam sağlıyorsa, statik bir `ngTemplateContextGuard` tür doğrulama fonksiyonu sağlayarak şablon içinde doğru şekilde türlendirebilirsiniz. Bu fonksiyon, bağlamın türünü türetmek için direktifin türünü kullanabilir ve bu, direktifin türü generic olduğunda yararlıdır.
+
+Yukarıda açıklanan `SelectDirective` için, veri kaynağı generic olsa bile veri türünü doğru şekilde belirtmek üzere bir `ngTemplateContextGuard` uygulayabilirsiniz.
+
+```ts
+// Şablon bağlamı için bir arayüz bildirin:
+export interface SelectTemplateContext<T> {
+  $implicit: T;
+}
+
+@Directive(...)
+export class SelectDirective<T> {
+  // Direktifin generic türü `T`, girdiye iletilen `DataSource` türünden
+  // çıkarılacaktır.
+  selectFrom = input.required<DataSource<T>>();
+
+  // Direktifin generic türünü kullanarak bağlamın türünü daraltın.
+  static ngTemplateContextGuard<T>(dir: SelectDirective<T>, ctx: any): ctx is SelectTemplateContext<T> {
+    // Daha önce olduğu gibi koruma gövdesi çalışma zamanında kullanılmaz ve yalnızca
+    // TypeScript hatalarını önlemek için dahil edilmiştir.
+    return true;
+  }
+}
+```
+
+## Sırada ne var {#whats-next}
+
+<docs-pill-row>
+  <docs-pill href="guide/directives/directive-composition-api" title="Direktif bileşim API'si"/>
+  <docs-pill href="guide/templates/ng-template" title="ng-template ile şablon parçaları oluşturma"/>
+  <docs-pill href="guide/templates/control-flow" title="Akış kontrolü"/>
+</docs-pill-row>

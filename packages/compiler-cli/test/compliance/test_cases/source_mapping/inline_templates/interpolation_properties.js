@@ -1,3 +1,0 @@
-i0.ɵɵelement(0, "div", 0) // SOURCE: "/interpolation_properties.ts" "<div "
-…
-i0.ɵɵinterpolate(ctx.name) // SOURCE: "/interpolation_properties.ts" "id=\"{{name}}\""

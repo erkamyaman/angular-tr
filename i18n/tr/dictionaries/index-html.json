@@ -1,0 +1,32 @@
+[
+  {
+    "find": "<html lang=\"en\"",
+    "replace": "<html lang=\"tr\"",
+    "note": "document language"
+  },
+  {
+    "find": "<title>Angular</title>",
+    "replace": "<title>Angular</title>",
+    "note": "translate the title if you wish"
+  },
+  {
+    "find": "content=\"The web development framework for building modern apps.\"",
+    "replace": "content=\"The web development framework for building modern apps.\"",
+    "note": "description, og:description, twitter:description: translate"
+  },
+  {
+    "find": "href=\"https://angular.dev\"",
+    "replace": "href=\"https://angular-docs.tr\"",
+    "note": "canonical"
+  },
+  {
+    "find": "content=\"https://angular.dev/\"",
+    "replace": "content=\"https://angular-docs.tr/\"",
+    "note": "og:url, twitter:url"
+  },
+  {
+    "find": "content=\"https://angular.dev/assets/images/ng-image.jpg\"",
+    "replace": "content=\"https://angular-docs.tr/assets/images/ng-image.jpg\"",
+    "note": "social image"
+  }
+]

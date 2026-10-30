@@ -1,6 +1,0 @@
-{
-  "extends": "./tsconfig-bazel.json",
-  "compilerOptions": {
-    "types": ["jasmine", "node"]
-  }
-}

@@ -1,27 +1,9 @@
-# Davranış Kuralları
+# Code of Conduct
 
-## Taahhüdümüz
+This project follows the [Contributor Covenant, version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
 
-Açık ve herkesi kucaklayan bir ortam oluşturmak adına; katkıda bulunanlar ve proje yürütücüleri olarak, yaş, beden, engellilik durumu, etnik köken, cinsiyet kimliği ve ifadesi, deneyim düzeyi, eğitim, sosyo-ekonomik durum, milliyet, dış görünüş, ırk, din veya cinsel kimlik ve yönelim ayrımı gözetmeksizin, bu projeye ve topluluğa katılımı herkes için tacizden uzak bir deneyim hâline getirmeyi taahhüt ederiz.
+In short: be respectful and constructive, assume good faith, welcome newcomers (many contributors here are translating their first open-source file), and keep review comments about the text, not the person.
 
-## Standartlarımız
+Translating documentation also means representing the Angular project and the Angular Team's work in another language. Translations must stay faithful to the source: no added opinions, no removed caveats, no promotion.
 
-Olumlu bir ortama katkıda bulunan davranışlara örnekler:
-
-- Kapsayıcı ve saygılı bir dil kullanmak
-- Farklı görüşlere ve deneyimlere saygı göstermek
-- Yapıcı eleştiriyi nezaketle kabul etmek
-- Topluluk için en iyi olana odaklanmak
-
-Kabul edilemez davranışlara örnekler:
-
-- Taciz edici, aşağılayıcı veya hakaret içeren yorumlar
-- Kişisel veya siyasi saldırılar
-- Başkalarının özel bilgilerini izinsiz paylaşmak
-- Profesyonel bir ortamda uygunsuz sayılabilecek diğer davranışlar
-
-## Uygulama
-
-Kabul edilemez davranışlar bu repoda bir [issue](https://github.com/erkamyaman/angular-tr/issues) açılarak veya doğrudan proje yürütücüsüne iletilerek bildirilebilir. Tüm şikâyetler incelenir ve gerekli görülen önlemler alınır.
-
-Bu Davranış Kuralları, [Contributor Covenant](https://www.contributor-covenant.org) sözleşmesinden uyarlanmıştır.
+To report a problem, contact the maintainers listed in `i18n/<lang>/README.md` or open a private report through the repository's security advisory form. Reports are handled confidentially.

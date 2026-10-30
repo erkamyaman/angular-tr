@@ -1,0 +1,4 @@
+[submodule "origin"]
+	path = origin
+	url = https://github.com/angular/angular.git
+	shallow = true

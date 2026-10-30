@@ -1,40 +1,31 @@
-## PR Checklist
+<!-- Title: translate(<lang>): <area> | sync: update origin to <branch> @ <sha> | tools: … | docs: … -->
 
-Please check if your PR fulfills the following requirements:
+## What
 
-- [ ] The commit message follows our guidelines: https://github.com/angular/angular/blob/main/contributing-docs/commit-message-guidelines.md
-- [ ] Tests for the changes have been added (for bug fixes / features)
-- [ ] Docs have been added / updated (for bug fixes / features)
+<!-- One or two lines. For a sync PR, the status report produced by `pnpm status <lang> --md` goes below. -->
 
-## PR Type
+## Pages translated
 
-What kind of change does this PR introduce?
+- `content/…`
 
-<!-- Please check the one that applies to this PR using "x". -->
+## Pages updated (with diff class)
 
-- [ ] Bugfix
-- [ ] Feature
-- [ ] Code style update (formatting, local variables)
-- [ ] Refactoring (no functional changes, no api changes)
-- [ ] Build related changes
-- [ ] CI related changes
-- [ ] Documentation content changes
-- [ ] angular.dev application / infrastructure changes
-- [ ] Other... Please describe:
+- `content/…` (b)
 
-## What is the current behavior?
+## Untranslated or deferred
 
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
+<!-- Mandatory for sync PRs, even if "none". Sections left in English, pages skipped, and the issue that tracks them. -->
 
-Issue Number: N/A
+- none
 
-## What is the new behavior?
+## Removed or moved
 
-## Does this PR introduce a breaking change?
+<!-- Mandatory for sync PRs, even if "none". Pairs deleted or renamed following upstream. -->
 
-- [ ] Yes
-- [ ] No
+- none
 
-<!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
+## Checks
 
-## Other information
+- [ ] `pnpm check <lang>` is green for every file touched (paste the summary line)
+- [ ] Markers point at the current snapshots
+- [ ] Glossary gaps noticed were added to `glossary.json` or listed here
