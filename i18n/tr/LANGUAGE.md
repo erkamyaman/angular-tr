@@ -34,17 +34,20 @@ fonts: []
 ## What stays in English and why
 
 - API names, file names, commands and flags: `@Component`, `ng generate`, `--standalone`.
-- Terms flagged `keep` in `glossary.json`: _TODO list the main ones and the reason_.
+- Terms flagged `keep` in `glossary.json`: `directive`, `resource`, `router`, `pipe`, `effect`, `observable`, `service worker`, `zone`, `promise`, `computed`, `host`, `migration`. They are API names, product names or already dominant in the existing pages.
+- Everything else in the glossary is translated (`bileşen`, `şablon`, `sinyal`, `rota`, `hidrasyon`, `enjektör`).
 - Code, including comments (v1 rule), sample output, URLs, anchors.
 
 ## Grammar traps
 
-- Gender and plural of borrowed terms: _TODO_.
-- "you" in instructions: _TODO_.
+- Suffixes on English terms take an apostrophe and follow the pronunciation: `Router'ı`, `pipe'ı`, `service worker'ın`. No plural suffix on kept terms when a number or context already makes it plural.
+- Suffix on code names: `signal()` fonksiyonu, not `signal()'ı`; put a noun after the code.
+- "you" in instructions: drop the pronoun and use the verb ending: "you create" → "oluşturursunuz", "create" → "oluşturun". Never "sen" forms.
 
 ## False friends and forbidden renderings
 
-- _TODO: wrong rendering_ → _correct rendering_.
+- `boru` → keep `pipe`. `biçim` → `form`. `inşa` → `derleme` (build).
+- `signal` is `sinyal`, but `signal forms`, `linked signal` and `computed` stay English.
 
 ## UI strings
 
@@ -53,6 +56,6 @@ fonts: []
 
 ## Voice sample
 
-> **EN** Signals are Angular's primitive for reactive state. A signal holds a value and notifies interested consumers when that value changes.
+> **EN** A signal is a wrapper around a value that notifies interested consumers when that value changes. Signals can contain any value, from primitives to complex data structures.
 >
-> **TR** _TODO reference translation_
+> **TR** Bir **sinyal**, ilgili tüketicileri değer değiştiğinde bilgilendiren bir değer etrafındaki sarmalayıcıdır. Sinyaller, ilkel değerlerden karmaşık veri yapılarına kadar herhangi bir değer içerebilir.
