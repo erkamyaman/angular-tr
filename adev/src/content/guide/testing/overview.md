@@ -87,7 +87,7 @@ HELPFUL: Test kurulumu veya sağlayıcılar için `src/test-providers.ts` gibi y
 
 IMPORTANT: Özel bir yapılandırma kullanmak ileri düzey seçenekleri etkinleştirirken, Angular ekibi yapılandırma dosyasının içeriği veya herhangi bir üçüncü taraf eklentisi için destek sağlamaz. CLI ayrıca düzgün entegrasyon sağlamak için belirli özellikleri (`test.projects`, `test.include`) geçersiz kılacaktır.
 
-Bir Vitest yapılandırma dosyası (ör. `vitest-base.config.ts`) oluşturabilir ve `angular.json` dosyanızda referans gösterebilirsiniz:
+Bir Vitest yapılandırma dosyası (ör. `vitest-base.config.mts`) oluşturabilir ve `angular.json` dosyanızda referans gösterebilirsiniz:
 
 ```json
 {
@@ -97,7 +97,7 @@ Bir Vitest yapılandırma dosyası (ör. `vitest-base.config.ts`) oluşturabilir
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "runnerConfig": "vitest-base.config.ts"
+            "runnerConfig": "vitest-base.config.mts"
           }
         }
       }
@@ -112,7 +112,7 @@ CLI kullanarak bir temel yapılandırma dosyası da oluşturabilirsiniz:
 ng generate config vitest
 ```
 
-Bu, özelleştirebileceğiniz bir `vitest-base.config.ts` dosyası oluşturur.
+Bu, özelleştirebileceğiniz bir `vitest-base.config.mts` dosyası oluşturur.
 
 HELPFUL: Vitest yapılandırması hakkında daha fazla bilgi için [resmi Vitest belgelerini](https://vitest.dev/config/) okuyun.
 

@@ -6,8 +6,7 @@ Bu eğitim dersi, bir Angular servisi oluşturmayı ve bağımlılık enjeksiyon
 
 ## Neler öğreneceksiniz
 
-Uygulamanız, verilerinizi uygulamanıza sunan bir servise sahiptir.
-Bu dersin sonunda, servis verileri yerel, statik verilerden okur.
+Uygulamanızda, yerel ve statik verileri okuyup uygulamanıza sunan bir servis olacak.
 İlerideki bir derste, servisi bir web servisinden veri alacak şekilde güncelleyeceksiniz.
 
 ## Servislerin kavramsal önizlemesi
@@ -36,7 +35,7 @@ IDE'nizin **Terminal** bölmesinde:
 1. `first-app` dizininde, yeni servisi oluşturmak için bu komutu çalıştırın.
 
    ```shell
-   ng generate service housing --skip-tests
+   ng generate service housingService --skip-tests
    ```
 
 1. Uygulamayı derlemek ve `http://localhost:4200` adresinde sunmak için `ng serve` komutunu çalıştırın.
@@ -52,18 +51,18 @@ Bu adım, yeni servisinize bazı örnek veriler ekler.
 IDE'nizin **Edit** bölmesinde:
 
 1. `src/app/home/home.ts` dosyasından, `Home` bileşenindeki `baseUrl` değişkenini ve `housingLocationList` değişkenini dizi değeriyle birlikte kopyalayın.
-1. `src/app/housing.service.ts` dosyasında:
+1. `src/app/housing-service.ts` dosyasında:
    1. `HousingService` sınıfı içinde, önceki adımda `Home` bileşeninden kopyaladığınız değişkenleri yapıştırın.
    1. `HousingService` sınıfı içinde, az önce kopyaladığınız veriden sonra bu fonksiyonları yapıştırın.
       Bu fonksiyonlar, bağımlılıkların servisin verilerine erişmesini sağlar.
 
-      <docs-code header="src/app/housing.service.ts içinde servis fonksiyonları" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[110,116]"/>
+      <docs-code header="src/app/housing-service.ts içinde servis fonksiyonları" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing-service.ts" visibleLines="[111,117]"/>
 
       Bu fonksiyonlara ilerideki bir derste ihtiyacınız olacak. Şimdilik, bu fonksiyonların belirli bir `HousingLocation`'ı id'ye göre veya tüm listeyi döndürdüğünü anlamak yeterlidir.
 
    1. `HousingLocation` için dosya düzeyinde bir import ekleyin.
 
-      <docs-code header="src/app/housing.service.ts içinde HousingLocation tipini içe aktarın" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing.service.ts" visibleLines="[2]"/>
+      <docs-code header="src/app/housing-service.ts içinde HousingLocation tipini içe aktarın" path="adev/src/content/tutorials/first-app/steps/10-routing/src/app/housing-service.ts" visibleLines="[2]"/>
 
 1. Uygulamanın hatasız derlendiğini doğrulayın.
    Bir sonraki adıma geçmeden önce tüm hataları düzeltin.

@@ -7,6 +7,7 @@
  */
 
 import type * as nga from './types.js';
+import type {NgpCompilerOptions} from './compiler_options.js';
 import type {IAnalyzer} from './hybrid_compiler.js';
 
 export class NapiAnalyzer implements IAnalyzer {
@@ -78,6 +79,10 @@ export class NapiAnalyzer implements IAnalyzer {
     return this.analyzer.setEntryPoints(entryPoints);
   }
 
+  async clearResolutionCache(): Promise<string[]> {
+    return this.analyzer.clearResolutionCache();
+  }
+
   async getTsFileForTemplate(templatePath: string): Promise<nga.TemplateUsage[] | null> {
     return this.analyzer.getTsFileForTemplate(templatePath);
   }
@@ -87,23 +92,16 @@ export class NapiAnalyzer implements IAnalyzer {
   }
 
   async readResource(containingFile: string, url: string): Promise<nga.ResolvedResource | null> {
-    return this.readResourceSync(containingFile, url);
-  }
-
-  readResourceSync(containingFile: string, url: string): nga.ResolvedResource | null {
     return this.analyzer.readResource(containingFile, url) ?? null;
   }
 
-  getMetadataForFileSync(filePath: string): nga.AnalysisResult | null {
-    return this.analyzer.getMetadataForFile(filePath) ?? null;
+  async canonicalPaths(paths: string[]): Promise<string[]> {
+    return this.analyzer.canonicalPaths(paths);
   }
 
-  getFileContentSync(filePath: string): string {
-    return this.analyzer.getFileContent(filePath);
-  }
-
-  getTsFileForTemplateSync(templatePath: string): nga.TemplateUsage[] | null {
-    return this.analyzer.getTsFileForTemplate(templatePath);
+  getCompilerOptions(): NgpCompilerOptions {
+    const raw = this.analyzer.getCompilerOptions?.();
+    return raw ? (JSON.parse(raw) as NgpCompilerOptions) : {};
   }
 
   close(): void {}

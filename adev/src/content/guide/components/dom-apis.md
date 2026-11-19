@@ -47,7 +47,7 @@ Bir bileşenin `Renderer2`'si tarafından oluşturulan tüm DOM elemanları, o b
 
 Belirli `Renderer2` API'leri ayrıca Angular'ın animasyon sistemine bağlanır. Sentetik animasyon özelliklerini güncellemek için `setProperty` yöntemini ve sentetik animasyon olayları için olay dinleyicileri eklemek için `listen` yöntemini kullanabilirsiniz. Ayrıntılar için [Animasyonlar](guide/animations) rehberine bakın.
 
-Bu iki dar kullanım alanı dışında, `Renderer2` kullanmak ile yerel DOM API'lerini kullanmak arasında hiçbir fark yoktur. `Renderer2` API'leri, sunucu tarafı render etme veya derleme zamanı ön-render etme bağlamlarında DOM manipülasyonunu desteklemez.
+Bu iki dar kullanım alanı dışında, `Renderer2` kullanmak ile yerel DOM API'lerini kullanmak arasında hiçbir fark yoktur. İkisi de sunucu tarafı render etme ve derleme zamanı ön-render etme sırasında çalışır, ancak sunucunun DOM'unda yerleşim ölçümü ve gözlemciler gibi yalnızca tarayıcıya özgü API'ler bulunmaz.
 
 ## DOM API'leri ne zaman kullanılır
 

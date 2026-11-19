@@ -2134,7 +2134,8 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Basic,
     material: true,
     step: 'update @angular/material',
-    action: '`ng update @angular/material@17` komutunu çalıştırın.',
+    action:
+      "`ng update @angular/material@17` komutunu çalıştırın. Uygulamanız hâlâ eski Angular Material bileşenlerini kullanıyorsa (v15'te kullanımdan kaldırıldı ve v17'de kaldırıldı), Material v17'ye yükseltmeden önce `ng generate @angular/material:mdc-migration` komutunu çalıştırın. Ayrıntılı yönergeler için [MDC geçiş kılavuzunu](https://v17.material.angular.dev/guide/mdc-migration) okuyun.",
   },
   {
     possibleIn: 1700,
@@ -3130,7 +3131,7 @@ export const RECOMMENDATIONS: Step[] = [
     level: ApplicationComplexity.Medium,
     step: '22.0.0-component-onpush-default',
     action:
-      "Tanımlı bir `changeDetection` özelliği olmayan bileşenler artık varsayılan olarak `OnPush`'tur. `Eager` (önceki varsayılan) değişiklik algılamasını korumak için, bileşen dekoratörünüzde `changeDetection: ChangeDetectionStrategy.Eager` değerini açıkça ayarlayın.",
+      "Tanımlı bir `changeDetection` özelliği olmayan bileşenler artık varsayılan olarak `OnPush`'tur. `ng update`, `changeDetection` özelliği olmayan her bileşene `changeDetection: ChangeDetectionStrategy.Eager` ekleyerek mevcut bileşenlerinizi önceki davranışta tutar. Ayrıca kullanımdan kaldırılmış `ChangeDetectionStrategy.Default` değerini `ChangeDetectionStrategy.Eager` ile değiştirir. `ng update` çalıştırmadan güncellerseniz, önceki davranışa ihtiyaç duyduğunuz yerlerde `changeDetection: ChangeDetectionStrategy.Eager` değerini kendiniz ayarlayın.",
   },
   {
     possibleIn: 2200,

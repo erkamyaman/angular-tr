@@ -7,7 +7,6 @@
 //! binding in value position yields an [`IncompleteValue`] hole, which the async semantic
 //! driver resolves between locks and feeds back through the [`ResolvedEnv`] on a re-run.
 
-use crate::analyzer::utils::js_str_to_string_lossy;
 use crate::analyzer::{ImportKind, ImportedSymbol};
 use crate::evaluator::foreign::{ForeignFunctionResolver, FunctionTarget, TypeNameRef};
 use crate::evaluator::value::{
@@ -115,9 +114,7 @@ pub fn evaluate_node_id(
         AstKind::BooleanLiteral(b) => Some(ResolvedValue::Boolean(b.value)),
         AstKind::NullLiteral(_) => Some(ResolvedValue::Null),
         AstKind::NumericLiteral(n) => Some(ResolvedValue::Number(n.value)),
-        AstKind::StringLiteral(s) => Some(ResolvedValue::String(
-            js_str_to_string_lossy(s.value).into_owned(),
-        )),
+        AstKind::StringLiteral(s) => Some(ResolvedValue::String(s.value.to_string())),
         AstKind::TemplateLiteral(t) => Some(interp.visit_template(t, &scope)),
         AstKind::IdentifierReference(ident) => {
             let ref_id = ident.reference_id.get()?;
@@ -433,6 +430,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
                 self.visit_type(&op.type_annotation, scope)
             }
             TSType::TSLiteralType(literal) => self.visit_literal_type(literal, scope),
+            TSType::TSNullKeyword(_) => ResolvedValue::Null,
             TSType::TSNeverKeyword(_) => ResolvedValue::Array(Vec::new()),
             TSType::TSImportType(import_type) => {
                 let old_node_id = self.current_node_id.replace(Some(import_type.node_id()));
@@ -452,7 +450,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
         let Some(qualifier) = &import_type.qualifier else {
             return self.dynamic(import_type.span, DynamicReason::UnsupportedSyntax);
         };
-        let specifier = js_str_to_string_lossy(import_type.source.value).into_owned();
+        let specifier = import_type.source.value.to_string();
         self.resolve_import_type_qualifier(qualifier, &specifier, import_type.span, scope)
     }
 
@@ -503,9 +501,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
         match &literal.literal {
             TSLiteral::BooleanLiteral(b) => ResolvedValue::Boolean(b.value),
             TSLiteral::NumericLiteral(n) => ResolvedValue::Number(n.value),
-            TSLiteral::StringLiteral(s) => {
-                ResolvedValue::String(js_str_to_string_lossy(s.value).into_owned())
-            }
+            TSLiteral::StringLiteral(s) => ResolvedValue::String(s.value.to_string()),
             TSLiteral::TemplateLiteral(t) => self.visit_template(t, scope),
             TSLiteral::UnaryExpression(u) => {
                 self.visit_unary(u.operator, &u.argument, u.span, scope)
@@ -812,9 +808,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
             Expression::BooleanLiteral(b) => ResolvedValue::Boolean(b.value),
             Expression::NullLiteral(_) => ResolvedValue::Null,
             Expression::NumericLiteral(n) => ResolvedValue::Number(n.value),
-            Expression::StringLiteral(s) => {
-                ResolvedValue::String(js_str_to_string_lossy(s.value).into_owned())
-            }
+            Expression::StringLiteral(s) => ResolvedValue::String(s.value.to_string()),
             Expression::TemplateLiteral(t) => self.visit_template(t, scope),
             Expression::Identifier(ident) => {
                 let res = if let Some(ref_id) = ident.reference_id.get() {
@@ -998,7 +992,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
         let mut result = String::new();
         for (i, quasi) in t.quasis.iter().enumerate() {
             match &quasi.value.cooked {
-                Some(cooked) => result.push_str(&js_str_to_string_lossy(*cooked)),
+                Some(cooked) => result.push_str(cooked.as_str()),
                 None => result.push_str(quasi.value.raw.as_str()),
             }
             let Some(expr) = t.expressions.get(i) else {
@@ -1147,7 +1141,13 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
             if name == "undefined" {
                 return ResolvedValue::Undefined;
             }
-            return self.dynamic(span, DynamicReason::UnknownIdentifier(name.to_string()));
+            // Pure type-position references (e.g. `: Function` in `declare const X: Function;`)
+            // cannot resolve to ambient runtime values and stay immediately dynamic so local
+            // ambient variable declarations fall back to `Reference` synchronously in Stage 1.
+            if reference.flags().is_type_only() {
+                return self.dynamic(span, DynamicReason::UnknownIdentifier(name.to_string()));
+            }
+            return self.ambient_global_hole(span, name);
         };
 
         if let Some(value) = scope.get(&symbol_id) {
@@ -1191,6 +1191,32 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
             span,
             self.current_node_id.get(),
             IncompleteDep::Reference(target),
+        )
+    }
+
+    /// An unbound value identifier that may be declared as an ambient global in one of the
+    /// tsconfig's `.d.ts` files: consult the env (Semantic mode), else emit a hole.
+    fn ambient_global_hole(&self, span: Span, name: &str) -> ResolvedValue {
+        let key = HoleKey::AmbientGlobal {
+            file: self.file(),
+            name: name.to_string(),
+        };
+        if let Some(mut value) = self.lookup_env(&key) {
+            if let ResolvedValue::Dynamic(ref mut d) = value {
+                if matches!(d.reason, DynamicReason::UnknownIdentifier(_)) {
+                    d.span = span;
+                }
+            }
+            return value;
+        }
+        ResolvedValue::incomplete(
+            self.file(),
+            span,
+            self.current_node_id.get(),
+            IncompleteDep::AmbientGlobal {
+                file: self.file(),
+                name: name.to_string(),
+            },
         )
     }
 
@@ -1245,7 +1271,17 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
                     None if self.is_declared_variable(decl_node.id()) => {
                         let mut type_val = None;
                         if let Some(type_annotation) = &declarator.type_annotation {
-                            let val = self.visit_type(&type_annotation.type_annotation, scope);
+                            let val = match self.visit_type(&type_annotation.type_annotation, scope)
+                            {
+                                val @ ResolvedValue::Incomplete(_) => {
+                                    // `visitVariableDeclaration` in `ngtsc` falls back to a
+                                    // `Reference` to the variable whenever `visitType` resolves to
+                                    // `DynamicValue`, so a pending type hole cannot be substituted
+                                    // transparently — re-run the declaration once the hole fills.
+                                    self.propagate_failure(usage_span, val)
+                                }
+                                val => val,
+                            };
                             if !matches!(val, ResolvedValue::Dynamic(_)) {
                                 type_val = Some(val);
                             }
@@ -1323,11 +1359,26 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
     }
 
     fn is_declared_variable(&self, declarator_node_id: oxc_semantic::NodeId) -> bool {
-        let parent = self.input.semantic.nodes().parent_node(declarator_node_id);
+        let nodes = self.input.semantic.nodes();
+        let parent = nodes.parent_node(declarator_node_id);
         let AstKind::VariableDeclaration(decl) = parent.kind() else {
             return false;
         };
-        decl.declare
+        if decl.declare {
+            return true;
+        }
+        // Declarations inside `declare global { ... }`, `declare namespace ...`, or
+        // `declare module '...'` omit `declare` on inner `var`/`let`/`const` statements (`TS1038`).
+        nodes
+            .ancestors(parent.id())
+            .any(|ancestor| match ancestor.kind() {
+                AstKind::TSGlobalDeclaration(g) => {
+                    g.declare || self.input.semantic.source_type().is_typescript_definition()
+                }
+                AstKind::TSNamespaceDeclaration(ns) => ns.declare,
+                AstKind::TSExternalModuleDeclaration(m) => m.declare,
+                _ => false,
+            })
     }
 
     /// Mirror of upstream `visitEnumDeclaration`: a `Map` of member name → [`EnumValue`].
@@ -1355,7 +1406,7 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
             let name = match &member.id {
                 TSEnumMemberName::Identifier(ident) => ident.name.to_string(),
                 TSEnumMemberName::String(s) | TSEnumMemberName::ComputedString(s) => {
-                    js_str_to_string_lossy(s.value).into_owned()
+                    s.value.to_string()
                 }
                 TSEnumMemberName::ComputedTemplateString(t) => {
                     let ResolvedValue::String(s) = self.visit_template(t, scope) else {
@@ -1840,7 +1891,9 @@ impl<'a, 'e, 'i> Interpreter<'a, 'e, 'i> {
         args: &[ResolvedValue],
     ) -> Option<ResolvedValue> {
         let mut resolve_type = |name: TypeNameRef<'_, 'a>| {
-            let resolved = self.resolve_type_name(name, &Scope::new());
+            let resolved = crate::evaluator::value::mark_value_synthetic(
+                self.resolve_type_name(name, &Scope::new()),
+            );
             match resolved {
                 ResolvedValue::Dynamic(_) | ResolvedValue::Incomplete(_) => {
                     self.propagate_failure(call_span, resolved)

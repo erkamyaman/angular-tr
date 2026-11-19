@@ -26,7 +26,9 @@ Tüm rota koruyucuları aynı olası dönüş türlerini paylaşır. Bu, navigas
 | `UrlTree` veya `RedirectCommand`  | Engellemek yerine başka bir rotaya yönlendirir                                          |
 | `Promise<T>` veya `Observable<T>` | Yönlendirici ilk yayılan değeri kullanır ve ardından abonelikten çıkar                  |
 
-NOTE: `CanMatch` farklı davranır — `false` döndürdüğünde, Angular navigasyonu tamamen engellemek yerine diğer eşleşen rotaları dener.
+NOTE: Bir route guard'ın bir değer yayması gerekir. `EMPTY` veya herhangi bir `Observable<never>` gibi, değer yaymadan tamamlanan bir `Observable`, yönlendiriciyi sonuçsuz bırakır ve navigasyon bir RxJS `EmptyError` ile başarısız olur. Bu durum sıklıkla bir interceptor'ın iptal ettiği bir istekten kaynaklanır. Kaynağınız boş tamamlanabiliyorsa, `defaultIfEmpty(false)` ile ona bir değer verin.
+
+NOTE: `CanMatch` farklıdır. `false` döndürdüğünde, Angular navigasyonu engellemek yerine diğer eşleşen rotaları dener.
 
 ## Route guard türleri
 
@@ -48,7 +50,7 @@ Tüm koruyucular, [rota düzeyinde sağlanan servislere](guide/di/defining-depen
 Aşağıdaki varsayılan argümanlara erişimi vardır:
 
 - `route`: `ActivatedRouteSnapshot` - Etkinleştirilen rota hakkında bilgi içerir
-- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
+- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu değil, gittiği durumu içerir (geçerli durum için `Router.routerState` kullanın)
 
 [Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
 
@@ -73,7 +75,7 @@ Daha fazla bilgi için [CanActivateFn API dokümanlarına](api/router/CanActivat
 Aşağıdaki varsayılan argümanlara erişimi vardır:
 
 - `childRoute`: `ActivatedRouteSnapshot` - Etkinleştirilen alt rotanın "gelecek" anlık görüntüsü (yani yönlendiricinin navigasyon yapmaya çalıştığı durum) hakkında bilgi içerir
-- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu içerir
+- `state`: `RouterStateSnapshot` - Yönlendiricinin geçerli durumunu değil, gittiği durumu içerir (geçerli durum için `Router.routerState` kullanın)
 
 [Standart koruyucu dönüş türlerini](#route-guard-dönüş-türleri) döndürebilir.
 

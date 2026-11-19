@@ -263,7 +263,7 @@ Aşağıdaki örnekler, form kontrol ve form grubu örnekleri oluşturmak için 
 
 </docs-step>
 <docs-step title="Form kontrollerini oluşturun">
-`FormBuilder` hizmetinin üç yöntemi vardır: `control()`, `group()` ve `array()`. Bunlar, bileşen sınıflarınızda form kontrolleri, form grupları ve form dizileri dahil olmak üzere örnekler oluşturmak için fabrika yöntemleridir. `profileForm` kontrollerini oluşturmak için `group` yöntemini kullanın.
+`FormBuilder` hizmetinin dört yöntemi vardır: `control()`, `group()`, `record()` ve `array()`. Bunlar, bileşen sınıflarınızda form kontrolleri, form grupları, form kayıtları ve form dizileri dahil olmak üzere örnekler oluşturmak için fabrika yöntemleridir. `profileForm` kontrollerini oluşturmak için `group` yöntemini kullanın.
 
 <docs-code header="profile-editor.component.ts (form builder)" path="adev/src/content/examples/reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="form-builder"/>
 

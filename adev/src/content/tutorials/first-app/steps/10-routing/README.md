@@ -44,11 +44,11 @@ Bu derste, ayrıntılar sayfasına navigasyon yapabilmek için uygulamanızda y�
           <docs-code header="src/main.ts içine yönlendirici yapılandırmasını ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/main.ts" visibleLines="[6,8]"/>
 
 3.  `src/app/app.ts` dosyasında, bileşeni yönlendirme kullanacak şekilde güncelleyin:
-    1.  Router yönergeleri `RouterOutlet` ve `RouterLink` için dosya düzeyinde import'lar ekleyin:
+    1.  Router yönergeleri `RouterLink` ve `RouterOutlet` için dosya düzeyinde import'lar ekleyin:
 
-          <docs-code language="angular-ts" header="src/app/app.ts içinde yönlendirici direktiflerini içe aktarın" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[3]"/>
+          <docs-code language="angular-ts" header="src/app/app.ts içinde yönlendirici direktiflerini içe aktarın" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[2]"/>
 
-    1.  `@Component` meta verileri imports'una `RouterOutlet` ve `RouterLink` ekleyin
+    1.  `@Component` meta verileri imports'unda `Home` yerine `RouterLink` ve `RouterOutlet` ekleyin
 
           <docs-code language="angular-ts" header="src/app/app.ts içinde bileşen imports dizisine yönlendirici direktiflerini ekleyin" path="adev/src/content/tutorials/first-app/steps/11-details-page/src/app/app.ts" visibleLines="[6]"/>
 

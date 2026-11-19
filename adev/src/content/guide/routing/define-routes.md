@@ -243,11 +243,13 @@ import {TitleStrategy, RouterStateSnapshot} from '@angular/router';
 @Injectable()
 export class AppTitleStrategy extends TitleStrategy {
   private readonly title = inject(Title);
+  // Bir kez okunur: getTitle() ilk güncellemeden sonra önekli başlığı döndürür
+  private readonly defaultTitle = this.title.getTitle();
 
   updateTitle(snapshot: RouterStateSnapshot): void {
     // PageTitle, ayarlanmışsa rotanın "Title" değerine eşittir
     // Ayarlanmamışsa index.html'deki "title" kullanılır
-    const pageTitle = this.buildTitle(snapshot) || this.title.getTitle();
+    const pageTitle = this.buildTitle(snapshot) || this.defaultTitle;
     this.title.setTitle(`MyAwesomeApp - ${pageTitle}`);
   }
 }
@@ -329,6 +331,26 @@ Bir rota için veri çekmeniz gerektiğinde, Angular Router veri çözücülerin
 
 - [Resource'lar ile veri çekme](/guide/routing/data-fetching-with-resources): Angular Signals `Resource` API'lerini kullanarak verileri reaktif olarak çekin.
 - [Rota veri çözücüleri](/guide/routing/data-resolvers): Resolver fonksiyonlarını kullanarak rota etkinleştirilmeden önce veri çekin.
+
+### Hata yedek bileşenleri
+
+Rota bileşeni başlatma veya render sırasında hata fırlattığında özel bir yedek bileşen göstermek için bir rotada `errorComponent` belirtebilirsiniz:
+
+```ts
+import {Routes} from '@angular/router';
+import {ProductDetails} from './product-details';
+import {ProductErrorFallback} from './product-error-fallback';
+
+export const routes: Routes = [
+  {
+    path: 'product/:id',
+    component: ProductDetails,
+    errorComponent: ProductErrorFallback,
+  },
+];
+```
+
+Hata yedeklerini yapılandırma ve başarısız rotaları yeniden deneme hakkında daha fazla bilgi için [Hata sınırları rehberine](/guide/routing/error-boundaries) bakın.
 
 ## İç İçe Route'lar
 

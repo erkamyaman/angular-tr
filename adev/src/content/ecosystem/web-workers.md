@@ -14,7 +14,7 @@ ng generate web-worker <location>
 ```
 
 Uygulamanızın herhangi bir yerine web worker ekleyebilirsiniz.
-Örneğin, kök bileşen olan `src/app/app.component.ts` dosyasına bir web worker eklemek için aşağıdaki komutu çalıştırın.
+Örneğin, kök bileşen olan `src/app/app.ts` dosyasına bir web worker eklemek için aşağıdaki komutu çalıştırın.
 
 ```shell
 ng generate web-worker app
@@ -32,9 +32,9 @@ Komut aşağıdaki işlemleri gerçekleştirir.
    });
    ```
 
-1. Worker'ı kullanmak için `src/app/app.component.ts` dosyasına aşağıdaki iskelet kodunu ekler.
+1. Worker'ı kullanmak için `src/app/app.ts` dosyasına aşağıdaki iskelet kodunu ekler.
 
-   ```ts {header:"src/app/app.component.ts"}
+   ```ts {header:"src/app/app.ts"}
    if (typeof Worker !== 'undefined') {
      // Yeni bir worker oluştur
      const worker = new Worker(new URL('./app.worker', import.meta.url));

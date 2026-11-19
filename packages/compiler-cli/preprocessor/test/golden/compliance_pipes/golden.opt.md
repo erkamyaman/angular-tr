@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './pipes';
+import * as i1 from '@angular/core';
 
 var _pipe1 = null! as i0.MyPipe;
 var _pipe2 = null! as i0.MyPurePipe;
@@ -135,7 +136,7 @@ export class PipeWithoutName implements PipeTransform {
     return new (__ngFactoryType__ || PipeWithoutName)();
   };
   // @ts-ignore
-  static ɵpipe: i0.ɵɵPipeDeclaration<PipeWithoutName, 'PipeWithoutName', true> =
+  static ɵpipe: i0.ɵɵPipeDeclaration<PipeWithoutName, null, true> =
     // @ts-ignore
     /*@__PURE__*/ i0.ɵɵdefinePipe({ name: 'PipeWithoutName', type: PipeWithoutName, pure: true });
   static {

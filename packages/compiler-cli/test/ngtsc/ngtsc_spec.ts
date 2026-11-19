@@ -13,9 +13,13 @@ import {CompilerOptions} from '../../src/transformers/api';
 import {createCompilerHost} from '../../src/transformers/compiler_host';
 
 import {ErrorCode, ERROR_DETAILS_PAGE_BASE_URL, ngErrorCode} from '../../src/ngtsc/diagnostics';
-import {absoluteFrom} from '../../src/ngtsc/file_system';
+import {absoluteFrom, getFileSystem} from '../../src/ngtsc/file_system';
 import {runInEachFileSystem} from '../../src/ngtsc/file_system/testing';
-import {loadStandardTestFiles} from '../../src/ngtsc/testing';
+import {
+  isNgpTestMode,
+  loadStandardTestFiles,
+  performNgpCompilationSync,
+} from '../../src/ngtsc/testing';
 import {
   restoreTypeScriptVersionForTesting,
   setTypeScriptVersionForTesting,
@@ -983,6 +987,43 @@ runInEachFileSystem((os: string) => {
         /MyJitModule\.ctorParameters = \(\) => \[\s*\{ type: Injector \}\s*\];/,
       );
       expect(env.getContents('test.js')).not.toContain('NonJitModule.ctorParameters');
+    });
+
+    it('should synthesize boxed primitive/built-in types and null for untyped params in `jit: true` ctorParameters', () => {
+      env.tsconfig({noImplicitAny: false});
+      env.write(
+        'test.ts',
+        `
+        import {Component, Optional} from '@angular/core';
+
+        export interface SomeInterface {}
+
+        @Component({
+          template: '{{ view }}',
+          jit: true,
+        })
+        export class TestHostComponent {
+          constructor(
+            public view: string,
+            public visible: boolean,
+            count: number,
+            nullable: string | null,
+            items: string[],
+            fn: () => void,
+            obj: object,
+            iface: SomeInterface,
+            untyped,
+            @Optional() untypedOptional,
+          ) {}
+        }
+      `,
+      );
+
+      env.driveMain();
+
+      expect(trim(env.getContents('test.js'))).toMatch(
+        /TestHostComponent\.ctorParameters = \(\) => \[\s*\{ type: String \},\s*\{ type: Boolean \},\s*\{ type: Number \},\s*\{ type: String \},\s*\{ type: Array \},\s*\{ type: Function \},\s*\{ type: Object \},\s*\{ type: undefined \},\s*null,\s*\{ type: undefined, decorators: \[\{ type: Optional \}\] \},?\s*\];/,
+      );
     });
 
     // This test triggers the Tsickle compiler which asserts that the file-paths
@@ -5113,7 +5154,7 @@ runInEachFileSystem((os: string) => {
       env.driveMain();
       const jsContents = env.getContents('test.js');
       expect(jsContents).toMatch(
-        /FooCmp\.ɵfac = function FooCmp_Factory\(__ngFactoryType__\) \{ (?:\/\* @ts-ignore \*\/\s*)?return new \(__ngFactoryType__ \|\| FooCmp\)\(i0\.ɵɵinjectAttribute\("test"\), i0\.ɵɵdirectiveInject\(i0\.ChangeDetectorRef\), i0\.ɵɵdirectiveInject\(i0\.ElementRef\), i0\.ɵɵdirectiveInject\(i0\.Injector\), i0\.ɵɵdirectiveInject\(i0\.Renderer2\), i0\.ɵɵdirectiveInject\(i0\.TemplateRef\), i0\.ɵɵdirectiveInject\(i0\.ViewContainerRef\)\); \}/,
+        /FooCmp\.ɵfac = function FooCmp_Factory\(__ngFactoryType__\) \{ (?:\/\* @ts-ignore \*\/\s*)?return new \(__ngFactoryType__ \|\| FooCmp\)\(i0\.ɵɵinjectAttribute\("test"\), i0\.ɵɵdirectiveInject\((?:i0\.)?ChangeDetectorRef\), i0\.ɵɵdirectiveInject\((?:i0\.)?ElementRef\), i0\.ɵɵdirectiveInject\((?:i0\.)?Injector\), i0\.ɵɵdirectiveInject\((?:i0\.)?Renderer2\), i0\.ɵɵdirectiveInject\((?:i0\.)?TemplateRef\), i0\.ɵɵdirectiveInject\((?:i0\.)?ViewContainerRef\)\); \}/,
       );
     });
 
@@ -5740,6 +5781,74 @@ runInEachFileSystem((os: string) => {
       }
     `;
       expect(trim(jsContents)).toContain(trim(hostBindingsFn));
+    });
+
+    it('should report diagnostics for invalid @HostBinding decorator attribute names', () => {
+      env.write(
+        'test.ts',
+        `
+        import {Directive, HostBinding} from '@angular/core';
+
+        @Directive({selector: '[test1]'})
+        export class Dir1 {
+          @HostBinding('attr.onclick') onClick = 'alert(1)';
+        }
+
+        @Directive({selector: '[test2]'})
+        export class Dir2 {
+          @HostBinding('attr.:onclick') colonOnClick = 'alert(1)';
+        }
+
+        @Directive({selector: '[test3]'})
+        export class Dir3 {
+          @HostBinding('attr.::onclick') doubleColonOnClick = 'alert(1)';
+        }
+
+        @Directive({selector: '[test4]'})
+        export class Dir4 {
+          @HostBinding('attr.svg:onclick') svgOnClick = 'alert(1)';
+        }
+
+        @Directive({selector: '[test5]'})
+        export class Dir5 {
+          @HostBinding('attr.:href') colonHref = 'javascript:alert(1)';
+        }
+
+        @Directive({selector: '[test6]'})
+        export class Dir6 {
+          @HostBinding('attr.::href') doubleColonHref = 'javascript:alert(1)';
+        }
+      `,
+      );
+
+      const errors = env.driveDiagnostics();
+      const messages = errors.map((e) => ts.flattenDiagnosticMessageText(e.messageText, '\n'));
+      expect(messages).toEqual([
+        "Binding to event attribute 'onclick' is disallowed for security reasons, please use (click)=...",
+        "Invalid attribute name ':onclick'. Attribute names cannot start with a colon.",
+        "Invalid attribute name '::onclick'. Attribute names cannot start with a colon.",
+        "Binding to event attribute 'svg:onclick' is disallowed for security reasons, please use (click)=...",
+        "Invalid attribute name ':href'. Attribute names cannot start with a colon.",
+        "Invalid attribute name '::href'. Attribute names cannot start with a colon.",
+      ]);
+    });
+
+    it('should allow @HostBinding with colon variant class and style bindings', () => {
+      env.write(
+        'test.ts',
+        `
+        import {Directive, HostBinding} from '@angular/core';
+
+        @Directive({selector: '[test]'})
+        export class Dir {
+          @HostBinding('class.hover:online') isOnline = true;
+          @HostBinding('style.color:only') colorOnly = 'red';
+        }
+      `,
+      );
+
+      const errors = env.driveDiagnostics();
+      expect(errors.length).toBe(0);
     });
 
     it('should use proper default value for preserveWhitespaces config param', () => {
@@ -11663,38 +11772,63 @@ runInEachFileSystem((os: string) => {
           // strict: true & strictTemplates: true are set by default
           target: ts.ScriptTarget.Latest,
           module: ts.ModuleKind.ESNext,
+          moduleResolution: ts.ModuleResolutionKind.Bundler,
+          skipLibCheck: true,
           annotateForClosureCompiler: true,
         };
+
+        const fakeTsickleTransform: ts.TransformerFactory<ts.SourceFile> =
+          (ctx) => (sf: ts.SourceFile) => {
+            const tsickleFileOverview = ctx.factory.createNotEmittedStatement(sf);
+            ts.setSyntheticLeadingComments(tsickleFileOverview, [
+              {
+                kind: ts.SyntaxKind.MultiLineCommentTrivia,
+                text: `*
+                  * @fileoverview Closure comment
+                  * @suppress bla1
+                  * @suppress bla2
+                `,
+                pos: -1,
+                end: -1,
+                hasTrailingNewLine: true,
+              },
+            ]);
+            return ctx.factory.updateSourceFile(
+              sf,
+              [tsickleFileOverview, ...sf.statements],
+              sf.isDeclarationFile,
+              sf.referencedFiles,
+              sf.typeReferenceDirectives,
+              sf.hasNoDefaultLib,
+              sf.libReferenceDirectives,
+            );
+          };
+
+        if (isNgpTestMode()) {
+          const fs = getFileSystem();
+          const result = performNgpCompilationSync({
+            fs,
+            basePath: env.basePath,
+            tsconfigPath: fs.resolve(env.basePath, 'tsconfig.json'),
+            rootNames: [fs.resolve('/test.ts')],
+            options,
+            emit: true,
+            complianceMode: true,
+            customTransformers: {beforeTs: [fakeTsickleTransform]},
+          });
+
+          expect(
+            result.diagnostics.map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n')),
+          ).toEqual([]);
+          expect(env.getContents('/test.js')).toContain(`* @fileoverview Closure comment`);
+          return;
+        }
 
         const program = new NgtscProgram(['/test.ts'], options, createCompilerHost({options}));
         const transformers = program.compiler.prepareEmit().transformers;
 
         // Add a "fake tsickle" transform before Angular's transform.
-        transformers.before!.unshift((ctx) => (sf: ts.SourceFile) => {
-          const tsickleFileOverview = ctx.factory.createNotEmittedStatement(sf);
-          ts.setSyntheticLeadingComments(tsickleFileOverview, [
-            {
-              kind: ts.SyntaxKind.MultiLineCommentTrivia,
-              text: `*
-                  * @fileoverview Closure comment
-                  * @suppress bla1
-                  * @suppress bla2
-                `,
-              pos: -1,
-              end: -1,
-              hasTrailingNewLine: true,
-            },
-          ]);
-          return ctx.factory.updateSourceFile(
-            sf,
-            [tsickleFileOverview, ...sf.statements],
-            sf.isDeclarationFile,
-            sf.referencedFiles,
-            sf.typeReferenceDirectives,
-            sf.hasNoDefaultLib,
-            sf.libReferenceDirectives,
-          );
-        });
+        transformers.before!.unshift(fakeTsickleTransform);
 
         const {diagnostics, emitSkipped} = program
           .getTsProgram()

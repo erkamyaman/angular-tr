@@ -93,8 +93,6 @@ IMPORTANT: Bu seçenek yalnızca `@angular-devkit/build-angular:browser` builder
 
 Etkinleştirildiğinde, `ngc`'nin `.js` çıktısı herhangi bir tembel yüklenen şablon veya stil URL'si içermez.
 
-Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
-
 ### `flatModuleId`
 
 Düz bir modülü içe aktarmak için kullanılan modül kimliği \(`flatModuleOutFile` `true` olduğunda\).
@@ -155,8 +153,6 @@ Bu, şablon derleyicisinin çoğunu kapatır ve şablon tanılama raporlamasın�
 
 Şablon derleyicisine, bir `npm` paketi ile dağıtım için `.metadata.json` dosyaları üretme talimatı vermek için kullanılabilir. Bu, `npm`'e dağıtılamayan `.ngfactory.js` ve `.ngstyle.js` dosyalarının üretimini önler.
 
-Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
-
 ### `strictMetadataEmit`
 
 `true` olduğunda, `"skipMetadataEmit"` `false` ise `.metadata.json` dosyasına bir hata bildirir.
@@ -174,8 +170,6 @@ Metadata toplayıcı, bir açıklamada kullanılmak üzere tasarlanmış semboll
 
 Bir kütüphanenin istemcisi bir açıklamada bir sembol kullanmayı amaçlıyorsa, şablon derleyicisi bunu normalde bildirmez. İstemci sembolü gerçekten kullandıktan sonra bildirilir.
 Bu seçenek, kütüphanenin derleme aşamasında bu hataların algılanmasını sağlar ve örneğin Angular kütüphanelerinin kendilerinin üretilmesinde kullanılır.
-
-Angular CLI ile oluşturulan kütüphane projeleri için geliştirme yapılandırması varsayılanı `true`'dur.
 
 ### `strictInjectionParameters`
 

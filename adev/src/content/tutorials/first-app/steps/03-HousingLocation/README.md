@@ -6,7 +6,7 @@ Bu eğitim dersi, Angular uygulamanıza `HousingLocation` bileşeninin nasıl ek
 
 ## Neler öğreneceksiniz
 
-- Uygulamanızda yeni bir bileşen var: `HousingLocation` ve bileşenin uygulamanıza eklendiğini doğrulayan bir mesaj görüntüler.
+Uygulamanızda yeni bir bileşen olacak, `HousingLocation`, ve bileşenin uygulamanıza eklendiğini doğrulayan bir mesaj görüntüleyecek.
 
 <docs-workflow>
 

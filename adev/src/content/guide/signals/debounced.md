@@ -31,11 +31,13 @@ export class Search {
 }
 ```
 
-`debounced`, kaynak sinyali ve milisaniye cinsinden bir bekleme süresini alır. Döndürülen kaynağın `value()` değeri her zaman en son yerleşen (settled) değeri içerir ve `status()` size yeni bir değerin hâlâ beklemede olup olmadığını söyler.
+`debounced`, kaynak sinyali ve milisaniye cinsinden bir bekleme süresini alır. Döndürülen kaynağın `value()` değeri en son yerleşen (settled) değeri içerir ve `status()` size yeni bir değerin hâlâ beklemede olup olmadığını söyler.
 
 ## Gecikme sırasında durum
 
-Gecikme zamanlayıcısı geri sayım yaparken `status()` `'loading'` olur ve `value()` önceden çözümlenmiş değeri döndürür. Zamanlayıcı sona erdiğinde kaynak `'resolved'` durumuna yerleşir. Kaynak sinyal bir hata fırlatırsa, kaynak hiçbir zamanlayıcı çalışmadan anında `'error'` durumuna geçer.
+Çözümlenmiş bir değerden sonra gecikme zamanlayıcısı geri sayım yaparken `status()` `'loading'` olur ve `value()` önceden çözümlenmiş değeri döndürür. Zamanlayıcı sona erdiğinde kaynak `'resolved'` durumuna yerleşir.
+
+Kaynak sinyal bir hata fırlatırsa, kaynak anında `'error'` durumuna geçer, `value()` hata fırlatır ve hiçbir zamanlayıcı çalışmaz. Kaynak sinyal hata fırlatmayı bıraktıktan sonra, kaynak yeni bekleme süresi yerleşene kadar `'error'` durumunda kalır, ardından `'resolved'` olur.
 
 Durumların tam listesi ve `value()` davranışları için [Kaynak durumu](/guide/signals/resource#resource-durumu) bölümüne bakın.
 

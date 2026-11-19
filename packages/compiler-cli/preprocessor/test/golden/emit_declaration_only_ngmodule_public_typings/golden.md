@@ -110,7 +110,13 @@ export class PermissionsCheckerModule {
   static ɵmod: i0.ɵɵNgModuleDeclaration<
     PermissionsCheckerModule,
     never,
-    never,
+    [
+      [typeof AveLoggingModule],
+      ReturnType<typeof FooModule.forRoot>,
+      ReturnType<typeof provideFoo>,
+      [typeof LocalHelperModule],
+      typeof ForwardModule,
+    ],
     [typeof PermissionsChecker]
   > =
     // @ts-ignore

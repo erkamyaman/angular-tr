@@ -139,6 +139,7 @@ export function ngIfDts(): TestFile {
     contents: `
     export declare class NgIf<T> {
       ngIf: T;
+      static ngTemplateGuard_ngIf: 'binding';
       static ngTemplateContextGuard<T>(dir: NgIf<T>, ctx: any): ctx is NgIfContext<Exclude<T, false|0|''|null|undefined>>
     }
 
@@ -222,6 +223,7 @@ export const ALL_ENABLED_CONFIG: Readonly<TypeCheckingConfig> = {
   allowSignalsInTwoWayBindings: true,
   allowDomEventAssertion: true,
   checkUnknownElements: true,
+  checkTypeOfNgTemplateBindings: true,
 };
 
 // Remove 'ref' from TypeCheckableDirectiveMeta and add a 'selector' instead.

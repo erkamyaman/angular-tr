@@ -354,7 +354,6 @@ export async function runPipeline(
   options: {
     optimize: boolean;
     sidecar?: boolean;
-    enableSelectorless?: boolean;
     templateParseOptions?: Record<string, any>;
     errors?: string[];
     format?: boolean;
@@ -413,7 +412,13 @@ export async function runPipeline(
   };
 
   const workspaceName = tsconfigOptions.workspaceName;
-  const rootDirs = compilerOptions.rootDirs;
+  const rootDir = path.posix.dirname(tsconfigFile.path);
+  const rootDirs = (compilerOptions.rootDirs as string[] | undefined)?.map((d) => {
+    const norm = d.replace(/\\/g, '/');
+    return norm.startsWith('/') || /^[a-zA-Z]:\//.test(norm)
+      ? norm
+      : path.posix.join(rootDir, norm);
+  });
   const useHostForImportGeneration =
     tsconfigOptions._useHostForImportGeneration ||
     tsconfigOptions._useHostForImportAndAliasGeneration
@@ -474,12 +479,9 @@ export async function runPipeline(
 
   const compiler = new HybridCompiler(analyzer, {
     optimize: options.optimize,
-    tsconfigPath: tsconfigFile.path,
-    virtualFiles,
     tcbConfig,
     optionDiagnostics,
     templateParseOptions: {
-      enableSelectorless: options.enableSelectorless,
       ...options.templateParseOptions,
     },
     legacyOptionalChaining: tsconfigOptions.legacyOptionalChaining,
@@ -494,7 +496,7 @@ export async function runPipeline(
     externalRuntimeStyles:
       tsconfigOptions.externalRuntimeStyles ??
       options.templateParseOptions?.['externalRuntimeStyles'],
-    rootDir: path.posix.dirname(tsconfigFile.path),
+    rootDir,
     complianceMode: options.complianceMode,
     workspaceName,
     rootDirs,
@@ -565,7 +567,7 @@ export async function runPipeline(
   const diagPath = getDiagnosticPath(tsconfigFile.path);
   const diagContent = serializeDiagnostics(
     tsconfigFile.path,
-    compiler.diagnosticsMap,
+    compiler.getDiagnostics(),
     compiler.optionDiagnostics,
   );
   const serializedDiagnostics = JSON.parse(diagContent) as {

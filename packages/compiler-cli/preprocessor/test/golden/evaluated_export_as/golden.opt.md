@@ -7,6 +7,7 @@
 
 import * as i0 from './app';
 import * as i1 from './tooltip';
+import * as i2 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.App) {
@@ -105,9 +106,9 @@ export class App {
               {
                 selector: 'app-root',
                 template: `
-        <button tooltip #t="tooltip" (click)="t.show()">a</button>
-        <span multi #m="second" (click)="m.toggle()">b</span>
-      `,
+    <button tooltip #t="tooltip" (click)="t.show()">a</button>
+    <span multi #m="second" (click)="m.toggle()">b</span>
+  `,
                 imports: [Tooltip, Multi],
               },
             ],

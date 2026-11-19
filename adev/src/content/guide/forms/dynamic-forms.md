@@ -21,7 +21,7 @@ Eğitim sizi aşağıdaki adımlardan geçirir:
 1. Dinamik olarak form kontrolleri oluşturacak bir bileşen geliştirin.
 
 Oluşturduğunuz form, kullanıcı deneyimini iyileştirmek için girdi doğrulaması ve stil kullanır.
-Yalnızca tüm kullanıcı girdisi geçerli olduğunda etkinleştirilen bir Gönder düğmesine sahiptir ve geçersiz girdiyi renk kodlaması ve hata mesajlarıyla işaretler.
+Yalnızca tüm kullanıcı girdisi geçerli olduğunda etkinleştirilen bir Kaydet düğmesine sahiptir ve geçersiz girdiyi renk kodlaması ve hata mesajlarıyla işaretler.
 
 Temel sürüm, daha zengin bir soru çeşitliliğini, daha zarif oluşturmayı ve üstün kullanıcı deneyimini desteklemek için geliştirilebilir.
 
@@ -64,7 +64,7 @@ Bir sonraki adımda form şablonunu oluşturduğunuzda, uygun kontrolleri dinami
 ### Form gruplarını oluşturma
 
 Dinamik bir form, form modeline dayalı olarak gruplandırılmış girdi kontrol kümeleri oluşturmak için bir hizmet kullanır.
-Aşağıdaki `QuestionControlService`, soru modelinden meta verileri kullanan bir dizi `FormGroup` örneği toplar.
+Aşağıdaki `QuestionControlService`, soru modelinden meta verileri kullanan soru modelindeki meta verilerden `FormControl` örneklerinden oluşan bir `FormGroup` oluşturur.
 Varsayılan değerler ve doğrulama kuralları belirleyebilirsiniz.
 
 <docs-code header="question-control.service.ts" path="adev/src/content/examples/dynamic-form/src/app/question-control.service.ts"/>
@@ -76,7 +76,7 @@ Her soru, `DynamicFormQuestionComponent`'in bir örneğiyle eşleşen bir `<app-
 
 `DynamicFormQuestionComponent`, veri bağlı soru nesnesindeki değerlere dayalı olarak bireysel bir sorunun ayrıntılarını oluşturmaktan sorumludur.
 Form, şablon HTML'sini altta yatan kontrol nesnelerine bağlamak için [`[formGroup]` direktifine](api/forms/FormGroupDirective 'API reference') dayanır.
-`DynamicFormQuestionComponent`, soru modelinde tanımlanan kontrollerle doldurarak form grupları oluşturur, görüntüleme ve doğrulama kurallarını belirtir.
+`DynamicFormQuestionComponent`, `QuestionControlService` tarafından oluşturulan form grubunu alır ve kendi sorusunun kontrolünü render eder, orada belirlenen kurallara göre doğrulama durumunu görüntüler.
 
 <docs-code-multifile>
   <docs-code header="dynamic-form-question.component.html" path="adev/src/content/examples/dynamic-form/src/app/dynamic-form-question.component.html"/>

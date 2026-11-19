@@ -50,9 +50,9 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [LocalComp, ExternalComp],
                 template: `
-        <local-comp></local-comp>
-        <external-comp></external-comp>
-      `,
+    <local-comp></local-comp>
+    <external-comp></external-comp>
+  `,
               },
             ],
           },
@@ -81,6 +81,7 @@ export class AppComponent {
  */
 
 import * as i0 from './local';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.LocalComp) {

@@ -6,12 +6,12 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {cleanupWebMCPPolyfill, initializeWebMCPPolyfill} from '@mcp-b/webmcp-polyfill';
+import type {ModelContextTool} from '../../third_party/webmcp-types';
 import {inject, Injectable, Injector, runInInjectionContext} from '../../src/di';
-import {RuntimeErrorCode} from '../../src/errors';
 import {declareExperimentalWebMcpTool} from '../../src/webmcp/declare_tool';
-import {Execute, ToolDescriptor} from '../../src/webmcp/types';
-import type {JsonSchemaForInference} from '../../third_party/@mcp-b/webmcp-types';
+import {Execute} from '../../src/webmcp/types';
+import {RuntimeErrorCode} from '../../src/errors';
+import {installWebMcpMock, ModelContextMock, uninstallWebMcpMock} from '@angular/private/testing';
 
 // Whether or not the input type is `any`.
 type IsAny<T> = 0 extends 1 & T ? true : false;
@@ -20,16 +20,18 @@ type IsAny<T> = 0 extends 1 & T ? true : false;
 type HasIndexSignature<T> = string extends keyof T ? true : false;
 
 describe('declareExperimentalWebMcpTool', () => {
+  let modelContext: ModelContextMock;
+
   beforeEach(() => {
-    initializeWebMCPPolyfill({installTestingShim: true});
+    modelContext = installWebMcpMock();
   });
 
   afterEach(() => {
-    cleanupWebMCPPolyfill();
+    uninstallWebMcpMock();
   });
 
   it('should register a tool', async () => {
-    const execute = jasmine.createSpy<Execute<JsonSchemaForInference>>('execute').and.returnValue({
+    const execute = jasmine.createSpy<Execute>('execute').and.returnValue({
       content: [{type: 'text', text: 'Hello!'}],
     });
 
@@ -48,16 +50,11 @@ describe('declareExperimentalWebMcpTool', () => {
       Injector.create({providers: []}),
     );
 
-    expect(globalThis.navigator.modelContextTesting!.listTools()).toEqual([
-      jasmine.objectContaining({name: 'testTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'testTool'})]);
 
-    const result = await globalThis.navigator.modelContextTesting!.executeTool(
-      'testTool',
-      '{"arg": "foo"}',
-    );
+    const result = await modelContext.executeTool({name: 'testTool'}, {arg: 'foo'});
     expect(execute).toHaveBeenCalledOnceWith({arg: 'foo'}, jasmine.anything());
-    expect(JSON.parse(result!)).toEqual({
+    expect(JSON.parse(result)).toEqual({
       content: [{type: 'text', text: 'Hello!'}],
     });
   });
@@ -101,13 +98,11 @@ describe('declareExperimentalWebMcpTool', () => {
       injector,
     );
 
-    expect(globalThis.navigator.modelContextTesting!.listTools()).toEqual([
-      jasmine.objectContaining({name: 'testTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'testTool'})]);
 
     injector.destroy();
 
-    expect(globalThis.navigator.modelContextTesting!.listTools()).toEqual([]);
+    expect(await modelContext.getTools()).toEqual([]);
   });
 
   it('should unregister the tool when its injection context is destroyed and no `injector` is provided', async () => {
@@ -122,13 +117,11 @@ describe('declareExperimentalWebMcpTool', () => {
       });
     });
 
-    expect(globalThis.navigator.modelContextTesting!.listTools()).toEqual([
-      jasmine.objectContaining({name: 'testTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'testTool'})]);
 
     injector.destroy();
 
-    expect(globalThis.navigator.modelContextTesting!.listTools()).toEqual([]);
+    expect(await modelContext.getTools()).toEqual([]);
   });
 
   it('should throw when called outside an injection context and no `injector` is provided', async () => {
@@ -146,9 +139,7 @@ describe('declareExperimentalWebMcpTool', () => {
 
   it('should pass an `AbortSignal` to the tool and abort it when the injector is destroyed', async () => {
     const injector = Injector.create({providers: []});
-    const execute = jasmine
-      .createSpy<Execute<JsonSchemaForInference>>('execute')
-      .and.returnValue({content: []});
+    const execute = jasmine.createSpy<Execute>('execute').and.returnValue({content: []});
 
     await declareExperimentalWebMcpTool(
       {
@@ -160,7 +151,7 @@ describe('declareExperimentalWebMcpTool', () => {
       injector,
     );
 
-    await globalThis.navigator.modelContextTesting!.executeTool('testTool', '{}');
+    await modelContext.executeTool({name: 'testTool'});
     const [, {signal}] = execute.calls.first().args;
     expect(signal.aborted).toBeFalse();
 
@@ -170,11 +161,8 @@ describe('declareExperimentalWebMcpTool', () => {
 
   it('should pass an `AbortSignal` to the tool and abort it when the client signal aborts', async () => {
     const injector = Injector.create({providers: []});
-    const execute = jasmine
-      .createSpy<Execute<JsonSchemaForInference>>('execute')
-      .and.returnValue({content: []});
+    const execute = jasmine.createSpy<Execute>('execute').and.returnValue({content: []});
 
-    const modelContext = (globalThis.document as any).modelContext;
     const registerToolSpy = spyOn(modelContext, 'registerTool').and.callThrough();
 
     await declareExperimentalWebMcpTool(
@@ -187,8 +175,7 @@ describe('declareExperimentalWebMcpTool', () => {
       injector,
     );
 
-    const wrappedTool = registerToolSpy.calls.first()
-      .args[0] as ToolDescriptor<JsonSchemaForInference>;
+    const wrappedTool = registerToolSpy.calls.first().args[0] as ModelContextTool;
 
     const clientAbortCtrl = new AbortController();
     await wrappedTool.execute({}, {signal: clientAbortCtrl.signal});
@@ -222,7 +209,7 @@ describe('declareExperimentalWebMcpTool', () => {
       injector,
     );
 
-    await globalThis.navigator.modelContextTesting!.executeTool('testTool', '{}');
+    await modelContext.executeTool({name: 'testTool'});
 
     expect(injectedService).toBeInstanceOf(TestService);
   });

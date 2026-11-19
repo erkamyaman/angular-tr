@@ -7,6 +7,7 @@
 
 import * as i0 from './app';
 import * as i1 from './pipe';
+import * as i2 from '@angular/core';
 
 var _pipe1 = null! as i1.TrimPipe;
 
@@ -93,10 +94,10 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [MatButtonModule, TrimPipeModule],
                 template: `
-        @defer (on immediate) {
-          <button matButton>{{ '  hello  ' | trim }}</button>
-        }
-      `,
+    @defer (on immediate) {
+      <button matButton>{{ '  hello  ' | trim }}</button>
+    }
+  `,
               },
             ],
           },

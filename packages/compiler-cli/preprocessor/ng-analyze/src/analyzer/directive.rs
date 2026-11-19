@@ -6,7 +6,7 @@ use crate::analyzer::class_data::{
     DirectiveData, ExpressionValueData, ExpressionValueKind, HostPropertyData, ValueIssue,
 };
 use crate::analyzer::transforms::InputTransformSite;
-use crate::evaluator::{evaluate_expression, EvalInput, Resolved};
+use crate::evaluator::{evaluate_expression, EvalInput, Resolved, ResolvedValue};
 
 use super::evaluated_io::{IoKind, IoMetadataArray};
 use super::input_output::{object_literal_transform, transform_property};
@@ -132,7 +132,6 @@ pub fn extract_directive_metadata<'a>(
                     }
                 }
             }
-            "signals" => data.signals = extract_bool(&p.value, semantic).unwrap_or(false),
             "exportAs" => {
                 data.export_as_span = Some(p.value.span());
                 data.export_as = Some(Resolved::from_syntax(
@@ -154,10 +153,12 @@ pub fn extract_directive_metadata<'a>(
             }
             "hostDirectives" => {
                 // Evaluated via the partial evaluator (`extractHostDirectives` in ngtsc `shared.ts`).
-                data.host_directives = Some(Resolved::from_syntax(
-                    evaluate_expression(&p.value, eval),
-                    eval.file,
-                ));
+                let evaluated = evaluate_expression(&p.value, eval);
+                data.unsupported_host_directives =
+                    extract_unsupported_host_directives(&evaluated, semantic, eval.file);
+                data.host_directive_expressions =
+                    host_directive_wrappable_expressions(&p.value, semantic.source_text());
+                data.host_directives = Some(Resolved::from_syntax(evaluated, eval.file));
                 data.host_directives_span = Some(p.value.span());
             }
             "providers" => {
@@ -221,6 +222,123 @@ fn fold_or_defer_io_array(data: &mut DirectiveData, array: IoMetadataArray) {
         .get_or_insert_with(Default::default)
         .arrays
         .push(array);
+}
+
+/// Entries in `hostDirectives` that evaluate to an external reference (`Incomplete`) via an
+/// expression other than a plain identifier or static property access (rejected in local and
+/// `emitDeclarationOnly` compilation modes by ngtsc's `extractHostDirectives` when unresolved).
+fn extract_unsupported_host_directives(
+    evaluated: &ResolvedValue,
+    semantic: &Semantic<'_>,
+    origin: crate::query::FileId,
+) -> Vec<(Resolved<()>, oxc_span::Span)> {
+    let ResolvedValue::Array(items) = evaluated.unwrap_named() else {
+        return Vec::new();
+    };
+    items
+        .iter()
+        .filter_map(|item| unsupported_host_directive_entry(item, semantic, origin))
+        .collect()
+}
+
+/// The `hostDirectives` array elements (or their `directive` property) that are an identifier or
+/// a non-computed property access chain, with their source text.
+///
+/// In local and `emitDeclarationOnly` compilation, ngtsc's `extractHostDirectives` keeps an entry
+/// that evaluates to a `DynamicValue` as `WrappedNodeExpr(node)` when that node is an `Identifier`
+/// or `PropertyAccessExpression`. Since `visitExpression` re-anchors every `DynamicValue` on the
+/// outermost expression evaluated, the node is the array element itself, so the check is purely
+/// syntactic on the decorator's own array literal.
+/// https://github.com/angular/angular/blob/73911c8/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L2152-L2171
+fn host_directive_wrappable_expressions(
+    expr: &Expression<'_>,
+    source_text: &str,
+) -> Vec<(oxc_span::Span, String)> {
+    let Expression::ArrayExpression(array) = expr.without_parentheses() else {
+        return Vec::new();
+    };
+    array
+        .elements
+        .iter()
+        .filter_map(|element| {
+            let element = element.as_expression()?;
+            let directive = match element.without_parentheses() {
+                Expression::ObjectExpression(object) => object_property_value(object, "directive")?,
+                other => other,
+            };
+            is_identifier_or_property_access(directive).then(|| {
+                let span = directive.span();
+                (span, span.source_text(source_text).to_string())
+            })
+        })
+        .collect()
+}
+
+fn object_property_value<'r, 'a>(
+    object: &'r oxc_ast::ast::ObjectExpression<'a>,
+    name: &str,
+) -> Option<&'r Expression<'a>> {
+    object.properties.iter().find_map(|property| {
+        let ObjectPropertyKind::ObjectProperty(property) = property else {
+            return None;
+        };
+        if property.computed || extract_property_key(&property.key).as_deref() != Some(name) {
+            return None;
+        }
+        Some(&property.value)
+    })
+}
+
+fn is_identifier_or_property_access(expr: &Expression<'_>) -> bool {
+    match expr {
+        Expression::Identifier(_) => true,
+        Expression::StaticMemberExpression(member) => {
+            is_identifier_or_property_access(&member.object)
+        }
+        _ => false,
+    }
+}
+
+fn unsupported_host_directive_entry(
+    item: &ResolvedValue,
+    semantic: &Semantic<'_>,
+    origin: crate::query::FileId,
+) -> Option<(Resolved<()>, oxc_span::Span)> {
+    let dir_val = match item.unwrap_named() {
+        ResolvedValue::Map(map) => map.get("directive")?,
+        other => other,
+    };
+    let ResolvedValue::Incomplete(hole) = dir_val.unwrap_named() else {
+        return None;
+    };
+    // A spread hole's node is its argument, but ngtsc sees the spread element itself
+    // (`[...IMPORTED]`), which is never an identifier.
+    let is_supported = !hole.synthetic
+        && hole.spread.is_none()
+        && hole.node_id.is_some_and(|id| {
+            matches!(
+                semantic.nodes().kind(id),
+                oxc_ast::AstKind::IdentifierReference(_)
+                    | oxc_ast::AstKind::StaticMemberExpression(_)
+            )
+        });
+    if is_supported {
+        return None;
+    }
+    let span = if hole.synthetic {
+        let call_span = hole.node_id.and_then(|id| {
+            semantic.nodes().ancestors(id).find_map(|ancestor| {
+                let oxc_ast::AstKind::CallExpression(call) = ancestor.kind() else {
+                    return None;
+                };
+                Some(call.span)
+            })
+        });
+        call_span.unwrap_or(hole.span)
+    } else {
+        hole.span
+    };
+    Some((Resolved::from_syntax(dir_val.clone(), origin), span))
 }
 
 /// The transforms of the `inputs` entries written in place as object literals, keyed by the
@@ -464,64 +582,6 @@ mod tests {
         let backtick_end = source_text.rfind('`').unwrap() as u32;
         assert_eq!(properties[0].value.span.start, backtick_start + 1);
         assert_eq!(properties[0].value.span.end, backtick_end);
-    }
-
-    #[test]
-    fn test_extract_directive_metadata_signals() {
-        let source_text = r#"
-            let x = {
-                selector: '[signalDir]',
-                standalone: false,
-                signals: true
-            };
-        "#;
-
-        let allocator = Allocator::default();
-        let source_type = SourceType::default();
-        let ret = Parser::new(&allocator, source_text, source_type).parse();
-
-        let semantic_ret = SemanticBuilder::new()
-            .with_build_nodes(true)
-            .build(&ret.program);
-
-        let mut object_expr = None;
-        if let oxc_ast::ast::Statement::VariableDeclaration(decl) = &ret.program.body[0] {
-            if let Some(init) = &decl.declarations[0].init {
-                object_expr = Some(init);
-            }
-        }
-
-        let expr = object_expr.expect("Expected object expression");
-        let oxc_ast::ast::Expression::ObjectExpression(obj) = expr else {
-            panic!("Expected object expression");
-        };
-
-        let import_map = crate::analyzer::extract_import_map(&ret.module_record);
-        let angular_imports = crate::analyzer::imports::extract_angular_imports(
-            &ret.module_record,
-            &semantic_ret.semantic,
-            false,
-        );
-        let env = crate::evaluator::ResolvedEnv::new();
-        let interner = crate::query::FileIdInterner::new();
-        let eval = EvalInput {
-            semantic: &semantic_ret.semantic,
-            file: interner.intern_path("/test/file.ts"),
-            import_map: &import_map,
-            mode: crate::evaluator::EvalMode::Syntax,
-            env: &env,
-            foreign: crate::analyzer::resolvers::angular_foreign_resolvers(),
-        };
-        let meta =
-            extract_directive_metadata(obj, None, &semantic_ret.semantic, &angular_imports, &eval)
-                .expect("non-jit metadata should be extracted");
-
-        assert_eq!(
-            meta.selector.as_ref().and_then(Resolved::get_optional),
-            Some("[signalDir]".to_string())
-        );
-        assert!(!meta.standalone);
-        assert!(meta.signals);
     }
 
     #[test]
@@ -929,8 +989,20 @@ mod tests {
         assert_eq!(text(type_span), "boolean | string");
         assert_eq!(text(value_span), "(v: boolean | string) => v !== false");
 
-        // As on `@Input({transform})`, an untyped inline function records no transform.
-        assert!(inputs[1].transform.is_none());
+        // As on `@Input({transform})`, an untyped inline function records its value span with an
+        // empty type span so local compilation still emits the transform and `unknown` coercion.
+        let Some(TransformData::Type {
+            type_span,
+            value_span,
+        }) = inputs[1].transform
+        else {
+            panic!(
+                "expected an untyped inline transform, got {:?}",
+                inputs[1].transform
+            );
+        };
+        assert!(type_span.is_empty());
+        assert_eq!(text(value_span), "(v) => v");
 
         let Some(TransformData::Expression(span)) = inputs[2].transform else {
             panic!(

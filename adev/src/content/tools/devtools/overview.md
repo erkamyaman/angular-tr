@@ -24,7 +24,7 @@ Uzantıyı açtığınızda dört ek sekme göreceksiniz:
 | [Injector Tree](tools/devtools/injectors) | Environment ve Element Injector hiyerarşisini görselleştirmenize olanak tanır                                                  |
 | [Router Tree](tools/devtools/router)      | Uygulamanızın yönlendirme ağacını görselleştirmenize olanak tanır.                                                             |
 
-`Transfer State` gibi diğer sekmeler deneyseldir ve devtools ayarları üzerinden etkinleştirilebilir; henüz belgelenmemiştir.
+Uygulama hydration kullandığında bir `Transfer State` sekmesi de görünür.
 
 HELPFUL: Chromium tabanlı tarayıcı kullanıcıları için, [Performans paneli entegrasyonu](/best-practices/profiling-with-chrome-devtools) ilginizi çekebilir.
 

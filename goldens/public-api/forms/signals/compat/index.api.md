@@ -6,8 +6,10 @@
 
 import { AbstractControl } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { FormArray } from '@angular/forms';
 import { FormControlState } from '@angular/forms';
 import { FormControlStatus } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import { Injector } from '@angular/core';
 import { Signal } from '@angular/core';
@@ -56,7 +58,10 @@ export const NG_STATUS_CLASSES: SignalFormsConfig['classes'];
 
 // @public
 export class SignalFormControl<T> extends AbstractControl {
-    constructor(value: T, schemaOrOptions?: SchemaFn<T> | FormOptions<T>, options?: FormOptions<T>);
+    constructor(value: T);
+    constructor(value: T, schema: SchemaOrSchemaFn<T>);
+    constructor(value: T, options: FormOptions<T>);
+    constructor(value: T, schema: SchemaOrSchemaFn<T> | undefined, options: FormOptions<T>);
     // (undocumented)
     addAsyncValidators(_validators: any): void;
     // (undocumented)
@@ -132,6 +137,8 @@ export class SignalFormControl<T> extends AbstractControl {
         emitEvent?: boolean;
     }): void;
     // (undocumented)
+    setParent(parent: FormGroup | FormArray | null): void;
+    // (undocumented)
     setValidators(_validators: any): void;
     // (undocumented)
     setValue(value: any, options?: ValueUpdateOptions): void;
@@ -146,6 +153,8 @@ export class SignalFormControl<T> extends AbstractControl {
     // (undocumented)
     get untouched(): boolean;
     set untouched(_: boolean);
+    // (undocumented)
+    get updateOn(): 'change' | 'blur' | 'submit';
     // (undocumented)
     updateValueAndValidity(_opts?: Object): void;
     // (undocumented)

@@ -7,6 +7,7 @@
 
 import * as i0 from './app';
 import * as i1 from './my-dir';
+import * as i2 from '@angular/core';
 
 const _ctor1: <T = any>(init: Pick<i1.MyNgIf<T>, 'myNgIf'>) => i1.MyNgIf<T> = null!;
 
@@ -84,8 +85,8 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [MyNgIf],
                 template: `
-        <div *myNgIf="true"></div>
-      `,
+    <div *myNgIf="true"></div>
+  `,
               },
             ],
           },

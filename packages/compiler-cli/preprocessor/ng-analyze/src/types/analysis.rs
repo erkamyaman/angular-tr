@@ -4,7 +4,7 @@ use super::metadata::{
 };
 use crate::evaluator::Resolved;
 use crate::query::{FileId, ReferenceId};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -450,6 +450,9 @@ pub struct NgModuleComponentMap {
     pub component_to_module: HashMap<FileId, HashMap<String, ReferenceId>>,
     /// Classes declared by multiple NgModules (excluded from `component_to_module` and reported as NG6007).
     pub duplicate_declarations: HashMap<FileId, HashMap<String, Vec<ReferenceId>>>,
+    /// Per-declared-file dependencies: every file read while evaluating and resolving the
+    /// `@NgModule.declarations` of modules that declare a class in `FileId`.
+    pub file_dependencies: HashMap<FileId, HashSet<FileId>>,
 }
 
 impl NgModuleComponentMap {
@@ -523,6 +526,38 @@ impl NgModuleComponentMap {
             .or_default()
             .insert(class_name.to_string(), vec![first, ng_module]);
     }
+
+    /// Record the files read while resolving a declaration targeting `file_id`.
+    pub fn record_file_dependencies(
+        &mut self,
+        file_id: FileId,
+        deps: impl IntoIterator<Item = FileId>,
+    ) {
+        self.file_dependencies
+            .entry(file_id)
+            .or_default()
+            .extend(deps);
+    }
+
+    /// Files whose single or duplicate `@NgModule` declarations changed between `self` and `other`.
+    pub fn changed_files(&self, other: &Self) -> HashSet<FileId> {
+        let mut changed = HashSet::new();
+        for &file_id in self
+            .component_to_module
+            .keys()
+            .chain(self.duplicate_declarations.keys())
+            .chain(other.component_to_module.keys())
+            .chain(other.duplicate_declarations.keys())
+        {
+            if self.component_to_module.get(&file_id) != other.component_to_module.get(&file_id)
+                || self.duplicate_declarations.get(&file_id)
+                    != other.duplicate_declarations.get(&file_id)
+            {
+                changed.insert(file_id);
+            }
+        }
+        changed
+    }
 }
 
 /// Internal per-file analysis result shared by [`crate::QueryKey::AnalyzeFileSyntax`] and
@@ -538,6 +573,7 @@ pub struct FileData {
     pub(crate) classes: Vec<crate::analyzer::ClassData>,
     /// Static `import` declarations in source order.
     pub(crate) import_declarations: Vec<crate::analyzer::ImportDeclarationInfo>,
+    pub(crate) import_equals_declarations: Vec<crate::analyzer::ImportEqualsDeclarationInfo>,
     pub(crate) type_only_exports: Vec<String>,
     /// Resolved on-disk TS paths of static imports (edges of the static import graph).
     pub(crate) resolved_dependencies: Vec<PathBuf>,
@@ -551,22 +587,28 @@ pub struct FileData {
     pub(crate) symbol_index: Arc<HashMap<ReferenceId, ClassInfo>>,
     /// Constructor facts for every class in the file, decorated or not, keyed by name.
     pub(crate) di_facts: Arc<HashMap<String, crate::analyzer::di_facts::ClassDiFacts>>,
+    /// Signal member facts for every class in the file, decorated or not, keyed by name.
+    pub(crate) signal_facts: Arc<HashMap<String, crate::analyzer::signal_facts::ClassSignalFacts>>,
     /// Facts for the top-level function declarations, keyed by name.
     pub(crate) function_facts: Arc<HashMap<String, crate::analyzer::transforms::FunctionFacts>>,
     /// Re-export table (`export … from …`).
     pub(crate) file_exports: Arc<crate::analyzer::FileExportInfo>,
+    #[cfg_attr(not(test), allow(dead_code))]
     pub(crate) errors: Vec<String>,
     pub(crate) diagnostics: Vec<crate::NgDiagnostic>,
     pub(crate) source_file_validator_diagnostics: Vec<crate::NgDiagnostic>,
     /// Byte offsets for implicit signal `debugName` insertions.
     pub(crate) signal_debug_names:
         Vec<crate::analyzer::signal_debug_name::SignalDebugNameInsertion>,
-    /// Whether this file is part of `@angular/core` itself (see
-    /// [`crate::analyzer::imports::detect_is_core`]). Always `false` for `.d.ts` files.
+    /// Whether this file is compiled as part of `@angular/core` itself (see
+    /// [`crate::AnalyzerOptions::angular_core_compilation`]). Always `false` for `.d.ts` files.
     pub(crate) is_core: bool,
     /// Root-scope runtime binding names for HMR (`None` unless the engine runs with
     /// `enable_hmr`).
     pub(crate) top_level_value_bindings: Option<Vec<String>>,
+    /// Names in the file a generated namespace import alias must avoid
+    /// ([`crate::analyzer::imports::namespace_alias_conflicts`]).
+    pub(crate) namespace_alias_conflicts: Vec<String>,
 }
 
 impl FileData {
@@ -579,6 +621,20 @@ impl FileData {
             .chain(&self.dynamic_dependencies)
     }
 
+    /// Whether any class in this file could require `@NgModule` chunk grouping (either an
+    /// `@NgModule` or a non-standalone / dynamically-standalone component, directive, or pipe).
+    pub(crate) fn may_have_non_standalone_class(&self) -> bool {
+        self.classes.iter().any(|class| match &class.decorator {
+            crate::analyzer::DecoratorData::NgModule(m) => !m.is_jit,
+            crate::analyzer::DecoratorData::Component(c) => {
+                !c.directive.standalone || c.directive.standalone_dynamic
+            }
+            crate::analyzer::DecoratorData::Directive(d) => !d.standalone || d.standalone_dynamic,
+            crate::analyzer::DecoratorData::Pipe(p) => !p.standalone.unwrap_or(false),
+            _ => false,
+        })
+    }
+
     /// Project analysis into the serialized wire shape using the provided `WireContext`.
     pub fn to_wire(
         &self,
@@ -587,6 +643,25 @@ impl FileData {
         let classes = self
             .classes
             .iter()
+            .filter(|c| {
+                !((cx.emit_declaration_only || cx.experimental_local_compilation)
+                    && !c.non_ng_decorator_spans.is_empty())
+            })
+            // TODO(parity): In ngtsc, a co-located `@Injectable()` on a class whose `@NgModule`
+            // fails analysis with a `FatalDiagnosticError` still compiles `ɵprov`/`ɵfac` independently
+            // because decorator handlers run per-decorator. Because `ngp` emits `.ng.ts` TypeScript
+            // source rather than post-typecheck JS, stripping `@NgModule(...)` or emitting `ɵprov`
+            // without `ɵfac` on a fatally errored NgModule class triggers cascading TS6133/TS2339
+            // errors; we therefore suppress wire codegen for the entire class in full mode while
+            // preserving both `NG6xxx` and `@Injectable` (`NG2003`) diagnostics.
+            .filter(|c| {
+                !(!cx.emit_declaration_only
+                    && !cx.experimental_local_compilation
+                    && matches!(
+                        &c.decorator,
+                        crate::analyzer::DecoratorData::NgModule(m) if m.analysis_failed
+                    ))
+            })
             .map(|c| c.to_wire(cx))
             .collect::<Result<Vec<_>, _>>()?;
 
@@ -596,6 +671,16 @@ impl FileData {
             imports_end: self.imports_end,
             classes,
             imports: self.wire_imports(),
+            import_equals_declarations: self
+                .import_equals_declarations
+                .iter()
+                .map(|info| {
+                    crate::types::metadata::ImportEqualsDeclarationMetadata::to_wire(
+                        info,
+                        &self.converter,
+                    )
+                })
+                .collect(),
             type_only_exports: self.type_only_exports.clone(),
             diagnostics: self.diagnostics.clone(),
             source_file_validator_diagnostics: self.source_file_validator_diagnostics.clone(),
@@ -611,6 +696,12 @@ impl FileData {
                 .collect(),
             r3_symbols_specifier: self.r3_symbols_specifier(cx.r3_symbols_path),
             top_level_value_bindings: self.top_level_value_bindings.clone(),
+            namespace_alias_conflicts: self.namespace_alias_conflicts.clone(),
+            static_dependencies: self
+                .resolved_dependencies
+                .iter()
+                .map(|path| path.to_string_lossy().into_owned())
+                .collect(),
         })
     }
 

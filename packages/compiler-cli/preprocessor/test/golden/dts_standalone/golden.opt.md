@@ -7,6 +7,7 @@
 
 import * as i0 from './app';
 import * as i1 from './my-dir';
+import * as i2 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.AppComponent) {
@@ -93,10 +94,10 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [MyDtsDirective, MyDtsComponent],
                 template: `
-        <div my-dir #ref1="myDir1" [myProp]="'test'"></div>
-        <my-cmp #ref2="myCmp" [myProp]="'test'"></my-cmp>
-        {{ref1.myProp}} - {{ref2.myProp}}
-      `,
+    <div my-dir #ref1="myDir1" [myProp]="'test'"></div>
+    <my-cmp #ref2="myCmp" [myProp]="'test'"></my-cmp>
+    {{ref1.myProp}} - {{ref2.myProp}}
+  `,
               },
             ],
           },

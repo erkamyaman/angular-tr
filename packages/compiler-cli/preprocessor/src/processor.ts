@@ -13,7 +13,6 @@ import {
   FactoryTarget,
   OutOfBandDiagnosticCategory,
   ParseTemplateOptions,
-  ParsedTemplate,
   R3ClassDebugInfo,
   R3ClassMetadataCtorParameter,
   R3CompiledExpression,
@@ -33,7 +32,6 @@ import {
   compileClassDebugInfo,
   compileComponentClassMetadata,
   compileComponentFromMetadata,
-  compileCtorParameters,
   compileDeferResolverFunction,
   compileDirectiveFromMetadata,
   compileFactoryFunction,
@@ -49,9 +47,10 @@ import {
   type R3DeferPerBlockDependency,
   type R3DeferPerComponentDependency,
 } from '@angular/compiler';
+import {ErrorCode} from './error_code.js';
 import MagicString, {type SourceMap} from 'magic-string';
-import * as fsSync from 'node:fs';
 import * as path from 'path';
+import {hasAnimations} from './animations.js';
 import {
   buildDeps,
   buildHostDirectives,
@@ -80,13 +79,12 @@ import {
   ParsedComponentTemplate,
   getOrCreateFileAnalysis,
 } from './file_analysis.js';
-import {hasAnimations} from './animations.js';
 import {analyzeForeignComponentFeatures} from './foreign_component.js';
 import {extractHmrMetadata, getHmrUpdateDeclaration} from './hmr.js';
 import type {IAnalyzer} from './hybrid_compiler.js';
 import {ExpressionPrinter, RawSource} from './output_ast_printer.js';
 import {OutputSourceMapBuilder, type OutputSourceMapOptions} from './output_source_map.js';
-import {analyzeTemplateForSelectorless} from './selectorless.js';
+import {Counter, SpanKind, type Tracer} from './perf.js';
 import {
   combineTcbContent,
   generateTcbCode,
@@ -129,6 +127,7 @@ interface HybridCompilerContext {
   rootDirs?: string[];
   enableHmr?: boolean;
   hmrUpdateTarget?: string;
+  tracer: Tracer;
 }
 
 // These are const enums, so they're not available at runtime - use literal values
@@ -142,13 +141,6 @@ const DeclarationListEmitMode = {
 const DeferBlockDepsEmitMode = {PerBlock: 0, PerComponent: 1} as const;
 const R3NgModuleMetadataKind = {Global: 0, Local: 1, Isolated: 2} as const;
 const R3SelectorScopeMode = {Inline: 0, SideEffect: 1, Omit: 2} as const;
-
-/**
- * Shape of the namespace aliases this compiler generates (`i0`, `i1`, … and the `ɵ`-prefixed
- * variants). Matching one in an already-processed file lets its alias be reused rather than a
- * second one minted for the same module.
- */
-const GENERATED_NAMESPACE_ALIAS = /^(ɵ?i\d+|ɵng)$/;
 
 export interface ProcessedFile {
   magicString: MagicString;
@@ -165,6 +157,7 @@ export interface ProcessedFile {
   tcb?: TcbResult | null;
   diagnostics?: nga.NgDiagnostic[];
   hmrUpdateModule?: string | null;
+  referencedStyleFiles?: string[];
 }
 
 /** The result for a file with nothing to compile, whose output is its original text. */
@@ -188,6 +181,7 @@ export function buildTcbTargets(
   options: Partial<ParseTemplateOptions> = {},
   tcbConfig: NgpTypeCheckingConfig,
   dependencyTemplates: DependencyTemplates,
+  tracer: Tracer,
 ): TcbTargetInput[] {
   const tcbTargets: TcbTargetInput[] = [];
   const consumer = {filePath, content, classes, templatesByClass};
@@ -211,6 +205,7 @@ export function buildTcbTargets(
         filePath,
         content,
         options,
+        tracer,
       );
 
       const parsedSchemas: SchemaMetadata[] = [];
@@ -224,12 +219,6 @@ export function buildTcbTargets(
         }
       }
 
-      let selectorlessEnabled = false;
-      if (options.enableSelectorless) {
-        const analysis = analyzeTemplateForSelectorless(parsed.nodes);
-        selectorlessEnabled = analysis.isSelectorless;
-      }
-
       // 9. Collect component for TCB generation (optimize mode only)
       tcbTargets.push({
         // TODO(cleanup): access fields mirrored from `classMeta` directly instead of duplicating them on `TcbTargetInput`.
@@ -241,8 +230,6 @@ export function buildTcbTargets(
           component.resolvedDeclarations ?? [],
           consumer,
         ),
-        enableSelectorless: options.enableSelectorless ?? false,
-        selectorlessEnabled,
         ownDeclaration: metadataToDeclaration(
           component,
           cls,
@@ -261,7 +248,7 @@ export function buildTcbTargets(
         foreignImports: component.foreignImports ?? null,
       });
     } else if (directive) {
-      if (directive.isJit) continue;
+      if (directive.isJit || (directive.isPoisoned && !tcbConfig.usePoisonedData)) continue;
       if (tcbConfig.typeCheckHostBindings === false) continue;
       const {hostProperties, standalone} = directive;
       const hasHostBindings =
@@ -317,6 +304,7 @@ export async function processFile(
   content: string,
   metadata?: nga.AnalysisResult,
   chunkContext?: ChunkContext,
+  fileId = 0,
 ): Promise<ProcessedFile> {
   const result = metadata || (await rawCtx.analyzer.getMetadataForFile(filePath));
   if (!result) {
@@ -333,6 +321,7 @@ export async function processFile(
       filePath,
       content,
       rawCtx.templateParseOptions,
+      rawCtx.tracer,
     );
     for (const styleUrl of parsed.styleUrls) {
       if (!resourceMap.has(styleUrl)) {
@@ -343,31 +332,17 @@ export async function processFile(
   }
   // Templates of dependencies declared in other files are needed to bind this file's
   // templates for type-checking; read them here, where the analyzer can be awaited. The
-  // condition mirrors when `processFileSync` builds the TCB targets.
+  // condition mirrors when `processFile` builds the TCB targets.
   if (rawCtx.optimize && !rawCtx.emitDeclarationOnly) {
     await new DependencyTemplates(
       rawCtx.analyzer,
       rawCtx.fileCache,
       rawCtx.templateParseOptions,
       chunkContext?.metadataMap || rawCtx.metadataMap,
+      rawCtx.tracer,
     ).prefetch(result);
   }
-  return processFileSync(rawCtx, filePath, content, resourceMap, result, chunkContext);
-}
-
-export function processFileSync(
-  rawCtx: HybridCompilerContext,
-  filePath: string,
-  content: string,
-  readResource?: ((file: string) => string | undefined) | Map<string, nga.ResolvedResource | null>,
-  metadata?: nga.AnalysisResult,
-  chunkContext?: ChunkContext,
-): ProcessedFile {
-  const ctx: HybridCompilerContext & {
-    remoteScopedClasses: Set<string>;
-    metadataMap: Map<string, nga.AnalysisResult>;
-    eagerlyUsedDeclarations: Map<string, nga.DeclarationMetadata[]>;
-  } = {
+  const ctx: ProcessFileContext = {
     ...rawCtx,
     remoteScopedClasses:
       chunkContext?.remoteScopedClasses || rawCtx.remoteScopedClasses || new Set(),
@@ -376,16 +351,16 @@ export function processFileSync(
   };
   const s = new MagicString(content);
   const fileDiagnostics: nga.NgDiagnostic[] = [];
-  let hmrUpdateModule: string | null | undefined;
+  const referencedStyleFiles: string[] = [];
 
-  const result = metadata || ctx.analyzer.getMetadataForFileSync(filePath);
-  if (!result) {
-    return unprocessedFile(s);
-  }
-  const {classes, importsEnd, imports: importDeclarations} = result;
+  const {classes, imports: importDeclarations} = result;
 
   // Inside `@angular/core` itself, generated imports of `@angular/core` go to `r3_symbols.ts`.
-  const printer = new ExpressionPrinter(filePath, result.r3SymbolsSpecifier ?? null);
+  const printer = new ExpressionPrinter(
+    filePath,
+    result.r3SymbolsSpecifier ?? null,
+    new Set(result.namespaceAliasConflicts),
+  );
   // Compiled text goes through `out` rather than `s` directly, so its source mappings survive.
   const out = new OutputSourceMapBuilder(s, printer, filePath, content);
   const generateSourceMap = (options?: OutputSourceMapOptions) => out.generateMap(options);
@@ -393,19 +368,6 @@ export function processFileSync(
   if (!ctx.emitDeclarationOnly) {
     insertSignalDebugNames(s, result.signalDebugNames, printer.emitTypes);
   }
-
-  // Reuse namespace aliases the file already has, so re-processing an already-processed file
-  // doesn't mint a second `i0` for `@angular/core`.
-  for (const decl of importDeclarations) {
-    for (const binding of decl.bindings) {
-      // `imported` is absent exactly for `import * as ns from '...'`.
-      if (binding.imported == null && GENERATED_NAMESPACE_ALIAS.test(binding.local)) {
-        printer.addNamespaceImport(decl.specifier, binding.local);
-      }
-    }
-  }
-
-  const {parsedTemplates: templatesByClass} = getOrCreateFileAnalysis(ctx.fileCache, filePath);
 
   // Shared pool for all components and directives in the file.
   // This mirrors Angular's behavior:
@@ -435,19 +397,144 @@ export function processFileSync(
     }
   }
 
-  // First pass: compile all classes in the file into AST representations so `sharedPool`
-  // (`ConstantPool`) finalizes all `FixupExpression`s (e.g., shared styles across multiple
-  // components in the same file) before the second pass prints and appends them.
-  const compiledClasses: CompiledClass[] = [];
+  // All local bindings explicitly listed in `@Component.deferredImports` across standalone
+  // components in this file. Computed before the per-class loop so co-bindings on a shared
+  // `import` statement (e.g. `import {DeferredCmpA, DeferredCmpB} from './deps'` where sibling
+  // components defer different bindings) are recognized as deferrable regardless of class order.
+  const fileExplicitlyDeferredNames = new Set<string>();
+  for (const cm of classes) {
+    const comp = cm.component;
+    if (!comp?.standalone) continue;
+    const byBlock = Object.values(comp.deferredImportsByBlock ?? {}).flat();
+    for (const ref of [...(comp.deferredImports ?? []), ...byBlock]) {
+      if (ref.localAlias !== undefined) {
+        fileExplicitlyDeferredNames.add(ref.localAlias);
+      }
+    }
+  }
 
-  // The first error the template pipeline threw for a component in this file. ngtsc only runs
-  // the pipeline at emit time, and `performCompilation` never emits a program that has error
-  // diagnostics, so a template the type checker already rejects never reaches the pipeline
-  // there. ngp compiles and type-checks in one pass, so a pipeline throw is held back until the
-  // type-check block has produced its diagnostics and only surfaces if the file is otherwise
-  // error-free (where ngtsc would have reached emit and thrown too).
-  let pipelineError: unknown = undefined;
+  const file: FileCompilation = {
+    ctx,
+    filePath,
+    content,
+    readResource: resourceMap,
+    s,
+    result,
+    printer,
+    out,
+    templatesByClass,
+    sharedPool,
+    importsByBinding,
+    fileExplicitlyDeferredNames,
+    fileDiagnostics,
+    referencedStyleFiles,
+    compiledClasses: [],
+    deferredOnlyNames,
+    eagerlyBoundNames,
+    eagerlyReferencedNames,
+    eagerDependencyNames,
+    pipelineError: undefined,
+  };
+  const hmrUpdateModule = ctx.tracer.slice(SpanKind.Compile, () => compileClasses(file), fileId);
+  if (hmrUpdateModule !== undefined) {
+    return {magicString: s, generateSourceMap, hmrUpdateModule};
+  }
 
+  // The target was not a component (or has no HMR metadata); nothing to update.
+  if (ctx.hmrUpdateTarget !== undefined) {
+    return {magicString: s, generateSourceMap, hmrUpdateModule: null};
+  }
+
+  ctx.tracer.slice(SpanKind.SerializeOutput, () => serializeOutput(file), fileId);
+  const returnTcb =
+    ctx.optimize && !ctx.emitDeclarationOnly
+      ? ctx.tracer.slice(SpanKind.GenerateTcb, () => generateTcb(file), fileId)
+      : undefined;
+
+  if (file.pipelineError !== undefined && !fileDiagnostics.some((d) => d.category === 1)) {
+    throw file.pipelineError;
+  }
+
+  return {
+    magicString: s,
+    generateSourceMap,
+    tcb: returnTcb,
+    diagnostics: fileDiagnostics,
+    hmrUpdateModule,
+    referencedStyleFiles: referencedStyleFiles.length > 0 ? referencedStyleFiles : undefined,
+  };
+}
+
+type ProcessFileContext = HybridCompilerContext & {
+  remoteScopedClasses: Set<string>;
+  metadataMap: Map<string, nga.AnalysisResult>;
+  eagerlyUsedDeclarations: Map<string, nga.DeclarationMetadata[]>;
+};
+
+/** The state of one `processFile` call that its passes below share. */
+interface FileCompilation {
+  ctx: ProcessFileContext;
+  filePath: string;
+  content: string;
+  readResource: ReadonlyMap<string, nga.ResolvedResource | null>;
+  s: MagicString;
+  result: nga.AnalysisResult;
+  printer: ExpressionPrinter;
+  out: OutputSourceMapBuilder;
+  templatesByClass: Map<string, ParsedComponentTemplate>;
+  sharedPool: ConstantPool;
+  importsByBinding: Map<string, nga.ImportDeclarationMetadata>;
+  fileExplicitlyDeferredNames: Set<string>;
+  fileDiagnostics: nga.NgDiagnostic[];
+  referencedStyleFiles: string[];
+  /**
+   * First pass: all classes in the file compiled into AST representations, so `sharedPool`
+   * (`ConstantPool`) finalizes all `FixupExpression`s (e.g., shared styles across multiple
+   * components in the same file) before the second pass prints and appends them.
+   */
+  compiledClasses: CompiledClass[];
+  deferredOnlyNames: Set<string>;
+  eagerlyBoundNames: Set<string>;
+  eagerlyReferencedNames: Set<string>;
+  eagerDependencyNames: Set<string>;
+  /**
+   * The first error the template pipeline threw for a component in this file. ngtsc only runs
+   * the pipeline at emit time, and `performCompilation` never emits a program that has error
+   * diagnostics, so a template the type checker already rejects never reaches the pipeline
+   * there. ngp compiles and type-checks in one pass, so a pipeline throw is held back until the
+   * type-check block has produced its diagnostics and only surfaces if the file is otherwise
+   * error-free (where ngtsc would have reached emit and thrown too).
+   */
+  pipelineError: unknown;
+}
+
+/**
+ * The `Compile` pass: compiles each class into `file.compiledClasses`. Returns the HMR update
+ * module as soon as `ctx.hmrUpdateTarget` is compiled, and `undefined` otherwise.
+ */
+function compileClasses(file: FileCompilation): string | null | undefined {
+  const {
+    ctx,
+    filePath,
+    content,
+    readResource,
+    s,
+    result,
+    printer,
+    out,
+    templatesByClass,
+    sharedPool,
+    importsByBinding,
+    fileExplicitlyDeferredNames,
+    fileDiagnostics,
+    referencedStyleFiles,
+    compiledClasses,
+    deferredOnlyNames,
+    eagerlyBoundNames,
+    eagerlyReferencedNames,
+    eagerDependencyNames,
+  } = file;
+  const {classes} = result;
   for (const classMeta of classes) {
     if (ctx.hmrUpdateTarget !== undefined && classMeta.className !== ctx.hmrUpdateTarget) {
       continue;
@@ -470,12 +557,15 @@ export function processFileSync(
     // expansion, coercion marking, and query ordering.
     const {inputs, outputs, queries, viewQueries} = classMeta;
 
-    for (const span of classMeta.removalSpans) {
-      s.remove(span.start, span.end);
+    const isJit = Boolean(component?.isJit || directive?.isJit || ngModule?.isJit);
+    if (!isJit || !ctx.emitDeclarationOnly) {
+      for (const span of classMeta.removalSpans) {
+        s.remove(span.start, span.end);
+      }
     }
 
     // Stripping the decorators stops tsickle from tagging statics `@nocollapse`; add it back.
-    if (ctx.isClosureCompilerEnabled) {
+    if (ctx.isClosureCompilerEnabled && !isJit) {
       for (const insertion of classMeta.nocollapseInsertions) {
         s.appendLeft(insertion.position, insertion.text);
       }
@@ -483,65 +573,41 @@ export function processFileSync(
 
     if (!className) continue;
 
-    if (component?.isJit || directive?.isJit || ngModule?.isJit) {
-      const coreNamespace = printer.getOrCreateNamespace('@angular/core');
-      for (const input of inputs) {
-        if (input.isSignal && input.propertySpan) {
-          const inputArgsObj: string[] = [
-            'isSignal: true',
-            `alias: ${JSON.stringify(input.alias ?? input.name)}`,
-            `required: ${input.required ? 'true' : 'false'}`,
-          ];
-          const inputArgs = `({${inputArgsObj.join(', ')}} as any)`;
-          s.appendLeft(input.propertySpan.start, `@${coreNamespace}.Input(${inputArgs}) `);
-        }
-      }
-
-      for (const output of outputs) {
-        if (output.isSignal && output.propertySpan) {
-          const outputArg = JSON.stringify(output.alias ?? output.name);
-          s.appendLeft(output.propertySpan.start, `@${coreNamespace}.Output(${outputArg}) `);
-        }
-      }
-
-      const allSignalQueries = [...(queries ?? []), ...(viewQueries ?? [])].filter(
-        (q) => q.isSignal && q.propertySpan,
-      );
-      for (const query of allSignalQueries) {
-        const decoratorName = query.isView
-          ? query.first
-            ? 'ViewChild'
-            : 'ViewChildren'
-          : query.first
-            ? 'ContentChild'
-            : 'ContentChildren';
-        const rawPred = s.original.slice(query.predicateSpan.start, query.predicateSpan.end);
-        // A signal query has selectors exactly when its locator is string-literal-like.
-        const predicateStr = query.predicateSelectors
-          ? rawPred
-          : `${coreNamespace}.forwardRef(() => ${rawPred})`;
-        const optionsObj: string[] = [];
-        if (query.optionsSpan) {
-          optionsObj.push(`...${s.original.slice(query.optionsSpan.start, query.optionsSpan.end)}`);
-        }
-        optionsObj.push('isSignal: true');
-        const optionsStr = `({${optionsObj.join(', ')}} as any)`;
-        s.appendLeft(
-          query.propertySpan!.start,
-          `@${coreNamespace}.${decoratorName}(${predicateStr}, ${optionsStr}) `,
-        );
-      }
-
-      if (!ctx.emitDeclarationOnly && constructorParams && constructorParams.length > 0) {
-        const ctorParams = buildCtorParametersExpr(constructorParams, s, {
-          omitEmptyDecorators: true,
-        });
-        if (ctorParams) {
-          const ctorExpr = compileCtorParameters(ctorParams, /* allowSuppressions */ true);
+    if (isJit) {
+      if (!ctx.emitDeclarationOnly) {
+        // TODO: this was added to avoid invalidating the import graph since we're almost
+        // always guaranteed to need a core import. Figure out if we still need it.
+        printer.getOrCreateNamespace('@angular/core');
+        if (constructorParams) {
+          for (const param of constructorParams) {
+            const hasNgDecorators = param.decorators.some((d) => d.isAngular);
+            if ((param.hasType || hasNgDecorators) && !param.isTypeOnly && param.typeName != null) {
+              eagerlyBoundNames.add(param.typeName.split('.')[0]);
+            }
+          }
+          const ctorExpr = buildJitCtorParametersExpr(constructorParams, s);
           const nocollapse = ctx.isClosureCompilerEnabled ? '/** @nocollapse */\n  ' : '';
           s.appendLeft(
             span.end - 1,
-            `\n  ${nocollapse}static ctorParameters = ${printer.print(ctorExpr)};\n`,
+            // ts-ignore is necessary to suppress errors if the base class has `ctorParameters`.
+            `\n  ${nocollapse}// @ts-ignore\n  static ctorParameters = ${printer.print(ctorExpr)};\n`,
+          );
+        }
+
+        const jitGuards = ctx.complianceMode ? [] : classMeta.laterDeclarationReferences;
+        const propExpr = buildPropDecoratorsExpr(
+          classMeta,
+          s,
+          className,
+          jitGuards,
+          /* isJit */ true,
+        );
+        if (propExpr !== null) {
+          const nocollapse = ctx.isClosureCompilerEnabled ? '/** @nocollapse */\n  ' : '';
+          s.appendLeft(
+            span.end - 1,
+            // ts-ignore is necessary to suppress errors if the base class has `propDecorators`.
+            `\n  ${nocollapse}// @ts-ignore\n  static propDecorators${printer.emitTypes ? ': any' : ''} = ${printer.print(propExpr)};\n`,
           );
         }
       }
@@ -551,13 +617,17 @@ export function processFileSync(
 
     // Build deps from constructor params
     // Use empty array for no-arg constructors (null means "inherit from parent")
-    const deps = buildDeps(
-      constructorParams,
-      classMeta.usesInheritance,
-      o,
-      s,
-      ctx.complianceMode ?? false,
+    const deps = buildDeps(constructorParams, classMeta.usesInheritance, o, s);
+    const usesCtorDepsInFactory = Boolean(
+      pipe || component || directive || ngModule || (injectable && !service),
     );
+    if (usesCtorDepsInFactory && Array.isArray(deps)) {
+      for (const dep of deps) {
+        if (dep.token instanceof o.ReadVarExpr) {
+          eagerlyBoundNames.add(dep.token.name.split('.')[0]);
+        }
+      }
+    }
 
     // Avoid duplicate `ɵfac` generation when a class carries multiple decorators (e.g. `@Component` + `@Injectable`).
     // https://github.com/angular/angular/blob/d27e2c2/packages/compiler-cli/src/ngtsc/transform/src/compilation.ts#L710-L718
@@ -608,7 +678,7 @@ export function processFileSync(
           value: o.variable(className),
           type: o.variable(className),
         },
-        pipeName: pipe.name,
+        pipeName: pipe.name ?? null,
         pure: pipe.pure ?? true,
         isStandalone: pipe.standalone ?? true,
         typeArgumentCount: classMeta?.typeParameters?.length ?? 0,
@@ -618,6 +688,7 @@ export function processFileSync(
         factory: factoryRes,
         def: {name: 'ɵpipe', def},
       });
+      ctx.tracer.count(Counter.PipesCompiled);
     }
 
     if (component) {
@@ -689,6 +760,7 @@ export function processFileSync(
         filePath,
         content,
         ctx.templateParseOptions,
+        ctx.tracer,
       );
 
       if (parsed.errors && parsed.errors.length > 0) {
@@ -702,7 +774,7 @@ export function processFileSync(
           fileDiagnostics.push(
             withTemplateDiagnosticLocation(component, filePath, {
               category: 1,
-              code: 5002,
+              code: ErrorCode.TEMPLATE_PARSE_ERROR,
               messageText: error.msg,
               span: {start, end},
             }),
@@ -737,7 +809,7 @@ export function processFileSync(
       if (component.animationsSpan && hasAnimations(parsed.nodes)) {
         fileDiagnostics.push({
           category: 1,
-          code: 2027,
+          code: ErrorCode.COMPONENT_ANIMATIONS_CONFLICT,
           messageText: `A component cannot have both the '@Component.animations' property (legacy animations) and use 'animate.enter' or 'animate.leave' in the template.`,
           filePath,
           span: {start: component.animationsSpan.start, end: component.animationsSpan.end},
@@ -751,30 +823,10 @@ export function processFileSync(
       // preprocessor-extension fallback as the decorator's `styleUrls`.
       // https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/component/src/handler.ts#L876-L923
       for (const styleUrl of parsed.styleUrls) {
-        let resource: nga.ResolvedResource | null = null;
-        if (readResource instanceof Map) {
-          resource = readResource.get(styleUrl) ?? null;
-        } else if (ctx.analyzer.readResourceSync) {
-          resource = ctx.analyzer.readResourceSync(filePath, styleUrl);
-          if (resource === null && typeof readResource === 'function') {
-            const resolvedPath = path.resolve(path.dirname(filePath), styleUrl);
-            const content = readResource(resolvedPath);
-            if (content !== undefined) {
-              resource = {resolvedPath, content};
-            }
-          }
-        } else if (typeof readResource === 'function') {
-          const resolvedPath = path.resolve(path.dirname(filePath), styleUrl);
-          const content = readResource(resolvedPath);
-          resource = content !== undefined ? {resolvedPath, content} : null;
-        } else {
-          const resolvedPath = path.resolve(path.dirname(filePath), styleUrl);
-          try {
-            const content = fsSync.readFileSync(resolvedPath, 'utf8');
-            resource = {resolvedPath, content};
-          } catch {
-            resource = null;
-          }
+        const resource = readResource.get(styleUrl) ?? null;
+
+        if (resource !== null) {
+          referencedStyleFiles.push(resource.resolvedPath);
         }
 
         if (externalRuntimeStyles && resource !== null) {
@@ -792,7 +844,7 @@ export function processFileSync(
           const span = component.templateUrlSpan ?? component.templateSpan;
           fileDiagnostics.push({
             category: 1,
-            code: 2008,
+            code: ErrorCode.COMPONENT_RESOURCE_NOT_FOUND,
             messageText: `Could not find stylesheet file '${styleUrl}' linked from the template.`,
             filePath,
             span: span ? {start: span.start, end: span.end} : undefined,
@@ -892,7 +944,9 @@ export function processFileSync(
         matcher,
         createForeignComponentMatcher(component.foreignImports),
       );
-      const bound = binder.bind({template: parsed.nodes});
+      const bound = ctx.tracer.slice(SpanKind.TemplateBind, () =>
+        binder.bind({template: parsed.nodes}),
+      );
 
       /** Resolves binder matches back to the declarations they were registered from. */
       const toDecls = (metas: MinimalDirectiveMeta[]): nga.DeclarationMetadata[] =>
@@ -970,7 +1024,7 @@ export function processFileSync(
           if (blockName === null) {
             fileDiagnostics.push({
               category: 1, // Error
-              code: 11100,
+              code: ErrorCode.DEFER_BLOCK_MISSING_NAME_PARAMETER,
               messageText: `@defer block must specify a 'name' parameter (e.g. '@defer (name blockName)') when 'deferredImports' is defined.`,
               filePath,
               span: block.sourceSpan
@@ -980,7 +1034,7 @@ export function processFileSync(
           } else if (!component?.deferredImportsByBlock?.[blockName]) {
             fileDiagnostics.push({
               category: 1, // Error
-              code: 11101,
+              code: ErrorCode.DEFER_BLOCK_UNKNOWN_NAME_PARAMETER,
               messageText: `The 'name' parameter references block '${blockName}' which is missing from '@Component.deferredImports'.`,
               filePath,
               span: block.sourceSpan
@@ -992,7 +1046,7 @@ export function processFileSync(
           if (blockName !== null) {
             fileDiagnostics.push({
               category: 1, // Error
-              code: 11102,
+              code: ErrorCode.DEFER_BLOCK_INVALID_NAME_PARAMETER,
               messageText: `The 'name' parameter can only be used when '@Component.deferredImports' is defined.`,
               filePath,
               span: block.sourceSpan
@@ -1104,12 +1158,10 @@ export function processFileSync(
           }
         }
 
-        if (!standalone) {
-          filteredDeclarations = [];
-          usedDeclarations.length = 0;
-          metaToDecl.clear();
-          pipeNameToDecl.clear();
-        }
+        filteredDeclarations = [];
+        usedDeclarations.length = 0;
+        metaToDecl.clear();
+        pipeNameToDecl.clear();
       }
 
       // Local bindings this component reaches only from inside a `@defer` block. Needed before
@@ -1185,11 +1237,14 @@ export function processFileSync(
        */
       const isRefDeferrable = (ref: nga.ReferenceMetadata): boolean => {
         const local = ref.localAlias;
-        if (local === undefined || !ref.typecheckImport) return false;
+        if (local === undefined || !ref.typecheckImport || !deferredHere.has(local)) return false;
         const owner = importsByBinding.get(local);
         if (owner === undefined) return false;
         return owner.bindings.every(
-          (b) => b.isType || (deferredHere.has(b.local) && !b.valueReferenced),
+          (b) =>
+            b.isType ||
+            ((deferredHere.has(b.local) || fileExplicitlyDeferredNames.has(b.local)) &&
+              !b.valueReferenced),
         );
       };
 
@@ -1467,7 +1522,6 @@ export function processFileSync(
             )
           : null,
         isStandalone: standalone,
-        isSignal: component.signals,
         hostDirectives: buildHostDirectives(hostDirectives),
 
         // Component-specific
@@ -1509,15 +1563,13 @@ export function processFileSync(
       };
 
       // 5. Compile
-      const bindingParser = makeBindingParser(
-        ctx.templateParseOptions?.enableSelectorless ?? false,
-      );
+      const bindingParser = makeBindingParser();
 
       let compileResult: R3CompiledExpression;
       try {
         compileResult = compileComponentFromMetadata(componentMeta, sharedPool, bindingParser);
       } catch (e) {
-        pipelineError ??= e;
+        file.pipelineError ??= e;
         continue;
       }
 
@@ -1536,6 +1588,7 @@ export function processFileSync(
         def: {name: 'ɵcmp', def: compileResult},
         coercionMembers: classMeta.coercionMembers,
       });
+      ctx.tracer.count(Counter.ComponentsCompiled);
 
       if (ctx.enableHmr) {
         hmrComponent = {
@@ -1599,21 +1652,18 @@ export function processFileSync(
             )
           : null,
         isStandalone: standalone,
-        isSignal: directive.signals,
         hostDirectives: buildHostDirectives(hostDirectives),
         legacyOptionalChaining: ctx.legacyOptionalChaining,
       };
 
       // Compile directive
-      const bindingParser = makeBindingParser(
-        ctx.templateParseOptions?.enableSelectorless ?? false,
-      );
+      const bindingParser = makeBindingParser();
       let compileResult: R3CompiledExpression;
 
       try {
         compileResult = compileDirectiveFromMetadata(directiveMeta, sharedPool, bindingParser);
       } catch (e) {
-        pipelineError ??= e;
+        file.pipelineError ??= e;
         continue;
       }
 
@@ -1632,6 +1682,7 @@ export function processFileSync(
         def: {name: 'ɵdir', def: compileResult},
         coercionMembers: classMeta.coercionMembers,
       });
+      ctx.tracer.count(Counter.DirectivesCompiled);
     }
     if (service) {
       decoratorsToEmit.push({
@@ -1666,6 +1717,7 @@ export function processFileSync(
         factory: factoryRes,
         def: {name: 'ɵprov', def},
       });
+      ctx.tracer.count(Counter.InjectablesCompiled);
     }
 
     if (injectable) {
@@ -1738,6 +1790,7 @@ export function processFileSync(
         factory: factoryRes,
         def: {name: 'ɵprov', def},
       });
+      ctx.tracer.count(Counter.InjectablesCompiled);
     }
 
     if (ngModule) {
@@ -1759,6 +1812,7 @@ export function processFileSync(
         filePath,
         fileDiagnostics,
       );
+      ctx.tracer.count(Counter.NgModulesCompiled);
     }
 
     let classMetadataStmt: o.Statement | null = null;
@@ -1773,6 +1827,14 @@ export function processFileSync(
         ctx.isClosureCompilerEnabled ?? false,
       );
       compiledClass.classMetadataStmt = classMetadataStmt;
+      for (const param of constructorParams ?? []) {
+        if (!param.isTypeOnly && param.typeName != null) {
+          const rootName = param.typeName.split('.')[0];
+          if (!perComponentDeferredDeps.some((d) => d.symbolName === rootName)) {
+            eagerlyBoundNames.add(rootName);
+          }
+        }
+      }
     }
 
     let debugInfoStmt: o.Statement | null = null;
@@ -1809,7 +1871,7 @@ export function processFileSync(
         compiledClass.hmrInitializerStmt = compileHmrInitializer(hmrMeta).toStmt();
       }
       if (ctx.hmrUpdateTarget === className) {
-        hmrUpdateModule =
+        const hmrUpdateModule =
           hmrMeta === null
             ? null
             : compileHmrUpdateModule({
@@ -1825,17 +1887,35 @@ export function processFileSync(
                 nameOffset: classMeta.nameSpan?.start ?? span.start,
                 ctx,
               });
-        return {magicString: s, generateSourceMap, hmrUpdateModule};
+        return hmrUpdateModule;
       }
     }
   }
+  return undefined;
+}
 
-  // The target was not a component (or has no HMR metadata); nothing to update.
-  if (ctx.hmrUpdateTarget !== undefined) {
-    return {magicString: s, generateSourceMap, hmrUpdateModule: null};
-  }
-
-  // Second pass: print and append static fields and trailing statements for all compiled classes.
+/**
+ * The `SerializeOutput` pass: prints and appends static fields and trailing statements for all
+ * compiled classes, then the imports and shared constants at the top of the file.
+ */
+function serializeOutput(file: FileCompilation): void {
+  const {
+    ctx,
+    filePath,
+    content,
+    s,
+    result,
+    printer,
+    out,
+    sharedPool,
+    fileDiagnostics,
+    compiledClasses,
+    deferredOnlyNames,
+    eagerlyBoundNames,
+    eagerlyReferencedNames,
+    eagerDependencyNames,
+  } = file;
+  const {classes, importsEnd, imports: importDeclarations} = result;
   for (const compiledClass of compiledClasses) {
     appendCompiledClass(compiledClass, out, printer, ctx);
   }
@@ -1858,22 +1938,35 @@ export function processFileSync(
     ? new Set<nga.ImportDeclarationMetadata>()
     : removeDeferredImports(s, content, importDeclarations, deferredOnlyNames, eagerlyBoundNames);
 
-  // Hoist any `import` declarations written after a non-import statement to `importsEnd` so that
-  // downstream CommonJS / Closure downleveling never emits a lexical `const ... = require(...)`
-  // below a top-level statement that references it.
+  // Hoist the import statements written after another statement up to `importsEnd`, like ngtsc's
+  // `ImportManager`, which rebuilds a file it adds imports to as its existing import statements
+  // (`import` declarations and `import X = …`), the generated imports, then everything else. This
+  // also keeps CommonJS / Closure downleveling from emitting a `const ... = require(...)` below a
+  // statement that reads it. ngtsc adds no imports to a file whose classes are all `jit: true`, but
+  // this emitter does (`getOrCreateNamespace` above), so the gate is a compiled class.
+  // TODO: as with ngtsc's `isImportStatement`, `import X = Local.Y` moves above a later local
+  // `namespace` / `enum` / class `Local` and then reads `undefined.Y` at runtime (for an enum, the
+  // type-checked output also reports TS2450). Skipping aliases of local declarations would fix both.
+  // https://github.com/angular/angular/blob/73911c8/packages/compiler-cli/src/ngtsc/translator/src/import_manager/import_typescript_transform.ts#L114-L148
   const hoistedImports: string[] = [];
-  if (!filePath.endsWith('.d.ts') && classes.length > 0) {
-    for (const decl of importDeclarations) {
-      if (decl.span.start > importsEnd && !removedDecls.has(decl)) {
-        hoistedImports.push(s.slice(decl.span.start, decl.span.end));
-        s.remove(decl.removalSpan.start, decl.removalSpan.end);
-      }
+  if (!filePath.endsWith('.d.ts') && compiledClasses.length > 0) {
+    const lateImports = [
+      ...importDeclarations.filter((decl) => !removedDecls.has(decl)),
+      ...(result.importEqualsDeclarations ?? []),
+    ]
+      .filter((decl) => decl.span.start > importsEnd)
+      .sort((a, b) => a.span.start - b.span.start);
+    for (const decl of lateImports) {
+      hoistedImports.push(s.slice(decl.span.start, decl.span.end));
+      s.remove(decl.removalSpan.start, decl.removalSpan.end);
     }
   }
 
   const poolStatements =
     sharedPool.statements.length > 0
-      ? '\n' + sharedPool.statements.map((stmt) => printer.printStatement(stmt)).join('\n') + '\n'
+      ? '\n' +
+        sharedPool.statements.map((stmt) => printer.printStatement(stmt, 0)).join('\n') +
+        '\n'
       : '';
 
   const topOfFileStatements = [...hoistedImports, printer.getImportStatements(), poolStatements]
@@ -1883,41 +1976,54 @@ export function processFileSync(
     const prefix = importsEnd === 0 || content[importsEnd - 1] === '\n' ? '' : '\n';
     out.appendRight(importsEnd, prefix + topOfFileStatements + '\n');
   }
+}
 
-  const tcbTargets =
-    ctx.optimize && !ctx.emitDeclarationOnly
-      ? buildTcbTargets(
-          filePath,
-          content,
-          classes,
-          templatesByClass,
-          ctx.templateParseOptions,
-          ctx.tcbConfig,
-          new DependencyTemplates(
-            ctx.analyzer,
-            ctx.fileCache,
-            ctx.templateParseOptions,
-            ctx.metadataMap,
-          ),
-        )
-      : [];
-  const prepared =
-    ctx.optimize && tcbTargets.length > 0
-      ? prepareTcbTargets(filePath, tcbTargets, content, ctx.tcbConfig, classes)
-      : null;
+/**
+ * The `GenerateTcb` pass, when optimizing: generates the file's type-check block and adds its
+ * diagnostics to `file.fileDiagnostics`.
+ */
+function generateTcb(file: FileCompilation): TcbResult | undefined {
+  const {ctx, filePath, content, result, templatesByClass, fileDiagnostics} = file;
+  const {classes} = result;
+  const analysis = getOrCreateFileAnalysis(ctx.fileCache, filePath);
+  let prepared: ReturnType<typeof prepareTcbTargets>;
+  if (analysis.preparedTcbData !== undefined && analysis.sourceContent === content) {
+    prepared = analysis.preparedTcbData;
+  } else {
+    const tcbTargets = buildTcbTargets(
+      filePath,
+      content,
+      classes,
+      templatesByClass,
+      ctx.templateParseOptions,
+      ctx.tcbConfig,
+      new DependencyTemplates(
+        ctx.analyzer,
+        ctx.fileCache,
+        ctx.templateParseOptions,
+        ctx.metadataMap,
+        ctx.tracer,
+      ),
+      ctx.tracer,
+    );
+    prepared =
+      tcbTargets.length > 0
+        ? prepareTcbTargets(filePath, tcbTargets, content, ctx.tcbConfig, classes, ctx.tracer)
+        : null;
+    analysis.preparedTcbData = prepared;
+    analysis.sourceContent = content;
+  }
   const tcb = prepared
-    ? (generateTcbCode(filePath, prepared, ctx.tcbConfig) ?? undefined)
+    ? (generateTcbCode(filePath, prepared, ctx.tcbConfig, result.namespaceAliasConflicts) ??
+      undefined)
     : undefined;
 
   const returnTcb = tcb
     ? {...tcb, code: combineTcbContent(tcb, filePath, {sourceContent: content, classes})}
     : undefined;
   if (returnTcb) {
-    const analysis = getOrCreateFileAnalysis(ctx.fileCache, filePath);
     analysis.tcb = returnTcb.code;
-    if (prepared) {
-      analysis.preparedTcbData = prepared;
-    }
+    ctx.tracer.count(Counter.TcbFilesGenerated);
   }
 
   if (tcb?.diagnostics && tcb.diagnostics.length > 0) {
@@ -1949,18 +2055,7 @@ export function processFileSync(
       );
     }
   }
-
-  if (pipelineError !== undefined && !fileDiagnostics.some((d) => d.category === 1)) {
-    throw pipelineError;
-  }
-
-  return {
-    magicString: s,
-    generateSourceMap,
-    tcb: returnTcb,
-    diagnostics: fileDiagnostics,
-    hmrUpdateModule,
-  };
+  return returnTcb;
 }
 
 interface CompiledNgModuleDef {
@@ -2022,7 +2117,7 @@ function appendCompiledClass(
     );
     if (ngModule.statements.length > 0) {
       ngModuleStatements = ngModule.statements
-        .map((stmt) => printer.printStatement(stmt))
+        .map((stmt) => printer.printStatement(stmt, 0))
         .join('\n');
     }
     const compiledInj = createStaticField(
@@ -2036,8 +2131,10 @@ function appendCompiledClass(
   }
 
   if (classMetadataStmt !== null) {
-    const metadata = printSetClassMetadata(classMetadataStmt, printer, ctx.complianceMode);
-    if (ctx.complianceMode) {
+    const emitOutsideClass =
+      !!ctx.complianceMode || !!compiled.classMeta.hasNonAngularClassDecorators;
+    const metadata = printSetClassMetadata(classMetadataStmt, printer, emitOutsideClass);
+    if (emitOutsideClass) {
       out.appendRight(span.end, '\n' + metadata);
     } else {
       out.appendLeft(span.end - 1, metadata);
@@ -2045,14 +2142,14 @@ function appendCompiledClass(
   }
 
   if (debugInfoStmt !== null) {
-    out.appendRight(span.end, '\n' + printer.printStatement(debugInfoStmt));
+    out.appendRight(span.end, '\n' + printer.printStatement(debugInfoStmt, 0));
   }
 
   // ngtsc appends the initializer to the `ɵcmp` statements, after `ɵsetClassMetadata` and
   // `ɵsetClassDebugInfo`.
   // https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/common/src/util.ts#L427-L439
   if (hmrInitializerStmt !== null) {
-    out.appendRight(span.end, '\n' + printer.printStatement(hmrInitializerStmt));
+    out.appendRight(span.end, '\n' + printer.printStatement(hmrInitializerStmt, 0));
   }
 
   // The NgModule side-effect statements (`ɵɵsetNgModuleScope`, `ɵɵregisterNgModuleType`)
@@ -2259,18 +2356,10 @@ function buildDecoratorMetadataExpr(
 function buildCtorParametersExpr(
   constructorParams: nga.ConstructorParamMetadata[] | undefined,
   s: MagicString,
-  options?: {
-    omitEmptyDecorators?: boolean;
-    useCoreNamespace?: boolean;
-    complianceMode?: boolean;
-  },
 ): R3ClassMetadataCtorParameter[] | null {
   if (constructorParams == null) {
     return null;
   }
-  const omitEmptyDecorators = options?.omitEmptyDecorators ?? false;
-  const useCoreNamespace = options?.useCoreNamespace ?? false;
-  const complianceMode = options?.complianceMode ?? false;
   return constructorParams.map((param) => {
     const typeName = param.isTypeOnly ? undefined : param.typeName;
     let decorators: o.Expression | null = null;
@@ -2278,21 +2367,10 @@ function buildCtorParametersExpr(
       const ngDecorators = param.decorators
         .filter((d) => d.isAngular)
         .map((d) => buildDecoratorMetadataExpr(d.name, d.argsSpan, d.argsString, s, []));
-      if (!omitEmptyDecorators || ngDecorators.length > 0) {
-        decorators = o.literalArr(ngDecorators);
-      }
+      decorators = o.literalArr(ngDecorators);
     }
-    const useNamespaceImport =
-      typeName != null &&
-      param.typeModule != null &&
-      ((useCoreNamespace && param.typeModule === '@angular/core') || complianceMode);
     return {
-      type:
-        typeName == null
-          ? null
-          : useNamespaceImport
-            ? o.importExpr(new o.ExternalReference(param.typeModule!, typeName))
-            : o.variable(typeName),
+      type: typeName == null ? null : o.variable(typeName),
       decorators,
       // Ask the compiler for a `@ts-ignore` only when the analyzer emitted a reference it could
       // not resolve to a value declaration. Those are the references that make `tsc` fail on the
@@ -2300,6 +2378,50 @@ function buildCtorParametersExpr(
       suppressTypeErrors: typeName != null && !param.isValueVerified,
     };
   });
+}
+
+/**
+ * Build the `() => [...]` callback assigned to `static ctorParameters` on `jit: true` classes,
+ * mirroring `ngtsc`'s `createCtorParametersClassProperty` in `downlevel_decorators_transform.ts`:
+ * primitive/built-in parameter types emit their boxed constructors (`String`, `Boolean`, `Number`,
+ * `Object`, `Array`, `Function`), and untyped, undecorated parameters emit `null`.
+ * https://github.com/angular/angular/blob/83622ee/packages/compiler-cli/src/ngtsc/transform/jit/src/downlevel_decorators_transform.ts#L108-L154
+ */
+function buildJitCtorParametersExpr(
+  constructorParams: nga.ConstructorParamMetadata[],
+  s: MagicString,
+): o.Expression {
+  const params = constructorParams.map((param): o.Expression => {
+    const ngDecorators = param.decorators
+      .filter((d) => d.isAngular)
+      .map((d) => buildDecoratorMetadataExpr(d.name, d.argsSpan, d.argsString, s, []));
+
+    if (!param.hasType && ngDecorators.length === 0) {
+      return o.literal(null);
+    }
+
+    const valueRefTypeName = param.isTypeOnly ? undefined : param.typeName;
+    const resolvedTypeName = valueRefTypeName ?? param.jitTypeName;
+    const typeProp = new o.LiteralMapPropertyAssignment(
+      'type',
+      resolvedTypeName == null ? o.literal(undefined) : o.variable(resolvedTypeName),
+      /* quoted */ false,
+    );
+
+    if (valueRefTypeName != null && !param.isValueVerified) {
+      typeProp.leadingComments = [o.leadingComment('@ts-ignore', true, true)];
+    }
+
+    const entries: o.LiteralMapEntry[] = [typeProp];
+    if (ngDecorators.length > 0) {
+      entries.push(
+        new o.LiteralMapPropertyAssignment('decorators', o.literalArr(ngDecorators), false),
+      );
+    }
+    return new o.LiteralMapExpr(entries);
+  });
+
+  return o.arrowFn([], o.literalArr(params), o.DYNAMIC_TYPE);
 }
 
 /**
@@ -2312,6 +2434,7 @@ function buildPropDecoratorsExpr(
   s: MagicString,
   className: string,
   guards: nga.SpanMetadata[],
+  isJit: boolean,
 ): o.Expression | null {
   const {memberDecorators, inputs, outputs, queries, viewQueries} = classMeta;
   const propMap = new Map<
@@ -2332,10 +2455,13 @@ function buildPropDecoratorsExpr(
 
   // 1. Decorator-based members from AST
   const seenMemberNames =
-    memberDecorators && memberDecorators.length > 1 ? new Set<string>() : null;
+    !isJit && memberDecorators && memberDecorators.length > 1 ? new Set<string>() : null;
   const duplicateNames: string[] = [];
   if (memberDecorators) {
     for (const member of memberDecorators) {
+      if (isJit && member.isStringLiteral) {
+        continue;
+      }
       if (seenMemberNames !== null) {
         if (seenMemberNames.has(member.propertyName)) {
           duplicateNames.push(member.propertyName);
@@ -2343,12 +2469,19 @@ function buildPropDecoratorsExpr(
         }
         seenMemberNames.add(member.propertyName);
       }
-      const offset = member.decorators[0]?.decoratorSpan?.start;
-      const entry = getOrCreateEntry(member.propertyName, member.isStringLiteral, offset);
       const ngDecorators = member.decorators
         .filter((d) => d.isAngular)
         .map((d) => buildDecoratorMetadataExpr(d.name, d.argsSpan, d.argsString, s, guards));
-      entry.decorators.push(...ngDecorators);
+      if (isJit && ngDecorators.length === 0) {
+        continue;
+      }
+      const offset = member.decorators[0]?.decoratorSpan?.start;
+      const entry = getOrCreateEntry(member.propertyName, member.isStringLiteral, offset);
+      if (isJit) {
+        entry.decorators = ngDecorators;
+      } else {
+        entry.decorators.push(...ngDecorators);
+      }
     }
   }
 
@@ -2440,8 +2573,10 @@ function buildPropDecoratorsExpr(
     if (query.optionsSpan) {
       // TODO(cleanup): `laterDeclarationReferences` only covers decorator arguments, so a signal
       // query's options naming a later declaration is unguarded and fails `tsc` inside the static
-      // block.
-      const optionsStr = s.original.slice(query.optionsSpan.start, query.optionsSpan.end);
+      // block. Type arguments are pre-stripped (`optionsString`) since they may name class type
+      // parameters (TS2302); they contain no value reads, so the span still describes it for HMR.
+      const optionsStr =
+        query.optionsString ?? s.original.slice(query.optionsSpan.start, query.optionsSpan.end);
       queryOptionsEntries.push(
         new o.LiteralMapSpreadAssignment(
           new o.WrappedNodeExpr(new RawSource(optionsStr, [query.optionsSpan])),
@@ -2568,38 +2703,32 @@ function buildSetClassMetadata(
   const classMetadata = {
     type: o.variable(className),
     decorators: o.literalArr(decoratorObjs),
-    ctorParameters: buildCtorParametersExpr(classMeta.constructorParams, s, {
-      useCoreNamespace: true,
-      complianceMode,
-    }),
-    propDecorators: buildPropDecoratorsExpr(classMeta, s, className, guards),
+    ctorParameters: buildCtorParametersExpr(classMeta.constructorParams, s),
+    propDecorators: buildPropDecoratorsExpr(classMeta, s, className, guards, false),
   };
   return compileComponentClassMetadata(classMetadata, deferredDeps).toStmt();
 }
 
 /**
- * Prints a `ɵsetClassMetadata` statement: as the trailing statement ngtsc emits in compliance
- * mode, or as a static block inside the class otherwise.
+ * Prints a `ɵsetClassMetadata` statement: as a trailing statement after the class declaration
+ * (in compliance mode or when non-Angular class decorators are present), or as a static block
+ * inside the class otherwise.
  */
 function printSetClassMetadata(
   statement: o.Statement,
   printer: ExpressionPrinter,
-  complianceMode: boolean = false,
+  emitOutsideClass: boolean = false,
 ): string {
-  if (complianceMode || !(statement instanceof o.ExpressionStatement)) {
-    return printer.printStatement(statement);
+  if (emitOutsideClass || !(statement instanceof o.ExpressionStatement)) {
+    return printer.printStatement(statement, 0);
   }
   const stmts = stripIife(statement.expr);
-  const printedStmt = stmts.map((stmt) => printer.printStatement(stmt)).join('\n');
+  const printedStmt = stmts.map((stmt) => printer.printStatement(stmt, 2)).join('\n');
   return createStaticBlock(printedStmt);
 }
 
 function createStaticBlock(statement: string): string {
-  const indented = statement
-    .split('\n')
-    .map((line) => (line.length > 0 ? `    ${line}` : line))
-    .join('\n');
-  return `  static {\n${indented}\n  }\n`;
+  return `  static {\n${statement}\n  }\n`;
 }
 
 /**
@@ -2849,11 +2978,12 @@ function compileNgModuleDef(
     if (!tuple) {
       return null;
     }
-    const elementExprs = tuple.elements.map((el): o.Expression => {
+
+    const buildIsolatedTypeElementExpr = (el: nga.IsolatedTypeElementMetadata): o.Expression => {
       switch (el.kind) {
         case 'typeof': {
           if (el.references && el.references.length > 0) {
-            return new o.TypeofExpr(refToExpression(el.references[0]));
+            return new o.TypeofExpr(refToTypeExpression(el.references[0]));
           }
           if (el.span && sourceText !== undefined) {
             return new o.TypeofExpr(
@@ -2872,8 +3002,11 @@ function compileNgModuleDef(
           return new o.WrappedNodeExpr(new RawSource(`ReturnType<typeof ${calleeText}>`));
         }
         case 'referenceTuple': {
+          if (el.elements && el.elements.length > 0) {
+            return o.literalArr(el.elements.map(buildIsolatedTypeElementExpr));
+          }
           return o.literalArr(
-            (el.references ?? []).map((ref) => new o.TypeofExpr(refToExpression(ref))),
+            (el.references ?? []).map((ref) => new o.TypeofExpr(refToTypeExpression(ref))),
           );
         }
         case 'never':
@@ -2881,7 +3014,7 @@ function compileNgModuleDef(
           if (diagnostics && filePath) {
             diagnostics.push({
               category: 1,
-              code: 11003,
+              code: ErrorCode.LOCAL_COMPILATION_UNSUPPORTED_EXPRESSION,
               messageText: `In experimental declaration-only emission mode, this expression is not supported in NgModule imports/exports as it cannot be referenced with 'typeof'. Use a direct reference or a supported call.`,
               filePath,
               span: el.span ? {start: el.span.start, end: el.span.end} : undefined,
@@ -2890,7 +3023,9 @@ function compileNgModuleDef(
           return new o.WrappedNodeExpr(new RawSource('never'));
         }
       }
-    });
+    };
+
+    const elementExprs = tuple.elements.map(buildIsolatedTypeElementExpr);
     return tuple.isArrayLiteral ? o.literalArr(elementExprs) : (elementExprs[0] ?? null);
   };
 
@@ -2944,9 +3079,7 @@ function compileNgModuleDef(
         ...sharedMeta,
         kind: R3NgModuleMetadataKind.Isolated,
         selectorScopeMode: R3SelectorScopeMode.Omit,
-        importsExpression: ctx.onlyPublishPublicTypingsForNgModules
-          ? null
-          : buildIsolatedTypeTupleExpr(ngModule.isolatedImports),
+        importsExpression: buildIsolatedTypeTupleExpr(ngModule.isolatedImports),
         exportsExpression: buildIsolatedTypeTupleExpr(ngModule.isolatedExports),
       }
     : optimize &&
@@ -3187,55 +3320,63 @@ function reportEagerlyImportedDeferredDependencies(
   deferredOnlyNames: ReadonlySet<string>,
   eagerlyReferencedNames: ReadonlySet<string>,
 ) {
+  const deferredNamesByClass = new Map<nga.ClassMetadata, Set<string>>();
   const explicitlyDeferredNames = new Set<string>();
   for (const classMeta of classes) {
     const component = classMeta.component;
     const byBlock = Object.values(component?.deferredImportsByBlock ?? {}).flat();
+    const classNames = new Set<string>();
     for (const ref of [...(component?.deferredImports ?? []), ...byBlock]) {
       if (ref.localAlias !== undefined) {
         explicitlyDeferredNames.add(ref.localAlias);
+        classNames.add(ref.localAlias);
       }
+    }
+    if (classNames.size > 0) {
+      deferredNamesByClass.set(classMeta, classNames);
     }
   }
   if (explicitlyDeferredNames.size === 0) {
     return;
   }
 
-  for (const decl of importDeclarations) {
-    if (!decl.bindings.some((binding) => explicitlyDeferredNames.has(binding.local))) {
-      continue;
+  for (const classDeferredNames of deferredNamesByClass.values()) {
+    for (const decl of importDeclarations) {
+      if (!decl.bindings.some((binding) => classDeferredNames.has(binding.local))) {
+        continue;
+      }
+      // ngtsc asks whether the declaration would survive *its* emit, which is JavaScript, so a
+      // type-only binding or a type-position reference is erased on the way out and does not block
+      // deferral (`valueReferenced` rather than `eagerlyReferenced`).
+      //
+      // A name listed in `deferredImports` is excused by `markAsDeferrableCandidate` at analysis
+      // time whether or not the compiler ends up deferring it, so it counts as a deferred candidate
+      // here even when it is absent from `deferredOnlyNames` (which only holds the names this
+      // compiler actually deferred).
+      const canDefer = decl.bindings.every(
+        (binding) =>
+          binding.isType ||
+          ((deferredOnlyNames.has(binding.local) || explicitlyDeferredNames.has(binding.local)) &&
+            !eagerlyReferencedNames.has(binding.local) &&
+            !binding.valueReferenced),
+      );
+      if (canDefer) {
+        continue;
+      }
+      diagnostics.push({
+        category: 1, // Error
+        code: ErrorCode.DEFERRED_DEPENDENCY_IMPORTED_EAGERLY,
+        messageText:
+          `This import contains symbols that are used both inside and outside of the ` +
+          `\`@Component.deferredImports\` fields in the file. This renders all these ` +
+          `defer imports useless as this import remains and its module is eagerly loaded. ` +
+          `To fix this, make sure that all symbols from the import are *only* used within ` +
+          `\`@Component.deferredImports\` arrays and there are no other references to those ` +
+          `symbols present in this file.`,
+        filePath,
+        span: decl.span,
+      });
     }
-    // ngtsc asks whether the declaration would survive *its* emit, which is JavaScript, so a
-    // type-only binding or a type-position reference is erased on the way out and does not block
-    // deferral (`valueReferenced` rather than `eagerlyReferenced`).
-    //
-    // A name listed in `deferredImports` is excused by `markAsDeferrableCandidate` at analysis
-    // time whether or not the compiler ends up deferring it, so it counts as a deferred candidate
-    // here even when it is absent from `deferredOnlyNames` (which only holds the names this
-    // compiler actually deferred).
-    const canDefer = decl.bindings.every(
-      (binding) =>
-        binding.isType ||
-        ((deferredOnlyNames.has(binding.local) || explicitlyDeferredNames.has(binding.local)) &&
-          !eagerlyReferencedNames.has(binding.local) &&
-          !binding.valueReferenced),
-    );
-    if (canDefer) {
-      continue;
-    }
-    diagnostics.push({
-      category: 1, // Error
-      code: 8014, // DEFERRED_DEPENDENCY_IMPORTED_EAGERLY
-      messageText:
-        `This import contains symbols that are used both inside and outside of the ` +
-        `\`@Component.deferredImports\` fields in the file. This renders all these ` +
-        `defer imports useless as this import remains and its module is eagerly loaded. ` +
-        `To fix this, make sure that all symbols from the import are *only* used within ` +
-        `\`@Component.deferredImports\` arrays and there are no other references to those ` +
-        `symbols present in this file.`,
-      filePath,
-      span: decl.span,
-    });
   }
 }
 

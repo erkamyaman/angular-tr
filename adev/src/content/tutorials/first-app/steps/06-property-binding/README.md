@@ -6,8 +6,8 @@ Bu eğitim dersi, bir şablona özellik bağlama eklemeyi ve bileşenlere dinami
 
 ## Neler öğreneceksiniz
 
-- Uygulamanızın `Home` şablonunda veri bağlamaları vardır.
-- Uygulamanız `Home`'dan `HousingLocation`'a veri gönderir.
+- Uygulamanızın `Home` şablonunda veri bağlamaları olacak.
+- Uygulamanız `Home`'dan `HousingLocation`'a veri gönderecek.
 
 ## Input'ların kavramsal önizlemesi
 

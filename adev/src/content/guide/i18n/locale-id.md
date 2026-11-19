@@ -61,6 +61,22 @@ Derleme için projenizin kaynak yerel ayarını değiştirmek üzere aşağıdak
 }
 ```
 
+## Etkin yerel ayarı bağımlılık enjeksiyonu dışında okuma {#read-the-active-locale-outside-dependency-injection}
+
+Bir bileşen veya servis içinde, etkin yerel ayarı almak için `LOCALE_ID` token'ını enjekte edin.
+
+`LOCALE_ID` enjekte edemiyorsanız, örneğin bir enjeksiyon bağlamı dışındaki sıradan bir fonksiyonda, `$localize.locale` değerini okuyun.
+Her yerelleştirilmiş derleme bu değeri ayarlar ve varsayılan `LOCALE_ID` fabrikası da bu değeri okur.
+Uygulamanız kendi `LOCALE_ID` değerini sağlıyorsa, `$localize.locale` bunu yansıtmaz.
+
+```ts
+declare const $localize: {locale?: string};
+
+export const locale = (typeof $localize !== 'undefined' && $localize.locale) || 'en-US';
+```
+
+Bunu bir `import` veya `export` içeren bir dosyaya koyun. Projeniz zaten `@angular/localize` türlerini içeriyorsa, `declare` satırını çıkarın.
+
 ## Sıradaki
 
 <docs-pill-row>

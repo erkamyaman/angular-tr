@@ -438,19 +438,26 @@ Kök form da alan ağacındaki bir alandır. Onu fonksiyon olarak çağırdığ�
 ### Form durumuna erişim
 
 ```angular-ts
+import {Component, signal} from '@angular/core';
+import {FormField, FormRoot, form, required} from '@angular/forms/signals';
+
 @Component({
+  imports: [FormRoot, FormField],
   template: `
-    <form novalidate>
+    <form [formRoot]="loginForm">
       <input [formField]="loginForm.email" />
       <input [formField]="loginForm.password" />
 
-      <button [disabled]="!loginForm().valid()">Sign In</button>
+      <button type="submit" [disabled]="!loginForm().valid()">Sign In</button>
     </form>
   `,
 })
 export class Login {
   loginModel = signal({email: '', password: ''});
-  loginForm = form(this.loginModel);
+  loginForm = form(this.loginModel, (schemaPath) => {
+    required(schemaPath.email);
+    required(schemaPath.password);
+  });
 }
 ```
 
@@ -746,7 +753,7 @@ export class Registration {
 }
 ```
 
-`FormRoot` kullandığınızda, formu göndermek otomatik olarak `submit()` fonksiyonunu çağırır; bu fonksiyon tüm alanları dokunulmuş olarak işaretler (doğrulama hatalarını ortaya çıkarır) ve form geçerliyse `action` geri çağırma fonksiyonunuzu çalıştırır.
+`submission` seçeneğine sahip bir form ile `FormRoot` kullandığınızda, formu göndermek otomatik olarak `submit()` fonksiyonunu çağırır; bu fonksiyon tüm alanları dokunulmuş olarak işaretler (doğrulama hatalarını ortaya çıkarır) ve form geçerliyse `action` geri çağırma fonksiyonunuzu çalıştırır.
 
 Ayrıca direktif kullanmadan, `submit(this.registrationForm)` çağırarak bir formu manuel olarak da gönderebilirsiniz. `submit` fonksiyonunu bu şekilde açıkça çağırırken, formun varsayılan `submission` mantığını geçersiz kılmak için bir `FormSubmitOptions` iletebilirsiniz: `submit(this.registrationForm, {action: () => /* ... */ })`.
 
@@ -865,7 +872,7 @@ onSubmit() {
 
 ### Özel kontroller
 
-Varsayılan olarak, bir özel kontrol üzerinde `focusBoundControl()` çağrılmasının hiçbir etkisi yoktur, çünkü bir özel kontrol birden fazla yerel girdi içerebilir. Örneğin, bir tarih seçici ayrı gün, ay ve yıl alanları içerebilir. Sonuç olarak, Angular hangi öğenin odağı alması veya hangi eylemin gerçekleştirilmesi gerektiğini belirleyemez.
+Varsayılan olarak, bir özel kontrol üzerinde `focusBoundControl()` çağrılması kontrolün ana bilgisayar öğesine odaklanır; bu öğe genellikle odağı alamaz. Bir özel kontrol birden fazla yerel girdi içerebilir. Örneğin, bir tarih seçici ayrı gün, ay ve yıl alanları içerebilir. Sonuç olarak, Angular hangi öğenin odağı alması veya hangi eylemin gerçekleştirilmesi gerektiğini belirleyemez.
 
 Bir özel kontrolde programatik odağı desteklemek için bir `focus()` yöntemi uygulayın. Bir özel kontrole ilişkili alan durumu üzerinde `focusBoundControl()` çağrıldığında, Angular varsa kontrolün `focus()` yöntemini çağırır.
 
@@ -873,7 +880,7 @@ Bir özel parola girdisini ele alalım:
 
 ```html
 <div class="password-block">
-  <input type="password" #passwordCtrl [value]="value()" (input)="value.set($event.target.value)" />
+  <input type="password" #passwordCtrl [value]="value()" (input)="value.set(passwordCtrl.value)" />
 </div>
 ```
 

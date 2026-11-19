@@ -68,9 +68,8 @@ IDE'nizin **Explorer** bölmesinde:
       1. Yeni bileşenler bu dizine eklenir.
 
    1. Dosya gezgininde uygulama tarafından kullanılan görselleri içeren görsel dizinini (`/public`) bulun.
-   1. Dosya gezgininde bir Angular uygulamasının derlenmesi ve çalıştırılması için gereken, ancak normalde etkileşime girmediğiniz dosya ve dizinleri bulun.
+   1. Dosya gezgininde bir Angular uygulamasının derlenmesi ve çalıştırılması için gereken, bulun. Bunlar normalde etkileşime girmediğiniz dosyalardır.
       1. `.angular` Angular uygulamasını derlemek için gereken dosyaları içerir.
-      1. `.e2e` uygulamayı test etmek için kullanılan dosyaları içerir.
       1. `.node_modules` uygulamanın kullandığı node.js paketlerini içerir.
       1. `angular.json` Angular uygulamasını derleme araçlarına tanımlar.
       1. `package.json`, tamamlanmış uygulamayı çalıştırmak için `npm` (node paket yöneticisi) tarafından kullanılır.

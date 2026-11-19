@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './test';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.AppComponent) {
@@ -41,6 +42,7 @@ export class FullDir extends BaseDir {
 
   ngOnChanges() {}
 
+  // @ts-ignore
   static ctorParameters = (): any => [{ type: TemplateRef }];
 }
 

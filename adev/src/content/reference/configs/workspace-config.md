@@ -152,14 +152,14 @@ Her hedef nesnesi, o hedef için `builder`'ı belirtir; bu, Architect'in çalı�
 Her hedefin ayrıca hedef için varsayılan seçenekleri yapılandıran bir `options` bölümü ve hedef için alternatif yapılandırmaları adlandıran ve belirten bir `configurations` bölümü vardır.
 Aşağıdaki [Derleme hedefi](#derleme-hedefi) bölümündeki örneğe bakın.
 
-| Özellik        | Ayrıntılar                                                                                                                                                                                                |
-| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build`        | `ng build` komutunun seçenekleri için varsayılanları yapılandırır. Daha fazla bilgi için [Derleme hedefi](#derleme-hedefi) bölümüne bakın.                                                                |
-| `serve`        | Derleme varsayılanlarını geçersiz kılar ve `ng serve` komutu için ek sunma varsayılanları sağlar. `ng build` komutu için mevcut seçeneklerin yanı sıra, uygulamanın sunulmasıyla ilgili seçenekler ekler. |
-| `e2e`          | `ng e2e` komutu kullanılarak uçtan uca test uygulamaları derlemek için derleme varsayılanlarını geçersiz kılar.                                                                                           |
-| `test`         | Test derlemeleri için derleme varsayılanlarını geçersiz kılar ve `ng test` komutu için ek test çalıştırma varsayılanları sağlar.                                                                          |
-| `lint`         | Proje kaynak dosyaları üzerinde statik kod analizi gerçekleştiren `ng lint` komutunun seçenekleri için varsayılanları yapılandırır.                                                                       |
-| `extract-i18n` | Kaynak kodundan yerelleştirilmiş mesaj dizelerini çıkaran ve uluslararasılaştırma için çeviri dosyaları üreten `ng extract-i18n` komutunun seçenekleri için varsayılanları yapılandırır.                  |
+| Özellik        | Ayrıntılar                                                                                                                                                                                                                                              |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `build`        | `ng build` komutunun seçenekleri için varsayılanları yapılandırır. Daha fazla bilgi için [Derleme hedefi](#derleme-hedefi) bölümüne bakın.                                                                                                              |
+| `serve`        | `ng serve` komutunun seçenekleri için varsayılanları yapılandırır. Geliştirme sunucusunun kendi seçenekleri vardır ve uygulamayı `buildTarget` seçeneğinde belirtilen derleme hedefiyle derler.                                                         |
+| `e2e`          | Uçtan uca testleri çalıştıran `ng e2e` komutunun seçenekleri için varsayılanları yapılandırır. `ng new` tarafından oluşturulmaz. Bu hedef olmadan `ng e2e` çalıştırıldığında bir uçtan uca test paketi eklemeniz önerilir.                              |
+| `test`         | `ng test` komutunun seçenekleri için varsayılanları yapılandırır. Birim test oluşturucusu, testleri derlemek için `buildTarget` seçeneğinde belirtilen derleme hedefini kullanır.                                                                       |
+| `lint`         | Proje kaynak dosyaları üzerinde statik kod analizi gerçekleştiren `ng lint` komutunun seçenekleri için varsayılanları yapılandırır. `ng new` tarafından oluşturulmaz. Bu hedef olmadan `ng lint` çalıştırıldığında `angular-eslint` eklemeniz önerilir. |
+| `extract-i18n` | Kaynak kodundan yerelleştirilmiş mesaj dizelerini çıkaran ve uluslararasılaştırma için çeviri dosyaları üreten `ng extract-i18n` komutunun seçenekleri için varsayılanları yapılandırır.                                                                |
 
 HELPFUL: Yapılandırma dosyasındaki tüm seçenekler, komut satırında kullanılan `dash-case` yerine `camelCase` kullanmalıdır.
 
@@ -242,7 +242,7 @@ Bu seçeneklerin ve olası değerlerinin ayrıntıları için [Angular CLI Refer
 
 | Seçenek özellikleri        | Ayrıntılar                                                                                                                                                                                                                                                                                           |
 | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assets`                   | Uygulama ile birlikte sunulacak statik varlıklara giden yolları içeren bir nesne. Varsayılan yollar projenin `public` dizinine işaret eder. Daha fazla bilgi için [Varlık yapılandırması](#varlık-yapılandırması) bölümüne bakın.                                                                    |
+| `assets`                   | Uygulama ile birlikte sunulacak statik varlıklara giden yolları içeren bir nesne. Varsayılan yollar projenin `public` dizinine işaret eder. Daha fazla bilgi için [Varlık yapılandırması](#assets-configuration) bölümüne bakın.                                                                     |
 | `styles`                   | Projenin genel bağlamına eklenecek CSS dosyalarından oluşan bir dizi. Angular CLI, CSS içe aktarmalarını ve tüm önemli CSS ön işlemcilerini destekler. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#stiller-ve-betikler-yapılandırması) bölümüne bakın.                               |
 | `stylePreprocessorOptions` | Stil ön işlemcilerine iletilecek seçenek-değer çiftlerini içeren bir nesne. Daha fazla bilgi için [Stiller ve betikler yapılandırması](#stiller-ve-betikler-yapılandırması) bölümüne bakın.                                                                                                          |
 | `inlineStyleLanguage`      | Uygulamanın satır içi bileşen stilleri için kullanılacak stil sayfası dili. `css`, `less`, `sass` veya `scss` değerlerini kabul eder, varsayılanı `css`'tir.                                                                                                                                         |
@@ -250,7 +250,7 @@ Bu seçeneklerin ve olası değerlerinin ayrıntıları için [Angular CLI Refer
 | `budgets`                  | Uygulamanızın tamamı veya bölümleri için varsayılan boyut bütçesi türü ve eşikleri. Çıktı bir eşik boyutuna ulaştığında veya aştığında oluşturucuyu uyarı veya hata bildirmeye yapılandırabilirsiniz. [Boyut bütçeleri yapılandırma](tools/cli/build#boyut-bütçelerini-yapılandırma) bölümüne bakın. |
 | `fileReplacements`         | Dosyaları ve derleme zamanı değiştirmelerini içeren bir nesne. Daha fazla bilgi için [Hedefe özgü dosya değiştirmelerini yapılandırma](tools/cli/environments#ortama-özgü-varsayılan-değerleri-yapılandırma) bölümüne bakın.                                                                         |
 | `index`                    | Uygulamayı yükleyen temel HTML belgesi. Daha fazla bilgi için [Dizin yapılandırması](#dizin-yapılandırması) bölümüne bakın.                                                                                                                                                                          |
-| `security`                 | `true` veya `false` olarak ayarlanabilen `autoCsp` anahtarını içeren bir nesne                                                                                                                                                                                                                       |
+| `security`                 | Güvenlik özelliklerini yapılandıran bir nesne. Daha fazla bilgi için [Güvenlik yapılandırması](#güvenlik-yapılandırması) bölümüne bakın.                                                                                                                                                             |
 
 ### Ek sunma seçenekleri
 
@@ -267,7 +267,7 @@ Geliştirme sunucusu, genellikle [`ng serve`](cli/serve) komutu için mevcut se�
 
 Aşağıdaki bölümler, bu karmaşık değerlerin her durumda nasıl kullanıldığı hakkında daha fazla ayrıntı sağlar.
 
-### Varlık yapılandırması
+### Varlık yapılandırması {#assets-configuration}
 
 Her `build` hedef yapılandırması, projenizi derlerken olduğu gibi kopyalamak istediğiniz dosya veya klasörleri listeleyen bir `assets` dizisi içerebilir.
 Varsayılan olarak, `public/` dizininin içerikleri kopyalanır.
@@ -415,7 +415,9 @@ Bu dizindeki dosyalar, örneğin `src/style-paths/_variables.scss`, projenizin h
 @import 'variables';
 ```
 
-HELPFUL: Birim testleri için ihtiyacınız varsa, stilleri veya betikleri `test` oluşturucusuna da eklemeniz gerekir.
+HELPFUL: Varsayılan `@angular/build:unit-test` oluşturucusunun `styles` veya `scripts` seçeneği yoktur. `styles` ve `stylePreprocessorOptions` değerlerini `buildTarget` seçeneğinde belirtilen derleme hedefinden devralır, ancak `scripts` değerini devralmaz.
+Birim testlerinizden önce bir betik çalıştırmak için bunu `test` hedefinin `setupFiles` seçeneğine ekleyin.
+Projeniz `@angular/build:karma` oluşturucusunu kullanıyorsa, birim testlerinizin ihtiyaç duyduğu stilleri veya betikleri `test` hedefine ekleyin.
 Ayrıca [Uygulamanızda çalışma zamanı global kütüphanelerini kullanma](tools/libraries/using-libraries#uygulamanızda-çalışma-zamanı-global-kütüphanelerini-kullanma) bölümüne de bakın.
 
 ### Optimizasyon yapılandırması
@@ -550,15 +552,26 @@ Kaynak haritalarından kaynak içeriğini hariç tutmak için `sourcesContent` s
 Uygulamanın HTML dizininin oluşturulmasını yapılandırır.
 
 `index` seçeneği, daha ayrıntılı yapılandırma için bir dize veya nesne olabilir.
+HTML dizin dosyası oluşturmamak için bunu `false` olarak ayarlayın.
 
 Değer bir dize olarak sağlandığında, belirtilen yolun dosya adı oluşturulan dosya için kullanılır ve uygulamanın yapılandırılmış çıktı yolunun kökünde oluşturulur.
 
 #### Dizin seçenekleri
 
-| Seçenekler | Ayrıntılar                                                                                                                                               | Değer türü | Varsayılan değer |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :--------------- |
-| `input`    | Uygulamanın oluşturulan HTML dizini için kullanılacak dosyanın yolu.                                                                                     | `string`   | Yok (gerekli)    |
-| `output`   | Uygulamanın oluşturulan HTML dizin dosyasının çıktı yolu. Sağlanan tam yol kullanılır ve uygulamanın yapılandırılmış çıktı yoluna göreceli kabul edilir. | `string`   | `index.html`     |
+| Seçenekler       | Ayrıntılar                                                                                                                                               | Değer türü | Varsayılan değer                                  |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------------------------------------------ |
+| `input`          | Uygulamanın oluşturulan HTML dizini için kullanılacak dosyanın yolu.                                                                                     | `string`   | Yok (gerekli)                                     |
+| `output`         | Uygulamanın oluşturulan HTML dizin dosyasının çıktı yolu. Sağlanan tam yol kullanılır ve uygulamanın yapılandırılmış çıktı yoluna göreceli kabul edilir. | `string`   | `index.html`                                      |
+| `preloadInitial` | Uygulamanın başlangıç dosyaları ve kaynakları için `preload`, `modulepreload` ve `preconnect` bağlantı öğeleri oluşturur.                                | `boolean`  | Service worker etkinse `false`, aksi halde `true` |
+
+### Güvenlik yapılandırması
+
+`security` seçeneği, tek tek güvenlik özelliklerini etkinleştiren bir nesnedir.
+
+| Seçenekler     | Ayrıntılar                                                                                                                                                                                                                                                                                                        |
+| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `autoCsp`      | `true` olarak ayarlandığında hash tabanlı bir İçerik Güvenlik Politikası (CSP) oluşturur. `eval` kullanımına da izin vermek için `{"unsafeEval": true}` olarak ayarlayın. Bkz. [Satır içi komut dosyalarını `autoCsp` ile hash'leyin](best-practices/security#satır-içi-komut-dosyalarını-autocsp-ile-hashleyin). |
+| `allowedHosts` | Sunucu tarafı uygulamaya erişmesine izin verilen ana bilgisayar adları. Bkz. [Sunucu Tarafı İstek Sahteciliğini (SSRF) Önleme](best-practices/security#sunucu-tarafı-istek-sahteciliğini-ssrf-önleme).                                                                                                            |
 
 ### Çıktı yolu yapılandırması
 

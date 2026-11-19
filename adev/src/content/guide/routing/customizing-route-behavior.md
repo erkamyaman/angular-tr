@@ -118,7 +118,7 @@ provideRouter(routes, withRouterConfig({urlUpdateStrategy: 'eager'}));
 
 ### Varsayılan sorgu parametresi yönetimini seçme {#choose-default-query-parameter-handling}
 
-`defaultQueryParamsHandling`, çağrı `queryParamsHandling` belirtmediğinde `Router.createUrlTree` için varsayılan davranışı ayarlar. `'replace'` varsayılandır ve mevcut sorgu dizesini değiştirir. `'merge'` sağlanan değerleri geçerli olanlarla birleştirir ve `'preserve'` açıkça yeni değerler sağlamadığınız sürece mevcut sorgu parametrelerini korur.
+`defaultQueryParamsHandling`, çağrı `queryParamsHandling` belirtmediğinde `Router.createUrlTree` için varsayılan davranışı ayarlar. `'replace'` varsayılandır ve mevcut sorgu dizesini değiştirir. `'merge'` sağlanan değerleri geçerli olanlarla birleştirir ve `'preserve'` mevcut sorgu parametrelerini korur ve çağrıya verdiğiniz tüm `queryParams` değerlerini yok sayar.
 
 ```ts
 provideRouter(routes, withRouterConfig({defaultQueryParamsHandling: 'merge'}));
@@ -555,7 +555,7 @@ export const routes: Routes = [
 ];
 ```
 
-Bileşen, çıkarılan parametreleri rota girişleri aracılığıyla alır:
+[`withComponentInputBinding`](api/router/withComponentInputBinding) özelliğini etkinleştirirseniz, bileşen çıkarılan parametreleri rota girişleri aracılığıyla alır:
 
 ```angular-ts
 import {Component, input, inject, resource} from '@angular/core';
@@ -573,7 +573,7 @@ import {Component, input, inject, resource} from '@angular/core';
   `,
 })
 export class Documentation {
-  // Rota parametreleri otomatik olarak sinyal girişlerine bağlanır
+  // Yönlendirici bu girişleri rota parametrelerinden ayarlar
   version = input.required<string>(); // Sürüm parametresini alır
   section = input.required<string>(); // Bölüm parametresini alır
 

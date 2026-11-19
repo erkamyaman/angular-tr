@@ -1,11 +1,7 @@
-use crate::ResourceResolverFs;
 use oxc_ast::ast::{Decorator, Expression, ObjectPropertyKind};
-use oxc_resolver::ResolverGeneric;
 use oxc_semantic::Semantic;
 use oxc_span::GetSpan;
 use std::collections::HashMap;
-
-use std::path::Path;
 
 use crate::analyzer::class_data::{
     ComponentData, DirectiveData, ForeignImportData, ForeignImportIssue, ForeignImportIssueKind,
@@ -16,16 +12,11 @@ use crate::evaluator::{evaluate_expression, EvalInput, Resolved, ResolvedValue};
 use super::imports::{resolve_imports_expression, ImportInfo, ImportedSymbol};
 
 use super::utils::{
-    extract_bool, extract_property_key, extract_schemas, extract_string, js_str_to_string_lossy,
-    resolve_local_expression,
+    extract_bool, extract_property_key, extract_schemas, extract_string, resolve_local_expression,
 };
 
-#[allow(clippy::too_many_arguments)]
-pub fn parse_decorator<'a, Fs: ResourceResolverFs>(
+pub fn parse_decorator<'a>(
     decorator: &Decorator<'a>,
-    file_path: &Path,
-    fs: &Fs,
-    resolver: &ResolverGeneric<Fs>,
     semantic: &Semantic<'a>,
     import_map: &HashMap<String, ImportedSymbol>,
     angular_imports: &crate::analyzer::imports::AngularImports,
@@ -74,9 +65,6 @@ pub fn parse_decorator<'a, Fs: ResourceResolverFs>(
         decorator.span,
         semantic,
         import_map,
-        file_path,
-        fs,
-        resolver,
         directive_data,
         eval,
     )
@@ -149,15 +137,11 @@ fn direct_template_content_span(expr: &Expression<'_>) -> Option<oxc_span::Span>
     ))
 }
 
-#[allow(clippy::too_many_arguments)]
-fn parse_component_metadata<'a, Fs: ResourceResolverFs>(
+fn parse_component_metadata<'a>(
     obj: &'a oxc_ast::ast::ObjectExpression<'a>,
     decorator_span: oxc_span::Span,
     semantic: &Semantic<'a>,
     import_map: &HashMap<String, ImportedSymbol>,
-    file_path: &Path,
-    fs: &Fs,
-    resolver: &ResolverGeneric<Fs>,
     directive_data: DirectiveData,
     eval: &EvalInput<'a, '_>,
 ) -> Option<ComponentData> {
@@ -264,7 +248,7 @@ fn parse_component_metadata<'a, Fs: ResourceResolverFs>(
                                     Some(id.name.to_string())
                                 }
                                 oxc_ast::ast::PropertyKey::StringLiteral(s) => {
-                                    Some(js_str_to_string_lossy(s.value).into_owned())
+                                    Some(s.value.to_string())
                                 }
                                 _ => None,
                             };
@@ -342,25 +326,9 @@ fn parse_component_metadata<'a, Fs: ResourceResolverFs>(
         }
     }
 
-    let resource_resolver = crate::ResourceResolver::new(fs, resolver);
     let default_span = data.directive.args_span.unwrap_or(decorator_span);
-
-    process_component_styles(
-        style_url,
-        style_urls,
-        &mut data,
-        &resource_resolver,
-        file_path,
-        default_span,
-    );
-
-    process_component_template_url(
-        template_url,
-        &mut data,
-        &resource_resolver,
-        file_path,
-        eval.file,
-    );
+    record_component_styles(style_url, style_urls, &mut data, default_span);
+    data.pending_template_url = template_url;
 
     Some(data)
 }
@@ -436,12 +404,10 @@ fn collect_style_urls_sources<'a>(
     }
 }
 
-fn process_component_styles<Fs: ResourceResolverFs>(
+fn record_component_styles(
     style_url: Option<StyleUrlSource>,
     style_urls: Option<Vec<StyleUrlSource>>,
     data: &mut ComponentData,
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
     default_span: oxc_span::Span,
 ) {
     let literal_span = |source: &StyleUrlSource| match source {
@@ -463,28 +429,103 @@ fn process_component_styles<Fs: ResourceResolverFs>(
     if style_url.is_none() && style_urls.is_none() {
         return;
     }
-    let sources: Vec<StyleUrlSource> = style_url
-        .into_iter()
-        .chain(style_urls.into_iter().flatten())
-        .collect();
-    load_style_urls(&sources, data, resource_resolver, file_path);
-    if sources.iter().any(StyleUrlSource::contains_incomplete) {
-        data.pending_style_urls = Some(sources);
-    }
+    data.pending_style_urls = Some(
+        style_url
+            .into_iter()
+            .chain(style_urls.into_iter().flatten())
+            .collect(),
+    );
+}
+
+/// Stage 1 resource pass: resolve and read every `templateUrl` and `styleUrl(s)` whose expression
+/// already evaluated within this file, leaving expressions that still reference constants from
+/// other files parked on `pending_template_url` / `pending_style_urls` for Stage 2.
+///
+/// Runs outside the `ParsedFile` mutex guard so resource resolution and file reads do not hold the
+/// AST lock.
+pub(crate) async fn load_syntax_resources(
+    classes: &mut [crate::analyzer::ClassData],
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
+    eval_file: crate::query::FileId,
+) {
+    futures::future::join_all(classes.iter_mut().filter_map(|class| {
+        let data = class.as_component_mut()?;
+        Some(async move {
+            let pending_styles = data.pending_style_urls.take();
+            let pending_template = data.pending_template_url.take();
+            let load_template = pending_template
+                .as_ref()
+                .is_some_and(|source| !source.url.contains_incomplete());
+
+            let styles_fut = async {
+                match pending_styles.as_ref() {
+                    Some(sources) => Some(resolve_style_urls(sources, host, containing).await),
+                    None => None,
+                }
+            };
+            let template_fut = async {
+                match (pending_template.as_ref(), load_template) {
+                    (Some(source), true) => {
+                        Some(resolve_template_url(source, host, containing, eval_file).await)
+                    }
+                    _ => None,
+                }
+            };
+
+            let (styles_res, template_res) = futures::future::join(styles_fut, template_fut).await;
+            if let Some(sources) = pending_styles {
+                if let Some((styles_from_urls, style_urls, issues)) = styles_res {
+                    data.styles_from_urls = Some(styles_from_urls);
+                    data.style_urls = Some(style_urls);
+                    data.style_url_issues = issues;
+                }
+                if sources.iter().any(StyleUrlSource::contains_incomplete) {
+                    data.pending_style_urls = Some(sources);
+                }
+            }
+            if let Some(source) = pending_template {
+                if load_template {
+                    if let Some((template, template_url)) = template_res {
+                        if let Some(template) = template {
+                            data.template = Some(template);
+                        }
+                        if let Some(template_url) = template_url {
+                            data.template_url = Some(template_url);
+                        }
+                    }
+                } else {
+                    data.pending_template_url = Some(source);
+                }
+            }
+        })
+    }))
+    .await;
 }
 
 /// Read every stylesheet `sources` names, in order, into `data.style_urls` and
 /// `data.styles_from_urls`, recording each source that did not evaluate to the expected shape
 /// as an `NG1010` issue with ngtsc's `extractComponentStyleUrls` message. Shared by Stage 1 and
 /// by Stage 2, which reloads once constants imported from other files are known.
-pub(crate) fn load_style_urls<Fs: ResourceResolverFs>(
+pub(crate) async fn load_style_urls(
     sources: &[StyleUrlSource],
     data: &mut ComponentData,
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
 ) {
-    let mut styles_from_urls = Vec::new();
-    let mut style_urls = Vec::new();
+    let (styles_from_urls, style_urls, issues) =
+        resolve_style_urls(sources, host, containing).await;
+    data.styles_from_urls = Some(styles_from_urls);
+    data.style_urls = Some(style_urls);
+    data.style_url_issues = issues;
+}
+
+async fn resolve_style_urls(
+    sources: &[StyleUrlSource],
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
+) -> (Vec<String>, Vec<UrlData>, Vec<ValueIssue>) {
+    let mut pending_urls: Vec<(String, Option<oxc_span::Span>)> = Vec::new();
     let mut issues = Vec::new();
 
     for source in sources {
@@ -502,13 +543,7 @@ pub(crate) fn load_style_urls<Fs: ResourceResolverFs>(
                     ));
                     continue;
                 };
-                style_urls.push(load_style_url(
-                    url,
-                    *string_literal_span,
-                    resource_resolver,
-                    file_path,
-                    &mut styles_from_urls,
-                ));
+                pending_urls.push((url, *string_literal_span));
             }
             StyleUrlSource::List { urls, span } => {
                 let Some(urls) = urls.get_optional() else {
@@ -520,107 +555,126 @@ pub(crate) fn load_style_urls<Fs: ResourceResolverFs>(
                     continue;
                 };
                 for url in urls.0 {
-                    style_urls.push(load_style_url(
-                        url,
-                        None,
-                        resource_resolver,
-                        file_path,
-                        &mut styles_from_urls,
-                    ));
+                    pending_urls.push((url, None));
                 }
             }
         }
     }
 
-    data.styles_from_urls = Some(styles_from_urls);
-    data.style_urls = Some(style_urls);
-    data.style_url_issues = issues;
+    let loaded = futures::future::join_all(pending_urls.into_iter().map(
+        |(url, string_literal_span)| async move {
+            let (resolved_path, content) =
+                load_url(host, containing, &url, crate::host::ResourceKind::Style).await;
+            let is_missing = content.is_none();
+            (
+                UrlData {
+                    url,
+                    resolved_path,
+                    string_literal_span,
+                    is_missing,
+                },
+                content,
+            )
+        },
+    ))
+    .await;
+
+    let mut styles_from_urls = Vec::new();
+    let mut style_urls = Vec::with_capacity(loaded.len());
+    for (url_data, content) in loaded {
+        styles_from_urls.extend(content);
+        style_urls.push(url_data);
+    }
+
+    (styles_from_urls, style_urls, issues)
 }
 
-fn load_style_url<Fs: ResourceResolverFs>(
-    url: String,
-    string_literal_span: Option<oxc_span::Span>,
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
-    styles_from_urls: &mut Vec<String>,
-) -> UrlData {
-    let (resolved_path, content) = load_url(resource_resolver, file_path, &url);
-    let is_missing = content.is_none();
-    styles_from_urls.extend(content);
-    UrlData {
-        url,
-        resolved_path,
-        string_literal_span,
-        is_missing,
-    }
+fn strip_bom(content: &str) -> String {
+    content.strip_prefix('\u{feff}').unwrap_or(content).to_owned()
+}
+
+/// Resolve and read `url` for `containing` through `host`, returning `None` when the host
+/// cannot resolve the URL.
+pub(crate) async fn resolve_and_load_resource(
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
+    url: &str,
+    kind: crate::host::ResourceKind,
+) -> Option<(String, Option<String>)> {
+    let resolved = host.resolve_resource(containing, url, kind).await.ok()??;
+    let content = match resolved.code {
+        Some(code) => Some(strip_bom(&code)),
+        None => {
+            let load_kind = match kind {
+                crate::host::ResourceKind::Template => crate::host::LoadKind::Template,
+                crate::host::ResourceKind::Style => crate::host::LoadKind::Style,
+            };
+            host.load(&resolved.id, load_kind, false)
+                .await
+                .ok()
+                .flatten()
+                .map(|loaded| strip_bom(&loaded.code))
+        }
+    };
+    Some((resolved.id.to_string(), content))
 }
 
 /// Load `url` for `UrlData`: the wire path (empty when the URL did not resolve at all) and the
 /// file's text when it could be read.
-fn load_url<Fs: ResourceResolverFs>(
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
+pub(crate) async fn load_url(
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
     url: &str,
+    kind: crate::host::ResourceKind,
 ) -> (String, Option<String>) {
-    let Ok(resource) = resource_resolver.load_resource(file_path, url) else {
-        return (String::new(), None);
-    };
-    (
-        crate::fs::path_to_string(resource.resolved_path),
-        resource.content,
-    )
+    resolve_and_load_resource(host, containing, url, kind)
+        .await
+        .unwrap_or_else(|| (String::new(), None))
 }
 
-/// Stage 1 for `templateUrl`: load it now when it evaluated within this file, or park it for
-/// Stage 2 (and the local pipeline) when it still names a constant from another file.
-fn process_component_template_url<Fs: ResourceResolverFs>(
-    template_url: Option<TemplateUrlSource>,
-    data: &mut ComponentData,
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
-    eval_file: crate::query::FileId,
-) {
-    let Some(source) = template_url else {
-        return;
-    };
-    if source.url.contains_incomplete() {
-        data.pending_template_url = Some(source);
-        return;
-    }
-    load_template_url(&source, data, resource_resolver, file_path, eval_file);
-}
-
-/// Read the template `source` names, relative to the component's own `file_path`, into
+/// Read the template `source` names, relative to the component's own `containing` module, into
 /// `data.template_url` and `data.template`. A value that did not evaluate to a string leaves
 /// `data.template_url` unset, which `validate()` reports as ngtsc's `NG1010`
 /// "templateUrl must be a string". Shared by Stage 1 and by Stage 2, which reloads once
 /// constants imported from other files are known.
-pub(crate) fn load_template_url<Fs: ResourceResolverFs>(
+pub(crate) async fn load_template_url(
     source: &TemplateUrlSource,
     data: &mut ComponentData,
-    resource_resolver: &crate::ResourceResolver<'_, Fs>,
-    file_path: &Path,
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
     eval_file: crate::query::FileId,
 ) {
+    let (template, template_url) = resolve_template_url(source, host, containing, eval_file).await;
+    if let Some(template) = template {
+        data.template = Some(template);
+    }
+    if let Some(template_url) = template_url {
+        data.template_url = Some(template_url);
+    }
+}
+
+async fn resolve_template_url(
+    source: &TemplateUrlSource,
+    host: &dyn crate::host::AnalysisHost,
+    containing: &crate::host::ModuleId,
+    eval_file: crate::query::FileId,
+) -> (Option<Resolved<String>>, Option<UrlData>) {
     let Some(url) = source.url.get_optional() else {
-        return;
+        return (None, None);
     };
 
-    let (resolved_path, content) = load_url(resource_resolver, file_path, &url);
+    let (resolved_path, content) =
+        load_url(host, containing, &url, crate::host::ResourceKind::Template).await;
     let is_missing = content.is_none();
-    if let Some(content) = content {
-        data.template = Some(Resolved::from_syntax(
-            ResolvedValue::String(content),
-            eval_file,
-        ));
-    }
-
-    data.template_url = Some(UrlData {
+    let template =
+        content.map(|content| Resolved::from_syntax(ResolvedValue::String(content), eval_file));
+    let template_url = Some(UrlData {
         url,
         resolved_path,
         string_literal_span: source.string_literal_span,
         is_missing,
     });
+    (template, template_url)
 }
 
 /// Extract each well-formed `myImport(MyComponent)` entry, recording an issue (rather than a

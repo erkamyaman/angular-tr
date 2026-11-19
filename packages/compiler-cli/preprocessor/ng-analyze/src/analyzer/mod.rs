@@ -1,6 +1,6 @@
 use self::utils::{
     expression_to_string, extract_decorator_name, get_canonical_decorator_name, get_decorator_args,
-    is_angular_decorator, js_str_to_string_lossy,
+    is_angular_decorator,
 };
 use crate::types::metadata::SpanMetadata;
 
@@ -26,19 +26,22 @@ pub mod resolver;
 pub mod resolvers;
 mod service;
 pub mod signal_debug_name;
+pub(crate) mod signal_facts;
 pub mod transforms;
 pub mod utils;
 mod visitor;
 
 pub use class_data::*;
+pub(crate) use component::{load_syntax_resources, resolve_and_load_resource};
 pub use dts::analyze_dts;
 pub use import_emit::{
     strip_extension_str, ApfImportStrategy, PrefixImportStrategy, ReferenceEmitStrategy,
 };
 pub use imports::{
-    extract_import_map, FileExportInfo, ImportDeclarationInfo, ImportKind, ImportedSymbol,
+    extract_import_map, FileExportInfo, ImportDeclarationInfo, ImportEqualsDeclarationInfo,
+    ImportKind, ImportedSymbol,
 };
-pub use resolver::{flatten_class_info, resolve_declaration_async, resolve_to_dts};
+pub use resolver::{flatten_class_info, resolve_declaration_async};
 pub use visitor::{analyze_parsed, ParsedFileAnalysis, RegistrationInfo};
 
 /// Span covering a decorator's argument list (first arg start..last arg end), or `None` when the
@@ -115,8 +118,22 @@ fn extract_decorator_args_string<'a>(
     source_text: &str,
     guards: &[oxc_span::Span],
 ) -> Option<String> {
+    strip_type_arguments_from_args(get_decorator_args(decorator)?, source_text, guards)
+}
+
+/// The source text of `args` (first argument start..last argument end) with every generic type
+/// argument list removed (`TemplateRef<Ctx<T>>` -> `TemplateRef`), and a
+/// [`FORWARD_REFERENCE_GUARD`] before each of `guards`. Expressions re-emitted into static class
+/// members must not keep type arguments, which may name class type parameters (TS2302).
+///
+/// Returns `None` when `args` contain no type arguments, so the caller can slice the source
+/// directly.
+pub(crate) fn strip_type_arguments_from_args<'a>(
+    args: &[oxc_ast::ast::Argument<'a>],
+    source_text: &str,
+    guards: &[oxc_span::Span],
+) -> Option<String> {
     use oxc_span::GetSpan;
-    let args = get_decorator_args(decorator)?;
     let first = args.first()?;
     let last = args.last()?;
     let first_start = first.span().start;
@@ -522,6 +539,7 @@ pub struct CtorParamDi {
     pub name_span: oxc_span::Span,
     pub type_span: Option<oxc_span::Span>,
     pub type_name: Option<String>,
+    pub jit_type_name: Option<&'static str>,
     pub type_info: TypeRefInfo,
     pub has_explicit_token: bool,
 }
@@ -556,6 +574,8 @@ pub(crate) fn constructor_params_di<'a>(
             Ok((name, info)) => (Some(name), info),
             Err(reason) => (None, TypeRefInfo::unavailable(reason)),
         };
+        let jit_type_name = type_annotation
+            .and_then(|annotation| extract_jit_builtin_type_name(&annotation.type_annotation));
         let has_explicit_token = decorators.iter().any(|decorator| {
             matches!(
                 get_canonical_decorator_name(decorator, semantic, angular_imports),
@@ -568,6 +588,7 @@ pub(crate) fn constructor_params_di<'a>(
             type_span: type_annotation
                 .map(|annotation| unwrap_union_type(&annotation.type_annotation).span()),
             type_name,
+            jit_type_name,
             type_info,
             has_explicit_token,
         }
@@ -607,6 +628,7 @@ pub(crate) fn constructor_params_di<'a>(
     Some(params)
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn get_constructor_params<'a>(
     class: &oxc_ast::ast::Class<'a>,
     params_di: &[CtorParamDi],
@@ -614,6 +636,7 @@ pub fn get_constructor_params<'a>(
     converter: &Utf8ToUtf16,
     import_map: &std::collections::HashMap<String, ImportedSymbol>,
     angular_imports: &crate::analyzer::imports::AngularImports,
+    jit_removal_spans: &mut Vec<oxc_span::Span>,
     mut top_level_reads: Option<&mut TopLevelReads<'_, 'a, '_>>,
 ) -> Option<ConstructorParams> {
     let target_method = constructor_method(class, false)?;
@@ -643,17 +666,6 @@ pub fn get_constructor_params<'a>(
         let type_name = di.type_name.clone();
         let mut decorators = Vec::new();
 
-        // Non-aliased named imports record their source module for namespaced DI token emission
-        // (e.g. `i0.ElementRef`).
-        let type_module = type_name.as_deref().and_then(|name| {
-            import_map.get(name).and_then(|sym| match &sym.kind {
-                crate::analyzer::ImportKind::Named(original) if original == name => {
-                    Some(sym.source.clone())
-                }
-                _ => None,
-            })
-        });
-
         for decorator in ast_decorators {
             let Some(name) = extract_decorator_name(decorator) else {
                 continue;
@@ -676,6 +688,10 @@ pub fn get_constructor_params<'a>(
                     top_level_reads.as_deref_mut(),
                     None,
                 );
+                jit_removal_spans.push(self::utils::decorator_removal_span(
+                    decorator,
+                    semantic.source_text(),
+                ));
             }
 
             // Flag unrecognized @angular/core decorators on constructor parameters (NG1005).
@@ -722,7 +738,8 @@ pub fn get_constructor_params<'a>(
 
         params.push(crate::ConstructorParamMetadata {
             type_name,
-            type_module,
+            jit_type_name: di.jit_type_name.map(String::from),
+            has_type: di.type_span.is_some(),
             is_type_only,
             is_value_verified,
             decorators,
@@ -753,6 +770,7 @@ pub fn get_member_decorators<'a>(
     source_text: &str,
     later_references: &mut Vec<oxc_span::Span>,
     removal_spans: &mut Vec<oxc_span::Span>,
+    jit_removal_spans: &mut Vec<oxc_span::Span>,
     mut top_level_reads: Option<&mut TopLevelReads<'_, 'a, '_>>,
 ) -> Vec<crate::DecoratedMemberMetadata> {
     use oxc_ast::ast::{ClassElement, PropertyKey};
@@ -802,7 +820,11 @@ pub fn get_member_decorators<'a>(
                         top_level_reads.as_deref_mut(),
                         None,
                     );
-                    removal_spans.push(self::utils::decorator_removal_span(decorator, source_text));
+                    let removal_span = self::utils::decorator_removal_span(decorator, source_text);
+                    removal_spans.push(removal_span);
+                    if !matches!(key, PropertyKey::StringLiteral(_)) {
+                        jit_removal_spans.push(removal_span);
+                    }
                 }
                 // `args` is intentionally omitted as an optimization, because `ɵsetClassMetadata`
                 // emission in TypeScript only requires `args_span` for verbatim source slicing.
@@ -943,6 +965,40 @@ fn unwrap_union_type<'a>(ts_type: &'a oxc_ast::ast::TSType<'a>) -> &'a oxc_ast::
         return non_null_types[0];
     }
     ts_type
+}
+
+/// Boxed runtime constructor identifier emitted by `ngtsc`'s `downlevel_decorators_transform`
+/// (`typeReferenceToExpression`) for non-`TSTypeReference` parameter types on `jit: true` classes.
+/// https://github.com/angular/angular/blob/83622ee/packages/compiler-cli/src/ngtsc/transform/jit/src/downlevel_decorators_transform.ts#L192-L235
+fn extract_jit_builtin_type_name(ts_type: &oxc_ast::ast::TSType<'_>) -> Option<&'static str> {
+    use oxc_ast::ast::{TSLiteral, TSType};
+
+    match ts_type {
+        TSType::TSFunctionType(_) | TSType::TSConstructorType(_) => Some("Function"),
+        TSType::TSArrayType(_) | TSType::TSTupleType(_) => Some("Array"),
+        TSType::TSTypePredicate(_) | TSType::TSBooleanKeyword(_) => Some("Boolean"),
+        TSType::TSStringKeyword(_) => Some("String"),
+        TSType::TSObjectKeyword(_) => Some("Object"),
+        TSType::TSNumberKeyword(_) => Some("Number"),
+        TSType::TSLiteralType(lit) => match &lit.literal {
+            TSLiteral::BooleanLiteral(_) => Some("Boolean"),
+            TSLiteral::StringLiteral(_) => Some("String"),
+            TSLiteral::NumericLiteral(_) => Some("Number"),
+            _ => None,
+        },
+        TSType::TSUnionType(union) => {
+            let mut non_null = union
+                .types
+                .iter()
+                .filter(|t| !matches!(t, TSType::TSNullKeyword(_)));
+            let single = non_null.next()?;
+            if non_null.next().is_some() {
+                return None;
+            }
+            extract_jit_builtin_type_name(single)
+        }
+        _ => None,
+    }
 }
 
 // TypeScript built-in types from lib.es5.d.ts (and friends) that have no runtime value
@@ -1233,7 +1289,7 @@ fn extract_decorator_args<'a>(
         match arg {
             oxc_ast::ast::Argument::StringLiteral(lit) => {
                 decorator_args.push(crate::DecoratorArg {
-                    value: js_str_to_string_lossy(lit.value).into_owned(),
+                    value: lit.value.to_string(),
                     is_literal: true,
                 });
             }
@@ -1290,5 +1346,114 @@ mod tests {
                 "not strictly sorted: {list:?}"
             );
         }
+    }
+
+    #[test]
+    fn constructor_params_extract_jit_builtin_types_and_has_type() {
+        let source = r#"
+            import {Component, Optional} from '@angular/core';
+            export interface MyInterface {}
+            export class DepService {}
+
+            @Component({ template: '', jit: true })
+            export class TestCmp {
+                constructor(
+                    a: string,
+                    b: boolean,
+                    c: number,
+                    d: object,
+                    e: string[],
+                    f: [string, number],
+                    g: () => void,
+                    h: new () => DepService,
+                    i: 'lit',
+                    j: true,
+                    k: 42,
+                    l: string | null,
+                    m: string | undefined,
+                    n: string | number,
+                    o: MyInterface,
+                    p: any,
+                    q: DepService,
+                    untyped,
+                    @Optional() untypedOptional,
+                    ...rest: number[]
+                ) {}
+            }
+        "#;
+        let fs = crate::test_utils::create_test_fs(&[
+            ("/tsconfig.json", r#"{ "files": ["test.ts"] }"#),
+            ("/test.ts", source),
+        ]);
+        let results = crate::test_utils::run_analyzer(fs, "/tsconfig.json", false);
+        let class = results[0]
+            .classes
+            .iter()
+            .find(|c| c.class_name.as_deref() == Some("TestCmp"))
+            .expect("TestCmp metadata");
+        let params = class
+            .constructor_params
+            .as_ref()
+            .expect("constructor_params");
+
+        let summary: Vec<(&str, Option<&str>, Option<&str>, bool)> = [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "q",
+            "untyped",
+            "untypedOptional",
+            "rest",
+        ]
+        .into_iter()
+        .zip(params.iter())
+        .map(|(label, p)| {
+            (
+                label,
+                p.type_name.as_deref(),
+                p.jit_type_name.as_deref(),
+                p.has_type,
+            )
+        })
+        .collect();
+
+        assert_eq!(
+            summary,
+            vec![
+                ("a", None, Some("String"), true),
+                ("b", None, Some("Boolean"), true),
+                ("c", None, Some("Number"), true),
+                ("d", None, Some("Object"), true),
+                ("e", None, Some("Array"), true),
+                ("f", None, Some("Array"), true),
+                ("g", None, Some("Function"), true),
+                ("h", None, Some("Function"), true),
+                ("i", None, Some("String"), true),
+                ("j", None, Some("Boolean"), true),
+                ("k", None, Some("Number"), true),
+                ("l", None, Some("String"), true),
+                ("m", None, None, true),
+                ("n", None, None, true),
+                ("o", Some("MyInterface"), None, true),
+                ("p", None, None, true),
+                ("q", Some("DepService"), None, true),
+                ("untyped", None, None, false),
+                ("untypedOptional", None, None, false),
+                ("rest", None, Some("Array"), true),
+            ]
+        );
     }
 }

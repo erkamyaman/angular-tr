@@ -128,6 +128,9 @@ export class App {}
 
 `<ng-content>` yer tutucusu, [bileşen seçicileri](guide/components/selectors) ile aynı CSS seçicilerini destekler.
 
+IMPORTANT: Nitelik veya sınıf seçicisi kullanılıyorsa, bu statik olarak ayarlanmalıdır, örneğin `class="within"`.
+`[class.within]="isWithin()"` gibi dinamik bağlamalar `select` seçicisi tarafından görülmez.
+
 `select` niteliği olan bir veya daha fazla `<ng-content>` yer tutucusu ve `select` niteliği olmayan bir `<ng-content>` yer tutucusu eklerseniz, ikincisi herhangi bir `select` niteliği ile eşleşmeyen tüm elemanları yakalar:
 
 ```angular-html

@@ -8,7 +8,7 @@ NOTE: Bu video eski bir sözdizimini yansıtmaktadır, ancak temel kavramlar ge�
 
 ## Neler öğreneceksiniz
 
-Uygulamanızın `HousingLocation` şablonunda girdi almak için bir `HousingLocation` özelliği bulunmaktadır.
+Uygulamanızın `HousingLocation` şablonunda girdi almak için bir `HousingLocation` özelliği bulunacaktır.
 
 ## Input'ların kavramsal önizlemesi
 

@@ -26,7 +26,7 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 1. `filteredLocationList`, sayfa yüklendiğinde varsayılan olarak tüm konut konumu değerlerini içermelidir. `Home` bileşeninin `constructor`'ını değeri ayarlamak için güncelleyin.
 
-   <docs-code header="filteredLocationList değerini ayarlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[29,32]"/>
+   <docs-code header="filteredLocationList değerini ayarlayın" path="adev/src/content/tutorials/first-app/steps/14-http/src/app/home/home.ts" visibleLines="[30,33]"/>
 
 </docs-step>
 
@@ -69,7 +69,7 @@ Bu adımda, filtreleme için kullanacağınız yeni bir dizi özelliğinde veri 
 
 </docs-workflow>
 
-SUMMARY: Bu derste, şablon değerleriyle etkileşim kurmak için şablon değişkenleri kullanmak üzere uygulamanızı güncellediniz ve olay bağlama ile dizi fonksiyonları kullanarak arama işlevselliği eklediniz.
+SUMMARY: Bu derste, şablon değerleriyle etkileşim kurmak için şablon değişkenleri kullandınız ve olay bağlama ile dizi fonksiyonları kullanarak arama işlevselliği eklediniz.
 
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 

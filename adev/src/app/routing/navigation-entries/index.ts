@@ -412,6 +412,12 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             status: 'new',
           },
           {
+            label: 'Hata sınırları',
+            path: 'guide/routing/error-boundaries',
+            contentPath: 'guide/routing/error-boundaries',
+            status: 'new',
+          },
+          {
             label: 'Yaşam döngüsü ve olaylar',
             path: 'guide/routing/lifecycle-and-events',
             contentPath: 'guide/routing/lifecycle-and-events',
@@ -1557,6 +1563,10 @@ export const REFERENCE_SUB_NAVIGATION_DATA: NavigationItem[] = [
           {
             label: 'directive',
             path: 'cli/generate/directive',
+          },
+          {
+            label: 'entry-point',
+            path: 'cli/generate/entry-point',
           },
           {
             label: 'enum',

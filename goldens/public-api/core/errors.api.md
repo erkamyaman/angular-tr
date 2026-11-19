@@ -64,9 +64,11 @@ export const enum RuntimeErrorCode {
     // (undocumented)
     HYDRATION_MISSING_NODE = -502,
     // (undocumented)
-    HYDRATION_MISSING_NODE_ON_PATH = 509,
+    HYDRATION_MISSING_NODE_ON_PATH = -509,
     // (undocumented)
     HYDRATION_MISSING_SIBLINGS = -501,
+    // (undocumented)
+    HYDRATION_MISSING_TEXT = -512,
     // (undocumented)
     HYDRATION_NODE_MISMATCH = -500,
     // (undocumented)
@@ -197,6 +199,8 @@ export const enum RuntimeErrorCode {
     UNKNOWN_BINDING = 303,
     // (undocumented)
     UNKNOWN_ELEMENT = 304,
+    // (undocumented)
+    UNPARSABLE_ICU_EXPRESSION = 702,
     // (undocumented)
     UNSAFE_ATTRIBUTE_BINDING = -910,
     // (undocumented)

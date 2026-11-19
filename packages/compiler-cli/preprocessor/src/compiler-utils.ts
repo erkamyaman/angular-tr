@@ -29,14 +29,16 @@ import {
   outputAst,
   parseTemplate,
   ParseTemplateOptions,
+  TmplAstNode,
   getSafePropertyAccessString,
   SelectorlessMatcher,
   ForeignComponentMeta,
 } from '@angular/compiler';
-
+import {ErrorCode} from './error_code.js';
 import * as nga from './types.js';
 import {PipeMeta} from './tcb.js';
 import type {ParsedComponentTemplate} from './file_analysis.js';
+import {Counter, NOOP_TRACER, SpanKind, type Tracer} from './perf.js';
 import {RawSource} from './output_ast_printer.js';
 import {offsetToPosition} from './tcb_util.js';
 import MagicString from 'magic-string';
@@ -250,7 +252,7 @@ export function buildHostMetadata(
         failed = true;
         diagCtx.diagnostics.push({
           category: 1,
-          code: 5001,
+          code: ErrorCode.HOST_BINDING_PARSE_ERROR,
           messageText: errors.map((error: ParseError) => error.msg).join('\n'),
           filePath: diagCtx.filePath,
           span: getHostBindingErrorSpan(errors[0], diagCtx),
@@ -260,7 +262,7 @@ export function buildHostMetadata(
       failed = true;
       diagCtx.diagnostics.push({
         category: 1,
-        code: 5001,
+        code: ErrorCode.HOST_BINDING_PARSE_ERROR,
         messageText: e instanceof Error ? e.message : String(e),
         filePath: diagCtx.filePath,
         span: diagCtx.hostSpan,
@@ -295,7 +297,30 @@ export function buildHostMetadata(
       bindingName.startsWith('[') || bindingName.startsWith('(') ? bindingName : `[${bindingName}]`;
     // Ensure names that aren't valid identifiers (e.g. `is-a`) are emitted as quoted property reads.
     // https://github.com/angular/angular/blob/c1829f6/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L685-L689
-    hostObj[key] = getSafePropertyAccessString('this', binding.memberName.text!);
+    const hostPropertyValue = getSafePropertyAccessString('this', binding.memberName.text!);
+    if (diagCtx) {
+      const propertyKey = key.startsWith('[') && key.endsWith(']') ? key.slice(1, -1) : bindingName;
+      const errors = verifyHostBindings(
+        {
+          attributes: {},
+          listeners: {},
+          properties: {[propertyKey]: hostPropertyValue},
+          specialAttributes: {},
+        },
+        createHostSourceSpan(diagCtx),
+      );
+      if (errors.length > 0) {
+        diagCtx.diagnostics.push({
+          category: 1,
+          code: 5001,
+          messageText: errors.map((e) => e.msg).join('\n'),
+          filePath: diagCtx.filePath,
+          span: binding.decoratorSpan ?? diagCtx.hostSpan,
+        });
+        continue;
+      }
+    }
+    hostObj[key] = hostPropertyValue;
   }
 
   // Add @HostListener decorators as event bindings
@@ -319,7 +344,14 @@ export function buildHostMetadata(
   // `@angular/compiler` does not.
   // https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L2049-L2058
   try {
-    return parseHostBindings(hostObj);
+    const parsed = parseHostBindings(hostObj);
+    if (!diagCtx) {
+      const errors = verifyHostBindings(parsed, createDummySourceSpan(''));
+      if (errors.length > 0) {
+        throw new Error(errors.map((e) => e.msg).join('\n'));
+      }
+    }
+    return parsed;
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     throw new Error(
@@ -397,7 +429,6 @@ export function buildDeps(
   usesInheritance: boolean,
   o: typeof outputAst,
   s: MagicString,
-  complianceMode: boolean = false,
 ):
   | Array<{
       token: outputAst.Expression;
@@ -425,21 +456,7 @@ export function buildDeps(
     // unions, inline types, no annotation), which ngtsc also treats as UNAVAILABLE.
     const typeName = param.isTypeOnly ? null : (param.typeName ?? null);
     let tokenResolved = typeName !== null;
-    let token: outputAst.Expression;
-    if (typeName !== null) {
-      // ngtsc's valueReferenceToExpression() emits a named-import type reference as an
-      // `ExternalExpr` (kind IMPORTED), which the import manager prints through the module's
-      // namespace import — e.g. `i0.ElementRef` for a token imported from `@angular/core`.
-      // We scope this to `@angular/core` by default (and all imported tokens in compliance mode);
-      // other named imports keep their bare local name in `.ng.ts` goldens.
-      // https://github.com/angular/angular/blob/83622ee/packages/compiler-cli/src/ngtsc/annotations/common/src/util.ts#L71-L82
-      token =
-        param.typeModule != null && (param.typeModule === '@angular/core' || complianceMode)
-          ? o.importExpr(new o.ExternalReference(param.typeModule, typeName))
-          : o.variable(typeName);
-    } else {
-      token = o.literal(null);
-    }
+    let token: outputAst.Expression = typeName !== null ? o.variable(typeName) : o.literal(null);
     let attributeNameType: outputAst.Expression | null = null;
     let host = false;
     let optional = false;
@@ -638,7 +655,12 @@ export function parseComponentTemplate(
   filePath: string,
   content: string,
   options: Partial<ParseTemplateOptions> = {},
+  tracer: Tracer = NOOP_TRACER,
 ): ParsedComponentTemplate {
+  const traced = <T>(parse: () => T): T => {
+    tracer.count(Counter.TemplatesParsed);
+    return tracer.slice(SpanKind.TemplateParse, parse);
+  };
   const parseOptions: Partial<ParseTemplateOptions> = {
     ...options,
     preserveWhitespaces: component.preserveWhitespaces ?? options.preserveWhitespaces ?? false,
@@ -655,28 +677,30 @@ export function parseComponentTemplate(
   // into it. An external template, or an inline one computed by any other expression, is parsed
   // on its own: its spans are offsets into the template string (ngtsc's `external` and
   // `indirect` source mappings).
-  // Mirroring ngtsc's `parseExtractedTemplate`, also parse a second, span-faithful copy
+  // Mirroring ngtsc's `parseExtractedTemplate`, also expose a second, span-faithful copy
   // (`diagNodes`: whitespace, line endings and leading trivia preserved) for type-checking,
-  // diagnostics, and indexing.
+  // diagnostics, and indexing, parsed lazily on first access so devmode and cross-file
+  // `ngContentSelectors` lookups do not pay for a second parse when `diagNodes` is unused.
   const contentSpan = component.templateContentSpan;
-  if (component.templateUrl == null && contentSpan != null) {
-    const parsed = parseDirectInlineTemplate(content, filePath, contentSpan, parseOptions);
-    const diagNodes = parseDirectInlineTemplate(
-      content,
-      filePath,
-      contentSpan,
-      diagParseOptions,
-    ).nodes;
-    return {...parsed, diagNodes};
-  }
+  const parseWithOptions =
+    component.templateUrl == null && contentSpan != null
+      ? (opts: ParseTemplateOptions) =>
+          traced(() => parseDirectInlineTemplate(content, filePath, contentSpan, opts))
+      : (opts: ParseTemplateOptions) => {
+          // The URL identifies the file the spans are offsets into, which for an external template
+          // is the template file itself (as in ngtsc's `extractTemplate`).
+          const templateStr = component.template || '';
+          const templateUrl = component.templateUrl?.resolvedPath ?? filePath;
+          return traced(() => parseTemplate(templateStr, templateUrl, opts));
+        };
 
-  // The URL identifies the file the spans are offsets into, which for an external template is
-  // the template file itself (as in ngtsc's `extractTemplate`).
-  const templateStr = component.template || '';
-  const templateUrl = component.templateUrl?.resolvedPath ?? filePath;
-  const parsed = parseTemplate(templateStr, templateUrl, parseOptions);
-  const diagNodes = parseTemplate(templateStr, templateUrl, diagParseOptions).nodes;
-  return {...parsed, diagNodes};
+  let cachedDiagNodes: TmplAstNode[] | undefined;
+  return {
+    ...parseWithOptions(parseOptions),
+    get diagNodes(): TmplAstNode[] {
+      return (cachedDiagNodes ??= parseWithOptions(diagParseOptions).nodes);
+    },
+  };
 }
 
 /**
@@ -691,14 +715,14 @@ export function getOrParseComponentTemplate(
   filePath: string,
   content: string,
   options?: Partial<ParseTemplateOptions>,
+  tracer: Tracer = NOOP_TRACER,
 ): ParsedComponentTemplate {
   const classKey = makeClassKey(classMeta.className, classMeta.span.start);
   let parsed = templatesByClass.get(classKey);
   if (parsed === undefined) {
-    parsed = {
-      ...parseComponentTemplate(component, filePath, content, options),
-      classNameStart: classMeta.nameSpan?.start,
-    };
+    parsed = parseComponentTemplate(component, filePath, content, options, tracer);
+    // Set in place: spreading `parsed` would read its lazy `diagNodes` getter.
+    parsed.classNameStart = classMeta.nameSpan?.start;
     templatesByClass.set(classKey, parsed);
   }
   return parsed;
@@ -772,8 +796,8 @@ export function makeClassKey(className: string | undefined | null, spanStart: nu
 }
 
 /**
- * Creates the selectorless matcher `R3TargetBinder` uses to recognize foreign components (one
- * registry entry per `foreignImports` name), or `null` when there are none.
+ * Creates the name-keyed `SelectorlessMatcher` that `R3TargetBinder` uses to recognize foreign
+ * components (one registry entry per `foreignImports` name), or `null` when there are none.
  * https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/metadata/src/util.ts#L384-L396
  */
 export function createForeignComponentMatcher(

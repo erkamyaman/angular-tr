@@ -94,8 +94,8 @@ describe('HybridCompiler fileCache invalidation', () => {
     ]);
     try {
       const loosePath = path.join(root, 'Feature/loose.ts');
-      expect(compiler.getTcbForFile(loosePath)).toContain('LooseComponent');
-      const key = compiler.getClassMetadata(loosePath)!.filePath;
+      expect(await compiler.getTcbForFile(loosePath)).toContain('LooseComponent');
+      const key = (await compiler.getClassMetadata(loosePath))!.filePath;
       expect(compiler.fileCache.has(key)).toBe(true);
 
       const updated = componentSource('<b>{{value.length}}</b>');
@@ -103,7 +103,7 @@ describe('HybridCompiler fileCache invalidation', () => {
       await compiler.updateFileContent([{filePath: loosePath, content: updated}]);
 
       expect(compiler.fileCache.has(key)).toBe(false);
-      expect(compiler.getTcbForFile(loosePath)).toContain('.length');
+      expect(await compiler.getTcbForFile(loosePath)).toContain('.length');
     } finally {
       compiler.analyzer.close();
     }
@@ -118,8 +118,8 @@ describe('HybridCompiler fileCache invalidation', () => {
     ]);
     try {
       const dependentPath = path.join(root, 'dependent.ts');
-      const before = compiler.getTcbForFile(dependentPath);
-      const key = compiler.getClassMetadata(dependentPath)!.filePath;
+      const before = await compiler.getTcbForFile(dependentPath);
+      const key = (await compiler.getClassMetadata(dependentPath))!.filePath;
       expect(compiler.fileCache.has(key)).toBe(true);
       expect(before).toContain('_t1.first');
       expect(before).not.toContain('_t1.second');
@@ -130,9 +130,96 @@ describe('HybridCompiler fileCache invalidation', () => {
       await compiler.updateFileContent([{filePath: dirPath, content: updated}]);
 
       expect(compiler.fileCache.has(key)).toBe(false);
-      const after = compiler.getTcbForFile(dependentPath);
+      const after = await compiler.getTcbForFile(dependentPath);
       expect(after).toContain('_t1.second');
       expect(after).not.toContain('_t1.first');
+    } finally {
+      compiler.analyzer.close();
+    }
+  });
+
+  it('drops the entry of a file that only the delta pass after an update finds stale', async () => {
+    // `cmp.ts` does not import `mod.ts`, so adding `Dir` to the module's declarations does not
+    // invalidate it through the import graph: the engine only finds it when it diffs its
+    // component mapping and scope registry at the start of the delta pass that `updateFileContent`
+    // runs. Readers must not be served the old entry in between that pass and the next `compile()`.
+    const moduleSource = (declarations: string) => `
+      import {NgModule} from '@angular/core';
+      import {Cmp} from './cmp';
+      import {Dir} from './Shared/dir';
+      @NgModule({declarations: [${declarations}]})
+      export class Mod {}
+    `;
+    const {compiler, root} = await createCompiler('ngmodule_scope', [
+      {
+        path: 'tsconfig.json',
+        content: JSON.stringify({
+          compilerOptions: {},
+          files: ['cmp.ts', 'Shared/dir.ts', 'mod.ts'],
+        }),
+      },
+      {
+        path: 'Shared/dir.ts',
+        content: directiveSource('first').replace("'[dir]'}", "'[dir]', standalone: false}"),
+      },
+      {
+        path: 'cmp.ts',
+        content: `
+          import {Component} from '@angular/core';
+          @Component({selector: 'app-cmp', standalone: false, template: '<div dir [first]="value"></div>'})
+          export class Cmp {
+            value = 'x';
+          }
+        `,
+      },
+      {path: 'mod.ts', content: moduleSource('Cmp')},
+    ]);
+    try {
+      const cmpPath = path.join(root, 'cmp.ts');
+      expect(await compiler.getTcbForFile(cmpPath)).not.toContain('_t1.first');
+      const key = (await compiler.getClassMetadata(cmpPath))!.filePath;
+      expect(compiler.fileCache.has(key)).toBe(true);
+
+      const modPath = path.join(root, 'mod.ts');
+      const updated = moduleSource('Cmp, Dir');
+      await fs.writeFile(modPath, updated);
+      await compiler.updateFileContent([{filePath: modPath, content: updated}]);
+
+      expect(compiler.fileCache.has(key)).toBe(false);
+      expect(await compiler.getTcbForFile(cmpPath)).toContain('_t1.first');
+    } finally {
+      compiler.analyzer.close();
+    }
+  });
+});
+
+describe('HybridCompiler inline TCB namespace alias collisions', () => {
+  it('avoids namespaceAliasConflicts when generating inline TCB imports', async () => {
+    const inlineSource = `
+      import {Component} from '@angular/core';
+      import {Dir} from './Shared/dir';
+      const i0 = 1;
+      @Component({
+        selector: 'app-inline',
+        imports: [Dir],
+        template: '<div dir [first]="value"></div>',
+      })
+      class InlineComponent {
+        value = String(i0);
+      }
+    `;
+    const {compiler, root} = await createCompiler('inline_tcb_collision', [
+      TSCONFIG,
+      MAIN,
+      {path: 'Shared/dir.ts', content: directiveSource('first')},
+      {path: 'inline.ts', content: inlineSource},
+    ]);
+    try {
+      const inlinePath = path.join(root, 'inline.ts');
+      const tcb = await compiler.getTcbForFile(inlinePath);
+      expect(tcb).not.toBeNull();
+      expect(tcb).not.toContain('import * as i0 ');
+      expect(tcb).toContain("import * as i0_1 from './Shared/dir'");
     } finally {
       compiler.analyzer.close();
     }

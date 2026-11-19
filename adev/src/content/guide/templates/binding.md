@@ -54,7 +54,7 @@ Tema örneğiyle devam edersek, bir kullanıcı sayfa yüklendikten sonra `theme
 
 Metin interpolasyonunu HTML'de normalde metin yazdığınız her yerde kullanabilirsiniz.
 
-Tüm ifade değerleri bir dizgeye dönüştürülür. Nesneler ve diziler değerin `toString` yöntemi kullanılarak dönüştürülür.
+İfade değerleri bir dizgeye dönüştürülür. `null` ve `undefined` boş dizge olarak işlenir. Nesneler ve diziler değerin `toString` yöntemi kullanılarak dönüştürülür.
 
 ## Dinamik özellik ve nitelikleri bağlama {#binding-dynamic-properties-and-attributes}
 
@@ -103,7 +103,7 @@ Karşılık gelen DOM özellikleri olmayan HTML niteliklerini (örneğin SVG nit
 
 Bu örnekte, `listRole` her değiştiğinde Angular otomatik olarak `setAttribute` çağırarak `<ul>` elemanının `role` niteliğini ayarlar.
 
-Bir nitelik bağlamasının değeri `null` ise, Angular `removeAttribute` çağırarak niteliği kaldırır.
+Bir nitelik bağlamasının değeri `null` veya `undefined` ise, Angular `removeAttribute` çağırarak niteliği kaldırır.
 
 ### Özellik ve niteliklerde metin interpolasyonu
 
@@ -164,7 +164,7 @@ Yukarıdaki örnek aşağıdaki DOM'u işler:
 <button class="highlighted"> ... </button>
 ```
 
-Angular geçerli CSS sınıf adları olmayan dizge değerlerini yok sayar.
+Angular, bir dizge değerini boşluklara göre böler ve boş dizgeleri yok sayar.
 
 Statik CSS sınıflarını, doğrudan `class` bağlamasını ve belirli sınıf bağlamalarını birlikte kullanırken Angular, işlenmiş sonuçta tüm sınıfları akıllı bir şekilde birleştirir.
 
@@ -258,6 +258,6 @@ Angular, ARIA niteliklerine dizge değerleri bağlamayı destekler.
 </button>
 ```
 
-Angular, dizge değerini elemanın `aria-label` niteliğine yazar ve bağlı değer `null` olduğunda kaldırır.
+Angular, dizge değerini elemanın `aria-label` niteliğine yazar ve bağlı değer `null` veya `undefined` olduğunda kaldırır.
 
 Bazı ARIA özellikleri, yapılı değerler (örneğin eleman referansları) kabul eden DOM özellikleri veya direktif girişleri sunar. Bu durumlar için standart özellik bağlamalarını kullanın. Örnekler ve ek rehberlik için [erişilebilirlik rehberine](/best-practices/a11y#aria-özellikleri-ve-nitelikleri) bakın.

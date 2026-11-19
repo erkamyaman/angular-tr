@@ -22,7 +22,7 @@ Yeni uygulamalar, `application` builder'ı aracılığıyla varsayılan olarak b
 ## Mevcut uygulamalar için
 
 Projenin gereksinimlerine bağlı olarak hem otomatik hem de manuel prosedürler mevcuttur.
-v18'den başlayarak, güncelleme süreci otomatik geçiş aracılığıyla mevcut uygulamaları yeni derleme sistemini kullanmaya geçirmek isteyip istemediğinizi soracaktır.
+v18'den beri, yeni bir ana sürüme güncelleme süreci, otomatik geçiş aracılığıyla mevcut uygulamaları yeni derleme sistemini kullanmaya geçirmek isteyip istemediğinizi sorar.
 Geçiş yapmadan önce, projeniz için ilgili bilgiler içerebilecek [Bilinen Sorunlar](#bilinen-sorunlar) bölümünü incelemeyi düşünün.
 
 HELPFUL: SSR kullanıyorsanız, uygulama sunucu kodundaki `require`, `__filename`, `__dirname` veya [CommonJS modül kapsamındaki](https://nodejs.org/api/modules.html#the-module-scope) diğer yapılar gibi CommonJS varsayımlarını kaldırmayı unutmayın. Tüm uygulama kodu ESM uyumlu olmalıdır. Bu, üçüncü taraf bağımlılıklar için geçerli değildir.
@@ -33,8 +33,8 @@ Otomatik geçiş, `angular.json` içindeki uygulama yapılandırmasını ve önc
 Birçok değişiklik otomatikleştirilebilir ve çoğu uygulama ek değişiklik gerektirmez, ancak her uygulama benzersizdir ve bazı manuel değişiklikler gerekebilir.
 Geçişten sonra lütfen uygulamayı derlemeyi deneyin çünkü kod içinde ayarlama gerektiren yeni hatalar olabilir.
 Hatalar mümkün olduğunda soruna çözüm önerileri sunmaya çalışacaktır ve bu kılavuzun sonraki bölümleri karşılaşabileceğiniz daha yaygın durumlardan bazılarını açıklamaktadır.
-Angular v18'e `ng update` aracılığıyla güncelleme yaparken, geçişi yürütmeniz istenecektir.
-Bu geçiş v18 için tamamen isteğe bağlıdır ve bir güncellemeden sonra herhangi bir zamanda aşağıdaki komutla manuel olarak da çalıştırılabilir:
+`ng update` aracılığıyla yeni bir ana sürüme güncelleme yaparken, geçişi yürütmeniz istenecektir.
+Bu geçiş tamamen isteğe bağlıdır ve bir güncellemeden sonra herhangi bir zamanda aşağıdaki komutla manuel olarak da çalıştırılabilir:
 
 ```shell
 
@@ -68,7 +68,7 @@ Ancak, özellikle mevcut SSR uygulamaları için manuel olarak yapıldığında 
 
 #### Uyumluluk builder'ına manuel geçiş
 
-`@angular-devkit/build-angular` paketinde, Angular CLI tarafından oluşturulan bir uygulamada bulunan `browser-esbuild` adlı bir builder mevcuttur.
+`@angular-devkit/build-angular` paketinde, `browser` builder'ını kullanan uygulamaların zaten bağımlı olduğu `browser-esbuild` adlı bir builder mevcuttur.
 `browser` builder'ını kullanan uygulamalar için yeni derleme sistemini deneyebilirsiniz.
 Özel bir builder kullanıyorsanız, olası geçiş seçenekleri hakkında lütfen o builder'ın belgelerine bakın.
 
@@ -98,8 +98,8 @@ Yeni derleme sistemine geçiş yapmak için herhangi bir uygulama hedefinin `bui
 
 #### Yeni `application` builder'ına manuel geçiş
 
-`@angular-devkit/build-angular` paketinde, Angular CLI tarafından oluşturulan bir uygulamada bulunan `application` adlı bir builder de mevcuttur.
-Bu builder, `ng new` aracılığıyla oluşturulan tüm yeni uygulamalar için varsayılandır.
+`@angular-devkit/build-angular` paketinde `application` adlı bir builder de mevcuttur.
+`ng new` aracılığıyla oluşturulan yeni uygulamalar, `@angular/build` paketindeki aynı builder'ı (`@angular/build:application`) kullanır.
 
 `angular.json`'da bir uygulama için tipik olarak bulacağınız şey şudur:
 
@@ -252,9 +252,9 @@ Ancak, ön paketleme devre dışı bırakıldığında yeniden derleme süreleri
 Uygulama derleme sisteminin ana avantajlarından biri geliştirilmiş derleme ve yeniden derleme hızıdır.
 Ancak yeni uygulama derleme sistemi, `browser` builder'ında bulunmayan ek özellikler de sağlar.
 
-IMPORTANT: Burada açıklanan `application` builder'ının yeni özellikleri, dahili olarak `browser` builder'ını kullandığı için varsayılan olarak `karma` test builder'ı ile uyumlu değildir.
-Kullanıcılar, `karma` builder'ı için `builderMode` seçeneğini `application` olarak ayarlayarak `application` builder'ını kullanmayı tercih edebilir.
-Bu seçenek şu anda geliştirici önizlemesindedir.
+IMPORTANT: Burada açıklanan `application` builder'ının yeni özellikleri, dahili olarak `browser` builder'ını kullandığı için varsayılan olarak `@angular-devkit/build-angular:karma` test builder'ı ile uyumlu değildir.
+Kullanıcılar, bu builder için `builderMode` seçeneğini `application` olarak ayarlayarak `application` builder'ını kullanmayı tercih edebilir.
+`@angular/build:karma` ve `@angular/build:unit-test` builder'ları her zaman `application` builder'ını kullanır.
 Herhangi bir sorun fark ederseniz, lütfen [buradan](https://github.com/angular/angular-cli/issues) bildirin.
 
 ### `define` ile derleme zamanı değer değiştirme
@@ -392,8 +392,8 @@ Import özniteliği için aşağıdaki yükleyici değerleri desteklenir:
 - `dataurl` - içeriği bir [data URL](https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs) olarak satır içi yerleştirir.
 - `base64` - içeriği Base64 kodlanmış bir dize olarak satır içi yerleştirir.
 
-Import özniteliklerini kullanmak için ek bir gereksinim, TypeScript'in uygulama kodunu başarıyla derleyebilmesi için TypeScript `module` seçeneğinin `esnext` olarak ayarlanması gerektiğidir.
-TypeScript içinde `ES2025` kullanılabilir olduğunda, bu değişiklik artık gerekli olmayacaktır.
+Import özniteliklerini kullanmak için ek bir gereksinim, TypeScript'in uygulama kodunu başarıyla derleyebilmesi için TypeScript `module` seçeneğinin `esnext` veya `preserve` olarak ayarlanması gerektiğidir.
+Yeni projeler varsayılan olarak `preserve` kullanır, bu nedenle herhangi bir değişiklik gerekmez.
 
 Bu aşamada, TypeScript import öznitelik değerlerine dayalı tür tanımlarını desteklememektedir.
 `@ts-expect-error`/`@ts-ignore` kullanımı veya bireysel tür tanım dosyalarının kullanımı (dosyanın yalnızca aynı loader özniteliğiyle içe aktarıldığı varsayılarak) şu anda gereklidir.

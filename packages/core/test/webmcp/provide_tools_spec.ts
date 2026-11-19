@@ -7,30 +7,30 @@
  */
 
 import {provideRouter, Router, withAutoCleanupInjectors} from '@angular/router';
-import {cleanupWebMCPPolyfill, initializeWebMCPPolyfill} from '@mcp-b/webmcp-polyfill';
-import {ModelContext} from '@mcp-b/webmcp-types';
 import {Component, createEnvironmentInjector, EnvironmentInjector} from '../../src/core';
 import {provideExperimentalWebMcpTools} from '../../src/webmcp/provide_tools';
 import {Execute} from '../../src/webmcp/types';
 import {TestBed} from '../../testing';
-import type {JsonSchemaForInference} from '../../third_party/@mcp-b/webmcp-types';
+import {installWebMcpMock, ModelContextMock, uninstallWebMcpMock} from '@angular/private/testing';
 
 describe('provideExperimentalWebMcpTools', () => {
+  let modelContext: ModelContextMock;
+
   beforeEach(() => {
     // Firefox throws a security error with this.
     Object.defineProperty(globalThis, 'originAgentCluster', {
       value: true,
       configurable: true,
     });
-    initializeWebMCPPolyfill({installTestingShim: true});
+    modelContext = installWebMcpMock();
   });
 
   afterEach(() => {
-    cleanupWebMCPPolyfill();
+    uninstallWebMcpMock();
   });
 
   it('should register tools when initialized', async () => {
-    const execute = jasmine.createSpy<Execute<JsonSchemaForInference>>('execute').and.returnValue({
+    const execute = jasmine.createSpy<Execute>('execute').and.returnValue({
       content: [{type: 'text', text: 'Hello!'}],
     });
 
@@ -48,13 +48,11 @@ describe('provideExperimentalWebMcpTools', () => {
       TestBed.inject(EnvironmentInjector),
     );
 
-    expect(await getModelContext()!.getTools()).toEqual([
-      jasmine.objectContaining({name: 'testTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'testTool'})]);
 
-    const tools = await getModelContext()!.getTools();
-    const testTool = tools.find((t: any) => t.name === 'testTool')!;
-    await (getModelContext() as any).executeTool(testTool, '{}');
+    const tools = await modelContext.getTools();
+    const testTool = tools.find((t) => t.name === 'testTool')!;
+    await modelContext.executeTool(testTool);
     expect(execute).toHaveBeenCalledOnceWith({}, jasmine.any(Object));
 
     envInjector.destroy();
@@ -75,13 +73,11 @@ describe('provideExperimentalWebMcpTools', () => {
       TestBed.inject(EnvironmentInjector),
     );
 
-    expect(await getModelContext()!.getTools()).toEqual([
-      jasmine.objectContaining({name: 'testTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'testTool'})]);
 
     envInjector.destroy();
 
-    expect(await getModelContext()!.getTools()).toEqual([]);
+    expect(await modelContext.getTools()).toEqual([]);
   });
 
   it('should work with route providers', async () => {
@@ -121,20 +117,14 @@ describe('provideExperimentalWebMcpTools', () => {
     await rootFixture.whenStable();
 
     // No tools should be registered initially
-    expect(await getModelContext()!.getTools()).toEqual([]);
+    expect(await modelContext.getTools()).toEqual([]);
 
     // Navigate to the route to register the tools
     await router.navigateByUrl('/test');
-    expect(await getModelContext()!.getTools()).toEqual([
-      jasmine.objectContaining({name: 'routeTool'}),
-    ]);
+    expect(await modelContext.getTools()).toEqual([jasmine.objectContaining({name: 'routeTool'})]);
 
     // Navigate away to destroy route environment injector context
     await router.navigateByUrl('/');
-    expect(await getModelContext()!.getTools()).toEqual([]);
+    expect(await modelContext.getTools()).toEqual([]);
   });
 });
-
-function getModelContext(): ModelContext {
-  return (globalThis as any).document?.modelContext;
-}

@@ -10,6 +10,8 @@ OnPush, Angular'daki varsayılan değişiklik algılama stratejisidir (v22'den b
 
 - Alt ağacın kök bileşeni, bir şablon bağlaması sonucunda yeni girişler aldığında. Angular, girişin mevcut ve önceki değerini `Object.is` ile karşılaştırır.
 - Angular, OnPush değişiklik algılama kullansalar da kullanmasalar da, alt ağacın kök bileşeninde veya herhangi bir çocuğunda bir olayı işlediğinde _(örneğin olay bağlama, çıkış bağlama veya `@HostListener` kullanarak)_.
+- Alt ağaçtaki bir bileşen kontrol için işaretlendiğinde, örneğin `ChangeDetectorRef.markForCheck` ile veya `AsyncPipe` tarafından.
+- Alt ağaçtaki bir bileşenin şablonunda okunan bir sinyal değiştiğinde. Angular bu durumda yalnızca sinyali okuyan bileşenleri yeniler.
 
 ## Yaygın değişiklik algılama senaryoları
 

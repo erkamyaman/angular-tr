@@ -16,10 +16,10 @@ Bu eğitimde en iyi deneyimi yaşamak için, başarılı olmak için ihtiyacın�
 
 Bu eğitimdeki dersler, aşağıdaki konularda deneyiminiz olduğunu varsaymaktadır:
 
-1. HTML'yi doğrudan düzenleyerek bir HTML web sayfası oluşturmuş olmak.
-1. JavaScript ile web sitesi içeriği programlamış olmak.
+1. HTML'yi doğrudan düzenleyerek HTML web sayfaları oluşturmak.
+1. JavaScript ile web sitesi içeriği programlamak.
 1. Basamaklı Stil Sayfası (CSS) içeriğini okumak ve seçicilerin nasıl kullanıldığını anlamak.
-1. Bilgisayarınızda görevleri gerçekleştirmek için komut satırı talimatlarını kullanmış olmak.
+1. Bilgisayarınızda görevleri gerçekleştirmek için komut satırı talimatlarını kullanmak.
 
 ### Gerekli donanım
 
@@ -65,8 +65,8 @@ Bir **Terminal** penceresinden şu komutu çalıştırın: `npm install -g @angu
 Angular ile uygulama geliştirmek için tercih ettiğiniz herhangi bir aracı kullanabilirsiniz. Aşağıdakileri öneriyoruz:
 
 1. [Visual Studio Code](https://code.visualstudio.com/)
-2. İsteğe bağlı ancak önerilen bir adım olarak, [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template) yükleyerek geliştirici deneyiminizi daha da iyileştirebilirsiniz.
-3. [WebStorm](https://www.jetbrains.com/webstorm/)
+   - İsteğe bağlı ancak önerilen bir adım olarak, [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template) yükleyerek geliştirici deneyiminizi daha da iyileştirebilirsiniz.
+1. [WebStorm](https://www.jetbrains.com/webstorm/)
    </docs-step>
 
 <docs-step title="İsteğe bağlı: Yapay zeka destekli IDE'nizi kurun">

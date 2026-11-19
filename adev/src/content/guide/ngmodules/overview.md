@@ -180,6 +180,7 @@ import {platformBrowser} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 @NgModule({
+  declarations: [MyApplication],
   bootstrap: [MyApplication],
 })
 export class MyApplicationModule {}
@@ -187,6 +188,6 @@ export class MyApplicationModule {}
 platformBrowser().bootstrapModule(MyApplicationModule);
 ```
 
-`bootstrap` içinde listelenen bileşenler otomatik olarak NgModule'ün bildirimlerine dahil edilir.
+`bootstrap` içinde listelenen bileşenler ayrıca NgModule'ün `declarations` dizisinde de bildirilmelidir.
 
 Bir uygulamayı NgModule'den önyükleme yaptığınızda, bu modülün toplanan `providers` değerleri ve tüm `imports` değerlerinin `providers` değerleri hevesle yüklenir ve tüm uygulama için enjekte edilmeye hazır olur.

@@ -50,6 +50,24 @@ export { LocalType };
 }
 
 #[test]
+fn test_exports_its_just_angular() {
+    let exports_marker = |source: &str| {
+        let allocator = Allocator::default();
+        let ret = Parser::new(&allocator, source, SourceType::ts()).parse();
+        exports_its_just_angular(&ret.program)
+    };
+    assert!(exports_marker("export const ITS_JUST_ANGULAR = true;"));
+    assert!(exports_marker("export const A = 1, ITS_JUST_ANGULAR = true;"));
+    assert!(exports_marker("export let ITS_JUST_ANGULAR: boolean = true;"));
+    // As in ngtsc, the exported statement itself must initialize the name to the literal `true`.
+    assert!(!exports_marker("export const ITS_JUST_ANGULAR = false;"));
+    assert!(!exports_marker("export const ITS_JUST_ANGULAR = !0;"));
+    assert!(!exports_marker("const ITS_JUST_ANGULAR = true;"));
+    assert!(!exports_marker("const ITS_JUST_ANGULAR = true;\nexport {ITS_JUST_ANGULAR};"));
+    assert!(!exports_marker("export const SOME_SYMBOL = true;"));
+}
+
+#[test]
 fn test_extract_template_guards_method_and_property() {
     let source_text = "
     class TestDir {
@@ -742,24 +760,4 @@ type T1 = a.b.c;
     assert_eq!(qualified_name_to_string(qualified), "a.b.c");
     let leftmost = get_leftmost_identifier_in_qualified(qualified).expect("should find leftmost");
     assert_eq!(leftmost.name.as_str(), "a");
-}
-
-#[test]
-fn test_js_str_to_string_lossy() {
-    let allocator = Allocator::default();
-    let source = r#""a\uFFFDb"; "a\uD83D\uDE00b"; "a\uD83Db"; "a\uDE00b";"#;
-    let ret = Parser::new(&allocator, source, SourceType::default()).parse();
-    let values: Vec<_> = ret
-        .program
-        .directives
-        .iter()
-        .map(|directive| js_str_to_string_lossy(directive.expression.value))
-        .collect();
-
-    // Well-formed values, including surrogate pairs, are borrowed unchanged.
-    assert!(matches!(&values[0], Cow::Borrowed("a\u{FFFD}b")));
-    assert!(matches!(&values[1], Cow::Borrowed("a\u{1F600}b")));
-    // Lone surrogates are encoded as U+FFFD followed by the code unit in hex.
-    assert_eq!(values[2], "a\u{FFFD}d83db");
-    assert_eq!(values[3], "a\u{FFFD}de00b");
 }

@@ -44,12 +44,12 @@ Yeni bir kütüphane oluşturduğunuzda, çalışma alanı yapılandırma dosyas
   …
   "my-lib": {
     "root": "projects/my-lib",
-    "sourceRoot": "projects/my-lib/src",
+    "sourceRoot": "projects/my-lib",
     "projectType": "library",
     "prefix": "lib",
     "architect": {
       "build": {
-        "builder": "@angular/build:ng-packagr",
+        "builder": "@angular/build:library",
         …
 
 ```
@@ -79,18 +79,19 @@ Kütüphaneniz, kurulum ve bakım için belgeler \(genellikle bir README dosyas�
 ## Giriş noktaları {#entry-points}
 
 Bir _giriş noktası_, tüketicilerin içe aktarma yaptığı bir modül belirleyicisi ile bu belirleyicinin sunduğu genel API'nin bütünüdür.
-Her kütüphanenin bir _birincil giriş noktası_ vardır ve istenilen sayıda _ikincil giriş noktası_ eklenebilir.
+Her kütüphanenin bir _birincil giriş noktası_ vardır ve istenilen sayıda _ikincil giriş noktası_ ekleyebilirsiniz.
 
-Birincil giriş noktası paketin kendisidir.
-Kütüphanenin kökündeki `ng-package.json` dosyası onu yapılandırır ve `lib.entryFile`, genel API'sini tanımlayan dosyayı belirtir.
+Giriş noktalarını kütüphanenin `package.json` dosyasında `"exports"` alanını kullanarak yapılandırırsınız.
+`"."` anahtarı birincil giriş noktasını tanımlar ve genel API'sini dışa aktaran TypeScript dosyasına işaret eder:
 
-```json {header: 'projects/my-lib/ng-package.json'}
+```json {header: "projects/my-lib/package.json"}
 {
-  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/my-lib",
-  "lib": {
-    "entryFile": "src/public-api.ts"
-  }
+  "name": "my-lib",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./src/public-api.ts"
+  },
+  …
 }
 ```
 
@@ -100,9 +101,8 @@ Tüketiciler birincil giriş noktasını paket adıyla içe aktarır:
 import {ThemeService} from 'my-lib';
 ```
 
-İkincil giriş noktası, kütüphane içinde kendi `ng-package.json` dosyasına sahip bir dizindir.
-Bu dizinin kütüphane köküne göre yolu, içe aktarma alt yolunu belirler.
-Örneğin, bir `button` dizini tüketicilere `my-lib/button` yolunu sunar:
+İkincil giriş noktası, `"exports"` içinde kendi genel API dosyasına işaret eden ek bir alt yol anahtarıdır.
+Örneğin, bir `"./button"` dışa aktarımı tüketicilere `my-lib/button` yolunu sunar:
 
 ```ts
 import {ButtonComponent} from 'my-lib/button';
@@ -115,53 +115,67 @@ HELPFUL: Giriş noktalarının Angular Paket Formatı'nda kod bölmeyi nasıl m�
 
 ### İkincil giriş noktası ekleme {#adding-a-secondary-entry-point}
 
-Kütüphane içinde kendi `ng-package.json` ve genel API dosyasına sahip bir dizin oluşturun:
+Kütüphanenizde yeni bir ikincil giriş noktası oluşturmak için [`entry-point` schematic'ini](cli/generate/entry-point) kullanın:
 
-```text
-projects/my-lib/
-├── ng-package.json      (primary entry point: my-lib)
-├── package.json
-├── src/
-│   ├── public-api.ts
-│   └── lib/ …
-└── button/
-    ├── ng-package.json  (secondary entry point: my-lib/button)
-    └── src/
-        ├── public-api.ts
-        └── button.ts
+```shell
+ng generate entry-point button --project my-lib
 ```
 
-İkincil `ng-package.json` yalnızca giriş noktasının kendisini yapılandırır:
+`testing/harness` gibi iç içe alt yollar da oluşturabilirsiniz:
 
-```json {header: 'projects/my-lib/button/ng-package.json'}
-{
-  "$schema": "../../../node_modules/ng-packagr/ng-entrypoint.schema.json",
-  "lib": {
-    "entryFile": "src/public-api.ts"
-  }
-}
+```shell
+ng generate entry-point testing/harness --project my-lib
 ```
 
-IMPORTANT: İkincil bir `ng-package.json` yalnızca `lib` seçeneklerini kabul eder. `dest` ve `assets` gibi paket genelindeki seçenekler kütüphane kökündeki `ng-package.json` dosyasında yer alır ve tüm giriş noktalarına uygulanır.
+`ng generate entry-point button --project my-lib` komutu aşağıdaki adımları gerçekleştirir:
 
-İkincil giriş noktasını başka bir yerde kaydetmeniz gerekmez.
-Derleme sırasında `ng-packagr`, kütüphane kökü altındaki her `ng-package.json` dosyasını otomatik olarak bulur ve içe aktarma alt yolunu dizin yolundan türetir (örneğin, `button/` dizini `my-lib/button`, `testing/harness/` dizini ise `my-lib/testing/harness` olur).
+1. Kütüphane içinde, kendi `public-api.ts` dosyasına ve başlangıç bileşen dosyalarına sahip bir `button/src/` dizini oluşturur:
 
-Aynı çalışma alanındaki bir uygulamadan ikincil bir giriş noktasını içe aktarmak için, çalışma alanının `tsconfig.json` dosyasına joker karakterli bir yol eşlemesi ekleyin.
-Varsayılan olarak `ng generate library` yalnızca paket kökünü eşler ve bu, alt yolları kapsamaz:
+   ```text
+   projects/my-lib/
+   ├── package.json
+   ├── src/
+   │   ├── public-api.ts         (primary entry point: my-lib)
+   │   └── lib/
+   │       ├── my-lib.spec.ts
+   │       └── my-lib.ts
+   └── button/
+       └── src/
+           ├── button.spec.ts
+           ├── button.ts
+           └── public-api.ts     (secondary entry point: my-lib/button)
+   ```
 
-```json {header: 'tsconfig.json'}
-{
-  "compilerOptions": {
-    "paths": {
-      "my-lib": ["./dist/my-lib"],
-      "my-lib/*": ["./dist/my-lib/*"]
-    }
-  }
-}
-```
+1. `"./button"` alt yolunu kütüphanenin `package.json` dosyasına kaydeder:
 
-IMPORTANT: Aynı kütüphanedeki başka bir giriş noktasından kod içe aktarırken, göreli bir yol yerine her zaman onun paket içe aktarma yolunu kullanın (örneğin, `import {ThemeService} from 'my-lib'`). `ng-packagr` her giriş noktasını bağımlılık sırasına göre ayrı ayrı derler; bu nedenle giriş noktaları arasındaki göreli içe aktarmalar ve giriş noktaları arasındaki döngüsel bağımlılıklar derlemenin başarısız olmasına neden olur.
+   ```json {header: "projects/my-lib/package.json"}
+   {
+     "name": "my-lib",
+     "version": "0.0.1",
+     "exports": {
+       ".": "./src/public-api.ts",
+       "./button": "./button/src/public-api.ts"
+     },
+     …
+   }
+   ```
+
+1. Aynı çalışma alanındaki uygulamaların ikincil giriş noktalarını derlenmiş kütüphane çıktısından çözebilmesi için, çalışma alanının `tsconfig.json` dosyasına (henüz yoksa) `"my-lib/*"` joker karakterli bir yol eşlemesi ekler:
+
+   ```json {header: "tsconfig.json"}
+   {
+     "compilerOptions": {
+       "paths": {
+         "my-lib": ["./dist/my-lib"],
+         "my-lib/*": ["./dist/my-lib/*"]
+       }
+     }
+   }
+   ```
+
+   `"my-lib/*"` bir joker karakter deseni olduğundan, ilk ikincil giriş noktasını oluşturduğunuzda eklenir ve `tsconfig.json` dosyasında başka bir güncelleme gerekmeden mevcut ve gelecekteki tüm ikincil giriş noktalarını otomatik olarak kapsar.
+
+Derleme sırasında `@angular/build:library`, tüm giriş noktalarını `projects/my-lib/package.json` içindeki `"exports"` alanından bulur, her giriş noktasını derler ve paketler, ilgili `types` ve `default` dışa aktarma koşullarını da `dist/my-lib/package.json` dosyasına yazar.
 
 ## Bir uygulamanın bölümlerini kütüphaneye dönüştürme
 
@@ -218,10 +232,10 @@ Daha fazla bilgi için bkz. [Schematics kullanarak kod oluşturma](tools/cli/sch
 
 Kütüphanenizi bir npm paketi olarak derlemek ve yayınlamak için Angular CLI'yi ve npm paket yöneticisini kullanın.
 
-Angular CLI, derlenmiş kodunuzdan npm'e yayınlanabilecek paketler oluşturmak için [ng-packagr](https://github.com/ng-packagr/ng-packagr/blob/main/README.md) adlı bir araç kullanır.
-`ng-packagr` tarafından desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Kütüphaneleri yayınlama](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
+Angular CLI, kodunuzu npm'e yayınlayabileceğiniz [Angular Paket Formatı](tools/libraries/angular-package-format) paketlerine derlemek için `@angular/build:library` builder'ını kullanır.
+Desteklenen dağıtım formatları ve kütüphaneniz için doğru formatı seçme konusunda rehberlik için bkz. [Kütüphaneleri yayınlama](tools/libraries/creating-libraries#kütüphaneleri-yayınlama).
 
-Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını kullanarak derlemelisiniz.
+Dağıtım için kütüphaneleri her zaman `production` yapılandırmasını (`ng build` için varsayılan yapılandırma) kullanarak derlemelisiniz.
 Bu, oluşturulan çıktının uygun optimizasyonları ve npm için doğru paket formatını kullanmasını sağlar.
 
 ```shell
@@ -235,29 +249,56 @@ npm publish
 ## Bir kütüphanedeki varlıkları yönetme
 
 Angular kütüphanenizde, dağıtılabilir paket tema dosyaları, Sass mixin'leri veya belgeler \(değişiklik günlüğü gibi\) gibi ek varlıklar içerebilir.
-Daha fazla bilgi için [varlıkları derlemenin bir parçası olarak kütüphanenize kopyalama](https://github.com/ng-packagr/ng-packagr/blob/main/docs/copy-assets.md) ve [varlıkları bileşen stillerine gömme](https://github.com/ng-packagr/ng-packagr/blob/main/docs/embed-assets-css.md) konularına bakın.
+Varsayılan olarak kütüphane builder'ı, kütüphanenizin kökündeki `README.md` ve `LICENSE*` dosyalarını çıktı dizinine kopyalar ve bileşen stil dosyalarında göreli `url()` yollarıyla başvurulan varlıkları veri URL'si olarak satır içine alır.
+Derlemenin bir parçası olarak ek dosyalar kopyalamak için, `angular.json` içinde kütüphanenizin `build` hedefindeki [`assets` seçeneğini](reference/configs/workspace-config#assets-configuration) yapılandırın:
 
-IMPORTANT: Sass mixin'leri veya önceden derlenmiş CSS gibi ek varlıklar dahil ederken, bunları birincil giriş noktasının `package.json` dosyasındaki koşullu ["exports"](tools/libraries/angular-package-format#exports) bölümüne manuel olarak eklemeniz gerekir.
-
-`ng-packagr`, elle yazılmış `"exports"` ile otomatik oluşturulanları birleştirir ve kütüphane yazarlarının ek dışa aktarma alt yolları veya özel koşullar yapılandırmasına olanak tanır.
-
-```json
-
-"exports": {
-  ".": {
-    "sass": "./_index.scss",
-  },
-  "./theming": {
-    "sass": "./_theming.scss"
-  },
-  "./prebuilt-themes/indigo-pink.css": {
-    "style": "./prebuilt-themes/indigo-pink.css"
+```json {header: "angular.json"}
+{
+  "projects": {
+    "my-lib": {
+      "architect": {
+        "build": {
+          "builder": "@angular/build:library",
+          "options": {
+            "tsConfig": "projects/my-lib/tsconfig.lib.json",
+            "assets": [
+              "projects/my-lib/CHANGELOG.md",
+              "projects/my-lib/_index.scss",
+              "projects/my-lib/prebuilt-themes",
+              {
+                "glob": "**/*.scss",
+                "input": "projects/my-lib/src/theming",
+                "output": "theming"
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }
-
 ```
 
-Yukarıdaki, [@angular/material](https://unpkg.com/browse/@angular/material/package.json) dağıtılabilir paketinden bir alıntıdır.
+IMPORTANT: Sass mixin'leri veya önceden derlenmiş CSS gibi ek varlıklar dahil ederken, bunları kütüphanenizin `package.json` dosyasındaki ["exports"](tools/libraries/angular-package-format#exports) alanında açığa çıkarın.
+
+Kütüphane builder'ı, özel `"exports"` alt yollarını ve koşullarını oluşturulan giriş noktası dışa aktarımlarıyla birleştirir ve stil dosyalarını veya özel koşulları TypeScript giriş noktalarının yanında açığa çıkarmanıza olanak tanır:
+
+```json {header: "projects/my-lib/package.json"}
+{
+  "exports": {
+    ".": {
+      "sass": "./_index.scss",
+      "default": "./src/public-api.ts"
+    },
+    "./theming": {
+      "sass": "./theming/_theming.scss"
+    },
+    "./prebuilt-themes/indigo-pink.css": {
+      "style": "./prebuilt-themes/indigo-pink.css"
+    }
+  }
+}
+```
 
 ## Eş bağımlılıklar
 
@@ -311,14 +352,9 @@ ng build my-lib --watch
 
 ```
 
-IMPORTANT: CLI `build` komutu, kütüphaneler için uygulamalardan farklı bir builder kullanır ve farklı bir derleme aracı çağırır.
+IMPORTANT: CLI `build` komutu, kütüphaneler için (`@angular/build:library`) uygulamalardan (`@angular/build:application`) farklı bir builder kullanır.
 
-- Uygulamalar için derleme sistemi `@angular/build`, `esbuild` tabanlıdır ve tüm yeni Angular CLI projelerine dahildir
-- Kütüphaneler için derleme sistemi `ng-packagr` tabanlıdır.
-  Yalnızca `ng generate library my-lib` kullanarak bir kütüphane eklediğinizde bağımlılıklarınıza eklenir.
-
-İki derleme sistemi farklı şeyleri destekler ve aynı şeyleri desteklediklerinde bile bunları farklı şekilde yaparlar.
-Bu, TypeScript kaynağının derlenmiş bir kütüphanede, derlenmiş bir uygulamadakinden farklı JavaScript koduna dönüşebileceği anlamına gelir.
+Kütüphaneler [Angular Paket Formatı](tools/libraries/angular-package-format)'na göre derlenir ve paketlenir; bu, TypeScript kaynak kodunun derlenmiş bir kütüphanede, derlenmiş bir uygulamadakinden farklı çıktı üretmesi anlamına gelir.
 
 Bu nedenle, bir kütüphaneye bağımlı olan bir uygulama yalnızca _derlenmiş kütüphaneye_ işaret eden TypeScript yol eşlemelerini kullanmalıdır.
 TypeScript yol eşlemeleri kütüphane kaynağı `.ts` dosyalarına _işaret etmemelidir_.
@@ -396,7 +432,7 @@ Bir uygulamayı derlemek için kullanılan Angular sürümü her zaman, bağıml
 Örneğin, Angular sürüm 13 kullanan bir kütüphaneniz varsa, o kütüphaneye bağımlı olan uygulama Angular sürüm 13 veya üstünü kullanmalıdır.
 Angular, uygulama için daha eski bir sürüm kullanmayı desteklemez.
 
-Kütüphanenizi npm'e yayınlamak istiyorsanız, `tsconfig.prod.json`'da `"compilationMode": "partial"` ayarlayarak partial-Ivy koduyla derleyin.
+Kütüphanenizi npm'e yayınlamak istiyorsanız, partial-Ivy kodu üretmek için varsayılan olarak `"compilationMode": "partial"` ayarlayan `production` yapılandırmasıyla derleyin.
 Bu kısmi format, Angular'ın farklı sürümleri arasında kararlıdır, bu nedenle npm'e yayınlamak güvenlidir.
 Bu formattaki kod, uygulama derlemesi sırasında Angular derleyicisinin aynı sürümü kullanılarak işlenir ve uygulamanın ve tüm kütüphanelerinin tek bir Angular sürümü kullanmasını sağlar.
 

@@ -17,7 +17,7 @@ Bu araçlar farklı girdileri anlayabilir ve gerektirebilir - bazı araçlar en 
 
 Angular dağıtım formatı, yaygın olarak kullanılan tüm geliştirme araçlarını ve iş akışlarını destekler ve daha küçük uygulama yük boyutu veya daha hızlı geliştirme iterasyon döngüsü \(derleme süresi\) ile sonuçlanan optimizasyonlara vurgu yapar.
 
-Geliştiriciler, Angular Paket Formatında paketler üretmek için Angular CLI'ye ve [ng-packagr](https://github.com/ng-packagr/ng-packagr)'a \(Angular CLI'nin kullandığı bir derleme aracı\) güvenebilir.
+Geliştiriciler, Angular Paket Formatında paketler üretmek için Angular CLI'ye güvenebilir.
 Daha fazla ayrıntı için [Kütüphane oluşturma](tools/libraries/creating-libraries) kılavuzuna bakın.
 
 ## Dosya Düzeni
@@ -103,7 +103,7 @@ Her giriş noktası için mevcut formatlar şunlardır:
 
 Bu anahtarların farkında olan araçlar, `"exports"`'tan tercih edilen bir kod formatını seçebilir.
 
-Kütüphaneler, JavaScript tabanlı giriş noktalarının dışa aktarımları tarafından yakalanmayan Sass mixin'leri veya önceden derlenmiş CSS gibi ek statik dosyaları sunmak isteyebilir.
+Ayrıca Sass mixin'leri veya önceden derlenmiş CSS gibi, JavaScript tabanlı giriş noktalarının parçası olmayan ek statik dosyaları sunmak isteyebilirsiniz.
 
 Daha fazla bilgi için bkz. [Bir kütüphanedeki varlıkları yönetme](tools/libraries/creating-libraries#bir-kütüphanedeki-varlıkları-yönetme).
 
@@ -160,7 +160,7 @@ Tek bir mantıksal amaca sahip çoğu kütüphane, tek bir giriş noktası olara
 
 #### İkincil Giriş Noktalarının Çözümlenmesi
 
-İkincil giriş noktaları, paketin `package.json`'ındaki `"exports"` alanı aracılığıyla çözümlenebilir.
+Modül çözümleyiciler, ikincil giriş noktalarını paketin `package.json` dosyasındaki `"exports"` alanını kullanarak çözümler.
 
 Bir kütüphanede ikincil giriş noktalarının nasıl yapılandırılacağını öğrenmek için [Giriş noktaları](tools/libraries/creating-libraries#entry-points) bölümüne bakın.
 
@@ -206,35 +206,15 @@ Angular Paket Formatı, kodun "düzleştirilmiş" ES modülü formatında yayın
 Bu, Angular uygulamalarının derleme süresini ve nihai uygulama paketinin indirme ve ayrıştırma süresini önemli ölçüde azaltır.
 Lütfen Nolan Lawson'ın mükemmel yazısı ["The cost of small modules"](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules)'a göz atın.
 
-Angular derleyicisi indeks ES modülü dosyaları oluşturabilir. Rollup / Rolldown gibi araçlar, _Düzleştirilmiş ES Modülü_ (FESM) dosya formatında düzleştirilmiş modüller oluşturmak için bu dosyaları kullanabilir.
-
 FESM, bir giriş noktasından erişilebilen tüm ES Modüllerinin tek bir ES Modülüne düzleştirilmesiyle oluşturulan bir dosya formatıdır.
 Bir paketteki tüm içe aktarımlar izlenerek ve bu kod tek bir dosyaya kopyalanırken tüm genel ES dışa aktarımları korunarak ve tüm özel içe aktarımlar kaldırılarak oluşturulur.
 Ancak bazı durumlarda FESM, birden fazla giriş noktası arasında paylaşılan bir paylaşımlı parçaya bağlı olabilir.
 
-Kısaltılmış ad FESM, _phe-som_ olarak telaffuz edilir ve FESM2020 gibi bir sayı ile takip edilebilir.
+Kısaltılmış ad FESM, _phe-som_ olarak telaffuz edilir ve FESM2022 gibi bir sayı ile takip edilebilir.
 Sayı, modül içindeki JavaScript'in dil düzeyini ifade eder.
-Buna göre bir FESM2022 dosyası ESM+ES2022 olur ve import/export ifadeleri ile ES2022 kaynak kodu içerir.
+Buna göre bir FESM2022 dosyası ESM+ES2022'dir ve import/export ifadeleri ile ES2022 kaynak kodu içerir.
 
-Düzleştirilmiş bir ES Modülü indeks dosyası oluşturmak için tsconfig.json dosyanızda aşağıdaki yapılandırma seçeneklerini kullanın:
-
-```js
-{
-  "compilerOptions": {
-    …
-    "module": "esnext",
-    "target": "es2022",
-    …
-  },
-  "angularCompilerOptions": {
-    …
-    "flatModuleOutFile": "my-ui-lib.js",
-    "flatModuleId": "my-ui-lib"
-  }
-}
-```
-
-ngc tarafından indeks dosyası \(örneğin, `my-ui-lib.js`\) oluşturulduktan sonra, düzleştirilmiş ESM dosyasını üretmek için Rollup ve Rolldown gibi paketleyiciler ve optimize ediciler kullanılabilir.
+Angular CLI ile (`@angular/build:library`) derleme yaparken, derleyici kütüphanenizi `ngc` ile derler ve her giriş noktasını doğrudan `fesm2022/` dizinindeki düzleştirilmiş ES2022 modüllerine paketlemek için Rolldown kullanır.
 
 ### "sideEffects" Bayrağı
 
@@ -267,8 +247,9 @@ Bu istenen bir durumdur ve tiplerin tekrarlanmasını önler.
 
 ### Tslib
 
-APF v10'dan itibaren tslib'in birincil giriş noktanızın doğrudan bir bağımlılığı olarak eklenmesi önerilir.
-Bunun nedeni, tslib sürümünün kütüphanenizi derlemek için kullanılan TypeScript sürümüne bağlı olmasıdır.
+APF v10'dan itibaren, derlenmiş çıktı `tslib`'den çalışma zamanı yardımcılarını içe aktarıyorsa `tslib`'in kütüphanenizin doğrudan bir bağımlılığı olarak listelenmesi önerilir.
+Bunun nedeni, `tslib` sürümünün kütüphanenizi derlemek için kullanılan TypeScript sürümüne bağlı olmasıdır.
+`@angular/build:library` ile derleme yaparken, derlenmiş kod `tslib`'i içe aktarıyorsa derleyici, oluşturulan `package.json` dosyasındaki `dependencies` alanına `tslib`'i otomatik olarak ekler.
 
 ## Örnekler
 
@@ -372,4 +353,4 @@ Angular'ın Ahead of Time Derleyicisi.
 
 ### Düzleştirilmiş tip tanımlamaları {#flattened-type-definitions}
 
-[API Extractor](https://api-extractor.com) veya [rollup-plugin-dts](https://github.com/Swatinem/rollup-plugin-dts) gibi araçlar kullanılarak oluşturulan paketlenmiş TypeScript tip tanımlamaları.
+[API Extractor](https://api-extractor.com) veya [`rolldown-plugin-dts`](https://github.com/sxzz/rolldown-plugin-dts) gibi araçlar kullanılarak oluşturulan paketlenmiş TypeScript tip tanımlamaları.

@@ -130,7 +130,7 @@ Sayfaların birden fazla outlet'i olabilir — hangi içeriğin hangi outlet'e a
 <app-footer />
 ```
 
-Her outlet'in benzersiz bir adı olmalıdır. Ad dinamik olarak ayarlanamaz veya değiştirilemez. Varsayılan olarak ad `'primary'` şeklindedir.
+Her outlet'in benzersiz bir adı olmalıdır. Adı bir değere bağlayabilirsiniz. Değer değiştiğinde outlet mevcut bileşenini yok eder ve eşleşen bir rota varsa yeni ad için rotayı render eder. Varsayılan olarak ad `'primary'` şeklindedir.
 
 Angular, outlet'in adını her rotada tanımlanan `outlet` özelliği ile eşleştirir:
 

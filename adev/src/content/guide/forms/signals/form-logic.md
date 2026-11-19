@@ -262,7 +262,7 @@ export class Profile {
 
 ## `readonly()` ile düzenlenemez alanları görüntüleme {#display-uneditable-fields-with-readonly}
 
-`readonly()` kuralı kullanıcıların bir alanı güncellemesini engeller. `[FormField]` direktifi, bu durumu HTML `readonly` niteliğine otomatik olarak bağlar ve bu, düzenlemeyi engellerken kullanıcıların odaklanmasına ve metin seçmesine izin verir.
+`readonly()` kuralı kullanıcıların bir alanı güncellemesini engeller. `FormField` direktifi, bu durumu HTML `readonly` niteliğine otomatik olarak bağlar ve bu, düzenlemeyi engellerken kullanıcıların odaklanmasına ve metin seçmesine izin verir.
 
 NOTE: Salt okunur alanlar [doğrulamayı](guide/forms/signals/validation) atlar.
 
@@ -301,7 +301,7 @@ export class Account {
 }
 ```
 
-`[FormField]` direktifi, alanın durumuna göre `readonly` niteliğini otomatik olarak bağlar.
+`FormField` direktifi, alanın durumuna göre `readonly` niteliğini otomatik olarak bağlar.
 
 ### Koşullu salt okunur
 
@@ -457,10 +457,18 @@ export class Search {
   });
 
   searchForm = form(this.searchModel, (schemaPath) => {
-    debounce(schemaPath.query, () => {
-      // 500ms sonra çözümlenen bir promise döndür
+    debounce(schemaPath.query, (context, abortSignal) => {
+      // 500ms sonra veya geciktirme iptal edildiğinde hemen çözümlenen bir promise döndür
       return new Promise<void>((resolve) => {
-        setTimeout(() => resolve(), 500);
+        const timeoutId = setTimeout(resolve, 500);
+        abortSignal.addEventListener(
+          'abort',
+          () => {
+            clearTimeout(timeoutId);
+            resolve();
+          },
+          {once: true},
+        );
       });
     });
   });

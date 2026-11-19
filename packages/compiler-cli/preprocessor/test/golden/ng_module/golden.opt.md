@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './app.module';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.MyComponent) {
@@ -289,9 +290,9 @@ export class AppRoot {
               {
                 selector: 'app-root',
                 template: `
-            <my-comp [compInput]="'hello'"></my-comp>
-            <div myDir [dirInput]="'world'"></div>
-        `,
+        <my-comp [compInput]="'hello'"></my-comp>
+        <div myDir [dirInput]="'world'"></div>
+    `,
                 imports: [MyModule],
               },
             ],

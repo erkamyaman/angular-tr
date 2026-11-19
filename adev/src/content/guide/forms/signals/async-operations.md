@@ -180,7 +180,7 @@ onSuccess: (response: { usernameTaken: boolean; profanity: boolean }) => {
 } // prettier-ignore
 ```
 
-`onSuccess` için tür ya doğrudan parametrede ya da `validateHttp`'in `options` nesnesindeki `parse` özelliğiyle belirtilebilir
+`onSuccess` için tür ya doğrudan parametrede ya da `validateHttp`'in `options` nesnesindeki `parse` özelliğiyle belirtilebilir.
 
 ```ts
 onSuccess: (response: { usernameTaken: boolean; profanity: boolean }) => {
@@ -190,8 +190,8 @@ onSuccess: (response: { usernameTaken: boolean; profanity: boolean }) => {
 // veya
 
 options: {
-  parse: (response) => response as {usernameTaken: boolean; profanity: boolean};
-}
+  parse: (response) => response as {usernameTaken: boolean; profanity: boolean},
+},
 onSuccess: (response) => {
   // ...
 } // prettier-ignore
@@ -239,7 +239,7 @@ validateHttp(schemaPath.field, {
 });
 ```
 
-TIP: Mevcut tüm seçenekler için [httpResource API dokümantasyonuna](api/common/http/httpResource) bakın.
+TIP: Mevcut tüm istek özellikleri için [`HttpResourceRequest` API dokümantasyonuna](api/common/http/HttpResourceRequest), `options` parametresi için ise [httpResource API dokümantasyonuna](api/common/http/httpResource) bakın.
 
 ## validateAsync() ile özel asenkron doğrulama {#custom-async-validation-with-validateasync}
 

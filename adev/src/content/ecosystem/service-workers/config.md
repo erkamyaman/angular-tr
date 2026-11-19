@@ -381,4 +381,8 @@ IMPORTANT: `freshness` stratejisi genellikle sunucuya daha fazla istek gönderil
 
 ### `applicationMaxAge`
 
-Bu isteğe bağlı özellik, service worker'ın tüm istekleri ne kadar süre önbelleğe alacağını yapılandırmanızı sağlar. `maxAge` süresi içinde dosyalar önbellekten sunulur. Bu sürenin ötesinde, varlık ve veri istekleri dahil tüm istekler yalnızca ağdan sunulur.
+Bu isteğe bağlı özellik, service worker'ın bir uygulama sürümünü önbelleğinden ne kadar süre sunacağını yapılandırmanızı sağlar. Süre, dosyaların cihazda önbelleğe alındığı andan değil, uygulamayı derlediğiniz andan itibaren ölçülür.
+
+`applicationMaxAge` süresi içinde service worker dosyaları önbellekten sunar. Bu sürenin ötesinde, daha yeni bir sürüm olmasa bile service worker varlık ve veri istekleri dahil tüm istekleri ağa gönderir. Uygulama, yeni bir derleme dağıtılıp cihaz onu alana kadar çevrimdışı çalışmaz.
+
+`applicationMaxAge` belirtmezseniz azami bir süre yoktur ve service worker önbelleğe alınmış sürümleri ne kadar eski olursa olsun sunar.

@@ -404,7 +404,7 @@ Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncell
 ```json
 {
   "projects": {
-    "your-app": {
+    "my-app": {
       "architect": {
         "build": {
           "options": {
@@ -416,6 +416,38 @@ Bunu yapılandırmak için `angular.json` dosyanızı aşağıdaki gibi güncell
   }
 }
 ```
+
+### Ön-render edilen dosya çıktı biçimi {#prerendered-file-output-format}
+
+`prerender` seçeneğinin `format` özelliği, Angular'ın her ön-render edilmiş rota için yazdığı dosya yapısını kontrol eder. `about` yoluna sahip bir rota için:
+
+| `format`                 | Ön-render edilmiş dosya |
+| ------------------------ | ----------------------- |
+| `directory` (varsayılan) | `about/index.html`      |
+| `file`                   | `about.html`            |
+
+Statik barındırma sağlayıcınıza bağlı olarak, barındırma ortamınız rotaları sonda eğik çizgiye yönlendirmeden sunmak için `<route>.html` dosyaları gerektiriyorsa `format` değerini `"file"` olarak ayarlayabilirsiniz.
+
+```json
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "outputMode": "static",
+            "prerender": {
+              "format": "file"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+NOTE: `format` seçeneği yalnızca derleme bir sunucu üretmediğinde dikkate alınır.
 
 ## HttpClient kullanırken verileri önbelleğe alma {#caching-data-when-using-httpclient}
 
@@ -455,7 +487,7 @@ CRITICAL: SSR sırasında Fetch uygulaması, [Fetch Standardı](https://fetch.sp
 Angular'ın sunucu tarafı render (SSR) sırasında HTTP yanıtlarını nasıl önbelleğe aldığını ve hidrasyon sırasında yeniden kullandığını `HttpTransferCacheOptions` yapılandırarak özelleştirebilirsiniz.
 Bu yapılandırma, `provideClientHydration()` içinde `withHttpTransferCacheOptions` kullanılarak global olarak sağlanır.
 
-Varsayılan olarak, `HttpClient` `Authorization`, `Proxy-Authorization` veya `Cookie` başlıkları içermeyen ve `withCredentials` ile ya da kimlik bilgisi gönderebilen Fetch API `credentials` modlarıyla gönderilmeyen tüm `HEAD` ve `GET` isteklerini önbelleğe alır. Ayrıca Angular, bir istek veya yanıt önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içerdiğinde ya da Fetch API `cache` seçeneği `no-store` veya `no-cache` olarak ayarlandığında transfer önbelleğini atlar. `Set-Cookie` başlığı taşıyan yanıtlar da atlanır. İstek filtreleme ayarlarını hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
+Varsayılan olarak, `HttpClient` `Authorization`, `Proxy-Authorization` veya `Cookie` başlıkları içermeyen ve `withCredentials` ile ya da kimlik bilgisi gönderebilen Fetch API `credentials` modlarıyla gönderilmeyen tüm `HEAD`, `QUERY` ve `GET` isteklerini önbelleğe alır. Ayrıca Angular, bir istek veya yanıt önbelleğe almayı yasaklayan `Cache-Control` direktifleri (`no-store`, `no-cache` veya `private`) içerdiğinde ya da Fetch API `cache` seçeneği `no-store` veya `no-cache` olarak ayarlandığında transfer önbelleğini atlar. `Set-Cookie` başlığı taşıyan yanıtlar da atlanır. İstek filtreleme ayarlarını hidrasyon yapılandırmasında `withHttpTransferCacheOptions` kullanarak geçersiz kılabilirsiniz.
 
 ```ts
 import {
@@ -495,7 +527,7 @@ IMPORTANT: Kimlik doğrulama token'ları gibi hassas başlıkları dahil etmekte
 
 ### `includePostRequests`
 
-Varsayılan olarak, yalnızca `GET` ve `HEAD` istekleri önbelleğe alınır.
+Varsayılan olarak, yalnızca `GET`, `QUERY` ve `HEAD` istekleri önbelleğe alınır.
 GraphQL sorguları gibi okuma işlemleri olarak kullanıldığında `POST` istekleri için önbelleğe almayı etkinleştirebilirsiniz.
 
 ```ts

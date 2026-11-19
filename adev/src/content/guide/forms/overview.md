@@ -293,7 +293,7 @@ Görünümden modele testinde gerçekleştirilen adımlar şunlardır.
 
 1. Form girdi öğesi için görünümü sorgulayın ve test için özel bir "input" olayı oluşturun.
 1. Girdi için yeni değeri _Red_ olarak ayarlayın ve form girdi öğesinde "input" olayını gönderin.
-1. Test fikstürü aracılığıyla değişiklik algılamayı çalıştırın.
+1. Güncellemenin işlenmesini beklemek için `await fixture.whenStable()` kullanın.
 1. Bileşenin `favoriteColor` özellik değerinin girdiden gelen değerle eşleştiğini doğrulayın.
 
 Aşağıdaki test, modelden görünüme veri akışını doğrular.
@@ -303,7 +303,6 @@ Aşağıdaki test, modelden görünüme veri akışını doğrular.
 Modelden görünüme testinde gerçekleştirilen adımlar şunlardır.
 
 1. `favoriteColor` özelliğinin değerini ayarlamak için bileşen örneğini kullanın.
-1. Test fikstürü aracılığıyla değişiklik algılamayı çalıştırın.
 1. Sonraki oluşturmayı beklemek için `await fixture.whenStable()` kullanın.
 1. Form girdi öğesi için görünümü sorgulayın.
 1. Girdi değerinin bileşen örneğindeki `favoriteColor` özelliğinin değeriyle eşleştiğini doğrulayın.

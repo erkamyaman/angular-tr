@@ -7,6 +7,7 @@
 
 import * as i0 from './app.component';
 import * as i1 from 'test-lib';
+import * as i2 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.AppComponent) {
@@ -72,11 +73,11 @@ export class AppComponent {
               {
                 selector: 'app-root',
                 template: `
-        <test-cmp 
-          width="100" 
-          height="200"
-        ></test-cmp>
-      `,
+    <test-cmp 
+      width="100" 
+      height="200"
+    ></test-cmp>
+  `,
                 imports: [TestComponent],
               },
             ],

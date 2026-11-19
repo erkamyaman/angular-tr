@@ -30,11 +30,12 @@ Komut, uygulama kodunu günceller ve proje yapısına ekstra dosyalar ekler.
 src
 ├── app
 │ ├── app.config.server.ts # sunucu uygulama yapılandırması
+│ ├── app.routes.server.ts # sunucu rotaları yapılandırması
 │ └── app-shell # app-shell bileşeni
-│   ├── app-shell.component.html
-│   ├── app-shell.component.scss
-│   ├── app-shell.component.spec.ts
-│   └── app-shell.component.ts
+│   ├── app-shell.css
+│   ├── app-shell.html
+│   ├── app-shell.spec.ts
+│   └── app-shell.ts
 └── main.server.ts # ana sunucu uygulama başlatma
 ```
 

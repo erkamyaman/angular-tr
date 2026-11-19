@@ -6,15 +6,16 @@ TIP: Bu rehber, [Temel Bilgiler Rehberi](essentials)'ni zaten okuduğunuzu varsa
 
 `@Component` dekoratörü, bileşenin **değişiklik algılama modunu** kontrol eden bir `changeDetection` seçeneği kabul eder. İki değişiklik algılama modu seçeneği vardır.
 
-**`ChangeDetectionStrategy.Eager`/`Default`**, isteğe bağlı bir moddur. Bu modda Angular, uygulama genelinde herhangi bir aktivite gerçekleştiğinde bileşenin DOM'unun güncellenmesi gerekip gerekmediğini kontrol eder. Bu kontrolü tetikleyen aktiviteler arasında kullanıcı etkileşimi, ağ yanıtı, zamanlayıcılar ve daha fazlası yer alır.
+**`ChangeDetectionStrategy.Eager`**, isteğe bağlı bir moddur. Bu modda Angular, uygulama genelinde herhangi bir aktivite gerçekleştiğinde bileşenin DOM'unun güncellenmesi gerekip gerekmediğini kontrol eder. Bu kontrolü tetikleyen aktiviteler arasında kullanıcı etkileşimi, ağ yanıtı, zamanlayıcılar ve daha fazlası yer alır.
 
 **`ChangeDetectionStrategy.OnPush`**, varsayılan stratejidir (v22'den itibaren). Bu mod, Angular'ın yapması gereken kontrol miktarını azaltır. Bu modda framework, bir bileşenin DOM'unun güncellenmesi gerekip gerekmediğini yalnızca şu durumlarda kontrol eder:
 
 - Bir bileşen girdisi, bir şablondaki bağlama sonucunda değişmişse, veya
 - Bu bileşendeki bir olay dinleyicisi çalışırsa
 - Bileşen, `ChangeDetectorRef.markForCheck` veya onu sarmalayan `AsyncPipe` gibi bir şey aracılığıyla açıkça kontrol için işaretlenmişse.
+- Bileşenin şablonunda okunan bir sinyal değişirse.
 
-Ek olarak, bir OnPush bileşeni kontrol edildiğinde, Angular uygulama ağacı boyunca yukarı doğru ilerleyerek tüm üst bileşenleri de kontrol eder.
+İlk üç durumda Angular, uygulama ağacı boyunca yukarı doğru ilerleyerek bileşenin tüm üst bileşenlerini de kontrol eder. Bir sinyal değiştiğinde ise Angular yalnızca şablonları o sinyali okuyan bileşenleri yeniler.
 
 ## PreserveWhitespaces
 

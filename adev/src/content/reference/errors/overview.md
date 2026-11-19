@@ -26,6 +26,8 @@
 | `NG0505`  | [Sunucu yanıtında hidrasyon bilgisi yok](errors/NG0505)                                  |
 | `NG0506`  | [Uygulama kararsız kalıyor](errors/NG0506)                                               |
 | `NG0507`  | [Sunucu tarafı oluşturma sonrasında HTML içeriği değiştirildi](errors/NG0507)            |
+| `NG0509`  | [Yolda eksik hidrasyon düğümü](errors/NG0509)                                            |
+| `NG0512`  | [Eksik hidrasyon metni](errors/NG0512)                                                   |
 | `NG0600`  | [İzin verilmeyen bir bağlamda sinyale yazma](errors/NG0600)                              |
 | `NG0602`  | [Reaktif bağlam içinde izin verilmeyen fonksiyon çağrısı](errors/NG0602)                 |
 | `NG0750`  | [@defer bağımlılıkları yüklenemedi](errors/NG0750)                                       |
@@ -68,5 +70,6 @@
 | `NG8002` | [Geçersiz Öznitelik](errors/NG8002)                                        |
 | `NG8003` | [Eksik Referans Hedefi](errors/NG8003)                                     |
 | `NG8011` | [İçerik yansıtmayı engelleyen kontrol akışı](errors/NG8011)                |
+| `NG8022` | [Form alanında desteklenmeyen bağlama](errors/NG8022)                      |
 | `NG8023` | [Birden Fazla Bileşen Aynı Elementle Eşleşiyor](errors/NG8023)             |
 | `NG8024` | [Çakışan Host Directive Bağlaması](errors/NG8024)                          |

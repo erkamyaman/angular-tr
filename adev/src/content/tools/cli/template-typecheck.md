@@ -201,22 +201,29 @@ Bu kılavuzdaki [Improving template type checking for custom directives](/guide/
 
 ## Girdi setter zorlaması
 
-Bazen bir direktifin veya bileşenin `input()` özelliğinin, kendisine bağlanan değeri değiştirmesi, genellikle girdi için bir `transform` fonksiyonu kullanması istenir.
+Bazen bir direktifin veya bileşenin bir girdisinin, kendisine bağlanan değeri değiştirmesi, genellikle girdinin setter'ında yapılması istenir.
 Örnek olarak bu özel düğme bileşenini inceleyin:
-
-Aşağıdaki direktifi inceleyin:
 
 ```angular-ts
 @Component({
   selector: 'submit-button',
   template: `
     <div class="wrapper">
-      <button [disabled]="disabled()">Submit</button>
+      <button [disabled]="disabled">Submit</button>
     </div>
   `,
 })
 class SubmitButton {
-  disabled = input.required({transform: booleanAttribute});
+  private _disabled = false;
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = value;
+  }
 }
 ```
 

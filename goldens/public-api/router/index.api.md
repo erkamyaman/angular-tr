@@ -11,6 +11,7 @@ import { DefaultExport } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
 import { EnvironmentProviders } from '@angular/core';
+import { ErrorDetails } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import * as i0 from '@angular/core';
 import { InjectionToken } from '@angular/core';
@@ -271,6 +272,15 @@ export type DisabledInitialNavigationFeature = RouterFeature<RouterFeatureKind.D
 export type EnabledBlockingInitialNavigationFeature = RouterFeature<RouterFeatureKind.EnabledBlockingInitialNavigationFeature>;
 
 // @public
+export type ErrorBoundariesFeature = RouterFeature<RouterFeatureKind.ErrorBoundariesFeature>;
+
+// @public
+export interface ErrorBoundaryOptions {
+    defaultErrorComponent?: Type<unknown>;
+    onError?: (error: Error, details?: ErrorDetails) => void;
+}
+
+// @public
 type Event_2 = NavigationStart | NavigationEnd | NavigationCancel | NavigationError | RoutesRecognized | GuardsCheckStart | GuardsCheckEnd | RouteConfigLoadStart | RouteConfigLoadEnd | ChildActivationStart | ChildActivationEnd | ActivationStart | ActivationEnd | Scroll | ResolveStart | ResolveEnd | NavigationSkipped;
 export { Event_2 as Event }
 
@@ -413,16 +423,17 @@ export function mapToResolve<T>(provider: Type<Resolve<T>>): ResolveFn<T>;
 export type MaybeAsync<T> = T | Observable<T> | Promise<T>;
 
 // @public
-export interface Navigation {
+interface Navigation_2 {
     readonly abort: () => void;
     extractedUrl: UrlTree;
     extras: NavigationExtras;
     finalUrl?: UrlTree;
     id: number;
     initialUrl: UrlTree;
-    previousNavigation: Navigation | null;
+    previousNavigation: Navigation_2 | null;
     trigger: NavigationTrigger;
 }
+export { Navigation_2 as Navigation }
 
 // @public
 export interface NavigationBehaviorOptions {
@@ -691,6 +702,7 @@ export interface Route {
     children?: Routes;
     component?: Type<any>;
     data?: Data;
+    errorComponent?: Type<unknown>;
     loadChildren?: LoadChildren;
     loadComponent?: () => Type<unknown> | Observable<Type<unknown> | DefaultExport<Type<unknown>>> | Promise<Type<unknown> | DefaultExport<Type<unknown>>>;
     matcher?: UrlMatcher;
@@ -734,17 +746,17 @@ export class Router {
     // (undocumented)
     config: Routes;
     createUrlTree(commands: readonly any[], navigationExtras?: UrlCreationOptions): UrlTree;
-    readonly currentNavigation: Signal<Navigation | null>;
+    readonly currentNavigation: Signal<Navigation_2 | null>;
     dispose(): void;
     get events(): Observable<Event_2>;
     // @deprecated
-    getCurrentNavigation(): Navigation | null;
+    getCurrentNavigation(): Navigation_2 | null;
     initialNavigation(): void;
     // @deprecated
     isActive(url: string | UrlTree, exact: boolean): boolean;
     // @deprecated (undocumented)
     isActive(url: string | UrlTree, matchOptions: Partial<IsActiveMatchOptions>): boolean;
-    get lastSuccessfulNavigation(): Signal<Navigation | null>;
+    get lastSuccessfulNavigation(): Signal<Navigation_2 | null>;
     navigate(commands: readonly any[], extras?: NavigationExtras): Promise<boolean>;
     navigateByUrl(url: string | UrlTree, extras?: NavigationBehaviorOptions): Promise<boolean>;
     navigated: boolean;
@@ -820,7 +832,7 @@ export interface RouterFeature<FeatureKind extends RouterFeatureKind> {
 }
 
 // @public
-export type RouterFeatures = PreloadingFeature | DebugTracingFeature | InitialNavigationFeature | InMemoryScrollingFeature | RouterConfigurationFeature | NavigationErrorHandlerFeature | ComponentInputBindingFeature | ViewTransitionsFeature | AutoCleanupInjectorsFeature | RouterHashLocationFeature | ExperimentalPlatformNavigationFeature | RouterResourcesFeature;
+export type RouterFeatures = PreloadingFeature | DebugTracingFeature | InitialNavigationFeature | InMemoryScrollingFeature | RouterConfigurationFeature | NavigationErrorHandlerFeature | ComponentInputBindingFeature | ViewTransitionsFeature | AutoCleanupInjectorsFeature | RouterHashLocationFeature | ExperimentalPlatformNavigationFeature | RouterResourcesFeature | ErrorBoundariesFeature;
 
 // @public
 export type RouterHashLocationFeature = RouterFeature<RouterFeatureKind.RouterHashLocationFeature>;
@@ -971,6 +983,7 @@ export interface RouterOutletContract {
     detach(): ComponentRef<unknown>;
     detachEvents?: EventEmitter<unknown>;
     isActivated: boolean;
+    isErrorComponentActive?: boolean;
     readonly supportsBindingToComponentInputs?: true;
 }
 
@@ -1183,6 +1196,9 @@ export function withDisabledInitialNavigation(): DisabledInitialNavigationFeatur
 
 // @public
 export function withEnabledBlockingInitialNavigation(): EnabledBlockingInitialNavigationFeature;
+
+// @public
+export function withErrorBoundaries(options?: ErrorBoundaryOptions): ErrorBoundariesFeature;
 
 // @public @deprecated
 export function withExperimentalAutoCleanupInjectors(): AutoCleanupInjectorsFeature;

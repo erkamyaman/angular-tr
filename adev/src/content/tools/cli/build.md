@@ -9,12 +9,12 @@ Angular CLI, genellikle `build` hedefleri olarak kullanılan dört builder içer
 | Builder                                         | Amaç                                                                                                                                                                                                                                      |
 | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@angular/build:application`                    | [esbuild](https://esbuild.github.io/) ile istemci tarafı paketi, bir Node sunucusu ve derleme zamanı önceden işlenmiş rotalar içeren bir uygulama derler.                                                                                 |
+| `@angular/build:library`                        | [Angular Paket Formatı](tools/libraries/angular-package-format)'na uygun bir Angular kütüphanesi derler.                                                                                                                                  |
 | `@angular-devkit/build-angular:browser-esbuild` | [esbuild](https://esbuild.github.io/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler. Daha fazla bilgi için [`browser-esbuild` belgelerine](tools/cli/build-system-migration#uyumluluk-builderına-manuel-geçiş) bakın. |
 | `@angular-devkit/build-angular:browser`         | [webpack](https://webpack.js.org/) ile tarayıcıda kullanım için istemci tarafı uygulamasını paketler.                                                                                                                                     |
-| `@angular/build:ng-packagr`                     | [Angular Paket Formatı](tools/libraries/angular-package-format)'na uygun bir Angular kütüphanesi derler.                                                                                                                                  |
 
 `ng new` tarafından oluşturulan uygulamalar varsayılan olarak `@angular/build:application` kullanır.
-`ng generate library` tarafından oluşturulan kütüphaneler varsayılan olarak `@angular/build:ng-packagr` kullanır.
+`ng generate library` tarafından oluşturulan kütüphaneler varsayılan olarak `@angular/build:library` kullanır.
 
 Belirli bir proje için hangi builder'ın kullanıldığını, o projenin `build` hedefine bakarak belirleyebilirsiniz.
 

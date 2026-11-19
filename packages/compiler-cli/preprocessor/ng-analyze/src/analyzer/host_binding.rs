@@ -247,7 +247,9 @@ fn evaluate_host_listener_runtime_args(
         );
     };
 
-    let resolved = crate::evaluator::evaluate_expression(expr, eval);
+    let resolved = crate::evaluator::value::demote_ambient_global_holes(
+        crate::evaluator::evaluate_expression(expr, eval),
+    );
 
     // Avoid false NG1010 diagnostics when the expression contains unresolved cross-file holes;
     // leave `runtime_args` as `None` so downstream code falls back to the identifier text.
@@ -295,6 +297,25 @@ fn get_member_span_excluding_decorators(
     oxc_span::Span::new(start, span.end)
 }
 
+fn classify_property_key_node(
+    key: &oxc_ast::ast::PropertyKey,
+    prop_name: String,
+) -> ExpressionValueData {
+    let raw_span = key.span();
+    let is_string = matches!(key, oxc_ast::ast::PropertyKey::StringLiteral(_))
+        || matches!(key, oxc_ast::ast::PropertyKey::TemplateLiteral(t) if t.expressions.is_empty());
+    if is_string {
+        let span = if raw_span.end >= raw_span.start + 2 {
+            oxc_span::Span::new(raw_span.start + 1, raw_span.end - 1)
+        } else {
+            raw_span
+        };
+        create_source_node(span, ExpressionValueKind::String, Some(prop_name))
+    } else {
+        create_source_node(raw_span, ExpressionValueKind::Identifier, Some(prop_name))
+    }
+}
+
 fn extract_property_host_bindings_listeners<'a>(
     decorators: &'a [oxc_ast::ast::Decorator<'a>],
     key: &oxc_ast::ast::PropertyKey,
@@ -307,11 +328,7 @@ fn extract_property_host_bindings_listeners<'a>(
     let Some(prop_name) = extract_property_key(key).map(|n| n.into_owned()) else {
         return (host_bindings, host_listeners);
     };
-    let name_node = create_source_node(
-        key.span(),
-        ExpressionValueKind::Identifier,
-        Some(prop_name.clone()),
-    );
+    let name_node = classify_property_key_node(key, prop_name);
 
     let member_span = get_member_span_excluding_decorators(span, decorators);
 
@@ -349,11 +366,7 @@ fn extract_method_host_bindings_listeners<'a>(
         return (host_bindings, host_listeners);
     };
     let member_span = get_member_span_excluding_decorators(method.span, &method.decorators);
-    let name_node = create_source_node(
-        method.key.span(),
-        ExpressionValueKind::Identifier,
-        Some(method_name.clone()),
-    );
+    let name_node = classify_property_key_node(&method.key, method_name);
 
     for decorator in &method.decorators {
         if let Some(listener) = parse_host_listener_decorator(

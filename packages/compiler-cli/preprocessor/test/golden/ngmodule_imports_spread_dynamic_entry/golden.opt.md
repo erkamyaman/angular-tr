@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './router';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.RouterOutlet) {
@@ -135,6 +136,7 @@ export class RouterModule {
  */
 
 import * as i0 from './test';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.AppComponent) {
@@ -177,7 +179,7 @@ export class DevToolsModule {
   }
 }
 
-const extraModules = [PRODUCTION ? [] : DevToolsModule.instrument()];
+const extraModules = [isProd() ? [] : DevToolsModule.instrument()];
 
 export class AppComponent {
   // @ts-ignore

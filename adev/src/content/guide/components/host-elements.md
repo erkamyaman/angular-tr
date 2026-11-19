@@ -103,28 +103,29 @@ export class CustomSlider {
 
 ## Bağlama çakışmaları
 
-Bir şablonda bileşen kullandığınızda, o bileşen örneğinin elemanına bağlamalar ekleyebilirsiniz. Bileşen aynı zamanda aynı özellikler veya nitelikler için host bağlamaları da tanımlayabilir.
+Bir şablonda bileşen kullanırken, o bileşenin elemanına bağlamalar uygulayabilirsiniz. Bileşen (veya ona uygulanan direktifler) aynı özellikler, nitelikler, sınıflar veya stiller için de host bağlamaları tanımlayabilir.
 
-```angular-ts
-@Component({
-  ...,
-  host: {
-    'role': 'presentation',
-    '[id]': 'id',
-  }
-})
-export class ProfilePhoto { /* ... */ }
-```
+Angular'ın bu çakışmaları nasıl ele aldığı bağlamanın türüne bağlıdır:
 
-```angular-html
-<profile-photo role="group" [id]="otherId" />
-```
+### Sınıf ve stil bağlamaları
 
-Bu gibi durumlarda, hangi değerin kazanacağını aşağıdaki kurallar belirler:
+Sınıf ve stil bağlamalarının tanımlı bir öncelik sırası vardır. Şablonda tanımlanan bağlamalar, direktifler veya bileşenler üzerinde tanımlanan host bağlamalarına göre önceliklidir:
 
-- Her iki değer de statikse, örnek bağlaması kazanır.
-- Bir değer statik ve diğeri dinamikse, dinamik değer kazanır.
-- Her iki değer de dinamikse, bileşenin host bağlaması kazanır.
+1. **Şablon bağlamaları** (örn. `[class.active]` veya `[style.color]`)
+2. **Statik şablon değerleri** (örn. şablondaki `class="..."` veya `style="..."`)
+3. **Direktif host bağlamaları**
+4. **Bileşen host bağlamaları**
+5. **Statik host değerleri** (örn. `host: {class: '...'}`)
+
+Bir bağlamanın değeri `undefined` ise Angular bir sonraki seviyeye geri döner. `null` değeri ise geri dönmeden sınıfı veya stili kaldırır.
+
+### Özellik ve nitelik çakışmaları
+
+Stil dışı özellikler ve nitelikler için (`id`, `role` veya `[attr.aria-*]` gibi):
+
+- **Statik nitelikler:** Hem şablon hem de bileşen statik bir nitelik tanımlıyorsa (örn. `<my-cmp id="parent">` ve `host: {id: 'child'}`), şablonda ayarlanan nitelik kazanır.
+- **Statik ve dinamik:** Bir değer statik, diğeri dinamikse dinamik değer kazanır.
+- **Dinamik bağlamalar:** Aynı DOM özelliğine veya niteliğine hem şablonda hem de host bağlamalarıyla bağlama yapmaktan kaçının. Angular yinelenen özellik bağlamalarını uzlaştırmaz; çakışan dinamik bağlamalar, değişiklik algılama yürütme sırasına bağlı olarak beklenmedik üzerine yazmalara yol açabilir.
 
 ## CSS özel özellikleri ile stillendirme
 

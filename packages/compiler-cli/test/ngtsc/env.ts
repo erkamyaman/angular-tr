@@ -32,9 +32,11 @@ import {NgtscProgram} from '../../src/ngtsc/program';
 import {DeclarationNode} from '../../src/ngtsc/reflection';
 import {
   isNgpTestMode,
+  NgpCompilationSession,
   NgtscTestCompilerHost,
   normalizeNgpOutputFile,
   performNgpCompilationSync,
+  runNgpSync,
   toPosixPath,
 } from '../../src/ngtsc/testing';
 import {TemplateTypeChecker} from '../../src/ngtsc/typecheck/api';
@@ -58,12 +60,19 @@ type TsCompilerOptions = Partial<
 >;
 
 /**
+ * The NGP compilation of the environment currently compiling repeatedly. Tests set up one
+ * environment at a time, so setting up the next releases this one's analyzer.
+ */
+let activeNgpSession: NgpCompilationSession | null = null;
+
+/**
  * Manages a temporary testing directory structure and environment for testing ngtsc by feeding it
  * TypeScript code.
  */
 export class NgtscTestEnvironment {
   private multiCompileHostExt: MultiCompileHostExt | null = null;
   private oldProgram: Program | null = null;
+  private ngpSession: NgpCompilationSession | null = null;
   private lastTsProgram: ts.Program | null = null;
   private changedResources: Set<string> | null = null;
   private commandLineArgs: string[];
@@ -80,6 +89,9 @@ export class NgtscTestEnvironment {
    * Set up a new testing environment.
    */
   static setup(files: Folder = {}, workingDir?: AbsoluteFsPath): NgtscTestEnvironment {
+    activeNgpSession?.dispose();
+    activeNgpSession = null;
+
     const fs = getFileSystem();
     if (fs instanceof MockFileSystem) {
       fs.init(files);
@@ -155,6 +167,10 @@ export class NgtscTestEnvironment {
     this.changedResources = new Set();
     this.multiCompileHostExt = new MultiCompileHostExt(this.fs);
     setWrapHostForTest(makeWrapHost(this.multiCompileHostExt));
+    if (isNgpTestMode()) {
+      activeNgpSession?.dispose();
+      this.ngpSession = activeNgpSession = new NgpCompilationSession();
+    }
   }
 
   /**
@@ -223,6 +239,7 @@ export class NgtscTestEnvironment {
     const absFilePath = this.fs.resolve(this.basePath, fileName);
     if (this.multiCompileHostExt !== null) {
       this.multiCompileHostExt.invalidate(absFilePath);
+      this.ngpSession?.recordChangedFile(absFilePath, /* created */ !this.fs.exists(absFilePath));
       if (!fileName.endsWith('.ts')) {
         this.changedResources!.add(absFilePath);
       }
@@ -237,6 +254,7 @@ export class NgtscTestEnvironment {
       throw new Error(`Not caching files - call enableMultipleCompilations()`);
     }
     this.multiCompileHostExt.invalidate(absFilePath);
+    this.ngpSession?.recordChangedFile(absFilePath);
     if (!fileName.endsWith('.ts')) {
       this.changedResources!.add(absFilePath);
     }
@@ -293,6 +311,7 @@ export class NgtscTestEnvironment {
         complianceMode: true,
         customTransformers,
         writeFileCallback,
+        session: this.ngpSession ?? undefined,
       });
       this.lastTsProgram = result.tsProgram;
       const errors = result.diagnostics.filter((d) => d.category === ts.DiagnosticCategory.Error);
@@ -355,6 +374,7 @@ export class NgtscTestEnvironment {
         emit: true,
         complianceMode: true,
         writeFileCallback,
+        session: this.ngpSession ?? undefined,
       });
       this.lastTsProgram = result.tsProgram;
       if (expectedExitCode !== undefined) {
@@ -411,6 +431,9 @@ export class NgtscTestEnvironment {
   }
 
   driveTemplateTypeChecker(): {program: ts.Program; checker: TemplateTypeChecker} {
+    if (isNgpTestMode()) {
+      throw new Error('driveTemplateTypeChecker is not supported in NGP mode.');
+    }
     const {rootNames, options} = readNgcCommandLineAndConfiguration(this.commandLineArgs);
     const host = createCompilerHost({options});
     const program = createProgram({rootNames, host, options});
@@ -435,7 +458,10 @@ export class NgtscTestEnvironment {
         closeAnalyzer: false,
       });
       try {
-        const rawIndexed = result.compiler.getIndexedComponentsSync();
+        const rawIndexed = runNgpSync(
+          result.compiler.getIndexedComponents(),
+          result.compiler.analyzer,
+        );
         const out = new Map<DeclarationNode, IndexedComponent<DeclarationNode>>();
         for (const [, comp] of rawIndexed.entries()) {
           const fsFileUrl = this.fs.resolve(comp.fileUrl);
@@ -472,6 +498,9 @@ export class NgtscTestEnvironment {
   }
 
   driveDocsExtraction(entryPoint: string): DocEntry[] {
+    if (isNgpTestMode()) {
+      throw new Error('driveDocsExtraction is not supported in NGP mode.');
+    }
     const {rootNames, options} = readNgcCommandLineAndConfiguration(this.commandLineArgs);
     const host = createCompilerHost({options});
     const program = createProgram({rootNames, host, options});
@@ -479,6 +508,9 @@ export class NgtscTestEnvironment {
   }
 
   driveDocsExtractionForSymbols(entryPoint: string): Map<string, string> {
+    if (isNgpTestMode()) {
+      throw new Error('driveDocsExtractionForSymbols is not supported in NGP mode.');
+    }
     const {rootNames, options} = readNgcCommandLineAndConfiguration(this.commandLineArgs);
     const host = createCompilerHost({options});
     const program = createProgram({rootNames, host, options});
@@ -486,6 +518,9 @@ export class NgtscTestEnvironment {
   }
 
   driveXi18n(format: string, outputFileName: string, locale: string | null = null): void {
+    if (isNgpTestMode()) {
+      throw new Error('driveXi18n is not supported in NGP mode.');
+    }
     const errorSpy = jasmine.createSpy('consoleError').and.callFake(console.error);
     const args = [...this.commandLineArgs, `--i18nFormat=${format}`, `--outFile=${outputFileName}`];
     if (locale !== null) {
@@ -512,7 +547,10 @@ export class NgtscTestEnvironment {
       });
       try {
         const filePath = toPosixPath(this.fs.resolve(this.basePath, fileName));
-        const source = result.compiler.emitHmrUpdateModuleSync(filePath, className);
+        const source = runNgpSync(
+          result.compiler.emitHmrUpdateModule(filePath, className),
+          result.compiler.analyzer,
+        );
         if (source === null) {
           return null;
         }

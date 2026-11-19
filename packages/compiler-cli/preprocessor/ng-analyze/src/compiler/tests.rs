@@ -174,6 +174,8 @@ fn run_async_compiler_test<Fs: crate::ResourceResolverFs + Clone + 'static>(
             let r3_symbols_path = engine.r3_symbols_file();
             let cx = crate::analyzer::WireContext {
                 mode: crate::analyzer::WireMode::Semantic,
+                emit_declaration_only: false,
+                experimental_local_compilation: false,
                 source_text: &source_text,
                 converter: &resolved.converter,
                 reference_strategy: &*engine.reference_strategy,
@@ -1183,6 +1185,227 @@ fn test_isolated_type_tuple_resolves_local_const_of_imported_classes() {
     }
 }
 
+/// Under `emitDeclarationOnly`, a same-file `const` array containing unresolvable imports must
+/// expand to a `ReferenceTuple` of local import bindings (avoiding TS9017 under
+/// `--isolatedDeclarations`), while cross-file arrays with unresolved imports, calls, or
+/// unresolvable spreads still fall back to `typeof`.
+#[test]
+fn test_isolated_type_tuple_resolves_local_const_of_unresolved_imports() {
+    use crate::types::metadata::IsolatedTypeElementKind;
+
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{
+            "compilerOptions": {"emitDeclarationOnly": true},
+            "angularCompilerOptions": {"_experimentalAllowEmitDeclarationOnly": true},
+            "files": ["index.ts", "resolved.module.ts", "shared.ts"]
+        }"#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/resolved.module.ts".to_string(),
+        r#"
+        import {NgModule} from '@angular/core';
+        @NgModule({})
+        export class ResolvedModule {}
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/shared.ts".to_string(),
+        r#"
+        import {Missing} from 'missing-pkg';
+        export const SHARED = [Missing];
+        "#
+        .to_string(),
+    );
+    let index_src = r#"
+        import {NgModule} from '@angular/core';
+        import {ExternalModuleA, EXTERNAL_ARRAY} from 'external-pkg';
+        import {ResolvedModule} from './resolved.module';
+        import {SHARED} from './shared';
+
+        @NgModule({})
+        export class LocalModuleB {}
+
+        const MODULE_IMPORTS = [ExternalModuleA, LocalModuleB];
+        const ALL_IMPORTS = [...MODULE_IMPORTS, ExternalModuleA, ResolvedModule];
+        const WITH_CALL = [ExternalModuleA.forRoot()];
+        const WITH_SPREAD = [...EXTERNAL_ARRAY];
+        let MUTABLE_IMPORTS = [ExternalModuleA, ExternalModuleA.forRoot()];
+        const OUTER_WITH_UNEXPANDABLE = [WITH_SPREAD, ExternalModuleA.forRoot()];
+        const CYCLE_A: any = [CYCLE_B, ExternalModuleA.forRoot()];
+        const CYCLE_B: any = [CYCLE_A];
+
+        @NgModule({
+            imports: [MODULE_IMPORTS],
+            exports: [MODULE_IMPORTS],
+        })
+        export class LocalConstModule {}
+
+        @NgModule({
+            imports: [
+                ALL_IMPORTS,
+                WITH_CALL,
+                WITH_SPREAD,
+                EXTERNAL_ARRAY,
+                SHARED,
+                MUTABLE_IMPORTS,
+                OUTER_WITH_UNEXPANDABLE,
+                CYCLE_A,
+            ],
+        })
+        export class EdgeCasesModule {}
+        "#;
+    virtual_files.insert("/project/index.ts".to_string(), index_src.to_string());
+
+    for optimize in [false, true] {
+        let options = AnalyzerOptions {
+            tsconfig_path: Some("/project/tsconfig.json".to_string()),
+            optimize: Some(optimize),
+            virtual_files: Some(virtual_files.clone()),
+            ..Default::default()
+        };
+        let analyzer = Analyzer::new(options).unwrap();
+        let iterator = if optimize {
+            analyzer.analyze_optimized().unwrap()
+        } else {
+            analyzer.analyze().unwrap()
+        };
+        let mut results = Vec::new();
+        while let Some(chunk) = futures::executor::block_on(iterator.next()).unwrap() {
+            results.extend(chunk.files);
+        }
+
+        let index = results
+            .iter()
+            .find(|res| res.file_path == "/project/index.ts")
+            .expect("index.ts metadata");
+        assert!(
+            index.diagnostics.is_empty(),
+            "unexpected diagnostics (optimize={optimize}): {:?}",
+            index.diagnostics
+        );
+
+        let ng_module = |name: &str| {
+            index
+                .classes
+                .iter()
+                .find(|c| c.class_name.as_deref() == Some(name))
+                .and_then(|c| c.ng_module.as_ref())
+                .unwrap_or_else(|| panic!("{name} ng_module metadata (optimize={optimize})"))
+        };
+        let local_names = |refs: &Option<Vec<crate::types::metadata::ReferenceMetadata>>| {
+            refs.iter()
+                .flatten()
+                .map(|r| r.local_alias.clone().unwrap_or_default())
+                .collect::<Vec<_>>()
+        };
+        let span_text = |el: &crate::types::metadata::IsolatedTypeElementMetadata| {
+            let span = el.span.expect("syntactic element has a span");
+            &index_src[span.start as usize..span.end as usize]
+        };
+
+        let local_mod = ng_module("LocalConstModule");
+        for (label, tuple) in [
+            ("imports", local_mod.isolated_imports.as_ref().unwrap()),
+            ("exports", local_mod.isolated_exports.as_ref().unwrap()),
+        ] {
+            assert!(tuple.is_array_literal);
+            assert_eq!(tuple.elements.len(), 1);
+            assert_eq!(
+                tuple.elements[0].kind,
+                IsolatedTypeElementKind::ReferenceTuple,
+                "{label}: MODULE_IMPORTS must expand to ReferenceTuple (optimize={optimize})"
+            );
+            assert_eq!(
+                local_names(&tuple.elements[0].references),
+                vec!["ExternalModuleA", "LocalModuleB"],
+                "{label} (optimize={optimize})"
+            );
+            let refs = tuple.elements[0].references.as_ref().unwrap();
+            assert!(
+                refs[0].consumer_import.is_none(),
+                "ExternalModuleA should reuse local import without consumer_import (optimize={optimize})"
+            );
+        }
+
+        let edge = ng_module("EdgeCasesModule")
+            .isolated_imports
+            .as_ref()
+            .expect("EdgeCasesModule isolated_imports");
+        assert!(edge.is_array_literal);
+        assert_eq!(edge.elements.len(), 8);
+
+        // 0: `ALL_IMPORTS` (spread of same-file const + duplicate unresolved import + resolved cross-file class)
+        assert_eq!(
+            edge.elements[0].kind,
+            IsolatedTypeElementKind::ReferenceTuple
+        );
+        assert_eq!(
+            local_names(&edge.elements[0].references),
+            vec![
+                "ExternalModuleA",
+                "LocalModuleB",
+                "ExternalModuleA",
+                "ResolvedModule"
+            ],
+            "optimize={optimize}"
+        );
+
+        // 1: `WITH_CALL` (`[ExternalModuleA.forRoot()]`) -> expands to ReferenceTuple([CallReturnType])
+        assert_eq!(
+            edge.elements[1].kind,
+            IsolatedTypeElementKind::ReferenceTuple
+        );
+        assert!(edge.elements[1].references.is_none(), "optimize={optimize}");
+        let call_elements = edge.elements[1]
+            .elements
+            .as_ref()
+            .expect("WITH_CALL expanded elements");
+        assert_eq!(call_elements.len(), 1);
+        assert_eq!(
+            call_elements[0].kind,
+            IsolatedTypeElementKind::CallReturnType
+        );
+        assert_eq!(span_text(&call_elements[0]), "ExternalModuleA.forRoot");
+
+        // 2: `WITH_SPREAD` (`[...EXTERNAL_ARRAY]`) -> falls back to `typeof WITH_SPREAD`
+        assert_eq!(edge.elements[2].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[2].references.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[2]), "WITH_SPREAD");
+
+        // 3: `EXTERNAL_ARRAY` (direct unresolved import) -> falls back to `typeof EXTERNAL_ARRAY`
+        assert_eq!(edge.elements[3].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[3].references.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[3]), "EXTERNAL_ARRAY");
+
+        // 4: `SHARED` (cross-file array containing `Missing` not imported in index.ts) -> `typeof SHARED`
+        assert_eq!(edge.elements[4].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[4].references.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[4]), "SHARED");
+
+        // 5: `MUTABLE_IMPORTS` (`let` declaration) -> falls back to `typeof MUTABLE_IMPORTS`
+        assert_eq!(edge.elements[5].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[5].references.is_none(), "optimize={optimize}");
+        assert!(edge.elements[5].elements.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[5]), "MUTABLE_IMPORTS");
+
+        // 6: `OUTER_WITH_UNEXPANDABLE` (references local const `WITH_SPREAD` that cannot expand) -> falls back to `typeof OUTER_WITH_UNEXPANDABLE`
+        assert_eq!(edge.elements[6].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[6].references.is_none(), "optimize={optimize}");
+        assert!(edge.elements[6].elements.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[6]), "OUTER_WITH_UNEXPANDABLE");
+
+        // 7: `CYCLE_A` (cyclic local const reference) -> falls back to `typeof CYCLE_A`
+        assert_eq!(edge.elements[7].kind, IsolatedTypeElementKind::Typeof);
+        assert!(edge.elements[7].references.is_none(), "optimize={optimize}");
+        assert!(edge.elements[7].elements.is_none(), "optimize={optimize}");
+        assert_eq!(span_text(&edge.elements[7]), "CYCLE_A");
+    }
+}
+
 #[test]
 fn test_injectable_with_deps() {
     let mut virtual_files = HashMap::new();
@@ -1499,13 +1722,13 @@ fn analyze_app_module_importing_non_class(
 }
 
 fn app_module_scope_failed(meta: &AnalysisResult) -> bool {
-    let ng_module = meta
-        .classes
+    // When NgModule analysis fails in full mode, NgModuleMetadata is suppressed from wire output
+    // (mirroring ngtsc's failed analysis handling, which omits ɵmod/ɵinj/setClassMetadata).
+    meta.classes
         .iter()
         .find(|c| c.class_name.as_deref() == Some("AppModule"))
         .and_then(|c| c.ng_module.as_ref())
-        .expect("AppModule ng_module");
-    ng_module.imports.is_none()
+        .is_none()
 }
 
 #[test]
@@ -2048,7 +2271,7 @@ fn test_component_dts_readonly_tuple_typeof_array_spread() {
 /// declarations and the component's own metadata must carry that effective selector, so that
 /// emit matching and the type-check block agree with ngtsc.
 #[test]
-fn test_selectorless_component_gets_default_selector() {
+fn test_component_without_selector_gets_default_selector() {
     let mut virtual_files = HashMap::new();
     virtual_files.insert(
         "/project/tsconfig.json".to_string(),
@@ -2616,9 +2839,8 @@ fn test_unresolvable_selector_in_non_optimized_mode() {
         .find(|f| f.file_path.contains("app.component.ts"))
         .expect("app.component.ts in chunk");
 
-    // TODO(parity): ngtsc reports NG11001 for imports outside the compilation unit.
     assert_eq!(app_meta.diagnostics.len(), 1);
-    assert_eq!(app_meta.diagnostics[0].code, 1010);
+    assert_eq!(app_meta.diagnostics[0].code, 11001);
 }
 
 /// A component whose `styles` use template-literal arithmetic, an imported constant, an
@@ -5196,6 +5418,310 @@ fn test_invalidate_files_dts_invalidates_dependents() {
     assert!(invalidated.contains(&app_wire_path), "{invalidated:?}");
 }
 
+#[test]
+fn test_invalidate_files_created_file_resolves_failed_import() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let root = dir.path().canonicalize().unwrap();
+    let root_str = root.to_string_lossy().into_owned();
+    let lib_path = root.join("lib.ts");
+    let app_path = format!("{root_str}/app.ts");
+
+    let analyzer = consumer_analyzer(&root_str, "./lib", HashMap::new());
+    assert_eq!(imported_lib_dir_selector(&analyzer, &app_path), None);
+
+    std::fs::write(&lib_path, lib_source("[libNew]")).unwrap();
+    analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: lib_path.to_string_lossy().into_owned(),
+            update_type: FileUpdateType::Created,
+        }])
+        .unwrap();
+
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libNew]"),
+        "the import of the created file must resolve"
+    );
+}
+
+#[test]
+fn test_update_file_content_created_file_resolves_failed_import() {
+    let analyzer = consumer_analyzer("/project", "./lib", HashMap::new());
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, "/project/app.ts"),
+        None
+    );
+
+    analyzer
+        .update_file_content(vec![FileUpdate {
+            file_path: "/project/lib.ts".to_string(),
+            content: lib_source("[libNew]"),
+        }])
+        .unwrap();
+
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, "/project/app.ts").as_deref(),
+        Some("[libNew]"),
+        "the import of the created file must resolve"
+    );
+}
+
+/// Virtual files of a minimal `@angular/core` package under `root`. A fixture without one fails
+/// to resolve `@angular/core`, which alone re-analyzes `app.ts` on every file creation or
+/// deletion and hides whether the failed import a test is about is tracked.
+fn angular_core_stub(root: &str) -> HashMap<String, String> {
+    HashMap::from([
+        (
+            format!("{root}/node_modules/@angular/core/package.json"),
+            r#"{"name": "@angular/core", "types": "./index.d.ts"}"#.to_string(),
+        ),
+        (
+            format!("{root}/node_modules/@angular/core/index.d.ts"),
+            r#"
+                export declare const Component: any;
+                export declare const Directive: any;
+            "#
+            .to_string(),
+        ),
+    ])
+}
+
+/// Whether `app.ts` lists a file whose path ends in the components `suffix` among its resolved
+/// static imports (`AnalysisResult::static_dependencies`).
+fn app_statically_imports(analyzer: &Analyzer, app_path: &str, suffix: &str) -> bool {
+    analyzer
+        .get_metadata_for_file(app_path.to_string())
+        .is_some_and(|meta| {
+            meta.static_dependencies
+                .iter()
+                .any(|dep| Path::new(dep).ends_with(suffix))
+        })
+}
+
+#[test]
+fn test_invalidate_files_created_file_resolves_failed_barrel_reexport() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let root = dir.path().canonicalize().unwrap();
+    let root_str = root.to_string_lossy().into_owned();
+    std::fs::write(root.join("barrel.ts"), "export * from './lib';\n").unwrap();
+    let lib_path = root.join("lib.ts");
+    let app_path = format!("{root_str}/app.ts");
+
+    let analyzer = consumer_analyzer(&root_str, "./barrel", angular_core_stub(&root_str));
+    assert_eq!(imported_lib_dir_selector(&analyzer, &app_path), None);
+    let app_wire_path = analyzer
+        .get_metadata_for_file(app_path.clone())
+        .unwrap()
+        .file_path;
+
+    std::fs::write(&lib_path, lib_source("[libNew]")).unwrap();
+    let invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: lib_path.to_string_lossy().into_owned(),
+            update_type: FileUpdateType::Created,
+        }])
+        .unwrap();
+
+    assert!(invalidated.contains(&app_wire_path), "{invalidated:?}");
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libNew]"),
+        "transitive re-export of the created file must resolve"
+    );
+}
+
+#[test]
+fn test_update_file_content_created_file_resolves_failed_dts_reexport() {
+    let mut virtual_files = angular_core_stub("/project");
+    virtual_files.insert(
+        "/project/barrel.d.ts".to_string(),
+        "export * from './lib';\n".to_string(),
+    );
+    let analyzer = consumer_analyzer("/project", "./barrel", virtual_files);
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, "/project/app.ts"),
+        None
+    );
+
+    let invalidated = analyzer
+        .update_file_content(vec![FileUpdate {
+            file_path: "/project/lib.d.ts".to_string(),
+            content: lib_dts("[libFromDts]"),
+        }])
+        .unwrap();
+
+    assert!(
+        invalidated.contains(&"/project/app.ts".to_string()),
+        "{invalidated:?}"
+    );
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, "/project/app.ts").as_deref(),
+        Some("[libFromDts]"),
+        "re-export from .d.ts to newly created .d.ts must resolve"
+    );
+}
+
+#[test]
+fn test_invalidate_files_deleted_file_re_resolves_importer_to_fallback() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let root = dir.path().canonicalize().unwrap();
+    let root_str = root.to_string_lossy().into_owned();
+    let lib_file = root.join("lib.ts");
+    let lib_dir = root.join("lib");
+    std::fs::create_dir(&lib_dir).unwrap();
+    std::fs::write(&lib_file, lib_source("[libDirect]")).unwrap();
+    std::fs::write(lib_dir.join("index.ts"), lib_source("[libIndex]")).unwrap();
+    let app_path = format!("{root_str}/app.ts");
+
+    let analyzer = consumer_analyzer(&root_str, "./lib", angular_core_stub(&root_str));
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libDirect]")
+    );
+    assert!(app_statically_imports(&analyzer, &app_path, "lib.ts"));
+    let app_wire_path = analyzer
+        .get_metadata_for_file(app_path.clone())
+        .unwrap()
+        .file_path;
+
+    std::fs::remove_file(&lib_file).unwrap();
+    let invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: lib_file.to_string_lossy().into_owned(),
+            update_type: FileUpdateType::Deleted,
+        }])
+        .unwrap();
+
+    assert!(invalidated.contains(&app_wire_path), "{invalidated:?}");
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libIndex]"),
+        "deleting the resolved target must evict importer resolution so fallback resolves"
+    );
+    assert!(
+        app_statically_imports(&analyzer, &app_path, "lib/index.ts"),
+        "the importer's static dependency edge must follow the fallback"
+    );
+    assert!(
+        !app_statically_imports(&analyzer, &app_path, "lib.ts"),
+        "the importer must not keep a static dependency edge to the deleted file"
+    );
+}
+
+/// A file creation or deletion stops the engine serving its cached resolutions, but an importer
+/// whose queries stay cached does not resolve again. Deleting the file it resolved to must still
+/// find and re-analyze it.
+#[test]
+fn test_invalidate_files_deleted_file_evicts_importer_after_unrelated_file_created() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let root = dir.path().canonicalize().unwrap();
+    let root_str = root.to_string_lossy().into_owned();
+    let lib_file = root.join("lib.ts");
+    let lib_dir = root.join("lib");
+    std::fs::create_dir(&lib_dir).unwrap();
+    std::fs::write(&lib_file, lib_source("[libDirect]")).unwrap();
+    std::fs::write(lib_dir.join("index.ts"), lib_source("[libIndex]")).unwrap();
+    let app_path = format!("{root_str}/app.ts");
+
+    let analyzer = consumer_analyzer(&root_str, "./lib", angular_core_stub(&root_str));
+    assert!(app_statically_imports(&analyzer, &app_path, "lib.ts"));
+
+    let unrelated = root.join("unrelated.ts");
+    std::fs::write(&unrelated, "export const unrelated = 1;\n").unwrap();
+    let invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: unrelated.to_string_lossy().into_owned(),
+            update_type: FileUpdateType::Created,
+        }])
+        .unwrap();
+    assert!(
+        !invalidated
+            .iter()
+            .any(|path| Path::new(path).ends_with("app.ts")),
+        "app.ts has no unresolved import, so an unrelated file must leave it cached: \
+         {invalidated:?}"
+    );
+
+    std::fs::remove_file(&lib_file).unwrap();
+    analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: lib_file.to_string_lossy().into_owned(),
+            update_type: FileUpdateType::Deleted,
+        }])
+        .unwrap();
+
+    assert!(
+        app_statically_imports(&analyzer, &app_path, "lib/index.ts"),
+        "the importer's static dependency edge must follow the fallback"
+    );
+    assert!(
+        !app_statically_imports(&analyzer, &app_path, "lib.ts"),
+        "the importer must not keep a static dependency edge to the deleted file"
+    );
+}
+
+#[test]
+fn test_clear_resolution_cache_re_resolves_cached_importers() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let root = dir.path().canonicalize().unwrap();
+    let root_str = root.to_string_lossy().into_owned();
+    let lib_dir = root.join("lib");
+    std::fs::create_dir(&lib_dir).unwrap();
+    std::fs::write(lib_dir.join("index.ts"), lib_source("[libIndex]")).unwrap();
+    let app_path = format!("{root_str}/app.ts");
+
+    let analyzer = consumer_analyzer(&root_str, "./lib", HashMap::new());
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libIndex]")
+    );
+    let app_wire_path = analyzer
+        .get_metadata_for_file(app_path.clone())
+        .unwrap()
+        .file_path;
+
+    // Write `lib.ts` shadowing `lib/index.ts` without reporting `FileUpdateType::Created`, then
+    // explicitly flush cached resolutions via `clear_resolution_cache`.
+    std::fs::write(root.join("lib.ts"), lib_source("[libDirect]")).unwrap();
+    let invalidated = analyzer.clear_resolution_cache().unwrap();
+
+    assert!(invalidated.contains(&app_wire_path), "{invalidated:?}");
+    assert_eq!(
+        imported_lib_dir_selector(&analyzer, &app_path).as_deref(),
+        Some("[libDirect]"),
+        "clear_resolution_cache must evict cached positive resolutions so ./lib re-resolves"
+    );
+}
+
+#[cfg(unix)]
+#[test]
+fn test_canonical_paths_resolves_symlinked_host_paths() {
+    let dir = tempfile::TempDir::new().unwrap();
+    let real = dir.path().canonicalize().unwrap().join("real");
+    std::fs::create_dir(&real).unwrap();
+    std::fs::write(real.join("lib.ts"), lib_source("[lib]")).unwrap();
+    let link = dir.path().join("link");
+    std::os::unix::fs::symlink(&real, &link).unwrap();
+    let real_str = real.to_string_lossy().into_owned();
+    let link_str = link.to_string_lossy().into_owned();
+
+    let analyzer = consumer_analyzer(&real_str, "./lib", HashMap::new());
+    let canonical = analyzer.canonical_paths(vec![
+        format!("{link_str}/lib.ts"),
+        format!("{link_str}/deleted.ts"),
+        format!("{real_str}/app.ts"),
+    ]);
+
+    assert_eq!(
+        canonical,
+        vec![
+            format!("{real_str}/lib.ts"),
+            format!("{real_str}/deleted.ts"),
+            format!("{real_str}/app.ts"),
+        ]
+    );
+}
+
 /// The Angular CLI's `tsconfig.app.json` lists only `main.ts`; the NgModule and everything it
 /// declares join the program because `main.ts` imports them. `C1`'s template matches `D`, which
 /// `MModule` declares next to it.
@@ -7455,5 +7981,1309 @@ fn test_ambient_constructors_and_injectable_options() {
             missing("GetterValue"),
             missing("ComputedValue"),
         ]
+    );
+}
+
+#[test]
+fn test_local_compilation_unsupported_host_directive_expression() {
+    let source = r#"
+        import { Component, forwardRef } from '@angular/core';
+        import { ExternalDirective } from 'some_where';
+        import { KnownDirective } from './known';
+
+        @Component({
+            selector: 'bad-comp',
+            template: '',
+            hostDirectives: [forwardRef(() => ExternalDirective)],
+        })
+        export class BadComp {}
+
+        @Component({
+            selector: 'good-comp',
+            template: '',
+            hostDirectives: [forwardRef(() => KnownDirective)],
+        })
+        export class GoodComp {}
+    "#;
+    let known = r#"
+        import { Directive } from '@angular/core';
+        @Directive({ selector: '[known]' })
+        export class KnownDirective {}
+    "#;
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert("/project/app.ts".to_string(), source.to_string());
+    virtual_files.insert("/project/known.ts".to_string(), known.to_string());
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts", "known.ts"]}"#.to_string(),
+    );
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(false),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+    let iterator = analyzer.analyze().unwrap();
+    let mut app_meta = None;
+    while let Some(chunk) = futures::executor::block_on(iterator.next()).unwrap() {
+        for file in chunk.files {
+            if file.file_path == "/project/app.ts" {
+                app_meta = Some(file);
+            }
+        }
+    }
+    let meta = app_meta.expect("app.ts metadata");
+    assert_eq!(meta.diagnostics.len(), 1, "{:?}", meta.diagnostics);
+    let diag = &meta.diagnostics[0];
+    assert_eq!(diag.code, 11003);
+    assert_eq!(
+        diag.message_text,
+        "In local compilation mode, host directive cannot be an expression. Use an identifier instead"
+    );
+    let span = diag.span.as_ref().expect("span");
+    assert_eq!(
+        &source[span.start as usize..span.end as usize],
+        "forwardRef(() => ExternalDirective)"
+    );
+    assert!(meta.classes[0].component.as_ref().unwrap().host_directives.is_none());
+    assert!(meta.classes[1].component.as_ref().unwrap().host_directives.is_some());
+}
+
+#[test]
+fn test_local_compilation_custom_decorators_diagnostic() {
+    let source = r#"
+        import { Component } from '@angular/core';
+        import { customDecorator1, customDecorator2 } from './some-where';
+
+        @customDecorator1('hello')
+        @Component({
+            template: ExternalString,
+        })
+        @customDecorator2
+        export class Main {}
+    "#;
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert("/project/app.ts".to_string(), source.to_string());
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts"], "angularCompilerOptions": {"compilationMode": "experimental-local"}}"#
+            .to_string(),
+    );
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(false),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+    let iterator = analyzer.analyze().unwrap();
+    let chunk = futures::executor::block_on(iterator.next())
+        .unwrap()
+        .expect("chunk");
+    let meta = &chunk.files[0];
+    assert!(
+        meta.classes.is_empty(),
+        "classes with custom decorators should skip trait compilation in experimental-local mode"
+    );
+    assert_eq!(meta.diagnostics.len(), 2, "{:?}", meta.diagnostics);
+    for (diag, expected_span) in meta
+        .diagnostics
+        .iter()
+        .zip(["@customDecorator1('hello')", "@customDecorator2"])
+    {
+        assert_eq!(diag.code, 1005);
+        assert_eq!(
+            diag.message_text,
+            "In local compilation mode, Angular does not support custom decorators. Ensure all class decorators are from Angular."
+        );
+        let span = diag.span.as_ref().expect("span");
+        assert_eq!(
+            &source[span.start as usize..span.end as usize],
+            expected_span
+        );
+    }
+}
+
+#[test]
+fn test_failed_ngmodule_analysis_suppresses_wire_metadata_and_preserves_diagnostics() {
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts", "ext.d.ts"]}"#.to_string(),
+    );
+    virtual_files.insert(
+        "/project/ext.d.ts".to_string(),
+        r#"
+            import * as i0 from '@angular/core';
+            export declare class ExternalComponent {
+                static ɵcmp: i0.ɵɵComponentDeclaration<ExternalComponent, 'ext-comp', never, {}, {}, never, never, false, never>;
+            }
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/app.ts".to_string(),
+        r#"
+            import { Component, Injectable, NgModule } from '@angular/core';
+            import { ExternalComponent } from './ext';
+
+            @NgModule({
+                declarations: [ExternalComponent],
+            })
+            export class BrokenModule {}
+
+            @Injectable()
+            @NgModule({
+                declarations: [ExternalComponent],
+            })
+            export class BrokenInjectableModule {}
+
+            @Component({
+                selector: 'valid-comp',
+                template: '<div>ok</div>',
+            })
+            export class ValidComponent {}
+        "#
+        .to_string(),
+    );
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let app_meta = analyzer
+        .get_metadata_for_file("/project/app.ts".to_string())
+        .expect("app.ts metadata");
+
+    let ng6001_count = app_meta
+        .diagnostics
+        .iter()
+        .filter(|d| d.code == 6001)
+        .count();
+    assert_eq!(
+        ng6001_count, 2,
+        "expected 2 NG6001 diagnostics, got {:?}",
+        app_meta.diagnostics
+    );
+
+    // Both BrokenModule and BrokenInjectableModule are filtered out of wire classes in full mode
+    // when NgModule analysis fails, avoiding cascading TS6133/TS2339 errors on `.ng.ts`.
+    assert!(
+        app_meta
+            .classes
+            .iter()
+            .all(|c| c.class_name.as_deref() != Some("BrokenModule")),
+        "expected BrokenModule to be filtered out when analysis_failed is true"
+    );
+    assert!(
+        app_meta
+            .classes
+            .iter()
+            .all(|c| c.class_name.as_deref() != Some("BrokenInjectableModule")),
+        "expected BrokenInjectableModule to be filtered out when analysis_failed is true"
+    );
+    assert!(
+        app_meta
+            .classes
+            .iter()
+            .any(|c| c.class_name.as_deref() == Some("ValidComponent"))
+    );
+}
+
+#[test]
+fn test_failed_ngmodule_strict_injection_parameters_diagnostics() {
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["broken_injectable.ts", "broken_pure.ts", "ext.d.ts"], "angularCompilerOptions": {"strictInjectionParameters": true}}"#
+            .to_string(),
+    );
+    virtual_files.insert(
+        "/project/ext.d.ts".to_string(),
+        r#"
+            import * as i0 from '@angular/core';
+            export declare class ExternalComponent {
+                static ɵcmp: i0.ɵɵComponentDeclaration<ExternalComponent, 'ext-comp', never, {}, {}, never, never, false, never>;
+            }
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/broken_injectable.ts".to_string(),
+        r#"
+            import { Injectable, NgModule } from '@angular/core';
+            import { ExternalComponent } from './ext';
+
+            @Injectable()
+            @NgModule({
+                declarations: [ExternalComponent],
+            })
+            export class BrokenInjectableModule {
+                constructor(dep: unknown) {}
+            }
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/broken_pure.ts".to_string(),
+        r#"
+            import { NgModule } from '@angular/core';
+            import { ExternalComponent } from './ext';
+
+            @NgModule({
+                declarations: [ExternalComponent],
+            })
+            export class BrokenModule {
+                constructor(dep: unknown) {}
+            }
+        "#
+        .to_string(),
+    );
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let inj_meta = analyzer
+        .get_metadata_for_file("/project/broken_injectable.ts".to_string())
+        .expect("broken_injectable.ts metadata");
+    assert!(
+        inj_meta.diagnostics.iter().any(|d| d.code == 6001),
+        "expected NG6001 on BrokenInjectableModule, got {:?}",
+        inj_meta.diagnostics
+    );
+    assert!(
+        inj_meta.diagnostics.iter().any(|d| d.code == 2003),
+        "expected NG2003 on BrokenInjectableModule, got {:?}",
+        inj_meta.diagnostics
+    );
+
+    let pure_meta = analyzer
+        .get_metadata_for_file("/project/broken_pure.ts".to_string())
+        .expect("broken_pure.ts metadata");
+    assert!(
+        pure_meta.diagnostics.iter().any(|d| d.code == 6001),
+        "expected NG6001 on BrokenModule, got {:?}",
+        pure_meta.diagnostics
+    );
+    assert!(
+        pure_meta.diagnostics.iter().all(|d| d.code != 2003),
+        "expected BrokenModule NOT to emit NG2003 when NgModule analysis fails, got {:?}",
+        pure_meta.diagnostics
+    );
+}
+
+#[test]
+fn test_foreign_function_module_with_providers_marks_remote_scopes_synthetic() {
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts", "feature.d.ts"]}"#.to_string(),
+    );
+    virtual_files.insert(
+        "/project/feature.d.ts".to_string(),
+        r#"
+            import * as i0 from '@angular/core';
+            import { ModuleWithProviders } from '@angular/core';
+            export declare class FeatureModule {
+                static forRoot(): ModuleWithProviders<FeatureModule>;
+                static ɵmod: i0.ɵɵNgModuleDeclaration<FeatureModule, never, never, never>;
+            }
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/app.ts".to_string(),
+        r#"
+            import { NgModule } from '@angular/core';
+            import { FeatureModule } from './feature';
+
+            @NgModule({
+                imports: [FeatureModule.forRoot()],
+            })
+            export class AppModule {}
+        "#
+        .to_string(),
+    );
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let app_meta =
+        analyzer.get_metadata_for_file("/project/app.ts".to_string()).expect("app.ts metadata");
+    let app_module = app_meta
+        .classes
+        .iter()
+        .find(|c| c.class_name.as_deref() == Some("AppModule"))
+        .expect("AppModule class metadata");
+    let ng_module = app_module.ng_module.as_ref().expect("NgModule metadata");
+
+    assert!(
+        ng_module.remote_scopes_may_require_cycle_protection,
+        "expected foreign-function ModuleWithProviders to set remote_scopes_may_require_cycle_protection"
+    );
+    assert_eq!(ng_module.injector_import_raw_spans.as_ref().map(|raws| raws.len()), Some(1));
+}
+
+#[test]
+fn test_foreign_function_module_with_providers_cross_file_type_hole_marks_remote_scopes_synthetic() {
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts", "addon.ts", "external.ts"]}"#.to_string(),
+    );
+    virtual_files.insert(
+        "/project/external.ts".to_string(),
+        r#"
+            import { NgModule } from '@angular/core';
+            @NgModule({})
+            export class ExternalModule {}
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/addon.ts".to_string(),
+        r#"
+            import { ModuleWithProviders } from '@angular/core';
+            import { ExternalModule } from './external';
+            export class AddonModule {
+                static forRoot(): ModuleWithProviders<ExternalModule> {
+                    return (globalThis as any).dynamicMwp;
+                }
+            }
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/app.ts".to_string(),
+        r#"
+            import { NgModule } from '@angular/core';
+            import { AddonModule } from './addon';
+
+            @NgModule({
+                imports: [AddonModule.forRoot()],
+            })
+            export class AppModule {}
+        "#
+        .to_string(),
+    );
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let app_meta =
+        analyzer.get_metadata_for_file("/project/app.ts".to_string()).expect("app.ts metadata");
+    let app_module = app_meta
+        .classes
+        .iter()
+        .find(|c| c.class_name.as_deref() == Some("AppModule"))
+        .expect("AppModule class metadata");
+    let ng_module = app_module.ng_module.as_ref().expect("NgModule metadata");
+
+    assert!(
+        ng_module.remote_scopes_may_require_cycle_protection,
+        "expected cross-file ExternalModule resolved via foreign-function ModuleWithProviders to set remote_scopes_may_require_cycle_protection"
+    );
+}
+#[test]
+fn test_ambient_dts_globals_missing_or_type_only_diagnostics() {
+    // Without an ambient value declaration in `tsconfig.files` (even if Closure options are set,
+    // or if `.d.ts` only declares an interface/type alias), `COMPILED` fails with NG1010 in full
+    // mode and NG11001 on bare identifiers in `experimental-local` mode.
+    for (tsconfig_json, extra_dts_file) in [
+        (r#"{"files": ["app.ts"]}"#, None),
+        (
+            r#"{"files": ["app.ts"], "angularCompilerOptions": {"annotateForClosureCompiler": true}, "bazelOptions": {"tsickle": true}}"#,
+            None,
+        ),
+        (
+            r#"{"files": ["types.d.ts", "app.ts"]}"#,
+            Some((
+                "/project/types.d.ts",
+                "declare interface COMPILED {}\ndeclare type OTHER_GLOBAL = boolean;",
+            )),
+        ),
+        (
+            r#"{"files": ["module_only.d.ts", "app.ts"]}"#,
+            Some(("/project/module_only.d.ts", "export declare var COMPILED: boolean;")),
+        ),
+        (
+            r#"{"files": ["cjs_module.d.ts", "app.ts"]}"#,
+            Some((
+                "/project/cjs_module.d.ts",
+                "import x = require('other-pkg');\ndeclare var COMPILED: boolean;\ndeclare global { var UNRELATED_AUG: boolean; }",
+            )),
+        ),
+    ] {
+        let mut full_files = HashMap::new();
+        full_files.insert("/project/tsconfig.json".to_string(), tsconfig_json.to_string());
+        if let Some((dts_path, dts)) = extra_dts_file {
+            full_files.insert(dts_path.to_string(), dts.to_string());
+        }
+        full_files.insert(
+            "/project/app.ts".to_string(),
+            r#"
+                import { Component, NgModule } from '@angular/core';
+
+                @NgModule({})
+                export class FooModule {}
+
+                @Component({
+                    selector: 'standalone-cmp',
+                    template: '',
+                    imports: [COMPILED && FooModule],
+                })
+                export class StandaloneCmp {}
+            "#
+            .to_string(),
+        );
+
+        let full_analyzer = Analyzer::new(AnalyzerOptions {
+            tsconfig_path: Some("/project/tsconfig.json".to_string()),
+            optimize: Some(true),
+            virtual_files: Some(full_files),
+            ..Default::default()
+        })
+        .unwrap();
+        let full_meta = full_analyzer
+            .get_metadata_for_file("/project/app.ts".to_string())
+            .expect("app.ts metadata");
+        assert!(
+            full_meta.diagnostics.iter().any(|d| d.code == 1010),
+            "Expected NG1010 for {tsconfig_json}, got: {:?}",
+            full_meta.diagnostics
+        );
+    }
+
+    let mut local_files = HashMap::new();
+    local_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts"], "angularCompilerOptions": {"compilationMode": "experimental-local"}}"#
+            .to_string(),
+    );
+    let local_app_src = r#"
+        import { Component, HostBinding, ViewChild } from '@angular/core';
+
+        @Component({
+            selector: 'app-cmp',
+            template: '',
+            styles: [COMPILED],
+        })
+        export class AppCmp {}
+
+        @Component({
+            selector: 'bad-host-cmp',
+            template: '',
+            host: COMPILED,
+        })
+        export class BadHostCmp {}
+
+        @Component({
+            selector: 'bad-host-value-cmp',
+            template: '',
+            host: { '[attr.x]': COMPILED, bad: 123 },
+        })
+        export class BadHostValueCmp {}
+
+        @Component({
+            selector: 'bad-query-cmp',
+            template: '',
+        })
+        export class BadQueryCmp {
+            @ViewChild(['ref', COMPILED]) child: any;
+            @HostBinding(COMPILED ? 123 : 456) bound: any;
+        }
+    "#;
+    local_files.insert("/project/app.ts".to_string(), local_app_src.to_string());
+    let local_analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(false),
+        virtual_files: Some(local_files),
+        ..Default::default()
+    })
+    .unwrap();
+    let local_iter = local_analyzer.analyze().unwrap();
+    let local_chunk = futures::executor::block_on(local_iter.next())
+        .unwrap()
+        .expect("chunk");
+    let local_diags = &local_chunk.files[0].diagnostics;
+    assert!(
+        local_diags.iter().any(|d| d.code == 11001),
+        "Expected NG11001 in experimental-local mode, got: {:?}",
+        local_diags
+    );
+    for expected_msg in [
+        "Decorator host metadata must be an object",
+        "Decorator host metadata must be a string -> string object",
+        "Failed to resolve @ViewChild predicate at position 1 to a string",
+        "@HostBinding's argument must be a string",
+    ] {
+        assert!(
+            local_diags
+                .iter()
+                .any(|d| d.code == 1010 && d.message_text.contains(expected_msg)),
+            "Expected NG1010 containing {expected_msg:?} in experimental-local mode, got: {:?}",
+            local_diags
+        );
+    }
+
+    // Direct Stage-1 `ClassData::validate` callers (without `QueryEngine` completion) must also
+    // report NG1010 on undeclared globals rather than skipping validation on lingering holes.
+    let alloc = oxc_allocator::Allocator::default();
+    let ret = oxc_parser::Parser::new(&alloc, local_app_src, oxc_span::SourceType::ts()).parse();
+    let sem = oxc_semantic::SemanticBuilder::new()
+        .with_build_nodes(true)
+        .with_class_table(true)
+        .build(&ret.program);
+    let converter = crate::utils::Utf8ToUtf16::new(local_app_src);
+    let analysis = crate::analyzer::analyze_parsed(
+        Path::new("/project/app.ts"),
+        0,
+        local_app_src,
+        &ret.program,
+        &ret.module_record,
+        &sem.semantic,
+        &converter,
+        false,
+        false,
+        false,
+        true,
+    );
+    let mut stage1_diags = Vec::new();
+    let vcx = crate::analyzer::ValidationContext {
+        mode: crate::analyzer::WireMode::Syntax,
+        strict_standalone: false,
+        strict_injection_parameters: false,
+        emit_declaration_only: false,
+        experimental_local_compilation: true,
+    };
+    for class in &analysis.classes {
+        class.validate(
+            vcx,
+            Path::new("/project/app.ts"),
+            &converter,
+            &mut stage1_diags,
+        );
+    }
+    for expected_msg in [
+        "Decorator host metadata must be an object",
+        "Decorator host metadata must be a string -> string object",
+        "Failed to resolve @ViewChild predicate at position 1 to a string",
+        "@HostBinding's argument must be a string",
+    ] {
+        assert!(
+            stage1_diags
+                .iter()
+                .any(|d| d.code == 1010 && d.message_text.contains(expected_msg)),
+            "Expected Stage-1 NG1010 containing {expected_msg:?}, got: {:?}",
+            stage1_diags
+        );
+    }
+}
+
+#[test]
+fn test_ambient_dts_globals_in_local_compilation_modes() {
+    // Full compilation is covered end to end by `closure_compiled_global_spec.ts`; local and
+    // declaration-only compilation complete ambient globals in fields the spec's emitted code
+    // doesn't expose directly (`host`, query predicates, `@Input` and `inputs` aliases).
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/closure.lib.d.ts".to_string(),
+        "declare var COMPILED: boolean;\n".to_string(),
+    );
+    virtual_files.insert(
+        "/project/imported.ts".to_string(),
+        r#"
+            import { Directive, NgModule } from '@angular/core';
+
+            export const CROSS_SELECTOR = COMPILED && 'cross-closure-cmp';
+
+            @Directive({
+                selector: '[importedDir]',
+                standalone: false,
+            })
+            export class ImportedDir {}
+
+            @NgModule({
+                declarations: [ImportedDir],
+                exports: [ImportedDir],
+            })
+            export class ImportedModule {}
+        "#
+        .to_string(),
+    );
+    for (extra_tsconfig, emit_decl_only) in [
+        (
+            r#"{"files": ["closure.lib.d.ts", "imported.ts", "local_app.ts"], "angularCompilerOptions": {"compilationMode": "experimental-local"}}"#,
+            false,
+        ),
+        (
+            r#"{"files": ["closure.lib.d.ts", "imported.ts", "local_app.ts"], "compilerOptions": {"declaration": true, "emitDeclarationOnly": true}, "angularCompilerOptions": {"_experimentalAllowEmitDeclarationOnly": true}}"#,
+            true,
+        ),
+    ] {
+        let mut mode_files = virtual_files.clone();
+        mode_files.insert(
+            "/project/tsconfig.json".to_string(),
+            extra_tsconfig.to_string(),
+        );
+        mode_files.insert(
+            "/project/local_app.ts".to_string(),
+            r#"
+                import { Component, Directive, Input, Pipe, ViewChild } from '@angular/core';
+                import { CROSS_SELECTOR } from './imported';
+
+                @Component({
+                    selector: CROSS_SELECTOR,
+                    template: '',
+                    host: COMPILED ? { role: 'button' } : {},
+                })
+                export class LocalCmp {
+                    @ViewChild(COMPILED && 'myRef') child: any;
+                    @Input(COMPILED && 'myAlias') prop: any;
+                }
+
+                @Directive({
+                    selector: '[local-io-dir]',
+                    inputs: [COMPILED && 'dirProp: dirAlias'],
+                })
+                export class LocalIoDir {
+                    dirProp: any;
+                }
+
+                @Pipe({
+                    name: COMPILED && 'closurePipe',
+                })
+                export class LocalPipe {}
+            "#
+            .to_string(),
+        );
+        let mode_analyzer = Analyzer::new(AnalyzerOptions {
+            tsconfig_path: Some("/project/tsconfig.json".to_string()),
+            optimize: Some(false),
+            virtual_files: Some(mode_files),
+            ..Default::default()
+        })
+        .unwrap();
+        let iter = mode_analyzer.analyze().unwrap();
+        let mut all_files = Vec::new();
+        while let Ok(Some(chunk)) = futures::executor::block_on(iter.next()) {
+            all_files.extend(chunk.files);
+        }
+        let local_meta = all_files
+            .iter()
+            .find(|f| f.file_path.ends_with("local_app.ts"))
+            .expect("local_app.ts metadata");
+        assert!(
+            local_meta.diagnostics.is_empty(),
+            "Expected no diagnostics for emit_decl_only={emit_decl_only}, got: {:?}",
+            local_meta.diagnostics
+        );
+        let local_cmp_class = local_meta
+            .classes
+            .iter()
+            .find(|c| c.class_name.as_deref() == Some("LocalCmp"))
+            .expect("LocalCmp class");
+        let local_cmp = local_cmp_class.component.as_ref().expect("LocalCmp");
+        assert_eq!(local_cmp.selector.as_deref(), Some("cross-closure-cmp"));
+        let host_meta = local_cmp
+            .host_metadata
+            .as_ref()
+            .expect("LocalCmp host_metadata");
+        assert_eq!(host_meta.len(), 1);
+        assert_eq!(host_meta[0].key, "role");
+        assert_eq!(host_meta[0].value.as_deref(), Some("button"));
+        assert_eq!(local_cmp_class.view_queries.len(), 1);
+        assert_eq!(local_cmp_class.view_queries[0].property_name, "child");
+        assert_eq!(
+            local_cmp_class.view_queries[0]
+                .predicate_selectors
+                .as_deref(),
+            Some(&["myRef".to_string()][..]),
+        );
+        assert_eq!(local_cmp_class.inputs.len(), 1);
+        assert_eq!(local_cmp_class.inputs[0].name, "prop");
+        assert_eq!(local_cmp_class.inputs[0].alias.as_deref(), Some("myAlias"),);
+
+        let local_io_dir_class = local_meta
+            .classes
+            .iter()
+            .find(|c| c.class_name.as_deref() == Some("LocalIoDir"))
+            .expect("LocalIoDir class");
+        assert_eq!(local_io_dir_class.inputs.len(), 1);
+        assert_eq!(local_io_dir_class.inputs[0].name, "dirProp");
+        assert_eq!(
+            local_io_dir_class.inputs[0].alias.as_deref(),
+            Some("dirAlias"),
+        );
+    }
+}
+
+
+/// Every `hostDirectives` entry either lands in the emitted metadata or reports a diagnostic, as in
+/// ngtsc's `extractHostDirectives`: local and declaration-only compilation keep a dynamic entry
+/// written as an identifier or property access verbatim and report NG11003 for any other
+/// expression, while full compilation requires a class reference.
+#[test]
+fn test_host_directives_entries_are_never_dropped() {
+    const UNSUPPORTED: &str = "11003";
+    const NOT_REFERENCE: &str = "1010:Host directive must be a reference";
+    const NOT_CLASS: &str = "1010:Host directive reference must be a class";
+    const NOT_ARRAY: &str = "1010:hostDirectives must be an array";
+    // (case, `hostDirectives` expression, [local, declaration-only, full] expectations), each
+    // expectation being the emitted entries (`None` when not emitted) and the diagnostics.
+    type Expected = (Option<&'static [&'static str]>, &'static [&'static str]);
+    let cases: &[(&str, &str, [Expected; 3])] = &[
+        (
+            "undeclared identifier",
+            "[LocalDir, UndeclaredDir]",
+            [
+                (Some(&["LocalDir", "UndeclaredDir"]), &[]),
+                (Some(&["LocalDir", "UndeclaredDir"]), &[]),
+                (Some(&["LocalDir"]), &[NOT_REFERENCE]),
+            ],
+        ),
+        (
+            "undeclared property access",
+            "[GlobalNs.Dir, LocalDir]",
+            [
+                (Some(&["GlobalNs.Dir", "LocalDir"]), &[]),
+                (Some(&["GlobalNs.Dir", "LocalDir"]), &[]),
+                (Some(&["LocalDir"]), &[NOT_REFERENCE]),
+            ],
+        ),
+        (
+            "imported identifier",
+            "[LocalDir, ImportedDir]",
+            [
+                (Some(&["LocalDir", "ImportedDir<./other:ImportedDir>"]), &[]),
+                (Some(&["LocalDir", "ImportedDir<./other:ImportedDir>"]), &[]),
+                (Some(&["LocalDir", "ImportedDir<./other:ImportedDir>"]), &[]),
+            ],
+        ),
+        (
+            "conditional on an import",
+            "[IMPORTED_BOOL ? LocalDir : LocalDir]",
+            [
+                (Some(&["LocalDir"]), &[]),
+                (None, &[UNSUPPORTED]),
+                (Some(&["LocalDir"]), &[]),
+            ],
+        ),
+        (
+            "conditional on an ambient global",
+            "[COMPILED ? LocalDir : LocalDir]",
+            [
+                (Some(&["LocalDir"]), &[]),
+                (Some(&["LocalDir"]), &[]),
+                (Some(&["LocalDir"]), &[]),
+            ],
+        ),
+        (
+            "conditional on an undeclared global",
+            "[NOPE ? LocalDir : LocalDir]",
+            [
+                (None, &[UNSUPPORTED]),
+                (None, &[UNSUPPORTED]),
+                (Some(&[]), &[NOT_REFERENCE]),
+            ],
+        ),
+        (
+            "spread of an import",
+            "[...IMPORTED_HDS]",
+            [
+                (Some(&["<./other:ImportedDir>"]), &[]),
+                (None, &[UNSUPPORTED]),
+                (Some(&["<./other:ImportedDir>"]), &[]),
+            ],
+        ),
+        (
+            "imported array",
+            "IMPORTED_HDS",
+            [
+                (Some(&["<./other:ImportedDir>"]), &[]),
+                (None, &[NOT_ARRAY]),
+                (Some(&["<./other:ImportedDir>"]), &[]),
+            ],
+        ),
+        (
+            "imported inputs mapping",
+            "[{directive: LocalDir, inputs: IMPORTED_INPUTS}]",
+            [
+                (Some(&["LocalDir[in:1]"]), &[]),
+                (Some(&["LocalDir"]), &[]),
+                (Some(&["LocalDir[in:1]"]), &[]),
+            ],
+        ),
+        (
+            "string entry",
+            "['str', LocalDir]",
+            [
+                (None, &[NOT_REFERENCE]),
+                (None, &[NOT_REFERENCE]),
+                (Some(&["LocalDir"]), &[NOT_REFERENCE]),
+            ],
+        ),
+        (
+            "forward reference to an import",
+            "[forwardRef(() => ImportedDir)]",
+            [
+                (Some(&["ImportedDir<./other:ImportedDir>"]), &[]),
+                (None, &[UNSUPPORTED]),
+                (Some(&["ImportedDir<./other:ImportedDir>"]), &[]),
+            ],
+        ),
+        (
+            "local array",
+            "LOCAL_HDS",
+            [
+                (Some(&["LocalDir"]), &[]),
+                (Some(&["LocalDir"]), &[]),
+                (Some(&["LocalDir"]), &[]),
+            ],
+        ),
+        (
+            "function reference",
+            "[LocalDir, notADirective]",
+            [
+                (Some(&["LocalDir", "notADirective"]), &[]),
+                (Some(&["LocalDir", "notADirective"]), &[]),
+                (Some(&["LocalDir", "notADirective"]), &[NOT_CLASS]),
+            ],
+        ),
+    ];
+    let modes = [
+        (
+            r#""angularCompilerOptions": {"compilationMode": "experimental-local"}"#,
+            false,
+        ),
+        (
+            r#""compilerOptions": {"declaration": true, "emitDeclarationOnly": true}, "angularCompilerOptions": {"_experimentalAllowEmitDeclarationOnly": true}"#,
+            false,
+        ),
+        (r#""angularCompilerOptions": {}"#, true),
+    ];
+    for (case, host_directives, expectations) in cases {
+        for ((options, optimize), (expected_entries, expected_diagnostics)) in
+            modes.iter().zip(expectations)
+        {
+            let mut files = HashMap::new();
+            files.insert(
+                "/project/tsconfig.json".to_string(),
+                format!(r#"{{"files": ["globals.d.ts", "other.ts", "app.ts"], {options}}}"#),
+            );
+            files.insert(
+                "/project/globals.d.ts".to_string(),
+                "declare var COMPILED: boolean;\n".to_string(),
+            );
+            files.insert(
+                "/project/other.ts".to_string(),
+                "import { Directive } from '@angular/core';\n\
+                 @Directive({selector: '[imp]'}) export class ImportedDir {}\n\
+                 export declare const IMPORTED_BOOL: boolean;\n\
+                 export const IMPORTED_HDS = [ImportedDir];\n\
+                 export const IMPORTED_INPUTS = ['x'];\n"
+                    .to_string(),
+            );
+            files.insert(
+                "/project/app.ts".to_string(),
+                format!(
+                    "import {{ Component, Directive, Input, forwardRef }} from '@angular/core';\n\
+                     import {{ ImportedDir, IMPORTED_BOOL, IMPORTED_HDS, IMPORTED_INPUTS }} from './other';\n\
+                     @Directive({{selector: '[loc]'}}) export class LocalDir {{ @Input() x: any; }}\n\
+                     const LOCAL_HDS = [LocalDir];\n\
+                     function notADirective() {{}}\n\
+                     @Component({{selector: 'c', template: '', hostDirectives: {host_directives}}})\n\
+                     export class Cmp {{}}\n"
+                ),
+            );
+            let analyzer = Analyzer::new(AnalyzerOptions {
+                tsconfig_path: Some("/project/tsconfig.json".to_string()),
+                optimize: Some(*optimize),
+                virtual_files: Some(files),
+                ..Default::default()
+            })
+            .unwrap();
+            let iter = if *optimize {
+                analyzer.analyze_optimized().unwrap()
+            } else {
+                analyzer.analyze().unwrap()
+            };
+            let mut all_files = Vec::new();
+            while let Ok(Some(chunk)) = futures::executor::block_on(iter.next()) {
+                all_files.extend(chunk.files);
+            }
+            let meta = all_files
+                .iter()
+                .find(|f| f.file_path.ends_with("app.ts"))
+                .expect("app.ts metadata");
+            let entries: Option<Vec<String>> = meta
+                .classes
+                .iter()
+                .find(|c| c.class_name.as_deref() == Some("Cmp"))
+                .and_then(|c| c.component.as_ref())
+                .and_then(|c| c.host_directives.as_ref())
+                .map(|entries| {
+                    entries
+                        .iter()
+                        .map(|entry| {
+                            let alias = entry.directive.local_alias.clone().unwrap_or_default();
+                            let import = entry
+                                .directive
+                                .consumer_import
+                                .as_ref()
+                                .map(|i| format!("<{}:{}>", i.specifier, i.symbol))
+                                .unwrap_or_default();
+                            let inputs = entry
+                                .inputs
+                                .as_ref()
+                                .map(|i| format!("[in:{}]", i.len()))
+                                .unwrap_or_default();
+                            format!("{alias}{import}{inputs}")
+                        })
+                        .collect()
+                });
+            let diagnostics: Vec<String> = meta
+                .diagnostics
+                .iter()
+                .map(|d| {
+                    if d.code == 11003 {
+                        UNSUPPORTED.to_string()
+                    } else {
+                        format!("{}:{}", d.code, d.message_text.lines().next().unwrap_or(""))
+                    }
+                })
+                .collect();
+            let mode = if *optimize { "full" } else { options };
+            assert_eq!(
+                entries
+                    .as_deref()
+                    .map(|e| e.iter().map(String::as_str).collect::<Vec<_>>()),
+                expected_entries.map(|e| e.to_vec()),
+                "entries for {case} in {mode}"
+            );
+            assert_eq!(
+                diagnostics, *expected_diagnostics,
+                "diagnostics for {case} in {mode}"
+            );
+        }
+    }
+}
+
+#[test]
+fn test_prefix_strategy_dts_ngmodule_skips_barrel_export_map() {
+    let virtual_files: HashMap<String, String> = [
+        (
+            "/project/tsconfig.json",
+            r#"{"compilerOptions": {"rootDirs": ["/project"], "paths": {"@org/pkg": ["./libs/pkg/index.d.ts"]}},
+                "angularCompilerOptions": {"workspaceName": "my_ws", "_useHostForImportGeneration": true},
+                "files": ["app.ts"]}"#,
+        ),
+        (
+            "/project/libs/pkg/index.d.ts",
+            "export { SharedModule } from './shared.module';\n\
+             export * from './unrelated';\n",
+        ),
+        (
+            "/project/libs/pkg/shared.module.d.ts",
+            "import * as i0 from '@angular/core';\n\
+             import * as i1 from './b';\n\
+             export declare class SharedModule {\n\
+               static ɵmod: i0.ɵɵNgModuleDeclaration<SharedModule, [typeof i1.B], never, [typeof i1.B]>;\n\
+             }\n",
+        ),
+        (
+            "/project/libs/pkg/b.d.ts",
+            "import * as i0 from '@angular/core';\n\
+             export declare class B {\n\
+               static ɵcmp: i0.ɵɵComponentDeclaration<B, 'b-cmp', never, {}, {}, never, never, false, never>;\n\
+             }\n",
+        ),
+        (
+            "/project/libs/pkg/unrelated.d.ts",
+            "export declare class Unrelated {}\n",
+        ),
+        (
+            "/project/app.ts",
+            "import { Component } from '@angular/core';\n\
+             import { SharedModule } from '@org/pkg';\n\
+             @Component({ selector: 'app-cmp', template: '<b-cmp></b-cmp>', imports: [SharedModule] })\n\
+             export class AppCmp {}\n",
+        ),
+    ]
+    .into_iter()
+    .map(|(k, v)| (k.to_string(), v.to_string()))
+    .collect();
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let meta = analyzer
+        .get_metadata_for_file("/project/app.ts".to_string())
+        .expect("app.ts metadata");
+    let decls = meta.classes[0]
+        .component
+        .as_ref()
+        .and_then(|c| c.resolved_declarations.as_ref())
+        .expect("resolved declarations");
+    let b_decl = decls.iter().find(|d| d.name == "B").expect("B in scope");
+    assert_eq!(
+        b_decl
+            .r#ref
+            .consumer_import
+            .as_ref()
+            .map(|r| (r.specifier.as_str(), r.symbol.as_str())),
+        Some(("my_ws/libs/pkg/b", "B"))
+    );
+
+    let unrelated_invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: "/project/libs/pkg/unrelated.d.ts".to_string(),
+            update_type: FileUpdateType::Changed,
+        }])
+        .unwrap();
+    assert!(!unrelated_invalidated.contains(&"/project/app.ts".to_string()));
+
+    let b_invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: "/project/libs/pkg/b.d.ts".to_string(),
+            update_type: FileUpdateType::Changed,
+        }])
+        .unwrap();
+    assert!(b_invalidated.contains(&"/project/app.ts".to_string()));
+}
+
+#[test]
+fn test_prefix_strategy_dts_host_directive_skips_barrel_export_map() {
+    let virtual_files: HashMap<String, String> = [
+        (
+            "/project/tsconfig.json",
+            r#"{"compilerOptions": {"rootDirs": ["/project"], "paths": {"@org/pkg": ["./libs/pkg/index.d.ts"]}},
+                "angularCompilerOptions": {"workspaceName": "my_ws", "_useHostForImportGeneration": true},
+                "files": ["app.ts"]}"#,
+        ),
+        (
+            "/project/libs/pkg/index.d.ts",
+            "export { ParentDir } from './parent';\n\
+             export * from './unrelated';\n",
+        ),
+        (
+            "/project/libs/pkg/parent.d.ts",
+            "import * as i0 from '@angular/core';\n\
+             import * as i1 from './host';\n\
+             export declare class ParentDir {\n\
+               static ɵdir: i0.ɵɵDirectiveDeclaration<ParentDir, '[parentDir]', never, {}, {}, never, never, true, [{ directive: typeof i1.HostDir; inputs: {}; outputs: {} }]>;\n\
+             }\n",
+        ),
+        (
+            "/project/libs/pkg/host.d.ts",
+            "import * as i0 from '@angular/core';\n\
+             export declare class HostDir {\n\
+               static ɵdir: i0.ɵɵDirectiveDeclaration<HostDir, '[hostDir]', never, {}, {}, never, never, true, never>;\n\
+             }\n",
+        ),
+        (
+            "/project/libs/pkg/unrelated.d.ts",
+            "export declare class Unrelated {}\n",
+        ),
+        (
+            "/project/app.ts",
+            "import { Component } from '@angular/core';\n\
+             import { ParentDir } from '@org/pkg';\n\
+             @Component({ selector: 'app-cmp', template: '<div parentDir></div>', imports: [ParentDir] })\n\
+             export class AppCmp {}\n",
+        ),
+    ]
+    .into_iter()
+    .map(|(k, v)| (k.to_string(), v.to_string()))
+    .collect();
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let meta = analyzer
+        .get_metadata_for_file("/project/app.ts".to_string())
+        .expect("app.ts metadata");
+    let decls = meta.classes[0]
+        .component
+        .as_ref()
+        .and_then(|c| c.resolved_declarations.as_ref())
+        .expect("resolved declarations");
+    let parent = decls
+        .iter()
+        .find(|d| d.name == "ParentDir")
+        .expect("ParentDir in scope");
+    let host_dirs = parent
+        .resolved_host_directives
+        .as_ref()
+        .expect("resolved host directives");
+    assert_eq!(host_dirs.len(), 1);
+    assert_eq!(host_dirs[0].directive.r#ref.invalid_reason, None);
+    assert_eq!(
+        host_dirs[0]
+            .directive
+            .r#ref
+            .typecheck_import
+            .as_ref()
+            .map(|r| (r.specifier.as_str(), r.symbol.as_str())),
+        Some(("my_ws/libs/pkg/host", "HostDir"))
+    );
+
+    let unrelated_invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: "/project/libs/pkg/unrelated.d.ts".to_string(),
+            update_type: FileUpdateType::Changed,
+        }])
+        .unwrap();
+    assert!(!unrelated_invalidated.contains(&"/project/app.ts".to_string()));
+
+    let host_invalidated = analyzer
+        .invalidate_files(vec![FileInvalidation {
+            file_path: "/project/libs/pkg/host.d.ts".to_string(),
+            update_type: FileUpdateType::Changed,
+        }])
+        .unwrap();
+    assert!(host_invalidated.contains(&"/project/app.ts".to_string()));
+}
+
+#[test]
+fn test_request_metadata_core_resolves_component_and_skips_missing_or_non_ts() {
+    let mut virtual_files = HashMap::new();
+    virtual_files.insert(
+        "/project/tsconfig.json".to_string(),
+        r#"{"files": ["app.ts"]}"#.to_string(),
+    );
+    virtual_files.insert(
+        "/project/app.ts".to_string(),
+        r#"
+        import { Component } from '@angular/core';
+        @Component({ selector: 'app-root', templateUrl: './app.component.html' })
+        export class AppComponent {}
+        "#
+        .to_string(),
+    );
+    virtual_files.insert(
+        "/project/app.component.html".to_string(),
+        "<h1>Hello</h1>".to_string(),
+    );
+    virtual_files.insert(
+        "/@id/virtual-cmp".to_string(),
+        r#"
+        import { Component } from '@angular/core';
+        @Component({ selector: 'app-virtual', template: '<span>v</span>' })
+        export class VirtualCmp {}
+        "#
+        .to_string(),
+    );
+
+    let analyzer = Analyzer::new(AnalyzerOptions {
+        tsconfig_path: Some("/project/tsconfig.json".to_string()),
+        optimize: Some(true),
+        virtual_files: Some(virtual_files),
+        ..Default::default()
+    })
+    .unwrap();
+
+    let spawner = crate::compiler::analyzer::get_global_pool().clone();
+
+    let html_rx = analyzer
+        .request_metadata_core(
+            crate::ModuleRef::from("/project/app.component.html"),
+            spawner.clone(),
+        )
+        .unwrap();
+    let html_meta = futures::executor::block_on(html_rx).unwrap().unwrap();
+    assert!(html_meta.is_none());
+
+    let missing_rx = analyzer
+        .request_metadata_core(
+            crate::ModuleRef::from("/project/missing.ts"),
+            spawner.clone(),
+        )
+        .unwrap();
+    let missing_meta = futures::executor::block_on(missing_rx).unwrap().unwrap();
+    assert!(missing_meta.is_none());
+
+    let app_rx = analyzer
+        .request_metadata_core(crate::ModuleRef::from("/project/app.ts"), spawner.clone())
+        .unwrap();
+    let app_meta = futures::executor::block_on(app_rx)
+        .unwrap()
+        .unwrap()
+        .expect("expected metadata for app.ts");
+    assert_eq!(app_meta.classes.len(), 1);
+    assert_eq!(
+        app_meta.classes[0].class_name.as_deref(),
+        Some("AppComponent")
+    );
+
+    // Once a virtual module without a `.ts` extension is interned as `IdKind::Virtual`, follow-up
+    // bare-string (`ModuleRef::Path`) lookups resolve to its virtual `FileId` instead of failing
+    // `is_ts_file`.
+    let explicit_virtual_rx = analyzer
+        .request_metadata_core(
+            crate::ModuleRef::Explicit {
+                id: "/@id/virtual-cmp".to_string(),
+                id_kind: crate::host::IdKind::Virtual,
+            },
+            spawner.clone(),
+        )
+        .unwrap();
+    let explicit_virtual_meta = futures::executor::block_on(explicit_virtual_rx)
+        .unwrap()
+        .unwrap()
+        .expect("expected metadata for explicit virtual module");
+    assert_eq!(
+        explicit_virtual_meta.classes[0].class_name.as_deref(),
+        Some("VirtualCmp")
+    );
+
+    let bare_virtual_rx = analyzer
+        .request_metadata_core(crate::ModuleRef::from("/@id/virtual-cmp"), spawner)
+        .unwrap();
+    let bare_virtual_meta = futures::executor::block_on(bare_virtual_rx)
+        .unwrap()
+        .unwrap()
+        .expect("expected metadata for bare-string lookup of interned virtual module");
+    assert_eq!(
+        bare_virtual_meta.classes[0].class_name.as_deref(),
+        Some("VirtualCmp")
+    );
+
+    let sync_virtual_meta = analyzer
+        .get_metadata_for_file("/@id/virtual-cmp".to_string())
+        .expect("expected sync metadata for bare-string lookup of interned virtual module");
+    assert_eq!(
+        sync_virtual_meta.classes[0].class_name.as_deref(),
+        Some("VirtualCmp")
     );
 }

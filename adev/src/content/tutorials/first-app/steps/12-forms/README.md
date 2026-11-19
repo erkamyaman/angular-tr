@@ -12,8 +12,8 @@ IMPORTANT: Eğitimin bu adımı için yerel ortamınızı kullanmanızı öneriy
 
 ## Neler öğreneceksiniz
 
-- Uygulamanızda, kullanıcıların uygulamanızın servisine gönderilen verileri girebileceği bir form var.
-- Servis, formdaki verileri tarayıcının konsol günlüğüne yazar.
+- Uygulamanızda, kullanıcıların uygulamanızın servisine gönderilen verileri girebileceği bir form olacak.
+- Servis, formdaki verileri tarayıcının konsol günlüğüne yazacak.
 
 <docs-workflow>
 
@@ -23,9 +23,9 @@ Bu örnekte, metot formdaki verileri tarayıcının konsol günlüğüne yazar.
 
 IDE'nizin **Edit** bölmesinde:
 
-1.  `src/app/housing.service.ts` dosyasında, `HousingService` sınıfı içine bu metodu sınıf tanımının en altına yapıştırın.
+1.  `src/app/housing-service.ts` dosyasında, `HousingService` sınıfı içine bu metodu sınıf tanımının en altına yapıştırın.
 
-       <docs-code header="src/app/housing.service.ts içinde gönderme metodu" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing.service.ts" visibleLines="[118,122]"/>
+       <docs-code header="src/app/housing-service.ts içinde gönderme metodu" path="adev/src/content/tutorials/first-app/steps/13-search/src/app/housing-service.ts" visibleLines="[119,123]"/>
 
 1.  Uygulamanın hatasız derlendiğini doğrulayın.
     Bir sonraki adıma geçmeden önce tüm hataları düzeltin.
@@ -96,7 +96,7 @@ Bu adım, form verileri uygulamaya gönderildiğinde form verilerinin konsol gü
 
 </docs-workflow>
 
-SUMMARY: Bu derste, Angular'ın form özelliğini kullanarak uygulamanıza bir form eklediniz ve formda yakalanan verileri bir olay işleyici kullanarak bir bileşene bağladınız.
+SUMMARY: Bu derste, Angular'ın form özelliğini kullanarak bir form eklediniz ve formda yakalanan verileri bir olay işleyici kullanarak bir bileşene bağladınız.
 
 Bu derste ele alınan konular hakkında daha fazla bilgi için:
 

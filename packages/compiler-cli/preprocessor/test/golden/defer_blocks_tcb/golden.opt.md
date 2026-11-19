@@ -8,6 +8,7 @@
 import * as i0 from './app.component';
 import * as i1 from './eager';
 import * as i2 from './deferred';
+import * as i3 from '@angular/core';
 
 var _pipe1 = null! as i1.EagerPipe;
 var _pipe2 = null! as i2.DeferredPipe;
@@ -117,11 +118,11 @@ export class AppComponent {
                     selector: 'app-root',
                     imports: [EagerDirective, DeferredDirective, EagerPipe, DeferredPipe],
                     template: `
-        <div eagerDir>{{ 1 | eagerPipe }}</div>
-        @defer {
-          <div deferredDir>{{ 2 | deferredPipe }}</div>
-        }
-      `,
+    <div eagerDir>{{ 1 | eagerPipe }}</div>
+    @defer {
+      <div deferredDir>{{ 2 | deferredPipe }}</div>
+    }
+  `,
                   },
                 ],
               },

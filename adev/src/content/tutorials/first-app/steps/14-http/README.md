@@ -150,19 +150,19 @@ Yapılandırmanızda herhangi bir sorun yaşarsanız, [resmi belgelerden](https:
 <docs-step title="Servisi yerel dizi yerine web sunucusu kullanacak şekilde güncelleyin">
 Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna bağlanacak ve verileri kullanacak şekilde güncellemektir.
 
-1.  `src/app/housing.service.ts` dosyasında aşağıdaki değişiklikleri yapın:
+1.  `src/app/housing-service.ts` dosyasında aşağıdaki değişiklikleri yapın:
 
 1.  `housingLocationList` özelliğini ve verileri içeren diziyi, ayrıca `baseUrl` özelliğini kaldırmak için kodu güncelleyin.
 
 1.  `url` adında bir string özelliği ekleyin ve değerini `'http://localhost:3000/locations'` olarak ayarlayın
 
-    <docs-code header="housing.service.ts içine url özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[6]"/>
+    <docs-code header="housing-service.ts içine url özelliğini ekleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing-service.ts" visibleLines="[6]"/>
 
     Bu kod, dosyanın geri kalanında hatalara neden olacaktır çünkü `housingLocationList` özelliğine bağımlıdır. Servis metotlarını şimdi güncelleyeceğiz.
 
 1.  `getAllHousingLocations` fonksiyonunu, yapılandırdığınız web sunucusuna bir çağrı yapacak şekilde güncelleyin.
 
-     <docs-code header="housing.service.ts içinde getAllHousingLocations metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[8,11]"/>
+     <docs-code header="housing-service.ts içinde getAllHousingLocations metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing-service.ts" visibleLines="[8,11]"/>
 
     Kod artık HTTP üzerinden bir **GET** isteği yapmak için asenkron kod kullanmaktadır.
 
@@ -172,11 +172,11 @@ Veri kaynağı yapılandırıldı, bir sonraki adım web uygulamanızı buna ba�
 
     HELPFUL: `fetch` URL'sinin artık eşleşen `id` özellik değerine sahip konumu istemek için `id` değerini bir yol bölümü olarak eklediğine (`${this.url}/${id}`) dikkat edin.
 
-     <docs-code header="housing.service.ts içinde getHousingLocationById metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[13,17]"/>
+     <docs-code header="housing-service.ts içinde getHousingLocationById metodunu güncelleyin" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing-service.ts" visibleLines="[13,17]"/>
 
 1.  Tüm güncellemeler tamamlandığında, güncellenmiş servisiniz aşağıdaki kodla eşleşmelidir.
 
-     <docs-code header="housing.service.ts dosyasının son hâli" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts" visibleLines="[1,23]" />
+     <docs-code header="housing-service.ts dosyasının son hâli" path="adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing-service.ts" visibleLines="[1,23]" />
 
 </docs-step>
 
@@ -200,7 +200,7 @@ Sunucu artık HTTP isteğinden veri okuyor ancak servise bağımlı olan bileşe
 
 NOTE: Bu ders tarayıcı `fetch` API'sine dayanmaktadır. Interceptor desteği için lütfen [HTTP client belgelerine](/guide/http) bakın.
 
-SUMMARY: Bu derste, uygulamanızı yerel bir web sunucusu (`json-server`) kullanacak şekilde güncellediniz ve veri almak için asenkron servis metotlarını kullandınız.
+SUMMARY: Bu derste, yerel bir web sunucusu (`json-server`) ve veri almak için asenkron servis metotları kullandınız.
 
 Tebrikler! Bu eğitimi başarıyla tamamladınız ve daha karmaşık Angular Uygulamaları oluşturma yolculuğunuza devam etmeye hazırsınız.
 

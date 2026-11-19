@@ -1,14 +1,13 @@
 use crate::fs::OverlayFileSystem;
 use crate::query::keys::QueryKey;
 use crate::query::{FileId, QueryContext};
-use crate::resource_loader::ResourceResolverFs;
 use crate::resource_registry::ResourceRegistry;
 use crate::tsconfig_resolution;
 use crate::utils::{create_resolver_with_fs, is_compilation_root, is_ts_file, is_ts_source};
 use crate::{
     AnalysisResult, AnalyzerOptions, CompilationChunk, FileData, FileInvalidation, FileUpdate,
 };
-use futures::channel::mpsc;
+use futures::channel::{mpsc, oneshot};
 use futures::prelude::*;
 use futures::stream::FuturesUnordered;
 use futures::task::{Spawn, SpawnExt};
@@ -22,6 +21,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::OnceLock;
 use std::sync::{Arc, Mutex, RwLock};
 use std::task::Waker;
+use tracing::Instrument;
 
 #[cfg(not(target_arch = "wasm32"))]
 static GLOBAL_POOL: OnceLock<futures::executor::ThreadPool> = OnceLock::new();
@@ -31,6 +31,8 @@ pub fn get_global_pool() -> &'static futures::executor::ThreadPool {
     GLOBAL_POOL.get_or_init(|| {
         futures::executor::ThreadPool::builder()
             .pool_size(std::thread::available_parallelism().unwrap().get())
+            .name_prefix("ng-analyze-worker-")
+            .after_start(crate::perf::set_pool_thread_index)
             .create()
             .expect("Failed to create Global ThreadPool")
     })
@@ -116,7 +118,7 @@ use napi_derive::napi;
 pub struct Analyzer {
     resource_registry: Arc<ResourceRegistry>,
     fs: OverlayFileSystem,
-    engine: Arc<crate::query::QueryEngine<OverlayFileSystem>>,
+    engine: Arc<crate::query::QueryEngine>,
     #[cfg(not(target_arch = "wasm32"))]
     active_handles: Arc<RwLock<Vec<futures::future::RemoteHandle<()>>>>,
 
@@ -128,6 +130,7 @@ pub struct Analyzer {
     roots_from_tsconfig: AtomicBool,
     entrypoints: Arc<RwLock<Vec<PathBuf>>>,
     current_cancel_token: RwLock<Option<CancellationToken>>,
+    merged_compiler_options: serde_json::Map<String, serde_json::Value>,
 }
 
 /// Every setting an [`Analyzer`] is built from, after merging explicit [`AnalyzerOptions`] over
@@ -144,6 +147,9 @@ struct EffectiveConfig {
     /// `.d.ts` files are used even when `entry_points` replace its roots.
     tsconfig_files: Vec<PathBuf>,
     r3_symbols_file: Option<PathBuf>,
+    /// `angular_core_compilation` > `angularCompilerOptions._isAngularCoreCompilation` > `true`
+    /// with an explicit `r3_symbols_file` > none (detected from `r3_symbols.ts` by the engine).
+    angular_core_compilation: Option<bool>,
     /// `default_host.preserve_symlinks` > `compilerOptions.preserveSymlinks` > `false`.
     preserve_symlinks: bool,
     /// `default_host.root_dirs` > `compilerOptions.rootDirs` > `[tsconfig dir]` > none.
@@ -162,6 +168,9 @@ struct EffectiveConfig {
     use_poisoned_data: bool,
     strict_injection_parameters: bool,
     implicit_standalone: bool,
+    emit_declaration_only: bool,
+    experimental_local_compilation: bool,
+    merged_compiler_options: serde_json::Map<String, serde_json::Value>,
 }
 
 impl EffectiveConfig {
@@ -169,7 +178,8 @@ impl EffectiveConfig {
         let tsconfig_path = options.tsconfig_path.map(PathBuf::from);
         let resolved = match &tsconfig_path {
             Some(path) => Some(
-                tsconfig_resolution::load_and_resolve_tsconfig(path, fs)
+                tracing::info_span!("ResolveTsconfig")
+                    .in_scope(|| tsconfig_resolution::load_and_resolve_tsconfig(path, fs))
                     .map_err(|e| e.to_string())?,
             ),
             None => None,
@@ -191,7 +201,11 @@ impl EffectiveConfig {
             }
         };
         let absolutize_all = |paths: Vec<String>| -> Result<Vec<PathBuf>, String> {
-            paths.into_iter().map(PathBuf::from).map(absolutize).collect()
+            paths
+                .into_iter()
+                .map(PathBuf::from)
+                .map(absolutize)
+                .collect()
         };
 
         // A tsconfig-provided flag, or its default without a tsconfig.
@@ -226,11 +240,28 @@ impl EffectiveConfig {
         let implicit_standalone = options
             .implicit_standalone
             .unwrap_or_else(|| tsconfig_flag(|r| r.implicit_standalone, true));
+        let emit_declaration_only = tsconfig_flag(|r| r.emit_declaration_only, false);
+        let experimental_local_compilation =
+            tsconfig_flag(|r| r.experimental_local_compilation, false);
+        let angular_core_compilation = options
+            .angular_core_compilation
+            .or_else(|| {
+                resolved
+                    .as_ref()
+                    .and_then(|r| r.is_angular_core_compilation)
+            })
+            .or_else(|| options.r3_symbols_file.is_some().then_some(true));
 
-        let (tsconfig_files, tsconfig_root_dirs, tsconfig_workspace_name) = match resolved {
-            Some(r) => (r.files, r.compiler_options.root_dirs, r.workspace_name),
-            None => (Vec::new(), None, None),
-        };
+        let (tsconfig_files, tsconfig_root_dirs, tsconfig_workspace_name, merged_compiler_options) =
+            match resolved {
+                Some(r) => (
+                    r.files,
+                    r.compiler_options.root_dirs,
+                    r.workspace_name,
+                    r.merged_compiler_options,
+                ),
+                None => (Vec::new(), None, None, serde_json::Map::new()),
+            };
 
         let mut merge_root_dirs = match default_host.root_dirs {
             Some(dirs) => absolutize_all(dirs)?,
@@ -258,6 +289,7 @@ impl EffectiveConfig {
                 .r3_symbols_file
                 .map(|path| absolutize(PathBuf::from(path)))
                 .transpose()?,
+            angular_core_compilation,
             preserve_symlinks,
             merge_root_dirs,
             node_modules_path_override: default_host
@@ -273,7 +305,10 @@ impl EffectiveConfig {
             use_poisoned_data,
             strict_injection_parameters,
             implicit_standalone,
+            emit_declaration_only,
+            experimental_local_compilation,
             tsconfig_path,
+            merged_compiler_options,
         })
     }
 }
@@ -290,6 +325,7 @@ impl Analyzer {
         options: AnalyzerOptions,
         physical: std::sync::Arc<dyn crate::physical_fs::PhysicalFs>,
     ) -> Result<Self, String> {
+        let _span = tracing::info_span!("Initialize").entered();
         let allowed = options
             .allowed_sources
             .clone()
@@ -310,7 +346,7 @@ impl Analyzer {
         fs: OverlayFileSystem,
     ) -> Result<Self, String> {
         let config = EffectiveConfig::resolve(options, &fs)?;
-        Ok(Self::construct(config, fs))
+        Ok(tracing::info_span!("ConstructAnalyzer").in_scope(|| Self::construct(config, fs)))
     }
 
     /// Build the analyzer from fully merged settings. Order matters: the symlink mode and the
@@ -358,6 +394,7 @@ impl Analyzer {
             entrypoints_lock.clone(),
             reference_strategy,
             r3_symbols_file,
+            config.angular_core_compilation,
             config.generate_extra_imports_in_local_mode,
             config.compile_non_exported_classes,
             config.enable_hmr,
@@ -365,6 +402,8 @@ impl Analyzer {
             config.use_poisoned_data,
             config.strict_injection_parameters,
             config.implicit_standalone,
+            config.emit_declaration_only,
+            config.experimental_local_compilation,
         );
         *engine.tsconfig_dts_files.write().unwrap() = dts_files;
 
@@ -378,7 +417,17 @@ impl Analyzer {
             roots_from_tsconfig: AtomicBool::new(roots_from_tsconfig),
             entrypoints: entrypoints_lock,
             current_cancel_token: RwLock::new(None),
+            merged_compiler_options: config.merged_compiler_options,
         }
+    }
+
+    pub fn merged_compiler_options(&self) -> &serde_json::Map<String, serde_json::Value> {
+        &self.merged_compiler_options
+    }
+
+    /// Path of an interned file, for perf reports.
+    pub fn file_path(&self, id: crate::query::FileId) -> Option<String> {
+        self.engine.file_path(id)
     }
 
     pub fn analyze_core<S: Spawner>(
@@ -386,21 +435,7 @@ impl Analyzer {
         spawner: S,
     ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
     {
-        self.cancel_current_analysis();
-
-        let (final_sender, receiver) = futures::channel::mpsc::unbounded();
-        let cancel_token = CancellationToken::new();
-        *self.current_cancel_token.write().unwrap() = Some(cancel_token.clone());
-
-        self.run_coordinator_helper(
-            self.entrypoints.read().unwrap().clone(),
-            spawner,
-            false,
-            cancel_token,
-            Some(final_sender),
-        );
-
-        Ok(receiver)
+        self.start_analysis(spawner, false, false)
     }
 
     pub fn analyze_optimized_core<S: Spawner>(
@@ -408,6 +443,32 @@ impl Analyzer {
         spawner: S,
     ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
     {
+        self.start_analysis(spawner, true, false)
+    }
+
+    pub fn analyze_delta_core<S: Spawner>(
+        &self,
+        spawner: S,
+    ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
+    {
+        self.start_analysis(spawner, false, true)
+    }
+
+    pub fn analyze_optimized_delta_core<S: Spawner>(
+        &self,
+        spawner: S,
+    ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
+    {
+        self.start_analysis(spawner, true, true)
+    }
+
+    fn start_analysis<S: Spawner>(
+        &self,
+        spawner: S,
+        is_optimized: bool,
+        is_delta: bool,
+    ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
+    {
         self.cancel_current_analysis();
 
         let (final_sender, receiver) = futures::channel::mpsc::unbounded();
@@ -417,46 +478,11 @@ impl Analyzer {
         self.run_coordinator_helper(
             self.entrypoints.read().unwrap().clone(),
             spawner,
-            true,
+            is_optimized,
+            is_delta,
             cancel_token,
             Some(final_sender),
         );
-
-        Ok(receiver)
-    }
-
-    pub fn analyze_delta_core<S: Spawner>(
-        &self,
-        spawner: S,
-    ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
-    {
-        self.cancel_current_analysis();
-
-        let (final_sender, receiver) = futures::channel::mpsc::unbounded();
-        let cancel_token = CancellationToken::new();
-        *self.current_cancel_token.write().unwrap() = Some(cancel_token.clone());
-
-        let paths: Vec<PathBuf> = self.entrypoints.read().unwrap().clone();
-
-        self.run_coordinator_helper(paths, spawner, false, cancel_token, Some(final_sender));
-
-        Ok(receiver)
-    }
-
-    pub fn analyze_optimized_delta_core<S: Spawner>(
-        &self,
-        spawner: S,
-    ) -> Result<futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>, String>
-    {
-        self.cancel_current_analysis();
-
-        let (final_sender, receiver) = futures::channel::mpsc::unbounded();
-        let cancel_token = CancellationToken::new();
-        *self.current_cancel_token.write().unwrap() = Some(cancel_token.clone());
-
-        let paths: Vec<PathBuf> = self.entrypoints.read().unwrap().clone();
-
-        self.run_coordinator_helper(paths, spawner, true, cancel_token, Some(final_sender));
 
         Ok(receiver)
     }
@@ -510,7 +536,8 @@ impl Analyzer {
 
         for (ts_path, _class_name) in affected {
             invalidated_paths.push(ts_path.to_string_lossy().into_owned());
-            self.evict_file(&ts_path, invalidated_paths);
+            let evicted = self.engine.invalidate_resource_owner(&ts_path);
+            self.push_evicted_paths(evicted, invalidated_paths);
         }
     }
 
@@ -532,21 +559,67 @@ impl Analyzer {
         self.push_evicted_paths(evicted, invalidated_paths);
     }
 
-    /// Append the wire path of every file whose cached query was evicted.
+    /// Append the wire path or virtual module ID of every file whose cached query was evicted.
     fn push_evicted_paths(&self, evicted: Vec<QueryKey>, invalidated_paths: &mut Vec<String>) {
         let mut evicted: Vec<String> = evicted
             .into_iter()
             .filter_map(|key| key.file_id())
-            .map(|file_id| crate::fs::path_to_string(self.engine.lookup_path(file_id)))
+            .map(|file_id| match self.engine.lookup_module(file_id) {
+                (id, crate::host::IdKind::Virtual) => id.as_str().to_owned(),
+                (_, crate::host::IdKind::Path) => {
+                    crate::fs::path_to_string(self.engine.lookup_path(file_id))
+                }
+            })
             .collect();
         evicted.sort_unstable();
         evicted.dedup();
         invalidated_paths.extend(evicted);
     }
 
+    /// Whether the configured [`crate::host::AnalysisHost`] answers every request synchronously.
+    pub fn is_synchronous_host(&self) -> bool {
+        self.engine.is_synchronous_host()
+    }
+
+    /// Fail with [`crate::host::SYNC_HOST_REQUIRED_MSG`] unless the host is synchronous.
+    ///
+    /// Fallible entry points call this before reaching a `*_blocking` engine API, which panics on
+    /// an asynchronous host instead of returning an error.
+    pub fn ensure_synchronous_host(&self) -> Result<(), String> {
+        if self.is_synchronous_host() {
+            Ok(())
+        } else {
+            Err(crate::host::SYNC_HOST_REQUIRED_MSG.to_string())
+        }
+    }
+
+    /// Read `file_path` from the analyzer's filesystem.
+    ///
+    /// This never calls the host, but it is still gated on a synchronous host: under an
+    /// asynchronous host, module text comes from [`crate::host::AnalysisHost::load`] and the
+    /// filesystem is not authoritative, so it could return text that differs from what was
+    /// analyzed or miss virtual modules entirely.
+    ///
+    /// TODO: add pump-driven equivalents of this and [`Self::read_resource_checked`] that go
+    /// through the host (as `request_metadata_core` does for metadata) so asynchronous hosts can
+    /// serve file content and resources.
     pub fn get_file_content_core(&self, file_path: String) -> Result<String, String> {
+        self.ensure_synchronous_host()?;
         let path = PathBuf::from(&file_path);
         self.fs.read_to_string(&path).map_err(|e| e.to_string())
+    }
+
+    /// Fallible form of [`Self::get_metadata_for_file`]: an asynchronous host is reported as an
+    /// `Err` instead of a panic.
+    pub fn get_metadata_for_file_checked(
+        &self,
+        file_path: String,
+    ) -> Result<Option<AnalysisResult>, String> {
+        self.ensure_synchronous_host()?;
+        let Some(file_id) = self.resolve_metadata_target(crate::ModuleRef::Path(file_path)) else {
+            return Ok(None);
+        };
+        Ok(self.engine.get_metadata_for_file_id_blocking(file_id))
     }
 
     /// Resolve `url` the way a component's `templateUrl`/`styleUrls` are resolved from
@@ -554,20 +627,49 @@ impl Analyzer {
     /// after parsing a template (`<link rel="stylesheet">`), which ngtsc also resolves from the
     /// component file rather than from the template.
     /// https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/component/src/handler.ts#L876-L883
+    ///
+    /// An asynchronous host is reported as an `Err` instead of a panic.
+    pub fn read_resource_checked(
+        &self,
+        containing_file: String,
+        url: String,
+    ) -> Result<Option<crate::ResolvedResource>, String> {
+        self.ensure_synchronous_host()?;
+        Ok(self.engine.read_resource_blocking(
+            &containing_file,
+            &url,
+            crate::host::ResourceKind::Style,
+        ))
+    }
+
+    /// Panicking form of [`Self::read_resource_checked`], for callers with no error channel.
     pub fn read_resource_core(
         &self,
         containing_file: String,
         url: String,
     ) -> Option<crate::ResolvedResource> {
-        let resource_resolver =
-            crate::ResourceResolver::new(&self.fs, self.engine.resolver.as_ref());
-        let resource = resource_resolver
-            .load_resource(Path::new(&containing_file), &url)
-            .ok()?;
-        Some(crate::ResolvedResource {
-            resolved_path: crate::fs::path_to_string(resource.resolved_path),
-            content: resource.content,
-        })
+        self.read_resource_checked(containing_file, url)
+            .unwrap_or_else(|msg| panic!("{msg}"))
+    }
+
+    pub fn canonical_paths_core(&self, paths: Vec<String>) -> Vec<String> {
+        paths
+            .into_iter()
+            .map(|path| crate::fs::path_to_string(self.canonical_host_path(PathBuf::from(path))))
+            .collect()
+    }
+
+    fn canonical_host_path(&self, path: PathBuf) -> PathBuf {
+        if let Ok(canonical) = self.fs.canonicalize(&path) {
+            return canonical;
+        }
+        let (Some(dir), Some(name)) = (path.parent(), path.file_name()) else {
+            return path;
+        };
+        match self.fs.canonicalize(dir) {
+            Ok(dir) => dir.join(name),
+            Err(_) => path,
+        }
     }
 
     /// Apply content updates and return every path whose cached results are now stale.
@@ -577,18 +679,23 @@ impl Analyzer {
     ) -> Result<Vec<String>, String> {
         self.cancel_current_analysis();
         let mut paths_to_invalidate = Vec::new();
+        let mut files_created = false;
+        let mut config_changed = false;
 
         for update in updates {
             let raw_path = PathBuf::from(&update.file_path);
             let path = self.fs.canonicalize(&raw_path).unwrap_or(raw_path);
+            files_created |= self.fs.metadata(&path).is_err();
+            config_changed |= path
+                .extension()
+                .is_some_and(|ext| ext.eq_ignore_ascii_case("json"));
             self.fs.upsert_file(path.clone(), update.content.clone());
 
             paths_to_invalidate.push(path.to_string_lossy().into_owned());
             self.invalidate_changed_path(&path, &mut paths_to_invalidate);
         }
 
-        self.re_resolve_entrypoints(&mut paths_to_invalidate);
-        Ok(dedup_preserving_order(paths_to_invalidate))
+        self.finalize_file_updates(paths_to_invalidate, files_created, config_changed)
     }
 
     /// Drop the virtual overlay of each changed or deleted file and return every stale TS path.
@@ -598,21 +705,53 @@ impl Analyzer {
     ) -> Result<Vec<String>, String> {
         self.cancel_current_analysis();
         let mut ts_paths_to_invalidate = Vec::new();
+        let mut files_created_or_deleted = false;
+        let mut config_changed = false;
 
         for update in updates {
             let raw_path = PathBuf::from(&update.file_path);
             let path = self.fs.canonicalize(&raw_path).unwrap_or(raw_path);
             self.fs.remove_virtual_file(&path);
+            files_created_or_deleted |= matches!(
+                update.update_type,
+                crate::FileUpdateType::Created | crate::FileUpdateType::Deleted
+            );
+            config_changed |= path
+                .extension()
+                .is_some_and(|ext| ext.eq_ignore_ascii_case("json"));
 
             if is_ts_file(&path) {
                 self.resource_registry.unregister_ts_file(&path);
                 ts_paths_to_invalidate.push(path.to_string_lossy().into_owned());
             }
+            if matches!(update.update_type, crate::FileUpdateType::Deleted) {
+                let evicted = self.engine.invalidate_deleted_file(&path);
+                self.push_evicted_paths(evicted, &mut ts_paths_to_invalidate);
+            }
             self.invalidate_changed_path(&path, &mut ts_paths_to_invalidate);
         }
 
-        self.re_resolve_entrypoints(&mut ts_paths_to_invalidate);
-        Ok(dedup_preserving_order(ts_paths_to_invalidate))
+        self.finalize_file_updates(
+            ts_paths_to_invalidate,
+            files_created_or_deleted,
+            config_changed,
+        )
+    }
+
+    fn finalize_file_updates(
+        &self,
+        mut invalidated_paths: Vec<String>,
+        structure_changed: bool,
+        config_changed: bool,
+    ) -> Result<Vec<String>, String> {
+        if structure_changed {
+            let evicted = self.engine.invalidate_module_resolution();
+            self.push_evicted_paths(evicted, &mut invalidated_paths);
+        }
+        if structure_changed || config_changed {
+            self.re_resolve_entrypoints(&mut invalidated_paths);
+        }
+        Ok(dedup_preserving_order(invalidated_paths))
     }
 
     /// Re-read the tsconfig's file list, which changes when files matching its `include` globs are
@@ -660,14 +799,26 @@ impl Analyzer {
         Ok(dedup_preserving_order(invalidated_paths))
     }
 
+    /// Flush every cached module resolution and return every module ID whose cached analysis was
+    /// evicted.
+    pub fn clear_resolution_cache_core(&self) -> Result<Vec<String>, String> {
+        self.cancel_current_analysis();
+        let mut invalidated_paths = Vec::new();
+        let evicted = self.engine.clear_resolution_cache();
+        self.push_evicted_paths(evicted, &mut invalidated_paths);
+        Ok(dedup_preserving_order(invalidated_paths))
+    }
+
     /// Install the given compilation roots and the tsconfig's `.d.ts` files (`None` keeps the
-    /// current list), evicting every query that read the previous lists when either differs.
+    /// current list), evicting every query that read the previous lists when either differs, and
+    /// every query that read which root is `r3_symbols.ts` when that changes too.
     fn replace_program_files(
         &self,
         roots: Option<Vec<PathBuf>>,
         dts_files: Option<Vec<PathBuf>>,
         invalidated_paths: &mut Vec<String>,
     ) {
+        let r3_symbols_file = self.engine.r3_symbols_file();
         let roots_changed = roots.is_some_and(|roots| replace_if_changed(&self.entrypoints, roots));
         let dts_files_changed = dts_files.is_some_and(|dts_files| {
             replace_if_changed(&self.engine.tsconfig_dts_files, dts_files)
@@ -675,8 +826,56 @@ impl Analyzer {
         if !roots_changed && !dts_files_changed {
             return;
         }
-        let evicted = self.engine.invalidate_roots();
+        let mut evicted = self.engine.invalidate_roots();
+        if self.engine.r3_symbols_file() != r3_symbols_file {
+            evicted.extend(self.engine.invalidate_r3_symbols_root());
+        }
         self.push_evicted_paths(evicted, invalidated_paths);
+    }
+
+    fn resolve_metadata_target(&self, module_ref: crate::host::ModuleRef) -> Option<FileId> {
+        let (id, id_kind) = module_ref.into_parts();
+        if id_kind == crate::host::IdKind::Path {
+            if let Some(file_id) = self.engine.get_virtual_if_interned(&id) {
+                return Some(file_id);
+            }
+            let path = PathBuf::from(&id);
+            // Non-TS files (templates, stylesheets, JSON) and missing files return `None`, like
+            // ngtsc's `TraitCompiler.recordFor`, rather than failing (the language service asks
+            // about every open document, and a panic over N-API aborts the host) or degrading to
+            // an empty `AnalysisResult` indistinguishable from a classless file.
+            if !is_ts_file(&path) {
+                return None;
+            }
+            if self.engine.is_synchronous_host()
+                && !self.fs.metadata(&path).is_ok_and(|m| m.is_file())
+            {
+                return None;
+            }
+        }
+        Some(self.engine.intern_module(&id, id_kind))
+    }
+
+    /// Spawn a wire-metadata query for `module_ref` onto `spawner` and return a oneshot receiver
+    /// for its outcome.
+    pub fn request_metadata_core<S: Spawner>(
+        &self,
+        module_ref: crate::host::ModuleRef,
+        spawner: S,
+    ) -> Result<oneshot::Receiver<Result<Option<AnalysisResult>, String>>, String> {
+        let (tx, rx) = oneshot::channel();
+        let Some(file_id) = self.resolve_metadata_target(module_ref) else {
+            let _ = tx.send(Ok(None));
+            return Ok(rx);
+        };
+        let engine = self.engine.clone();
+        spawner
+            .spawn(async move {
+                let res = engine.get_metadata_for_file_id(file_id).await;
+                let _ = tx.send(Ok(res));
+            })
+            .map_err(|e| e.to_string())?;
+        Ok(rx)
     }
 }
 
@@ -692,9 +891,9 @@ fn replace_if_changed<T: PartialEq>(lock: &RwLock<T>, value: T) -> bool {
 
 /// Split the tsconfig's file list into the compilation roots, canonicalized through `fs`, and the
 /// `.d.ts` files it also lists, only normalized structurally. Bazel targets can list thousands of
-/// transitive `.d.ts` files, so they never cost a canonicalize call here: the ambient module index
-/// canonicalizes them lazily, once an import actually needs it (`QueryKey::AmbientModuleFiles`).
-/// Other files are filtered out.
+/// transitive `.d.ts` files, so they never cost a canonicalize call here: the engine canonicalizes
+/// them lazily, as the ambient module index and ambient global lookups first read them
+/// (`QueryEngine::tsconfig_dts_file_id`). Other files are filtered out.
 fn partition_tsconfig_files(
     files: Vec<PathBuf>,
     fs: &OverlayFileSystem,
@@ -793,6 +992,20 @@ impl Analyzer {
     #[cfg(not(feature = "napi"))]
     pub fn set_entry_points(&self, entry_points: Vec<String>) -> Result<Vec<String>, String> {
         self.set_entry_points_core(entry_points)
+    }
+
+    /// Flush every cached module resolution and return every module ID whose cached analysis was
+    /// evicted.
+    #[cfg(feature = "napi")]
+    #[napi]
+    pub fn clear_resolution_cache(&self) -> napi::Result<Vec<String>> {
+        self.clear_resolution_cache_core()
+            .map_err(napi::Error::from_reason)
+    }
+
+    #[cfg(not(feature = "napi"))]
+    pub fn clear_resolution_cache(&self) -> Result<Vec<String>, String> {
+        self.clear_resolution_cache_core()
     }
 
     #[cfg(feature = "napi")]
@@ -895,47 +1108,23 @@ impl Analyzer {
         Ok(crate::AnalysisIterator::new(rx))
     }
 
-    #[cfg_attr(feature = "napi", napi)]
+    /// Panicking form of [`Self::get_metadata_for_file_checked`], for Rust callers with no error
+    /// channel. N-API is served by `get_metadata_for_file_napi` instead.
     pub fn get_metadata_for_file(&self, file_path: String) -> Option<AnalysisResult> {
-        let path = PathBuf::from(&file_path);
-        // Non-TS files (templates, stylesheets, JSON) and missing files return `None`, like ngtsc's
-        // `TraitCompiler.recordFor`, rather than failing (the language service asks about every
-        // open document, and a panic over N-API aborts the host) or degrading to an empty
-        // `AnalysisResult` indistinguishable from a classless file.
-        if !is_ts_file(&path) || !self.fs.metadata(&path).is_ok_and(|m| m.is_file()) {
-            return None;
-        }
+        self.get_metadata_for_file_checked(file_path)
+            .unwrap_or_else(|msg| panic!("{msg}"))
+    }
 
-        // Synchronously drive `AnalyzeFileSemantic` to completion. Wire projection happens at
-        // the engine boundary; an `Err` is an internal bug (semantic results are demoted hole-free)
-        // or user error, returning `None` to prevent an FFI panic across N-API.
-        let file_data = self.engine.analyze_file_semantic_blocking(path);
-        let parse_res = self.engine.parse_file_by_id_blocking(file_data.file_id);
-        let source_text = parse_res.lock().unwrap().borrow_owner().source_text.clone();
-        let path_lookup = |id| self.engine.lookup_path(id);
-        let declaring_exports = self.engine.declaring_export_names_blocking(&file_data);
-        let r3_symbols_path = self.engine.r3_symbols_file();
-        let cx = crate::analyzer::WireContext {
-            mode: crate::analyzer::WireMode::Semantic,
-            source_text: &source_text,
-            converter: &file_data.converter,
-            reference_strategy: &*self.engine.reference_strategy,
-            path_lookup: Some(&path_lookup),
-            declaring_exports: &declaring_exports,
-            r3_symbols_path: r3_symbols_path.as_deref(),
-        };
-        match file_data.to_wire(&cx) {
-            Ok(result) => Some(result),
-            Err(err) => {
-                // TODO(diagnostics): surface WireError via a diagnostics channel instead of
-                // logging to stderr and returning None.
-                #[allow(clippy::print_stderr)]
-                {
-                    eprintln!("ERROR: {err}; skipping metadata for this file");
-                }
-                None
-            }
-        }
+    /// N-API `getMetadataForFile`: an asynchronous host is thrown as a JS error, since a panic
+    /// over N-API aborts the host process.
+    #[cfg(feature = "napi")]
+    #[napi(js_name = "getMetadataForFile")]
+    pub fn get_metadata_for_file_napi(
+        &self,
+        file_path: String,
+    ) -> napi::Result<Option<AnalysisResult>> {
+        self.get_metadata_for_file_checked(file_path)
+            .map_err(napi::Error::from_reason)
     }
 
     #[cfg(feature = "napi")]
@@ -950,7 +1139,8 @@ impl Analyzer {
         self.get_file_content_core(file_path)
     }
 
-    #[cfg_attr(feature = "napi", napi)]
+    /// Panicking form of [`Self::read_resource_checked`], for Rust callers with no error channel.
+    /// N-API is served by `read_resource_napi` instead.
     pub fn read_resource(
         &self,
         containing_file: String,
@@ -959,11 +1149,35 @@ impl Analyzer {
         self.read_resource_core(containing_file, url)
     }
 
+    /// N-API `readResource`: an asynchronous host is thrown as a JS error, since a panic over
+    /// N-API aborts the host process.
+    #[cfg(feature = "napi")]
+    #[napi(js_name = "readResource")]
+    pub fn read_resource_napi(
+        &self,
+        containing_file: String,
+        url: String,
+    ) -> napi::Result<Option<crate::ResolvedResource>> {
+        self.read_resource_checked(containing_file, url)
+            .map_err(napi::Error::from_reason)
+    }
+
+    #[cfg_attr(feature = "napi", napi)]
+    pub fn canonical_paths(&self, paths: Vec<String>) -> Vec<String> {
+        self.canonical_paths_core(paths)
+    }
+
+    #[cfg_attr(feature = "napi", napi)]
+    pub fn get_compiler_options(&self) -> String {
+        serde_json::to_string(&self.merged_compiler_options).unwrap_or_else(|_| "{}".to_string())
+    }
+
     fn run_coordinator_helper<S: Spawner>(
         &self,
         paths: Vec<PathBuf>,
         spawner: S,
         is_optimized: bool,
+        is_delta: bool,
         cancel_token: CancellationToken,
         sender: Option<
             futures::channel::mpsc::UnboundedSender<Result<crate::CompilationChunk, String>>,
@@ -973,106 +1187,37 @@ impl Analyzer {
 
         let engine_clone = engine.clone();
 
-        // Dependency discovery always uses `AnalyzeFileSyntax`; `processor` below selects between
-        // projecting the syntax result (local mode) and running `AnalyzeFileSemantic` (optimized).
+        // Dependency discovery always uses `AnalyzeFileSyntax`; `processor` below uses the cached
+        // `AnalyzeFileWire` query for either local or optimized mode.
         let local_analyzer = move |file_path: PathBuf| {
             let engine = engine_clone.clone();
             async move {
                 let file_id = engine.intern_path(file_path);
-                let res = QueryContext::new(engine.clone())
+                QueryContext::new(engine.clone())
                     .analyze_file_syntax(file_id)
-                    .await;
-                (*res).clone()
+                    .await
             }
             .boxed()
         };
 
         let engine_clone = engine.clone();
         let cancel_token_clone = cancel_token.clone();
-        let r3_symbols_path: Option<Arc<Path>> = self.engine.r3_symbols_file().map(Arc::from);
 
-        let processor = move |file_path: PathBuf, _local_res: FileData| {
+        let processor = move |_file_path: PathBuf, local_res: Arc<FileData>| {
             let engine = engine_clone.clone();
             let cancel_token = cancel_token_clone.clone();
-            let r3_symbols_path = r3_symbols_path.clone();
 
             async move {
                 if cancel_token.is_cancelled() {
                     return (Err("Cancelled".to_string()), FileChunkInfo::default());
                 }
 
-                if !crate::utils::is_dts(&file_path) && !_local_res.errors.is_empty() {
-                    return (
-                        Err(format!(
-                            "Syntax errors in {}: \n{}",
-                            file_path.display(),
-                            _local_res.errors.join("\n")
-                        )),
-                        FileChunkInfo::default(),
-                    );
-                }
-
-                // TODO(diagnostics): surface WireError on AnalysisResult instead of dropping
-                // the file from the stream.
-                let ctx = QueryContext::new(engine.clone());
-                let parse_res = ctx.parse_file(_local_res.file_id).await;
-                let source_text = parse_res.lock().unwrap().borrow_owner().source_text.clone();
-                let path_lookup = |id| engine.lookup_path(id);
-                let (projected, chunk_info) = if is_optimized {
-                    let semantic_res = ctx.analyze_file_semantic(_local_res.file_id).await;
-                    let chunk_info = extract_chunk_info(&semantic_res, &engine, &ctx).await;
-                    let declaring_exports = ctx.declaring_export_names(&semantic_res).await;
-                    let cx = crate::analyzer::WireContext {
-                        mode: crate::analyzer::WireMode::Semantic,
-                        source_text: &source_text,
-                        converter: &semantic_res.converter,
-                        reference_strategy: &*engine.reference_strategy,
-                        path_lookup: Some(&path_lookup),
-                        declaring_exports: &declaring_exports,
-                        r3_symbols_path: r3_symbols_path.as_deref(),
-                    };
-                    (semantic_res.to_wire(&cx), chunk_info)
-                } else {
-                    let mut syntax_res = _local_res;
-                    // ngtsc's local compilation still evaluates imported `selector`, `styles`,
-                    // `templateUrl` and `styleUrl(s)` constants; only scope resolution is off.
-                    // TODO(parity): unresolvable imports should report NG11001, not NG1010.
-                    for class in &mut syntax_res.classes {
-                        class.complete_selector(&ctx).await;
-                        class.complete_styles(&ctx).await;
-                        class.complete_resource_urls(&ctx).await;
-                        class.complete_isolated_type_tuples(&ctx).await;
-                    }
-                    // Must run before `validate()`, `extract_chunk_info` and `to_wire()`: it sets
-                    // the extra imports and `declaring_ng_module` they read.
-                    if engine.generate_extra_imports_in_local_mode {
-                        engine
-                            .populate_local_compilation_extra_imports(&mut syntax_res, &ctx)
-                            .await;
-                    }
-                    syntax_res
-                        .validate(engine.validation_context(crate::analyzer::WireMode::Syntax));
-                    // Local mode normally streams 1-file chunks, but under `generateExtraImportsInLocalMode`
-                    // it groups by NgModule because template cycle detection across sibling declarations
-                    // requires the whole module in one chunk.
-                    let chunk_info = if engine.generate_extra_imports_in_local_mode {
-                        extract_chunk_info(&syntax_res, &engine, &ctx).await
-                    } else {
-                        FileChunkInfo::default()
-                    };
-                    let declaring_exports = ctx.declaring_export_names(&syntax_res).await;
-                    let cx = crate::analyzer::WireContext {
-                        mode: crate::analyzer::WireMode::Syntax,
-                        source_text: &source_text,
-                        converter: &syntax_res.converter,
-                        reference_strategy: &*engine.reference_strategy,
-                        path_lookup: Some(&path_lookup),
-                        declaring_exports: &declaring_exports,
-                        r3_symbols_path: r3_symbols_path.as_deref(),
-                    };
-                    (syntax_res.to_wire(&cx), chunk_info)
-                };
-                (projected.map_err(|err| err.to_string()), chunk_info)
+                // TODO(diagnostics): surface `_local_res.errors` as a WireError on the
+                // AnalysisResult for consumers that don't run TypeScript.
+                let wire = QueryContext::new(engine)
+                    .analyze_file_wire(local_res.file_id, is_optimized)
+                    .await;
+                (*wire).clone()
             }
             .boxed()
         };
@@ -1084,6 +1229,11 @@ impl Analyzer {
         // cycle detection across an NgModule's declarations).
         let group_chunks_by_ng_module =
             is_optimized || self.engine.generate_extra_imports_in_local_mode;
+        let span = if is_optimized {
+            tracing::info_span!(target: crate::perf::ASYNC_TARGET, "AnalyzeOptimized")
+        } else {
+            tracing::info_span!(target: crate::perf::ASYNC_TARGET, "Analyze")
+        };
 
         #[cfg(not(target_arch = "wasm32"))]
         {
@@ -1098,7 +1248,10 @@ impl Analyzer {
                 cancel_token,
                 sender,
                 group_chunks_by_ng_module,
-            );
+                is_optimized,
+                is_delta,
+            )
+            .instrument(span);
 
             let handle = spawner.spawn_with_handle(fut).unwrap();
             self.active_handles.write().unwrap().push(handle);
@@ -1118,7 +1271,10 @@ impl Analyzer {
                 cancel_token,
                 sender,
                 group_chunks_by_ng_module,
-            );
+                is_optimized,
+                is_delta,
+            )
+            .instrument(span);
             spawner.spawn_local(fut).unwrap();
         }
     }
@@ -1134,8 +1290,8 @@ pub trait Spawner: Spawn + futures::task::LocalSpawn + Clone + 'static {}
 #[cfg(target_arch = "wasm32")]
 impl<T: Spawn + futures::task::LocalSpawn + Clone + 'static> Spawner for T {}
 
-async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
-    engine: Arc<crate::QueryEngine<Fs>>,
+async fn run_coordinator<S, LA, FutLA, P, FutP>(
+    engine: Arc<crate::QueryEngine>,
     entrypoints: Vec<PathBuf>,
     spawner: S,
     event_receiver: mpsc::Receiver<CoordinatorEvent>,
@@ -1147,17 +1303,19 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
         futures::channel::mpsc::UnboundedSender<Result<crate::CompilationChunk, String>>,
     >,
     group_chunks_by_ng_module: bool,
+    is_optimized: bool,
+    is_delta: bool,
 ) where
-    Fs: FileSystem + Clone + 'static + ResourceResolverFs,
     S: Spawner,
     LA: Fn(PathBuf) -> FutLA + Send + Sync + 'static + Clone,
-    FutLA: std::future::Future<Output = FileData> + Send + 'static,
-    P: Fn(PathBuf, FileData) -> FutP + Send + Sync + 'static + Clone,
+    FutLA: std::future::Future<Output = Arc<FileData>> + Send + 'static,
+    P: Fn(PathBuf, Arc<FileData>) -> FutP + Send + Sync + 'static + Clone,
     FutP: std::future::Future<Output = (Result<crate::AnalysisResult, String>, FileChunkInfo)>
         + Send
         + 'static,
 {
     let mut seen = HashSet::new();
+    let mut visited_file_ids = HashSet::new();
     let mut pending_tasks = FuturesUnordered::new();
     let mut uf = UnionFind::new();
 
@@ -1165,18 +1323,42 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
         return;
     }
 
+    engine
+        .ensure_singletons_fresh(is_optimized)
+        .instrument(tracing::info_span!(
+            target: crate::perf::ASYNC_TARGET,
+            "EnsureSingletonsFresh"
+        ))
+        .await;
+
+    if cancel_token.is_cancelled() {
+        return;
+    }
+
+    let prev_program_files = Arc::new(engine.last_program_files.lock().unwrap().clone());
+    let dirty_snapshot = DirtyFilesSnapshot::take(&engine);
+    let delta_dirty_files = if is_delta {
+        dirty_snapshot.files().cloned()
+    } else {
+        None
+    };
+
     // Spawns the per-file task: Stage-1 analysis (resolving static/dynamic dependencies),
     // dep fan-out over `event_sender`, and Stage-2 processing, checking cancellation at each await.
     // The closure owns its captures (`move` closure holding owned, `Send` values) so the
     // coordinator future stays `Send` without requiring the spawner to be `Sync`.
     let task_cancel_token = cancel_token.clone();
     let task_engine = engine.clone();
+    let task_delta_dirty = delta_dirty_files.clone();
+    let task_prev_program = prev_program_files.clone();
     let spawn_file_task = move |path: PathBuf| {
         let event_sender = event_sender.clone();
         let local_analyzer = local_analyzer.clone();
         let processor = processor.clone();
         let cancel_token = task_cancel_token.clone();
         let engine = task_engine.clone();
+        let delta_dirty = task_delta_dirty.clone();
+        let prev_program = task_prev_program.clone();
         spawner
             .spawn_with_handle(async move {
                 if cancel_token.is_cancelled() {
@@ -1197,7 +1379,20 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
                 if cancel_token.is_cancelled() {
                     return;
                 }
-                let file_id = engine.intern_path(&path);
+                let file_id = local_res.file_id;
+                let is_dirty = match &delta_dirty {
+                    Some(dirty) => {
+                        dirty.contains(&file_id)
+                            || !prev_program.contains(&file_id)
+                            || !engine.has_cached_wire(file_id, is_optimized)
+                    }
+                    None => true,
+                };
+                if !is_dirty
+                    && (!group_chunks_by_ng_module || !local_res.may_have_non_standalone_class())
+                {
+                    return;
+                }
                 let (result, chunk_info) = processor(path, local_res).await;
                 let _ = event_sender
                     .clone()
@@ -1205,6 +1400,7 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
                         file_id,
                         result,
                         chunk_info,
+                        is_dirty,
                     })
                     .await;
             })
@@ -1220,7 +1416,8 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
         if seen.insert(crate::fs::normalize_path(&entry).into_owned()) {
             // Intern `FileId`s synchronously in entrypoint order before spawning async workers so
             // `FileId` ordering is deterministic and reflects `tsconfig` root order.
-            engine.intern_path(&entry);
+            let file_id = engine.intern_path(&entry);
+            visited_file_ids.insert(file_id);
             valid_entrypoints.push(entry);
         }
     }
@@ -1240,43 +1437,21 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
         }
 
         if pending_tasks.is_empty() {
-            let mut spawned_any = false;
             while let Ok(event) = event_receiver.get_mut().try_recv() {
-                match event {
-                    CoordinatorEvent::DepsDiscovered { deps } => {
-                        for dep in deps {
-                            if cancel_token.is_cancelled() {
-                                break;
-                            }
-                            if !is_ts_file(&dep) {
-                                continue;
-                            }
-                            if !seen.insert(crate::fs::normalize_path(&dep).into_owned()) {
-                                continue;
-                            }
-                            engine.intern_path(&dep);
-                            pending_tasks.push(spawn_file_task(dep));
-                            spawned_any = true;
-                        }
-                    }
-                    CoordinatorEvent::FileCompleted {
-                        file_id,
-                        result,
-                        chunk_info,
-                    } => {
-                        handle_completed_file(
-                            &engine,
-                            file_id,
-                            result,
-                            chunk_info,
-                            &mut uf,
-                            &final_sender,
-                            group_chunks_by_ng_module,
-                        );
-                    }
-                }
+                handle_coordinator_event(
+                    event,
+                    &engine,
+                    &cancel_token,
+                    &mut seen,
+                    &mut visited_file_ids,
+                    &mut pending_tasks,
+                    &spawn_file_task,
+                    &mut uf,
+                    &final_sender,
+                    group_chunks_by_ng_module,
+                );
             }
-            if !spawned_any && pending_tasks.is_empty() {
+            if pending_tasks.is_empty() {
                 break;
             }
         }
@@ -1284,27 +1459,18 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
         futures::select! {
             _ = pending_tasks.select_next_some() => {}
             event = event_receiver.select_next_some() => {
-                match event {
-                    CoordinatorEvent::DepsDiscovered { deps } => {
-                        for dep in deps {
-                            if cancel_token.is_cancelled() {
-                                break;
-                            }
-                            if !seen.insert(crate::fs::normalize_path(&dep).into_owned()) {
-                                continue;
-                            }
-                            engine.intern_path(&dep);
-                            pending_tasks.push(spawn_file_task(dep));
-                        }
-                    }
-                    CoordinatorEvent::FileCompleted {
-                        file_id,
-                        result,
-                        chunk_info,
-                    } => {
-                        handle_completed_file(&engine, file_id, result, chunk_info, &mut uf, &final_sender, group_chunks_by_ng_module);
-                    }
-                }
+                handle_coordinator_event(
+                    event,
+                    &engine,
+                    &cancel_token,
+                    &mut seen,
+                    &mut visited_file_ids,
+                    &mut pending_tasks,
+                    &spawn_file_task,
+                    &mut uf,
+                    &final_sender,
+                    group_chunks_by_ng_module,
+                );
             }
         }
     }
@@ -1312,6 +1478,9 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
     let mut remaining_states: Vec<_> = uf.states.drain().collect();
     remaining_states.sort_by_key(|(root, _)| *root);
     for (_, state) in remaining_states {
+        if !state.has_dirty {
+            continue;
+        }
         if let Some(snd) = &final_sender {
             let mut files: Vec<crate::AnalysisResult> = state.completed.into_values().collect();
             files.sort_by_key(|f| f.file_id);
@@ -1320,7 +1489,89 @@ async fn run_coordinator<S, LA, FutLA, P, FutP, Fs>(
                 let _ = snd.unbounded_send(Ok(crate::CompilationChunk {
                     files,
                     static_edges,
+                    removed_files: None,
                 }));
+            }
+        }
+    }
+
+    if delta_dirty_files.is_some() {
+        if let Some(snd) = &final_sender {
+            let mut removed: Vec<String> = prev_program_files
+                .difference(&visited_file_ids)
+                .map(|&fid| crate::fs::path_to_string(engine.lookup_path(fid)))
+                .collect();
+            removed.sort_unstable();
+            if !removed.is_empty() {
+                let _ = snd.unbounded_send(Ok(crate::CompilationChunk {
+                    files: Vec::new(),
+                    static_edges: None,
+                    removed_files: Some(removed),
+                }));
+            }
+        }
+    }
+
+    *engine.last_program_files.lock().unwrap() = visited_file_ids;
+    dirty_snapshot.consume();
+}
+
+/// The files marked dirty since the last completed stream, taken from the engine for one
+/// coordinator run.
+///
+/// Taking the snapshot leaves an empty live set behind, so files marked while the run is in
+/// progress are kept for the next one. A run that completes has streamed every file in the
+/// snapshot and consumes it. A run that does not complete (every update cancels the in-flight
+/// stream) puts the snapshot back when dropped, so the next delta pass still re-streams those
+/// files, and still knows a baseline exists against which to report `removed_files`.
+struct DirtyFilesSnapshot {
+    engine: Arc<crate::QueryEngine>,
+    files: Option<Arc<HashSet<FileId>>>,
+    consumed: bool,
+}
+
+impl DirtyFilesSnapshot {
+    fn take(engine: &Arc<crate::QueryEngine>) -> Self {
+        let files = engine
+            .dirty_wire_files
+            .lock()
+            .ok()
+            .and_then(|mut guard| guard.as_mut().map(|set| Arc::new(std::mem::take(set))));
+        Self {
+            engine: engine.clone(),
+            files,
+            consumed: false,
+        }
+    }
+
+    /// The files to re-stream, or `None` before the first full stream completed.
+    fn files(&self) -> Option<&Arc<HashSet<FileId>>> {
+        self.files.as_ref()
+    }
+
+    /// Marks the run complete: the snapshot is spent, and from now on dirty files are tracked.
+    fn consume(mut self) {
+        self.consumed = true;
+        if let Ok(mut guard) = self.engine.dirty_wire_files.lock() {
+            if guard.is_none() {
+                *guard = Some(HashSet::new());
+            }
+        }
+    }
+}
+
+impl Drop for DirtyFilesSnapshot {
+    fn drop(&mut self) {
+        if self.consumed {
+            return;
+        }
+        let Some(files) = self.files.take() else {
+            return;
+        };
+        if let Ok(mut guard) = self.engine.dirty_wire_files.lock() {
+            match guard.as_mut() {
+                Some(live) => live.extend(files.iter().copied()),
+                None => *guard = Some(Arc::unwrap_or_clone(files)),
             }
         }
     }
@@ -1334,13 +1585,62 @@ pub enum CoordinatorEvent {
         file_id: FileId,
         result: Result<crate::AnalysisResult, String>,
         chunk_info: FileChunkInfo,
+        is_dirty: bool,
     },
+}
+
+#[allow(clippy::too_many_arguments)]
+fn handle_coordinator_event(
+    event: CoordinatorEvent,
+    engine: &Arc<crate::QueryEngine>,
+    cancel_token: &CancellationToken,
+    seen: &mut HashSet<PathBuf>,
+    visited_file_ids: &mut HashSet<FileId>,
+    pending_tasks: &mut FuturesUnordered<futures::future::RemoteHandle<()>>,
+    spawn_file_task: &impl Fn(PathBuf) -> futures::future::RemoteHandle<()>,
+    uf: &mut UnionFind,
+    final_sender: &Option<
+        futures::channel::mpsc::UnboundedSender<Result<crate::CompilationChunk, String>>,
+    >,
+    group_chunks_by_ng_module: bool,
+) {
+    match event {
+        CoordinatorEvent::DepsDiscovered { deps } => {
+            for dep in deps {
+                if cancel_token.is_cancelled() {
+                    break;
+                }
+                if is_ts_file(&dep) && seen.insert(crate::fs::normalize_path(&dep).into_owned()) {
+                    visited_file_ids.insert(engine.intern_path(&dep));
+                    pending_tasks.push(spawn_file_task(dep));
+                }
+            }
+        }
+        CoordinatorEvent::FileCompleted {
+            file_id,
+            result,
+            chunk_info,
+            is_dirty,
+        } => {
+            handle_completed_file(
+                engine,
+                file_id,
+                result,
+                chunk_info,
+                is_dirty,
+                uf,
+                final_sender,
+                group_chunks_by_ng_module,
+            );
+        }
+    }
 }
 
 struct ChunkState {
     members: HashSet<FileId>,
     expected: HashSet<FileId>,
     completed: HashMap<FileId, crate::AnalysisResult>,
+    has_dirty: bool,
 }
 
 struct UnionFind {
@@ -1376,6 +1676,7 @@ impl UnionFind {
             members: [file_id].into_iter().collect(),
             expected: [file_id].into_iter().collect(),
             completed: HashMap::new(),
+            has_dirty: false,
         });
     }
 
@@ -1392,22 +1693,25 @@ impl UnionFind {
             members: [root2].into_iter().collect(),
             expected: [root2].into_iter().collect(),
             completed: HashMap::new(),
+            has_dirty: false,
         });
 
         let state1 = self.states.entry(root1).or_insert_with(|| ChunkState {
             members: [root1].into_iter().collect(),
             expected: [root1].into_iter().collect(),
             completed: HashMap::new(),
+            has_dirty: false,
         });
 
         state1.members.extend(state2.members);
         state1.expected.extend(state2.expected);
         state1.completed.extend(state2.completed);
+        state1.has_dirty |= state2.has_dirty;
     }
 }
 
-fn compute_intra_chunk_static_edges<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
-    engine: &Arc<crate::QueryEngine<Fs>>,
+fn compute_intra_chunk_static_edges(
+    engine: &Arc<crate::QueryEngine>,
     chunk_files: &[crate::AnalysisResult],
 ) -> Option<HashMap<String, Vec<FileId>>> {
     if chunk_files.len() <= 1 {
@@ -1463,10 +1767,10 @@ pub struct FileChunkInfo {
 
 /// Summarize what a completed file contributes to chunk grouping: whether it holds anything that
 /// needs an `@NgModule` scope at all, and which files the `@NgModule`s it declares pull in.
-async fn extract_chunk_info<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
+pub(crate) async fn extract_chunk_info(
     file_data: &FileData,
-    engine: &crate::QueryEngine<Fs>,
-    ctx: &QueryContext<Fs>,
+    engine: &crate::QueryEngine,
+    ctx: &QueryContext,
 ) -> FileChunkInfo {
     let mut has_non_standalone = false;
     let mut declared_file_ids = Vec::new();
@@ -1487,6 +1791,7 @@ async fn extract_chunk_info<Fs: FileSystem + Clone + 'static + ResourceResolverF
                 // completed before or after them.
                 let mapping = ctx.component_mapping().await;
                 for r in refs {
+                    ctx.record_component_mapping_deps(&mapping, r.file);
                     if mapping
                         .get_duplicate_declarations(r.file, r.name())
                         .is_some()
@@ -1499,13 +1804,19 @@ async fn extract_chunk_info<Fs: FileSystem + Clone + 'static + ResourceResolverF
                     }
                 }
             }
-            crate::analyzer::DecoratorData::Component(c) if !c.directive.standalone => {
+            crate::analyzer::DecoratorData::Component(c)
+                if !c.directive.standalone || c.directive.declaring_ng_module.is_some() =>
+            {
                 has_non_standalone = true;
             }
-            crate::analyzer::DecoratorData::Directive(d) if !d.standalone => {
+            crate::analyzer::DecoratorData::Directive(d)
+                if !d.standalone || d.declaring_ng_module.is_some() =>
+            {
                 has_non_standalone = true;
             }
-            crate::analyzer::DecoratorData::Pipe(p) if !p.standalone.unwrap_or(true) => {
+            crate::analyzer::DecoratorData::Pipe(p)
+                if !p.standalone.unwrap_or(true) || p.declaring_ng_module.is_some() =>
+            {
                 has_non_standalone = true;
             }
             _ => {}
@@ -1523,9 +1834,9 @@ async fn extract_chunk_info<Fs: FileSystem + Clone + 'static + ResourceResolverF
 /// Semantic results are already hole-free; syntactic results (used when
 /// `generateExtraImportsInLocalMode` groups chunks) still contain `Incomplete` holes for imported
 /// declarations that must be completed to find their declaring files.
-async fn resolved_ng_module_declarations<Fs: ResourceResolverFs + Clone + 'static>(
+async fn resolved_ng_module_declarations(
     declarations: &crate::evaluator::Resolved<Vec<crate::types::analysis::Reference>>,
-    ctx: &QueryContext<Fs>,
+    ctx: &QueryContext,
 ) -> Option<Vec<crate::types::analysis::Reference>> {
     if !declarations.contains_incomplete() {
         return declarations.get_optional();
@@ -1537,11 +1848,12 @@ async fn resolved_ng_module_declarations<Fs: ResourceResolverFs + Clone + 'stati
     completed.get_optional()
 }
 
-fn handle_completed_file<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
-    engine: &Arc<crate::QueryEngine<Fs>>,
+fn handle_completed_file(
+    engine: &Arc<crate::QueryEngine>,
     file_id: FileId,
     result: Result<crate::AnalysisResult, String>,
     chunk_info: FileChunkInfo,
+    is_dirty: bool,
     uf: &mut UnionFind,
     final_sender: &Option<
         futures::channel::mpsc::UnboundedSender<Result<crate::CompilationChunk, String>>,
@@ -1559,11 +1871,14 @@ fn handle_completed_file<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
     };
 
     if !group_by_ng_module || !chunk_info.has_non_standalone {
-        if let Some(snd) = final_sender {
-            let _ = snd.unbounded_send(Ok(crate::CompilationChunk {
-                files: vec![res],
-                static_edges: None,
-            }));
+        if is_dirty {
+            if let Some(snd) = final_sender {
+                let _ = snd.unbounded_send(Ok(crate::CompilationChunk {
+                    files: vec![res],
+                    static_edges: None,
+                    removed_files: None,
+                }));
+            }
         }
         return;
     }
@@ -1572,6 +1887,7 @@ fn handle_completed_file<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
     let root = uf.find(file_id);
     if let Some(state) = uf.states.get_mut(&root) {
         state.completed.insert(file_id, res);
+        state.has_dirty |= is_dirty;
     }
 
     for &decl_file_id in &chunk_info.declared_file_ids {
@@ -1616,6 +1932,9 @@ fn handle_completed_file<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
         let Some(mut state) = uf.states.remove(&root) else {
             return;
         };
+        if !state.has_dirty {
+            return;
+        }
         let mut sorted_members: Vec<FileId> = state.members.into_iter().collect();
         sorted_members.sort();
         let files: Vec<_> = sorted_members
@@ -1627,6 +1946,7 @@ fn handle_completed_file<Fs: FileSystem + Clone + 'static + ResourceResolverFs>(
             let _ = snd.unbounded_send(Ok(crate::CompilationChunk {
                 files,
                 static_edges,
+                removed_files: None,
             }));
         }
     }
@@ -1646,28 +1966,23 @@ enum ClassOwner {
 }
 
 fn get_class_owner(class: &crate::ClassMetadata) -> ClassOwner {
-    let is_non_standalone = if let Some(comp) = &class.component {
-        !comp.standalone
-    } else if let Some(dir) = &class.directive {
-        !dir.standalone
-    } else if let Some(pipe) = &class.pipe {
-        !pipe.standalone.unwrap_or(true)
-    } else {
-        false
-    };
-
-    if !is_non_standalone {
-        return ClassOwner::Other;
-    }
-
     let declaring = if let Some(comp) = &class.component {
+        if comp.standalone && comp.declaring_ng_module.is_none() {
+            return ClassOwner::Other;
+        }
         &comp.declaring_ng_module
     } else if let Some(dir) = &class.directive {
+        if dir.standalone && dir.declaring_ng_module.is_none() {
+            return ClassOwner::Other;
+        }
         &dir.declaring_ng_module
     } else if let Some(pipe) = &class.pipe {
+        if pipe.standalone.unwrap_or(true) && pipe.declaring_ng_module.is_none() {
+            return ClassOwner::Other;
+        }
         &pipe.declaring_ng_module
     } else {
-        unreachable!()
+        return ClassOwner::Other;
     };
 
     let Some(r) = declaring else {
@@ -1682,7 +1997,7 @@ mod chunk_order_tests {
     use super::*;
 
     fn optimized_result(
-        engine: &Arc<crate::QueryEngine<OverlayFileSystem>>,
+        engine: &Arc<crate::QueryEngine>,
         path: &str,
     ) -> (AnalysisResult, FileChunkInfo) {
         futures::executor::block_on(async {
@@ -1697,6 +2012,8 @@ mod chunk_order_tests {
             let r3_symbols_path = engine.r3_symbols_file();
             let cx = crate::analyzer::WireContext {
                 mode: crate::analyzer::WireMode::Semantic,
+                emit_declaration_only: false,
+                experimental_local_compilation: false,
                 source_text: &source_text,
                 converter: &semantic.converter,
                 reference_strategy: &*engine.reference_strategy,
@@ -1722,6 +2039,7 @@ mod chunk_order_tests {
                 engine.intern_path(path),
                 Ok(result),
                 chunk_info,
+                true,
                 &mut uf,
                 &final_sender,
                 true,
@@ -1816,6 +2134,7 @@ mod effective_config_tests {
             "generateExtraImportsInLocalMode": true,
             "_enableHmr": true,
             "_compilePoisonedComponents": true,
+            "_isAngularCoreCompilation": true,
             "_angularCoreVersion": "18.2.0"
         }
     }"#;
@@ -1824,7 +2143,10 @@ mod effective_config_tests {
         let physical: Arc<dyn crate::physical_fs::PhysicalFs> =
             Arc::new(crate::physical_fs::default_physical_fs());
         let fs = OverlayFileSystem::new_with_allowed_sources_and_fs(None, physical);
-        fs.upsert_file(PathBuf::from("/project/tsconfig.json"), TSCONFIG.to_string());
+        fs.upsert_file(
+            PathBuf::from("/project/tsconfig.json"),
+            TSCONFIG.to_string(),
+        );
         fs.upsert_file(PathBuf::from("/project/main.ts"), "export {};".to_string());
         EffectiveConfig::resolve(
             AnalyzerOptions {
@@ -1854,6 +2176,7 @@ mod effective_config_tests {
         assert!(config.enable_hmr);
         assert!(config.use_poisoned_data);
         assert!(!config.implicit_standalone);
+        assert_eq!(config.angular_core_compilation, Some(true));
         assert_eq!(config.node_modules_path_override, None);
     }
 
@@ -1869,6 +2192,7 @@ mod effective_config_tests {
             enable_hmr: Some(false),
             use_poisoned_data: Some(false),
             implicit_standalone: Some(true),
+            angular_core_compilation: Some(false),
             default_host: Some(crate::DefaultHostConfig {
                 root_dirs: Some(vec!["./gen".to_string()]),
                 preserve_symlinks: Some(false),
@@ -1878,7 +2202,10 @@ mod effective_config_tests {
         });
         assert!(!config.preserve_symlinks);
         assert_eq!(config.merge_root_dirs, paths(&["/project/gen"]));
-        assert_eq!(config.import_prefix_roots, paths(&["/project/prefix", "/abs"]));
+        assert_eq!(
+            config.import_prefix_roots,
+            paths(&["/project/prefix", "/abs"])
+        );
         assert_eq!(config.workspace_name.as_deref(), Some("explicit"));
         assert!(!config.strict_standalone);
         assert!(!config.strict_injection_parameters);
@@ -1887,6 +2214,7 @@ mod effective_config_tests {
         assert!(!config.enable_hmr);
         assert!(!config.use_poisoned_data);
         assert!(config.implicit_standalone);
+        assert_eq!(config.angular_core_compilation, Some(false));
         assert_eq!(config.node_modules_path_override.as_deref(), Some("/nm"));
     }
 
@@ -1898,10 +2226,16 @@ mod effective_config_tests {
             ..Default::default()
         });
         assert_eq!(alias_only.import_prefix_roots, paths(&["/project/legacy"]));
-        assert_eq!(alias_only.node_modules_path_override.as_deref(), Some("/legacy_nm"));
+        assert_eq!(
+            alias_only.node_modules_path_override.as_deref(),
+            Some("/legacy_nm")
+        );
         // The deprecated `root_dirs` alias only feeds the import prefix roots, never the merging
         // directories.
-        assert_eq!(alias_only.merge_root_dirs, paths(&["/project/a", "/project/b"]));
+        assert_eq!(
+            alias_only.merge_root_dirs,
+            paths(&["/project/a", "/project/b"])
+        );
 
         let both = resolve(AnalyzerOptions {
             root_dirs: Some(vec!["./legacy".to_string()]),
@@ -1957,6 +2291,7 @@ mod effective_config_tests {
         assert!(!config.strict_standalone);
         assert!(config.implicit_standalone);
         assert_eq!(config.r3_symbols_file, None);
+        assert_eq!(config.angular_core_compilation, None);
     }
 
     #[test]
@@ -1972,10 +2307,26 @@ mod effective_config_tests {
         .unwrap();
         assert_eq!(config.entry_points, Some(paths(&["/app/main.ts"])));
         assert!(config.tsconfig_files.is_empty());
-        assert_eq!(config.r3_symbols_file, Some(PathBuf::from("/core/r3_symbols.ts")));
+        assert_eq!(
+            config.r3_symbols_file,
+            Some(PathBuf::from("/core/r3_symbols.ts"))
+        );
+        // Naming the `r3_symbols.ts` file only makes sense when compiling `@angular/core`.
+        assert_eq!(config.angular_core_compilation, Some(true));
         assert!(config.strict_standalone);
         assert!(!config.implicit_standalone);
         assert_eq!(config.import_prefix_roots, paths(&["/app"]));
+    }
+
+    #[test]
+    fn explicit_angular_core_compilation_wins_over_r3_symbols_file() {
+        let config = resolve_without_tsconfig(AnalyzerOptions {
+            r3_symbols_file: Some("/core/r3_symbols.ts".to_string()),
+            angular_core_compilation: Some(false),
+            ..Default::default()
+        })
+        .unwrap();
+        assert_eq!(config.angular_core_compilation, Some(false));
     }
 
     #[test]
@@ -2001,7 +2352,9 @@ mod effective_config_tests {
                 ..Default::default()
             },
         ] {
-            let err = resolve_without_tsconfig(options).err().expect("relative path rejected");
+            let err = resolve_without_tsconfig(options)
+                .err()
+                .expect("relative path rejected");
             assert!(err.contains("must be an absolute path"), "{err}");
         }
     }
@@ -2013,7 +2366,10 @@ mod effective_config_tests {
             ..Default::default()
         });
         assert_eq!(config.entry_points, Some(paths(&["/project/main.ts"])));
-        assert_eq!(config.tsconfig_path, Some(PathBuf::from("/project/tsconfig.json")));
+        assert_eq!(
+            config.tsconfig_path,
+            Some(PathBuf::from("/project/tsconfig.json"))
+        );
     }
 }
 
@@ -2060,7 +2416,10 @@ mod entry_point_tests {
     #[test]
     fn set_entry_points_evicts_program_queries() {
         let analyzer = analyzer(&[
-            ("/project/tsconfig.json", r#"{"files": ["c1.component.ts"]}"#),
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts"]}"#,
+            ),
             ("/project/c1.component.ts", COMPONENT),
             ("/project/m.module.ts", MODULE),
         ]);
@@ -2079,10 +2438,15 @@ mod entry_point_tests {
     #[test]
     fn set_entry_points_with_unchanged_roots_evicts_nothing() {
         let analyzer = analyzer(&[
-            ("/project/tsconfig.json", r#"{"files": ["c1.component.ts"]}"#),
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts"]}"#,
+            ),
             ("/project/c1.component.ts", COMPONENT),
         ]);
-        analyzer.engine.analyze_file_semantic_blocking("/project/c1.component.ts");
+        analyzer
+            .engine
+            .analyze_file_semantic_blocking("/project/c1.component.ts");
 
         let stale = analyzer
             .set_entry_points_core(vec!["/project/c1.component.ts".to_string()])
@@ -2093,10 +2457,15 @@ mod entry_point_tests {
     #[test]
     fn set_entry_points_rejects_relative_paths() {
         let analyzer = analyzer(&[
-            ("/project/tsconfig.json", r#"{"files": ["c1.component.ts"]}"#),
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts"]}"#,
+            ),
             ("/project/c1.component.ts", COMPONENT),
         ]);
-        let err = analyzer.set_entry_points_core(vec!["c1.component.ts".to_string()]).unwrap_err();
+        let err = analyzer
+            .set_entry_points_core(vec!["c1.component.ts".to_string()])
+            .unwrap_err();
         assert!(err.contains("c1.component.ts"), "{err}");
     }
 
@@ -2105,7 +2474,10 @@ mod entry_point_tests {
     #[test]
     fn set_entry_points_keeps_tsconfig_declaration_files() {
         let analyzer = analyzer(&[
-            ("/project/tsconfig.json", r#"{"files": ["c1.component.ts", "a.d.ts"]}"#),
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts", "a.d.ts"]}"#,
+            ),
             ("/project/c1.component.ts", COMPONENT),
             ("/project/m.module.ts", MODULE),
             ("/project/a.d.ts", "declare module 'a' {}"),
@@ -2121,7 +2493,10 @@ mod entry_point_tests {
                 "/project/b.d.ts".to_string(),
             ])
             .unwrap();
-        assert_eq!(*analyzer.entrypoints.read().unwrap(), paths(&["/project/m.module.ts"]));
+        assert_eq!(
+            *analyzer.entrypoints.read().unwrap(),
+            paths(&["/project/m.module.ts"])
+        );
         assert_eq!(dts_files(&analyzer), paths(&["/project/a.d.ts"]));
 
         analyzer
@@ -2130,7 +2505,10 @@ mod entry_point_tests {
                 content: r#"{"files": ["c1.component.ts", "b.d.ts"]}"#.to_string(),
             }])
             .unwrap();
-        assert_eq!(*analyzer.entrypoints.read().unwrap(), paths(&["/project/m.module.ts"]));
+        assert_eq!(
+            *analyzer.entrypoints.read().unwrap(),
+            paths(&["/project/m.module.ts"])
+        );
         assert_eq!(dts_files(&analyzer), paths(&["/project/b.d.ts"]));
     }
 
@@ -2147,7 +2525,9 @@ mod entry_point_tests {
             ("/project/c1.component.ts", COMPONENT),
         ]);
         // A non-standalone component's semantic analysis reads the program-wide NgModule mapping.
-        analyzer.engine.analyze_file_semantic_blocking("/project/c1.component.ts");
+        analyzer
+            .engine
+            .analyze_file_semantic_blocking("/project/c1.component.ts");
 
         let stale = analyzer
             .update_file_content_core(vec![FileUpdate {
@@ -2324,7 +2704,657 @@ mod entry_point_tests {
         .unwrap();
         assert_eq!(
             explicit.engine.r3_symbols_file(),
-            Some(PathBuf::from("/core/r3_symbols.ts"))
+            Some(PathBuf::from("/core/r3_symbols.ts")),
+        );
+    }
+
+    const R3_SYMBOLS: &str = "export const ITS_JUST_ANGULAR = true;";
+
+    /// Whether `path` is analyzed as part of `@angular/core` itself.
+    fn is_core(analyzer: &Analyzer, path: &str) -> bool {
+        let engine = analyzer.engine.clone();
+        let file_id = engine.intern_path(path);
+        let syntax =
+            futures::executor::block_on(QueryContext::new(engine).analyze_file_syntax(file_id));
+        syntax.is_core
+    }
+
+    /// Without `_isAngularCoreCompilation`, a root `r3_symbols.ts` exporting `ITS_JUST_ANGULAR`
+    /// makes the compilation `@angular/core`, so roots that add or remove it re-analyze the files
+    /// analyzed before, while unrelated root changes leave them cached.
+    #[test]
+    fn root_change_redetects_angular_core_compilation() {
+        let analyzer = analyzer(&[
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts"]}"#,
+            ),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/c2.component.ts", COMPONENT),
+            ("/project/r3_symbols.ts", R3_SYMBOLS),
+        ]);
+        assert!(!is_core(&analyzer, "/project/c1.component.ts"));
+
+        let unrelated_stale = analyzer
+            .set_entry_points_core(vec![
+                "/project/c1.component.ts".to_string(),
+                "/project/c2.component.ts".to_string(),
+            ])
+            .unwrap();
+        assert!(
+            !unrelated_stale.contains(&"/project/c1.component.ts".to_string()),
+            "unrelated root change should not invalidate c1.component.ts: {unrelated_stale:?}"
+        );
+
+        let stale = analyzer
+            .set_entry_points_core(vec![
+                "/project/c1.component.ts".to_string(),
+                "/project/c2.component.ts".to_string(),
+                "/project/r3_symbols.ts".to_string(),
+            ])
+            .unwrap();
+        assert!(
+            stale.contains(&"/project/c1.component.ts".to_string()),
+            "stale paths: {stale:?}"
+        );
+        assert!(is_core(&analyzer, "/project/c1.component.ts"));
+
+        analyzer
+            .set_entry_points_core(vec!["/project/c1.component.ts".to_string()])
+            .unwrap();
+        assert!(!is_core(&analyzer, "/project/c1.component.ts"));
+    }
+
+    /// Detecting `@angular/core` reads `r3_symbols.ts`, so editing its `ITS_JUST_ANGULAR` marker
+    /// re-analyzes the files analyzed before.
+    #[test]
+    fn r3_symbols_edit_redetects_angular_core_compilation() {
+        let analyzer = analyzer(&[
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts", "r3_symbols.ts"]}"#,
+            ),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/r3_symbols.ts", R3_SYMBOLS),
+        ]);
+        assert!(is_core(&analyzer, "/project/c1.component.ts"));
+
+        let stale = analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/r3_symbols.ts".to_string(),
+                content: "export const ITS_JUST_ANGULAR = false;".to_string(),
+            }])
+            .unwrap();
+        assert!(
+            stale.contains(&"/project/c1.component.ts".to_string()),
+            "stale paths: {stale:?}"
+        );
+        assert!(!is_core(&analyzer, "/project/c1.component.ts"));
+    }
+
+    #[test]
+    fn leaf_edit_does_not_evict_unrelated_component_semantic_or_wire_cache() {
+        let c2 = r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'c2', templateUrl: './c2.component.html'})
+            export class C2 {}
+        "#;
+        let analyzer = analyzer(&[
+            ("/project/tsconfig.json", "{}"),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/m.module.ts", MODULE),
+            ("/project/c2.component.ts", c2),
+            ("/project/c2.component.html", "<p>v1</p>"),
+        ]);
+
+        let c1_wire_before = analyzer
+            .engine
+            .analyze_file_wire_blocking("/project/c1.component.ts", true);
+        let c2_wire_before = analyzer
+            .engine
+            .analyze_file_wire_blocking("/project/c2.component.ts", true);
+        let c2_id = analyzer.engine.intern_path("/project/c2.component.ts");
+
+        // Editing c2's external template should invalidate c2's wire/semantic cache while keeping
+        // c2's ParseFile and c1's WireFileResult Arc intact.
+        let stale = analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/c2.component.html".to_string(),
+                content: "<p>v2</p>".to_string(),
+            }])
+            .unwrap();
+        assert!(
+            !stale.contains(&"/project/c1.component.ts".to_string()),
+            "unrelated c1 must not be invalidated by c2 template edit: {stale:?}"
+        );
+        assert!(
+            analyzer
+                .engine
+                .cache
+                .get(&QueryKey::ParseFile(c2_id))
+                .is_some(),
+            "c2 ParseFile AST must survive an external template edit"
+        );
+
+        let c1_wire_after = analyzer
+            .engine
+            .analyze_file_wire_blocking("/project/c1.component.ts", true);
+        let c2_wire_after = analyzer
+            .engine
+            .analyze_file_wire_blocking("/project/c2.component.ts", true);
+        assert!(
+            Arc::ptr_eq(&c1_wire_before, &c1_wire_after),
+            "c1 WireFileResult Arc must be reused without recomputation"
+        );
+        assert!(
+            !Arc::ptr_eq(&c2_wire_before, &c2_wire_after),
+            "c2 WireFileResult must be recomputed after template edit"
+        );
+    }
+
+    #[test]
+    fn delta_stream_emits_only_dirty_chunks_and_removed_files() {
+        let c2 = r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'c2', templateUrl: './c2.component.html'})
+            export class C2 {}
+        "#;
+        let c3 = r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'c3', template: '<p>c3</p>'})
+            export class C3 {}
+        "#;
+        let analyzer = analyzer(&[
+            ("/project/tsconfig.json", "{}"),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/m.module.ts", MODULE),
+            ("/project/c2.component.ts", c2),
+            ("/project/c2.component.html", "<p>v1</p>"),
+            ("/project/c3.component.ts", c3),
+        ]);
+
+        let collect_chunks =
+            |rx: futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>| {
+                futures::executor::block_on(rx.collect::<Vec<_>>())
+                    .into_iter()
+                    .map(|c| c.expect("chunk"))
+                    .collect::<Vec<_>>()
+            };
+
+        let initial_chunks = collect_chunks(
+            analyzer
+                .analyze_optimized_core(get_global_pool().clone())
+                .unwrap(),
+        );
+        let initial_files: HashSet<String> = initial_chunks
+            .iter()
+            .flat_map(|c| c.files.iter().map(|f| f.file_path.clone()))
+            .collect();
+        assert_eq!(initial_files.len(), 4);
+
+        // Edit only c2's external template: delta stream should only emit c2's chunk, not the
+        // NgModule chunk (m.module + c1) or c3.
+        analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/c2.component.html".to_string(),
+                content: "<p>v2</p>".to_string(),
+            }])
+            .unwrap();
+        let delta_chunks = collect_chunks(
+            analyzer
+                .analyze_optimized_delta_core(get_global_pool().clone())
+                .unwrap(),
+        );
+        let delta_files: Vec<String> = delta_chunks
+            .iter()
+            .flat_map(|c| c.files.iter().map(|f| f.file_path.clone()))
+            .collect();
+        assert_eq!(delta_files, vec!["/project/c2.component.ts".to_string()]);
+    }
+
+    #[test]
+    fn delta_restreams_components_when_an_entrypoint_starts_contributing_extra_imports() {
+        const CMP: &str = r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'cmp', template: '', standalone: false})
+            export class Cmp {}
+        "#;
+        const MOD: &str = r#"
+            import {NgModule} from '@angular/core';
+            import {Cmp} from './cmp';
+            @NgModule({declarations: [Cmp]})
+            export class Mod {}
+        "#;
+        const OTHER_WITHOUT_IMPORTS: &str = r#"
+            import {NgModule} from '@angular/core';
+            import {ExtModule} from './ext/external';
+            @NgModule({imports: [         ]})
+            export class OtherMod {}
+        "#;
+        const OTHER_WITH_IMPORTS: &str = r#"
+            import {NgModule} from '@angular/core';
+            import {ExtModule} from './ext/external';
+            @NgModule({imports: [ExtModule]})
+            export class OtherMod {}
+        "#;
+        const EXTERNAL: &str = r#"
+            import {NgModule} from '@angular/core';
+            @NgModule({})
+            export class ExtModule {}
+        "#;
+        let analyzer = Analyzer::new(AnalyzerOptions {
+            tsconfig_path: Some("/project/tsconfig.json".to_string()),
+            optimize: Some(false),
+            virtual_files: Some(
+                [
+                    (
+                        "/project/tsconfig.json",
+                        r#"{
+                            "angularCompilerOptions": {"generateExtraImportsInLocalMode": true},
+                            "files": ["cmp.ts", "mod.ts", "other.ts"]
+                        }"#,
+                    ),
+                    ("/project/cmp.ts", CMP),
+                    ("/project/mod.ts", MOD),
+                    ("/project/other.ts", OTHER_WITHOUT_IMPORTS),
+                    ("/project/ext/external.ts", EXTERNAL),
+                ]
+                .iter()
+                .map(|(path, content)| (path.to_string(), content.to_string()))
+                .collect(),
+            ),
+            ..Default::default()
+        })
+        .unwrap();
+
+        let collect_chunks =
+            |rx: futures::channel::mpsc::UnboundedReceiver<Result<CompilationChunk, String>>| {
+                futures::executor::block_on(rx.collect::<Vec<_>>())
+                    .into_iter()
+                    .map(|c| c.expect("chunk"))
+                    .collect::<Vec<_>>()
+            };
+        let extra_imports_of_cmp = |chunks: &[CompilationChunk]| {
+            chunks
+                .iter()
+                .flat_map(|c| c.files.iter())
+                .find(|f| f.file_path == "/project/cmp.ts")
+                .map(|f| {
+                    f.classes
+                        .iter()
+                        .find_map(|c| c.component.as_ref())
+                        .expect("Cmp is a component")
+                        .local_compilation_extra_imports
+                        .clone()
+                        .unwrap_or_default()
+                })
+        };
+
+        let initial = collect_chunks(analyzer.analyze_core(get_global_pool().clone()).unwrap());
+        assert_eq!(extra_imports_of_cmp(&initial), Some(vec![]));
+
+        analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/other.ts".to_string(),
+                content: OTHER_WITH_IMPORTS.to_string(),
+            }])
+            .unwrap();
+        let delta = collect_chunks(
+            analyzer
+                .analyze_delta_core(get_global_pool().clone())
+                .unwrap(),
+        );
+
+        assert_eq!(
+            extra_imports_of_cmp(&delta),
+            Some(vec!["./ext/external".to_string()]),
+            "cmp.ts must be re-streamed with the extra import other.ts now contributes"
+        );
+    }
+
+    const C3_IN_M2: [(&str, &str); 2] = [
+        (
+            "/project/c3.component.ts",
+            r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'c3', template: '', standalone: false})
+            export class C3 {}
+        "#,
+        ),
+        (
+            "/project/m2.module.ts",
+            r#"
+            import {NgModule} from '@angular/core';
+            import {C3} from './c3.component';
+            @NgModule({declarations: [C3]})
+            export class M2Module {}
+        "#,
+        ),
+    ];
+
+    /// The file declaring the first component of a wire result's NgModule, if any.
+    fn declaring_module(wire: &crate::query::keys::WireFileResult) -> Option<String> {
+        wire.0.as_ref().ok()?.classes.iter().find_map(|class| {
+            Some(
+                class
+                    .component
+                    .as_ref()?
+                    .declaring_ng_module
+                    .as_ref()?
+                    .file_path
+                    .clone(),
+            )
+        })
+    }
+
+    /// A `.ts` edit evicts the whole-program `ComponentMapping` and `NgModuleScopeRegistry`,
+    /// which the next read rebuilds. The rebuild is diffed against the previous result and must
+    /// evict nothing when it reaches the same conclusions: NgModule-declared components keep
+    /// their semantic and wire results although the index they are looked up in was rebuilt.
+    /// This is the path a plain source edit takes, unlike an external template edit, which
+    /// never touches the singletons.
+    #[test]
+    fn unrelated_ts_edit_keeps_ngmodule_declared_component_wire_cached() {
+        let analyzer = analyzer(&[
+            ("/project/tsconfig.json", "{}"),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/m.module.ts", MODULE),
+            C3_IN_M2[0],
+            C3_IN_M2[1],
+            ("/project/util.ts", "export const answer = 42;"),
+        ]);
+        let engine = &analyzer.engine;
+        let c1_before = engine.analyze_file_wire_blocking("/project/c1.component.ts", true);
+        let c3_before = engine.analyze_file_wire_blocking("/project/c3.component.ts", true);
+        assert_eq!(
+            declaring_module(&c1_before).as_deref(),
+            Some("/project/m.module.ts")
+        );
+        assert_eq!(
+            declaring_module(&c3_before).as_deref(),
+            Some("/project/m2.module.ts")
+        );
+        let mapping_before = engine
+            .last_component_mapping
+            .lock()
+            .unwrap()
+            .clone()
+            .expect("the component mapping was built");
+
+        let stale = analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/util.ts".to_string(),
+                content: "export const answer = 43;".to_string(),
+            }])
+            .unwrap();
+        assert_eq!(stale, vec!["/project/util.ts".to_string()]);
+
+        let c1_after = engine.analyze_file_wire_blocking("/project/c1.component.ts", true);
+        let c3_after = engine.analyze_file_wire_blocking("/project/c3.component.ts", true);
+        let mapping_after = engine
+            .last_component_mapping
+            .lock()
+            .unwrap()
+            .clone()
+            .expect("the component mapping was rebuilt");
+        assert!(
+            !Arc::ptr_eq(&mapping_before, &mapping_after),
+            "a .ts edit rebuilds the component mapping"
+        );
+        assert!(
+            Arc::ptr_eq(&c1_before, &c1_after) && Arc::ptr_eq(&c3_before, &c3_after),
+            "rebuilding the mapping to the same conclusions must not evict the components it indexes"
+        );
+    }
+
+    /// Declaring a component that no NgModule declared before changes the mapping's conclusion
+    /// about a file that never read the edited module, so the reverse index alone would leave
+    /// the component's cached results stale. The rebuilt mapping is diffed against the previous
+    /// one and the component is evicted, so its next wire result names the new owner.
+    #[test]
+    fn declaring_an_orphan_component_recomputes_its_wire() {
+        let analyzer = analyzer(&[
+            ("/project/tsconfig.json", "{}"),
+            ("/project/c1.component.ts", COMPONENT),
+            (
+                "/project/m.module.ts",
+                r#"
+                import {NgModule} from '@angular/core';
+                @NgModule({declarations: []})
+                export class MModule {}
+            "#,
+            ),
+        ]);
+        let engine = &analyzer.engine;
+        let before = engine.analyze_file_wire_blocking("/project/c1.component.ts", true);
+        assert_eq!(declaring_module(&before), None);
+
+        // The reverse index does not know c1 for m.module.ts: c1 is only invalidated by the
+        // mapping diff, which runs when the mapping is next rebuilt, not at update time.
+        let stale = analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/m.module.ts".to_string(),
+                content: MODULE.to_string(),
+            }])
+            .unwrap();
+        assert!(!stale.contains(&"/project/c1.component.ts".to_string()));
+
+        let after = engine.analyze_file_wire_blocking("/project/c1.component.ts", true);
+        assert!(
+            !Arc::ptr_eq(&before, &after),
+            "c1's wire result must be recomputed once an NgModule declares it"
+        );
+        assert_eq!(
+            declaring_module(&after).as_deref(),
+            Some("/project/m.module.ts")
+        );
+    }
+
+    /// A delta run that is cancelled after taking the dirty files must give them back: the next
+    /// delta pass has to re-stream them, and has to know a baseline exists so it can report the
+    /// files that left the program. The run is cancelled from inside its own processor, so the
+    /// cancellation deterministically happens after the snapshot was taken.
+    #[test]
+    fn cancelled_delta_run_keeps_dirty_files_and_removed_files_for_the_next_pass() {
+        let c2 = r#"
+            import {Component} from '@angular/core';
+            @Component({selector: 'c2', templateUrl: './c2.component.html'})
+            export class C2 {}
+        "#;
+        let analyzer = analyzer(&[
+            (
+                "/project/tsconfig.json",
+                r#"{"files": ["c1.component.ts", "c2.component.ts"]}"#,
+            ),
+            ("/project/c1.component.ts", COMPONENT),
+            ("/project/c2.component.ts", c2),
+            ("/project/c2.component.html", "<p>v1</p>"),
+        ]);
+        let engine = analyzer.engine.clone();
+        let collect_chunks = |rx: mpsc::UnboundedReceiver<Result<CompilationChunk, String>>| {
+            futures::executor::block_on(rx.collect::<Vec<_>>())
+                .into_iter()
+                .map(|c| c.expect("chunk"))
+                .collect::<Vec<_>>()
+        };
+        let streamed = |chunks: &[CompilationChunk]| -> Vec<String> {
+            chunks
+                .iter()
+                .flat_map(|c| c.files.iter().map(|f| f.file_path.clone()))
+                .collect()
+        };
+
+        // Baseline: a completed full stream.
+        let initial = collect_chunks(
+            analyzer
+                .analyze_optimized_core(get_global_pool().clone())
+                .unwrap(),
+        );
+        assert_eq!(streamed(&initial).len(), 2);
+        let c1 = engine.intern_path("/project/c1.component.ts");
+        let c2_id = engine.intern_path("/project/c2.component.ts");
+
+        // c2's template changes, and c1 leaves the program.
+        analyzer
+            .update_file_content_core(vec![FileUpdate {
+                file_path: "/project/c2.component.html".to_string(),
+                content: "<p>v2</p>".to_string(),
+            }])
+            .unwrap();
+        analyzer
+            .set_entry_points_core(vec!["/project/c2.component.ts".to_string()])
+            .unwrap();
+        let dirty_before = engine
+            .dirty_wire_files
+            .lock()
+            .unwrap()
+            .clone()
+            .expect("baseline");
+        assert!(dirty_before.contains(&c2_id));
+
+        // A delta run that cancels itself as soon as it processes a file.
+        let token = CancellationToken::new();
+        let (final_sender, final_receiver) = mpsc::unbounded();
+        let (event_sender, event_receiver) = mpsc::channel::<CoordinatorEvent>(100);
+        let local_engine = engine.clone();
+        let local_analyzer = move |path: PathBuf| {
+            let engine = local_engine.clone();
+            async move {
+                let file_id = engine.intern_path(path);
+                QueryContext::new(engine).analyze_file_syntax(file_id).await
+            }
+            .boxed()
+        };
+        let processor_engine = engine.clone();
+        let processor_token = token.clone();
+        let processor = move |_path: PathBuf, local: Arc<FileData>| {
+            let engine = processor_engine.clone();
+            let token = processor_token.clone();
+            async move {
+                token.cancel();
+                let wire = QueryContext::new(engine)
+                    .analyze_file_wire(local.file_id, true)
+                    .await;
+                (*wire).clone()
+            }
+            .boxed()
+        };
+        futures::executor::block_on(run_coordinator(
+            engine.clone(),
+            engine.entrypoints.read().unwrap().clone(),
+            get_global_pool().clone(),
+            event_receiver,
+            event_sender,
+            local_analyzer,
+            processor,
+            token.clone(),
+            Some(final_sender),
+            true,
+            true,
+            true,
+        ));
+        assert!(token.is_cancelled());
+        drop(final_receiver);
+
+        let dirty_after = engine.dirty_wire_files.lock().unwrap().clone();
+        assert_eq!(
+            dirty_after.as_ref(),
+            Some(&dirty_before),
+            "a cancelled run must give the dirty files back"
+        );
+        assert!(
+            engine.last_program_files.lock().unwrap().contains(&c1),
+            "a cancelled run must not replace the baseline program"
+        );
+
+        // The next delta pass streams the dirty file and reports the file that left the program.
+        let delta = collect_chunks(
+            analyzer
+                .analyze_optimized_delta_core(get_global_pool().clone())
+                .unwrap(),
+        );
+        assert_eq!(
+            streamed(&delta),
+            vec!["/project/c2.component.ts".to_string()]
+        );
+        let removed: Vec<String> = delta
+            .iter()
+            .filter_map(|c| c.removed_files.clone())
+            .flatten()
+            .collect();
+        assert_eq!(removed, vec!["/project/c1.component.ts".to_string()]);
+        assert_eq!(
+            *engine.dirty_wire_files.lock().unwrap(),
+            Some(HashSet::new())
+        );
+    }
+
+    #[test]
+    fn test_checked_synchronous_apis_reject_async_host() {
+        use crate::host::{
+            AnalysisHost, HostError, HostFuture, LoadKind, LoadedModule, ModuleId, ResolveRequest,
+            ResolvedModule, ResolvedResourceId, ResourceKind, SYNC_HOST_REQUIRED_MSG,
+        };
+
+        struct AsyncStubHost;
+
+        impl AnalysisHost for AsyncStubHost {
+            fn resolve(
+                &self,
+                _req: ResolveRequest,
+            ) -> HostFuture<Result<Option<ResolvedModule>, HostError>> {
+                futures::future::pending().boxed()
+            }
+
+            fn load(
+                &self,
+                _id: &ModuleId,
+                _kind: LoadKind,
+                _external: bool,
+            ) -> HostFuture<Result<Option<LoadedModule>, HostError>> {
+                futures::future::pending().boxed()
+            }
+
+            fn resolve_resource(
+                &self,
+                _containing: &ModuleId,
+                _url: &str,
+                _kind: ResourceKind,
+            ) -> HostFuture<Result<Option<ResolvedResourceId>, HostError>> {
+                futures::future::pending().boxed()
+            }
+        }
+
+        let mut analyzer = Analyzer::new_core(AnalyzerOptions::default()).unwrap();
+        let entrypoints = Arc::new(RwLock::new(Vec::new()));
+        analyzer.engine = crate::query::QueryEngine::new_default_with_host(
+            Arc::new(AsyncStubHost),
+            analyzer.resource_registry.clone(),
+            entrypoints,
+        );
+
+        assert!(!analyzer.is_synchronous_host());
+        assert_eq!(
+            analyzer.ensure_synchronous_host().unwrap_err(),
+            SYNC_HOST_REQUIRED_MSG
+        );
+        assert_eq!(
+            analyzer
+                .get_file_content_core("/project/app.ts".to_string())
+                .unwrap_err(),
+            SYNC_HOST_REQUIRED_MSG
+        );
+        assert_eq!(
+            analyzer
+                .get_metadata_for_file_checked("/project/app.ts".to_string())
+                .unwrap_err(),
+            SYNC_HOST_REQUIRED_MSG
+        );
+        assert_eq!(
+            analyzer
+                .read_resource_checked("/project/app.ts".to_string(), "./app.css".to_string())
+                .unwrap_err(),
+            SYNC_HOST_REQUIRED_MSG
         );
     }
 }

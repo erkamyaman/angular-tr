@@ -94,16 +94,12 @@ Bunun yerine, service worker'ın önbelleğinden yüklenmektedir.
 Tarayıcının bu uygulamayı oluşturmak için ihtiyaç duyduğu tüm dosyaların önbelleğe alındığına dikkat edin.
 `ngsw-config.json` şablon yapılandırması, CLI tarafından kullanılan belirli kaynakları önbelleğe alacak şekilde ayarlanmıştır:
 
-- `index.html`
-- `favicon.ico`
+- `index.html` (sunucu tarafı oluşturma veya ön-render kullanan uygulamalar için `index.csr.html` de)
+- `favicon.ico` ve `manifest.webmanifest`
 - Derleme çıktıları (JS ve CSS paketleri)
-- `assets` altındaki her şey
-- Yapılandırılmış `outputPath` (varsayılan olarak `./dist/<project-name>/`) veya `resourcesOutputPath` altındaki doğrudan resimler ve yazı tipleri.
-  Bu seçenekler hakkında daha fazla bilgi için `ng build` belgelerine bakın.
+- Tarayıcı çıktısının herhangi bir yerindeki resimler ve yazı tipleri (varsayılan olarak `./dist/<project-name>/browser/`)
 
 IMPORTANT: Oluşturulan `ngsw-config.json`, önbelleğe alınabilir yazı tipi ve resim uzantılarının sınırlı bir listesini içerir. Bazı durumlarda, glob desenini ihtiyaçlarınıza uyacak şekilde değiştirmek isteyebilirsiniz.
-
-IMPORTANT: Yapılandırma dosyası oluşturulduktan sonra `resourcesOutputPath` veya `assets` yolları değiştirilirse, `ngsw-config.json` içindeki yolları manuel olarak değiştirmeniz gerekir.
 
 ### Uygulamanızda değişiklik yapma
 
@@ -117,8 +113,8 @@ Uygulamada bir değişiklik yapın ve service worker'ın güncellemeyi yükledi�
    Bu, Geliştirici Araçlarını da kapatmalıdır.
 
 1. `http-server`'ı kapatın (Ctrl-c).
-1. `src/app/app.component.html` dosyasını düzenlemek için açın.
-1. `Welcome to {{title}}!` metnini `Bienvenue à {{title}}!` olarak değiştirin.
+1. `src/app/app.html` dosyasını düzenlemek için açın.
+1. `Hello, {{ title() }}` metnini `Bienvenue à {{ title() }}!` olarak değiştirin.
 1. Sunucuyu yeniden derleyin ve çalıştırın:
 
 ```shell

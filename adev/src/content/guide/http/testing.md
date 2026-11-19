@@ -139,7 +139,7 @@ req.flush('Failed!', {status: 500, statusText: 'Internal Server Error'});
 
 ### Ağ Hataları
 
-İstekler ağ hataları nedeniyle de başarısız olabilir ve bunlar `ProgressEvent` hataları olarak ortaya çıkar. Bunlar `error()` yöntemi ile iletilebilir:
+İstekler ağ hataları nedeniyle de başarısız olabilir ve `HttpClient` bunları `status` değeri `0` olan bir `HttpErrorResponse` olarak bildirir. Bunlar, verilen `ProgressEvent`'i böyle bir yanıtın içine saran `error()` yöntemi ile simüle edilebilir:
 
 ```ts
 const req = httpTesting.expectOne('/api/config');

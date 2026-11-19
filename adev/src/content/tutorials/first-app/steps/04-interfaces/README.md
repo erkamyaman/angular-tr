@@ -6,8 +6,8 @@ Bu eğitim dersi, bir arayüz oluşturmayı ve onu uygulamanızın bir bileşeni
 
 ## Neler öğreneceksiniz
 
-- Uygulamanızda veri türü olarak kullanabileceği yeni bir arayüz var.
-- Uygulamanızda örnek verilerle yeni arayüzün bir örneği var.
+- Uygulamanızda veri türü olarak kullanabileceği yeni bir arayüz olacak.
+- Uygulamanızda örnek verilerle yeni arayüzün bir örneği olacak.
 
 ## Arayüzlerin kavramsal önizlemesi
 

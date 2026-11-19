@@ -79,6 +79,8 @@ Ancak çoğu sunucu varsayılan olarak `http://my-app.test/users/42` isteğini r
 Angular'ın derin bağlantılar için sunulabilmesi ve doğru rotayı görüntüleyebilmesi için sunucunuzda yedek rota veya 404 sayfasını `index.html` olarak yapılandırın.
 Bazı sunucular bu yedek davranışı "Tek Sayfa Uygulaması" (SPA) modu olarak adlandırır.
 
+IMPORTANT: Uygulamanızı `outputMode: "static"` ile önceden render ettiğinizde, sunucunuzu yedek olarak `index.html` yerine `index.csr.html` kullanacak şekilde yapılandırın. Derleme, ana sayfa dosyasını `index.csr.html` olarak yazar; `index.html` ise (oluşturulduysa) kök rota (`/`) için önceden render edilmiş içeriği barındırır.
+
 Tarayıcı uygulamayı yüklediğinde, Angular yönlendirici hangi sayfada olduğunu belirlemek için URL'yi okuyacak ve `/users/42` sayfasını doğru şekilde görüntüleyecektir.
 
 `http://my-app.test/does-not-exist` gibi "gerçek" 404 sayfaları için sunucunun ek yapılandırma gerektirmez.

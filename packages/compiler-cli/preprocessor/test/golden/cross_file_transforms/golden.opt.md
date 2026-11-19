@@ -114,7 +114,7 @@ export class TestTransformsComponent {
       encapsulation: 2,
     });
   // @ts-ignore
-  declare static ngAcceptInputType_decoratorInput: Parameters<typeof myBooleanTransform>[0];
+  declare static ngAcceptInputType_decoratorInput: string | boolean;
   // @ts-ignore
   declare static ngAcceptInputType_aliasedInput: unknown;
   // @ts-ignore
@@ -227,15 +227,15 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [TestTransformsComponent],
                 template: `
-        <test-transforms
-          [decoratorInput]="'true'"
-          [aliasedInput]="123"
-          [signalInput]="'false'"
-          [aliasedSignal]="'hello'"
-          [inlineTransform]="null"
-          [externalTypeInput]="true"
-        ></test-transforms>
-      `,
+    <test-transforms
+      [decoratorInput]="'true'"
+      [aliasedInput]="123"
+      [signalInput]="'false'"
+      [aliasedSignal]="'hello'"
+      [inlineTransform]="null"
+      [externalTypeInput]="true"
+    ></test-transforms>
+  `,
               },
             ],
           },

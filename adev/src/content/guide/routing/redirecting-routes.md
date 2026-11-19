@@ -136,6 +136,37 @@ export const routes: Routes = [
 
 Daha fazla bilgi için [RedirectFunction API dokümanlarına](api/router/RedirectFunction) göz atın.
 
+## Bileşenlerden ve resource'lardan `RedirectCommand` ile yönlendirme
+
+Statik ve fonksiyon tabanlı rota yönlendirmelerine ek olarak, bileşenler ve rota resource'ları bir `RedirectCommand` fırlatarak zorunlu (imperative) şekilde yönlendirme tetikleyebilir. Bu, özellikle kimliği doğrulanmamış kullanıcıları yönlendirmek veya veri çekme sırasında dinamik yetkilendirme kontrollerini ele almak için kullanışlıdır:
+
+```angular-ts
+import {Component, inject, resource} from '@angular/core';
+import {Router, RedirectCommand} from '@angular/router';
+
+@Component({
+  selector: 'app-account',
+  template: `<p>Account Details</p>`,
+})
+export class AccountPage {
+  private router = inject(Router);
+
+  accountData = resource({
+    loader: async () => {
+      const response = await fetch('/api/account');
+      if (response.status === 401) {
+        // Yetkisiz olduğunda otomatik olarak /login sayfasına yönlendirir
+        throw new RedirectCommand(this.router.parseUrl('/login'));
+      }
+      return response.json();
+    },
+  });
+}
+```
+
+Bir `RedirectCommand` yönlendirilen bir bileşenin constructor'ı, yaşam döngüsü hook'u veya rota resource loader'ı içinde fırlatıldığında, Angular Router komutu yakalar ve navigasyonu otomatik olarak hedef URL'ye yönlendirir.
+
 ## Sonraki adımlar
 
 `redirectTo` özelliği hakkında daha fazla bilgi için [API dokümanlarına](api/router/Route#redirectTo) göz atın.
+Hata sınırları ve bileşen hatalarını yakalama hakkında daha fazla bilgi için [Hata sınırları rehberine](/guide/routing/error-boundaries) bakın.

@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './app.component';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.LocalizeSimpleCmp) {
@@ -119,9 +120,9 @@ export class LocalizeSimpleCmp {
               {
                 selector: 'localize-simple-cmp',
                 template: `
-        <div i18n>Hello World</div>
-        <div i18n="site header|Header description@@customHeaderId">Welcome</div>
-      `,
+    <div i18n>Hello World</div>
+    <div i18n="site header|Header description@@customHeaderId">Welcome</div>
+  `,
               },
             ],
           },
@@ -235,9 +236,9 @@ export class LocalizeInterpolationCmp {
               {
                 selector: 'localize-interpolation-cmp',
                 template: `
-        <div i18n="greeting|Greeting to user@@greetUser">Hello, {{ name }}!</div>
-        <div i18n>You have {{ count }} new notifications.</div>
-      `,
+    <div i18n="greeting|Greeting to user@@greetUser">Hello, {{ name }}!</div>
+    <div i18n>You have {{ count }} new notifications.</div>
+  `,
               },
             ],
           },
@@ -315,8 +316,8 @@ export class LocalizeAttributesCmp {
               {
                 selector: 'localize-attributes-cmp',
                 template: `
-        <input i18n-title="input tooltip|Description for tooltip@@inputTitleId" title="Username input" />
-      `,
+    <input i18n-title="input tooltip|Description for tooltip@@inputTitleId" title="Username input" />
+  `,
               },
             ],
           },
@@ -411,10 +412,10 @@ export class LocalizeNamedPlaceholderCmp {
               {
                 selector: 'localize-named-placeholder-cmp',
                 template: `
-        <div i18n>
-          Named interpolation: {{ valueA // i18n(ph="PH_A") }} and {{ valueB // i18n(ph="PH B") }}
-        </div>
-      `,
+    <div i18n>
+      Named interpolation: {{ valueA // i18n(ph="PH_A") }} and {{ valueB // i18n(ph="PH B") }}
+    </div>
+  `,
               },
             ],
           },

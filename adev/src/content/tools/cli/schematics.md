@@ -34,6 +34,11 @@ Bu varsayılanlar, komut satırında bir seçenek için farklı bir değer sağl
 CLI tarafından proje ve proje parçaları oluşturmak için kullanılan varsayılan şematiklerin JSON şemaları [`@schematics/angular`](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular) paketinde toplanmıştır.
 Şema, `--help` çıktısında gösterildiği gibi her `ng generate` alt komutu için CLI'a sunulan seçenekleri açıklar.
 
+### Otomatik biçimlendirme
+
+Çalışma alanınızda [Prettier](https://prettier.io/) veya [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) yüklüyse, Angular CLI schematics ve `ng update` migrasyonları tarafından oluşturulan veya değiştirilen tüm dosyaları otomatik olarak biçimlendirir.
+CLI yalnızca etkilenen dosyaları biçimlendirir ve diğer tüm dosyalara dokunmaz.
+
 ## Kütüphaneler için Schematics Geliştirme
 
 Bir kütüphane geliştiricisi olarak, kütüphanenizi Angular CLI ile entegre etmek üzere kendi özel şematik koleksiyonlarınızı oluşturabilirsiniz.

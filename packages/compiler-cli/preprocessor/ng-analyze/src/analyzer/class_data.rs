@@ -108,6 +108,7 @@ pub struct QueryData {
     pub emit_distinct_changes_only: bool,
     pub read_span: Option<oxc_span::Span>,
     pub options_span: Option<oxc_span::Span>,
+    pub options_string: Option<String>,
     pub is_static: bool,
     pub is_signal: bool,
     pub decorator_span: Option<oxc_span::Span>,
@@ -124,6 +125,8 @@ pub struct ClassData {
     /// Spans of ALL recognized Angular decorators on the class (kept even for decorators the
     /// classification dropped — wire parity).
     pub ng_decorator_spans: Vec<oxc_span::Span>,
+    /// Spans of non-Angular decorators applied to the class.
+    pub non_ng_decorator_spans: Vec<oxc_span::Span>,
     /// Spans the processor deletes to strip Angular class and member decorators, including
     /// trailing whitespace. Separate from `ng_decorator_spans`, which diagnostics use.
     pub decorator_removal_spans: Vec<oxc_span::Span>,
@@ -161,6 +164,7 @@ pub struct ClassData {
     /// Public instance method names ngtsc's `publicMethods` would hold: the class's own after
     /// single-file analysis, merged with its base classes' once Stage 2 flattens inheritance.
     pub public_methods: Vec<String>,
+    pub signal_members: Vec<String>,
     pub uses_inheritance: bool,
     pub uses_on_changes: bool,
     pub is_exported: bool,
@@ -251,7 +255,6 @@ pub struct DirectiveData {
     /// True when the `standalone` property was present but did not fold to a boolean, in
     /// which case `standalone` falls back to `true` (the implicit default).
     pub standalone_dynamic: bool,
-    pub signals: bool,
     pub is_structural: bool,
     /// `exportAs` as the partial evaluator sees it.
     pub export_as: Option<Resolved<crate::evaluator::ExportAsNames>>,
@@ -271,6 +274,10 @@ pub struct DirectiveData {
     /// Stage 2 can chase cross-file arrays and aliases before it is projected onto the wire.
     pub host_directives: Option<Resolved<Vec<HostDirectiveEntry>>>,
     pub host_directives_span: Option<oxc_span::Span>,
+    pub unsupported_host_directives: Vec<(Resolved<()>, oxc_span::Span)>,
+    /// `hostDirectives` array elements that local compilation may emit verbatim when they don't
+    /// resolve to a reference (see [`crate::evaluator::local_host_directive_entries`]).
+    pub host_directive_expressions: Vec<(oxc_span::Span, String)>,
     /// The directive's own `hostDirectives`, resolved in stage 2 — what ngtsc's
     /// `TypeCheckScopeRegistry` puts in `directivesOnHost` ahead of the directive itself when
     /// type-checking its host bindings. Components keep theirs on
@@ -306,10 +313,23 @@ pub struct DirectiveData {
     pub duplicate_declaring_ng_modules: Vec<crate::query::ReferenceId>,
     pub duplicate_declaration_context: Vec<crate::NgRelatedInformation>,
     pub is_jit: bool,
+    pub is_poisoned: bool,
     pub decorator_name: Option<String>,
 }
 
 impl DirectiveData {
+    /// True when `hostDirectives` has been evaluated and has a structural shape error
+    /// (which in ngtsc throws a `FatalDiagnosticError` during `analyze()`).
+    pub fn has_host_directives_shape_error(&self) -> bool {
+        let Some(host_directives) = &self.host_directives else {
+            return false;
+        };
+        if host_directives.contains_incomplete() {
+            return false;
+        }
+        crate::evaluator::host_directives_shape_error(host_directives.raw()).is_some()
+    }
+
     /// The `exportAs` names, when the property evaluated to a string.
     pub fn export_as_names(&self) -> Option<Vec<String>> {
         self.export_as
@@ -336,9 +356,9 @@ impl DirectiveData {
                 .is_some_and(|io| io.contains_incomplete())
     }
 
-    async fn complete_declaration_metadata<Fs: crate::ResourceResolverFs + Clone + 'static>(
+    async fn complete_declaration_metadata(
         &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
+        ctx: &crate::query::QueryContext,
         foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
     ) {
         if let Some(selector) = &mut self.selector {
@@ -391,10 +411,10 @@ impl DirectiveData {
 /// Stage 2 for `styleUrl`/`styleUrls` that named a constant from another file: complete the
 /// expressions, then read the stylesheets they name exactly as Stage 1 reads literal ones, and
 /// register them so an edit to one invalidates this component.
-async fn complete_style_urls<Fs: crate::ResourceResolverFs + Clone + 'static>(
+async fn complete_style_urls(
     c: &mut ComponentData,
     reference_id: crate::query::ReferenceId,
-    ctx: &crate::query::QueryContext<Fs>,
+    ctx: &crate::query::QueryContext,
     foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
 ) {
     let Some(mut sources) = c.pending_style_urls.take() else {
@@ -403,9 +423,9 @@ async fn complete_style_urls<Fs: crate::ResourceResolverFs + Clone + 'static>(
     for source in &mut sources {
         source.complete_with(ctx, foreign).await;
     }
+    let containing = ctx.lookup_id(reference_id.file);
     let file_path = ctx.lookup_path(reference_id.file);
-    let resource_resolver = crate::ResourceResolver::new(&ctx.fs, ctx.resolver.as_ref());
-    crate::analyzer::component::load_style_urls(&sources, c, &resource_resolver, &file_path);
+    crate::analyzer::component::load_style_urls(&sources, c, ctx.host.as_ref(), &containing).await;
     for style_url in c.style_urls.iter().flatten() {
         ctx.resource_registry.register_template(
             std::path::PathBuf::from(&style_url.resolved_path),
@@ -415,31 +435,79 @@ async fn complete_style_urls<Fs: crate::ResourceResolverFs + Clone + 'static>(
     }
 }
 
+/// Complete `hostDirectives` for local compilation the way ngtsc's partial evaluator sees it.
+///
+/// Without `emitDeclarationOnly`, ngtsc still evaluates across the compilation unit, so
+/// `forwardRef(() => DepA)`, `[...DIRS]`, or `FLAG ? DirA : DirB` resolve when their inputs live in
+/// another file of the unit. Under `emitDeclarationOnly`, other `.ts` files are outside the unit,
+/// but ambient `.d.ts` globals listed in `tsconfig.files` are still in the `ts.Program`, so only
+/// those fold (e.g. `COMPILED ? DirA : DirB`).
+///
+/// An entry Stage 1 flagged as an unsupported expression stays flagged unless completion folds it to
+/// a concrete value: ngtsc's `visitExpression` re-anchors any `DynamicValue` on the outermost
+/// expression it evaluated, so `FLAG ? ImportedDir : X` is still reported once `FLAG` resolves,
+/// even though the branch it selects is a plain identifier. Entries that fold land in
+/// `host_directives` too, since it is completed the same way.
+async fn complete_local_host_directives(
+    d: &mut DirectiveData,
+    ctx: &crate::query::QueryContext,
+    foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
+) {
+    let ambient_only = ctx.engine.emit_declaration_only;
+    if let Some(host_directives) = &mut d.host_directives {
+        complete_for_local_compilation(host_directives, ambient_only, ctx, foreign).await;
+    }
+    for (probe, _) in &mut d.unsupported_host_directives {
+        complete_for_local_compilation(probe, ambient_only, ctx, foreign).await;
+    }
+    d.unsupported_host_directives.retain(|(probe, _)| {
+        matches!(
+            probe.raw().unwrap_named(),
+            crate::evaluator::ResolvedValue::Dynamic(_)
+                | crate::evaluator::ResolvedValue::Incomplete(_)
+        )
+    });
+}
+
+async fn complete_for_local_compilation<T>(
+    value: &mut Resolved<T>,
+    ambient_only: bool,
+    ctx: &crate::query::QueryContext,
+    foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
+) {
+    if ambient_only {
+        value.complete_ambient_globals_with(ctx, foreign).await;
+    } else {
+        value.complete_with(ctx, foreign).await;
+    }
+}
+
 /// Stage 2 for a `templateUrl` that named a constant from another file: complete the
 /// expression, then read the template exactly as Stage 1 reads a literal URL — still relative
 /// to the component's own file, not to the file declaring the constant, as ngtsc's
 /// `resourceLoader.resolve(templateUrl, containingFile)` does — and register it so an edit to
 /// the template invalidates this component.
 /// https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/component/src/resources.ts#L392-L439
-async fn complete_template_url<Fs: crate::ResourceResolverFs + Clone + 'static>(
+async fn complete_template_url(
     c: &mut ComponentData,
     reference_id: crate::query::ReferenceId,
-    ctx: &crate::query::QueryContext<Fs>,
+    ctx: &crate::query::QueryContext,
     foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
 ) {
     let Some(mut source) = c.pending_template_url.take() else {
         return;
     };
     source.url.complete_with(ctx, foreign).await;
+    let containing = ctx.lookup_id(reference_id.file);
     let file_path = ctx.lookup_path(reference_id.file);
-    let resource_resolver = crate::ResourceResolver::new(&ctx.fs, ctx.resolver.as_ref());
     crate::analyzer::component::load_template_url(
         &source,
         c,
-        &resource_resolver,
-        &file_path,
+        ctx.host.as_ref(),
+        &containing,
         reference_id.file,
-    );
+    )
+    .await;
     if let Some(template_url) = &c.template_url {
         ctx.resource_registry.register_template(
             std::path::PathBuf::from(&template_url.resolved_path),
@@ -457,7 +525,6 @@ impl Default for DirectiveData {
             standalone: true,
             standalone_span: None,
             standalone_dynamic: false,
-            signals: false,
             is_structural: false,
             export_as: None,
             export_as_span: None,
@@ -466,6 +533,8 @@ impl Default for DirectiveData {
             host_properties: Vec::new(),
             host_directives: None,
             host_directives_span: None,
+            unsupported_host_directives: Vec::new(),
+            host_directive_expressions: Vec::new(),
             resolved_host_directives: None,
             host_directive_diagnostics: Vec::new(),
             providers_span: None,
@@ -485,6 +554,7 @@ impl Default for DirectiveData {
             duplicate_declaring_ng_modules: Vec::new(),
             duplicate_declaration_context: Vec::new(),
             is_jit: false,
+            is_poisoned: false,
             decorator_name: None,
         }
     }
@@ -565,7 +635,7 @@ impl ComponentData {
 /// `validate()` on `span` with ngtsc's code and message.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ValueIssue {
-    pub code: &'static str,
+    pub code: crate::ErrorCode,
     pub span: oxc_span::Span,
     pub message: String,
     pub next: Vec<String>,
@@ -575,32 +645,32 @@ pub struct ValueIssue {
 impl ValueIssue {
     /// `DECORATOR_ARG_NOT_LITERAL` (`NG1001`).
     pub fn arg_not_literal(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1001", span, message)
+        Self::new(crate::ErrorCode::DECORATOR_ARG_NOT_LITERAL, span, message)
     }
 
     /// `DECORATOR_ARITY_WRONG` (`NG1002`).
     pub fn arity_wrong(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1002", span, message)
+        Self::new(crate::ErrorCode::DECORATOR_ARITY_WRONG, span, message)
     }
 
     /// `DECORATOR_NOT_CALLED` (`NG1003`).
     pub fn decorator_not_called(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1003", span, message)
+        Self::new(crate::ErrorCode::DECORATOR_NOT_CALLED, span, message)
     }
 
     /// `DECORATOR_UNEXPECTED` (`NG1005`).
     pub fn decorator_unexpected(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1005", span, message)
+        Self::new(crate::ErrorCode::DECORATOR_UNEXPECTED, span, message)
     }
 
     /// `DECORATOR_COLLISION` (`NG1006`).
     pub fn decorator_collision(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1006", span, message)
+        Self::new(crate::ErrorCode::DECORATOR_COLLISION, span, message)
     }
 
     /// `VALUE_HAS_WRONG_TYPE` (`NG1010`) whose message already carries any detail.
     pub fn wrong_type(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1010", span, message)
+        Self::new(crate::ErrorCode::VALUE_HAS_WRONG_TYPE, span, message)
     }
 
     /// `VALUE_HAS_WRONG_TYPE` (`NG1010`) for `value`, with the detail ngtsc's
@@ -611,7 +681,7 @@ impl ValueIssue {
         message: &str,
     ) -> Self {
         Self::new(
-            "1010",
+            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
             span,
             crate::evaluator::wrong_type_message(message, value),
         )
@@ -620,7 +690,7 @@ impl ValueIssue {
     /// `VALUE_HAS_WRONG_TYPE` (`NG1010`) with the detail of `createValueHasWrongTypeError`
     /// chained under the message.
     pub fn wrong_type_with_detail(span: oxc_span::Span, message: &str, detail: &str) -> Self {
-        let mut issue = Self::new("1010", span, message);
+        let mut issue = Self::new(crate::ErrorCode::VALUE_HAS_WRONG_TYPE, span, message);
         issue.next.push(detail.to_string());
         issue
     }
@@ -628,7 +698,7 @@ impl ValueIssue {
     /// `CONFLICTING_INPUT_TRANSFORM` (`NG2020`).
     pub fn conflicting_input_transform(span: oxc_span::Span, input: &str) -> Self {
         Self::new(
-            "2020",
+            crate::ErrorCode::CONFLICTING_INPUT_TRANSFORM,
             span,
             format!(
                 "Class cannot have both a transform function on Input {input} and a static \
@@ -640,7 +710,7 @@ impl ValueIssue {
     /// `SYMBOL_NOT_EXPORTED` (`NG3001`) for the type of an input transform's parameter.
     pub fn symbol_not_exported(span: oxc_span::Span, decl_span: oxc_span::Span) -> Self {
         let mut issue = Self::new(
-            "3001",
+            crate::ErrorCode::SYMBOL_NOT_EXPORTED,
             span,
             "Symbol must be exported in order to be used as the type of an Input transform \
              function",
@@ -653,27 +723,43 @@ impl ValueIssue {
 
     /// `IMPORT_GENERATION_FAILURE` (`NG3004`) for a type that cannot be imported.
     pub fn import_generation_failure(span: oxc_span::Span, name: &str) -> Self {
-        Self::new("3004", span, format!("Unable to import type {name}."))
+        Self::new(
+            crate::ErrorCode::IMPORT_GENERATION_FAILURE,
+            span,
+            format!("Unable to import type {name}."),
+        )
     }
 
     /// `VALUE_NOT_LITERAL` (`NG1011`).
     pub fn not_literal(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1011", span, message)
+        Self::new(crate::ErrorCode::VALUE_NOT_LITERAL, span, message)
     }
 
     /// `INITIALIZER_API_WITH_DISALLOWED_DECORATOR` (`NG1050`).
     pub fn disallowed_decorator(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1050", span, message)
+        Self::new(
+            crate::ErrorCode::INITIALIZER_API_WITH_DISALLOWED_DECORATOR,
+            span,
+            message,
+        )
     }
 
     /// `INITIALIZER_API_DECORATOR_METADATA_COLLISION` (`NG1051`).
     pub fn metadata_collision(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1051", span, message)
+        Self::new(
+            crate::ErrorCode::INITIALIZER_API_DECORATOR_METADATA_COLLISION,
+            span,
+            message,
+        )
     }
 
     /// `INITIALIZER_API_NO_REQUIRED_FUNCTION` (`NG1052`).
     pub fn no_required_function(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1052", span, message)
+        Self::new(
+            crate::ErrorCode::INITIALIZER_API_NO_REQUIRED_FUNCTION,
+            span,
+            message,
+        )
     }
 
     /// `INITIALIZER_API_DISALLOWED_MEMBER_VISIBILITY` (`NG1053`).
@@ -685,7 +771,7 @@ impl ValueIssue {
     ) -> Self {
         let allowed: Vec<&str> = allowed.iter().map(|level| level.as_str()).collect();
         Self::new(
-            "1053",
+            crate::ErrorCode::INITIALIZER_API_DISALLOWED_MEMBER_VISIBILITY,
             span,
             format!(
                 "Cannot use \"{function_name}\" on a class member that is declared as {}.\n  \
@@ -698,7 +784,11 @@ impl ValueIssue {
 
     /// `INCORRECTLY_DECLARED_ON_STATIC_MEMBER` (`NG1100`).
     pub fn declared_on_static_member(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("1100", span, message)
+        Self::new(
+            crate::ErrorCode::INCORRECTLY_DECLARED_ON_STATIC_MEMBER,
+            span,
+            message,
+        )
     }
 
     /// `UNDECORATED_PROVIDER` (`NG2005`), ngtsc's `getProviderDiagnostics`.
@@ -706,7 +796,7 @@ impl ValueIssue {
     // TODO(parity): ngtsc attaches a related-information entry pointing at the class declaration.
     pub fn undecorated_provider(span: oxc_span::Span, class_name: &str) -> Self {
         Self::new(
-            "2005",
+            crate::ErrorCode::UNDECORATED_PROVIDER,
             span,
             format!(
                 "The class '{class_name}' cannot be created via dependency injection, as it does \
@@ -729,7 +819,7 @@ impl ValueIssue {
 
         let param_name = param.name.clone().unwrap_or_else(|| index.to_string());
         let mut issue = Self::new(
-            "2003",
+            crate::ErrorCode::PARAM_MISSING_TOKEN,
             param.name_span,
             format!(
                 "No suitable injection token for parameter '{param_name}' of class '{class_name}'."
@@ -794,7 +884,7 @@ impl ValueIssue {
         kind: &str,
     ) -> Self {
         Self::new(
-            "2016",
+            crate::ErrorCode::INJECTABLE_INHERITS_INVALID_CONSTRUCTOR,
             span,
             format!(
                 "The {} {class_name} inherits its constructor from {base_class_name}, but the \
@@ -821,7 +911,7 @@ impl ValueIssue {
             "Injectable"
         };
         Self::new(
-            "2006",
+            crate::ErrorCode::DIRECTIVE_INHERITS_UNDECORATED_CTOR,
             span,
             format!(
                 "The {} {class_name} inherits its constructor from {base_class_name}, but the \
@@ -838,7 +928,7 @@ impl ValueIssue {
     /// https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/common/src/diagnostics.ts#L349-L358
     pub fn undecorated_class_using_angular_features(span: oxc_span::Span) -> Self {
         Self::new(
-            "2007",
+            crate::ErrorCode::UNDECORATED_CLASS_USING_ANGULAR_FEATURES,
             span,
             "Class is using Angular features but is not decorated. Please add an explicit \
              Angular decorator.",
@@ -849,7 +939,7 @@ impl ValueIssue {
     /// https://github.com/angular/angular/blob/e3ac727/packages/compiler-cli/src/ngtsc/annotations/src/service.ts#L312-L318
     pub fn service_constructor_di(span: oxc_span::Span) -> Self {
         Self::new(
-            "2028",
+            crate::ErrorCode::SERVICE_CONSTRUCTOR_DI,
             span,
             "@Service class cannot use constructor dependency injection. Use the `inject` \
              function instead.",
@@ -858,7 +948,11 @@ impl ValueIssue {
 
     /// `NGMODULE_BOOTSTRAP_IS_STANDALONE` (`NG6009`).
     pub fn bootstrap_is_standalone(span: oxc_span::Span, message: impl Into<String>) -> Self {
-        Self::new("6009", span, message)
+        Self::new(
+            crate::ErrorCode::NGMODULE_BOOTSTRAP_IS_STANDALONE,
+            span,
+            message,
+        )
     }
 
     /// `UNSUPPORTED_INITIALIZER_API_USAGE` (`NG8110`).
@@ -866,7 +960,11 @@ impl ValueIssue {
         span: oxc_span::Span,
         message: impl Into<String>,
     ) -> Self {
-        Self::new("8110", span, message)
+        Self::new(
+            crate::ErrorCode::UNSUPPORTED_INITIALIZER_API_USAGE,
+            span,
+            message,
+        )
     }
 
     /// `FORBIDDEN_REQUIRED_INITIALIZER_INVOCATION` (`NG8118`).
@@ -874,10 +972,14 @@ impl ValueIssue {
         span: oxc_span::Span,
         message: impl Into<String>,
     ) -> Self {
-        Self::new("8118", span, message)
+        Self::new(
+            crate::ErrorCode::FORBIDDEN_REQUIRED_INITIALIZER_INVOCATION,
+            span,
+            message,
+        )
     }
 
-    fn new(code: &'static str, span: oxc_span::Span, message: impl Into<String>) -> Self {
+    fn new(code: crate::ErrorCode, span: oxc_span::Span, message: impl Into<String>) -> Self {
         Self {
             code,
             span,
@@ -992,9 +1094,9 @@ impl StyleUrlSource {
         }
     }
 
-    pub async fn complete_with<Fs: crate::ResourceResolverFs + Clone + 'static>(
+    pub async fn complete_with(
         &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
+        ctx: &crate::query::QueryContext,
         foreign: &[&dyn crate::evaluator::ForeignFunctionResolver],
     ) {
         match self {
@@ -1048,18 +1150,20 @@ pub struct ComponentData {
     /// The evaluated `templateUrl`, loaded. `None` while [`Self::pending_template_url`] is
     /// set, and `None` for good when the property evaluated to something other than a string.
     pub template_url: Option<UrlData>,
-    /// The `templateUrl` expression, kept only while it still waits on a constant from another
-    /// file. Stage 2 (and local compilation, which evaluates it like ngtsc's does) completes it
-    /// and loads `template_url` and `template` from the result.
+    /// The `templateUrl` expression recorded during AST extraction before
+    /// `load_syntax_resources` runs, and retained afterward only when it still waits on a
+    /// constant from another file. Stage 2 (and local compilation, which evaluates it like
+    /// ngtsc's does) completes any remaining entry and loads `template_url` and `template`.
     pub pending_template_url: Option<TemplateUrlSource>,
     /// `@Component.styles` as the partial evaluator sees it.
     pub styles: Option<Resolved<crate::evaluator::ComponentStyles>>,
     pub styles_span: Option<oxc_span::Span>,
     pub styles_from_urls: Option<Vec<String>>,
     pub style_urls: Option<Vec<UrlData>>,
-    /// The `styleUrl`/`styleUrls` expressions, kept only while one of them still waits on a
-    /// constant from another file. Stage 2 completes them and reloads `style_urls` and
-    /// `styles_from_urls` from the result.
+    /// The `styleUrl`/`styleUrls` expressions recorded during AST extraction before
+    /// `load_syntax_resources` runs, and retained afterward only when at least one entry still
+    /// waits on a constant from another file. Stage 2 completes them and reloads `style_urls`
+    /// and `styles_from_urls` from the result.
     pub pending_style_urls: Option<Vec<StyleUrlSource>>,
     /// `styleUrl`/`styleUrls` values that did not evaluate to strings.
     pub style_url_issues: Vec<ValueIssue>,
@@ -1453,6 +1557,7 @@ pub struct NgModuleData {
     pub service: Option<ServiceData>,
     pub decorator_name: Option<String>,
     pub is_jit: bool,
+    pub analysis_failed: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -1466,6 +1571,14 @@ pub enum IsolatedTypeElementData {
     CallReturnType { callee_span: oxc_span::Span },
     /// `[typeof A, typeof B, ...]` — locally evaluates to an array of references.
     ReferenceTuple { references: Vec<Reference> },
+    /// `[<el1>, <el2>, ...]` — a same-file `const` array expanded element-by-element when it cannot
+    /// be reduced to a flat `ReferenceTuple` (e.g. contains `ModuleWithProviders` calls like
+    /// `RouterModule.forChild(...)`). Falls back to `fallback` (the `typeof CONST_NAME` span) if any
+    /// inner element fails to classify.
+    Tuple {
+        elements: Vec<IsolatedTypeElementData>,
+        fallback: Box<IsolatedTypeElementData>,
+    },
     /// `never` — unsupported expression shape in declaration-only mode.
     Never { span: oxc_span::Span },
     /// Evaluation that still depends on other files (e.g. `const SHARED = [ImportedPipe]`).
@@ -1482,25 +1595,81 @@ pub struct IsolatedTypeTupleData {
     pub elements: Vec<IsolatedTypeElementData>,
 }
 
+/// An element inside a [`ResolvedIsolatedElement::Tuple`].
+pub(crate) enum ResolvedIsolatedTupleItem {
+    /// A resolved declaration reference (`typeof Ref`).
+    Reference(Reference),
+    /// An unresolved import bound at top-level in the origin file (`typeof LocalImportName`).
+    LocalImport(String),
+}
+
 /// A deferred element's completed value, per ngtsc's `resolvedToTypeTupleElement`.
 pub(crate) enum ResolvedIsolatedElement {
     /// `typeof Ref`
     Single(Reference),
     /// `[typeof A, typeof B]`
-    Tuple(Vec<Reference>),
+    Tuple(Vec<ResolvedIsolatedTupleItem>),
+}
+
+fn unresolved_local_import_name(
+    value: &crate::evaluator::ResolvedValue,
+    origin: crate::query::FileId,
+) -> Option<&str> {
+    use crate::analyzer::ImportKind;
+    use crate::evaluator::{DynamicReason, IncompleteDep, ResolvedValue};
+
+    let (unresolved, span) = match value.unwrap_named() {
+        ResolvedValue::Dynamic(d) if d.file == origin => match &d.reason {
+            DynamicReason::UnresolvedImport(u) => (u.as_ref(), d.span),
+            DynamicReason::DynamicInput(inner) => match &inner.reason {
+                DynamicReason::UnresolvedImport(u) => (u.as_ref(), d.span),
+                _ => return None,
+            },
+            _ => return None,
+        },
+        ResolvedValue::Incomplete(hole)
+            if hole.file == origin && hole.transparent && hole.spread.is_none() =>
+        {
+            match &hole.dep {
+                IncompleteDep::Reference(u) => (u, hole.span),
+                _ => return None,
+            }
+        }
+        _ => return None,
+    };
+
+    if unresolved.importer != origin
+        || unresolved.is_namespace_member
+        || matches!(unresolved.symbol, ImportKind::Namespace)
+    {
+        return None;
+    }
+    unresolved
+        .local_name
+        .as_deref()
+        .filter(|name| name.len() as u32 == span.size())
 }
 
 impl ResolvedIsolatedElement {
-    /// `None` for any other value, including one that still has holes.
-    pub(crate) fn from_value(value: &crate::evaluator::ResolvedValue) -> Option<Self> {
+    /// `None` for any other value, including one that still has holes (except same-file direct
+    /// unresolved imports inside tuple arrays).
+    pub(crate) fn from_value(
+        value: &crate::evaluator::ResolvedValue,
+        origin: crate::query::FileId,
+    ) -> Option<Self> {
         use crate::evaluator::ResolvedValue;
         match value.unwrap_named() {
-            ResolvedValue::Reference(r) => Some(Self::Single(Reference::from_value_reference(r))),
+            ResolvedValue::Reference(r) if r.member.is_none() => {
+                Some(Self::Single(Reference::from_value_reference(r)))
+            }
             ResolvedValue::Array(items) if !items.is_empty() => items
                 .iter()
                 .map(|item| match item.unwrap_named() {
-                    ResolvedValue::Reference(r) => Some(Reference::from_value_reference(r)),
-                    _ => None,
+                    ResolvedValue::Reference(r) if r.member.is_none() => Some(
+                        ResolvedIsolatedTupleItem::Reference(Reference::from_value_reference(r)),
+                    ),
+                    _ => unresolved_local_import_name(item, origin)
+                        .map(|name| ResolvedIsolatedTupleItem::LocalImport(name.to_string())),
                 })
                 .collect::<Option<Vec<_>>>()
                 .map(Self::Tuple),
@@ -1508,10 +1677,61 @@ impl ResolvedIsolatedElement {
         }
     }
 
-    pub(crate) fn references(&self) -> &[Reference] {
+    pub(crate) fn references(&self) -> Vec<Reference> {
         match self {
-            Self::Single(r) => std::slice::from_ref(r),
-            Self::Tuple(refs) => refs,
+            Self::Single(r) => vec![r.clone()],
+            Self::Tuple(items) => items
+                .iter()
+                .filter_map(|item| match item {
+                    ResolvedIsolatedTupleItem::Reference(r) => Some(r.clone()),
+                    ResolvedIsolatedTupleItem::LocalImport(_) => None,
+                })
+                .collect(),
+        }
+    }
+}
+
+impl IsolatedTypeElementData {
+    fn collect_deferred_values_mut<'a>(
+        &'a mut self,
+        out: &mut Vec<&'a mut Resolved<crate::evaluator::ResolvedValue>>,
+    ) {
+        match self {
+            Self::Deferred { resolved, fallback } => {
+                out.push(resolved);
+                fallback.collect_deferred_values_mut(out);
+            }
+            Self::Tuple { elements, fallback } => {
+                for el in elements {
+                    el.collect_deferred_values_mut(out);
+                }
+                fallback.collect_deferred_values_mut(out);
+            }
+            _ => {}
+        }
+    }
+
+    fn collect_references(&self, out: &mut Vec<Reference>) {
+        match self {
+            Self::Typeof {
+                reference: Some(r), ..
+            } => out.push(r.clone()),
+            Self::ReferenceTuple { references } => out.extend(references.iter().cloned()),
+            Self::Tuple { elements, fallback } => {
+                for el in elements {
+                    el.collect_references(out);
+                }
+                fallback.collect_references(out);
+            }
+            Self::Deferred { resolved, fallback } => {
+                if let Some(element) =
+                    ResolvedIsolatedElement::from_value(resolved.raw(), resolved.origin)
+                {
+                    out.extend(element.references());
+                }
+                fallback.collect_references(out);
+            }
+            _ => {}
         }
     }
 }
@@ -1520,31 +1740,19 @@ impl IsolatedTypeTupleData {
     /// The evaluations of all `Deferred` elements.
     pub(crate) fn deferred_values_mut(
         &mut self,
-    ) -> impl Iterator<Item = &mut Resolved<crate::evaluator::ResolvedValue>> {
-        self.elements.iter_mut().filter_map(|el| match el {
-            IsolatedTypeElementData::Deferred { resolved, .. } => Some(resolved),
-            _ => None,
-        })
+    ) -> Vec<&mut Resolved<crate::evaluator::ResolvedValue>> {
+        let mut out = Vec::new();
+        for el in &mut self.elements {
+            el.collect_deferred_values_mut(&mut out);
+        }
+        out
     }
 
     /// All references the wire projection may emit.
     pub(crate) fn references(&self) -> Vec<Reference> {
         let mut out = Vec::new();
         for el in &self.elements {
-            match el {
-                IsolatedTypeElementData::Typeof {
-                    reference: Some(r), ..
-                } => out.push(r.clone()),
-                IsolatedTypeElementData::ReferenceTuple { references } => {
-                    out.extend(references.iter().cloned())
-                }
-                IsolatedTypeElementData::Deferred { resolved, .. } => {
-                    if let Some(element) = ResolvedIsolatedElement::from_value(resolved.raw()) {
-                        out.extend(element.references().iter().cloned());
-                    }
-                }
-                _ => {}
-            }
+            el.collect_references(&mut out);
         }
         out
     }
@@ -1607,11 +1815,17 @@ pub struct ValidationContext {
     pub strict_standalone: bool,
     /// `angularCompilerOptions.strictInjectionParameters`.
     pub strict_injection_parameters: bool,
+    /// `compilerOptions.emitDeclarationOnly && angularCompilerOptions._experimentalAllowEmitDeclarationOnly`.
+    pub emit_declaration_only: bool,
+    /// `angularCompilerOptions.compilationMode === 'experimental-local'`.
+    pub experimental_local_compilation: bool,
 }
 
 /// Pure data object holding the context needed for wire serialization.
 pub struct WireContext<'a> {
     pub mode: WireMode,
+    pub emit_declaration_only: bool,
+    pub experimental_local_compilation: bool,
     pub source_text: &'a str,
     pub converter: &'a crate::utils::Utf8ToUtf16,
     pub reference_strategy: &'a dyn crate::analyzer::import_emit::ReferenceEmitStrategy,
@@ -1677,10 +1891,7 @@ impl ClassData {
         }
     }
 
-    pub async fn complete_selector<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    pub async fn complete_selector(&mut self, ctx: &crate::query::QueryContext) {
         let Some(selector) = self.directive_part_mut().and_then(|d| d.selector.as_mut()) else {
             return;
         };
@@ -1689,10 +1900,7 @@ impl ClassData {
             .await;
     }
 
-    pub async fn complete_styles<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    pub async fn complete_styles(&mut self, ctx: &crate::query::QueryContext) {
         let Some(styles) = self.as_component_mut().and_then(|c| c.styles.as_mut()) else {
             return;
         };
@@ -1701,10 +1909,53 @@ impl ClassData {
             .await;
     }
 
-    pub async fn complete_resource_urls<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    /// Complete the remaining constant-evaluated fields that ngtsc evaluates in local compilation
+    /// mode (`exportAs`, `@Component.template`, `@HostBinding` arguments, and `@HostListener`
+    /// event names) so cross-file constants within the compilation unit resolve and external
+    /// imports demote to `UnresolvedImport` for `NG11001` validation, and resolve ambient `.d.ts`
+    /// global holes on `host`, `@Input`/`@Output` metadata, and decorator query predicates while
+    /// keeping cross-file import holes intact for syntax-mode emission. `hostDirectives` is
+    /// completed by [`complete_local_host_directives`].
+    pub async fn complete_local_compilation_constants(&mut self, ctx: &crate::query::QueryContext) {
+        let foreign = crate::analyzer::resolvers::angular_foreign_resolvers();
+        if let Some(d) = self.directive_part_mut() {
+            if let Some(export_as) = &mut d.export_as {
+                export_as.complete_with(ctx, foreign).await;
+            }
+            if let Some(host) = &mut d.host_expr {
+                host.complete_ambient_globals_with(ctx, foreign).await;
+            }
+            for predicate in d.evaluated_query_predicates_mut() {
+                predicate.complete_ambient_globals_with(ctx, foreign).await;
+            }
+            for name in d.host_binding_names_mut() {
+                name.complete_with(ctx, foreign).await;
+            }
+            for name in d.host_listener_event_names_mut() {
+                name.complete_with(ctx, foreign).await;
+            }
+            if let Some(io) = &mut d.evaluated_io {
+                io.complete_ambient_globals_with(ctx, foreign).await;
+            }
+            d.fold_pending_io();
+            complete_local_host_directives(d, ctx, foreign).await;
+        }
+        if let Some(c) = self.as_component_mut() {
+            if let Some(template) = &mut c.template {
+                template.complete_with(ctx, foreign).await;
+            }
+        }
+        if let DecoratorData::Pipe(p) = &mut self.decorator {
+            if let Some(name) = &mut p.name {
+                name.complete_with(ctx, foreign).await;
+            }
+            if let Some(pure) = &mut p.pure {
+                pure.complete_with(ctx, foreign).await;
+            }
+        }
+    }
+
+    pub async fn complete_resource_urls(&mut self, ctx: &crate::query::QueryContext) {
         let reference_id = self.reference_id;
         let Some(c) = self.as_component_mut() else {
             return;
@@ -1716,10 +1967,7 @@ impl ClassData {
 
     /// Resolve cross-file holes in the `emitDeclarationOnly` type tuples. Uses no foreign
     /// resolvers, like ngtsc's `transformToTypeTupleExpression`.
-    pub async fn complete_isolated_type_tuples<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    pub async fn complete_isolated_type_tuples(&mut self, ctx: &crate::query::QueryContext) {
         let DecoratorData::NgModule(m) = &mut self.decorator else {
             return;
         };
@@ -1820,10 +2068,7 @@ impl ClassData {
     /// input/output declarations. Only the partial evaluator is involved — never another
     /// file's scope or semantic analysis — so `AnalyzeFileEvaluated` can run this for any file
     /// its consumers name without creating a query cycle.
-    pub async fn complete_declaration_metadata<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    pub async fn complete_declaration_metadata(&mut self, ctx: &crate::query::QueryContext) {
         let foreign = crate::analyzer::resolvers::angular_foreign_resolvers();
         self.complete_selector(ctx).await;
         match &mut self.decorator {
@@ -1843,10 +2088,7 @@ impl ClassData {
     }
 
     /// Completely resolve all partially-evaluated fields in-place during Stage 2.
-    pub async fn resolve_semantic<Fs: crate::ResourceResolverFs + Clone + 'static>(
-        &mut self,
-        ctx: &crate::query::QueryContext<Fs>,
-    ) {
+    pub async fn resolve_semantic(&mut self, ctx: &crate::query::QueryContext) {
         self.complete_declaration_metadata(ctx).await;
         let foreign = crate::analyzer::resolvers::angular_foreign_resolvers();
         let reference_id = self.reference_id;
@@ -2019,6 +2261,28 @@ impl ClassData {
         converter: &crate::utils::Utf8ToUtf16,
         diagnostics: &mut Vec<crate::NgDiagnostic>,
     ) {
+        if (cx.emit_declaration_only || cx.experimental_local_compilation)
+            && !self.non_ng_decorator_spans.is_empty()
+        {
+            let mode_name = if cx.emit_declaration_only {
+                "experimental declaration-only emission"
+            } else {
+                "local compilation"
+            };
+            for span in &self.non_ng_decorator_spans {
+                push_error(
+                    diagnostics,
+                    file_path,
+                    converter,
+                    crate::ErrorCode::DECORATOR_UNEXPECTED,
+                    *span,
+                    format!(
+                        "In {mode_name} mode, Angular does not support custom decorators. Ensure all class decorators are from Angular."
+                    ),
+                );
+            }
+            return;
+        }
         for issue in &self.decorator_issues {
             push_issue(diagnostics, file_path, converter, issue);
         }
@@ -2027,53 +2291,57 @@ impl ClassData {
         {
             return;
         }
-        for issue in &self.di_issues {
-            push_issue(diagnostics, file_path, converter, issue);
+        let has_hd_shape_err = cx.mode == WireMode::Semantic
+            && self
+                .directive_part()
+                .is_some_and(|d| d.has_host_directives_shape_error());
+        if !has_hd_shape_err {
+            for issue in &self.di_issues {
+                push_issue(diagnostics, file_path, converter, issue);
+            }
         }
         self.validate_constructor_param_decorators(file_path, converter, diagnostics);
         self.validate_constructor_dependencies(cx, file_path, converter, diagnostics);
         self.validate_service_constructor_di(file_path, converter, diagnostics);
-        if cx.strict_standalone {
+        if cx.strict_standalone && !has_hd_shape_err {
             self.validate_strict_standalone(file_path, converter, diagnostics);
         }
         match &self.decorator {
             DecoratorData::Component(c) => {
-                self.validate_directive(&c.directive, false, file_path, converter, diagnostics);
-                self.validate_host_directives(
-                    &c.directive,
-                    cx.mode,
-                    file_path,
-                    converter,
-                    diagnostics,
-                );
-                self.validate_component(c, cx.mode, file_path, converter, diagnostics);
-                self.validate_unique_declaration(
-                    "Component",
-                    &c.directive.duplicate_declaring_ng_modules,
-                    &c.directive.duplicate_declaration_context,
-                    file_path,
-                    converter,
-                    diagnostics,
-                );
+                self.validate_directive(&c.directive, false, cx, file_path, converter, diagnostics);
+                self.validate_host_directives(&c.directive, cx, file_path, converter, diagnostics);
+                if cx.mode != WireMode::Semantic || !c.directive.has_host_directives_shape_error() {
+                    self.validate_component(c, cx.mode, file_path, converter, diagnostics);
+                    self.validate_unique_declaration(
+                        "Component",
+                        &c.directive.duplicate_declaring_ng_modules,
+                        &c.directive.duplicate_declaration_context,
+                        file_path,
+                        converter,
+                        diagnostics,
+                    );
+                }
             }
             DecoratorData::Directive(d) => {
-                self.validate_directive(d, true, file_path, converter, diagnostics);
-                self.validate_host_directives(d, cx.mode, file_path, converter, diagnostics);
-                self.validate_declared_directive_selector(
-                    d,
-                    cx.mode,
-                    file_path,
-                    converter,
-                    diagnostics,
-                );
-                self.validate_unique_declaration(
-                    "Directive",
-                    &d.duplicate_declaring_ng_modules,
-                    &d.duplicate_declaration_context,
-                    file_path,
-                    converter,
-                    diagnostics,
-                );
+                self.validate_directive(d, true, cx, file_path, converter, diagnostics);
+                self.validate_host_directives(d, cx, file_path, converter, diagnostics);
+                if cx.mode != WireMode::Semantic || !d.has_host_directives_shape_error() {
+                    self.validate_declared_directive_selector(
+                        d,
+                        cx.mode,
+                        file_path,
+                        converter,
+                        diagnostics,
+                    );
+                    self.validate_unique_declaration(
+                        "Directive",
+                        &d.duplicate_declaring_ng_modules,
+                        &d.duplicate_declaration_context,
+                        file_path,
+                        converter,
+                        diagnostics,
+                    );
+                }
             }
             DecoratorData::Pipe(p) => {
                 self.validate_pipe(p, file_path, converter, diagnostics);
@@ -2131,7 +2399,7 @@ impl ClassData {
             diagnostics,
             file_path,
             converter,
-            "2023",
+            crate::ErrorCode::NON_STANDALONE_NOT_ALLOWED,
             span,
             message.to_string(),
         );
@@ -2162,7 +2430,7 @@ impl ClassData {
             diagnostics,
             file_path,
             converter,
-            "2004",
+            crate::ErrorCode::DIRECTIVE_MISSING_SELECTOR,
             self.decorated_span,
             format!("Directive {class_name} has no selector, please add it!"),
         );
@@ -2193,7 +2461,7 @@ impl ClassData {
         };
         diagnostics.push(
             crate::NgDiagnostic::error(
-                6007,
+                crate::ErrorCode::NGMODULE_DECLARATION_NOT_UNIQUE,
                 file_path.to_string_lossy().into_owned(),
                 crate::types::metadata::SpanMetadata::new(name_span, converter),
                 format!("The {kind} '{class_name}' is declared by more than one NgModule."),
@@ -2215,6 +2483,9 @@ impl ClassData {
             push_issue(diagnostics, file_path, converter, issue);
         }
         diagnostics.extend(m.scope_diagnostics.iter().cloned());
+        if m.analysis_failed {
+            return;
+        }
         let Some(span) = m.module_id_span else {
             return;
         };
@@ -2222,7 +2493,7 @@ impl ClassData {
             diagnostics,
             file_path,
             converter,
-            "6100",
+            crate::ErrorCode::WARN_NGMODULE_ID_UNNECESSARY,
             span,
             "Using 'module.id' for NgModule.id is a common anti-pattern that is ignored by \
              the Angular compiler."
@@ -2246,7 +2517,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1005",
+                crate::ErrorCode::DECORATOR_UNEXPECTED,
                 decorator.span,
                 format!("Unexpected decorator {} on parameter.", decorator.name),
             );
@@ -2264,8 +2535,12 @@ impl ClassData {
         diagnostics: &mut Vec<crate::NgDiagnostic>,
     ) {
         let validates = match &self.decorator {
-            DecoratorData::Component(_) | DecoratorData::Pipe(_) | DecoratorData::NgModule(_) => {
-                true
+            DecoratorData::Component(_) | DecoratorData::Pipe(_) => true,
+            DecoratorData::NgModule(m) => {
+                !m.analysis_failed
+                    || m.injectable.as_ref().is_some_and(|i| {
+                        cx.strict_injection_parameters && !self.is_abstract && i.requires_valid_ctor()
+                    })
             }
             DecoratorData::Directive(d) => d.selector.is_some(),
             DecoratorData::Injectable(i) => {
@@ -2326,17 +2601,36 @@ impl ClassData {
         &self,
         d: &DirectiveData,
         is_directive: bool,
+        cx: ValidationContext,
         file_path: &std::path::Path,
         converter: &crate::utils::Utf8ToUtf16,
         diagnostics: &mut Vec<crate::NgDiagnostic>,
     ) {
         if let (Some(span), Some(ref sel)) = (d.selector_span, &d.selector) {
             let Some(ref s) = sel.get_optional() else {
+                if cx.mode == WireMode::Syntax {
+                    if let Some(unresolved_span) = local_unresolved_const_span(sel.raw()) {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                            unresolved_span,
+                            "Unresolved identifier found for @Component.selector field! Did you \
+                             import this identifier from a file outside of the compilation unit? \
+                             This is not allowed when Angular compiler runs in local mode. \
+                             Possible solutions: 1) Move the declarations into a file within the \
+                             compilation unit, 2) Inline the selector"
+                                .to_string(),
+                        );
+                        return;
+                    }
+                }
                 push_error(
                     diagnostics,
                     file_path,
                     converter,
-                    "1010",
+                    crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                     span,
                     "selector must be a string".to_string(),
                 );
@@ -2348,7 +2642,7 @@ impl ClassData {
                     diagnostics,
                     file_path,
                     converter,
-                    "2004",
+                    crate::ErrorCode::DIRECTIVE_MISSING_SELECTOR,
                     span,
                     format!("Directive {class_name} has no selector, please add it!"),
                 );
@@ -2371,6 +2665,14 @@ impl ClassData {
             .input_transforms
             .iter()
             .filter_map(|site| site.issue.as_ref());
+        let decl_only_transform_issues: Vec<ValueIssue> = if cx.emit_declaration_only {
+            d.input_transforms
+                .iter()
+                .filter_map(super::transforms::InputTransformSite::emit_declaration_only_issue)
+                .collect()
+        } else {
+            Vec::new()
+        };
         for issue in d
             .io_issues
             .iter()
@@ -2378,21 +2680,42 @@ impl ClassData {
             .chain(&query_predicate_issues)
             .chain(&host_issues)
             .chain(transform_issues)
+            .chain(&decl_only_transform_issues)
         {
             push_issue(diagnostics, file_path, converter, issue);
         }
 
         // ngtsc evaluates `exportAs` and rejects anything that is not statically a string.
-        let export_as = d.export_as.as_ref().map(Resolved::get_optional);
-        if let (Some(span), Some(None)) = (d.export_as_span, export_as) {
-            push_error(
-                diagnostics,
-                file_path,
-                converter,
-                "1010",
-                span,
-                "exportAs must be a string".to_string(),
-            );
+        if let (Some(span), Some(ref export_as)) = (d.export_as_span, &d.export_as) {
+            if export_as.get_optional().is_none() {
+                let unresolved_span = (cx.mode == WireMode::Syntax)
+                    .then(|| local_unresolved_const_span(export_as.raw()))
+                    .flatten();
+                if let Some(unresolved_span) = unresolved_span {
+                    push_error(
+                        diagnostics,
+                        file_path,
+                        converter,
+                        crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                        unresolved_span,
+                        "Unresolved identifier found for exportAs field! Did you import this \
+                         identifier from a file outside of the compilation unit? This is not \
+                         allowed when Angular compiler runs in local mode. Possible \
+                         solutions: 1) Move the declarations into a file within the \
+                         compilation unit, 2) Inline the selector"
+                            .to_string(),
+                    );
+                } else {
+                    push_error(
+                        diagnostics,
+                        file_path,
+                        converter,
+                        crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
+                        span,
+                        "exportAs must be a string".to_string(),
+                    );
+                }
+            }
         }
 
         // ngtsc evaluates the `standalone` flag and rejects anything that is not
@@ -2403,7 +2726,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 span,
                 "standalone flag must be a boolean".to_string(),
             );
@@ -2418,7 +2741,7 @@ impl ClassData {
                     diagnostics,
                     file_path,
                     converter,
-                    "1002",
+                    crate::ErrorCode::DECORATOR_ARITY_WRONG,
                     binding.decorator_span,
                     format!(
                         "@HostBinding can have at most one argument, got {} argument(s)",
@@ -2431,46 +2754,88 @@ impl ClassData {
                 continue;
             };
 
-            // TODO(parity): the single-file pipeline drops such a binding instead of binding
-            // it under the imported name.
-            if name.contains_incomplete() {
-                continue;
-            }
             if name.get_optional().is_none() {
+                if cx.mode == WireMode::Syntax {
+                    if let Some(unresolved_span) = local_unresolved_const_span(name.raw()) {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                            unresolved_span,
+                            "Unresolved identifier found for @HostBinding's argument! Did you \
+                             import this identifier from a file outside of the compilation unit? \
+                             This is not allowed when Angular compiler runs in local mode. \
+                             Possible solutions: 1) Move the declaration into a file within the \
+                             compilation unit, 2) Inline the argument"
+                                .to_string(),
+                        );
+                        continue;
+                    }
+                }
+                if crate::evaluator::value::demote_ambient_global_holes(name.raw().clone())
+                    .contains_incomplete()
+                {
+                    continue;
+                }
                 push_error(
                     diagnostics,
                     file_path,
                     converter,
-                    "1010",
+                    crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                     binding.decorator_span,
                     "@HostBinding's argument must be a string".to_string(),
                 );
             }
         }
 
+        // ngtsc rejects @HostListener event names that do not resolve to a string, and @HostListener
+        // second arguments that cannot be statically resolved to a string array.
+        // https://github.com/angular/angular/blob/5b525f9/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L719-L754
+        // https://github.com/angular/angular/blob/5b525f9/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L1092-L1107
         for listener in &d.host_listeners {
-            if listener.resolved_event_name.contains_incomplete() {
-                continue;
-            }
             if listener.resolved_event_name.get_optional().is_none() {
+                if cx.mode == WireMode::Syntax {
+                    if let Some(unresolved_span) =
+                        local_unresolved_const_span(listener.resolved_event_name.raw())
+                    {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                            unresolved_span,
+                            "Unresolved identifier found for @HostListener's event name argument! \
+                             Did you import this identifier from a file outside of the \
+                             compilation unit? This is not allowed when Angular compiler runs in \
+                             local mode. Possible solutions: 1) Move the declaration into a file \
+                             within the compilation unit, 2) Inline the argument"
+                                .to_string(),
+                        );
+                        continue;
+                    }
+                }
+                if crate::evaluator::value::demote_ambient_global_holes(
+                    listener.resolved_event_name.raw().clone(),
+                )
+                .contains_incomplete()
+                {
+                    continue;
+                }
                 push_error(
                     diagnostics,
                     file_path,
                     converter,
-                    "1010",
+                    crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                     listener
                         .event_name
                         .as_ref()
                         .map_or(listener.decorator_span, |name| name.span),
                     "@HostListener's event name argument must be a string".to_string(),
                 );
+                continue;
             }
-        }
 
-        // ngtsc rejects @HostListener arguments that cannot be statically resolved to a string array.
-        // https://github.com/angular/angular/blob/5b525f9/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L743-L754
-        // https://github.com/angular/angular/blob/5b525f9/packages/compiler-cli/src/ngtsc/annotations/directive/src/shared.ts#L1092-L1107
-        for listener in &d.host_listeners {
             for err in &listener.args_errors {
                 match err {
                     HostListenerArgsError::NotStringArray(span) => {
@@ -2478,7 +2843,7 @@ impl ClassData {
                             diagnostics,
                             file_path,
                             converter,
-                            "1010",
+                            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                             *span,
                             "@HostListener's second argument must be a string array".to_string(),
                         );
@@ -2488,7 +2853,7 @@ impl ClassData {
                             diagnostics,
                             file_path,
                             converter,
-                            "1010",
+                            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                             *span,
                             format!("Failed to resolve @HostListener.args at position {index} to a string"),
                         );
@@ -2501,12 +2866,64 @@ impl ClassData {
     fn validate_host_directives(
         &self,
         d: &DirectiveData,
-        mode: WireMode,
+        cx: ValidationContext,
         file_path: &std::path::Path,
         converter: &crate::utils::Utf8ToUtf16,
         diagnostics: &mut Vec<crate::NgDiagnostic>,
     ) {
-        if mode != WireMode::Semantic {
+        if cx.emit_declaration_only || cx.mode != WireMode::Semantic {
+            let mode_name = if cx.emit_declaration_only {
+                "experimental declaration-only emission"
+            } else {
+                "local compilation"
+            };
+            for (_, span) in &d.unsupported_host_directives {
+                push_error(
+                    diagnostics,
+                    file_path,
+                    converter,
+                    crate::ErrorCode::LOCAL_COMPILATION_UNSUPPORTED_EXPRESSION,
+                    *span,
+                    format!(
+                        "In {mode_name} mode, host directive cannot be an expression. Use an identifier instead"
+                    ),
+                );
+            }
+            let issues = local_host_directives(d).map_or_else(Vec::new, |(_, issues)| issues);
+            for issue in issues {
+                match issue {
+                    crate::evaluator::LocalHostDirectiveIssue::UnsupportedExpression(span) => {
+                        // Stage 1 already flagged the entry when it was written as an expression.
+                        let already_reported = d
+                            .unsupported_host_directives
+                            .iter()
+                            .any(|(_, reported)| reported.contains_inclusive(span));
+                        if already_reported {
+                            continue;
+                        }
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::LOCAL_COMPILATION_UNSUPPORTED_EXPRESSION,
+                            span,
+                            format!(
+                                "In {mode_name} mode, host directive cannot be an expression. Use an identifier instead"
+                            ),
+                        );
+                    }
+                    crate::evaluator::LocalHostDirectiveIssue::WrongType(span, error) => {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
+                            span,
+                            error.message().to_string(),
+                        );
+                    }
+                }
+            }
             return;
         }
         if let (Some(host_directives), Some(span)) = (&d.host_directives, d.host_directives_span) {
@@ -2520,7 +2937,7 @@ impl ClassData {
                         diagnostics,
                         file_path,
                         converter,
-                        "1010",
+                        crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                         span,
                         error.message().to_string(),
                     );
@@ -2552,7 +2969,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "2021",
+                crate::ErrorCode::COMPONENT_INVALID_STYLE_URLS,
                 span,
                 "@Component cannot define both `styleUrl` and `styleUrls`. Use `styleUrl` if the component has one stylesheet, or `styleUrls` if it has multiple".to_string(),
             );
@@ -2563,7 +2980,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 issue.span,
                 issue.message.clone(),
             );
@@ -2577,7 +2994,7 @@ impl ClassData {
                         diagnostics,
                         file_path,
                         converter,
-                        "2008",
+                        crate::ErrorCode::COMPONENT_RESOURCE_NOT_FOUND,
                         span,
                         format!("Could not find stylesheet file '{}'.", u.url),
                     );
@@ -2592,26 +3009,27 @@ impl ClassData {
                     diagnostics,
                     file_path,
                     converter,
-                    "2008",
+                    crate::ErrorCode::COMPONENT_RESOURCE_NOT_FOUND,
                     span,
                     format!("Could not find template file '{}'.", t_url.url),
                 );
             }
         }
 
-        self.validate_template_declaration(c, file_path, converter, diagnostics);
-        self.validate_component_styles(c, file_path, converter, diagnostics);
+        self.validate_template_declaration(c, mode, file_path, converter, diagnostics);
+        self.validate_component_styles(c, mode, file_path, converter, diagnostics);
         self.validate_component_imports(c, file_path, converter, diagnostics);
         self.validate_shadow_dom_selector(c, file_path, converter, diagnostics);
     }
 
-    /// `@Component.styles` must evaluate to a string or an array of strings (`NG1010`).
+    /// `@Component.styles` must evaluate to a string or an array of strings (`NG1010`), or
+    /// `NG11001` in local compilation when an unresolved identifier is encountered.
     // TODO(parity): ngtsc chains the reason (e.g. "Value could not be determined statically.")
     // under the message.
-    // TODO(parity): local compilation should report NG11001 for unresolved identifiers.
     fn validate_component_styles(
         &self,
         c: &ComponentData,
+        mode: WireMode,
         file_path: &std::path::Path,
         converter: &crate::utils::Utf8ToUtf16,
         diagnostics: &mut Vec<crate::NgDiagnostic>,
@@ -2622,6 +3040,25 @@ impl ClassData {
         let Err(error) = crate::evaluator::ComponentStyles::parse(styles.raw()) else {
             return;
         };
+        if mode == WireMode::Syntax {
+            if let Some(unresolved_span) = local_unresolved_styles_span(styles.raw()) {
+                push_error(
+                    diagnostics,
+                    file_path,
+                    converter,
+                    crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                    unresolved_span,
+                    "Unresolved identifier found for @Component.styles field! Did you import \
+                     this identifier from a file outside of the compilation unit? This is not \
+                     allowed when Angular compiler runs in local mode. Possible solutions: \
+                     1) Move the declarations into a file within the compilation unit, \
+                     2) Inline the styles, 3) Move the styles into separate files and include it \
+                     using @Component.styleUrls"
+                        .to_string(),
+                );
+                return;
+            }
+        }
         let message = match error {
             crate::evaluator::ComponentStylesError::NotStringOrArray => {
                 "Failed to resolve @Component.styles to a string or an array of strings".to_string()
@@ -2630,7 +3067,14 @@ impl ClassData {
                 format!("Failed to resolve styles at position {index} to a string")
             }
         };
-        push_error(diagnostics, file_path, converter, "1010", span, message);
+        push_error(
+            diagnostics,
+            file_path,
+            converter,
+            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
+            span,
+            message,
+        );
     }
 
     fn validate_shadow_dom_selector(
@@ -2676,7 +3120,7 @@ impl ClassData {
             diagnostics,
             file_path,
             converter,
-            "2009",
+            crate::ErrorCode::COMPONENT_INVALID_SHADOW_DOM_SELECTOR,
             span,
             message.to_string(),
         );
@@ -2703,7 +3147,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "2002",
+                crate::ErrorCode::PIPE_MISSING_NAME,
                 metadata_span,
                 "@Pipe decorator is missing name field".to_string(),
             );
@@ -2712,7 +3156,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 p.name_span.unwrap_or(metadata_span),
                 "@Pipe.name must be a string".to_string(),
             );
@@ -2724,7 +3168,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 span,
                 "@Pipe.pure must be a boolean".to_string(),
             );
@@ -2735,7 +3179,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 span,
                 "standalone flag must be a boolean".to_string(),
             );
@@ -2750,6 +3194,7 @@ impl ClassData {
     fn validate_template_declaration(
         &self,
         c: &ComponentData,
+        mode: WireMode,
         file_path: &std::path::Path,
         converter: &crate::utils::Utf8ToUtf16,
         diagnostics: &mut Vec<crate::NgDiagnostic>,
@@ -2766,7 +3211,7 @@ impl ClassData {
                     diagnostics,
                     file_path,
                     converter,
-                    "1010",
+                    crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                     span,
                     "templateUrl must be a string".to_string(),
                 );
@@ -2774,20 +3219,36 @@ impl ClassData {
         } else if let Some(span) = c.template_span {
             // An inline template that did not statically resolve to a string. Only checked
             // when `templateUrl` is absent, matching the reference's precedence.
-            let dynamic = c
-                .template
-                .as_ref()
-                .map(|t| t.get_optional().is_none())
-                .unwrap_or(false);
-            if dynamic {
-                push_error(
-                    diagnostics,
-                    file_path,
-                    converter,
-                    "1010",
-                    span,
-                    "template must be a string".to_string(),
-                );
+            if let Some(ref template) = c.template {
+                if template.get_optional().is_none() {
+                    if mode == WireMode::Syntax
+                        && local_unresolved_const_span(template.raw()).is_some()
+                    {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::LOCAL_COMPILATION_UNRESOLVED_CONST,
+                            span,
+                            "Unresolved identifier found for @Component.template field! Did you \
+                             import this identifier from a file outside of the compilation unit? \
+                             This is not allowed when Angular compiler runs in local mode. \
+                             Possible solutions: 1) Move the declaration into a file within the \
+                             compilation unit, 2) Inline the template, 3) Move the template into \
+                             a separate .html file and include it using @Component.templateUrl"
+                                .to_string(),
+                        );
+                    } else {
+                        push_error(
+                            diagnostics,
+                            file_path,
+                            converter,
+                            crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
+                            span,
+                            "template must be a string".to_string(),
+                        );
+                    }
+                }
             }
         } else if c.directive.args_span.is_some() {
             // Metadata object present but declares neither `template` nor `templateUrl`.
@@ -2801,7 +3262,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "2001",
+                crate::ErrorCode::COMPONENT_MISSING_TEMPLATE,
                 span,
                 "@Component is missing a template. Add either a `template` or `templateUrl`"
                     .to_string(),
@@ -2838,7 +3299,7 @@ impl ClassData {
                 let file_path_str = file_path.to_string_lossy().into_owned();
                 diagnostics.push(
                     crate::NgDiagnostic::error(
-                        2010,
+                        crate::ErrorCode::COMPONENT_NOT_STANDALONE,
                         file_path_str.clone(),
                         crate::types::metadata::SpanMetadata::new(span, converter),
                         format!("'{field}' is only valid on a component that is standalone."),
@@ -2864,7 +3325,7 @@ impl ClassData {
                     diagnostics,
                     file_path,
                     converter,
-                    "2010",
+                    crate::ErrorCode::COMPONENT_NOT_STANDALONE,
                     span,
                     "'schemas' is only valid on a component that is standalone.".to_string(),
                 );
@@ -2896,7 +3357,7 @@ impl ClassData {
                 diagnostics,
                 file_path,
                 converter,
-                "1010",
+                crate::ErrorCode::VALUE_HAS_WRONG_TYPE,
                 issue.span,
                 message.to_string(),
             );
@@ -2938,13 +3399,31 @@ fn core_enum_field_issues(c: &ComponentData) -> Vec<ValueIssue> {
     .collect()
 }
 
+/// `hostDirectives` as local and `emitDeclarationOnly` compilation emit it, with the entries that
+/// can't be emitted.
+fn local_host_directives(
+    d: &DirectiveData,
+) -> Option<(
+    Vec<HostDirectiveEntry>,
+    Vec<crate::evaluator::LocalHostDirectiveIssue>,
+)> {
+    let host_directives = d.host_directives.as_ref()?;
+    Some(crate::evaluator::local_host_directive_entries(
+        host_directives.raw(),
+        host_directives.origin,
+        &d.host_directive_expressions,
+        d.host_directives_span.unwrap_or_default(),
+    ))
+}
+
 fn host_metadata_issues(d: &DirectiveData) -> Vec<ValueIssue> {
     use crate::evaluator::ResolvedValue;
 
     let (Some(host), Some(span)) = (&d.host_expr, d.host_span) else {
         return Vec::new();
     };
-    let value = host.raw();
+    let demoted = crate::evaluator::value::demote_ambient_global_holes(host.raw().clone());
+    let value = &demoted;
     // A value still waiting on another file is checked once Stage 2 completes it.
     if value.contains_incomplete() {
         return Vec::new();
@@ -3006,24 +3485,88 @@ fn check_custom_element_selector_for_errors(selector: &str) -> Option<&'static s
     None
 }
 
+/// Returns the unresolved identifier span when `value` corresponds to ngtsc's
+/// `value instanceof DynamicValue && value.isFromUnknownIdentifier()` in local compilation mode.
+fn local_unresolved_const_span(value: &crate::evaluator::ResolvedValue) -> Option<oxc_span::Span> {
+    use crate::analyzer::ImportKind;
+    use crate::evaluator::{DynamicReason, IncompleteDep, ResolvedValue, UnresolvedReference};
+
+    // Only a bare identifier produces `DynamicValueReason.UNKNOWN_IDENTIFIER` in ngtsc: wrapping
+    // expressions (even parentheses or `as` assertions) hit `StaticInterpreter.visitExpression`'s
+    // postlude and wrap into `DynamicValue.fromDynamicInput(...)`, where `isFromUnknownIdentifier`
+    // is false and ngtsc falls back to NG1010.
+    let is_direct_import = |u: &UnresolvedReference, span: oxc_span::Span| {
+        !u.is_namespace_member
+            && !matches!(u.symbol, ImportKind::Namespace)
+            && u.local_name
+                .as_ref()
+                .is_some_and(|name| name.len() as u32 == span.size())
+    };
+
+    match value.unwrap_named() {
+        ResolvedValue::Dynamic(d) => match &d.reason {
+            DynamicReason::UnknownIdentifier(_) => Some(d.span),
+            DynamicReason::UnresolvedImport(u) if is_direct_import(u, d.span) => Some(d.span),
+            DynamicReason::DynamicInput(inner)
+                if matches!(
+                    &inner.reason,
+                    DynamicReason::UnresolvedImport(u)
+                        if u.importer == d.file && is_direct_import(u, d.span)
+                ) =>
+            {
+                Some(d.span)
+            }
+            _ => None,
+        },
+        ResolvedValue::Incomplete(hole)
+            if hole.transparent
+                && hole.identifiers.len() <= 1
+                && matches!(
+                    &hole.dep,
+                    IncompleteDep::Reference(u) if is_direct_import(u, hole.span)
+                ) =>
+        {
+            Some(hole.span)
+        }
+        ResolvedValue::Incomplete(hole)
+            if hole.transparent
+                && hole.identifiers.len() <= 1
+                && matches!(
+                    &hole.dep,
+                    IncompleteDep::AmbientGlobal { name, .. } if name.len() as u32 == hole.span.size()
+                ) =>
+        {
+            Some(hole.span)
+        }
+        _ => None,
+    }
+}
+
+fn local_unresolved_styles_span(value: &crate::evaluator::ResolvedValue) -> Option<oxc_span::Span> {
+    match value.unwrap_named() {
+        crate::evaluator::ResolvedValue::Array(items) => {
+            items.iter().find_map(local_unresolved_const_span)
+        }
+        other => local_unresolved_const_span(other),
+    }
+}
+
 /// Build an error-severity `NgDiagnostic` carrying the given `NG` code and push it onto the
 /// file's diagnostics list.
 fn push_error(
     diagnostics: &mut Vec<crate::NgDiagnostic>,
     file_path: &std::path::Path,
     converter: &crate::utils::Utf8ToUtf16,
-    code: &'static str,
+    code: crate::ErrorCode,
     span: oxc_span::Span,
     message: String,
 ) {
-    push_diagnostic(
-        diagnostics,
-        file_path,
-        converter,
-        oxc_diagnostics::OxcDiagnostic::error(message),
+    diagnostics.push(crate::NgDiagnostic::error(
         code,
-        span,
-    );
+        file_path.to_string_lossy().into_owned(),
+        crate::SpanMetadata::new(span, converter),
+        message,
+    ));
 }
 
 /// [`push_error`] for a recorded [`ValueIssue`].
@@ -3033,22 +3576,14 @@ pub(crate) fn push_issue(
     converter: &crate::utils::Utf8ToUtf16,
     issue: &ValueIssue,
 ) {
-    push_error(
-        diagnostics,
-        file_path,
-        converter,
+    let file_path_str = file_path.to_string_lossy().into_owned();
+    let mut diagnostic = crate::NgDiagnostic::error(
         issue.code,
-        issue.span,
+        file_path_str.clone(),
+        crate::SpanMetadata::new(issue.span, converter),
         issue.message.clone(),
     );
-    let Some(diagnostic) = diagnostics.last_mut() else {
-        return;
-    };
     diagnostic.next = issue.next.clone();
-    let file_path_str = diagnostic
-        .file_path
-        .clone()
-        .unwrap_or_else(|| file_path.to_string_lossy().into_owned());
     diagnostic.related_information = issue
         .related
         .iter()
@@ -3058,6 +3593,7 @@ pub(crate) fn push_issue(
             message_text: message.clone(),
         })
         .collect();
+    diagnostics.push(diagnostic);
 }
 
 /// [`push_error`] for the codes ngtsc reports as warnings rather than errors, which compile
@@ -3066,35 +3602,15 @@ fn push_warning(
     diagnostics: &mut Vec<crate::NgDiagnostic>,
     file_path: &std::path::Path,
     converter: &crate::utils::Utf8ToUtf16,
-    code: &'static str,
+    code: crate::ErrorCode,
     span: oxc_span::Span,
     message: String,
 ) {
-    push_diagnostic(
-        diagnostics,
-        file_path,
-        converter,
-        oxc_diagnostics::OxcDiagnostic::warn(message),
+    diagnostics.push(crate::NgDiagnostic::warning(
         code,
-        span,
-    );
-}
-
-/// Stamp the `NG` code and source span onto a diagnostic and push it. The severity already
-/// on `diag` is what `NgDiagnostic::from_oxc` turns into the wire category.
-fn push_diagnostic(
-    diagnostics: &mut Vec<crate::NgDiagnostic>,
-    file_path: &std::path::Path,
-    converter: &crate::utils::Utf8ToUtf16,
-    diag: oxc_diagnostics::OxcDiagnostic,
-    code: &'static str,
-    span: oxc_span::Span,
-) {
-    let oxc_diag = diag.with_error_code("NG", code).with_label(span);
-    diagnostics.push(crate::NgDiagnostic::from_oxc(
-        &oxc_diag,
-        Some(file_path.to_string_lossy().into_owned()),
-        converter,
+        file_path.to_string_lossy().into_owned(),
+        crate::SpanMetadata::new(span, converter),
+        message,
     ));
 }
 
@@ -3326,9 +3842,8 @@ impl TransformData {
             } => TransformMetadata {
                 kind: "type".to_string(),
                 span: crate::types::metadata::SpanMetadata::new(*value_span, converter),
-                type_span: (!type_span.is_empty()).then(|| {
-                    crate::types::metadata::SpanMetadata::new(*type_span, converter)
-                }),
+                type_span: (!type_span.is_empty())
+                    .then(|| crate::types::metadata::SpanMetadata::new(*type_span, converter)),
             },
             TransformData::Expression(span) => TransformMetadata {
                 kind: "expression".to_string(),
@@ -3526,11 +4041,8 @@ fn prepare_members(
                 // locate, which would splice a malformed `: ;` member.
                 if !i.is_signal {
                     use std::fmt::Write;
-                    let invalid_site = d
-                        .input_transforms
-                        .iter()
-                        .find(|site| site.input == i.name && site.is_invalid());
-                    if let Some(site) = invalid_site {
+                    let site = d.input_transforms.iter().rfind(|site| site.input == i.name);
+                    if let Some(site) = site.filter(|s| s.is_invalid()) {
                         if !site.conflicting_coercion {
                             let _ = writeln!(
                                 prepared.coercion_members,
@@ -3561,12 +4073,22 @@ fn prepare_members(
                             );
                         }
                         Some(TransformData::Expression(span)) if !span.is_empty() => {
-                            let expr_str = &source_text[span.start as usize..span.end as usize];
-                            let _ = writeln!(
-                                prepared.coercion_members,
-                                "{NG_ACCEPT_INPUT_TYPE_PREFIX}{}: Parameters<typeof {expr_str}>[0];",
-                                coercion_member_key(&i.name)
-                            );
+                            if let Some(resolved_type) =
+                                site.and_then(|s| s.resolved_type.as_deref())
+                            {
+                                let _ = writeln!(
+                                    prepared.coercion_members,
+                                    "{NG_ACCEPT_INPUT_TYPE_PREFIX}{}: {resolved_type};",
+                                    coercion_member_key(&i.name)
+                                );
+                            } else {
+                                let expr_str = &source_text[span.start as usize..span.end as usize];
+                                let _ = writeln!(
+                                    prepared.coercion_members,
+                                    "{NG_ACCEPT_INPUT_TYPE_PREFIX}{}: Parameters<typeof {expr_str}>[0];",
+                                    coercion_member_key(&i.name)
+                                );
+                            }
                         }
                         _ => {}
                     }
@@ -3693,6 +4215,7 @@ impl QueryData {
             options_span: self
                 .options_span
                 .map(|s| crate::types::metadata::SpanMetadata::new(s, converter)),
+            options_string: self.options_string.clone(),
             is_static: self.is_static,
             is_signal: self.is_signal,
             decorator_span: self
@@ -3738,10 +4261,7 @@ impl ClassData {
                 });
                 pipe = Some(PipeMetadata {
                     decorator_name: p.decorator_name.clone(),
-                    name: self
-                        .read_optional_string(&p.name, cx, "pipe.name")?
-                        .or_else(|| self.class_name.clone())
-                        .unwrap_or_default(),
+                    name: self.read_optional_string(&p.name, cx, "pipe.name")?,
                     pure: self.read_optional_field(p.pure.as_ref(), cx, "pipe.pure")?,
                     standalone: p.standalone,
                     args_span: p
@@ -3750,7 +4270,7 @@ impl ClassData {
                     declaring_ng_module,
                 });
             }
-            DecoratorData::NgModule(m) => {
+            DecoratorData::NgModule(m) if !m.analysis_failed => {
                 let any_synthetic = |slot: &Option<crate::evaluator::Resolved<Vec<Reference>>>| {
                     slot.as_ref()
                         .is_some_and(|s| s.raw().any_reference(&mut |r| r.synthetic))
@@ -3832,8 +4352,9 @@ impl ClassData {
                     is_jit: m.is_jit,
                 });
             }
-            // Already projected via injectable_data()/service_data() above.
-            DecoratorData::Injectable(_) | DecoratorData::Service(_) => {}
+            // Already projected via injectable_data()/service_data() above, or skipped after a
+            // fatal NgModule analysis error.
+            DecoratorData::Injectable(_) | DecoratorData::Service(_) | DecoratorData::NgModule(_) => {}
         }
 
         // Member-level API surface: from the directive part; empty defaults for
@@ -3844,15 +4365,13 @@ impl ClassData {
             .unwrap_or_default();
         let is_jit = members.is_some_and(|d| d.is_jit)
             || matches!(&self.decorator, DecoratorData::NgModule(m) if m.is_jit);
-        // For JIT classes, decorators are preserved on source, so removal_spans is empty.
-        let removal_spans: Vec<crate::types::metadata::SpanMetadata> = if is_jit {
-            Vec::new()
-        } else {
-            self.decorator_removal_spans
-                .iter()
-                .map(|s| crate::types::metadata::SpanMetadata::new(*s, cx.converter))
-                .collect()
-        };
+        // For JIT classes, class decorators are preserved on source, while `decorator_removal_spans`
+        // holds only Angular constructor-parameter and identifier-named member decorator spans.
+        let removal_spans: Vec<crate::types::metadata::SpanMetadata> = self
+            .decorator_removal_spans
+            .iter()
+            .map(|s| crate::types::metadata::SpanMetadata::new(*s, cx.converter))
+            .collect();
         // A JIT class keeps its decorators, so tsickle still adds `@nocollapse` itself.
         let nocollapse_insertions: Vec<crate::types::metadata::TextInsertionMetadata> = if is_jit {
             Vec::new()
@@ -4017,11 +4536,13 @@ impl ClassData {
             ng_template_guards: self.ng_template_guards.clone(),
             has_ng_field_directive: self.has_ng_field_directive,
             public_methods: self.public_methods.clone(),
+            signal_members: self.signal_members.clone(),
             super_class: self.super_class.clone(),
             uses_inheritance: self.uses_inheritance,
             uses_on_changes: self.uses_on_changes,
             is_exported: self.is_exported,
             has_non_exported_bounds: self.has_non_exported_bounds,
+            has_non_angular_class_decorators: !self.non_ng_decorator_spans.is_empty(),
         };
         Ok(metadata)
     }
@@ -4164,13 +4685,18 @@ impl ClassData {
             .path_lookup
             .map(|lookup| lookup(r.file))
             .unwrap_or_default();
-        cx.reference_strategy.emit(
+        let mut emitted = cx.reference_strategy.emit(
             r,
             file_id,
             current_file_path,
             &target_path,
             cx.declaring_export_name(r.file, &r.name),
-        )
+        );
+        if r.owning_reference.is_some() && emitted.typecheck_import.is_some() {
+            emitted.consumer_import = emitted.typecheck_import.clone();
+            emitted.local_alias = None;
+        }
+        emitted
     }
 
     fn to_wire_isolated_tuple(
@@ -4210,12 +4736,14 @@ impl ClassData {
                 references: reference
                     .as_ref()
                     .map(|r| vec![self.to_wire_single_ref(r, current_file_path, cx)]),
+                elements: None,
             },
             IsolatedTypeElementData::CallReturnType { callee_span } => {
                 IsolatedTypeElementMetadata {
                     kind: IsolatedTypeElementKind::CallReturnType,
                     span: Some(SpanMetadata::new(*callee_span, cx.converter)),
                     references: None,
+                    elements: None,
                 }
             }
             IsolatedTypeElementData::ReferenceTuple { references } => IsolatedTypeElementMetadata {
@@ -4227,39 +4755,106 @@ impl ClassData {
                         .map(|r| self.to_wire_single_ref(r, current_file_path, cx))
                         .collect(),
                 ),
+                elements: None,
             },
+            IsolatedTypeElementData::Tuple { elements, fallback } => {
+                let projected: Vec<_> = elements
+                    .iter()
+                    .map(|el| {
+                        if let IsolatedTypeElementData::Deferred { resolved, .. } = el {
+                            if let Some(local_name) =
+                                unresolved_local_import_name(resolved.raw(), self.reference_id.file)
+                            {
+                                return IsolatedTypeElementMetadata {
+                                    kind: IsolatedTypeElementKind::Typeof,
+                                    span: None,
+                                    references: Some(vec![
+                                        ReferenceMetadata::for_local_declaration(
+                                            local_name.to_string(),
+                                        ),
+                                    ]),
+                                    elements: None,
+                                };
+                            }
+                        }
+                        self.to_wire_isolated_element(el, current_file_path, cx)
+                    })
+                    .collect();
+                if projected
+                    .iter()
+                    .any(|el| matches!(el.kind, IsolatedTypeElementKind::Never))
+                {
+                    return self.to_wire_isolated_element(fallback, current_file_path, cx);
+                }
+                if projected.iter().all(|el| {
+                    matches!(el.kind, IsolatedTypeElementKind::Typeof)
+                        && el.span.is_none()
+                        && el.elements.is_none()
+                        && el.references.as_ref().is_some_and(|r| r.len() == 1)
+                }) {
+                    let references = projected
+                        .into_iter()
+                        .flat_map(|el| el.references.into_iter().flatten())
+                        .collect();
+                    return IsolatedTypeElementMetadata {
+                        kind: IsolatedTypeElementKind::ReferenceTuple,
+                        span: None,
+                        references: Some(references),
+                        elements: None,
+                    };
+                }
+                IsolatedTypeElementMetadata {
+                    kind: IsolatedTypeElementKind::ReferenceTuple,
+                    span: None,
+                    references: None,
+                    elements: Some(projected),
+                }
+            }
             IsolatedTypeElementData::Never { span } => IsolatedTypeElementMetadata {
                 kind: IsolatedTypeElementKind::Never,
                 span: Some(SpanMetadata::new(*span, cx.converter)),
                 references: None,
+                elements: None,
             },
             IsolatedTypeElementData::Deferred { resolved, fallback } => {
-                let Some(element) = ResolvedIsolatedElement::from_value(resolved.raw()) else {
+                let Some(element) =
+                    ResolvedIsolatedElement::from_value(resolved.raw(), self.reference_id.file)
+                else {
                     return self.to_wire_isolated_element(fallback, current_file_path, cx);
                 };
-                let emitted: Option<Vec<ReferenceMetadata>> = element
-                    .references()
-                    .iter()
-                    .map(|r| {
-                        let emitted = self.to_wire_single_ref(r, current_file_path, cx);
-                        // Neither a local binding nor an import: unreachable from this file
-                        // (e.g. not exported), so ngtsc's reference emit would fail too.
-                        (emitted.local_alias.is_some() || emitted.consumer_import.is_some())
-                            .then_some(emitted)
-                    })
-                    .collect();
+                let project_ref = |r: &Reference| -> Option<ReferenceMetadata> {
+                    let emitted = self.to_wire_single_ref(r, current_file_path, cx);
+                    // Neither a local binding nor an import: unreachable from this file
+                    // (e.g. not exported), so ngtsc's reference emit would fail too.
+                    (emitted.local_alias.is_some() || emitted.consumer_import.is_some())
+                        .then_some(emitted)
+                };
+                let (kind, emitted) = match &element {
+                    ResolvedIsolatedElement::Single(r) => (
+                        IsolatedTypeElementKind::Typeof,
+                        project_ref(r).map(|m| vec![m]),
+                    ),
+                    ResolvedIsolatedElement::Tuple(items) => (
+                        IsolatedTypeElementKind::ReferenceTuple,
+                        items
+                            .iter()
+                            .map(|item| match item {
+                                ResolvedIsolatedTupleItem::Reference(r) => project_ref(r),
+                                ResolvedIsolatedTupleItem::LocalImport(local_name) => Some(
+                                    ReferenceMetadata::for_local_declaration(local_name.clone()),
+                                ),
+                            })
+                            .collect::<Option<Vec<_>>>(),
+                    ),
+                };
                 let Some(references) = emitted else {
                     return self.to_wire_isolated_element(fallback, current_file_path, cx);
                 };
                 IsolatedTypeElementMetadata {
-                    kind: match element {
-                        ResolvedIsolatedElement::Single(_) => IsolatedTypeElementKind::Typeof,
-                        ResolvedIsolatedElement::Tuple(_) => {
-                            IsolatedTypeElementKind::ReferenceTuple
-                        }
-                    },
+                    kind,
                     span: None,
                     references: Some(references),
+                    elements: None,
                 }
             }
         }
@@ -4270,10 +4865,27 @@ impl ClassData {
     /// a local binding or through a generated import.
     fn to_wire_host_directives(
         &self,
-        slot: &Option<Resolved<Vec<HostDirectiveEntry>>>,
+        d: &DirectiveData,
         cx: &WireContext,
     ) -> Option<Vec<HostDirectiveMetadata>> {
-        let slot = slot.as_ref()?;
+        if cx.emit_declaration_only || cx.mode != WireMode::Semantic {
+            if !d.unsupported_host_directives.is_empty() {
+                return None;
+            }
+            let (entries, issues) = local_host_directives(d)?;
+            if !issues.is_empty() {
+                return None;
+            }
+            let file_id = self.reference_id.file;
+            let current_file_path = cx.path_lookup.map(|lookup| lookup(file_id));
+            return Some(
+                entries
+                    .into_iter()
+                    .map(|e| e.into_wire(file_id, current_file_path.as_deref(), cx.path_lookup))
+                    .collect(),
+            );
+        }
+        let slot = d.host_directives.as_ref()?;
         let entries = slot.get_optional()?;
         let file_id = self.reference_id.file;
         let current_file_path = cx.path_lookup.map(|lookup| lookup(file_id));
@@ -4301,7 +4913,6 @@ impl ClassData {
             decorator_name: d.decorator_name.clone(),
             selector: self.read_optional_string(&d.selector, cx, "directive.selector")?,
             standalone: d.standalone,
-            signals: d.signals,
             is_structural: d.is_structural,
             export_as: self
                 .read_optional_field(d.export_as.as_ref(), cx, "directive.exportAs")?
@@ -4318,7 +4929,7 @@ impl ClassData {
             host_metadata: self
                 .read_optional_field(d.host_expr.as_deref(), cx, "directive.host")?
                 .map(|host| host_metadata_wire(host, cx.source_text, cx.converter)),
-            host_directives: self.to_wire_host_directives(&d.host_directives, cx),
+            host_directives: self.to_wire_host_directives(d, cx),
             resolved_host_directives: d.resolved_host_directives.as_ref().map(|hds| {
                 hds.iter()
                     .map(|hd| ResolvedHostDirectiveMetadata::to_wire(hd, cx.path_lookup))
@@ -4332,6 +4943,7 @@ impl ClassData {
                 .map(|s| crate::types::metadata::SpanMetadata::new(s, cx.converter)),
             declaring_ng_module,
             is_jit: d.is_jit,
+            is_poisoned: d.is_poisoned,
         })
     }
 
@@ -4441,7 +5053,6 @@ impl ClassData {
                 .map(|s| s.iter().map(|u| u.to_wire(cx.converter)).collect()),
             encapsulation,
             standalone: c.directive.standalone,
-            signals: c.directive.signals,
             export_as: self
                 .read_optional_field(c.directive.export_as.as_ref(), cx, "component.exportAs")?
                 .map(|names| names.0),
@@ -4574,7 +5185,7 @@ impl ClassData {
             host_metadata: self
                 .read_optional_field(c.directive.host_expr.as_deref(), cx, "component.host")?
                 .map(|host| host_metadata_wire(host, cx.source_text, cx.converter)),
-            host_directives: self.to_wire_host_directives(&c.directive.host_directives, cx),
+            host_directives: self.to_wire_host_directives(&c.directive, cx),
             providers_span: c
                 .directive
                 .providers_span

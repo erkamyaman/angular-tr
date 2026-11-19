@@ -28,12 +28,19 @@ export declare class Analyzer {
    * Paths must be absolute. From then on the roots are no longer re-read from the tsconfig.
    */
   setEntryPoints(entryPoints: Array<string>): Array<string>;
+  /**
+   * Flush every cached module resolution and return every module ID whose cached analysis was
+   * evicted.
+   */
+  clearResolutionCache(): Array<string>;
   analyze(): AnalysisIterator;
   analyzeOptimized(): AnalysisIterator;
   analyzeDelta(): AnalysisIterator;
   analyzeOptimizedDelta(): AnalysisIterator;
   getMetadataForFile(filePath: string): AnalysisResult | null;
   getFileContent(filePath: string): string;
+  canonicalPaths(paths: Array<string>): Array<string>;
+  getCompilerOptions?(): string;
 }
 
 /** Test analyzer that uses virtual filesystem for in-memory testing */
@@ -41,11 +48,14 @@ export declare class TestAnalyzer {
   constructor(options: TestAnalyzerOptions);
   getMetadataForFile(filePath: string): AnalysisResult | null;
   getFileContent(filePath: string): string;
+  getCompilerOptions?(): string;
   getTsFileForTemplate(templatePath: string): Array<TemplateUsage> | null;
   readResource(containingFile: string, url: string): ResolvedResource | null;
+  canonicalPaths(paths: Array<string>): Array<string>;
   updateFileContent(updates: Array<FileUpdate>): Array<string>;
   invalidateFiles(updates: Array<FileInvalidation>): Array<string>;
   setEntryPoints(entryPoints: Array<string>): Array<string>;
+  clearResolutionCache(): Array<string>;
   analyze(): AnalysisIterator;
   analyzeOptimized(): AnalysisIterator;
   analyzeDelta(): AnalysisIterator;
@@ -62,6 +72,11 @@ export interface AnalysisResult {
    * re-parse the source to find or edit an import.
    */
   imports: Array<ImportDeclarationMetadata>;
+  /**
+   * The file's top-level `import X = …` statements, in source order, which the emitter hoists
+   * like ngtsc's `ImportManager` alongside `imports`.
+   */
+  importEqualsDeclarations?: Array<ImportEqualsDeclarationMetadata>;
   typeOnlyExports: Array<string>;
   diagnostics: Array<NgDiagnostic>;
   /**
@@ -73,6 +88,17 @@ export interface AnalysisResult {
   signalDebugNames: Array<SignalDebugNameMetadata>;
   r3SymbolsSpecifier?: string;
   topLevelValueBindings?: Array<string>;
+  /**
+   * Names bound in the file that a generated namespace import alias (`i0`, `i1`, …) must
+   * avoid, as ngtsc's `ImportManager` does. Only names of that shape are listed.
+   */
+  namespaceAliasConflicts?: Array<string>;
+  /**
+   * Resolved paths of the local TS files this file statically imports, in the same form as
+   * `filePath`. Consumers use these as the file's dependency edges (e.g. incremental re-emit
+   * decisions) without resolving module specifiers themselves.
+   */
+  staticDependencies?: Array<string>;
 }
 
 /**
@@ -81,6 +107,10 @@ export interface AnalysisResult {
  * always takes precedence. Without a tsconfig, path-valued options must be absolute.
  */
 export interface AnalyzerOptions {
+  /** Record spans and counters for `takePerf`. Off by default. */
+  perfTrace?: boolean;
+  /** With `perfTrace`, also record detail events (per-query slices, query keys). */
+  perfTraceDetail?: boolean;
   /** tsconfig to read the root files and unset options from. */
   tsconfigPath?: string;
   /**
@@ -88,8 +118,20 @@ export interface AnalyzerOptions {
    * `setEntryPoints`), the tsconfig no longer supplies the roots.
    */
   entryPoints?: Array<string>;
-  /** The `r3_symbols.ts` file when compiling `@angular/core` itself. */
+  /**
+   * The `r3_symbols.ts` file when compiling `@angular/core` itself. Falls back to a root file
+   * named `r3_symbols.ts`. Setting it marks the compilation as `@angular/core`.
+   */
   r3SymbolsFile?: string;
+  /**
+   * Whether this compilation builds `@angular/core` itself (ngtsc's `isCore`), which imports
+   * its own decorators through relative paths rather than from `@angular/core`. Falls back to
+   * the tsconfig's `angularCompilerOptions._isAngularCoreCompilation`, then to `true` when
+   * `r3SymbolsFile` is set, and otherwise to whether the root file named `r3_symbols.ts` exports
+   * `ITS_JUST_ANGULAR = true` (ngtsc's `isAngularCorePackage`).
+   * Internal: only meant for compiling Angular itself.
+   */
+  angularCoreCompilation?: boolean;
   optimize?: boolean;
   virtualFiles?: Record<string, string>;
   /**
@@ -204,16 +246,19 @@ export interface ClassMetadata {
   ngTemplateGuards: Array<TemplateGuardMetadata>;
   hasNgFieldDirective: boolean;
   publicMethods: Array<string>;
+  signalMembers?: Array<string>;
   superClass?: DeclarationTuple;
   usesInheritance: boolean;
   usesOnChanges: boolean;
   isExported: boolean;
   hasNonExportedBounds: boolean;
+  hasNonAngularClassDecorators: boolean;
 }
 
 export interface CompilationChunk {
   files: Array<AnalysisResult>;
   staticEdges?: Record<string, Array<FileId>>;
+  removedFiles?: Array<string>;
 }
 
 export interface ComponentImportEntryMetadata {
@@ -253,7 +298,6 @@ export interface ComponentMetadata {
   stylesFromUrls?: Array<string>;
   styleUrls?: Array<UrlMetadata>;
   standalone: boolean;
-  signals: boolean;
   exportAs?: Array<string>;
   schemas?: Array<string>;
   rawImportsSpan?: SpanMetadata;
@@ -319,12 +363,15 @@ export interface ComponentMetadata {
 export interface ConstructorParamMetadata {
   typeName?: string;
   /**
-   * Module specifier the type was imported from, when the type resolves to a (non-aliased)
-   * named import (e.g. `@angular/core` for `ElementRef`). `None` for locally declared types.
-   * Used so DI tokens that reference an imported symbol are emitted through the matching
-   * namespace import (e.g. `i0.ElementRef`), mirroring ngtsc's import manager.
+   * Boxed runtime constructor name (`String`, `Boolean`, `Number`, `Object`, `Array`, `Function`)
+   * for non-`TSTypeReference` parameter types, mirroring `ngtsc`'s `downlevel_decorators_transform`
+   * for `jit: true` `static ctorParameters`.
    */
-  typeModule?: string;
+  jitTypeName?: string;
+  /**
+   * Whether the parameter carries a TypeScript type annotation in source.
+   */
+  hasType: boolean;
   isTypeOnly: boolean;
   /**
    * Whether `type_name` was resolved to a declaration that has a runtime value, either in this
@@ -475,7 +522,6 @@ export interface DirectiveMetadata {
   decoratorName?: string;
   selector?: string;
   standalone: boolean;
-  signals: boolean;
   isStructural: boolean;
   exportAs?: Array<string>;
   /** Syntax of the `host` object literal, for the type-check block. */
@@ -498,6 +544,7 @@ export interface DirectiveMetadata {
   argsSpan?: SpanMetadata;
   declaringNgModule?: DeclaringNgModule;
   isJit: boolean;
+  isPoisoned: boolean;
 }
 
 export enum ExpressionValueKindMetadata {
@@ -633,6 +680,14 @@ export interface ImportDeclarationMetadata {
   bindings: Array<ImportBindingMetadata>;
 }
 
+/** A top-level `import X = …` statement, which the emitter hoists like the `import` declarations. */
+export interface ImportEqualsDeclarationMetadata {
+  /** Statement span, including a leading `export`. */
+  span: SpanMetadata;
+  /** `span` extended over any trailing line terminator for clean removal. */
+  removalSpan: SpanMetadata;
+}
+
 export interface InjectableMetadata {
   decoratorName?: string;
   providedIn?: ProviderField;
@@ -689,6 +744,11 @@ export interface IsolatedTypeElementMetadata {
    * reference for `Typeof`, or the full list for `ReferenceTuple`).
    */
   references?: Array<ReferenceMetadata>;
+  /**
+   * Expanded inner elements for a same-file `const` array that mixes references and call
+   * expressions (e.g. `RouterModule.forChild(...)`) when `kind` is `ReferenceTuple`.
+   */
+  elements?: Array<IsolatedTypeElementMetadata>;
 }
 
 export interface IsolatedTypeTupleMetadata {
@@ -788,7 +848,7 @@ export interface OutputMetadata {
 
 export interface PipeMetadata {
   decoratorName?: string;
-  name: string;
+  name?: string | null;
   pure?: boolean;
   standalone?: boolean;
   argsSpan?: SpanMetadata;
@@ -815,6 +875,7 @@ export interface QueryMetadata {
   emitDistinctChangesOnly: boolean;
   readSpan?: SpanMetadata;
   optionsSpan?: SpanMetadata;
+  optionsString?: string;
   isStatic: boolean;
   isSignal: boolean;
   decoratorSpan?: SpanMetadata;

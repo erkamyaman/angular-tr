@@ -21,7 +21,7 @@ import {TemplateTypeChecker} from './type_checker.js';
 import {TsGoFacade} from './facade.js';
 import {getSetup} from './type_checker_setup.js';
 import {SymbolKind} from './symbols.js';
-import {getTcbPath, offsetToPosition} from '../../src/tcb_ls_util.js';
+import {getTcbPath, offsetToPosition} from './tcb_ls_util.js';
 import {findTightestNode} from './references_and_rename_utils.js';
 
 /**
@@ -37,7 +37,7 @@ export async function getSignatureHelp(
   facade: TsGoFacade,
   context?: SignatureHelpContext,
 ): Promise<SignatureHelp | null> {
-  const setup = getSetup(hybridCompiler, filePath, position);
+  const setup = await getSetup(hybridCompiler, filePath, position);
   if (!setup) {
     return null;
   }
@@ -61,7 +61,7 @@ export async function getSignatureHelp(
     return null;
   }
 
-  const symbol = templateTypeChecker.getSymbolForNode(
+  const symbol = await templateTypeChecker.getSymbolForNode(
     target.context.node,
     tsFilePath,
     meta.classKey,

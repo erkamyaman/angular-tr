@@ -10,7 +10,7 @@ import {Position, TextDocuments} from 'vscode-languageserver';
 import {TextDocument} from 'vscode-languageserver-textdocument';
 import {fileURLToPath} from 'node:url';
 import {LanguageService} from '../../../../packages/compiler-cli/preprocessor/language-service/src/language_service.js';
-import {positionToOffset} from '../../../../packages/compiler-cli/preprocessor/src/tcb_ls_util.js';
+import {positionToOffset} from '../../../../packages/compiler-cli/preprocessor/language-service/src/tcb_ls_util.js';
 
 export interface HandlerContext {
   languageService: LanguageService;
@@ -23,11 +23,11 @@ export interface DocumentContext {
   offset: number;
 }
 
-export function getDocumentContext(
+export async function getDocumentContext(
   context: HandlerContext,
   uri: string,
   position: Position,
-): DocumentContext | null {
+): Promise<DocumentContext | null> {
   if (!uri.startsWith('file:')) {
     return null;
   }
@@ -44,7 +44,7 @@ export function getDocumentContext(
 
   let fileContent: string;
   try {
-    fileContent = context.languageService.hybridCompiler.getFileContent(filePath);
+    fileContent = await context.languageService.hybridCompiler.getFileContent(filePath);
   } catch {
     return null;
   }

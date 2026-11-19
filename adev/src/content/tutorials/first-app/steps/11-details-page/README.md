@@ -58,11 +58,11 @@ Bu adımda, `Details` bileşeninde rota parametresini alacaksınız. Şu anda uy
 
          ```ts
          export class Details {
-            route: ActivatedRoute = inject(ActivatedRoute);
-            housingLocationId = -1;
-            constructor() {
-            this.housingLocationId = Number(this.route.snapshot.params['id']);
-            }
+           route: ActivatedRoute = inject(ActivatedRoute);
+           housingLocationId = -1;
+           constructor() {
+             this.housingLocationId = Number(this.route.snapshot.params['id']);
+           }
          }
          ```
 
@@ -96,9 +96,6 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
    ve değişikliklerinizi kaydedin
 
-1. `Details` bileşeninde, az önce oluşturulan `details.css` dosyasını stillerin kaynağı olarak kullanın:
-   <docs-code language="angular-ts" header="details.ts dosyasını oluşturulan css dosyasını kullanacak şekilde güncelleyin" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/details/details.ts" visibleLines="[30]"/>
-
 1. Tarayıcıda sayfayı yenileyin ve belirli bir konut konumu için "Learn More" bağlantısına tıkladığınızda, ayrıntılar sayfasının seçilen öğenin verilerine göre doğru bilgileri görüntülediğini doğrulayın.
 
 <img alt="Ev bilgilerini listeleyen detay sayfası" src="assets/images/tutorials/first-app/homes-app-lesson-11-step-3.png">
@@ -110,7 +107,7 @@ Verilere erişmek için `HousingService`'e bir çağrı ekleyeceksiniz.
 
 1.  Kodunuzun aşağıdakiyle eşleştiğini doğrulayın:
 
-      <docs-code language="angular-ts" header="app.ts içindeki routerLink'i doğrulayın" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/app.ts" visibleLines="[8,19]"/>
+      <docs-code language="angular-ts" header="app.ts içindeki routerLink'i doğrulayın" path="adev/src/content/tutorials/first-app/steps/12-forms/src/app/app.ts" visibleLines="[7,18]"/>
 
     Kodunuz zaten güncel olmalı ama emin olmak için doğrulayın.
 

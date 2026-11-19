@@ -22,7 +22,7 @@
 
 Şablonunuzun bir bölümüne davranışlar veya yapılandırma eklemek için `<ng-container>`'a direktifler uygulayabilirsiniz.
 
-Angular, `<ng-container>`'a uygulanan tüm nitelik bağlamalarını ve olay dinleyicilerini, direktifler aracılığıyla uygulananlar dahil, yok sayar.
+Angular, `<ng-container>`'a uygulanan sınıf bağlamalarını, stil bağlamalarını, DOM olay dinleyicilerini ve statik nitelikleri, direktifler aracılığıyla uygulananlar dahil, yok sayar. Nitelik bağlamaları hata verir ve özellik bağlamaları yalnızca direktif girdileri için çalışır.
 
 ## Dinamik içerik görüntülemek için `<ng-container>` kullanma
 

@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './dom_schema_checker';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.MyComp) {
@@ -84,9 +85,9 @@ export class MyComp {
               {
                 selector: 'my-comp',
                 template: `
-        <unknown-element></unknown-element>
-        <div [unknown-property]="true"></div>
-      `,
+    <unknown-element></unknown-element>
+    <div [unknown-property]="true"></div>
+  `,
               },
             ],
           },
@@ -153,9 +154,9 @@ export class MyCompNoErrors {
               {
                 selector: 'my-comp-no-errors',
                 template: `
-        <unknown-element></unknown-element>
-        <div [unknown-property]="true"></div>
-      `,
+    <unknown-element></unknown-element>
+    <div [unknown-property]="true"></div>
+  `,
                 schemas: [NO_ERRORS_SCHEMA],
               },
             ],

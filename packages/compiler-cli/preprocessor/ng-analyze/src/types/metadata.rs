@@ -104,6 +104,29 @@ impl ImportDeclarationMetadata {
     }
 }
 
+/// A top-level `import X = …` statement, which the emitter hoists like the `import` declarations.
+#[cfg_attr(feature = "napi", napi(object))]
+#[derive(Clone, Debug, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ImportEqualsDeclarationMetadata {
+    /// Statement span, including a leading `export`.
+    pub span: SpanMetadata,
+    /// `span` extended over any trailing line terminator for clean removal.
+    pub removal_span: SpanMetadata,
+}
+
+impl ImportEqualsDeclarationMetadata {
+    pub(crate) fn to_wire(
+        info: &crate::analyzer::ImportEqualsDeclarationInfo,
+        converter: &crate::utils::Utf8ToUtf16,
+    ) -> Self {
+        Self {
+            span: SpanMetadata::new(info.span, converter),
+            removal_span: SpanMetadata::new(info.removal_span, converter),
+        }
+    }
+}
+
 /// Implicit signal `debugName` insertion (`signalMetadataTransform`).
 /// https://github.com/angular/angular/blob/5b525f9/packages/compiler-cli/src/ngtsc/transform/src/implicit_signal_debug_name_transform.ts#L11-L93
 #[cfg_attr(feature = "napi", napi(object))]
@@ -264,7 +287,8 @@ pub struct DeclaringNgModule {
 pub struct PipeMetadata {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub decorator_name: Option<String>,
-    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     pub pure: Option<bool>,
     pub standalone: Option<bool>,
     pub args_span: Option<SpanMetadata>,
@@ -349,7 +373,6 @@ pub struct ComponentMetadata {
     pub styles_from_urls: Option<Vec<String>>,
     pub style_urls: Option<Vec<UrlMetadata>>,
     pub standalone: bool,
-    pub signals: bool,
     pub export_as: Option<Vec<String>>,
     pub schemas: Option<Vec<String>>,
     pub raw_imports_span: Option<SpanMetadata>,
@@ -464,7 +487,6 @@ pub struct DirectiveMetadata {
     pub decorator_name: Option<String>,
     pub selector: Option<String>,
     pub standalone: bool,
-    pub signals: bool,
     pub is_structural: bool,
     pub export_as: Option<Vec<String>>,
     /// Syntax of the `host` object literal, for the type-check block.
@@ -487,6 +509,8 @@ pub struct DirectiveMetadata {
     pub declaring_ng_module: Option<DeclaringNgModule>,
     #[serde(default)]
     pub is_jit: bool,
+    #[serde(default)]
+    pub is_poisoned: bool,
 }
 
 #[cfg_attr(feature = "napi", napi(object))]
@@ -564,6 +588,8 @@ pub struct QueryMetadata {
     pub read_span: Option<SpanMetadata>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub options_span: Option<SpanMetadata>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub options_string: Option<String>,
     pub is_static: bool,
     pub is_signal: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -816,6 +842,10 @@ pub struct IsolatedTypeElementMetadata {
     /// reference for `Typeof`, or the full list for `ReferenceTuple`).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub references: Option<Vec<ReferenceMetadata>>,
+    /// Nested tuple elements when `kind` is `ReferenceTuple` and the tuple was expanded from a
+    /// same-file `const` array containing non-reference elements (such as `CallReturnType`).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub elements: Option<Vec<IsolatedTypeElementMetadata>>,
 }
 
 #[cfg_attr(feature = "napi", napi(object))]
@@ -859,12 +889,17 @@ pub struct HostListenerMetadata {
 pub struct ConstructorParamMetadata {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub type_name: Option<String>,
-    /// Module specifier the type was imported from, when the type resolves to a (non-aliased)
-    /// named import (e.g. `@angular/core` for `ElementRef`). `None` for locally declared types.
-    /// Used so DI tokens that reference an imported symbol are emitted through the matching
-    /// namespace import (e.g. `i0.ElementRef`), mirroring ngtsc's import manager.
+    /// Boxed runtime constructor name (`String`, `Boolean`, `Number`, `Object`, `Array`,
+    /// `Function`) for non-`TSTypeReference` parameter types (primitives, literals, arrays/tuples,
+    /// functions/constructors, type predicates, and nullable `T | null` unions), mirroring
+    /// `ngtsc`'s `downlevel_decorators_transform` for `jit: true` `static ctorParameters`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub type_module: Option<String>,
+    pub jit_type_name: Option<String>,
+    /// Whether the parameter carries a TypeScript type annotation in source (`param.type != null`
+    /// in `downlevel_decorators_transform`). Untyped, undecorated parameters emit `null` in
+    /// `jit: true` `static ctorParameters`, whereas typed parameters whose type has no runtime
+    /// value emit `{ type: undefined }`.
+    pub has_type: bool,
     pub is_type_only: bool,
     /// Whether `type_name` was resolved to a declaration that has a runtime value, either in this
     /// file or by chasing the import across files. References we could not resolve at all —
@@ -1054,10 +1089,14 @@ pub struct ClassMetadata {
     pub ng_template_guards: Vec<TemplateGuardMetadata>,
     pub has_ng_field_directive: bool,
     pub public_methods: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub signal_members: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub super_class: Option<DeclarationTuple>,
     pub uses_inheritance: bool,
     pub uses_on_changes: bool,
     pub is_exported: bool,
     pub has_non_exported_bounds: bool,
+    #[serde(default)]
+    pub has_non_angular_class_decorators: bool,
 }

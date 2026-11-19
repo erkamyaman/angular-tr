@@ -64,6 +64,18 @@
         >
           {{ answerRevealed() ? 'Sıfırla' : 'Cevabı Göster' }}
         </button>
+        @if (answerRevealed()) {
+          <button
+            type="button"
+            (click)="handleBackToMyCode()"
+            [disabled]="!canRevealAnswer()"
+            class="docs-reveal-answer-button adev-reveal-desktop-button docs-primary-btn"
+            [attr.text]="'Koduma Geri Dön'"
+            aria-label="Koduma Geri Dön"
+          >
+            Koduma Geri Dön
+          </button>
+        }
       }
 
       <!-- Download code -->
@@ -118,6 +130,18 @@
           >
             {{ answerRevealed() ? 'Sıfırla' : 'Cevabı Göster' }}
           </button>
+          @if (answerRevealed()) {
+            <button
+              type="button"
+              (click)="handleBackToMyCode()"
+              [disabled]="!canRevealAnswer()"
+              class="docs-reveal-answer-button adev-reveal-mobile-button docs-primary-btn"
+              [attr.text]="'Koduma Geri Dön'"
+              aria-label="Koduma Geri Dön"
+            >
+              Koduma Geri Dön
+            </button>
+          }
         }
       </div>
 

@@ -476,7 +476,7 @@ signupForm = form(this.signupModel, (schemaPath) => {
 });
 ```
 
-E-posta alanı boşsa, yalnızca `required()` hatası görünür. Kullanıcı "a@b" yazarsa, hem `email()` hem de `minLength()` hataları görünür. Tüm doğrulama kuralları çalışır -- doğrulama ilk başarısızlıktan sonra durmaz.
+E-posta alanı boşsa, yalnızca `required()` hatası görünür. Kullanıcı "a@" yazarsa, hem `email()` hem de `minLength()` hataları görünür. Tüm doğrulama kuralları çalışır -- doğrulama ilk başarısızlıktan sonra durmaz.
 
 TIP: Hataların kullanıcılar alanla etkileşime girmeden önce görünmesini önlemek için şablonlarınızda `touched() && invalid()` kalıbını kullanın. Doğrulama hatalarını görüntüleme hakkında kapsamlı rehberlik için [Alan Durumu Yönetimi kılavuzuna](guide/forms/signals/field-state-management#koşullu-hata-gösterimi) bakın.
 
@@ -793,12 +793,12 @@ const userForm = form(signal({email: '', password: ''}), (schemaPath) => {
 
 ### Dinamik şemalar
 
-Doğrulama şemasının bağımlılıkları değiştiğinde otomatik olarak güncellenmesi için statik bir şema yerine bir sinyal geçirebilirsiniz.
+Statik bir şema yerine, şemayı döndüren bir fonksiyon geçirebilirsiniz. Fonksiyonun okuduğu sinyaller değiştiğinde doğrulama otomatik olarak güncellenir.
 
 ```angular-ts
 import {Component, computed, signal} from '@angular/core';
 import {form, FormField, validateStandardSchema} from '@angular/forms/signals';
-import z from 'zod';
+import * as z from 'zod';
 
 @Component({/* ... */})
 export class DynamicSchema {

@@ -6,7 +6,7 @@ Bu eğitim dersi, Angular uygulamanız için nasıl yeni bir [bileşen](guide/co
 
 ## Neler öğreneceksiniz
 
-Uygulamanızda yeni bir bileşen var: `Home`.
+Uygulamanızda yeni bir bileşen olacak: `Home`.
 
 ## Angular bileşenlerinin kavramsal önizlemesi
 
@@ -20,7 +20,7 @@ Angular'da bileşenler, özelliklerini tanımlayan meta verilere sahiptir.
 - `selector`: Angular'ın şablonlarda bileşene nasıl başvurduğunu tanımlar.
 - `imports`: bileşenin bağımlılıklarını tanımlar.
 - `template`: bileşenin HTML işaretlemesini ve düzenini tanımlar.
-- `styleUrls`: bileşenin kullandığı CSS dosyalarının URL'lerini bir dizi içinde listeler.
+- `styleUrl`: bileşenin kullandığı CSS dosyasının URL'sini belirtir.
 
 <docs-pill-row>
   <docs-pill href="api/core/Component" title="Bileşenler hakkında daha fazla bilgi"/>

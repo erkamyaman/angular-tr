@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './app';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.AppComponent) {
@@ -70,9 +71,9 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [LibModule],
                 template: `
-        <div lib-dir></div>
-        <lib-cmp></lib-cmp>
-      `,
+    <div lib-dir></div>
+    <lib-cmp></lib-cmp>
+  `,
               },
             ],
           },

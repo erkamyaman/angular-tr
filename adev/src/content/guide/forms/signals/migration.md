@@ -206,13 +206,12 @@ form.password().value(); // 'password'
 form().value(); // { email: '', password: FormControl}
 ```
 
-Tüm form değerine ihtiyacınız varsa, bunu manuel olarak oluşturmanız gerekir:
+Kontrollerin sarmalından çıkarıldığı tüm form değerine ihtiyacınız varsa, `@angular/forms/signals/compat` içindeki `extractValue` fonksiyonunu kullanın:
 
 ```typescript
-const formValue = computed(() => ({
-  email: form.email().value(),
-  password: form.password().value(),
-})); // {email: '', password: ''}
+import {extractValue} from '@angular/forms/signals/compat';
+
+const formValue = computed(() => extractValue(form)); // {email: '', password: 'password'}
 ```
 
 ## Aşağıdan yukarıya taşıma

@@ -9,7 +9,7 @@
 import {ErrorCode, ngErrorCode} from '../../src/ngtsc/diagnostics';
 
 import {runInEachFileSystem} from '../../src/ngtsc/file_system/testing';
-import {loadStandardTestFiles} from '../../src/ngtsc/testing';
+import {isNgpTestMode, loadStandardTestFiles} from '../../src/ngtsc/testing';
 
 import {NgtscTestEnvironment} from './env';
 
@@ -769,7 +769,14 @@ runInEachFileSystem(() => {
         expect(cleanNewLines(jsContents)).toMatch(
           /\(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\("\.\/cmp"\)\.then\(\(?m\)? => m\.Cmp\) ?\]/,
         );
-        expect(jsContents).not.toContain('import { Cmp }');
+        if (isNgpTestMode()) {
+          // `TestCmp` also injects `Cmp` via constructor DI (`ɵɵdirectiveInject(Cmp)`), so `ngp`
+          // retains the named `import { Cmp }` instead of synthesizing `import * as i1`.
+          expect(jsContents).toContain('import { Cmp }');
+          expect(jsContents).not.toContain('import * as i1');
+        } else {
+          expect(jsContents).not.toContain('import { Cmp }');
+        }
       });
 
       it('should retain symbols used in types and eagerly', () => {
@@ -1113,18 +1120,18 @@ runInEachFileSystem(() => {
         // Expect that all deferrableImports to become dynamic imports.
         // Other imported symbols remain eager.
         expect(cleanNewLines(jsContents)).toMatch(
-          /const AppCmp_Defer_1_DepsFn = \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\("\.\/deferred-a"\)\.then\(\(?m\)? => m\.DeferredCmpA\) ?\];/,
+          /const AppCmp_Defer_1_DepsFn = \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\(["']\.\/deferred-a["']\)\.then\(\(?m\)? => m\.DeferredCmpA\) ?\];/,
         );
         expect(cleanNewLines(jsContents)).toMatch(
-          /const AppCmp_Defer_4_DepsFn = \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\("\.\/deferred-b"\)\.then\(\(?m\)? => m\.DeferredCmpB\) ?\];/,
+          /const AppCmp_Defer_4_DepsFn = \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\(["']\.\/deferred-b["']\)\.then\(\(?m\)? => m\.DeferredCmpB\) ?\];/,
         );
 
         // Make sure there are no eager imports present in the output.
-        expect(jsContents).not.toContain(`from './deferred-a'`);
-        expect(jsContents).not.toContain(`from './deferred-b'`);
+        expect(jsContents).not.toMatch(/from ["']\.\/deferred-a["']/);
+        expect(jsContents).not.toMatch(/from ["']\.\/deferred-b["']/);
 
         // Eager dependencies retain their imports.
-        expect(jsContents).toContain(`from './eager-a';`);
+        expect(jsContents).toMatch(/from ["']\.\/eager-a["'];/);
 
         // Defer blocks would have their own dependency functions in full mode.
         expect(jsContents).toContain('ɵɵdefer(1, 0, AppCmp_Defer_1_DepsFn);');
@@ -1132,7 +1139,7 @@ runInEachFileSystem(() => {
 
         // Expect `ɵsetClassMetadataAsync` to contain dynamic imports too.
         expect(cleanNewLines(jsContents)).toMatch(
-          /ɵsetClassMetadataAsync\(AppCmp, \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\("\.\/deferred-a"\)\.then\(\(?m\)? => m\.DeferredCmpA\), (?:\/\* @ts-ignore \*\/ )?import\("\.\/deferred-b"\)\.then\(\(?m\)? => m\.DeferredCmpB\) ?\], \(DeferredCmpA, DeferredCmpB\) => \{/,
+          /ɵsetClassMetadataAsync\(AppCmp, \(\) => \[ ?(?:\/\* @ts-ignore \*\/ )?import\(["']\.\/deferred-a["']\)\.then\(\(?m\)? => m\.DeferredCmpA\), (?:\/\* @ts-ignore \*\/ )?import\(["']\.\/deferred-b["']\)\.then\(\(?m\)? => m\.DeferredCmpB\) ?\], \(DeferredCmpA, DeferredCmpB\) => \{/,
         );
       });
 
@@ -1762,9 +1769,7 @@ runInEachFileSystem(() => {
                 blockA: [DeferredCmpA],
               },
               template: \`
-                @defer {
-                  <deferred-cmp-a />
-                }
+                @defer {}
               \`,
             })
             export class AppCmp {}
@@ -1800,9 +1805,7 @@ runInEachFileSystem(() => {
                 blockA: [DeferredCmpA],
               },
               template: \`
-                @defer (name blockB) {
-                  <deferred-cmp-a />
-                }
+                @defer (name blockB) {}
               \`,
             })
             export class AppCmp {}
@@ -2541,8 +2544,18 @@ runInEachFileSystem(() => {
         );
 
         const diags = env.driveDiagnostics();
-        expect(diags.length).toBe(1);
-        expect(diags[0].messageText).toContain(`@defer block must specify a 'name' parameter`);
+
+        if (isNgpTestMode()) {
+          expect(diags.length).toBe(2);
+          expect(diags[0].messageText).toContain(`@defer block must specify a 'name' parameter`);
+          expect(diags[1].messageText).toContain(
+            `Pipe 'pipea' was imported via \`@Component.deferredImports\` under block 'blockA', ` +
+              `but is used in a \`@defer\` block configured for 'unnamed'`,
+          );
+        } else {
+          expect(diags.length).toBe(1);
+          expect(diags[0].messageText).toContain(`@defer block must specify a 'name' parameter`);
+        }
       });
 
       it('should report an error when a structural directive from deferredImports is used in an unassociated defer block', () => {

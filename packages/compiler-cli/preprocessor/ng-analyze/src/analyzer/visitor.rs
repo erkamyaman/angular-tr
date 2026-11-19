@@ -1,10 +1,8 @@
 use std::collections::HashSet;
 use std::path::Path;
 
-use crate::ResourceResolverFs;
 use oxc_ast::ast::{Class, ClassElement, ExportDefaultDeclarationKind, Program, Statement};
 use oxc_ast_visit::utf8_to_utf16::Utf8ToUtf16;
-use oxc_resolver::ResolverGeneric;
 use oxc_semantic::Semantic;
 use oxc_syntax::module_record::{ExportExportName, ExportImportName, ModuleRecord};
 
@@ -29,13 +27,11 @@ use super::{
 };
 
 /// Visitor that collects Angular decorated classes (non-optimized mode)
-pub struct ClassVisitor<'a, Fs: ResourceResolverFs> {
+pub struct ClassVisitor<'a> {
     source_text: &'a str,
     converter: &'a Utf8ToUtf16,
     file_path: &'a Path,
     file_id: crate::query::FileId,
-    fs: &'a Fs,
-    resolver: &'a ResolverGeneric<Fs>,
     import_map: &'a std::collections::HashMap<String, ImportedSymbol>,
     angular_imports: &'a crate::analyzer::imports::AngularImports,
     semantic: &'a Semantic<'a>,
@@ -47,11 +43,12 @@ pub struct ClassVisitor<'a, Fs: ResourceResolverFs> {
     results: Vec<ClassData>,
     registrations: Vec<RegistrationInfo>,
     di_facts: Vec<super::di_facts::ClassDiFacts>,
+    signal_facts: Vec<super::signal_facts::ClassSignalFacts>,
     fallback_symbol_id: usize,
     diagnostics: Vec<crate::NgDiagnostic>,
 }
 
-impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
+impl<'a> ClassVisitor<'a> {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         source_text: &'a str,
@@ -59,8 +56,6 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
         semantic: &'a Semantic<'a>,
         file_path: &'a Path,
         file_id: crate::query::FileId,
-        fs: &'a Fs,
-        resolver: &'a ResolverGeneric<Fs>,
         import_map: &'a std::collections::HashMap<String, ImportedSymbol>,
         angular_imports: &'a crate::analyzer::imports::AngularImports,
         local_exported_names: &'a HashSet<&'a str>,
@@ -75,8 +70,6 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             semantic,
             file_path,
             file_id,
-            fs,
-            resolver,
             import_map,
             angular_imports,
             local_exported_names,
@@ -87,6 +80,7 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             results: Vec::new(),
             registrations: Vec::new(),
             di_facts: Vec::new(),
+            signal_facts: Vec::new(),
             fallback_symbol_id: 1000000,
             diagnostics: Vec::new(),
         }
@@ -99,6 +93,7 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             classes: self.results,
             registrations: self.registrations,
             di_facts: self.di_facts,
+            signal_facts: self.signal_facts,
             file_exports: self.file_exports,
             diagnostics: self.diagnostics,
         }
@@ -158,6 +153,21 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             super_class.clone(),
             ctor_params_di.as_deref(),
         ));
+        let own_signal_facts = super::signal_facts::extract_own_signal_facts(
+            class,
+            self.semantic,
+            self.import_map,
+            self.angular_imports.is_core,
+            false,
+        );
+        let own_signal_members = own_signal_facts.signal_members.clone();
+        self.signal_facts
+            .extend(super::signal_facts::ts_class_signal_facts(
+                class,
+                reference_id,
+                own_signal_facts,
+                super_class.clone(),
+            ));
 
         if class.decorators.is_empty() {
             if !self.angular_imports.is_core
@@ -179,9 +189,6 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             class,
             node_id,
             self.converter,
-            self.file_path,
-            self.fs,
-            self.resolver,
             self.import_map,
             self.angular_imports,
             self.semantic,
@@ -190,6 +197,7 @@ impl<'a, Fs: ResourceResolverFs> ClassVisitor<'a, Fs> {
             self.enable_hmr,
             super_class,
             ctor_params_di.unwrap_or_default(),
+            own_signal_members,
         ) else {
             return;
         };
@@ -391,6 +399,7 @@ fn classify(
     ClassData {
         reference_id,
         ng_decorator_spans: common.ng_decorator_spans,
+        non_ng_decorator_spans: common.non_ng_decorator_spans,
         decorator_removal_spans: common.decorator_removal_spans,
         nocollapse_insertions: common.nocollapse_insertions,
         span: common.span,
@@ -412,6 +421,7 @@ fn classify(
         ng_template_guards: common.ng_template_guards,
         has_ng_field_directive: common.has_ng_field_directive,
         public_methods: common.public_methods,
+        signal_members: common.signal_members,
         uses_inheritance: common.uses_inheritance,
         uses_on_changes: common.uses_on_changes,
         is_exported: common.is_exported,
@@ -453,33 +463,11 @@ pub struct RegistrationInfo {
     pub has_non_exported_bounds: bool,
 }
 
-#[allow(clippy::too_many_arguments)]
-fn try_parse_component<'a, Fs: ResourceResolverFs>(
-    decorator: &oxc_ast::ast::Decorator<'a>,
-    semantic: &Semantic<'a>,
-    import_map: &std::collections::HashMap<String, ImportedSymbol>,
-    file_path: &Path,
-    fs: &Fs,
-    resolver: &ResolverGeneric<Fs>,
-    angular_imports: &crate::analyzer::imports::AngularImports,
-    eval: &crate::evaluator::EvalInput<'a, '_>,
-) -> Option<ComponentData> {
-    component::parse_decorator(
-        decorator,
-        file_path,
-        fs,
-        resolver,
-        semantic,
-        import_map,
-        angular_imports,
-        eval,
-    )
-}
-
 /// Class-body facts shared by every classification (everything except `symbol_id`, which
 /// `process_class` assigns).
 struct ParsedCommon {
     ng_decorator_spans: Vec<oxc_span::Span>,
+    non_ng_decorator_spans: Vec<oxc_span::Span>,
     decorator_removal_spans: Vec<oxc_span::Span>,
     nocollapse_insertions: Vec<super::closure_nocollapse::NoCollapseInsertion>,
     span: oxc_span::Span,
@@ -500,6 +488,7 @@ struct ParsedCommon {
     ng_template_guards: Vec<TemplateGuardMetadata>,
     has_ng_field_directive: bool,
     public_methods: Vec<String>,
+    signal_members: Vec<String>,
     uses_inheritance: bool,
     uses_on_changes: bool,
     is_exported: bool,
@@ -551,13 +540,10 @@ impl ParsedClass {
 }
 
 #[allow(clippy::too_many_arguments)]
-fn process_class_common<'a, Fs: ResourceResolverFs>(
+fn process_class_common<'a>(
     class: &Class<'a>,
     class_node_id: oxc_semantic::NodeId,
     converter: &Utf8ToUtf16,
-    file_path: &Path,
-    fs: &Fs,
-    resolver: &ResolverGeneric<Fs>,
     import_map: &std::collections::HashMap<String, ImportedSymbol>,
     angular_imports: &crate::analyzer::imports::AngularImports,
     semantic: &Semantic<'a>,
@@ -566,6 +552,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
     enable_hmr: bool,
     super_class: Option<crate::DeclarationTuple>,
     ctor_params_di: Vec<super::CtorParamDi>,
+    signal_members: Vec<String>,
 ) -> Option<ParsedClass> {
     let class_name = class.id.as_ref().map(|id| id.name.to_string());
     let name_span = class.id.as_ref().map(|id| id.span);
@@ -573,6 +560,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
         out: Vec::new(),
         eval,
     });
+    let mut jit_removal_spans = Vec::new();
     let constructor_params_result = get_constructor_params(
         class,
         &ctor_params_di,
@@ -580,6 +568,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
         converter,
         import_map,
         angular_imports,
+        &mut jit_removal_spans,
         top_level_reads.as_mut(),
     );
     let (constructor_params, unexpected_param_decorators) = match constructor_params_result {
@@ -596,6 +585,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
         semantic.source_text(),
         &mut later_declaration_references,
         &mut member_removal_spans,
+        &mut jit_removal_spans,
         top_level_reads.as_mut(),
     );
 
@@ -624,16 +614,9 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
             service = Some(facts);
             ng_decorator_spans.push(decorator.span);
         }
-        if let Some(parsed) = try_parse_component(
-            decorator,
-            semantic,
-            import_map,
-            file_path,
-            fs,
-            resolver,
-            angular_imports,
-            eval,
-        ) {
+        if let Some(parsed) =
+            component::parse_decorator(decorator, semantic, import_map, angular_imports, eval)
+        {
             component = Some(parsed);
             ng_decorator_spans.push(decorator.span);
         }
@@ -672,9 +655,17 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
         }
     }
 
+    let is_jit = component.as_ref().is_some_and(|c| c.directive.is_jit)
+        || directive.as_ref().is_some_and(|d| d.is_jit)
+        || ng_module.as_ref().is_some_and(|m| m.is_jit);
+
     // Class decorators lead the removal list, followed by the member decorators.
+    // For JIT classes, class decorators are preserved on the class declaration while
+    // Angular constructor parameter and identifier-named member decorators are downleveled
+    // into `static ctorParameters` and `static propDecorators`.
     let mut decorator_removal_spans = Vec::new();
     let mut decorator_function_spans = Vec::new();
+    let mut non_ng_decorator_spans = Vec::new();
     for decorator in &class.decorators {
         if ng_decorator_spans.contains(&decorator.span) {
             super::collect_decorator_references(
@@ -685,13 +676,21 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
                 top_level_reads.as_mut(),
                 Some(&mut decorator_function_spans),
             );
-            decorator_removal_spans.push(super::utils::decorator_removal_span(
-                decorator,
-                semantic.source_text(),
-            ));
+            if !is_jit {
+                decorator_removal_spans.push(super::utils::decorator_removal_span(
+                    decorator,
+                    semantic.source_text(),
+                ));
+            }
+        } else {
+            non_ng_decorator_spans.push(decorator.span);
         }
     }
-    decorator_removal_spans.extend(member_removal_spans);
+    if is_jit {
+        decorator_removal_spans.extend(jit_removal_spans);
+    } else {
+        decorator_removal_spans.extend(member_removal_spans);
+    }
     let nocollapse_insertions = super::closure_nocollapse::collect_nocollapse_insertions(
         class,
         &ng_decorator_spans,
@@ -758,6 +757,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
     Some(ParsedClass {
         common: ParsedCommon {
             ng_decorator_spans,
+            non_ng_decorator_spans,
             decorator_removal_spans,
             nocollapse_insertions,
             span: class.span,
@@ -778,6 +778,7 @@ fn process_class_common<'a, Fs: ResourceResolverFs>(
             ng_template_guards: type_check_meta.ng_template_guards,
             has_ng_field_directive: type_check_meta.has_ng_field_directive,
             public_methods: type_check_meta.public_methods,
+            signal_members,
             uses_inheritance,
             uses_on_changes,
             is_exported,
@@ -886,22 +887,29 @@ fn declaration_statement_start(
     }
 }
 
-/// Everything derivable from a single file: the decorated classes (each component carrying its own
-/// parsed imports) plus the curated facts (registrations, re-exports). This is the complete
-/// single-file pass ([`analyze_file`]); the semantic query layers cross-file resolution on top of it.
+/// Everything derivable from a single file's AST: the decorated classes (each component carrying
+/// its own parsed imports) plus the curated facts (registrations, re-exports). Produced by
+/// [`analyze_parsed`] without touching the filesystem; `templateUrl`/`styleUrl(s)` are recorded
+/// on each component's `pending_*` fields and loaded by a subsequent
+/// [`super::load_syntax_resources`] pass. The semantic query layers cross-file resolution on top.
 pub struct ParsedFileAnalysis {
     pub classes: Vec<ClassData>,
     pub registrations: Vec<RegistrationInfo>,
     /// Constructor facts for every class in the file, decorated or not.
     pub di_facts: Vec<super::di_facts::ClassDiFacts>,
+    /// Signal member facts for every class in the file, decorated or not.
+    pub signal_facts: Vec<super::signal_facts::ClassSignalFacts>,
     /// Facts for the top-level function declarations, by name.
     pub function_facts: std::collections::HashMap<String, super::transforms::FunctionFacts>,
     pub file_exports: FileExportInfo,
     pub imports_end: u32,
     /// The file's static `import` declarations, in source order. Drives import removal for
-    /// `@defer` and namespace-alias discovery — both need the exact declaration text, so both
-    /// would otherwise have to re-parse the source downstream.
+    /// `@defer`, which needs the exact declaration text and would otherwise have to re-parse the
+    /// source downstream.
     pub import_declarations: Vec<ImportDeclarationInfo>,
+    /// The file's top-level `import X = …` statements, in source order, which the emitter hoists
+    /// alongside [`Self::import_declarations`].
+    pub import_equals_declarations: Vec<super::imports::ImportEqualsDeclarationInfo>,
     pub type_only_exports: Vec<String>,
     pub static_dependencies: Vec<String>,
     /// The specifiers of the file's dynamic imports, `import()` calls and literal import types
@@ -919,6 +927,10 @@ pub struct ParsedFileAnalysis {
     /// Root-scope runtime binding names for HMR ([`super::top_level_value_bindings`]); `None`
     /// unless analyzed with `enable_hmr`.
     pub top_level_value_bindings: Option<Vec<String>>,
+    /// Names in the file a generated namespace import alias must avoid
+    /// ([`super::imports::namespace_alias_conflicts`]); empty when `classes` is, as nothing then
+    /// generates an import.
+    pub namespace_alias_conflicts: Vec<String>,
 }
 
 /// Raw output of [`ClassVisitor`] before the file-level fields (`imports_end`, …) are attached.
@@ -926,27 +938,35 @@ struct ClassVisitorOutput {
     classes: Vec<ClassData>,
     registrations: Vec<RegistrationInfo>,
     di_facts: Vec<super::di_facts::ClassDiFacts>,
+    signal_facts: Vec<super::signal_facts::ClassSignalFacts>,
     file_exports: FileExportInfo,
     diagnostics: Vec<crate::NgDiagnostic>,
 }
 
+/// The single-file syntactic pass over an already-parsed file: every decorated class, the
+/// symbol/registration tables, re-exports, and the raw static/dynamic import specifiers.
+///
+/// This is deliberately a pure AST/semantic walk — it performs no module resolution and no
+/// filesystem reads — so the caller can run it while holding the `ParsedFile` lock and release
+/// that lock before any I/O. Component `templateUrl` and `styleUrl(s)` expressions are only
+/// *recorded* (on `pending_template_url` / `pending_style_urls`); the caller must follow up with
+/// [`super::load_syntax_resources`] to complete Stage 1, otherwise `template`, `template_url` and
+/// `style_urls` stay unset.
 #[allow(clippy::too_many_arguments)]
-pub fn analyze_parsed<Fs: ResourceResolverFs>(
+pub fn analyze_parsed(
     path: &Path,
     file_id: crate::query::FileId,
     source_text: &str,
     program: &oxc_ast::ast::Program<'_>,
     module_record: &oxc_syntax::module_record::ModuleRecord<'_>,
     semantic: &Semantic<'_>,
-    fs: &Fs,
-    resolver: &ResolverGeneric<Fs>,
     converter: &Utf8ToUtf16,
+    is_core: bool,
     compile_non_exported_classes: bool,
     enable_hmr: bool,
     implicit_standalone: bool,
 ) -> ParsedFileAnalysis {
     let import_map = super::imports::extract_import_map(module_record);
-    let is_core = super::imports::detect_is_core(path, fs);
     let angular_imports = super::imports::extract_angular_imports(module_record, semantic, is_core);
     let local_exported_names = get_local_exported_names(module_record);
     let file_exports = extract_file_exports(module_record, program);
@@ -957,8 +977,6 @@ pub fn analyze_parsed<Fs: ResourceResolverFs>(
         semantic,
         path,
         file_id,
-        fs,
-        resolver,
         &import_map,
         &angular_imports,
         &local_exported_names,
@@ -995,6 +1013,8 @@ pub fn analyze_parsed<Fs: ResourceResolverFs>(
         source_text,
         &dependency_array_references(&output.classes),
     );
+    let import_equals_declarations =
+        super::imports::collect_import_equals_declarations(program, source_text);
     let type_only_exports = get_type_only_exports(module_record, semantic);
     let (static_dependencies, type_only_static_dependencies) =
         super::imports::extract_imports(module_record, program);
@@ -1003,15 +1023,24 @@ pub fn analyze_parsed<Fs: ResourceResolverFs>(
     let signal_debug_names =
         super::signal_debug_name::collect_signal_debug_names(program, semantic, source_text);
     let top_level_value_bindings = enable_hmr.then(|| super::top_level_value_bindings(semantic));
+    // The emitter generates namespace imports only for code it compiles from these classes, so a
+    // file without any has no alias to keep clear.
+    let namespace_alias_conflicts = if output.classes.is_empty() {
+        Vec::new()
+    } else {
+        super::imports::namespace_alias_conflicts(semantic)
+    };
 
     ParsedFileAnalysis {
         classes: output.classes,
         registrations: output.registrations,
         di_facts: output.di_facts,
+        signal_facts: output.signal_facts,
         function_facts: super::transforms::collect_function_facts(program, semantic),
         file_exports: output.file_exports,
         imports_end,
         import_declarations,
+        import_equals_declarations,
         type_only_exports,
         static_dependencies,
         dynamic_dependencies,
@@ -1020,6 +1049,7 @@ pub fn analyze_parsed<Fs: ResourceResolverFs>(
         signal_debug_names,
         is_core,
         top_level_value_bindings,
+        namespace_alias_conflicts,
     }
 }
 
@@ -2941,8 +2971,12 @@ export enum Empty {}
         );
         assert!(!reads.iter().find(|r| r.name == "ns").unwrap().is_const_enum);
 
+        let app = results
+            .iter()
+            .find(|r| r.file_path.ends_with("/app.ts"))
+            .unwrap();
         assert_eq!(
-            results[0].top_level_value_bindings.as_deref().unwrap(),
+            app.top_level_value_bindings.as_deref().unwrap(),
             [
                 "Component",
                 "Directive",
@@ -3304,12 +3338,8 @@ export class MyService {
     fn test_core_reports_any_unrecognized_param_decorator() {
         let fs = create_test_fs(&[
             (
-                "/test/package.json",
-                r#"{"name": "@angular/core", "version": "0.0.0"}"#,
-            ),
-            (
                 "/test/tsconfig.json",
-                r#"{"compilerOptions": {}, "files": ["app.ts"]}"#,
+                r#"{"compilerOptions": {}, "angularCompilerOptions": {"_isAngularCoreCompilation": true}, "files": ["app.ts"]}"#,
             ),
             (
                 "/test/di.ts",
@@ -3563,5 +3593,223 @@ export class Cmp {
         let content_queries: Vec<&str> =
             c.queries.iter().map(|q| q.property_name.as_str()).collect();
         assert_eq!(content_queries, vec!["parenthesizedQuery"]);
+    }
+
+    #[test]
+    fn test_analyze_parsed_defers_resource_loading_to_stage1_pass() {
+        let source = r#"
+import { Component } from '@angular/core';
+import { EXTRA_CSS } from './styles';
+import type { Foo } from './foo';
+
+export const loadLazy = (): Promise<Foo> => import('./lazy').then(m => m.foo);
+
+@Component({
+    selector: 'my-comp',
+    templateUrl: './app.html',
+    styleUrl: './base.css',
+    styleUrls: ['./extra.css', EXTRA_CSS],
+    standalone: true,
+})
+export class Cmp {}
+"#;
+
+        let allocator = oxc_allocator::Allocator::default();
+        let ret = oxc_parser::Parser::new(&allocator, source, oxc_span::SourceType::ts()).parse();
+        let semantic_ret = oxc_semantic::SemanticBuilder::new()
+            .with_build_nodes(true)
+            .with_class_table(true)
+            .build(&ret.program);
+        let converter = Utf8ToUtf16::new(source);
+        let file_path = Path::new("/test/app.ts");
+
+        let mut analysis = analyze_parsed(
+            file_path,
+            0,
+            source,
+            &ret.program,
+            &ret.module_record,
+            &semantic_ret.semantic,
+            &converter,
+            false,
+            false,
+            false,
+            true,
+        );
+
+        assert_eq!(
+            analysis.static_dependencies,
+            vec!["@angular/core".to_string(), "./styles".to_string()]
+        );
+        assert_eq!(
+            analysis.dynamic_dependencies,
+            vec!["./foo".to_string(), "./lazy".to_string()]
+        );
+
+        let comp = analysis.classes[0]
+            .as_component()
+            .expect("Cmp should be a component");
+        assert!(comp.template.is_none());
+        assert!(comp.template_url.is_none());
+        assert!(comp.pending_template_url.is_some());
+        assert!(comp.style_urls.is_none());
+        assert!(comp.styles_from_urls.is_none());
+        assert_eq!(comp.pending_style_urls.as_ref().unwrap().len(), 3);
+        assert!(comp.style_conflict_span.is_some());
+
+        let fs = create_test_fs(&[
+            ("/test/app.html", "<p>hi</p>"),
+            ("/test/base.css", ".base {}"),
+            ("/test/extra.css", ".extra {}"),
+        ]);
+        let host = crate::host::DefaultFsHost::from_fs_and_options(fs, None, false, None);
+        futures::executor::block_on(crate::analyzer::load_syntax_resources(
+            &mut analysis.classes,
+            &host,
+            &crate::host::ModuleId::from_path(file_path),
+            0,
+        ));
+
+        let comp = analysis.classes[0]
+            .as_component()
+            .expect("Cmp should be a component");
+        assert!(comp.pending_template_url.is_none());
+        let tpl_url = comp
+            .template_url
+            .as_ref()
+            .expect("template_url should be loaded");
+        assert_eq!(tpl_url.url, "./app.html");
+        assert!(tpl_url.resolved_path.ends_with("/test/app.html"));
+        assert!(!tpl_url.is_missing);
+        assert_eq!(
+            comp.template.as_ref().and_then(|t| t.get_optional()),
+            Some("<p>hi</p>".to_string())
+        );
+        assert_eq!(
+            comp.styles_from_urls.as_deref(),
+            Some(&[".base {}".to_string(), ".extra {}".to_string()][..])
+        );
+        // `EXTRA_CSS` is an imported constant, so `pending_style_urls` stays parked for Stage 2.
+        assert_eq!(comp.pending_style_urls.as_ref().unwrap().len(), 3);
+    }
+
+    /// Generated namespace imports only come with a compiled class, so a file without one reports
+    /// no names for their aliases to avoid.
+    #[test]
+    fn test_analyze_parsed_reports_namespace_alias_conflicts_only_with_classes() {
+        let conflicts_of = |source: &str| {
+            let allocator = oxc_allocator::Allocator::default();
+            let ret =
+                oxc_parser::Parser::new(&allocator, source, oxc_span::SourceType::ts()).parse();
+            let semantic_ret = oxc_semantic::SemanticBuilder::new()
+                .with_build_nodes(true)
+                .with_class_table(true)
+                .build(&ret.program);
+            let converter = Utf8ToUtf16::new(source);
+            analyze_parsed(
+                Path::new("/test/app.ts"),
+                0,
+                source,
+                &ret.program,
+                &ret.module_record,
+                &semantic_ret.semantic,
+                &converter,
+                false,
+                false,
+                false,
+                true,
+            )
+            .namespace_alias_conflicts
+        };
+
+        assert!(conflicts_of("const i0 = 1;\nexport class Plain {}\n").is_empty());
+        assert_eq!(
+            conflicts_of(
+                "import { Injectable } from '@angular/core';\nconst i0 = 1;\n\
+                 @Injectable()\nexport class Svc {}\n"
+            ),
+            ["i0"]
+        );
+    }
+
+    #[test]
+    fn test_load_syntax_resources_parks_cross_file_template_url_per_class() {
+        let source = r#"
+import { Component } from '@angular/core';
+import { SHARED_TEMPLATE } from './paths';
+
+@Component({
+    selector: 'cross-file',
+    templateUrl: SHARED_TEMPLATE,
+    standalone: true,
+})
+export class CrossFileCmp {}
+
+@Component({
+    selector: 'literal',
+    templateUrl: './literal.html',
+    standalone: true,
+})
+export class LiteralCmp {}
+"#;
+
+        let allocator = oxc_allocator::Allocator::default();
+        let ret = oxc_parser::Parser::new(&allocator, source, oxc_span::SourceType::ts()).parse();
+        let semantic_ret = oxc_semantic::SemanticBuilder::new()
+            .with_build_nodes(true)
+            .with_class_table(true)
+            .build(&ret.program);
+        let converter = Utf8ToUtf16::new(source);
+        let file_path = Path::new("/test/app.ts");
+
+        let mut analysis = analyze_parsed(
+            file_path,
+            0,
+            source,
+            &ret.program,
+            &ret.module_record,
+            &semantic_ret.semantic,
+            &converter,
+            false,
+            false,
+            false,
+            true,
+        );
+        assert_eq!(analysis.classes.len(), 2);
+        for class in &analysis.classes {
+            let comp = class.as_component().expect("component");
+            assert!(comp.pending_template_url.is_some());
+            assert!(comp.template_url.is_none());
+            assert!(comp.template.is_none());
+        }
+
+        let fs = create_test_fs(&[("/test/literal.html", "<b>lit</b>")]);
+        let host = crate::host::DefaultFsHost::from_fs_and_options(fs, None, false, None);
+        futures::executor::block_on(crate::analyzer::load_syntax_resources(
+            &mut analysis.classes,
+            &host,
+            &crate::host::ModuleId::from_path(file_path),
+            0,
+        ));
+
+        // The cross-file `templateUrl` is left parked for Stage 2 and nothing is loaded for it.
+        let cross_file = analysis.classes[0].as_component().expect("component");
+        assert!(cross_file.pending_template_url.is_some());
+        assert!(cross_file.template_url.is_none());
+        assert!(cross_file.template.is_none());
+
+        // A sibling class in the same file with a literal `templateUrl` is loaded independently.
+        let literal = analysis.classes[1].as_component().expect("component");
+        assert!(literal.pending_template_url.is_none());
+        let tpl_url = literal
+            .template_url
+            .as_ref()
+            .expect("template_url should be loaded");
+        assert_eq!(tpl_url.url, "./literal.html");
+        assert!(!tpl_url.is_missing);
+        assert_eq!(
+            literal.template.as_ref().and_then(|t| t.get_optional()),
+            Some("<b>lit</b>".to_string())
+        );
     }
 }

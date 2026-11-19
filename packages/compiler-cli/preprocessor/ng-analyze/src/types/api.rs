@@ -42,7 +42,7 @@ impl NgDiagnostic {
             .number
             .as_ref()
             .and_then(|c| c.strip_prefix("NG").unwrap_or(c).parse::<u32>().ok())
-            .unwrap_or(1010);
+            .unwrap_or(super::ErrorCode::VALUE_HAS_WRONG_TYPE.code());
         let span = diag.labels.first().map(|l| {
             let start = l.offset();
             let end = start + l.len();
@@ -63,10 +63,32 @@ impl NgDiagnostic {
         }
     }
 
-    pub fn error(code: u32, file_path: String, span: SpanMetadata, message_text: String) -> Self {
+    pub fn error(
+        code: super::ErrorCode,
+        file_path: String,
+        span: SpanMetadata,
+        message_text: String,
+    ) -> Self {
         Self {
             category: 1,
-            code,
+            code: code.code(),
+            message_text,
+            file_path: Some(file_path),
+            span: Some(span),
+            next: Vec::new(),
+            related_information: Vec::new(),
+        }
+    }
+
+    pub fn warning(
+        code: super::ErrorCode,
+        file_path: String,
+        span: SpanMetadata,
+        message_text: String,
+    ) -> Self {
+        Self {
+            category: 0,
+            code: code.code(),
             message_text,
             file_path: Some(file_path),
             span: Some(span),
@@ -92,6 +114,10 @@ pub struct AnalysisResult {
     /// The file's static `import` declarations, in source order, so consumers never have to
     /// re-parse the source to find or edit an import.
     pub imports: Vec<ImportDeclarationMetadata>,
+    /// The file's top-level `import X = …` statements, in source order, which the emitter hoists
+    /// like ngtsc's `ImportManager` alongside [`Self::imports`].
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub import_equals_declarations: Vec<super::metadata::ImportEqualsDeclarationMetadata>,
     pub type_only_exports: Vec<String>,
     pub diagnostics: Vec<NgDiagnostic>,
     /// Diagnostics from `SourceFileValidator` checks (`NG8110`, `NG8118`), recorded separately
@@ -103,6 +129,16 @@ pub struct AnalysisResult {
     pub r3_symbols_specifier: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub top_level_value_bindings: Option<Vec<String>>,
+    /// Names bound in the file that a generated namespace import alias (`i0`, `i1`, …) must
+    /// avoid, as ngtsc's `ImportManager` does. Only names of that shape are listed; see
+    /// `analyzer::imports::namespace_alias_conflicts`.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub namespace_alias_conflicts: Vec<String>,
+    /// Resolved paths of the local TS files this file statically imports, in the same form as
+    /// `file_path`. Consumers use these as the file's dependency edges (e.g. incremental
+    /// re-emit decisions) without resolving module specifiers themselves.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub static_dependencies: Vec<String>,
 }
 
 /// Options for constructing an [`crate::Analyzer`].
@@ -115,6 +151,10 @@ pub struct AnalysisResult {
 #[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AnalyzerOptions {
+    /// Record perf spans and counters for `takePerf`. Off by default.
+    pub perf_trace: Option<bool>,
+    /// With `perf_trace`, also record query keys and per-query latency slices.
+    pub perf_trace_detail: Option<bool>,
     /// tsconfig to read the root files and unset options from. Optional: every setting it
     /// provides can be passed explicitly instead.
     pub tsconfig_path: Option<String>,
@@ -124,8 +164,16 @@ pub struct AnalyzerOptions {
     /// `set_entry_points`), the tsconfig no longer supplies the roots.
     pub entry_points: Option<Vec<String>>,
     /// The `r3_symbols.ts` file that compiling `@angular/core` itself imports runtime symbols from.
-    /// Falls back to a root file named `r3_symbols.ts` when unset.
+    /// Falls back to a root file named `r3_symbols.ts` when unset. Setting it implies
+    /// [`Self::angular_core_compilation`] unless that is set explicitly.
     pub r3_symbols_file: Option<String>,
+    /// Whether this compilation builds `@angular/core` itself (ngtsc's `isCore`), which imports
+    /// its own decorators through relative paths rather than from `@angular/core`. Falls back to
+    /// the tsconfig's `angularCompilerOptions._isAngularCoreCompilation`, then to `true` when
+    /// [`Self::r3_symbols_file`] is set, and otherwise to whether the root file named
+    /// `r3_symbols.ts` exports `ITS_JUST_ANGULAR = true` (ngtsc's `isAngularCorePackage`).
+    /// Internal: only meant for compiling Angular itself.
+    pub angular_core_compilation: Option<bool>,
     pub optimize: Option<bool>,
     pub virtual_files: Option<HashMap<String, String>>,
     /// Deprecated alias of [`DefaultHostConfig::node_modules_path_override`], which takes
@@ -352,6 +400,9 @@ pub struct CompilationChunk {
     pub files: Vec<AnalysisResult>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub static_edges: Option<HashMap<String, Vec<FileId>>>,
+    /// Files that were in the program on the previous analysis pass and are no longer reachable.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub removed_files: Option<Vec<String>>,
 }
 
 #[cfg_attr(feature = "napi", napi(object))]

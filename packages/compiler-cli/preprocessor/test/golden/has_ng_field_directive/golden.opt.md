@@ -6,6 +6,7 @@
  */
 
 import * as i0 from './test';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.MyComp) {
@@ -175,8 +176,8 @@ export class MyComp {
               {
                 selector: 'my-comp',
                 template: `
-        <input [formField]="myField" myOtherDir>
-      `,
+    <input [formField]="myField" myOtherDir>
+  `,
                 imports: [FormField, MyOtherDirective],
               },
             ],

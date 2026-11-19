@@ -228,6 +228,21 @@ Render yapabilmek için DOM manipülasyonuna bağımlı birçok üçüncü taraf
 
 Reklam takipçileri ve analitik gibi birçok üçüncü taraf betiği, hidrasyon gerçekleşmeden önce DOM'u değiştirir. Bu betikler, sayfa artık Angular'ın beklediği yapıyla eşleşmediği için hidrasyon hatalarına neden olabilir. Mümkün olduğunda bu tür betikleri hidrasyon sonrasına ertelemeyi tercih edin. Betiği hidrasyon sonrası işlemler gerçekleştikten sonra geciktirmek için [`AfterNextRender`](api/core/afterNextRender) kullanmayı düşünün.
 
+### CDN'ler ve tarayıcı eklentileri {#cdns-and-browser-extensions}
+
+Uygulamanızın dışındaki kod, hydration başlamadan önce sunucudan gelen HTML'i değiştirebilir. Bu hatalar yerel sunucunuzda oluşmadığı için bilgisayarınızda çoğu zaman göremezsiniz.
+
+**HTML'i değiştiren CDN'ler.** Bazı CDN özellikleri HTML'i tarayıcıya giderken değiştirir. Örneğin bazı özellikler yorum düğümlerini ve boşlukları kaldırır, ancak hydration bunlara ihtiyaç duyar. Bir diğer örnek, Cloudflare'in varsayılan olarak açık olan Email Address Obfuscation özelliğidir. Bu özellik e-posta adreslerini `<span class="__cf_email__" data-cfemail="...">` gibi elemanlara dönüştürür. Ayrıca `mailto:` bağlantılarını da değiştirir ve içeriği geri dönüştüren bir betik ekler. Bu betik hydration başlamadan önce çalışmazsa, Angular metin beklediği yerde bir eleman bulur. Yerel sunucunuz CDN kullanmadığı için uygulamanız bilgisayarınızda çalışır ve yalnızca production ortamında hata verir.
+
+**Tarayıcı eklentileri.** Bazı tarayıcı eklentileri sayfayı hydration başlamadan önce değiştirir. Tıkla-ara araçları, çevirmenler ve parola yöneticileri bunlara örnektir. Bu eklentileri kontrol edemezsiniz. Sorunu yalnızca bunları yükleyen kullanıcılar yaşar, bu yüzden hataları yalnızca bazı kullanıcılardan görebilirsiniz.
+
+Bu hataları düzeltmek için:
+
+- Değişen içeriğin etrafındaki bileşen host'una `ngSkipHydration` ekleyin. Bu içeriği yazdığınız şablonda şöyle ekleyin: `<app-contact ngSkipHydration><a href="tel:...">...</a></app-contact>`. Angular bu içeriği tarayıcıda yeniden render eder ve bu, yapılan değişiklikleri ortadan kaldırır. Bu niteliği yalnızca bileşen host elemanlarında kullanabilirsiniz, bu yüzden `<a>` elemanına ekleyemezsiniz. Daha fazlası için [hydration nasıl atlanır](#belirli-bileşenler-için-hydration-nasıl-atlanır) bölümüne bakın.
+- CDN özelliğini uygulamanız için kapatın. Cloudflare'de güvenlik ayarlarından [Email Address Obfuscation](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/) özelliğini kapatın veya uygulamanızın host adları için kapatmak üzere bir [Configuration Rule](https://developers.cloudflare.com/rules/configuration-rules/settings/) kullanın.
+
+NOTE: Cloudflare'in `<!--email_off-->` yorumları Angular şablonlarında işe yaramaz, çünkü derleyici yorumları şablonlardan kaldırır.
+
 ## Artımlı Hydration
 
 Artımlı hidrasyon, hidrasyonun ne zaman gerçekleşeceği üzerinde daha ayrıntılı kontrol sağlayan gelişmiş bir hidrasyon biçimidir. Daha fazla bilgi için [artımlı hidrasyon kılavuzuna](guide/incremental-hydration) bakın.

@@ -15,6 +15,7 @@ import ts from 'typescript';
 
 import {
   buildTypeCheckingConfig,
+  FileUpdateType,
   HybridCompiler,
   IndexerBoundTemplate,
   verifyCompilerOptions,
@@ -42,8 +43,6 @@ import {isInHostBindingTcb} from '../../typecheck/src/tcb_util';
 import {getTokenAtPosition} from '../../util/src/typescript';
 import {NgtscTestCompilerHost} from './compiler_host';
 
-const SPAN_COMMENT_REGEX = /\/\*(\d+),(\d+)\*\//g;
-
 /**
  * Workspace name under which ngtsc's test `FileNameToModuleNameHost` (`test/ngtsc/env.ts`) names
  * modules when `_useHostForImportGeneration` is set, and the specifier prefix it strips again on
@@ -52,13 +51,79 @@ const SPAN_COMMENT_REGEX = /\/\*(\d+),(\d+)\*\//g;
 const ROOT_HOST_WORKSPACE_NAME = 'root';
 const ROOT_HOST_PREFIX = `${ROOT_HOST_WORKSPACE_NAME}/`;
 
+let jasmineMacrotaskHookInstalled = false;
+
+/**
+ * Jasmine 7 dispatches `suiteStarted` and `specStarted` via `Promise.then(next)` and uses
+ * `queueMicrotask` for stack clearing in Node.js, which means synchronous `beforeAll`,
+ * `beforeEach`, and `it` callbacks execute inside an active V8 microtask checkpoint
+ * (`is_running_microtasks == true`). While V8 is already inside a microtask checkpoint,
+ * `process._tickCallback()` is a no-op and cannot synchronously drain `Promise` continuations in
+ * `runNgpSync`.
+ *
+ * Scheduling a `setImmediate` boundary at the start of each spec and `beforeAll` moves test
+ * execution onto a libuv macrotask where `process._tickCallback()` can synchronously drain V8
+ * microtasks.
+ */
+function ensureJasmineMacrotaskBoundary(): void {
+  if (jasmineMacrotaskHookInstalled) {
+    return;
+  }
+  const g = globalThis as {
+    jasmine?: {
+      getEnv?: () => {
+        beforeEach?: (fn: (...args: any[]) => unknown, timeout?: number) => void;
+      };
+    };
+    beforeEach?: (fn: (...args: any[]) => unknown, timeout?: number) => void;
+    beforeAll?: (fn: (...args: any[]) => unknown, timeout?: number) => void;
+  };
+  const env = g.jasmine?.getEnv?.();
+  if (!env?.beforeEach) {
+    return;
+  }
+  jasmineMacrotaskHookInstalled = true;
+  env.beforeEach((done: () => void) => {
+    setImmediate(done);
+  });
+  if (typeof g.beforeEach === 'function') {
+    const origBeforeEach = g.beforeEach;
+    g.beforeEach = (fn: (...args: any[]) => unknown, timeout?: number) => {
+      const res = origBeforeEach(fn, timeout);
+      if (fn.length > 0 || fn.constructor?.name === 'AsyncFunction') {
+        origBeforeEach((done: () => void) => {
+          setImmediate(done);
+        });
+      }
+      return res;
+    };
+  }
+  if (typeof g.beforeAll === 'function') {
+    const origBeforeAll = g.beforeAll;
+    g.beforeAll = (fn: (...args: any[]) => unknown, timeout?: number) => {
+      origBeforeAll((done: () => void) => {
+        setImmediate(done);
+      });
+      return origBeforeAll(fn, timeout);
+    };
+  }
+}
+
 /**
  * Returns true if the current test run is configured to use the NGP compiler backend.
  */
 export function isNgpTestMode(): boolean {
   const backend = process.env['NG_COMPILER_BACKEND'];
   const useNgp = process.env['USE_NGP'];
-  return backend === 'ngp' || useNgp === '1' || useNgp === 'true';
+  const enabled = backend === 'ngp' || useNgp === '1' || useNgp === 'true';
+  if (enabled) {
+    ensureJasmineMacrotaskBoundary();
+  }
+  return enabled;
+}
+
+if (isNgpTestMode()) {
+  ensureJasmineMacrotaskBoundary();
 }
 
 /**
@@ -122,21 +187,59 @@ function createTestWasmAnalyzerSync(
   if (typeof Inner !== 'function') {
     throw new Error(`'${options.wasmBinding}' does not export a 'WasmAnalyzer' constructor`);
   }
+  const {backend, nativeBinding, wasmBinding, hostFs, ngAnalyzeDir, useWasm, ...engine} = options;
   const inner = new Inner(
     JSON.stringify({
-      virtualFiles: options.virtualFiles,
+      ...engine,
       optimize: options.optimize ?? true,
       tsconfigPath,
-      nodeModulesPathOverride: options.nodeModulesPathOverride,
-      workspaceName: options.workspaceName,
-      rootDirs: options.rootDirs,
-      enableHmr: options.enableHmr,
-      usePoisonedData: options.usePoisonedData,
-      useHostForImportGeneration: options.useHostForImportGeneration,
     }),
-    options.hostFs,
+    hostFs,
   );
   return new WasmAnalyzer(inner);
+}
+
+/**
+ * Synchronously drives an NGP promise backed by the single-threaded `WasmAnalyzer` to completion
+ * by pumping the WASM event stream and draining V8 microtasks.
+ */
+export function runNgpSync<T>(promise: Promise<T>, analyzer?: unknown): T {
+  let result!: T;
+  let error: unknown;
+  let hasError = false;
+  let done = false;
+  promise.then(
+    (v) => {
+      result = v;
+      done = true;
+    },
+    (e) => {
+      error = e;
+      hasError = true;
+      done = true;
+    },
+  );
+  const tickCallback = (process as unknown as {_tickCallback(): void})._tickCallback;
+  const pumpLoop =
+    analyzer !== undefined && analyzer !== null
+      ? (analyzer as {pumpLoop?: () => void}).pumpLoop
+      : undefined;
+  let spins = 0;
+  try {
+    while (!done) {
+      pumpLoop?.();
+      tickCallback();
+      if (++spins > 100_000) {
+        throw new Error('Timed out waiting for synchronous NGP promise resolution');
+      }
+    }
+  } finally {
+    pumpLoop?.();
+  }
+  if (hasError) {
+    throw error;
+  }
+  return result;
 }
 
 /**
@@ -246,6 +349,97 @@ export interface NgpCompilationResult {
   emittedFiles: AbsoluteFsPath[];
 }
 
+/** The NGP compilation a session carries from one build to the next. */
+interface NgpSessionState {
+  /** The configuration the compilation was created for; any other configuration starts afresh. */
+  readonly key: string;
+  readonly analyzer: WasmAnalyzer;
+  readonly compiler: HybridCompiler;
+  /** The virtual tsconfig the analyzer last saw, if the driver synthesizes one. */
+  tsconfigContent: string | undefined;
+  oldProgram: ts.Program | undefined;
+}
+
+/**
+ * Carries an NGP compilation from one build to the next while a test compiles the same program
+ * repeatedly (`NgtscTestEnvironment.enableMultipleCompilations`), as ngtsc carries the previous
+ * `NgtscProgram`: the analyzer and `HybridCompiler` stay alive and are told which files changed,
+ * and the previous `ts.Program` is handed to TypeScript for structure reuse.
+ *
+ * The session holds no incremental policy. Which files a build re-emits is decided by the
+ * compiler (`HybridCompiler.incremental`); the session only relays what the host reports.
+ */
+export class NgpCompilationSession {
+  state: NgpSessionState | null = null;
+
+  /** Paths changed since the previous build, mapped to whether the change created them. */
+  private readonly changedFiles = new Map<AbsoluteFsPath, boolean>();
+  /**
+   * Source files handed to TypeScript, so a file whose text did not change keeps its identity
+   * across builds, as it would with a caching compiler host.
+   * @internal
+   */
+  readonly sourceFiles = new Map<AbsoluteFsPath, ts.SourceFile>();
+
+  /**
+   * Records that the host changed `path` since the previous build, `created` telling whether it
+   * did not exist before. A deleted file is recognized by no longer existing.
+   */
+  recordChangedFile(path: AbsoluteFsPath, created = false): void {
+    this.changedFiles.set(path, (this.changedFiles.get(path) ?? false) || created);
+  }
+
+  /** @internal */
+  takeChangedFiles(): Map<AbsoluteFsPath, boolean> {
+    const changed = new Map(this.changedFiles);
+    this.changedFiles.clear();
+    return changed;
+  }
+
+  /** Releases the analyzer. The next build through this session starts afresh. */
+  dispose(): void {
+    this.state?.analyzer.close();
+    this.state = null;
+    this.sourceFiles.clear();
+  }
+}
+
+/** Tells the compilation a session continues what the host changed since the previous build. */
+function relayHostChanges(
+  fs: FileSystem,
+  state: NgpSessionState,
+  changedFiles: ReadonlyMap<AbsoluteFsPath, boolean>,
+  posixTsconfigPath: string,
+  virtualFiles: Readonly<Record<string, string>>,
+): void {
+  // A synthesized tsconfig lists the root files, so it changes when files are added. The analyzer
+  // holds it as a virtual file, which an invalidation would drop rather than re-read.
+  const tsconfigContent = virtualFiles[posixTsconfigPath];
+  if (tsconfigContent !== undefined && tsconfigContent !== state.tsconfigContent) {
+    runNgpSync(
+      state.compiler.updateFileContent([{filePath: posixTsconfigPath, content: tsconfigContent}]),
+      state.analyzer,
+    );
+    state.tsconfigContent = tsconfigContent;
+  }
+  const invalidations: Array<{filePath: string; updateType: FileUpdateType}> = [];
+  for (const [fsPath, created] of changedFiles) {
+    const filePath = toPosixPath(fsPath);
+    if (tsconfigContent !== undefined && filePath === posixTsconfigPath) {
+      continue;
+    }
+    // Creations and deletions are told apart from changes: they can change what other files'
+    // imports resolve to.
+    const updateType = !fs.exists(fsPath)
+      ? FileUpdateType.Deleted
+      : created
+        ? FileUpdateType.Created
+        : FileUpdateType.Changed;
+    invalidations.push({filePath, updateType});
+  }
+  runNgpSync(state.compiler.invalidateFiles(invalidations), state.analyzer);
+}
+
 /**
  * Runs a full synchronous compilation and diagnostic pass using NGP (`HybridCompiler` + WASM
  * `ng-analyze` + TypeScript over `.ng.ts` and `.ngtypecheck.ts`), mapping all diagnostics back
@@ -264,6 +458,7 @@ export function performNgpCompilationSync(params: {
   closeAnalyzer?: boolean;
   tcbConfigOverride?: Partial<NgpTypeCheckingConfig>;
   templateDiagnosticsOnly?: boolean;
+  session?: NgpCompilationSession;
 }): NgpCompilationResult {
   const {
     fs,
@@ -278,6 +473,7 @@ export function performNgpCompilationSync(params: {
     closeAnalyzer = true,
     tcbConfigOverride,
     templateDiagnosticsOnly = false,
+    session,
   } = params;
 
   const posixTsconfigPath = toPosixPath(tsconfigPath);
@@ -324,13 +520,28 @@ export function performNgpCompilationSync(params: {
         rootDirs,
         preserveSymlinks: Boolean(options.preserveSymlinks),
         allowJs: Boolean(options.allowJs),
+        emitDeclarationOnly: Boolean(options.emitDeclarationOnly),
+        ...(options.baseUrl !== undefined
+          ? {baseUrl: toPosixPath(fs.resolve(basePath, options.baseUrl))}
+          : {}),
+        ...(options.paths ? {paths: options.paths} : {}),
       },
       angularCompilerOptions: {
+        generateExtraImportsInLocalMode: Boolean(
+          rawOpts['generateExtraImportsInLocalMode'] ?? rawOpts['_generateExtraImportsInLocalMode'],
+        ),
         _generateExtraImportsInLocalMode: Boolean(rawOpts['_generateExtraImportsInLocalMode']),
         compileNonExportedClasses: rawOpts['compileNonExportedClasses'] !== false,
         workspaceName: analyzerWorkspaceName,
         _useHostForImportGeneration: useHostForImportGeneration,
         _angularCoreVersion: rawOpts['_angularCoreVersion'],
+        _experimentalAllowEmitDeclarationOnly: Boolean(
+          rawOpts['_experimentalAllowEmitDeclarationOnly'],
+        ),
+        ...(rawOpts['compilationMode'] !== undefined
+          ? {compilationMode: rawOpts['compilationMode']}
+          : {}),
+        _isAngularCoreCompilation: rawOpts['_isAngularCoreCompilation'],
       },
       files: rootNames.map((r) => toPosixPath(fs.resolve(basePath, r))),
     });
@@ -347,62 +558,90 @@ export function performNgpCompilationSync(params: {
     ...tcbConfigOverride,
   };
 
-  const analyzer = createTestWasmAnalyzerSync(posixTsconfigPath, {
-    backend: 'wasm',
-    wasmBinding,
-    hostFs,
-    optimize,
-    virtualFiles,
-    nodeModulesPathOverride: toPosixPath(fs.resolve('/node_modules')),
-    workspaceName: analyzerWorkspaceName,
-    rootDirs: analyzerRootDirs,
-    enableHmr: Boolean(rawOpts['_enableHmr']),
-    usePoisonedData: tcbConfig.usePoisonedData,
-    useHostForImportGeneration,
-  });
-
   const optionDiagnostics = verifyCompilerOptions(options as NgpCompilerOptions);
+  const sessionKey = JSON.stringify({
+    options,
+    tcbConfigOverride: tcbConfigOverride ?? null,
+    complianceMode,
+    templateDiagnosticsOnly,
+  });
+  const reused = session?.state?.key === sessionKey ? session.state : null;
+  if (session !== undefined && reused === null) {
+    // A different configuration means a different compilation, so nothing carries over: every
+    // file is new to the compilation that starts here.
+    session.dispose();
+    session.takeChangedFiles();
+  }
+
+  let analyzer: WasmAnalyzer;
   let compiler: HybridCompiler | undefined;
   let compilerInitError: Error | undefined;
-  try {
-    compiler = new HybridCompiler(analyzer, {
+  if (reused !== null) {
+    ({analyzer, compiler} = reused);
+    relayHostChanges(fs, reused, session!.takeChangedFiles(), posixTsconfigPath, virtualFiles);
+  } else {
+    analyzer = createTestWasmAnalyzerSync(posixTsconfigPath, {
+      backend: 'wasm',
+      wasmBinding,
+      hostFs,
       optimize,
-      tsconfigPath: posixTsconfigPath,
       virtualFiles,
-      tcbConfig,
-      optionDiagnostics,
-      templateParseOptions: {
-        enableSelectorless: Boolean(rawOpts['_enableSelectorless']),
-      },
-      legacyOptionalChaining: Boolean(rawOpts['legacyOptionalChaining']),
-      isClosureCompilerEnabled,
-      emitDeclarationOnly,
-      externalRuntimeStyles: Boolean(rawOpts['externalRuntimeStyles']),
-      onlyExplicitDeferDependencyImports: Boolean(rawOpts['onlyExplicitDeferDependencyImports']),
-      enableTemplateSourceLocations: Boolean(rawOpts['enableTemplateSourceLocations']),
-      onlyPublishPublicTypingsForNgModules: Boolean(
-        rawOpts['onlyPublishPublicTypingsForNgModules'],
-      ),
-      forbidOrphanComponents: Boolean(rawOpts['forbidOrphanComponents']),
-      supportJitMode: rawOpts['supportJitMode'] as boolean | undefined,
-      preserveWhitespaces: options.preserveWhitespaces,
-      supportTestBed: rawOpts['supportTestBed'] as boolean | undefined,
-      enableI18nLegacyMessageIdFormat: options.enableI18nLegacyMessageIdFormat,
-      i18nUseExternalIds: options.i18nUseExternalIds,
-      i18nNormalizeLineEndingsInICUs: options.i18nNormalizeLineEndingsInICUs,
-      i18nPreserveWhitespaceForLegacyExtraction: options.i18nPreserveWhitespaceForLegacyExtraction,
+      nodeModulesPathOverride: toPosixPath(fs.resolve('/node_modules')),
+      workspaceName: analyzerWorkspaceName,
+      rootDirs: analyzerRootDirs,
       enableHmr: Boolean(rawOpts['_enableHmr']),
-      rootDir: options.rootDir
-        ? toPosixPath(fs.resolve(basePath, options.rootDir))
-        : options.rootDirs
-          ? undefined
-          : posixBasePath,
-      workspaceName,
-      rootDirs,
-      complianceMode,
+      usePoisonedData: tcbConfig.usePoisonedData,
+      useHostForImportGeneration,
+      angularCoreCompilation:
+        typeof rawOpts['_isAngularCoreCompilation'] === 'boolean'
+          ? rawOpts['_isAngularCoreCompilation']
+          : undefined,
     });
-  } catch (e) {
-    compilerInitError = e as Error;
+    try {
+      compiler = new HybridCompiler(analyzer, {
+        optimize,
+        tcbConfig,
+        optionDiagnostics,
+        legacyOptionalChaining: Boolean(rawOpts['legacyOptionalChaining']),
+        isClosureCompilerEnabled,
+        emitDeclarationOnly,
+        externalRuntimeStyles: Boolean(rawOpts['externalRuntimeStyles']),
+        onlyExplicitDeferDependencyImports: Boolean(rawOpts['onlyExplicitDeferDependencyImports']),
+        enableTemplateSourceLocations: Boolean(rawOpts['enableTemplateSourceLocations']),
+        onlyPublishPublicTypingsForNgModules: Boolean(
+          rawOpts['onlyPublishPublicTypingsForNgModules'],
+        ),
+        forbidOrphanComponents: Boolean(rawOpts['forbidOrphanComponents']),
+        supportJitMode: rawOpts['supportJitMode'] as boolean | undefined,
+        preserveWhitespaces: options.preserveWhitespaces,
+        supportTestBed: rawOpts['supportTestBed'] as boolean | undefined,
+        enableI18nLegacyMessageIdFormat: options.enableI18nLegacyMessageIdFormat,
+        i18nUseExternalIds: options.i18nUseExternalIds,
+        i18nNormalizeLineEndingsInICUs: options.i18nNormalizeLineEndingsInICUs,
+        i18nPreserveWhitespaceForLegacyExtraction:
+          options.i18nPreserveWhitespaceForLegacyExtraction,
+        enableHmr: Boolean(rawOpts['_enableHmr']),
+        rootDir: options.rootDir
+          ? toPosixPath(fs.resolve(basePath, options.rootDir))
+          : options.rootDirs
+            ? undefined
+            : posixBasePath,
+        workspaceName,
+        rootDirs,
+        complianceMode,
+      });
+    } catch (e) {
+      compilerInitError = e as Error;
+    }
+    if (session !== undefined && compiler !== undefined) {
+      session.state = {
+        key: sessionKey,
+        analyzer,
+        compiler,
+        tsconfigContent: virtualFiles[posixTsconfigPath],
+        oldProgram: undefined,
+      };
+    }
   }
 
   // Map of original AbsoluteFsPath -> preprocessed .ng.ts content
@@ -419,36 +658,22 @@ export function performNgpCompilationSync(params: {
   const templateTargetByTypeCheckId = new Map<string, TemplateDiagnosticTarget>();
   const processorThrownErrors: Array<{fsFilePath: AbsoluteFsPath; message: string}> = [];
 
-  const chunks =
-    compiler === undefined || rootNames.length === 0
-      ? []
-      : optimize && !emitDeclarationOnly
-        ? compiler.analyzeOptimizedSync()
-        : compiler.analyzeSync();
-  for (const chunk of chunks) {
-    const chunkContext = compiler!.prepareChunkSync(chunk);
-    for (const fileResult of chunk.files) {
-      const posixFilePath = fileResult.filePath;
+  if (compiler !== undefined && rootNames.length > 0) {
+    const processedFiles = runNgpSync(
+      compiler.compile({
+        readFile: (posixFilePath: string) => {
+          const fsFilePath = fromPosixPath(fs, posixFilePath);
+          return fs.exists(fsFilePath) ? fs.readFile(fsFilePath) : undefined;
+        },
+      }),
+      analyzer,
+    );
+    for (const [posixFilePath, message] of compiler.currentProcessErrors) {
+      processorThrownErrors.push({fsFilePath: fromPosixPath(fs, posixFilePath), message});
+    }
+    for (const [posixFilePath, processed] of processedFiles) {
       const fsFilePath = fromPosixPath(fs, posixFilePath);
       if (!fs.exists(fsFilePath)) {
-        continue;
-      }
-      const originalContent = fs.readFile(fsFilePath);
-      let processed;
-      try {
-        processed = compiler!.processFileSync(
-          posixFilePath,
-          originalContent,
-          (resPosixPath: string) => {
-            const resFsPath = fromPosixPath(fs, resPosixPath);
-            return fs.exists(resFsPath) ? fs.readFile(resFsPath) : undefined;
-          },
-          fileResult,
-          chunkContext,
-        );
-      } catch (e: unknown) {
-        const message = e instanceof Error ? e.message : String(e);
-        processorThrownErrors.push({fsFilePath, message});
         continue;
       }
 
@@ -468,8 +693,9 @@ export function performNgpCompilationSync(params: {
         tcbFileMap.set(tcbFsPath, {code: processed.tcb.code, originFsPath: fsFilePath});
       }
 
-      const typeCheckIdMap = compiler!.getTypeCheckIdMap(posixFilePath);
-      if (typeCheckIdMap) {
+      const typeCheckIdMap = runNgpSync(compiler.getTypeCheckIdMap(posixFilePath), analyzer);
+      const fileResult = runNgpSync(compiler.getCachedMetadata(posixFilePath), analyzer);
+      if (typeCheckIdMap && fileResult) {
         for (const cls of fileResult.classes) {
           const component = cls.component;
           if (!component?.className) {
@@ -553,6 +779,33 @@ export function performNgpCompilationSync(params: {
     return baseHost.readFile(fileName);
   };
 
+  // Within a session, an unchanged file keeps the source file the previous build handed out, as a
+  // caching compiler host would. TypeScript's structure reuse relies on that identity (e.g. a
+  // redirect target must be the very same object).
+  const withStableIdentity = (sf: ts.SourceFile): ts.SourceFile => {
+    if (session === undefined) {
+      return sf;
+    }
+    const absPath = fs.resolve(sf.fileName);
+    const previous = session.sourceFiles.get(absPath);
+    if (previous !== undefined && previous.text === sf.text) {
+      return previous;
+    }
+    session.sourceFiles.set(absPath, sf);
+    return sf;
+  };
+  const createSourceFile = (
+    absPath: AbsoluteFsPath,
+    text: string,
+    languageVersionOrOptions: ts.ScriptTarget | ts.CreateSourceFileOptions,
+  ): ts.SourceFile => {
+    const previous = session?.sourceFiles.get(absPath);
+    if (previous !== undefined && previous.text === text) {
+      return previous;
+    }
+    return withStableIdentity(ts.createSourceFile(absPath, text, languageVersionOrOptions, true));
+  };
+
   overlayHost.getSourceFile = (
     fileName: string,
     languageVersionOrOptions: ts.ScriptTarget | ts.CreateSourceFileOptions,
@@ -560,19 +813,20 @@ export function performNgpCompilationSync(params: {
     const absPath = fs.resolve(fileName);
     const tcb = tcbFileMap.get(absPath);
     if (tcb !== undefined) {
-      return ts.createSourceFile(absPath, tcb.code, languageVersionOrOptions, true);
+      return createSourceFile(absPath, tcb.code, languageVersionOrOptions);
     }
     const preprocessed = preprocessedTsMap.get(absPath);
     if (preprocessed !== undefined) {
       // Cache original SourceFile before returning preprocessed SourceFile
       getOriginalSourceFile(absPath);
-      return ts.createSourceFile(absPath, preprocessed, languageVersionOrOptions, true);
+      return createSourceFile(absPath, preprocessed, languageVersionOrOptions);
     }
     const languageVersion =
       typeof languageVersionOrOptions === 'object'
         ? languageVersionOrOptions.languageVersion
         : languageVersionOrOptions;
-    const sf = baseHost.getSourceFile(fileName, languageVersion);
+    const created = baseHost.getSourceFile(fileName, languageVersion);
+    const sf = created && withStableIdentity(created);
     if (sf) {
       originalSourceFiles.set(absPath, sf);
     }
@@ -606,12 +860,19 @@ export function performNgpCompilationSync(params: {
       });
   }
 
-  const programRootNames: string[] = [...rootNames];
-  for (const tcbPath of tcbFileMap.keys()) {
-    programRootNames.push(tcbPath);
-  }
+  // Chunks complete in no fixed order, and TypeScript only reuses a program's structure when the
+  // root names are the same and in the same order.
+  const programRootNames: string[] = [...rootNames, ...Array.from(tcbFileMap.keys()).sort()];
 
-  const tsProgram = ts.createProgram(programRootNames, options, overlayHost);
+  const tsProgram = ts.createProgram({
+    rootNames: programRootNames,
+    options,
+    host: overlayHost,
+    oldProgram: session?.state?.oldProgram,
+  });
+  if (session?.state) {
+    session.state.oldProgram = tsProgram;
+  }
 
   const allDiagnostics: ts.Diagnostic[] = [];
   // `NgtscProgram` verifies the TypeScript version in its constructor and `performCompilation`
@@ -705,9 +966,7 @@ export function performNgpCompilationSync(params: {
   }
 
   // 3. Collect and map TCB semantic diagnostics from .ngtypecheck.ts files
-  for (const [tcbFsPath, {code: tcbCode, originFsPath}] of hasOptionErrors
-    ? []
-    : tcbFileMap.entries()) {
+  for (const [tcbFsPath, {originFsPath}] of hasOptionErrors ? [] : tcbFileMap.entries()) {
     const tcbSf = tsProgram.getSourceFile(tcbFsPath);
     if (!tcbSf) {
       continue;
@@ -717,7 +976,6 @@ export function performNgpCompilationSync(params: {
       const mapped = translateTcbDiagnostic(
         diag,
         tcbSf,
-        tcbCode,
         originFsPath,
         templateTargetByTypeCheckId,
         getOriginalSourceFile,
@@ -787,9 +1045,13 @@ export function performNgpCompilationSync(params: {
       }
       baseWriteFile(fileName, data, writeByteOrderMark, onError, sourceFiles, writeFileData);
     };
+    // Which files to re-emit is the compiler's decision (everything, before its first emit).
+    const shouldEmit = compiler?.createEmitFilter() ?? (() => true);
+    const emittedSources: string[] = [];
     for (const sf of tsProgram.getSourceFiles()) {
       const absPath = fs.resolve(sf.fileName);
-      if (tcbFileMap.has(absPath) || sf.isDeclarationFile) {
+      const posixPath = toPosixPath(absPath);
+      if (tcbFileMap.has(absPath) || sf.isDeclarationFile || !shouldEmit(posixPath)) {
         continue;
       }
       const emitResult = tsProgram.emit(
@@ -802,15 +1064,17 @@ export function performNgpCompilationSync(params: {
       for (const d of emitResult.diagnostics) {
         allDiagnostics.push(d);
       }
+      emittedSources.push(posixPath);
     }
     // Safety net: write out any buffered maps whose `.js` was never emitted.
     for (const pendingMap of pendingSourceMaps.values()) {
       baseWriteFile(...pendingMap);
     }
     pendingSourceMaps.clear();
+    compiler?.recordSuccessfulEmit(emittedSources);
   }
 
-  if (closeAnalyzer) {
+  if (closeAnalyzer && session?.state?.analyzer !== analyzer) {
     analyzer.close();
   }
 
@@ -1105,34 +1369,6 @@ function findClosestPrecedingNode(
   return bestNode;
 }
 
-function getTemplateSpanFromTcbLocation(
-  tcbCode: string,
-  targetPos: number,
-): {start: number; end: number} | null {
-  let closestMatch: RegExpExecArray | null = null;
-  let minDistance = Infinity;
-
-  for (const match of tcbCode.matchAll(SPAN_COMMENT_REGEX)) {
-    const commentPos = match.index!;
-    const distance = Math.abs(commentPos - targetPos);
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestMatch = match;
-    } else {
-      break;
-    }
-  }
-
-  if (!closestMatch) {
-    return null;
-  }
-
-  return {
-    start: parseInt(closestMatch[1], 10),
-    end: parseInt(closestMatch[2], 10),
-  };
-}
-
 /**
  * Where diagnostics for a component's template are reported when its spans aren't offsets into
  * the component file: an external template file, or a synthetic source file holding the text of
@@ -1146,7 +1382,6 @@ type TemplateDiagnosticTarget = ({fsPath: AbsoluteFsPath} | {sourceFile: ts.Sour
 function translateTcbDiagnostic(
   diag: ts.Diagnostic,
   tcbSf: ts.SourceFile,
-  tcbCode: string,
   originFsPath: AbsoluteFsPath,
   templateTargetByTypeCheckId: ReadonlyMap<string, TemplateDiagnosticTarget>,
   getOriginalSourceFile: (fsPath: AbsoluteFsPath) => ts.SourceFile | undefined,
@@ -1182,15 +1417,9 @@ function translateTcbDiagnostic(
     currentNode = currentNode.parent;
   }
 
-  if (typeCheckId === undefined) {
-    // Diagnostic is outside a _tcb function (e.g., in an inline TCB's copied class body)
-    return null;
-  }
-
-  if (!span) {
-    span = getTemplateSpanFromTcbLocation(tcbCode, diag.start);
-  }
-  if (!span) {
+  if (typeCheckId === undefined || !span) {
+    // Diagnostic is outside a _tcb function (e.g., in an inline TCB's copied class body) or on
+    // synthetic TCB prelude code with no source span comment (matching ngtsc's `findSourceLocation`).
     return null;
   }
 
@@ -1353,17 +1582,20 @@ export function createNgpBoundTemplate(
   try {
     const compiler = new HybridCompiler(analyzer, {
       optimize: true,
-      tsconfigPath: posixTsconfigPath,
-      virtualFiles,
       templateParseOptions: options,
     });
-    for (const chunk of compiler.analyzeOptimizedSync()) {
-      for (const result of chunk.files) {
-        compiler.ensureBoundWithMetadataSync(result);
-      }
-    }
+    runNgpSync(
+      (async () => {
+        for await (const chunk of compiler.analyzeOptimized()) {
+          for (const result of chunk.files) {
+            await compiler.ensureBoundWithMetadata(result);
+          }
+        }
+      })(),
+      analyzer,
+    );
     const fileAnalysis = compiler.fileCache.get(posixTestPath);
-    const result = analyzer.getMetadataForFileSync(posixTestPath);
+    const result = runNgpSync(analyzer.getMetadataForFile(posixTestPath), analyzer);
     const hostCls = result?.classes.find((c) => c.className === hostClassName);
     const classKey = hostCls ? `${hostCls.className}@${hostCls.span.start}` : '';
     const boundTarget = fileAnalysis?.preparedTcbData?.boundTargetMap.get(classKey);
@@ -1456,7 +1688,7 @@ export function createNgpTestCompiler(
   let currentResult!: NgpCompilationResult;
   const metadataByFile = new Map<
     AbsoluteFsPath,
-    NonNullable<ReturnType<HybridCompiler['analyzer']['getMetadataForFileSync']>>
+    NonNullable<Awaited<ReturnType<HybridCompiler['analyzer']['getMetadataForFile']>>>
   >();
 
   const runCompile = () => {
@@ -1474,7 +1706,10 @@ export function createNgpTestCompiler(
     try {
       for (const rootName of inputFiles) {
         const fsPath = fs.resolve(rootName);
-        const meta = res.compiler.analyzer.getMetadataForFileSync(toPosixPath(fsPath));
+        const meta = runNgpSync(
+          res.compiler.analyzer.getMetadataForFile(toPosixPath(fsPath)),
+          res.compiler.analyzer,
+        );
         if (meta) {
           metadataByFile.set(fsPath, meta);
         }

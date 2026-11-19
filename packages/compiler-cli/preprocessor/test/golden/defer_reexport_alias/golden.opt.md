@@ -7,6 +7,7 @@
 
 import * as i0 from './network_activity';
 import * as i1 from './ng_for_of';
+import * as i2 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.NetworkActivityComponent) {
@@ -121,12 +122,12 @@ export class NetworkActivityComponent {
                     selector: 'app-network-activity',
                     imports: [NgFor],
                     template: `
-        @defer (on interaction) {
-          <div *ngFor="let item of items">{{ item }}</div>
-        } @placeholder {
-          <span>Placeholder</span>
-        }
-      `,
+    @defer (on interaction) {
+      <div *ngFor="let item of items">{{ item }}</div>
+    } @placeholder {
+      <span>Placeholder</span>
+    }
+  `,
                   },
                 ],
               },

@@ -198,22 +198,22 @@ export class AppComponent {
                 selector: 'app-root',
                 imports: [GreetingComponent],
                 template: `
-        <app-greeting
-          [count]="1"
-          [userName]="'User'"
-          [title]="'Hello'"
-          [name]="'Signal'"
-          [greetingText]="'Hi'"
-          [id]="123"
-          (clicked)="handleClick()"
-          (valueChanged)="handleChange($event)"
-          (submitted)="handleSubmit($event)"
-          (onCancel)="handleCancel()"
-          [(value)]="value"
-          [(isChecked)]="isChecked"
-          [(selectedId)]="selectedId"
-        ></app-greeting>
-      `,
+    <app-greeting
+      [count]="1"
+      [userName]="'User'"
+      [title]="'Hello'"
+      [name]="'Signal'"
+      [greetingText]="'Hi'"
+      [id]="123"
+      (clicked)="handleClick()"
+      (valueChanged)="handleChange($event)"
+      (submitted)="handleSubmit($event)"
+      (onCancel)="handleCancel()"
+      [(value)]="value"
+      [(isChecked)]="isChecked"
+      [(selectedId)]="selectedId"
+    ></app-greeting>
+  `,
               },
             ],
           },
@@ -242,6 +242,7 @@ export class AppComponent {
  */
 
 import * as i0 from './greeting.component';
+import * as i1 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.GreetingComponent) {

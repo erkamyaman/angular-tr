@@ -7,6 +7,7 @@
 
 import * as i0 from './app';
 import * as i1 from './field';
+import * as i2 from '@angular/core';
 
 /*tcb1*/
 function _tcb1(this: i0.App) {
@@ -117,18 +118,18 @@ export class App {
               {
                 selector: 'app-root',
                 template: `
-        <div
-          field
-          [value]="text"
-          [sizeAlias]="2"
-          [localAlias]="text"
-          [extraAlias]="text"
-          [labelAlias]="text"
-          [hintAlias]="text"
-          (valueChange)="onChange($event)"
-          (doneAlias)="onDone()"
-        ></div>
-      `,
+    <div
+      field
+      [value]="text"
+      [sizeAlias]="2"
+      [localAlias]="text"
+      [extraAlias]="text"
+      [labelAlias]="text"
+      [hintAlias]="text"
+      (valueChange)="onChange($event)"
+      (doneAlias)="onDone()"
+    ></div>
+  `,
                 imports: [Field],
               },
             ],
